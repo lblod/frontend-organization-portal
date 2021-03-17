@@ -1,7 +1,6 @@
 # frontend-contact-hub
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This ember application provides endpoints to visualize linked data exposed by the Contact Hub Backend.
 
 ## Prerequisites
 
