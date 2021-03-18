@@ -1,0 +1,14 @@
+FROM madnificent/ember:3.22.0 as builder
+
+LABEL maintainer="info@redpencil.io"
+
+WORKDIR /app
+COPY package.json .
+COPY package-lock.json .
+RUN npm install
+COPY . .
+RUN ember build --environment production
+
+FROM redpencil/fastboot-app-server
+
+COPY --from=builder /app/dist /app

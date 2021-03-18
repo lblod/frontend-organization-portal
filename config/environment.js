@@ -1,7 +1,18 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   let ENV = {
+    fastboot: {
+      hostWhitelist: [/^localhost:\d+$/],
+    },
+    metis: {
+      baseUrl: "http://data.lblod.info/"
+    },
+    yasgui: {
+      // NOTE: look at app/modifiers/yasgui.js when changing this variable
+      defaultQuery: "EMBER_YASGUI_DEFAULT_QUERY",
+      extraPrefixes: "EMBER_YASGUI_EXTRA_PREFIXES"
+    },
     modulePrefix: 'frontend-contact-hub',
     environment,
     rootURL: '/',

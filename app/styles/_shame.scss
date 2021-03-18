@@ -1,0 +1,19 @@
+/* fix the table for the sparql querier */
+
+table.dataTable tbody td,
+table.dataTable tbody th {
+	min-width: 2rem;
+}
+
+.yasgui .controlbar {
+	justify-content: flex-end;
+	margin-bottom: 1rem;
+}
+
+.yasgui .autocompleteWrapper {
+  display: none !important;
+}
+
+.CodeMirror {
+    max-height: 500px  !important;
+}
