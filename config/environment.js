@@ -6,7 +6,7 @@ module.exports = function (environment) {
       hostWhitelist: [/^localhost:\d+$/],
     },
     metis: {
-      baseUrl: "http://data.lblod.info/"
+      baseUrl: "EMBER_METIS_BASE_URL"
     },
     yasgui: {
       // NOTE: look at app/modifiers/yasgui.js when changing this variable
