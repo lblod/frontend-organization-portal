@@ -1,0 +1,85 @@
+<div class="au-c-main-container">
+    <div class="au-c-main-container__sidebar">
+        <div class="au-d-component-block">
+            <div class="au-c-form">
+                <p>
+                    <AuLabel for="input-regular">Naam</AuLabel>
+                    <AuInput id="input-regular" />
+                </p>
+                <p>
+                    <AuLabel for="input-regular">Gemeente</AuLabel>
+                    <AuInput id="input-regular" />
+                </p>
+                <p>
+                    <AuLabel for="input-regular">Soort eredienst</AuLabel>
+                    <PowerSelect
+                        @allowClear={{true}} 
+                        {{!-- @disabled={{disabled}}  --}}
+                        @searchEnabled={{true}}
+                        @loadingMessage="Aan het laden..."
+                        @noMatchesMessage="Geen resultaten"
+                        @searchMessage="Typ om te zoeken"
+                        @options={{this.singleselects}}
+                        @selected={{this.singleselect}}
+                        @onChange={{fn (mut this.singleselect)}} as |singleselect|>
+                        {{singleselect}}
+                    </PowerSelect>
+                </p>
+                <p>
+                    <AuLabel for="input-regular">Status</AuLabel>
+                    <PowerSelect
+                    @allowClear={{true}}
+                    {{!-- @disabled={{disabled}}  --}}
+                    @searchEnabled={{true}}
+                    @loadingMessage="Aan het laden..."
+                    @noMatchesMessage="Geen resultaten"
+                    @searchMessage="Typ om te zoeken"
+                    @options={{this.singleselects}}
+                    @selected={{this.singleselect}}
+                    @onChange={{fn (mut this.singleselect)}} as |singleselect|>
+                    {{singleselect}}
+                </PowerSelect>
+                </p>
+                <AuButton>
+                    Zoeken
+                </AuButton>
+            </div>
+        </div>
+    </div>
+    <div class="au-c-main-container__content">
+        <div class="au-d-component-block">
+            <AuDataTable @content={{this.model}} @fields="title description" @noDataMessage="Geen documenten"
+                {{!-- @sort={{sort} --}}
+                @size="small" as |t|>
+                <t.menu as |menu|>
+                    <menu.general>
+                        <AuToolbar class="au-o-box">
+                            <AuToolbarGroup>
+                                <AuHeading @skin="2">
+                                    Bestuurseenheden (sample)
+                                </AuHeading>
+                            </AuToolbarGroup>
+                        </AuToolbar>
+                    </menu.general>
+                </t.menu>
+                <t.content class="au-c-data-table__table--small" as |c|>
+                    <c.header>
+                        <AuDataTableThSortable @field="title"
+                        {{!-- @currentSorting={{sort}} --}}
+                        @label="Titel notulen"
+                            @class="data-table__header-title" />
+                        <AuDataTableThSortable @field="description"
+                        {{!-- @currentSorting={{sort}} --}}
+                        @label="Omschrijving"
+                        @class="data-table__header-title" />
+                    </c.header>
+                    <c.body as |row|>
+                        <td>{{row.title}}</td>
+                        <td>{{row.description}}</td>
+                    </c.body>
+                </t.content>
+            </AuDataTable>
+
+        </div>
+    </div>
+</div>
