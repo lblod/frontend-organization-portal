@@ -1,5 +1,6 @@
-import Model from '@ember-data/model';
+import Model, {hasMany, belongsTo } from '@ember-data/model';
 
 export default class SiteModel extends Model {
-
+    @belongsTo('address') address;
+    @hasMany('contact-point', { inverse: null }) contactPoints;
 }
