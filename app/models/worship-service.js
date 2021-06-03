@@ -1,6 +1,10 @@
-import {belongsTo } from '@ember-data/model';
+import {attr, belongsTo } from '@ember-data/model';
 import AdministrativeUnitModel from './administrative-unit';
 
 export default class WorshipServiceModel extends AdministrativeUnitModel {
-    @belongsTo('eredienst-type') eredienstType;
+    @attr denomination;
+    @attr crossBorder;
+    @belongsTo('honorary-service-type') honoraryServiceType;
+    @belongsTo('central-worship-service') centralService;
+    @belongsTo('representative-body') representiveBody;
 }
