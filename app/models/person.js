@@ -4,5 +4,5 @@ export default class PersonModel extends Model {
     @attr givenName;
     @attr familyName;
     @attr firstNameUsed;
-    @hasMany('mandatory', { inverse: null }) mandatories;
+    @hasMany('mandatory') mandatories;
 }

@@ -38,8 +38,8 @@
     </div>
     <div class="au-c-main-container__content">
         <div class="au-d-component-block">
-            <AuDataTable @content={{this.model}} @fields="title description" @noDataMessage="Geen documenten" {{!--
-                @sort={{sort} --}} @size="small" as |t|>
+            <AuDataTable @content={{@model}} @noDataMessage="No Administrative unit found" 
+                @sort={{@sort}} @size={{@size}} as |t|>
                 <t.menu as |menu|>
                     <menu.general>
                         <AuToolbar class="au-o-box">
@@ -53,14 +53,14 @@
                 </t.menu>
                 <t.content class="au-c-data-table__table--small" as |c|>
                     <c.header>
-                        <AuDataTableThSortable @field="title" {{!-- @currentSorting={{sort}} --}} @label="Titel notulen"
+                        <AuDataTableThSortable @field="name" @currentSorting={{sort}} @label="Name"
                             @class="data-table__header-title" />
-                        <AuDataTableThSortable @field="description" {{!-- @currentSorting={{sort}} --}}
-                            @label="Omschrijving" @class="data-table__header-title" />
+                        <AuDataTableThSortable @field="classification.label" @currentSorting={{sort}}
+                            @label="Status" @class="data-table__header-title" />
                     </c.header>
                     <c.body as |row|>
-                        <td>{{row.title}}</td>
-                        <td>{{row.description}}</td>
+                        <td>{{row.name}}</td>
+                        <td>{{row.classification.label}}</td>
                     </c.body>
                 </t.content>
             </AuDataTable>
