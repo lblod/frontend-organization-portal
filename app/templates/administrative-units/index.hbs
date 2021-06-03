@@ -55,12 +55,14 @@
                     <c.header>
                         <AuDataTableThSortable @field="name" @currentSorting={{sort}} @label="Name"
                             @class="data-table__header-title" />
-                        <AuDataTableThSortable @field="classification.label" @currentSorting={{sort}}
-                            @label="Status" @class="data-table__header-title" />
+                        <AuDataTableThSortable @field="site" @currentSorting={{sort}}
+                            @label="Type Eredienst" @class="data-table__header-title" />
+                        <tr>Status</tr>
                     </c.header>
                     <c.body as |row|>
                         <td>{{row.name}}</td>
                         <td>{{row.classification.label}}</td>
+                        <td>{{row.organization-status.label}}</td>
                     </c.body>
                 </t.content>
             </AuDataTable>

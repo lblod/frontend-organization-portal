@@ -48,7 +48,7 @@
                         <td>{{person.givenName}}</td>
                         <td>{{person.familyName}}</td>
                         <td>
-                           {{#each @model.mandatories as |mandatory|}}
+                           {{#each person.mandatories as |mandatory|}}
                             <p>
                               {{mandatory.startDate}}
                             </p>
