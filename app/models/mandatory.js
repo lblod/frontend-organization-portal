@@ -5,6 +5,6 @@ export default class MandatoryModel extends Model {
     @attr endDate;
     @belongsTo('mandatory-status-code') status;
     @belongsTo('person') governingAlias;
-    @hasMany('contact-point', { inverse: null }) contactPoints;
-    @hasMany('mandate', { inverse: null }) mandates;
+    @belongsTo('mandate') mandate;
+    @hasMany('contact-point', { inverse: null }) contacts;
 }
