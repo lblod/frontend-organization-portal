@@ -4,15 +4,16 @@
             <div class="au-c-sidebar__content au-o-box">
                 <div class="au-c-form">
                     <p>
-                        <AuLabel for="input-block">Naam</AuLabel>
+                      <AuLabel for="input-block">Naam</AuLabel>
+                      <AuDataTableTextSearch
+                      @filter={{this.filter}}/>
+                    </p>
+                    <p>
+                        <AuLabel for="input-block">Municipality</AuLabel>
                         <AuInput id="input-block" @width="block"/>
                     </p>
                     <p>
-                        <AuLabel for="input-block">Gemeente</AuLabel>
-                        <AuInput id="input-block" @width="block"/>
-                    </p>
-                    <p>
-                        <AuLabel for="input-regular">Soort eredienst</AuLabel>
+                        <AuLabel for="input-regular">Type eredienst</AuLabel>
                         <PowerSelect @allowClear={{true}} {{!-- @disabled={{disabled}} --}} @searchEnabled={{true}}
                             @loadingMessage="Aan het laden..." @noMatchesMessage="Geen resultaten"
                             @searchMessage="Typ om te zoeken" @options={{this.singleselects}}
@@ -30,7 +31,7 @@
                         </PowerSelect>
                     </p>
                     <AuButton @width="block">
-                        Zoeken
+                        Search
                     </AuButton>
                 </div>
             </div>
@@ -38,8 +39,7 @@
     </div>
     <div class="au-c-main-container__content">
         <div class="au-d-component-block">
-            <AuDataTable @content={{@model}} @noDataMessage="No Administrative unit found" 
-                @sort={{@sort}} @size={{@size}} as |t|>
+            <AuDataTable @content={{@model}} @noDataMessage="No Administrative unit found" as |t|>
                 <t.menu as |menu|>
                     <menu.general>
                         <AuToolbar class="au-o-box">
@@ -53,16 +53,25 @@
                 </t.menu>
                 <t.content class="au-c-data-table__table--small" as |c|>
                     <c.header>
-                        <AuDataTableThSortable @field="name" @currentSorting={{sort}} @label="Name"
+                        <th>Name</th>
+                        <AuDataTableThSortable @field="site" @currentSorting={{sort}}  @label="Type Eredienst" 
                             @class="data-table__header-title" />
-                        <AuDataTableThSortable @field="site" @currentSorting={{sort}}
-                            @label="Type Eredienst" @class="data-table__header-title" />
-                        <tr>Status</tr>
+                         <AuDataTableThSortable @field="name" @currentSorting={{sort}} @label="Province"
+                            @class="data-table__header-title" />
+                         <AuDataTableThSortable @field="name" @currentSorting={{sort}} @label="Municipality"
+                            @class="data-table__header-title" />
+                        <th>Status</th>
                     </c.header>
                     <c.body as |row|>
                         <td>{{row.name}}</td>
                         <td>{{row.classification.label}}</td>
-                        <td>{{row.organization-status.label}}</td>
+                        <td>{{row.primarySite.address.province}}</td>
+                        <td>{{row.primarySite.address.municipality}}</td>
+                        <td>
+                          <AuPill @skin={{this.getStatus}}>
+                            {{row.organizationStatus.label}}
+                          </AuPill>
+                        </td>
                     </c.body>
                 </t.content>
             </AuDataTable>
