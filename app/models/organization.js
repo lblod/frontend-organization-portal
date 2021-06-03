@@ -3,7 +3,7 @@ import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
 export default class OrganizationModel extends Model {
     @attr name;
     @attr alternativeName;
-    @belongsTo('primary-site') primarySite;
+    @belongsTo('site') primarySite;
     @belongsTo('organization-status-code') organizationStatus;
     @hasMany('identifier', { inverse: null }) identifiers;
     @hasMany('site', { inverse: null }) sites;
