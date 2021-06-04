@@ -5,20 +5,24 @@
                 <div class="au-c-form">
                     <p>
                       <AuLabel for="input-block">Naam</AuLabel>
-                      <AuDataTableTextSearch
-                      @filter={{this.filter}}/>
+                      <AuDataTableTextSearch @filter={{this.filter}}/>
                     </p>
                     <p>
                         <AuLabel for="input-block">Municipality</AuLabel>
-                        <AuInput id="input-block" @width="block"/>
-                    </p>
-                    <p>
-                        <AuLabel for="input-regular">Type eredienst</AuLabel>
                         <PowerSelect @allowClear={{true}} {{!-- @disabled={{disabled}} --}} @searchEnabled={{true}}
                             @loadingMessage="Aan het laden..." @noMatchesMessage="Geen resultaten"
                             @searchMessage="Typ om te zoeken" @options={{this.singleselects}}
                             @selected={{this.singleselect}} @onChange={{fn (mut this.singleselect)}} as |singleselect|>
                             {{singleselect}}
+                        </PowerSelect>
+                    </p>
+                    <p>
+                        <AuLabel for="input-regular">Type eredienst</AuLabel>
+                        <PowerSelect @allowClear={{true}} @searchEnabled={{true}}
+                            @noMatchesMessage="Geen resultaten" @searchField="label"
+                            @options={{this.getTypesEredienst}}
+                            @selected={{this.typeEredienst}} @onChange={{fn (mut this.handleTypeEredienstSelection)}} as |typeEredienst|>
+                            {{typeEredienst.label}}
                         </PowerSelect>
                     </p>
                     <p>
@@ -39,7 +43,7 @@
     </div>
     <div class="au-c-main-container__content">
         <div class="au-d-component-block">
-            <AuDataTable @content={{@model}} @noDataMessage="No Administrative unit found" as |t|>
+            <AuDataTable @content={{@model}} @fields="province municipality" @noDataMessage="No Administrative unit found" as |t|>
                 <t.menu as |menu|>
                     <menu.general>
                         <AuToolbar class="au-o-box">
@@ -54,21 +58,23 @@
                 <t.content class="au-c-data-table__table--small" as |c|>
                     <c.header>
                         <th>Name</th>
-                        <AuDataTableThSortable @field="site" @currentSorting={{sort}}  @label="Type Eredienst" 
+                        <AuDataTableThSortable @field="typeEredienst" @currentSorting={{sort}}  @label="Type Eredienst" 
                             @class="data-table__header-title" />
-                         <AuDataTableThSortable @field="name" @currentSorting={{sort}} @label="Province"
+                         <AuDataTableThSortable @field="province" @currentSorting={{sort}} @label="Province"
                             @class="data-table__header-title" />
-                         <AuDataTableThSortable @field="name" @currentSorting={{sort}} @label="Municipality"
+                         <AuDataTableThSortable @field="municipality" @currentSorting={{sort}} @label="Municipality"
                             @class="data-table__header-title" />
                         <th>Status</th>
                     </c.header>
                     <c.body as |row|>
-                        <td>{{row.name}}</td>
+                        <td>
+                            {{row.name}}
+                        </td>
                         <td>{{row.classification.label}}</td>
                         <td>{{row.primarySite.address.province}}</td>
                         <td>{{row.primarySite.address.municipality}}</td>
-                        <td>
-                          <AuPill @skin={{this.getStatus}}>
+                        <td>                            
+                          <AuPill @skin="success">
                             {{row.organizationStatus.label}}
                           </AuPill>
                         </td>
