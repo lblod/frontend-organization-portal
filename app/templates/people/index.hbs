@@ -37,14 +37,18 @@
                     <c.header>
                         <AuDataTableThSortable @field="givenName" @currentSorting={{this.sort}} @label="Given name"
                             @class="data-table__header-title" />
-                        <AuDataTableThSortable @field="familyName" @currentSorting={{this.sort}} @label="Family name" 
+                        <AuDataTableThSortable @field="familyName" @currentSorting={{this.sort}} @label="Family name"
                             @class="data-table__header-title" />
                         <AuDataTableThSortable @field="mandatories" @currentSorting={{this.sort}} @label="Organization"
+                            @class="data-table__header-title" />
+                        <AuDataTableThSortable @field="mandatories.mandate.role-board.label" @currentSorting={{this.sort}} @label="Positie"
                             @class="data-table__header-title" />
                     </c.header>
                     <c.body as |person|>
                         <td>{{person.givenName}}</td>
                         <td>{{person.familyName}}</td>
+                        <td>{{person.mandatories.firstObject.mandate.governingBody.name}}</td>
+                        <td>{{person.mandatories.firstObject.mandate.roleBoard.label}}</td>
                     </c.body>
                 </t.content>
             </AuDataTable>
