@@ -4,6 +4,5 @@ import AdministrativeUnitModel from './administrative-unit';
 export default class CentralWorshipServiceModel extends AdministrativeUnitModel {
     @belongsTo('honorary-service-type') honoraryServiceType;
     @belongsTo('representative-body') representativeBody;
-    @hasMany('worship-service', { inverse: true }) worshipServices;
-
+    @hasMany('worship-service', { inverse: 'centralService' }) worshipServices;
 }
