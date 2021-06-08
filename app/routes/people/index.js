@@ -9,7 +9,7 @@ export default class PeopleIndexRoute extends Route.extend(DataTableRouteMixin){
   mergeQueryOptions() {
     return {
       include: [
-        'mandatories.mandate.governing-body.is-time-specialization-of',
+        'mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit',
         'mandatories.mandate.role-board',
       ].join()
     }

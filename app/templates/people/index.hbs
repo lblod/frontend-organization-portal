@@ -39,7 +39,7 @@
                             @class="data-table__header-title" />
                         <AuDataTableThSortable @field="familyName" @currentSorting={{this.sort}} @label="Family name"
                             @class="data-table__header-title" />
-                        <AuDataTableThSortable @field="mandatories.mandate.governing-body.is-time-specialization-of.start-date" @currentSorting={{this.sort}} @label="Start Date"
+                        <AuDataTableThSortable @field="mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.name" @currentSorting={{this.sort}} @label="Organization"
                             @class="data-table__header-title" />
                         <AuDataTableThSortable @field="mandatories.mandate.role-board.label" @currentSorting={{this.sort}} @label="Position"
                             @class="data-table__header-title" />
@@ -48,7 +48,7 @@
                     <c.body as |person|>
                         <td>{{person.givenName}}</td>
                         <td>{{person.familyName}}</td>
-                        <td>{{person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.startDate}}</td>
+                        <td>{{person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}</td>
                         <td>{{person.mandatories.firstObject.mandate.roleBoard.label}}</td>
                         <td><AuPill @status="success">{{person.mandatories.firstObject.status.label}}</AuPill></td>
                     </c.body>
