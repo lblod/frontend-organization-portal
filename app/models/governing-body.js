@@ -5,7 +5,7 @@ export default class GoverningBodyModel extends Model {
     @attr endDate;
     @belongsTo('administrative-unit') administrativeUnit;
     @belongsTo('governing-body-classification-code', { inverse: null }) classification;
-    @belongsTo('governing-body') isTimeSpecializationOf;
+    @belongsTo('governing-body', {inverse: 'hasTimeSpecializations'}) isTimeSpecializationOf;
     @hasMany('governing-body', { inverse: 'isTimeSpecializationOf' }) hasTimeSpecializations;
     @hasMany('mandate') mandates;
 }
