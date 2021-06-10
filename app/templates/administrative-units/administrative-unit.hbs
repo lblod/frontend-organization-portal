@@ -79,13 +79,13 @@
           </AuToolbar>
         </div>
         <div class="au-o-flow au-o-flow--large">
-          <div>
+          <div class="{{ if this.isEditingCore "au-u-hidden-visually" ""}}">
             <AuToolbar class="au-u-margin-bottom-small">
               <AuToolbarGroup>
                 <AuHeading @level="4" @skin="5">Bestuur van de eredienst</AuHeading>
               </AuToolbarGroup>
               <AuToolbarGroup>
-                <AuButton @skin="tertiary" @icon="pencil" @iconAlignment="right">
+                <AuButton @skin="tertiary" @icon="pencil" @iconAlignment="right" {{on "click" this.toggleEditCoreInfo}}>
                   Bewerk
                 </AuButton>
               </AuToolbarGroup>
@@ -142,7 +142,7 @@
                           <p><strong>Strekking</strong></p>
                         </div>
                         <div class="au-o-grid__item au-u-3-4">
-                          <p></p>
+                          <p>{{@model.denomination}}</p>
                         </div>
                       </div>
                     </div>
@@ -172,20 +172,139 @@
                     </div>
                   </div>
                   <div class="au-o-grid">
+                    {{#each @model.identifiers as |identifier|}}
+                      <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                        <div class="au-o-grid">
+                          <div class="au-o-grid__item au-u-1-4">
+                            <p><strong>{{identifier.idName}}</strong></p>
+                          </div>
+                          <div class="au-o-grid__item au-u-3-4">
+                            <p>{{identifier.structuredIdentifier.localId}}</p>
+                          </div>
+                        </div>
+                      </div>
+                    {{/each}}
+                  </div>
+                </div>
+              </c.content>
+            </AuCard>
+          </div>
+          <div class="{{ if this.isShowingCore "au-u-hidden-visually" ""}}">
+            <AuToolbar class="au-u-margin-bottom-small">
+              <AuToolbarGroup>
+                <AuHeading @level="4" @skin="5">Bestuur van de eredienst</AuHeading>
+              </AuToolbarGroup>
+              <AuToolbarGroup>
+                <AuButton @icon="check" @iconAlignment="right"  form="edit-core-info-form"
+                          type="submit">
+                  Bewaar
+                </AuButton>
+              </AuToolbarGroup>
+            </AuToolbar>
+            <AuCard as |c|>
+              <c.content>
+                <form class="au-c-form" id="edit-core-info-form" {{on "submit" this.editCoreInfo}}>
+                  <div class="au-o-grid">
                     <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                       <div class="au-o-grid">
                         <div class="au-o-grid__item au-u-1-4">
-                          <p><strong>KBO nummer</strong></p>
+                          <p><strong>Naam eredienst</strong></p>
                         </div>
                         <div class="au-o-grid__item au-u-3-4">
-                          <p></p>
+                          <AuLabel for="naam-eredienst" class="au-u-hidden-visually">Naam eredienst input</AuLabel>
+                          <AuInput id="naam-eredienst"  @width="block" type="text" value={{@model.name}}/>
                         </div>
                       </div>
                     </div>
+                    <div class="au-o-grid__item  au-u-1-1 au-u-1-2@medium">
+                      <div class="au-o-grid">
+                        <div class="au-o-grid__item au-u-1-4">
+                          <p><strong>Status</strong></p>
+                        </div>
+                        <div class="au-o-grid__item au-u-3-4">
+                          <PowerSelect
+                            @allowClear={{true}}
+                            @searchEnabled={{true}}
+                            @loadingMessage="Aan het laden..."
+                            @noMatchesMessage="Geen resultaten"
+                            @searchMessage="Typ om te zoeken"
+                            @options={{this.singleselects}}
+                            @selected={{@model.organizationStatus.label}}
+                            @onChange={{fn (mut this.singleselect)}} as |singleselect|>
+                            {{singleselect}}
+                          </PowerSelect>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="au-o-grid__item  au-u-1-1 au-u-1-2@medium">
+                      <div class="au-o-grid">
+                        <div class="au-o-grid__item au-u-1-4">
+                          <p><strong>Type eredienst</strong></p>
+                        </div>
+                        <div class="au-o-grid__item au-u-3-4">
+                          <PowerSelect
+                            @allowClear={{true}}
+                            @searchEnabled={{true}}
+                            @loadingMessage="Aan het laden..."
+                            @noMatchesMessage="Geen resultaten"
+                            @searchMessage="Typ om te zoeken"
+                            @options={{this.singleselects}}
+                            @selected={{@model.honoraryServiceType.label}}
+                            @onChange={{fn (mut this.singleselect)}} as |singleselect|>
+                            {{singleselect}}
+                          </PowerSelect>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="au-o-grid__item  au-u-1-1 au-u-1-2@medium">
+                      <div class="au-o-grid">
+                        <div class="au-o-grid__item au-u-1-4">
+                          <p><strong>Status datum</strong></p>
+                        </div>
+                        <div class="au-o-grid__item au-u-3-4">
+                          <AuDatePicker @label="Choose a date" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="au-o-grid">
                     <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                       <div class="au-o-grid">
                         <div class="au-o-grid__item au-u-1-4">
-                          <p><strong>SharePoint identificator</strong></p>
+                          <p><strong>Strekking</strong></p>
+                        </div>
+                        <div class="au-o-grid__item au-u-3-4">
+                          <AuLabel for="strekking" class="au-u-hidden-visually">Strekking input</AuLabel>
+                          <AuInput id="strekking"  @width="block" type="text" value={{@model.denomination}}/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                      <div class="au-o-grid">
+                        <div class="au-o-grid__item au-u-1-4">
+                          <p><strong>Grensoverschrijdend</strong></p>
+                        </div>
+                        <div class="au-o-grid__item au-u-3-4">
+                          <ul>
+                            <li>
+                              <AuControlRadio @label="Ja" @name="ja-nee" @value="true" @check={{@model.crossBorder}} @identifier="ja" />
+                            </li>
+                            <li>
+                              <AuControlRadio @label="Nee" @name="ja-nee" @value="false" @check={{@model.crossBorder}} @identifier="nee" />
+                            </li>
+                          </ul>
+                          <p>{{@model.crossBorderNominal}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                      <div class="au-o-grid">
+                        <div class="au-o-grid__item au-u-1-4">
+                          <p><strong>Werkingsgebied</strong></p>
                         </div>
                         <div class="au-o-grid__item au-u-3-4">
                           <p></p>
@@ -193,7 +312,21 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                  <div class="au-o-grid">
+                    {{#each @model.identifiers as |identifier|}}
+                      <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                        <div class="au-o-grid">
+                          <div class="au-o-grid__item au-u-1-4">
+                            <p><strong>{{identifier.idName}}</strong></p>
+                          </div>
+                          <div class="au-o-grid__item au-u-3-4">
+                            <p>{{identifier.structuredIdentifier.localId}}</p>
+                          </div>
+                        </div>
+                      </div>
+                    {{/each}}
+                  </div>
+                </form>
               </c.content>
             </AuCard>
           </div>
@@ -291,7 +424,7 @@
                         <p><strong>Representatief orgaan</strong></p>
                       </div>
                       <div class="au-o-grid__item au-u-3-4">
-                        <p>{{@model.representiveBody}}</p>
+                        <p>{{@model.representiveBody.name}}</p>
                       </div>
                     </div>
                   </div>
