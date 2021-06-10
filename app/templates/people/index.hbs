@@ -4,15 +4,18 @@
             <div class="au-c-sidebar__content au-o-box">
                 <div class="au-c-form">
                     <p>
-                      <AuLabel for="input-block">Name</AuLabel>
-                      <AuDataTableTextSearch
-                      @filter={{this.filter}}/>
+                      <AuLabel for="filter-given-name">Given name</AuLabel>
+                      <AuInput id="filter-given-name" @width="block" @value={{this.givenName}} />
                     </p>
                     <p>
-                        <AuLabel for="input-block">Organization</AuLabel>
-                        <AuInput id="input-block" @width="block" />
+                      <AuLabel for="filter-family-name">Family name</AuLabel>
+                      <AuInput id="filter-family-name" @width="block" @value={{this.familyName}} />
                     </p>
-                    <AuButton @width="block">
+                    <p>
+                      <AuLabel for="filter-organization">Organization</AuLabel>
+                      <AuInput id="filter-organization" @width="block" @value={{this.organization}} />
+                    </p>
+                    <AuButton @width="block" {{on "click" this.search}}>
                         Search
                     </AuButton>
                 </div>
