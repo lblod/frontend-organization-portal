@@ -5,15 +5,21 @@ import { tracked } from '@glimmer/tracking';
 
 export default class PeopleIndexController extends Controller {
   @service router;
+<<<<<<< HEAD
   queryParams = ['page', 'size', 'givenName', 'familyName', 'organization'];
 
   @tracked page = 0;
   size = 25;
   @tracked sort = 'family-name';
+=======
+  queryParams = ['givenName', 'familyName', 'organization'];
+
+>>>>>>> Add filters to the people page
   @tracked givenName = '';
   @tracked familyName = '';
   @tracked organization = '';
 
+<<<<<<< HEAD
   get people() {
     return this.model.loadPeopleTaskInstance.isFinished
       ? this.model.loadPeopleTaskInstance.value
@@ -41,5 +47,10 @@ export default class PeopleIndexController extends Controller {
 
   resetPagination() {
     this.page = 0;
+=======
+  @action
+  search() {
+    this.router.refresh();
+>>>>>>> Add filters to the people page
   }
 }
