@@ -12,6 +12,6 @@ Router.map(function () {
     this.route('person');
   });
   this.route('administrative-units', function () {
-    this.route('administrative-unit', { path: '/:id' });
+    this.route('administrative-unit', { path: '/:id/' }, function () {});
   });
 });

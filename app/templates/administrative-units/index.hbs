@@ -68,7 +68,7 @@
                     </c.header>
                     <c.body as |adminUnit|>
                         <td>
-                            <LinkTo class="au-c-link" @model={{adminUnit.id}} @route="administrative-units.administrative-unit">
+                            <LinkTo class="au-c-link" @model={{adminUnit.id}} @route="administrative-units.administrative-unit.index">
                               {{adminUnit.name}}
                             </LinkTo>
                         </td>
@@ -83,7 +83,6 @@
                     </c.body>
                 </t.content>
             </AuDataTable>
-
         </div>
     </div>
 </div>
