@@ -60,8 +60,8 @@
           </ul>
       </div> 
     </div>
-    <div class="au-c-main-container__content au-c-body-container--scroll au-o-box">
-      <div class="au-d-component-block au-d-component-block--overflow au-o-flow">
+    <div class="au-c-main-container__content au-c-body-container--scroll">
+      <div class="au-o-box au-d-component-block au-d-component-block--overflow au-o-flow">
         <div class="au-o-flow au-o-flow--tiny">     
           <AuToolbar>
             <AuToolbarGroup>
@@ -195,7 +195,8 @@
                 <AuHeading @level="4" @skin="5">Bestuur van de eredienst</AuHeading>
               </AuToolbarGroup>
               <AuToolbarGroup>
-                <AuButton @icon="check" @iconAlignment="right"  form="edit-core-info-form"
+                <AuButton @icon="check" @iconAlignment="right"  
+                          @loading={{this.isSaving}} form="edit-core-info-form"
                           type="submit">
                   Bewaar
                 </AuButton>
@@ -332,13 +333,13 @@
           </div>
         </div>
         <div class="au-o-flow au-o-flow--large">
-          <div>
+          <div class="{{ if this.isEditingContact "au-u-hidden-visually" ""}}">
             <AuToolbar class="au-u-margin-bottom-small">
               <AuToolbarGroup>
                 <AuHeading @level="4" @skin="5">Contactgegevens maatschappelijke zetel</AuHeading>
               </AuToolbarGroup>
               <AuToolbarGroup>
-                <AuButton @skin="tertiary" @icon="pencil" @iconAlignment="right">
+                <AuButton @skin="tertiary" @icon="pencil" @iconAlignment="right" {{on "click" this.toggleEditContactInfo}}>
                   Bewerk
                 </AuButton>
               </AuToolbarGroup>
@@ -387,6 +388,135 @@
                     </div>
                   </div>
                 </div>
+              </c.content>
+            </AuCard>
+          </div>
+          <div class="{{ if this.isShowingContact "au-u-hidden-visually" ""}}">
+            <AuToolbar class="au-u-margin-bottom-small">
+              <AuToolbarGroup>
+                <AuHeading @level="4" @skin="5">Contactgegevens maatschappelijke zetel</AuHeading>
+              </AuToolbarGroup>
+              <AuToolbarGroup>
+                <AuButton @skin="tertiary" @icon="pencil" @iconAlignment="right" @loading={{this.isSavingContact}} form="edit-contact-info-form"
+                          type="submit">
+                  Bewaar
+                </AuButton>
+              </AuToolbarGroup>
+            </AuToolbar>
+            <AuCard @standOut={{false}} as |c|>
+              <c.content>
+                <form class="au-c-form" id="edit-contact-info-form" {{on "submit" this.editContactInfo}}>
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                      <div class="au-o-grid">
+                        <div class="au-o-grid__item au-u-1-4">
+                          <p><strong>Huis nummer</strong></p>
+                        </div>
+                        <div class="au-o-grid__item au-u-3-4">
+                          <AuLabel for="huis-nummer" class="au-u-hidden-visually">Huis nummer input</AuLabel>
+                          <AuInput id="huis-nummer"  @width="block" type="text" value={{@model.primarySite.address.number}}/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                      <div class="au-o-grid">
+                        <div class="au-o-grid__item au-u-1-4">
+                          <p><strong>Busnummer</strong></p>
+                        </div>
+                        <div class="au-o-grid__item au-u-3-4">
+                          <AuLabel for="busnummer" class="au-u-hidden-visually">Busnummer input</AuLabel>
+                          <AuInput id="busnummer"  @width="block" type="text" value={{@model.primarySite.address.boxNumber}}/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                      <div class="au-o-grid">
+                        <div class="au-o-grid__item au-u-1-4">
+                          <p><strong>Straat</strong></p>
+                        </div>
+                        <div class="au-o-grid__item au-u-3-4">
+                          <AuLabel for="straat" class="au-u-hidden-visually">Straat input</AuLabel>
+                          <AuInput id="straat"  @width="block" type="text" value={{@model.primarySite.address.street}}/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                      <div class="au-o-grid">
+                        <div class="au-o-grid__item au-u-1-4">
+                          <p><strong>Postcode</strong></p>
+                        </div>
+                        <div class="au-o-grid__item au-u-3-4">
+                          <AuLabel for="postcode" class="au-u-hidden-visually">Postcode input</AuLabel>
+                          <AuInput id="postcode"  @width="block" type="text" value={{@model.primarySite.address.postcode}}/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                      <div class="au-o-grid">
+                        <div class="au-o-grid__item au-u-1-4">
+                          <p><strong>Gemeente</strong></p>
+                        </div>
+                        <div class="au-o-grid__item au-u-3-4">
+                          <AuLabel for="gemeente" class="au-u-hidden-visually">Gemeente input</AuLabel>
+                          <PowerSelect
+                              @allowClear={{true}}
+                              @searchEnabled={{true}}
+                              @loadingMessage="Aan het laden..."
+                              @noMatchesMessage="Geen resultaten"
+                              @searchMessage="Typ om te zoeken"
+                              @options={{this.singleselects}}
+                              @selected={{@model.primarySite.address.municipality}}
+                              @onChange={{fn (mut this.singleselect)}} as |singleselect|>
+                              {{singleselect}}
+                            </PowerSelect>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="au-o-grid__item  au-u-1-1 au-u-1-2@medium">
+                      <div class="au-o-grid">
+                        <div class="au-o-grid__item au-u-1-4">
+                          <p><strong>Provincie</strong></p>
+                        </div>
+                        <div class="au-o-grid__item au-u-3-4">
+                          <AuLabel for="provincie" class="au-u-hidden-visually">Provincie input</AuLabel>
+                          <PowerSelect
+                              @allowClear={{true}}
+                              @searchEnabled={{true}}
+                              @loadingMessage="Aan het laden..."
+                              @noMatchesMessage="Geen resultaten"
+                              @searchMessage="Typ om te zoeken"
+                              @options={{this.singleselects}}
+                              @selected={{@model.primarySite.address.province}}
+                              @onChange={{fn (mut this.singleselect)}} as |singleselect|>
+                              {{singleselect}}
+                            </PowerSelect>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                      <div class="au-o-grid">
+                        <div class="au-o-grid__item au-u-1-4">
+                          <p><strong>Telefoonnummer</strong></p>
+                        </div>
+                        <div class="au-o-grid__item au-u-3-4">
+                          <AuLabel for="telefoonnummer" class="au-u-hidden-visually">Telefoonnummer input</AuLabel>
+                          <AuInput id="telefoonnummer"  @width="block" type="text" value={{@model.primarySite.contacts.firstObject.telephone}}/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                      <div class="au-o-grid">
+                        <div class="au-o-grid__item au-u-1-4">
+                          <p><strong>Website</strong></p>
+                        </div>
+                        <div class="au-o-grid__item au-u-3-4">
+                          <AuLabel for="website" class="au-u-hidden-visually">Website input</AuLabel>
+                          <AuInput id="website"  @width="block" type="text" value={{@model.primarySite.contacts.firstObject.website}}/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
               </c.content>
             </AuCard>
           </div>
