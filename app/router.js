@@ -1,6 +1,5 @@
 import EmberRouter from '@ember/routing/router';
 import config from 'frontend-contact-hub/config/environment';
-import metisFallbackRoute from 'metis/utils/fallback-route';
 
 export default class Router extends EmberRouter {
   location = config.locationType;
@@ -8,6 +7,9 @@ export default class Router extends EmberRouter {
 }
 
 Router.map(function () {
-  this.route('sparql', { path: '' });
-  metisFallbackRoute(this);
+  this.route('index', { path: '' });
+  this.route('people', function() {
+    this.route('person');
+  });
+  this.route('administrative-units', function() {});
 });

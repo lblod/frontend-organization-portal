@@ -1,0 +1,10 @@
+<BreadcrumbsItem as |linkClass|>
+    <LinkTo @route="administrative-units.index" class={{linkClass}}>
+        Besturen
+    </LinkTo>
+</BreadcrumbsItem>
+
+<div class="au-c-body-container au-c-body-container--scroll">
+    <NavigationBar />
+    {{outlet}}
+</div>

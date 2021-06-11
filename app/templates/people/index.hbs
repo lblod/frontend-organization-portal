@@ -1,0 +1,59 @@
+<div class="au-c-main-container">
+    <div class="au-c-main-container__sidebar">
+        <div class="au-c-sidebar">
+            <div class="au-c-sidebar__content au-o-box">
+                <div class="au-c-form">
+                    <p>
+                      <AuLabel for="input-block">Name</AuLabel>
+                      <AuDataTableTextSearch
+                      @filter={{this.filter}}/>
+                    </p>
+                    <p>
+                        <AuLabel for="input-block">Organization</AuLabel>
+                        <AuInput id="input-block" @width="block" />
+                    </p>
+                    <AuButton @width="block">
+                        Search
+                    </AuButton>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="au-c-main-container__content">
+        <div class="au-d-component-block">
+            <AuDataTable @content={{@model}} @fields="givenName familyName position" @noDataMessage="No person found" as |t|>
+                <t.menu as |menu|>
+                    <menu.general>
+                        <AuToolbar class="au-o-box">
+                            <AuToolbarGroup>
+                                <AuHeading @skin="2">
+                                    Personen
+                                </AuHeading>
+                            </AuToolbarGroup>
+                        </AuToolbar>
+                    </menu.general>
+                </t.menu>
+                <t.content class="au-c-data-table__table--small" as |c|>
+                    <c.header>
+                        <AuDataTableThSortable @field="givenName" @currentSorting={{this.sort}} @label="Given name"
+                            @class="data-table__header-title" />
+                        <AuDataTableThSortable @field="familyName" @currentSorting={{this.sort}} @label="Family name"
+                            @class="data-table__header-title" />
+                        <AuDataTableThSortable @field="mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.name" @currentSorting={{this.sort}} @label="Organization"
+                            @class="data-table__header-title" />
+                        <AuDataTableThSortable @field="mandatories.mandate.role-board.label" @currentSorting={{this.sort}} @label="Position"
+                            @class="data-table__header-title" />
+                        <th>Status</th>
+                    </c.header>
+                    <c.body as |person|>
+                        <td>{{person.givenName}}</td>
+                        <td>{{person.familyName}}</td>
+                        <td>{{person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}</td>
+                        <td>{{person.mandatories.firstObject.mandate.roleBoard.label}}</td>
+                        <td><AuPill @status="success">{{person.mandatories.firstObject.status.label}}</AuPill></td>
+                    </c.body>
+                </t.content>
+            </AuDataTable>
+        </div>
+    </div>
+</div>
