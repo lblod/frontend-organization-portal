@@ -55,6 +55,7 @@
     "ember-power-select": "^4.1.5",
     "ember-qunit": "^4.6.0",
     "ember-resolver": "^8.0.2",
+    "ember-router-service-refresh-polyfill": "^0.1.0",
     "ember-source": "~3.25.1",
     "ember-template-lint": "^2.18.1",
     "eslint": "^7.20.0",
