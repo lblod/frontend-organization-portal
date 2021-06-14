@@ -5,7 +5,8 @@ export default class PeopleIndexRoute extends Route {
   @service store;
 
   queryParams = {
-    page: { refreshModel: true }
+    page: { refreshModel: true },
+    sort: { refreshModel: true }
   }
 
   model(params) {
@@ -18,7 +19,8 @@ export default class PeopleIndexRoute extends Route {
       page: {
         number: params.page,
         size: params.size
-      }
+      },
+      sort: params.sort,
     };
 
     if (params.givenName) {
