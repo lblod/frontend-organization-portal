@@ -1,7 +1,0 @@
-.breadcrumbs__item:last-child .breadcrumbs__link {
-  // The last breadcrumb needs to appear as regular text, so we need to override some .au-c-link styles
-  font-weight: 500;
-  pointer-events: none;
-  text-decoration: none;
-  color: inherit;
-}

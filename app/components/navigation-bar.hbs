@@ -1,12 +1,28 @@
 <AuToolbar @border="bottom" @size="medium" @skin="tint">
   <AuToolbarGroup>
-    <BreadcrumbsContainer class="breadcrumbs au-c-list-horizontal"
-      @itemClass="breadcrumbs__item au-c-list-horizontal__item" @linkClass="breadcrumbs__link au-c-link">
-      <li class="au-c-list-horizontal__item">
-        <AuLink @linkRoute="index" @icon="arrow-left" @iconAlignment="left">
-          Overzicht
-        </AuLink>
-      </li>
-    </BreadcrumbsContainer>
+    <nav aria-label="breadcrumbs">
+      <ol class="au-c-list-horizontal">
+        <li class="au-c-list-horizontal__item">
+          <AuLink @linkRoute="index" @icon="arrow-left" @iconAlignment="left">
+            Overzicht
+          </AuLink>
+        </li>
+        {{#each (breadcrumbs) as |breadcrumb|}}
+          <li class="au-c-list-horizontal__item">
+            {{#if (is-last breadcrumb (breadcrumbs))}}
+              {{breadcrumb.title}}
+            {{else}}
+              <AuLink
+                @linkRoute={{breadcrumb.data.route}}
+                @model={{breadcrumb.data.model}}
+                @models={{breadcrumb.data.models}}
+              >
+                {{breadcrumb.title}}
+              </AuLink>
+            {{/if}}
+          </li>
+        {{/each}}
+      </ol>
+    </nav>
   </AuToolbarGroup>
 </AuToolbar>
