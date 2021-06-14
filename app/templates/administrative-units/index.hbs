@@ -4,37 +4,45 @@
             <div class="au-c-sidebar__content au-o-box">
                 <div class="au-c-form">
                     <p>
-                      <AuLabel for="input-block">Naam</AuLabel>
-                      <AuDataTableTextSearch @filter={{this.filter}}/>
+                        <AuLabel for="filter-name">Name</AuLabel>
+                        <AuInput id="filter-name" @width="block" @value={{this.name}} />
+
                     </p>
                     <p>
-                        <AuLabel for="input-block">Municipality</AuLabel>
-                        <PowerSelect @allowClear={{true}} {{!-- @disabled={{disabled}} --}} @searchEnabled={{true}}
-                            @loadingMessage="Aan het laden..." @noMatchesMessage="Geen resultaten"
-                            @searchMessage="Typ om te zoeken" @options={{this.singleselects}}
-                            @selected={{this.singleselect}} @onChange={{fn (mut this.singleselect)}} as |singleselect|>
-                            {{singleselect}}
-                        </PowerSelect>
+                        <AuLabel for="filter-municipality">Municipality</AuLabel>
+                        <AuInput id="filter-municipality" @width="block" @value={{this.municipality}} />
                     </p>
                     <p>
                         <AuLabel for="input-regular">Type eredienst</AuLabel>
-                        <PowerSelect @allowClear={{true}} @searchEnabled={{true}}
-                            @noMatchesMessage="Geen resultaten" @searchField="label"
-                            @options={{this.getTypesEredienst}}
-                            @selected={{this.typeEredienst}} @onChange={{fn (mut this.handleTypeEredienstSelection)}} as |typeEredienst|>
-                            {{typeEredienst.label}}
+                        <PowerSelect
+                            @allowClear={{true}}
+                            @searchEnabled={{true}}
+                            @noMatchesMessage="Geen resultaten"
+                            @searchField="label"
+                            @options={{@model.classifications}}
+                            @selected={{this.selectedClassification}}
+                            @onChange={{this.setClassification}}
+                            @triggerId="classifications" as |classification|>
+                            {{classification.label}}
                         </PowerSelect>
                     </p>
                     <p>
                         <AuLabel for="input-regular">Status</AuLabel>
-                        <PowerSelect @allowClear={{true}} {{!-- @disabled={{disabled}} --}} @searchEnabled={{true}}
-                            @loadingMessage="Aan het laden..." @noMatchesMessage="Geen resultaten"
-                            @searchMessage="Typ om te zoeken" @options={{this.singleselects}}
-                            @selected={{this.singleselect}} @onChange={{fn (mut this.singleselect)}} as |singleselect|>
-                            {{singleselect}}
+                        <PowerSelect
+                            @allowClear={{true}} {{!-- @disabled={{disabled}} --}}
+                            @searchEnabled={{true}}
+                            @loadingMessage="Aan het laden..."
+                            @noMatchesMessage="Geen resultaten"
+                            @searchField="label"
+                            @searchMessage="Typ om te zoeken"
+                            @options={{@model.statuses}}
+                            @selected={{this.selectedOrganizationStatus}}
+                            @onChange={{this.setOrganizationStatus}}
+                            @triggerId="statuses" as |status|>
+                            {{status.label}}
                         </PowerSelect>
                     </p>
-                    <AuButton @width="block">
+                    <AuButton @width="block" {{on "click" this.search}}>
                         Search
                     </AuButton>
                 </div>
@@ -43,7 +51,7 @@
     </div>
     <div class="au-c-main-container__content">
         <div class="au-d-component-block">
-            <AuDataTable @content={{@model}} @fields="province municipality" @noDataMessage="No Administrative unit found" as |t|>
+            <AuDataTable @content={{@model.administrativeUnit}} @fields="province municipality" @noDataMessage="No Administrative unit found" as |t|>
                 <t.menu as |menu|>
                     <menu.general>
                         <AuToolbar class="au-o-box">
