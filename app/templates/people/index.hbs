@@ -24,7 +24,13 @@
     </div>
     <div class="au-c-main-container__content">
         <div class="au-d-component-block">
-            <AuDataTable @content={{@model}} @fields="givenName familyName position" @noDataMessage="No person found" as |t|>
+            <AuDataTable
+              @content={{@model}}
+              @noDataMessage="No person found"
+              @page={{this.page}}
+              @size={{this.size}}
+              as |t|
+            >
                 <t.menu as |menu|>
                     <menu.general>
                         <AuToolbar class="au-o-box">
