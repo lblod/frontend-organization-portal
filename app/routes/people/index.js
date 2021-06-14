@@ -10,11 +10,11 @@ export default class PeopleIndexRoute extends Route {
 
   model(params) {
     let query = {
-      include: [
-        'mandatories.status',
-        'mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit',
-        'mandatories.mandate.role-board',
-      ].join(),
+      // include: [
+      //   'mandatories.status',
+      //   'mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit',
+      //   'mandatories.mandate.role-board',
+      // ].join(),
       page: {
         number: params.page,
         size: params.size
