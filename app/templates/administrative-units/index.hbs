@@ -58,30 +58,31 @@
                 <t.content class="au-c-data-table__table--small" as |c|>
                     <c.header>
                         <th>Name</th>
-                        <AuDataTableThSortable @field="typeEredienst" @currentSorting={{sort}}  @label="Type Eredienst" 
+                        <AuDataTableThSortable @field="typeEredienst" @currentSorting={{this.sort}}  @label="Type Eredienst" 
                             @class="data-table__header-title" />
-                         <AuDataTableThSortable @field="province" @currentSorting={{sort}} @label="Province"
+                         <AuDataTableThSortable @field="province" @currentSorting={{this.sort}} @label="Province"
                             @class="data-table__header-title" />
-                         <AuDataTableThSortable @field="municipality" @currentSorting={{sort}} @label="Municipality"
+                         <AuDataTableThSortable @field="municipality" @currentSorting={{this.sort}} @label="Municipality"
                             @class="data-table__header-title" />
                         <th>Status</th>
                     </c.header>
-                    <c.body as |row|>
+                    <c.body as |adminUnit|>
                         <td>
-                            {{row.name}}
+                            <LinkTo class="au-c-link" @model={{adminUnit.id}} @route="administrative-units.administrative-unit.index">
+                              {{adminUnit.name}}
+                            </LinkTo>
                         </td>
-                        <td>{{row.classification.label}}</td>
-                        <td>{{row.primarySite.address.province}}</td>
-                        <td>{{row.primarySite.address.municipality}}</td>
+                        <td>{{adminUnit.classification.label}}</td>
+                        <td>{{adminUnit.primarySite.address.province}}</td>
+                        <td>{{adminUnit.primarySite.address.municipality}}</td>
                         <td>                            
                           <AuPill @skin="success">
-                            {{row.organizationStatus.label}}
+                            {{adminUnit.organizationStatus.label}}
                           </AuPill>
                         </td>
                     </c.body>
                 </t.content>
             </AuDataTable>
-
         </div>
     </div>
 </div>
