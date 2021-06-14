@@ -3,7 +3,7 @@ import AdministrativeUnitModel from './administrative-unit';
 
 export default class WorshipServiceModel extends AdministrativeUnitModel {
     @attr denomination;
-    @attr('boolean') crossBorder;
+    @attr crossBorder;
     @belongsTo('honorary-service-type') honoraryServiceType;
     @belongsTo('central-worship-service') centralService;
     @belongsTo('representative-body') representiveBody;
