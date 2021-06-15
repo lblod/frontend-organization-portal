@@ -2,7 +2,10 @@
     <div class="au-c-main-container__sidebar">
         <div class="au-c-sidebar">
             <div class="au-c-sidebar__content au-o-box">
-                <div class="au-c-form">
+                <form
+                  {{on "submit" this.search}}
+                  class="au-c-form"
+                >
                     <p>
                       <AuLabel for="filter-given-name">Given name</AuLabel>
                       <AuInput id="filter-given-name" @width="block" @value={{this.givenName}} />
@@ -15,17 +18,23 @@
                       <AuLabel for="filter-organization">Organization</AuLabel>
                       <AuInput id="filter-organization" @width="block" @value={{this.organization}} />
                     </p>
-                    <AuButton @width="block" {{on "click" this.search}}>
+                    <AuButton
+                      @loading={{this.isLoading}}
+                      @disabled={{this.isLoading}}
+                      @width="block"
+                      type="submit"
+                    >
                         Search
                     </AuButton>
-                </div>
+                </form>
             </div>
         </div>
     </div>
     <div class="au-c-main-container__content">
         <div class="au-d-component-block">
             <AuDataTable
-              @content={{@model}}
+              @content={{this.people}}
+              @isLoading={{this.showTableLoader}}
               @noDataMessage="No person found"
               @page={{this.page}}
               @size={{this.size}}

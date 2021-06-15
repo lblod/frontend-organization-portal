@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { dropTask } from 'ember-concurrency';
 
 export default class PeopleIndexRoute extends Route {
   @service store;
@@ -10,7 +11,16 @@ export default class PeopleIndexRoute extends Route {
   }
 
   model(params) {
+    return {
+      loadPeopleTaskInstance: this.loadPeopleTask.perform(params),
+      loadedPeople: this.loadPeopleTask.lastSuccessful?.value
+    };
+  }
+
+  @dropTask({ cancelOn: 'deactivate' })
+  *loadPeopleTask(params) {
     let query = {
+      // Includes slow down the API response so we disable them for now.
       // include: [
       //   'mandatories.status',
       //   'mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit',
@@ -35,6 +45,6 @@ export default class PeopleIndexRoute extends Route {
       query['filter[mandatories][mandate][governing-body][is-time-specialization-of][administrative-unit][name]'] = params.organization;
     }
 
-    return this.store.query('person', query);
+    return yield this.store.query('person', query);
   }
 }
