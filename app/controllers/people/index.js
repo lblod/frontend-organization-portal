@@ -31,6 +31,15 @@ export default class PeopleIndexController extends Controller {
   @action
   search(event) {
     event.preventDefault();
-    this.router.refresh();
+
+    if (this.page > 0) {
+      this.resetPagination(); // updating `page` will refresh the model
+    } else {
+      this.router.refresh();
+    }
+  }
+
+  resetPagination() {
+    this.page = 0;
   }
 }
