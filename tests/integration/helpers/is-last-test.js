@@ -3,10 +3,10 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 
-module('Integration | Helper | is-last', function(hooks) {
+module('Integration | Helper | is-last', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it determines if the passed in item is the last item of an array', async function(assert) {
+  test('it determines if the passed in item is the last item of an array', async function (assert) {
     this.list = [1, 2, 3];
     this.currentItem = 1;
 
@@ -26,13 +26,13 @@ module('Integration | Helper | is-last', function(hooks) {
     assert.equal(this.element.textContent.trim(), 'true');
   });
 
-  test('it works with an array of objects', async function(assert) {
+  test('it works with an array of objects', async function (assert) {
     this.list = [
       {
-        label: "foo",
+        label: 'foo',
       },
       {
-        label: "bar",
+        label: 'bar',
       },
     ];
     this.currentItem = this.list[0];
@@ -47,9 +47,9 @@ module('Integration | Helper | is-last', function(hooks) {
     assert.equal(this.element.textContent.trim(), 'true');
   });
 
-  test('it always returns false when the list is empty', async function(assert) {
+  test('it always returns false when the list is empty', async function (assert) {
     this.list = [];
-    this.currentItem = "foo";
+    this.currentItem = 'foo';
 
     await render(hbs`
       {{is-last this.currentItem this.list}}

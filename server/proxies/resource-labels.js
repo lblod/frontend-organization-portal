@@ -9,11 +9,11 @@ module.exports = function (app) {
     console.error(err, req.url);
   });
 
-  app.use(proxyPath, function (req, res, /*next*/) {
+  app.use(proxyPath, function (req, res /*next*/) {
     const credentials = Buffer.from('root:root').toString('base64');
-    req.headers.authorization = "Basic " + credentials;
-    req.headers["Accept"] = "application/json";
-    req.url = "http://localhost" + proxyPath + '/' + req.url;
+    req.headers.authorization = 'Basic ' + credentials;
+    req.headers['Accept'] = 'application/json';
+    req.url = 'http://localhost' + proxyPath + '/' + req.url;
     proxy.web(req, res, { target: '' });
   });
 };

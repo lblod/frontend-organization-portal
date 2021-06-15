@@ -38,7 +38,6 @@ export default class AdministrativeUnitsAdministrativeUnitIndexController extend
 
   @action
   async editCoreInfo(event) {
-
     event.preventDefault();
 
     if (!this.isSavingContact) {
@@ -54,7 +53,6 @@ export default class AdministrativeUnitsAdministrativeUnitIndexController extend
 
   @action
   async editContactInfo(event) {
-
     event.preventDefault();
 
     if (!this.isSaving) {
@@ -67,5 +65,4 @@ export default class AdministrativeUnitsAdministrativeUnitIndexController extend
 
     this.toggleShowContactInfo();
   }
-
 }
