@@ -7,13 +7,13 @@ export default class PeopleIndexRoute extends Route {
 
   queryParams = {
     page: { refreshModel: true },
-    sort: { refreshModel: true }
-  }
+    sort: { refreshModel: true },
+  };
 
   model(params) {
     return {
       loadPeopleTaskInstance: this.loadPeopleTask.perform(params),
-      loadedPeople: this.loadPeopleTask.lastSuccessful?.value
+      loadedPeople: this.loadPeopleTask.lastSuccessful?.value,
     };
   }
 
@@ -28,7 +28,7 @@ export default class PeopleIndexRoute extends Route {
       // ].join(),
       page: {
         number: params.page,
-        size: params.size
+        size: params.size,
       },
       sort: params.sort,
     };
@@ -42,7 +42,9 @@ export default class PeopleIndexRoute extends Route {
     }
 
     if (params.organization) {
-      query['filter[mandatories][mandate][governing-body][is-time-specialization-of][administrative-unit][name]'] = params.organization;
+      query[
+        'filter[mandatories][mandate][governing-body][is-time-specialization-of][administrative-unit][name]'
+      ] = params.organization;
     }
 
     return yield this.store.query('person', query);

@@ -148,7 +148,12 @@
         </AuToolbar>
         <AuCard as |c|>
           <c.content>
-            <form class="au-c-form" id="edit-core-info-form" {{on "submit" this.editCoreInfo}}>
+            <form
+              class="au-c-form"
+              id="edit-core-info-form"
+              aria-label="edit-core-info-form"
+              {{on "submit" this.editCoreInfo}}
+            >
               <div class="au-o-grid">
                 <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                   <div class="au-o-grid">
@@ -349,7 +354,12 @@
         </AuToolbar>
         <AuCard @standOut={{false}} as |c|>
           <c.content>
-            <form class="au-c-form" id="edit-contact-info-form" {{on "submit" this.editContactInfo}}>
+            <form
+              class="au-c-form"
+              id="edit-contact-info-form"
+              aria-label="edit-contact-info-form"
+              {{on "submit" this.editContactInfo}}
+            >
               <div class="au-o-grid">
                 <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                   <div class="au-o-grid">

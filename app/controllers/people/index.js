@@ -15,9 +15,9 @@ export default class PeopleIndexController extends Controller {
   @tracked organization = '';
 
   get people() {
-    return this.model.loadPeopleTaskInstance.isFinished ?
-      this.model.loadPeopleTaskInstance.value :
-      this.model.loadedPeople;
+    return this.model.loadPeopleTaskInstance.isFinished
+      ? this.model.loadPeopleTaskInstance.value
+      : this.model.loadedPeople;
   }
 
   get isLoading() {
