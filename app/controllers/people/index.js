@@ -14,9 +14,23 @@ export default class PeopleIndexController extends Controller {
   @tracked familyName = '';
   @tracked organization = '';
 
+  get people() {
+    return this.model.loadPeopleTaskInstance.isFinished ?
+      this.model.loadPeopleTaskInstance.value :
+      this.model.loadedPeople;
+  }
+
+  get isLoading() {
+    return this.model.loadPeopleTaskInstance.isRunning;
+  }
+
+  get showTableLoader() {
+    return this.isLoading && !this.model.loadedPeople;
+  }
 
   @action
-  search() {
+  search(event) {
+    event.preventDefault();
     this.router.refresh();
   }
 }
