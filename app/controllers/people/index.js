@@ -24,8 +24,12 @@ export default class PeopleIndexController extends Controller {
     return this.model.loadPeopleTaskInstance.isRunning;
   }
 
+  get hasPreviousData() {
+    return this.model.loadedPeople && this.model.loadedPeople.length > 0;
+  }
+
   get showTableLoader() {
-    return this.isLoading && !this.model.loadedPeople;
+    return this.isLoading && !this.hasPreviousData;
   }
 
   get hasNoResults() {
