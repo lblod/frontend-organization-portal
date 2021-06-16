@@ -5,17 +5,8 @@ import { hash } from 'rsvp';
 export default class AdministrativeUnitsIndexRoute extends Route {
   @service store;
 
-<<<<<<< HEAD
-export default class AdministrativeUnitsIndexRoute extends Route.extend(
-  DataTableRouteMixin
-) {
-  modelName = 'administrative-unit';
-}
-=======
   model(params) {
-  
-    let query = {
-    };
+    let query = {};
 
     if (params.name) {
       query['filter[name]'] = params.name;
@@ -26,7 +17,8 @@ export default class AdministrativeUnitsIndexRoute extends Route.extend(
     }
 
     if (params.municipality) {
-      query['filter[primary-site][address][municipality]'] = params.municipality;
+      query['filter[primary-site][address][municipality]'] =
+        params.municipality;
     }
 
     if (params.organizationStatus) {
@@ -34,11 +26,11 @@ export default class AdministrativeUnitsIndexRoute extends Route.extend(
     }
 
     return hash({
-      classifications: this.store.findAll('administrative-unit-classification-code'),
+      classifications: this.store.findAll(
+        'administrative-unit-classification-code'
+      ),
       statuses: this.store.findAll('organization-status-code'),
-      administrativeUnit: this.store.query('administrative-unit', query)
+      administrativeUnit: this.store.query('administrative-unit', query),
     });
-
   }
 }
->>>>>>> Add search logic

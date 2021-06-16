@@ -59,20 +59,12 @@
     "ember-qunit": "^5.1.4",
     "ember-resolver": "^8.0.2",
     "ember-router-service-refresh-polyfill": "^0.1.0",
-<<<<<<< HEAD
     "ember-source": "~3.26.1",
     "ember-template-lint": "^3.2.0",
     "ember-truth-helpers": "^3.0.0",
     "eslint": "^7.23.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-ember": "^10.3.0",
-=======
-    "ember-source": "~3.25.1",
-    "ember-template-lint": "^2.18.1",
-    "eslint": "^7.20.0",
-    "eslint-config-prettier": "^7.2.0",
-    "eslint-plugin-ember": "^10.2.0",
->>>>>>> Install ember-router-service-refresh-polyfill
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "glob": "^4.5.3",
