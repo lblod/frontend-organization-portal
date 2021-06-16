@@ -1,44 +1,115 @@
-<div class="au-c-body-container au-c-body-container--scroll">
-    <div class="au-o-box">
-        <ul class="au-o-grid au-o-grid--small">
-            <li class="au-o-grid__item au-u-1-2@medium au-u-1-3@large">
-                <AuCard @flex={{true}} as |c|>
-                    <c.header @badgeSkin="brand" @badgeIcon="alert-triangle">
-                        <AuHeading @level="2" @skin="4">
-                            Bestuurseenheden
-                        </AuHeading>
-                    </c.header>
-                    <c.content>
-                        <p>
-                            Lorem ipsum dolor sit amet
-                        </p>
-                    </c.content>
-                    <c.footer>
-                        <LinkTo class="au-c-button" @route="administrative-units">
-                            Ga naar databank
-                        </LinkTo>
-                    </c.footer>
-                </AuCard>
-            </li>
-            <li class="au-o-grid__item au-u-1-2@medium au-u-1-3@large">
-                <AuCard @flex={{true}} as |c|>
-                    <c.header @badgeSkin="brand" @badgeIcon="alert-triangle">
-                        <AuHeading @level="2" @skin="4">
-                            Personen
-                        </AuHeading>
-                    </c.header>
-                    <c.content>
-                        <p>
-                            Lorem ipsum dolor sit amet
-                        </p>
-                    </c.content>
-                    <c.footer>
-                        <LinkTo class="au-c-button" @route="people">
-                            Ga naar databank
-                        </LinkTo>
-                    </c.footer>
-                </AuCard>
-            </li>
+<div class="au-c-main-container">
+  <div class="au-c-main-container__sidebar">
+    <div class="au-d-component-block au-c-sidebar">
+      <div class="au-c-sidebar__content">
+        <div class="au-c-sidebar__header">
+          <AuHeading @level="6" @skin="6">Menu modules</AuHeading>
+        </div>
+        <ul class="au-c-list-navigation">
+          <li class="au-c-list-navigation__item">
+            <AuNavigationLink @linkRoute="administrative-units">
+              Bestuurseenheden
+            </AuNavigationLink>
+          </li>
+          <li class="au-c-list-navigation__item">
+            <AuNavigationLink @linkRoute="people">
+              Personen
+            </AuNavigationLink>
+          </li>
         </ul>
+      </div>
+      <div class="au-c-sidebar__footer">
+        <a class="au-c-link au-c-link--secondary au-c-link--icon" href="" target="_blank" rel="noopener noreferrer">
+          <AuIcon @icon="manual" @alignment="left" />
+          Handleiding
+        </a>
+      </div>
     </div>
+  </div>
+  <div class="au-c-main-container__content au-c-main-container__content--block">
+    <div
+      class="au-o-box au-o-flow au-o-flow--large"
+    >
+      <AuHeading @skin="2">
+        Lokale Financiën - Jan Janssens
+      </AuHeading>
+
+      <AuHeading @level="2" @skin="3" class="au-u-margin-bottom">
+        Beschikbare modules
+      </AuHeading>
+
+      <ul class="au-o-grid au-o-grid--small">
+        <li class="au-o-grid__item au-u-1-2@medium au-u-1-3@large">
+          <AuCard @flex={{true}} as |c|>
+            <c.header @badgeSkin="brand" @badgeIcon="sitemap">
+              <AuHeading @level="2" @skin="4">
+                Bestuurseenheden
+              </AuHeading>
+            </c.header>
+            <c.content>
+              <p>
+                Bekijk en bewerk
+              </p>
+              <ul>
+                <li>
+                  Kerninformatie over besturen
+                </li>
+                <li>
+                  Data over bestuursorganen en mandaten
+                </li>
+                <li>
+                  Documenten en dossiers
+                </li>
+              </ul>
+            </c.content>
+            <c.footer>
+              <LinkTo class="au-c-button" @route="administrative-units">
+                Ga naar bestuurseenheden
+              </LinkTo>
+              &nbsp;
+              <a class="au-c-link au-c-link--secondary" href="" target="_blank" rel="noopener noreferrer">
+                <AuIcon @icon="manual" @alignment="left" />
+                Handleiding
+              </a>
+            </c.footer>
+          </AuCard>
+        </li>
+        <li class="au-o-grid__item au-u-1-2@medium au-u-1-3@large">
+          <AuCard @flex={{true}} as |c|>
+            <c.header @badgeSkin="brand" @badgeIcon="users">
+              <AuHeading @level="2" @skin="4">
+                Personen
+              </AuHeading>
+            </c.header>
+            <c.content>
+              <p>
+                Bekijk en bewerk
+              </p>
+              <ul>
+                <li>
+                  Persoonlijke informatie over personen
+                </li>
+                <li>
+                  Contactinformatie
+                </li>
+                <li>
+                  Posities
+                </li>
+              </ul>
+            </c.content>
+            <c.footer>
+              <LinkTo class="au-c-button" @route="people">
+                Ga naar personen
+              </LinkTo>
+              &nbsp;
+              <a class="au-c-link au-c-link--secondary" href="" target="_blank" rel="noopener noreferrer">
+                <AuIcon @icon="manual" @alignment="left" />
+                Handleiding
+              </a>
+            </c.footer>
+          </AuCard>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

@@ -1,13 +1,27 @@
 {{page-title "ContactHub"}}
 
 <AuMainHeader
-    @brandLink="https://www.vlaanderen.be/nl"
-    @homeRoute="index"
-    @appTitle="Contact Hub">
+  @brandLink="https://www.vlaanderen.be/nl"
+  @homeRoute="index"
+  @appTitle="ORGANISATIEPORTAAL"
+  @contactRoute="index"
+>
+  <AuDropdown
+    @dropdownTitle="Voornaam"
+    @dropdownButtonLabel="Account settings"
+    @alignment="right"
+  >
+    <AuButton @skin="tertiary" role="menuitem">
+      <AuIcon @icon="logout" @alignment="left" />Afmelden
+    </AuButton>
+  </AuDropdown>
 </AuMainHeader>
 
 <main id="main" class="au-c-main-container">
-    <div class="au-c-main-container__content au-c-main-container__content--scroll" id="content">
-        <div>{{outlet}}</div>
-    </div>
+  <div
+    class="au-c-main-container__content au-c-main-container__content--scroll"
+    id="content"
+  >
+    <div>{{outlet}}</div>
+  </div>
 </main>
