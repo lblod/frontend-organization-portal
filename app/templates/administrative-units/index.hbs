@@ -4,38 +4,46 @@
             <div class="au-c-sidebar__content au-o-box">
                 <div class="au-c-form">
                     <p>
-                      <AuLabel for="input-block">Naam</AuLabel>
-                      <AuDataTableTextSearch @filter={{this.filter}}/>
+                        <AuLabel for="filter-name">Naam</AuLabel>
+                        <AuInput id="filter-name" @width="block" @value={{this.name}} />
+
                     </p>
                     <p>
-                        <AuLabel for="input-block">Municipality</AuLabel>
-                        <PowerSelect @allowClear={{true}} {{!-- @disabled={{disabled}} --}} @searchEnabled={{true}}
-                            @loadingMessage="Aan het laden..." @noMatchesMessage="Geen resultaten"
-                            @searchMessage="Typ om te zoeken" @options={{this.singleselects}}
-                            @selected={{this.singleselect}} @onChange={{fn (mut this.singleselect)}} as |singleselect|>
-                            {{singleselect}}
+                        <AuLabel for="filter-municipality">Gemeente</AuLabel>
+                        <AuInput id="filter-municipality" @width="block" @value={{this.municipality}} />
+                    </p>
+                    <p>
+                        <AuLabel for="classifications">Soort eredienst</AuLabel>
+                        <PowerSelect
+                            @allowClear={{true}}
+                            @searchEnabled={{true}}
+                            @noMatchesMessage="Geen resultaten"
+                            @searchField="label"
+                            @options={{@model.classifications}}
+                            @selected={{this.selectedClassification}}
+                            @onChange={{this.setClassification}}
+                            @triggerId="classifications" as |classification|>
+                            {{classification.label}}
                         </PowerSelect>
                     </p>
                     <p>
-                        <AuLabel for="input-regular">Type eredienst</AuLabel>
-                        <PowerSelect @allowClear={{true}} @searchEnabled={{true}}
-                            @noMatchesMessage="Geen resultaten" @searchField="label"
-                            @options={{this.getTypesEredienst}}
-                            @selected={{this.typeEredienst}} @onChange={{fn (mut this.handleTypeEredienstSelection)}} as |typeEredienst|>
-                            {{typeEredienst.label}}
+                        <AuLabel for="statuses">Status</AuLabel>
+                        <PowerSelect
+                            @allowClear={{true}} {{!-- @disabled={{disabled}} --}}
+                            @searchEnabled={{true}}
+                            @loadingMessage="Aan het laden..."
+                            @noMatchesMessage="Geen resultaten"
+                            @searchField="label"
+                            @searchMessage="Typ om te zoeken"
+                            @options={{@model.statuses}}
+                            @selected={{this.selectedOrganizationStatus}}
+                            @onChange={{this.setOrganizationStatus}}
+                            @triggerId="statuses" as |status|>
+                            {{status.label}}
                         </PowerSelect>
                     </p>
-                    <p>
-                        <AuLabel for="input-regular">Status</AuLabel>
-                        <PowerSelect @allowClear={{true}} {{!-- @disabled={{disabled}} --}} @searchEnabled={{true}}
-                            @loadingMessage="Aan het laden..." @noMatchesMessage="Geen resultaten"
-                            @searchMessage="Typ om te zoeken" @options={{this.singleselects}}
-                            @selected={{this.singleselect}} @onChange={{fn (mut this.singleselect)}} as |singleselect|>
-                            {{singleselect}}
-                        </PowerSelect>
-                    </p>
-                    <AuButton @width="block">
-                        Search
+                    <AuButton @width="block" {{on "click" this.search}}>
+                        Zoeken
                     </AuButton>
                 </div>
             </div>
@@ -43,13 +51,13 @@
     </div>
     <div class="au-c-main-container__content">
         <div class="au-d-component-block">
-            <AuDataTable @content={{@model}} @fields="province municipality" @noDataMessage="No Administrative unit found" as |t|>
+            <AuDataTable @content={{@model.administrativeUnits}} @noDataMessage="No Administrative unit found" as |t|>
                 <t.menu as |menu|>
                     <menu.general>
                         <AuToolbar class="au-o-box">
                             <AuToolbarGroup>
                                 <AuHeading @skin="2">
-                                    Bestuurseenheden (sample)
+                                    Bestuurseenheden
                                 </AuHeading>
                             </AuToolbarGroup>
                         </AuToolbar>
@@ -57,12 +65,12 @@
                 </t.menu>
                 <t.content class="au-c-data-table__table--small" as |c|>
                     <c.header>
-                        <th>Name</th>
-                        <AuDataTableThSortable @field="typeEredienst" @currentSorting={{this.sort}}  @label="Type Eredienst" 
+                        <th>Naam</th>
+                        <AuDataTableThSortable @field="typeEredienst" @currentSorting={{this.sort}}  @label="Type bestuur" 
                             @class="data-table__header-title" />
-                         <AuDataTableThSortable @field="province" @currentSorting={{this.sort}} @label="Province"
+                         <AuDataTableThSortable @field="province" @currentSorting={{this.sort}} @label="Provincie"
                             @class="data-table__header-title" />
-                         <AuDataTableThSortable @field="municipality" @currentSorting={{this.sort}} @label="Municipality"
+                         <AuDataTableThSortable @field="municipality" @currentSorting={{this.sort}} @label="Gemeente"
                             @class="data-table__header-title" />
                         <th>Status</th>
                     </c.header>
@@ -73,8 +81,8 @@
                             </LinkTo>
                         </td>
                         <td>{{adminUnit.classification.label}}</td>
-                        <td>{{adminUnit.primarySite.address.province}}</td>
-                        <td>{{adminUnit.primarySite.address.municipality}}</td>
+                        <td>{{adminUnit.province.label}}</td>
+                        <td>{{adminUnit.municipality.label}}</td>
                         <td>                            
                           <AuPill @skin="success">
                             {{adminUnit.organizationStatus.label}}
