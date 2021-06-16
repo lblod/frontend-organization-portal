@@ -24,7 +24,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
 
   @action
   setClassification(selection) {
-    if (selection != null) {
+    if (selection !== null) {
       this.classification = selection.id;
     } else {
       this.classification = '';
@@ -43,7 +43,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
 
   @action
   setOrganizationStatus(selection) {
-    if (selection != null) {
+    if (selection !== null) {
       this.organizationStatus = selection.id;
     } else {
       this.organizationStatus = '';

@@ -17,8 +17,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     }
 
     if (params.municipality) {
-      query['filter[primary-site][address][municipality]'] =
-        params.municipality;
+      query['filter[municipality]'] = params.municipality;
     }
 
     if (params.organizationStatus) {
@@ -30,7 +29,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
         'administrative-unit-classification-code'
       ),
       statuses: this.store.findAll('organization-status-code'),
-      administrativeUnit: this.store.query('administrative-unit', query),
+      administrativeUnits: this.store.query('administrative-unit', query),
     });
   }
 }

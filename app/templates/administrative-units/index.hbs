@@ -13,7 +13,7 @@
                         <AuInput id="filter-municipality" @width="block" @value={{this.municipality}} />
                     </p>
                     <p>
-                        <AuLabel for="input-regular">Soort eredienst</AuLabel>
+                        <AuLabel for="classifications">Soort eredienst</AuLabel>
                         <PowerSelect
                             @allowClear={{true}}
                             @searchEnabled={{true}}
@@ -27,7 +27,7 @@
                         </PowerSelect>
                     </p>
                     <p>
-                        <AuLabel for="input-regular">Status</AuLabel>
+                        <AuLabel for="statuses">Status</AuLabel>
                         <PowerSelect
                             @allowClear={{true}} {{!-- @disabled={{disabled}} --}}
                             @searchEnabled={{true}}
@@ -51,7 +51,7 @@
     </div>
     <div class="au-c-main-container__content">
         <div class="au-d-component-block">
-            <AuDataTable @content={{@model.administrativeUnit}} @fields="province municipality" @noDataMessage="No Administrative unit found" as |t|>
+            <AuDataTable @content={{@model.administrativeUnits}} @noDataMessage="No Administrative unit found" as |t|>
                 <t.menu as |menu|>
                     <menu.general>
                         <AuToolbar class="au-o-box">
@@ -70,7 +70,7 @@
                             @class="data-table__header-title" />
                          <AuDataTableThSortable @field="province" @currentSorting={{this.sort}} @label="Provincie"
                             @class="data-table__header-title" />
-                         <AuDataTableThSortable @field="municipality" @currentSorting={{this.sort}} @label="Geemente"
+                         <AuDataTableThSortable @field="municipality" @currentSorting={{this.sort}} @label="Gemeente"
                             @class="data-table__header-title" />
                         <th>Status</th>
                     </c.header>
@@ -81,8 +81,8 @@
                             </LinkTo>
                         </td>
                         <td>{{adminUnit.classification.label}}</td>
-                        <td>{{adminUnit.primarySite.address.province}}</td>
-                        <td>{{adminUnit.primarySite.address.municipality}}</td>
+                        <td>{{adminUnit.province.label}}</td>
+                        <td>{{adminUnit.municipality.label}}</td>
                         <td>                            
                           <AuPill @skin="success">
                             {{adminUnit.organizationStatus.label}}
