@@ -35,7 +35,6 @@
             <AuDataTable
               @content={{this.people}}
               @isLoading={{this.showTableLoader}}
-              @noDataMessage="No person found"
               @page={{this.page}}
               @size={{this.size}}
               as |t|
@@ -63,13 +62,22 @@
                             @class="data-table__header-title" />
                         <th>Status</th>
                     </c.header>
-                    <c.body as |person|>
-                        <td>{{person.givenName}}</td>
-                        <td>{{person.familyName}}</td>
-                        <td>{{person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}</td>
-                        <td>{{person.mandatories.firstObject.mandate.roleBoard.label}}</td>
-                        <td><AuPill @status="success">{{person.mandatories.firstObject.status.label}}</AuPill></td>
-                    </c.body>
+                    {{#if this.hasNoResults}}
+                      <TableMessage>
+                        <p>
+                          Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of probeer een andere zoekopdracht.
+                          Indien een persoon ontbreekt, meldt dit aan <a href="mailto:TODO" class="au-c-link">TODO@vlaanderen.be</a>.
+                        </p>
+                      </TableMessage>
+                    {{else}}
+                      <c.body as |person|>
+                          <td>{{person.givenName}}</td>
+                          <td>{{person.familyName}}</td>
+                          <td>{{person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}</td>
+                          <td>{{person.mandatories.firstObject.mandate.roleBoard.label}}</td>
+                          <td><AuPill @status="success">{{person.mandatories.firstObject.status.label}}</AuPill></td>
+                      </c.body>
+                    {{/if}}
                 </t.content>
             </AuDataTable>
         </div>
