@@ -28,6 +28,12 @@ export default class PeopleIndexController extends Controller {
     return this.isLoading && !this.model.loadedPeople;
   }
 
+  get hasNoResults() {
+    return (
+      this.model.loadPeopleTaskInstance.isFinished && this.people.length === 0
+    );
+  }
+
   @action
   search(event) {
     event.preventDefault();
