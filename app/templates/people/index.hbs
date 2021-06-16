@@ -7,15 +7,15 @@
                   class="au-c-form"
                 >
                     <p>
-                      <AuLabel for="filter-given-name">Given name</AuLabel>
+                      <AuLabel for="filter-given-name">Voornaam</AuLabel>
                       <AuInput id="filter-given-name" @width="block" @value={{this.givenName}} />
                     </p>
                     <p>
-                      <AuLabel for="filter-family-name">Family name</AuLabel>
+                      <AuLabel for="filter-family-name">Achternaam</AuLabel>
                       <AuInput id="filter-family-name" @width="block" @value={{this.familyName}} />
                     </p>
                     <p>
-                      <AuLabel for="filter-organization">Organization</AuLabel>
+                      <AuLabel for="filter-organization">Organisatie</AuLabel>
                       <AuInput id="filter-organization" @width="block" @value={{this.organization}} />
                     </p>
                     <AuButton
@@ -24,7 +24,7 @@
                       @width="block"
                       type="submit"
                     >
-                        Search
+                        Zoeken
                     </AuButton>
                 </form>
             </div>
@@ -53,13 +53,13 @@
                 </t.menu>
                 <t.content class="au-c-data-table__table--small" as |c|>
                     <c.header>
-                        <AuDataTableThSortable @field="givenName" @currentSorting={{this.sort}} @label="Given name"
+                        <AuDataTableThSortable @field="givenName" @currentSorting={{this.sort}} @label="Voornaam"
                             @class="data-table__header-title" />
-                        <AuDataTableThSortable @field="familyName" @currentSorting={{this.sort}} @label="Family name"
+                        <AuDataTableThSortable @field="familyName" @currentSorting={{this.sort}} @label="Achternaam"
                             @class="data-table__header-title" />
-                        <AuDataTableThSortable @field="mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.name" @currentSorting={{this.sort}} @label="Organization"
+                        <AuDataTableThSortable @field="mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.name" @currentSorting={{this.sort}} @label="Organisatie"
                             @class="data-table__header-title" />
-                        <AuDataTableThSortable @field="mandatories.mandate.role-board.label" @currentSorting={{this.sort}} @label="Position"
+                        <AuDataTableThSortable @field="mandatories.mandate.role-board.label" @currentSorting={{this.sort}} @label="Positie"
                             @class="data-table__header-title" />
                         <th>Status</th>
                     </c.header>

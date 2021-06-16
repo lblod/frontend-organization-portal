@@ -4,16 +4,16 @@
             <div class="au-c-sidebar__content au-o-box">
                 <div class="au-c-form">
                     <p>
-                        <AuLabel for="filter-name">Name</AuLabel>
+                        <AuLabel for="filter-name">Naam</AuLabel>
                         <AuInput id="filter-name" @width="block" @value={{this.name}} />
 
                     </p>
                     <p>
-                        <AuLabel for="filter-municipality">Municipality</AuLabel>
+                        <AuLabel for="filter-municipality">Gemeente</AuLabel>
                         <AuInput id="filter-municipality" @width="block" @value={{this.municipality}} />
                     </p>
                     <p>
-                        <AuLabel for="input-regular">Type eredienst</AuLabel>
+                        <AuLabel for="input-regular">Soort eredienst</AuLabel>
                         <PowerSelect
                             @allowClear={{true}}
                             @searchEnabled={{true}}
@@ -43,7 +43,7 @@
                         </PowerSelect>
                     </p>
                     <AuButton @width="block" {{on "click" this.search}}>
-                        Search
+                        Zoeken
                     </AuButton>
                 </div>
             </div>
@@ -57,7 +57,7 @@
                         <AuToolbar class="au-o-box">
                             <AuToolbarGroup>
                                 <AuHeading @skin="2">
-                                    Bestuurseenheden (sample)
+                                    Bestuurseenheden
                                 </AuHeading>
                             </AuToolbarGroup>
                         </AuToolbar>
@@ -65,12 +65,12 @@
                 </t.menu>
                 <t.content class="au-c-data-table__table--small" as |c|>
                     <c.header>
-                        <th>Name</th>
-                        <AuDataTableThSortable @field="typeEredienst" @currentSorting={{this.sort}}  @label="Type Eredienst" 
+                        <th>Naam</th>
+                        <AuDataTableThSortable @field="typeEredienst" @currentSorting={{this.sort}}  @label="Type bestuur" 
                             @class="data-table__header-title" />
-                         <AuDataTableThSortable @field="province" @currentSorting={{this.sort}} @label="Province"
+                         <AuDataTableThSortable @field="province" @currentSorting={{this.sort}} @label="Provincie"
                             @class="data-table__header-title" />
-                         <AuDataTableThSortable @field="municipality" @currentSorting={{this.sort}} @label="Municipality"
+                         <AuDataTableThSortable @field="municipality" @currentSorting={{this.sort}} @label="Geemente"
                             @class="data-table__header-title" />
                         <th>Status</th>
                     </c.header>
