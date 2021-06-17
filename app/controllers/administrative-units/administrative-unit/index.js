@@ -40,27 +40,52 @@ export default class AdministrativeUnitsAdministrativeUnitIndexController extend
   async editCoreInfo(event) {
     event.preventDefault();
 
-    if (!this.isSavingContact) {
-      this.isSavingContact = true;
+    if (!this.isSaving) {
+      this.isSaving = true;
 
-      await this.model.save();
+      await this.model.administrativeUnit.save();
 
-      this.isSavingContact = false;
+      this.isSaving = false;
     }
 
     this.toggleShowCoreInfo();
   }
 
   @action
+  setOrganizationStatus(administrativeUnit, selection) {
+    administrativeUnit.status = selection;
+  }
+
+  @action
+  setHonoraryServiceType(administrativeUnit, selection) {
+    administrativeUnit.honoraryServiceType = selection;
+  }
+
+  @action
   async editContactInfo(event) {
     event.preventDefault();
 
-    if (!this.isSaving) {
-      this.isSaving = true;
+    if (!this.isSavingContact) {
+      this.isSavingContact = true;
 
-      await this.model.psave();
+      let address = await this.model.administrativeUnit.primarySite.get(
+        'address'
+      );
 
-      this.isSaving = false;
+      address.fullAddress =
+        address.street +
+        ' ' +
+        address.number +
+        ' ' +
+        address.boxNumber +
+        ' ' +
+        address.postcode +
+        ' ' +
+        address.municipality;
+
+      await this.model.administrativeUnit.save();
+
+      this.isSavingContact = false;
     }
 
     this.toggleShowContactInfo();

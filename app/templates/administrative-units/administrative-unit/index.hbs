@@ -1,36 +1,43 @@
-{{page-title @model.name}}
+{{page-title @model.administrativeUnit.name}}
 {{breadcrumb
-  @model.name
+  @model.administrativeUnit.name
   route="administrative-units.administrative-unit"
-  model=@model.id
+  model=@model.administrativeUnit.id
 }}
 
 <div class="au-c-main-container__content au-c-main-container__content--block">
-  <div class="au-o-box au-d-component-block au-d-component-block--overflow au-o-flow">
+  <div
+    class="au-o-box au-d-component-block au-d-component-block--overflow au-o-flow"
+  >
     <div class="au-o-flow au-o-flow--tiny">
       <AuToolbar>
         <AuToolbarGroup>
-            <AuHeading @level="2">
-              Kerngegevens
-            </AuHeading>
+          <AuHeading @level="2">
+            Kerngegevens
+          </AuHeading>
         </AuToolbarGroup>
       </AuToolbar>
       <AuToolbar>
         <AuToolbarGroup>
           <AuHeading @skin="3">
-              {{@model.name}}
+            {{@model.administrativeUnit.name}}
           </AuHeading>
         </AuToolbarGroup>
       </AuToolbar>
     </div>
     <div class="au-o-flow au-o-flow--large">
-      <div class="{{ if this.isEditingCore "au-u-hidden-visually" ""}}">
+      <div class="{{if this.isEditingCore "au-u-hidden-visually" ""}}">
         <AuToolbar class="au-u-margin-bottom-small">
           <AuToolbarGroup>
             <AuHeading @level="4" @skin="5">Bestuur van de eredienst</AuHeading>
           </AuToolbarGroup>
           <AuToolbarGroup>
-            <AuButton @skin="tertiary" @icon="pencil" @iconAlignment="right" {{on "click" this.toggleEditCoreInfo}}>
+            <AuButton
+              @skin="tertiary"
+              @icon="pencil"
+              @iconAlignment="right"
+              {{on "click" this.toggleEditCoreInfo}}
+            >
               Bewerk
             </AuButton>
           </AuToolbarGroup>
@@ -45,17 +52,19 @@
                       <p><strong>Naam eredienst</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <p>{{@model.name}}</p>
+                      <p>{{@model.administrativeUnit.name}}</p>
                     </div>
                   </div>
                 </div>
-                <div class="au-o-grid__item  au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                   <div class="au-o-grid">
                     <div class="au-o-grid__item au-u-1-4">
                       <p><strong>Status</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <p><AuPill @skin="success">{{@model.organizationStatus.label}}</AuPill></p>
+                      <p><AuPill
+                          @skin="success"
+                        >{{@model.administrativeUnit.organizationStatus.label}}</AuPill></p>
                     </div>
                   </div>
                 </div>
@@ -65,7 +74,8 @@
                       <p><strong>Type eredienst</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <p>{{@model.honoraryServiceType.label}}</p>
+                      <p
+                      >{{@model.administrativeUnit.honoraryServiceType.label}}</p>
                     </div>
                   </div>
                 </div>
@@ -87,7 +97,7 @@
                       <p><strong>Strekking</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <p>{{@model.denomination}}</p>
+                      <p>{{@model.administrativeUnit.denomination}}</p>
                     </div>
                   </div>
                 </div>
@@ -99,7 +109,7 @@
                       <p><strong>Grensoverschrijdend</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <p>{{@model.crossBorderNominal}}</p>
+                      <p>{{@model.administrativeUnit.crossBorderNominal}}</p>
                     </div>
                   </div>
                 </div>
@@ -117,7 +127,7 @@
                 </div>
               </div>
               <div class="au-o-grid">
-                {{#each @model.identifiers as |identifier|}}
+                {{#each @model.administrativeUnit.identifiers as |identifier|}}
                   <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                     <div class="au-o-grid">
                       <div class="au-o-grid__item au-u-1-4">
@@ -134,15 +144,19 @@
           </c.content>
         </AuCard>
       </div>
-      <div class="{{ if this.isShowingCore "au-u-hidden-visually" ""}}">
+      <div class="{{if this.isShowingCore "au-u-hidden-visually" ""}}">
         <AuToolbar class="au-u-margin-bottom-small">
           <AuToolbarGroup>
             <AuHeading @level="4" @skin="5">Bestuur van de eredienst</AuHeading>
           </AuToolbarGroup>
           <AuToolbarGroup>
-            <AuButton @icon="check" @iconAlignment="right"
-                      @loading={{this.isSaving}} form="edit-core-info-form"
-                      type="submit">
+            <AuButton
+              @icon="check"
+              @iconAlignment="right"
+              @loading={{this.isSaving}}
+              form="edit-core-info-form"
+              type="submit"
+            >
               Bewaar
             </AuButton>
           </AuToolbarGroup>
@@ -162,12 +176,20 @@
                       <p><strong>Naam eredienst</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuLabel for="naam-eredienst" class="au-u-hidden-visually">Naam eredienst input</AuLabel>
-                      <AuInput id="naam-eredienst"  @width="block" type="text" value={{@model.name}}/>
+                      <AuLabel
+                        for="naam-eredienst"
+                        class="au-u-hidden-visually"
+                      >Naam eredienst input</AuLabel>
+                      <AuInput
+                        id="naam-eredienst"
+                        @width="block"
+                        type="text"
+                        value={{@model.administrativeUnit.name}}
+                      />
                     </div>
                   </div>
                 </div>
-                <div class="au-o-grid__item  au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                   <div class="au-o-grid">
                     <div class="au-o-grid__item au-u-1-4">
                       <p><strong>Status</strong></p>
@@ -178,16 +200,23 @@
                         @searchEnabled={{true}}
                         @loadingMessage="Aan het laden..."
                         @noMatchesMessage="Geen resultaten"
+                        @searchField="label"
                         @searchMessage="Typ om te zoeken"
-                        @options={{this.singleselects}}
-                        @selected={{@model.organizationStatus.label}}
-                        @onChange={{fn (mut this.singleselect)}} as |singleselect|>
-                        {{singleselect}}
+                        @options={{@model.statuses}}
+                        @selected={{@model.administrativeUnit.organizationStatus}}
+                        @onChange={{fn
+                          this.setOrganizationStatus
+                          @model.administrativeUnit
+                        }}
+                        @triggerId="statuses"
+                        as |status|
+                      >
+                        {{status.label}}
                       </PowerSelect>
                     </div>
                   </div>
                 </div>
-                <div class="au-o-grid__item  au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                   <div class="au-o-grid">
                     <div class="au-o-grid__item au-u-1-4">
                       <p><strong>Type eredienst</strong></p>
@@ -199,21 +228,27 @@
                         @loadingMessage="Aan het laden..."
                         @noMatchesMessage="Geen resultaten"
                         @searchMessage="Typ om te zoeken"
-                        @options={{this.singleselects}}
-                        @selected={{@model.honoraryServiceType.label}}
-                        @onChange={{fn (mut this.singleselect)}} as |singleselect|>
-                        {{singleselect}}
+                        @options={{@model.honoraryServiceTypes}}
+                        @selected={{@model.administrativeUnit.honoraryServiceType}}
+                        @onChange={{fn
+                          this.setHonoraryServiceType
+                          @model.administrativeUnit
+                        }}
+                        @triggerId="honoraryServiceTypes"
+                        as |honoraryServiceType|
+                      >
+                        {{honoraryServiceType.label}}
                       </PowerSelect>
                     </div>
                   </div>
                 </div>
-                <div class="au-o-grid__item  au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                   <div class="au-o-grid">
                     <div class="au-o-grid__item au-u-1-4">
                       <p><strong>Status datum</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuDatePicker @label="Choose a date" />
+                      <AuDatePicker @label="Kies een datum" />
                     </div>
                   </div>
                 </div>
@@ -225,8 +260,16 @@
                       <p><strong>Strekking</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuLabel for="strekking" class="au-u-hidden-visually">Strekking input</AuLabel>
-                      <AuInput id="strekking"  @width="block" type="text" value={{@model.denomination}}/>
+                      <AuLabel
+                        for="strekking"
+                        class="au-u-hidden-visually"
+                      >Strekking input</AuLabel>
+                      <AuInput
+                        id="strekking"
+                        @width="block"
+                        type="text"
+                        value={{@model.administrativeUnit.denomination}}
+                      />
                     </div>
                   </div>
                 </div>
@@ -240,13 +283,25 @@
                     <div class="au-o-grid__item au-u-3-4">
                       <ul>
                         <li>
-                          <AuControlRadio @label="Ja" @name="ja-nee" @value="true" @check={{@model.crossBorder}} @identifier="ja" />
+                          <AuControlRadio
+                            @label="Ja"
+                            @name="ja-nee"
+                            @value="true"
+                            @check={{@model.administrativeUnit.crossBorder}}
+                            @identifier="ja"
+                          />
                         </li>
                         <li>
-                          <AuControlRadio @label="Nee" @name="ja-nee" @value="false" @check={{@model.crossBorder}} @identifier="nee" />
+                          <AuControlRadio
+                            @label="Nee"
+                            @name="ja-nee"
+                            @value="false"
+                            @check={{@model.administrativeUnit.crossBorder}}
+                            @identifier="nee"
+                          />
                         </li>
                       </ul>
-                      <p>{{@model.crossBorderNominal}}</p>
+                      <p>{{@model.administrativeUnit.crossBorderNominal}}</p>
                     </div>
                   </div>
                 </div>
@@ -264,7 +319,7 @@
                 </div>
               </div>
               <div class="au-o-grid">
-                {{#each @model.identifiers as |identifier|}}
+                {{#each @model.administrativeUnit.identifiers as |identifier|}}
                   <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                     <div class="au-o-grid">
                       <div class="au-o-grid__item au-u-1-4">
@@ -283,13 +338,19 @@
       </div>
     </div>
     <div class="au-o-flow au-o-flow--large">
-      <div class="{{ if this.isEditingContact "au-u-hidden-visually" ""}}">
+      <div class="{{if this.isEditingContact "au-u-hidden-visually" ""}}">
         <AuToolbar class="au-u-margin-bottom-small">
           <AuToolbarGroup>
-            <AuHeading @level="4" @skin="5">Contactgegevens maatschappelijke zetel</AuHeading>
+            <AuHeading @level="4" @skin="5">Contactgegevens maatschappelijke
+              zetel</AuHeading>
           </AuToolbarGroup>
           <AuToolbarGroup>
-            <AuButton @skin="tertiary" @icon="pencil" @iconAlignment="right" {{on "click" this.toggleEditContactInfo}}>
+            <AuButton
+              @skin="tertiary"
+              @icon="pencil"
+              @iconAlignment="right"
+              {{on "click" this.toggleEditContactInfo}}
+            >
               Bewerk
             </AuButton>
           </AuToolbarGroup>
@@ -303,17 +364,17 @@
                     <p><strong>Adres</strong></p>
                   </div>
                   <div class="au-o-grid__item au-u-3-4">
-                    <p>{{@model.primarySite.address.fullAddress}}</p>
+                    <p>{{@model.administrativeUnit.primarySite.address.fullAddress}}</p>
                   </div>
                 </div>
               </div>
-              <div class="au-o-grid__item  au-u-1-1 au-u-1-2@medium">
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                 <div class="au-o-grid">
                   <div class="au-o-grid__item au-u-1-4">
                     <p><strong>Provincie</strong></p>
                   </div>
                   <div class="au-o-grid__item au-u-3-4">
-                    <p>{{@model.primarySite.address.province}}</p>
+                    <p>{{@model.administrativeUnit.primarySite.address.province}}</p>
                   </div>
                 </div>
               </div>
@@ -323,7 +384,7 @@
                     <p><strong>Telefoonnummer</strong></p>
                   </div>
                   <div class="au-o-grid__item au-u-3-4">
-                    <p>{{@model.primarySite.contacts.firstObject.telephone}}</p>
+                    <p>{{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}</p>
                   </div>
                 </div>
               </div>
@@ -333,7 +394,7 @@
                     <p><strong>Website</strong></p>
                   </div>
                   <div class="au-o-grid__item au-u-3-4">
-                    <p>{{@model.primarySite.contacts.firstObject.website}}</p>
+                    <p>{{@model.administrativeUnit.primarySite.contacts.firstObject.website}}</p>
                   </div>
                 </div>
               </div>
@@ -341,14 +402,21 @@
           </c.content>
         </AuCard>
       </div>
-      <div class="{{ if this.isShowingContact "au-u-hidden-visually" ""}}">
+      <div class="{{if this.isShowingContact "au-u-hidden-visually" ""}}">
         <AuToolbar class="au-u-margin-bottom-small">
           <AuToolbarGroup>
-            <AuHeading @level="4" @skin="5">Contactgegevens maatschappelijke zetel</AuHeading>
+            <AuHeading @level="4" @skin="5">Contactgegevens maatschappelijke
+              zetel</AuHeading>
           </AuToolbarGroup>
           <AuToolbarGroup>
-            <AuButton @skin="tertiary" @icon="pencil" @iconAlignment="right" @loading={{this.isSavingContact}} form="edit-contact-info-form"
-                      type="submit">
+            <AuButton
+              @skin="tertiary"
+              @icon="pencil"
+              @iconAlignment="right"
+              @loading={{this.isSavingContact}}
+              form="edit-contact-info-form"
+              type="submit"
+            >
               Bewaar
             </AuButton>
           </AuToolbarGroup>
@@ -368,8 +436,16 @@
                       <p><strong>Huis nummer</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuLabel for="huis-nummer" class="au-u-hidden-visually">Huis nummer input</AuLabel>
-                      <AuInput id="huis-nummer"  @width="block" type="text" value={{@model.primarySite.address.number}}/>
+                      <AuLabel
+                        for="huis-nummer"
+                        class="au-u-hidden-visually"
+                      >Huis nummer input</AuLabel>
+                      <AuInput
+                        id="huis-nummer"
+                        @width="block"
+                        type="text"
+                        value={{@model.administrativeUnit.primarySite.address.number}}
+                      />
                     </div>
                   </div>
                 </div>
@@ -379,8 +455,16 @@
                       <p><strong>Busnummer</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuLabel for="busnummer" class="au-u-hidden-visually">Busnummer input</AuLabel>
-                      <AuInput id="busnummer"  @width="block" type="text" value={{@model.primarySite.address.boxNumber}}/>
+                      <AuLabel
+                        for="busnummer"
+                        class="au-u-hidden-visually"
+                      >Busnummer input</AuLabel>
+                      <AuInput
+                        id="busnummer"
+                        @width="block"
+                        type="text"
+                        value={{@model.administrativeUnit.primarySite.address.boxNumber}}
+                      />
                     </div>
                   </div>
                 </div>
@@ -390,8 +474,14 @@
                       <p><strong>Straat</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuLabel for="straat" class="au-u-hidden-visually">Straat input</AuLabel>
-                      <AuInput id="straat"  @width="block" type="text" value={{@model.primarySite.address.street}}/>
+                      <AuLabel for="straat" class="au-u-hidden-visually">Straat
+                        input</AuLabel>
+                      <AuInput
+                        id="straat"
+                        @width="block"
+                        type="text"
+                        value={{@model.administrativeUnit.primarySite.address.street}}
+                      />
                     </div>
                   </div>
                 </div>
@@ -401,8 +491,16 @@
                       <p><strong>Postcode</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuLabel for="postcode" class="au-u-hidden-visually">Postcode input</AuLabel>
-                      <AuInput id="postcode"  @width="block" type="text" value={{@model.primarySite.address.postcode}}/>
+                      <AuLabel
+                        for="postcode"
+                        class="au-u-hidden-visually"
+                      >Postcode input</AuLabel>
+                      <AuInput
+                        id="postcode"
+                        @width="block"
+                        type="text"
+                        value={{@model.administrativeUnit.primarySite.address.postcode}}
+                      />
                     </div>
                   </div>
                 </div>
@@ -412,39 +510,49 @@
                       <p><strong>Gemeente</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuLabel for="gemeente" class="au-u-hidden-visually">Gemeente input</AuLabel>
+                      <AuLabel
+                        for="gemeente"
+                        class="au-u-hidden-visually"
+                      >Gemeente input</AuLabel>
                       <PowerSelect
-                          @allowClear={{true}}
-                          @searchEnabled={{true}}
-                          @loadingMessage="Aan het laden..."
-                          @noMatchesMessage="Geen resultaten"
-                          @searchMessage="Typ om te zoeken"
-                          @options={{this.singleselects}}
-                          @selected={{@model.primarySite.address.municipality}}
-                          @onChange={{fn (mut this.singleselect)}} as |singleselect|>
-                          {{singleselect}}
-                        </PowerSelect>
+                        @allowClear={{true}}
+                        @searchEnabled={{true}}
+                        @loadingMessage="Aan het laden..."
+                        @noMatchesMessage="Geen resultaten"
+                        @searchMessage="Typ om te zoeken"
+                        @options={{this.singleselects}}
+                        @selected={{@model.administrativeUnit.primarySite.address.municipality}}
+                        @onChange={{fn (mut this.singleselect)}}
+                        as |singleselect|
+                      >
+                        {{singleselect}}
+                      </PowerSelect>
                     </div>
                   </div>
                 </div>
-                <div class="au-o-grid__item  au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                   <div class="au-o-grid">
                     <div class="au-o-grid__item au-u-1-4">
                       <p><strong>Provincie</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuLabel for="provincie" class="au-u-hidden-visually">Provincie input</AuLabel>
+                      <AuLabel
+                        for="provincie"
+                        class="au-u-hidden-visually"
+                      >Provincie input</AuLabel>
                       <PowerSelect
-                          @allowClear={{true}}
-                          @searchEnabled={{true}}
-                          @loadingMessage="Aan het laden..."
-                          @noMatchesMessage="Geen resultaten"
-                          @searchMessage="Typ om te zoeken"
-                          @options={{this.singleselects}}
-                          @selected={{@model.primarySite.address.province}}
-                          @onChange={{fn (mut this.singleselect)}} as |singleselect|>
-                          {{singleselect}}
-                        </PowerSelect>
+                        @allowClear={{true}}
+                        @searchEnabled={{true}}
+                        @loadingMessage="Aan het laden..."
+                        @noMatchesMessage="Geen resultaten"
+                        @searchMessage="Typ om te zoeken"
+                        @options={{this.singleselects}}
+                        @selected={{@model.administrativeUnit.primarySite.address.province}}
+                        @onChange={{fn (mut this.singleselect)}}
+                        as |singleselect|
+                      >
+                        {{singleselect}}
+                      </PowerSelect>
                     </div>
                   </div>
                 </div>
@@ -454,8 +562,16 @@
                       <p><strong>Telefoonnummer</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuLabel for="telefoonnummer" class="au-u-hidden-visually">Telefoonnummer input</AuLabel>
-                      <AuInput id="telefoonnummer"  @width="block" type="text" value={{@model.primarySite.contacts.firstObject.telephone}}/>
+                      <AuLabel
+                        for="telefoonnummer"
+                        class="au-u-hidden-visually"
+                      >Telefoonnummer input</AuLabel>
+                      <AuInput
+                        id="telefoonnummer"
+                        @width="block"
+                        type="text"
+                        value={{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}
+                      />
                     </div>
                   </div>
                 </div>
@@ -465,8 +581,16 @@
                       <p><strong>Website</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuLabel for="website" class="au-u-hidden-visually">Website input</AuLabel>
-                      <AuInput id="website"  @width="block" type="text" value={{@model.primarySite.contacts.firstObject.website}}/>
+                      <AuLabel
+                        for="website"
+                        class="au-u-hidden-visually"
+                      >Website input</AuLabel>
+                      <AuInput
+                        id="website"
+                        @width="block"
+                        type="text"
+                        value={{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
+                      />
                     </div>
                   </div>
                 </div>
@@ -497,19 +621,19 @@
                     <p><strong>Centraal bestuur</strong></p>
                   </div>
                   <div class="au-o-grid__item au-u-3-4">
-                    <p>{{@model.centralService.name}}</p>
+                    <p>{{@model.administrativeUnit.centralService.name}}</p>
                   </div>
                 </div>
               </div>
             </div>
             <div class="au-o-grid">
-              <div class="au-o-grid__item  au-u-1-1 au-u-1-2@medium">
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                 <div class="au-o-grid">
                   <div class="au-o-grid__item au-u-1-4">
                     <p><strong>Representatief orgaan</strong></p>
                   </div>
                   <div class="au-o-grid__item au-u-3-4">
-                    <p>{{@model.representiveBody.name}}</p>
+                    <p>{{@model.administrativeUnit.representiveBody.name}}</p>
                   </div>
                 </div>
               </div>
@@ -520,5 +644,3 @@
     </div>
   </div>
 </div>
-
-
