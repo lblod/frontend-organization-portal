@@ -46,9 +46,10 @@
                         </PowerSelect>
                     </p>
                     <AuButton
+                      @loading={{this.isLoading}}
+                      @disabled={{this.isLoading}}
                       @width="block"
                       type="submit"
-                      {{on "click" this.search}}
                     >
                         Zoeken
                     </AuButton>
@@ -59,7 +60,8 @@
     <div class="au-c-main-container__content">
         <div class="au-d-component-block">
             <AuDataTable
-              @content={{@model.administrativeUnits}}
+              @content={{this.administrativeUnits}}
+              @isLoading={{this.showTableLoader}}
               @noDataMessage="No Administrative unit found"
               @page={{this.page}}
               @size={{this.size}}

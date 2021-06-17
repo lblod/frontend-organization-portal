@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { hash } from 'rsvp';
+import { dropTask } from 'ember-concurrency';
 
 export default class AdministrativeUnitsIndexRoute extends Route {
   @service store;
@@ -10,7 +10,24 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     sort: { refreshModel: true },
   };
 
-  model(params) {
+  async model(params) {
+    let [classifications, statuses] = await Promise.all([
+      this.store.findAll('administrative-unit-classification-code'),
+      this.store.findAll('organization-status-code'),
+    ]);
+
+    return {
+      classifications,
+      statuses,
+      loadAdministrativeUnitsTaskInstance:
+        this.loadAdministrativeUnitsTask.perform(params),
+      loadedAdministrativeUnits:
+        this.loadAdministrativeUnitsTask.lastSuccessful?.value,
+    };
+  }
+
+  @dropTask({ cancelOn: 'deactivate' })
+  *loadAdministrativeUnitsTask(params) {
     let query = {
       include: [
         'classification',
@@ -41,12 +58,6 @@ export default class AdministrativeUnitsIndexRoute extends Route {
       query['filter[organization-status][:id:]'] = params.organizationStatus;
     }
 
-    return hash({
-      classifications: this.store.findAll(
-        'administrative-unit-classification-code'
-      ),
-      statuses: this.store.findAll('organization-status-code'),
-      administrativeUnits: this.store.query('administrative-unit', query),
-    });
+    return yield this.store.query('administrative-unit', query);
   }
 }
