@@ -1,9 +1,9 @@
 <div class="au-c-main-container">
   <div class="au-c-main-container__sidebar">
-    <div class="au-d-component-block au-c-sidebar">
+    <div class="au-c-sidebar">
       <div class="au-c-sidebar__content">
         <div class="au-c-sidebar__header">
-          <AuHeading @level="6" @skin="6">Menu modules</AuHeading>
+          <p class="au-u-h5 au-u-medium">Menu modules</p>
         </div>
         <ul class="au-c-list-navigation">
           <li class="au-c-list-navigation__item">
@@ -19,30 +19,33 @@
         </ul>
       </div>
       <div class="au-c-sidebar__footer">
-        <a class="au-c-link au-c-link--secondary au-c-link--icon" href="" target="_blank" rel="noopener noreferrer">
+        <a
+          class="au-c-link au-c-link--secondary au-c-link--icon"
+          href=""
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <AuIcon @icon="manual" @alignment="left" />
           Handleiding
         </a>
       </div>
     </div>
   </div>
-  <div class="au-c-main-container__content au-c-main-container__content--block">
-    <div
-      class="au-o-box au-o-flow au-o-flow--large"
-    >
-      <AuHeading @skin="2">
-        Lokale Financiën - Jan Janssens
+  <div class="au-c-main-container__content">
+    <div class="au-o-box">
+      <AuHeading @skin="2" class="au-u-margin-bottom-large">
+        Lokale Financiën - Voornaam Achternaam
       </AuHeading>
 
       <AuHeading @level="2" @skin="3" class="au-u-margin-bottom">
         Beschikbare modules
       </AuHeading>
 
-      <ul class="au-o-grid au-o-grid--small">
+      <ul class="au-o-grid au-o-grid">
         <li class="au-o-grid__item au-u-1-2@medium au-u-1-3@large">
           <AuCard @flex={{true}} as |c|>
             <c.header @badgeSkin="brand" @badgeIcon="sitemap">
-              <AuHeading @level="2" @skin="4">
+              <AuHeading @level="3" @skin="4">
                 Bestuurseenheden
               </AuHeading>
             </c.header>
@@ -63,14 +66,22 @@
               </ul>
             </c.content>
             <c.footer>
-              <LinkTo class="au-c-button" @route="administrative-units">
-                Ga naar bestuurseenheden
-              </LinkTo>
-              &nbsp;
-              <a class="au-c-link au-c-link--secondary" href="" target="_blank" rel="noopener noreferrer">
-                <AuIcon @icon="manual" @alignment="left" />
-                Handleiding
-              </a>
+              <AuButtonGroup>
+                <LinkTo class="au-c-button" @route="administrative-units">
+                  Ga naar bestuurseenheden
+                </LinkTo>
+
+                <a
+                  class="au-c-link au-c-link--secondary"
+                  href=""
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <AuIcon @icon="manual" @alignment="left" />
+                  Handleiding
+                </a>
+              </AuButtonGroup>
+
             </c.footer>
           </AuCard>
         </li>
@@ -102,7 +113,12 @@
                 Ga naar personen
               </LinkTo>
               &nbsp;
-              <a class="au-c-link au-c-link--secondary" href="" target="_blank" rel="noopener noreferrer">
+              <a
+                class="au-c-link au-c-link--secondary"
+                href=""
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <AuIcon @icon="manual" @alignment="left" />
                 Handleiding
               </a>
