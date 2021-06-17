@@ -24,8 +24,15 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked organizationStatus = '';
 
   @action
-  search() {
-    this.router.refresh();
+  search(event) {
+    event.preventDefault();
+
+    if (this.page > 0) {
+      // resetting the pagination will refresh the model
+      this.resetPagination();
+    } else {
+      this.router.refresh();
+    }
   }
 
   @action
@@ -64,5 +71,9 @@ export default class AdministrativeUnitsIndexController extends Controller {
     return this.model.statuses.find((organizationStatus) => {
       return organizationStatus.id === this.organizationStatus;
     });
+  }
+
+  resetPagination() {
+    this.page = 0;
   }
 }

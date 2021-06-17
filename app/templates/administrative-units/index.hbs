@@ -2,7 +2,10 @@
     <div class="au-c-main-container__sidebar">
         <div class="au-c-sidebar">
             <div class="au-c-sidebar__content au-o-box">
-                <div class="au-c-form">
+                <form
+                  class="au-c-form"
+                  {{on "submit" this.search}}
+                >
                     <p>
                         <AuLabel for="filter-name">Naam</AuLabel>
                         <AuInput id="filter-name" @width="block" @value={{this.name}} />
@@ -42,10 +45,14 @@
                             {{status.label}}
                         </PowerSelect>
                     </p>
-                    <AuButton @width="block" {{on "click" this.search}}>
+                    <AuButton
+                      @width="block"
+                      type="submit"
+                      {{on "click" this.search}}
+                    >
                         Zoeken
                     </AuButton>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -86,7 +93,7 @@
                         <td>{{adminUnit.classification.label}}</td>
                         <td>{{adminUnit.province.label}}</td>
                         <td>{{adminUnit.municipality.label}}</td>
-                        <td>                            
+                        <td>
                           <AuPill @skin="success">
                             {{adminUnit.organizationStatus.label}}
                           </AuPill>
