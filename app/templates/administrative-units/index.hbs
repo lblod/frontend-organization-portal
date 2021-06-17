@@ -86,21 +86,31 @@
                         <AuDataTableThSortable @field="municipality.label" @currentSorting={{this.sort}} @label="Gemeente" />
                         <th>Status</th>
                     </c.header>
-                    <c.body as |adminUnit|>
-                        <td>
-                            <LinkTo class="au-c-link" @model={{adminUnit.id}} @route="administrative-units.administrative-unit.index">
-                              {{adminUnit.name}}
-                            </LinkTo>
-                        </td>
-                        <td>{{adminUnit.classification.label}}</td>
-                        <td>{{adminUnit.province.label}}</td>
-                        <td>{{adminUnit.municipality.label}}</td>
-                        <td>
-                          <AuPill @skin="success">
-                            {{adminUnit.organizationStatus.label}}
-                          </AuPill>
-                        </td>
-                    </c.body>
+                    {{#if this.hasNoResults}}
+                      <TableMessage>
+                        <p>
+                          Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of probeer een andere zoekopdracht.
+                          Indien een organisatie ontbreekt, meldt dit aan <a class="au-c-link" href="mailto:TODO@vlaanderen.be">TODO@vlaanderen.be</a>
+                          of <AuLink @linkRoute="index">maak een organisatie aan.</AuLink> {{! TODO add the correct route }}
+                        </p>
+                      </TableMessage>
+                    {{else}}
+                      <c.body as |adminUnit|>
+                          <td>
+                              <LinkTo class="au-c-link" @model={{adminUnit.id}} @route="administrative-units.administrative-unit.index">
+                                {{adminUnit.name}}
+                              </LinkTo>
+                          </td>
+                          <td>{{adminUnit.classification.label}}</td>
+                          <td>{{adminUnit.province.label}}</td>
+                          <td>{{adminUnit.municipality.label}}</td>
+                          <td>
+                            <AuPill @skin="success">
+                              {{adminUnit.organizationStatus.label}}
+                            </AuPill>
+                          </td>
+                      </c.body>
+                    {{/if}}
                 </t.content>
             </AuDataTable>
         </div>
