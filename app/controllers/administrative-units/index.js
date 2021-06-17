@@ -44,6 +44,13 @@ export default class AdministrativeUnitsIndexController extends Controller {
     return this.isLoading && !this.hasPreviousData;
   }
 
+  get hasNoResults() {
+    return (
+      this.model.loadAdministrativeUnitsTaskInstance.isFinished &&
+      this.administrativeUnits.length === 0
+    );
+  }
+
   get selectedClassification() {
     if (!this.classification) {
       return null;
