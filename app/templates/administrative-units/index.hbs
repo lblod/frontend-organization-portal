@@ -2,7 +2,10 @@
     <div class="au-c-main-container__sidebar">
         <div class="au-c-sidebar">
             <div class="au-c-sidebar__content au-o-box">
-                <div class="au-c-form">
+                <form
+                  class="au-c-form"
+                  {{on "submit" this.search}}
+                >
                     <p>
                         <AuLabel for="filter-name">Naam</AuLabel>
                         <AuInput id="filter-name" @width="block" @value={{this.name}} />
@@ -42,16 +45,26 @@
                             {{status.label}}
                         </PowerSelect>
                     </p>
-                    <AuButton @width="block" {{on "click" this.search}}>
+                    <AuButton
+                      @width="block"
+                      type="submit"
+                      {{on "click" this.search}}
+                    >
                         Zoeken
                     </AuButton>
-                </div>
+                </form>
             </div>
         </div>
     </div>
     <div class="au-c-main-container__content">
         <div class="au-d-component-block">
-            <AuDataTable @content={{@model.administrativeUnits}} @noDataMessage="No Administrative unit found" as |t|>
+            <AuDataTable
+              @content={{@model.administrativeUnits}}
+              @noDataMessage="No Administrative unit found"
+              @page={{this.page}}
+              @size={{this.size}}
+              as |t|
+            >
                 <t.menu as |menu|>
                     <menu.general>
                         <AuToolbar class="au-o-box">
@@ -65,13 +78,10 @@
                 </t.menu>
                 <t.content class="au-c-data-table__table--small" as |c|>
                     <c.header>
-                        <th>Naam</th>
-                        <AuDataTableThSortable @field="typeEredienst" @currentSorting={{this.sort}}  @label="Type bestuur" 
-                            @class="data-table__header-title" />
-                         <AuDataTableThSortable @field="province" @currentSorting={{this.sort}} @label="Provincie"
-                            @class="data-table__header-title" />
-                         <AuDataTableThSortable @field="municipality" @currentSorting={{this.sort}} @label="Gemeente"
-                            @class="data-table__header-title" />
+                        <AuDataTableThSortable @field="name" @currentSorting={{this.sort}}  @label="Naam" />
+                        <AuDataTableThSortable @field="classification.label" @currentSorting={{this.sort}}  @label="Type bestuur" />
+                        <AuDataTableThSortable @field="province.label" @currentSorting={{this.sort}} @label="Provincie" />
+                        <AuDataTableThSortable @field="municipality.label" @currentSorting={{this.sort}} @label="Gemeente" />
                         <th>Status</th>
                     </c.header>
                     <c.body as |adminUnit|>
@@ -83,7 +93,7 @@
                         <td>{{adminUnit.classification.label}}</td>
                         <td>{{adminUnit.province.label}}</td>
                         <td>{{adminUnit.municipality.label}}</td>
-                        <td>                            
+                        <td>
                           <AuPill @skin="success">
                             {{adminUnit.organizationStatus.label}}
                           </AuPill>

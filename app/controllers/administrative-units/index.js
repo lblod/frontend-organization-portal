@@ -6,20 +6,33 @@ import { tracked } from '@glimmer/tracking';
 export default class AdministrativeUnitsIndexController extends Controller {
   @service router;
   queryParams = [
+    'page',
+    'size',
+    'sort',
     'name',
     'municipality',
     'classification',
     'organizationStatus',
   ];
 
+  @tracked page = 0;
+  size = 20;
+  @tracked sort = 'name';
   @tracked name = '';
   @tracked municipality = '';
   @tracked classification = '';
   @tracked organizationStatus = '';
 
   @action
-  search() {
-    this.router.refresh();
+  search(event) {
+    event.preventDefault();
+
+    if (this.page > 0) {
+      // resetting the pagination will refresh the model
+      this.resetPagination();
+    } else {
+      this.router.refresh();
+    }
   }
 
   @action
@@ -58,5 +71,9 @@ export default class AdministrativeUnitsIndexController extends Controller {
     return this.model.statuses.find((organizationStatus) => {
       return organizationStatus.id === this.organizationStatus;
     });
+  }
+
+  resetPagination() {
+    this.page = 0;
   }
 }
