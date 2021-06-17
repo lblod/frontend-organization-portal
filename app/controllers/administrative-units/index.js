@@ -23,6 +23,47 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked classification = '';
   @tracked organizationStatus = '';
 
+  get administrativeUnits() {
+    return this.model.loadAdministrativeUnitsTaskInstance.isFinished
+      ? this.model.loadAdministrativeUnitsTaskInstance.value
+      : this.model.loadedAdministrativeUnits;
+  }
+
+  get isLoading() {
+    return this.model.loadAdministrativeUnitsTaskInstance.isRunning;
+  }
+
+  get hasPreviousData() {
+    return (
+      this.model.loadedAdministrativeUnits &&
+      this.model.loadedAdministrativeUnits.length > 0
+    );
+  }
+
+  get showTableLoader() {
+    return this.isLoading && !this.hasPreviousData;
+  }
+
+  get selectedClassification() {
+    if (!this.classification) {
+      return null;
+    }
+
+    return this.model.classifications.find((classification) => {
+      return classification.id === this.classification;
+    });
+  }
+
+  get selectedOrganizationStatus() {
+    if (!this.organizationStatus) {
+      return null;
+    }
+
+    return this.model.statuses.find((organizationStatus) => {
+      return organizationStatus.id === this.organizationStatus;
+    });
+  }
+
   @action
   search(event) {
     event.preventDefault();
@@ -44,16 +85,6 @@ export default class AdministrativeUnitsIndexController extends Controller {
     }
   }
 
-  get selectedClassification() {
-    if (!this.classification) {
-      return null;
-    }
-
-    return this.model.classifications.find((classification) => {
-      return classification.id === this.classification;
-    });
-  }
-
   @action
   setOrganizationStatus(selection) {
     if (selection !== null) {
@@ -61,16 +92,6 @@ export default class AdministrativeUnitsIndexController extends Controller {
     } else {
       this.organizationStatus = '';
     }
-  }
-
-  get selectedOrganizationStatus() {
-    if (!this.organizationStatus) {
-      return null;
-    }
-
-    return this.model.statuses.find((organizationStatus) => {
-      return organizationStatus.id === this.organizationStatus;
-    });
   }
 
   resetPagination() {
