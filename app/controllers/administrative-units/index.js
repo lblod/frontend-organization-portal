@@ -6,12 +6,18 @@ import { tracked } from '@glimmer/tracking';
 export default class AdministrativeUnitsIndexController extends Controller {
   @service router;
   queryParams = [
+    'page',
+    'size',
+    'sort',
     'name',
     'municipality',
     'classification',
     'organizationStatus',
   ];
 
+  @tracked page = 0;
+  size = 20;
+  @tracked sort = 'name';
   @tracked name = '';
   @tracked municipality = '';
   @tracked classification = '';
