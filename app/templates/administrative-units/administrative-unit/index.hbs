@@ -184,7 +184,15 @@
                         id="naam-eredienst"
                         @width="block"
                         type="text"
-                        value={{@model.administrativeUnit.name}}
+                        @value={{@model.administrativeUnit.name}}
+                        {{on
+                          "input"
+                          (fn
+                            this.setAdministrativeValue
+                            @model.administrativeUnit
+                            "name"
+                          )
+                        }}
                       />
                     </div>
                   </div>
@@ -268,7 +276,15 @@
                         id="strekking"
                         @width="block"
                         type="text"
-                        value={{@model.administrativeUnit.denomination}}
+                        @value={{@model.administrativeUnit.denomination}}
+                        {{on
+                          "input"
+                          (fn
+                            this.setAdministrativeValue
+                            @model.administrativeUnit
+                            "denomination"
+                          )
+                        }}
                       />
                     </div>
                   </div>
@@ -281,27 +297,29 @@
                       <p><strong>Grensoverschrijdend</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <ul>
-                        <li>
-                          <AuControlRadio
-                            @label="Ja"
-                            @name="ja-nee"
-                            @value="true"
-                            @check={{@model.administrativeUnit.crossBorder}}
-                            @identifier="ja"
-                          />
-                        </li>
-                        <li>
-                          <AuControlRadio
-                            @label="Nee"
-                            @name="ja-nee"
-                            @value="false"
-                            @check={{@model.administrativeUnit.crossBorder}}
-                            @identifier="nee"
-                          />
-                        </li>
-                      </ul>
-                      <p>{{@model.administrativeUnit.crossBorderNominal}}</p>
+                      <AuControlRadio
+                        @label="Ja"
+                        @name="ja-nee"
+                        @value={{@model.administrativeUnit.crossBorder}}
+                        @checked={{@model.administrativeUnit.crossBorder}}
+                        @identifier="ja"
+                        {{on
+                          "input"
+                          (fn this.setCrossBorder @model.administrativeUnit)
+                        }}
+                      />
+
+                      <AuControlRadio
+                        @label="Nee"
+                        @name="ja-nee"
+                        @value={{@model.administrativeUnit.crossBorder}}
+                        @checked={{@model.administrativeUnit.crossBorder}}
+                        @identifier="nee"
+                        {{on
+                          "input"
+                          (fn this.setCrossBorder @model.administrativeUnit)
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -364,7 +382,8 @@
                     <p><strong>Adres</strong></p>
                   </div>
                   <div class="au-o-grid__item au-u-3-4">
-                    <p>{{@model.administrativeUnit.primarySite.address.fullAddress}}</p>
+                    <p
+                    >{{@model.administrativeUnit.primarySite.address.fullAddress}}</p>
                   </div>
                 </div>
               </div>
@@ -374,7 +393,8 @@
                     <p><strong>Provincie</strong></p>
                   </div>
                   <div class="au-o-grid__item au-u-3-4">
-                    <p>{{@model.administrativeUnit.primarySite.address.province}}</p>
+                    <p
+                    >{{@model.administrativeUnit.primarySite.address.province}}</p>
                   </div>
                 </div>
               </div>
@@ -384,7 +404,8 @@
                     <p><strong>Telefoonnummer</strong></p>
                   </div>
                   <div class="au-o-grid__item au-u-3-4">
-                    <p>{{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}</p>
+                    <p
+                    >{{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}</p>
                   </div>
                 </div>
               </div>
@@ -394,7 +415,8 @@
                     <p><strong>Website</strong></p>
                   </div>
                   <div class="au-o-grid__item au-u-3-4">
-                    <p>{{@model.administrativeUnit.primarySite.contacts.firstObject.website}}</p>
+                    <p
+                    >{{@model.administrativeUnit.primarySite.contacts.firstObject.website}}</p>
                   </div>
                 </div>
               </div>

@@ -37,6 +37,30 @@ export default class AdministrativeUnitsAdministrativeUnitIndexController extend
   }
 
   @action
+  setOrganizationStatus(administrativeUnit, selection) {
+    administrativeUnit.organizationStatus = selection;
+  }
+
+  @action
+  setHonoraryServiceType(administrativeUnit, selection) {
+    administrativeUnit.honoraryServiceType = selection;
+  }
+
+  @action
+  setCrossBorder(administrativeUnit, event) {
+    if (event.target.id === 'ja' && event.target.checked) {
+      administrativeUnit['crossBorder'] = true;
+    } else {
+      administrativeUnit['crossBorder'] = false;
+    }
+  }
+
+  @action
+  setAdministrativeValue(administrativeUnit, attributeName, event) {
+    administrativeUnit[attributeName] = event.target.value;
+  }
+
+  @action
   async editCoreInfo(event) {
     event.preventDefault();
 
@@ -49,16 +73,6 @@ export default class AdministrativeUnitsAdministrativeUnitIndexController extend
     }
 
     this.toggleShowCoreInfo();
-  }
-
-  @action
-  setOrganizationStatus(administrativeUnit, selection) {
-    administrativeUnit.status = selection;
-  }
-
-  @action
-  setHonoraryServiceType(administrativeUnit, selection) {
-    administrativeUnit.honoraryServiceType = selection;
   }
 
   @action
