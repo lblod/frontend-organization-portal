@@ -53,7 +53,7 @@ model=@model.id
                                 <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                                     <div class="au-o-grid">
                                         <div class="au-o-grid__item au-u-1-4">
-                                            <p><strong>Geeborte datum</strong></p>
+                                            <p><strong>Geboorte datum</strong></p>
                                         </div>
                                         <div class="au-o-grid__item au-u-3-4">
                                             <p></p>
@@ -122,7 +122,7 @@ model=@model.id
                                 <div class="au-o-grid__item  au-u-1-1 au-u-1-2@medium">
                                     <div class="au-o-grid">
                                         <div class="au-o-grid__item au-u-1-4">
-                                            <p><strong>Geeborte datum</strong></p>
+                                            <p><strong>Geboorte datum</strong></p>
                                         </div>
                                         <div class="au-o-grid__item au-u-3-4">
                                             <AuDatePicker @label="Choose a date" />
@@ -169,7 +169,7 @@ model=@model.id
             <div>
                 <AuToolbar class="au-u-margin-bottom-small">
                     <AuToolbarGroup>
-                        <AuHeading @level="4" @skin="5">Contactgegevens: GemeenteBestuur </AuHeading>
+                        <AuHeading @level="4" @skin="5">Contactgegevens: Gemeentebestuur </AuHeading>
                     </AuToolbarGroup>
                 </AuToolbar>
                 <AuCard @standOut={{true}} as |c|>
@@ -243,8 +243,11 @@ model=@model.id
                                             <p><strong>Organisatie</strong></p>
                                         </div>
                                         <div class="au-o-grid__item au-u-3-4">
-                                            <p>{{@model.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}
-                                            </p>
+                                           <p>
+                                            <LinkTo class="au-c-link" @model={{@model.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.id}} @route="administrative-units.administrative-unit">
+                                              {{@model.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}
+                                            </LinkTo>
+                                          </p>
                                         </div>
                                     </div>
                                 </div>

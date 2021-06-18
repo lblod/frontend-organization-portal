@@ -71,7 +71,11 @@
                                 {{person.familyName}}
                             </LinkTo>
                         </td>
-                        <td>{{person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}
+                        <td>
+                          <LinkTo class="au-c-link" @model={{person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.id}} @route="administrative-units.administrative-unit">
+                             {{person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}
+                          </LinkTo>
+
                         </td>
                         <td>{{person.mandatories.firstObject.mandate.roleBoard.label}}</td>
                         <td>
