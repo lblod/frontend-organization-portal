@@ -1,38 +1,22 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { dropTask } from 'ember-concurrency';
 
 export default class PeoplePersonIndexController extends Controller {
-  @tracked isSaving = false;
-  @tracked isSavingContact = false;
-
-  @tracked isEditingCore = false;
-  @tracked isShowingCore = true;
+  @tracked isEditingPersonalInformation = false;
 
   @action
-  toggleEditCoreInfo() {
-    this.isEditingCore = !this.isEditingCore;
-    this.isShowingCore = false;
+  toggleEditPersonalInformation() {
+    this.isEditingPersonalInformation = !this.isEditingPersonalInformation;
   }
 
-  @action
-  toggleShowCoreInfo() {
-    this.isShowingCore = !this.isShowingCore;
-    this.isEditingCore = false;
-  }
-
-  @action
-  async editCoreInfo(event) {
+  @dropTask
+  *savePersonalInformation(event) {
     event.preventDefault();
 
-    if (!this.isSavingContact) {
-      this.isSavingContact = true;
+    yield this.model.save();
 
-      await this.model.save();
-
-      this.isSavingContact = false;
-    }
-
-    this.toggleShowCoreInfo();
+    this.toggleEditPersonalInformation();
   }
 }
