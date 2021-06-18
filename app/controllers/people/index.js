@@ -38,6 +38,10 @@ export default class PeopleIndexController extends Controller {
     );
   }
 
+  get hasErrored() {
+    return this.model.loadPeopleTaskInstance.isError;
+  }
+
   @action
   search(event) {
     event.preventDefault();

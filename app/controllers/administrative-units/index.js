@@ -51,6 +51,10 @@ export default class AdministrativeUnitsIndexController extends Controller {
     );
   }
 
+  get hasErrored() {
+    return this.model.loadAdministrativeUnitsTaskInstance.isError;
+  }
+
   get selectedClassification() {
     if (!this.classification) {
       return null;

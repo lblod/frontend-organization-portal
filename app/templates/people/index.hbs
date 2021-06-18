@@ -50,8 +50,10 @@
                             @currentSorting={{this.sort}} @label="Positie" @class="data-table__header-title" />
                         <th>Status</th>
                     </c.header>
-                    {{#if this.hasNoResults}}
-                    <TableMessage>
+                    {{#if this.hasErrored}}
+                      <TableMessage::Error />
+                    {{else if this.hasNoResults}}
+                      <TableMessage>
                         <p>
                             Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of probeer een andere
                             zoekopdracht.

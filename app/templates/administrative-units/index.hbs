@@ -86,7 +86,9 @@
                         <AuDataTableThSortable @field="municipality.label" @currentSorting={{this.sort}} @label="Gemeente" />
                         <th>Status</th>
                     </c.header>
-                    {{#if this.hasNoResults}}
+                    {{#if this.hasErrored}}
+                      <TableMessage::Error />
+                    {{else if this.hasNoResults}}
                       <TableMessage>
                         <p>
                           Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of probeer een andere zoekopdracht.
