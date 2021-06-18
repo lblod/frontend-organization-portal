@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { dropTask } from 'ember-concurrency';
 
 export default class AdministrativeUnitsAdministrativeUnitIndexController extends Controller {
   @tracked isSaving = false;
@@ -11,6 +12,14 @@ export default class AdministrativeUnitsAdministrativeUnitIndexController extend
 
   @tracked isEditingContact = false;
   @tracked isShowingContact = true;
+
+  get isSaving() {
+    return this.editCoreInfoTask.isRunning;
+  }
+
+  get isSavingContact() {
+    return this.editContactInfoTask.isRunning;
+  }
 
   @action
   toggleEditCoreInfo() {
@@ -46,61 +55,35 @@ export default class AdministrativeUnitsAdministrativeUnitIndexController extend
     administrativeUnit.honoraryServiceType = selection;
   }
 
-  @action
-  setCrossBorder(administrativeUnit, event) {
-    if (event.target.id === 'ja' && event.target.checked) {
-      administrativeUnit['crossBorder'] = true;
-    } else {
-      administrativeUnit['crossBorder'] = false;
-    }
-  }
-
-  @action
-  setAdministrativeValue(administrativeUnit, attributeName, event) {
-    administrativeUnit[attributeName] = event.target.value;
-  }
-
-  @action
-  async editCoreInfo(event) {
+  @dropTask
+  *editCoreInfoTask(event) {
     event.preventDefault();
 
-    if (!this.isSaving) {
-      this.isSaving = true;
-
-      await this.model.administrativeUnit.save();
-
-      this.isSaving = false;
-    }
+    yield this.model.administrativeUnit.save();
 
     this.toggleShowCoreInfo();
   }
 
-  @action
-  async editContactInfo(event) {
+  @dropTask
+  *editContactInfoTask(event) {
     event.preventDefault();
 
-    if (!this.isSavingContact) {
-      this.isSavingContact = true;
+    let address = yield this.model.administrativeUnit.primarySite.get(
+      'address'
+    );
 
-      let address = await this.model.administrativeUnit.primarySite.get(
-        'address'
-      );
+    address.fullAddress =
+      address.street +
+      ' ' +
+      address.number +
+      ' ' +
+      address.boxNumber +
+      ' ' +
+      address.postcode +
+      ' ' +
+      address.municipality;
 
-      address.fullAddress =
-        address.street +
-        ' ' +
-        address.number +
-        ' ' +
-        address.boxNumber +
-        ' ' +
-        address.postcode +
-        ' ' +
-        address.municipality;
-
-      await this.model.administrativeUnit.save();
-
-      this.isSavingContact = false;
-    }
+    yield this.model.administrativeUnit.save();
 
     this.toggleShowContactInfo();
   }
