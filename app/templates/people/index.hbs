@@ -2,28 +2,20 @@
     <div class="au-c-main-container__sidebar">
         <div class="au-c-sidebar">
             <div class="au-c-sidebar__content au-o-box">
-                <form
-                  {{on "submit" this.search}}
-                  class="au-c-form"
-                >
+                <form {{on "submit" this.search}} class="au-c-form">
                     <p>
-                      <AuLabel for="filter-given-name">Voornaam</AuLabel>
-                      <AuInput id="filter-given-name" @width="block" @value={{this.givenName}} />
+                        <AuLabel for="filter-given-name">Voornaam</AuLabel>
+                        <AuInput id="filter-given-name" @width="block" @value={{this.givenName}} />
                     </p>
                     <p>
-                      <AuLabel for="filter-family-name">Achternaam</AuLabel>
-                      <AuInput id="filter-family-name" @width="block" @value={{this.familyName}} />
+                        <AuLabel for="filter-family-name">Achternaam</AuLabel>
+                        <AuInput id="filter-family-name" @width="block" @value={{this.familyName}} />
                     </p>
                     <p>
-                      <AuLabel for="filter-organization">Organisatie</AuLabel>
-                      <AuInput id="filter-organization" @width="block" @value={{this.organization}} />
+                        <AuLabel for="filter-organization">Organisatie</AuLabel>
+                        <AuInput id="filter-organization" @width="block" @value={{this.organization}} />
                     </p>
-                    <AuButton
-                      @loading={{this.isLoading}}
-                      @disabled={{this.isLoading}}
-                      @width="block"
-                      type="submit"
-                    >
+                    <AuButton @loading={{this.isLoading}} @disabled={{this.isLoading}} @width="block" type="submit">
                         Zoeken
                     </AuButton>
                 </form>
@@ -32,13 +24,8 @@
     </div>
     <div class="au-c-main-container__content">
         <div class="au-d-component-block">
-            <AuDataTable
-              @content={{this.people}}
-              @isLoading={{this.showTableLoader}}
-              @page={{this.page}}
-              @size={{this.size}}
-              as |t|
-            >
+            <AuDataTable @content={{this.people}} @isLoading={{this.showTableLoader}} @page={{this.page}}
+                @size={{this.size}} as |t|>
                 <t.menu as |menu|>
                     <menu.general>
                         <AuToolbar class="au-o-box">
@@ -56,27 +43,45 @@
                             @class="data-table__header-title" />
                         <AuDataTableThSortable @field="familyName" @currentSorting={{this.sort}} @label="Achternaam"
                             @class="data-table__header-title" />
-                        <AuDataTableThSortable @field="mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.name" @currentSorting={{this.sort}} @label="Organisatie"
-                            @class="data-table__header-title" />
-                        <AuDataTableThSortable @field="mandatories.mandate.role-board.label" @currentSorting={{this.sort}} @label="Positie"
-                            @class="data-table__header-title" />
+                        <AuDataTableThSortable
+                            @field="mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.name"
+                            @currentSorting={{this.sort}} @label="Organisatie" @class="data-table__header-title" />
+                        <AuDataTableThSortable @field="mandatories.mandate.role-board.label"
+                            @currentSorting={{this.sort}} @label="Positie" @class="data-table__header-title" />
                         <th>Status</th>
                     </c.header>
                     {{#if this.hasNoResults}}
-                      <TableMessage>
+                    <TableMessage>
                         <p>
-                          Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of probeer een andere zoekopdracht.
-                          Indien een persoon ontbreekt, meldt dit aan <a href="mailto:TODO" class="au-c-link">TODO@vlaanderen.be</a>.
+                            Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of probeer een andere
+                            zoekopdracht.
+                            Indien een persoon ontbreekt, meldt dit aan <a href="mailto:TODO"
+                                class="au-c-link">TODO@vlaanderen.be</a>.
                         </p>
-                      </TableMessage>
+                    </TableMessage>
                     {{else}}
-                      <c.body as |person|>
-                          <td>{{person.givenName}}</td>
-                          <td>{{person.familyName}}</td>
-                          <td>{{person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}</td>
-                          <td>{{person.mandatories.firstObject.mandate.roleBoard.label}}</td>
-                          <td><AuPill @status="success">{{person.mandatories.firstObject.status.label}}</AuPill></td>
-                      </c.body>
+                    <c.body as |person|>
+                        <td>
+                            <LinkTo class="au-c-link" @model={{person.id}} @route="people.person.index">
+                                {{person.givenName}}
+                            </LinkTo>
+                        </td>
+                        <td>
+                            <LinkTo class="au-c-link" @model={{person.id}} @route="people.person.index">
+                                {{person.familyName}}
+                            </LinkTo>
+                        </td>
+                        <td>
+                          <LinkTo class="au-c-link" @model={{person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.id}} @route="administrative-units.administrative-unit">
+                             {{person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}
+                          </LinkTo>
+
+                        </td>
+                        <td>{{person.mandatories.firstObject.mandate.roleBoard.label}}</td>
+                        <td>
+                            <AuPill @status="success">{{person.mandatories.firstObject.status.label}}</AuPill>
+                        </td>
+                    </c.body>
                     {{/if}}
                 </t.content>
             </AuDataTable>
