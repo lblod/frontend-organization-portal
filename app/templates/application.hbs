@@ -1,9 +1,9 @@
-{{page-title "ContactHub"}}
+{{page-title (config "appName")}}
 
 <AuMainHeader
   @brandLink="https://www.vlaanderen.be/nl"
   @homeRoute="index"
-  @appTitle="Organisatieportaal"
+  @appTitle={{config "appName"}}
   @contactRoute="index"
 >
   <AuDropdown
