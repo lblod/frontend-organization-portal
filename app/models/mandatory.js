@@ -1,8 +1,8 @@
 import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
 
 export default class MandatoryModel extends Model {
-  @attr startDate;
-  @attr endDate;
+  @attr('date') startDate;
+  @attr('date') endDate;
   @belongsTo('mandatory-status-code') status;
   @belongsTo('person') governingAlias;
   @belongsTo('mandate') mandate;

@@ -1,92 +1,141 @@
 <div class="au-c-main-container">
-    <div class="au-c-main-container__sidebar">
-        <div class="au-c-sidebar">
-            <div class="au-c-sidebar__content au-o-box">
-                <form {{on "submit" this.search}} class="au-c-form">
-                    <p>
-                        <AuLabel for="filter-given-name">Voornaam</AuLabel>
-                        <AuInput id="filter-given-name" @width="block" @value={{this.givenName}} />
-                    </p>
-                    <p>
-                        <AuLabel for="filter-family-name">Achternaam</AuLabel>
-                        <AuInput id="filter-family-name" @width="block" @value={{this.familyName}} />
-                    </p>
-                    <p>
-                        <AuLabel for="filter-organization">Organisatie</AuLabel>
-                        <AuInput id="filter-organization" @width="block" @value={{this.organization}} />
-                    </p>
-                    <AuButton @loading={{this.isLoading}} @disabled={{this.isLoading}} @width="block" type="submit">
-                        Zoeken
-                    </AuButton>
-                </form>
-            </div>
-        </div>
+  <div class="au-c-main-container__sidebar">
+    <div class="au-c-sidebar">
+      <div class="au-c-sidebar__content au-o-box">
+        <form {{on "submit" this.search}} class="au-c-form">
+          <p>
+            <AuLabel for="filter-given-name">Voornaam</AuLabel>
+            <AuInput
+              @width="block"
+              @value={{this.givenName}}
+              id="filter-given-name"
+            />
+          </p>
+          <p>
+            <AuLabel for="filter-family-name">Achternaam</AuLabel>
+            <AuInput
+              @width="block"
+              @value={{this.familyName}}
+              id="filter-family-name"
+            />
+          </p>
+          <p>
+            <AuLabel for="filter-organization">Organisatie</AuLabel>
+            <AuInput
+              @width="block"
+              @value={{this.organization}}
+              id="filter-organization"
+            />
+          </p>
+          <AuButton
+            @loading={{this.isLoading}}
+            @disabled={{this.isLoading}}
+            @width="block"
+            type="submit"
+          >
+            Zoeken
+          </AuButton>
+        </form>
+      </div>
     </div>
-    <div class="au-c-main-container__content">
-        <div class="au-d-component-block">
-            <AuDataTable @content={{this.people}} @isLoading={{this.showTableLoader}} @page={{this.page}}
-                @size={{this.size}} as |t|>
-                <t.menu as |menu|>
-                    <menu.general>
-                        <AuToolbar class="au-o-box">
-                            <AuToolbarGroup>
-                                <AuHeading @skin="2">
-                                    Personen
-                                </AuHeading>
-                            </AuToolbarGroup>
-                        </AuToolbar>
-                    </menu.general>
-                </t.menu>
-                <t.content class="au-c-data-table__table--small" as |c|>
-                    <c.header>
-                        <AuDataTableThSortable @field="givenName" @currentSorting={{this.sort}} @label="Voornaam"
-                            @class="data-table__header-title" />
-                        <AuDataTableThSortable @field="familyName" @currentSorting={{this.sort}} @label="Achternaam"
-                            @class="data-table__header-title" />
-                        <AuDataTableThSortable
-                            @field="mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.name"
-                            @currentSorting={{this.sort}} @label="Organisatie" @class="data-table__header-title" />
-                        <AuDataTableThSortable @field="mandatories.mandate.role-board.label"
-                            @currentSorting={{this.sort}} @label="Positie" @class="data-table__header-title" />
-                        <th>Status</th>
-                    </c.header>
-                    {{#if this.hasErrored}}
-                      <TableMessage::Error />
-                    {{else if this.hasNoResults}}
-                      <TableMessage>
-                        <p>
-                            Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of probeer een andere
-                            zoekopdracht.
-                            Indien een persoon ontbreekt, meldt dit aan <a href="mailto:TODO"
-                                class="au-c-link">TODO@vlaanderen.be</a>.
-                        </p>
-                    </TableMessage>
-                    {{else}}
-                    <c.body as |person|>
-                        <td>
-                            <LinkTo class="au-c-link" @model={{person.id}} @route="people.person.index">
-                                {{person.givenName}}
-                            </LinkTo>
-                        </td>
-                        <td>
-                            <LinkTo class="au-c-link" @model={{person.id}} @route="people.person.index">
-                                {{person.familyName}}
-                            </LinkTo>
-                        </td>
-                        <td>
-                          <LinkTo class="au-c-link" @model={{person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.id}} @route="administrative-units.administrative-unit">
-                             {{person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}
-                          </LinkTo>
-
-                        </td>
-                        <td>{{person.mandatories.firstObject.mandate.roleBoard.label}}</td>
-                        <td>
-                            <AuPill @status="success">{{person.mandatories.firstObject.status.label}}</AuPill>
-                        </td>
-                    </c.body>
+  </div>
+  <div class="au-c-main-container__content">
+    <div class="au-d-component-block">
+      <AuDataTable
+        @content={{this.people}}
+        @isLoading={{this.showTableLoader}}
+        @page={{this.page}}
+        @size={{this.size}}
+        as |t|
+      >
+        <t.menu as |menu|>
+          <menu.general>
+            <AuToolbar class="au-o-box">
+              <AuToolbarGroup>
+                <AuHeading @skin="2">
+                  Personen
+                </AuHeading>
+              </AuToolbarGroup>
+            </AuToolbar>
+          </menu.general>
+        </t.menu>
+        <t.content class="au-c-data-table__table--small" as |c|>
+          <c.header>
+            <AuDataTableThSortable
+              @field="givenName"
+              @currentSorting={{this.sort}}
+              @label="Voornaam"
+            />
+            <AuDataTableThSortable
+              @field="familyName"
+              @currentSorting={{this.sort}}
+              @label="Achternaam"
+            />
+            <AuDataTableThSortable
+              @field="mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.name"
+              @currentSorting={{this.sort}}
+              @label="Organisatie"
+            />
+            <AuDataTableThSortable
+              @field="mandatories.mandate.role-board.label"
+              @currentSorting={{this.sort}}
+              @label="Positie"
+            />
+            <th>Status</th>
+          </c.header>
+          {{#if this.hasErrored}}
+            <TableMessage::Error />
+          {{else if this.hasNoResults}}
+            <TableMessage>
+              <p>
+                Er werden geen zoekresultaten gevonden. Kijk na op spelfouten,
+                of probeer een andere zoekopdracht. Indien een persoon
+                ontbreekt, meldt dit aan
+                <a href="mailto:TODO" class="au-c-link">TODO@vlaanderen.be</a>.
+              </p>
+            </TableMessage>
+          {{else}}
+            <c.body as |person|>
+              {{#let person.mandatories.firstObject as |mandatory|}}
+                <td>
+                  <AuLink
+                    @linkRoute="people.person"
+                    @model={{person.id}}
+                  >
+                    {{person.givenName}}
+                  </AuLink>
+                </td>
+                <td>
+                  <AuLink
+                    @linkRoute="people.person"
+                    @model={{person.id}}
+                  >
+                    {{person.familyName}}
+                  </AuLink>
+                </td>
+                <td>
+                  {{#let mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit as |administrativeUnit|}}
+                    {{#if administrativeUnit}}
+                      <AuLink
+                        @linkRoute="administrative-units.administrative-unit"
+                        @model={{administrativeUnit.id}}
+                      >
+                        {{administrativeUnit.name}}
+                      </AuLink>
                     {{/if}}
-                </t.content>
-            </AuDataTable>
-        </div>
+                  {{/let}}
+                </td>
+                <td>{{mandatory.mandate.roleBoard.label}}</td>
+                <td>
+                  {{#if mandatory}}
+                    <MandatoryStatus @mandatory={{mandatory}} />
+                  {{/if}}
+                </td>
+              {{/let}}
+            </c.body>
+          {{/if}}
+        </t.content>
+      </AuDataTable>
     </div>
+  </div>
 </div>
