@@ -96,40 +96,42 @@
             </TableMessage>
           {{else}}
             <c.body as |person|>
-              <td>
-                <AuLink
-                  @linkRoute="people.person"
-                  @model={{person.id}}
-                >
-                  {{person.givenName}}
-                </AuLink>
-              </td>
-              <td>
-                <AuLink
-                  @linkRoute="people.person"
-                  @model={{person.id}}
-                >
-                  {{person.familyName}}
-                </AuLink>
-              </td>
-              <td>
-                {{#let person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit as |administrativeUnit|}}
-                  {{#if administrativeUnit}}
-                    <AuLink
-                      @linkRoute="administrative-units.administrative-unit"
-                      @model={{administrativeUnit.id}}
-                    >
-                      {{administrativeUnit.name}}
-                    </AuLink>
+              {{#let person.mandatories.firstObject as |mandatory|}}
+                <td>
+                  <AuLink
+                    @linkRoute="people.person"
+                    @model={{person.id}}
+                  >
+                    {{person.givenName}}
+                  </AuLink>
+                </td>
+                <td>
+                  <AuLink
+                    @linkRoute="people.person"
+                    @model={{person.id}}
+                  >
+                    {{person.familyName}}
+                  </AuLink>
+                </td>
+                <td>
+                  {{#let mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit as |administrativeUnit|}}
+                    {{#if administrativeUnit}}
+                      <AuLink
+                        @linkRoute="administrative-units.administrative-unit"
+                        @model={{administrativeUnit.id}}
+                      >
+                        {{administrativeUnit.name}}
+                      </AuLink>
+                    {{/if}}
+                  {{/let}}
+                </td>
+                <td>{{mandatory.mandate.roleBoard.label}}</td>
+                <td>
+                  {{#if mandatory}}
+                    <MandatoryStatus @mandatory={{mandatory}} />
                   {{/if}}
-                {{/let}}
-              </td>
-              <td>{{person.mandatories.firstObject.mandate.roleBoard.label}}</td>
-              <td>
-                <AuPill
-                  @status="success"
-                >{{person.mandatories.firstObject.status.label}}</AuPill>
-              </td>
+                </td>
+              {{/let}}
             </c.body>
           {{/if}}
         </t.content>
