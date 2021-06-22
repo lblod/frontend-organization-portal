@@ -107,9 +107,7 @@
                           <td>{{adminUnit.province.label}}</td>
                           <td>{{adminUnit.municipality.label}}</td>
                           <td>
-                            <AuPill @skin="success">
-                              {{adminUnit.organizationStatus.label}}
-                            </AuPill>
+                            <AdministrativeUnitStatus @status={{adminUnit.organizationStatus.label}} />
                           </td>
                       </c.body>
                     {{/if}}
