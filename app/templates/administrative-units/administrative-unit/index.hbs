@@ -55,7 +55,9 @@
                       <p><strong>Status</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <p><AuPill @skin="success">{{@model.organizationStatus.label}}</AuPill></p>
+                      {{#if @model.organizationStatus}}
+                        <p><OrganizationStatus @status={{@model.organizationStatus}} /></p>
+                      {{/if}}
                     </div>
                   </div>
                 </div>
