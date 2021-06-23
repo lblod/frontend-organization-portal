@@ -2,10 +2,7 @@
     <div class="au-c-main-container__sidebar">
         <div class="au-c-sidebar">
             <div class="au-c-sidebar__content au-o-box">
-                <form
-                  class="au-c-form"
-                  {{on "submit" this.search}}
-                >
+                <form class="au-c-form" {{on "submit" this.search}}>
                     <p>
                         <AuLabel for="filter-name">Naam</AuLabel>
                         <AuInput id="filter-name" @width="block" @value={{this.name}} />
@@ -17,40 +14,24 @@
                     </p>
                     <p>
                         <AuLabel for="classifications">Soort eredienst</AuLabel>
-                        <PowerSelect
-                            @allowClear={{true}}
-                            @searchEnabled={{true}}
-                            @noMatchesMessage="Geen resultaten"
-                            @searchField="label"
-                            @options={{@model.classifications}}
-                            @selected={{this.selectedClassification}}
-                            @onChange={{this.setClassification}}
+                        <PowerSelect @allowClear={{true}} @searchEnabled={{true}} @noMatchesMessage="Geen resultaten"
+                            @searchField="label" @options={{@model.classifications}}
+                            @selected={{this.selectedClassification}} @onChange={{this.setClassification}}
                             @triggerId="classifications" as |classification|>
                             {{classification.label}}
                         </PowerSelect>
                     </p>
                     <p>
                         <AuLabel for="statuses">Status</AuLabel>
-                        <PowerSelect
-                            @allowClear={{true}} {{!-- @disabled={{disabled}} --}}
-                            @searchEnabled={{true}}
-                            @loadingMessage="Aan het laden..."
-                            @noMatchesMessage="Geen resultaten"
-                            @searchField="label"
-                            @searchMessage="Typ om te zoeken"
-                            @options={{@model.statuses}}
-                            @selected={{this.selectedOrganizationStatus}}
-                            @onChange={{this.setOrganizationStatus}}
+                        <PowerSelect @allowClear={{true}} {{!-- @disabled={{disabled}} --}} @searchEnabled={{true}}
+                            @loadingMessage="Aan het laden..." @noMatchesMessage="Geen resultaten" @searchField="label"
+                            @searchMessage="Typ om te zoeken" @options={{@model.statuses}}
+                            @selected={{this.selectedOrganizationStatus}} @onChange={{this.setOrganizationStatus}}
                             @triggerId="statuses" as |status|>
                             {{status.label}}
                         </PowerSelect>
                     </p>
-                    <AuButton
-                      @loading={{this.isLoading}}
-                      @disabled={{this.isLoading}}
-                      @width="block"
-                      type="submit"
-                    >
+                    <AuButton @loading={{this.isLoading}} @disabled={{this.isLoading}} @width="block" type="submit">
                         Zoeken
                     </AuButton>
                 </form>
@@ -59,14 +40,8 @@
     </div>
     <div class="au-c-main-container__content">
         <div class="au-d-component-block">
-            <AuDataTable
-              @content={{this.administrativeUnits}}
-              @isLoading={{this.showTableLoader}}
-              @noDataMessage="No Administrative unit found"
-              @page={{this.page}}
-              @size={{this.size}}
-              as |t|
-            >
+            <AuDataTable @content={{this.administrativeUnits}} @isLoading={{this.showTableLoader}}
+                @noDataMessage="No Administrative unit found" @page={{this.page}} @size={{this.size}} as |t|>
                 <t.menu as |menu|>
                     <menu.general>
                         <AuToolbar class="au-o-box">
@@ -80,36 +55,45 @@
                 </t.menu>
                 <t.content class="au-c-data-table__table--small" as |c|>
                     <c.header>
-                        <AuDataTableThSortable @field="name" @currentSorting={{this.sort}}  @label="Naam" />
-                        <AuDataTableThSortable @field="classification.label" @currentSorting={{this.sort}}  @label="Type bestuur" />
-                        <AuDataTableThSortable @field="province.label" @currentSorting={{this.sort}} @label="Provincie" />
-                        <AuDataTableThSortable @field="municipality.label" @currentSorting={{this.sort}} @label="Gemeente" />
+                        <AuDataTableThSortable @field="name" @currentSorting={{this.sort}} @label="Naam" />
+                        <AuDataTableThSortable @field="classification.label" @currentSorting={{this.sort}}
+                            @label="Type bestuur" />
+                        <AuDataTableThSortable @field="province.label" @currentSorting={{this.sort}}
+                            @label="Provincie" />
+                        <AuDataTableThSortable @field="municipality.label" @currentSorting={{this.sort}}
+                            @label="Gemeente" />
                         <th>Status</th>
                     </c.header>
                     {{#if this.hasErrored}}
-                      <TableMessage::Error />
+                    <TableMessage::Error />
                     {{else if this.hasNoResults}}
-                      <TableMessage>
+                    <TableMessage>
                         <p>
-                          Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of probeer een andere zoekopdracht.
-                          Indien een organisatie ontbreekt, meldt dit aan <a class="au-c-link" href="mailto:TODO@vlaanderen.be">TODO@vlaanderen.be</a>
-                          of <AuLink @linkRoute="index">maak een organisatie aan.</AuLink> {{! TODO add the correct route }}
+                            Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of probeer een andere
+                            zoekopdracht.
+                            Indien een organisatie ontbreekt, meldt dit aan <a class="au-c-link"
+                                href="mailto:TODO@vlaanderen.be">TODO@vlaanderen.be</a>
+                            of <AuLink @linkRoute="index">maak een organisatie aan.</AuLink> {{! TODO add the correct
+                            route }}
                         </p>
-                      </TableMessage>
+                    </TableMessage>
                     {{else}}
-                      <c.body as |adminUnit|>
-                          <td>
-                              <LinkTo class="au-c-link" @model={{adminUnit.id}} @route="administrative-units.administrative-unit.index">
+                    <c.body as |adminUnit|>
+                        <td>
+                            <LinkTo class="au-c-link" @model={{adminUnit.id}}
+                                @route="administrative-units.administrative-unit.index">
                                 {{adminUnit.name}}
-                              </LinkTo>
-                          </td>
-                          <td>{{adminUnit.classification.label}}</td>
-                          <td>{{adminUnit.province.label}}</td>
-                          <td>{{adminUnit.municipality.label}}</td>
-                          <td>
-                            <AdministrativeUnitStatus @status={{adminUnit.organizationStatus.label}} />
-                          </td>
-                      </c.body>
+                            </LinkTo>
+                        </td>
+                        <td>{{adminUnit.classification.label}}</td>
+                        <td>{{adminUnit.province.label}}</td>
+                        <td>{{adminUnit.municipality.label}}</td>
+                        <td>
+                            {{#if adminUnit.organizationStatus}}
+                            <OrganizationStatus @status={{adminUnit.organizationStatus}} />
+                            {{/if}}
+                        </td>
+                    </c.body>
                     {{/if}}
                 </t.content>
             </AuDataTable>
