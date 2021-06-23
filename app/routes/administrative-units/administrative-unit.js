@@ -10,6 +10,16 @@ export default class AdministrativeUnitsAdministrativeUnitRoute extends Route {
       ),
       honoraryServiceTypes: this.store.findAll('honorary-service-type'),
       statuses: this.store.findAll('organization-status-code'),
+      provinces: this.store.query('location', {
+        filter: {
+          level: 'Provincie',
+        },
+      }),
+      municipalities: this.store.query('location', {
+        filter: {
+          level: 'Gemeente',
+        },
+      }),
     });
   }
 }

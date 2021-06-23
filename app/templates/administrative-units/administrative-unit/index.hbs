@@ -292,7 +292,7 @@
                         @value={{@model.administrativeUnit.crossBorder}}
                         @checked={{@model.administrativeUnit.crossBorder}}
                         @identifier="cross-border-true"
-                        @onChange={{fn (mut @model.administrativeUnit.crossBorder)}}
+                        @onChange={{fn (mut @model.administrativeUnit.crossBorder) true}}
                       />
 
                       <AuControlRadio
@@ -301,7 +301,7 @@
                         @value={{@model.administrativeUnit.crossBorder}}
                         @checked={{@model.administrativeUnit.crossBorder}}
                         @identifier="cross-border-false"
-                        @onChange={{fn (mut @model.administrativeUnit.crossBorder)}}
+                        @onChange={{fn (mut @model.administrativeUnit.crossBorder) false}}
                       />
                     </div>
                   </div>
@@ -347,7 +347,6 @@
           </AuToolbarGroup>
           <AuToolbarGroup>
             <AuButton
-              class="au-u-hidden-visually"
               @skin="tertiary"
               @icon="pencil"
               @iconAlignment="right"
@@ -531,19 +530,23 @@
                       <AuLabel
                         for="gemeente"
                         class="au-u-hidden-visually"
-                      >Gemeente input</AuLabel>
+                      >Municipality input</AuLabel>
                       <PowerSelect
                         @allowClear={{true}}
                         @searchEnabled={{true}}
                         @loadingMessage="Aan het laden..."
                         @noMatchesMessage="Geen resultaten"
                         @searchMessage="Typ om te zoeken"
-                        @options={{this.singleselects}}
+                        @options={{@model.municipalities}}
                         @selected={{@model.administrativeUnit.primarySite.address.municipality}}
-                        @onChange={{fn (mut this.singleselect)}}
-                        as |singleselect|
+                        @onChange={{fn
+                          this.setMunicipality
+                          @model.administrativeUnit
+                        }}
+                        @triggerId="municipalities"
+                        as |municipality|
                       >
-                        {{singleselect}}
+                        {{municipality.label}}
                       </PowerSelect>
                     </div>
                   </div>
@@ -564,12 +567,16 @@
                         @loadingMessage="Aan het laden..."
                         @noMatchesMessage="Geen resultaten"
                         @searchMessage="Typ om te zoeken"
-                        @options={{this.singleselects}}
+                        @options={{@model.provinces}}
                         @selected={{@model.administrativeUnit.primarySite.address.province}}
-                        @onChange={{fn (mut this.singleselect)}}
-                        as |singleselect|
+                        @onChange={{fn
+                          this.setProvince
+                          @model.administrativeUnit
+                        }}
+                        @triggerId="provinces"
+                        as |province|
                       >
-                        {{singleselect}}
+                        {{province.label}}
                       </PowerSelect>
                     </div>
                   </div>
