@@ -3,7 +3,7 @@
     <nav aria-label="breadcrumbs">
       <ol class="au-c-list-horizontal">
         <li class="au-c-list-horizontal__item">
-          <AuLink @linkRoute="index" @icon="arrow-left" @iconAlignment="left">
+          <AuLink @route="index" @icon="arrow-left" @iconAlignment="left">
             Overzicht
           </AuLink>
         </li>
@@ -13,7 +13,7 @@
               {{breadcrumb.title}}
             {{else}}
               <AuLink
-                @linkRoute={{breadcrumb.data.route}}
+                @route={{breadcrumb.data.route}}
                 @model={{breadcrumb.data.model}}
                 @models={{breadcrumb.data.models}}
               >
