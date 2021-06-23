@@ -99,7 +99,7 @@
               {{#let person.mandatories.firstObject as |mandatory|}}
                 <td>
                   <AuLink
-                    @linkRoute="people.person"
+                    @route="people.person"
                     @model={{person.id}}
                   >
                     {{person.givenName}}
@@ -107,7 +107,7 @@
                 </td>
                 <td>
                   <AuLink
-                    @linkRoute="people.person"
+                    @route="people.person"
                     @model={{person.id}}
                   >
                     {{person.familyName}}
@@ -117,7 +117,7 @@
                   {{#let mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit as |administrativeUnit|}}
                     {{#if administrativeUnit}}
                       <AuLink
-                        @linkRoute="administrative-units.administrative-unit"
+                        @route="administrative-units.administrative-unit"
                         @model={{administrativeUnit.id}}
                       >
                         {{administrativeUnit.name}}
