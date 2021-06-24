@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 
-export default class PeoplePersonIndexController extends Controller {
+export default class PeoplePersonPersonalInformationController extends Controller {
   @tracked isEditingPersonalInformation = false;
 
   @action

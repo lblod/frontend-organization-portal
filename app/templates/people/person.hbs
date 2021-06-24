@@ -1,9 +1,16 @@
+{{page-title @model.givenName " " @model.familyName}}
+{{breadcrumb
+  @model.givenName " " @model.familyName
+  route="people.person"
+  model=@model.id
+}}
+
 <div class="au-c-main-container au-c-main-container__content--block">
   <div class="au-c-main-container__sidebar">
       <div class="au-d-component-block au-c-sidebar">
         <ul class="au-c-list-navigation">
           <li class="au-c-list-navigation__item">
-            <AuNavigationLink @route="people.person">
+            <AuNavigationLink @route="people.person.personal-information">
               Persoonlijke gegevens
             </AuNavigationLink>
           </li>
