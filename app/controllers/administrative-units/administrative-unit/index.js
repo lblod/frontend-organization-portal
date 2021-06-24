@@ -55,18 +55,6 @@ export default class AdministrativeUnitsAdministrativeUnitIndexController extend
     administrativeUnit.honoraryServiceType = selection;
   }
 
-  @action
-  setMunicipality(administrativeUnit, selection) {
-    let address = administrativeUnit.primarySite.get('address');
-    address.municipality = selection;
-  }
-
-  @action
-  setProvince(administrativeUnit, selection) {
-    let address = administrativeUnit.primarySite.get('address');
-    address.province = selection;
-  }
-
   @dropTask
   *editCoreInfoTask(event) {
     event.preventDefault();

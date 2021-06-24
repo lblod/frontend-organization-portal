@@ -121,7 +121,7 @@
                       <p><strong>Werkingsgebied</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <p></p>
+                      <p>{{@model.administrativeUnit.scope.label}}</p>
                     </div>
                   </div>
                 </div>
@@ -251,7 +251,7 @@
                       <p><strong>Status datum</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuDatePicker @label="Kies een datum" />
+                      <p></p>
                     </div>
                   </div>
                 </div>
@@ -314,7 +314,21 @@
                       <p><strong>Werkingsgebied</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <p></p>
+                      <PowerSelectMultiple
+                        @allowClear={{true}}
+                        @searchEnabled={{true}}
+                        @loadingMessage="Aan het laden..."
+                        @noMatchesMessage="Geen resultaten"
+                        @searchMessage="Typ om te zoeken"
+                        {{!-- @options={{@model.municipalities}} --}}
+                        @selected={{@model.administrativeUnit.scope}}
+                        @onChange={{fn (mut @model.administrativeUnit.scope)}}
+                        @triggerId="scopes"
+                        as |scope|
+                      >
+                        {{scope}}
+                      </PowerSelectMultiple>
+                      <p>{{@model.administrativeUnit.scope.label}}</p>
                     </div>
                   </div>
                 </div>
@@ -539,14 +553,11 @@
                         @searchMessage="Typ om te zoeken"
                         @options={{@model.municipalities}}
                         @selected={{@model.administrativeUnit.primarySite.address.municipality}}
-                        @onChange={{fn
-                          this.setMunicipality
-                          @model.administrativeUnit
-                        }}
+                        @onChange={{fn (mut @model.administrativeUnit.primarySite.address.municipality)}}
                         @triggerId="municipalities"
                         as |municipality|
                       >
-                        {{municipality.label}}
+                        {{municipality}}
                       </PowerSelect>
                     </div>
                   </div>
@@ -569,14 +580,11 @@
                         @searchMessage="Typ om te zoeken"
                         @options={{@model.provinces}}
                         @selected={{@model.administrativeUnit.primarySite.address.province}}
-                        @onChange={{fn
-                          this.setProvince
-                          @model.administrativeUnit
-                        }}
+                        @onChange={{fn (mut  @model.administrativeUnit.primarySite.address.province)}}
                         @triggerId="provinces"
                         as |province|
                       >
-                        {{province.label}}
+                        {{province}}
                       </PowerSelect>
                     </div>
                   </div>
