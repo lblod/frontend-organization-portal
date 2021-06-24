@@ -1,1 +1,24 @@
-{{outlet}}
+<div class="au-c-main-container au-c-main-container__content--block">
+  <div class="au-c-main-container__sidebar">
+      <div class="au-d-component-block au-c-sidebar">
+        <ul class="au-c-list-navigation">
+          <li class="au-c-list-navigation__item">
+            <AuNavigationLink @route="people.person">
+              Persoonlijke gegevens
+            </AuNavigationLink>
+          </li>
+          <li class="au-c-list-navigation__item">
+            <AuNavigationLink>
+              Contactgegevens
+            </AuNavigationLink>
+          </li>
+          <li class="au-c-list-navigation__item">
+            <AuNavigationLink @route="people.person.positions">
+              Posities
+            </AuNavigationLink>
+          </li>
+        </ul>
+    </div>
+  </div>
+  {{outlet}}
+</div>

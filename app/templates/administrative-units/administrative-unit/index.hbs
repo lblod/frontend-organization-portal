@@ -1,10 +1,3 @@
-{{page-title @model.administrativeUnit.name}}
-{{breadcrumb
-  @model.administrativeUnit.name
-  route="administrative-units.administrative-unit"
-  model=@model.administrativeUnit.id
-}}
-
 <div class="au-c-main-container__content au-c-main-container__content--block">
   <div
     class="au-o-box au-d-component-block au-d-component-block--overflow au-o-flow"
@@ -62,9 +55,9 @@
                       <p><strong>Status</strong></p>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <p><AuPill
-                          @skin="success"
-                        >{{@model.administrativeUnit.organizationStatus.label}}</AuPill></p>
+                      {{#if @model.organizationStatus}}
+                        <p><OrganizationStatus @status={{@model.organizationStatus}} /></p>
+                      {{/if}}
                     </div>
                   </div>
                 </div>

@@ -1,14 +1,21 @@
-<div class="au-c-main-container au-c-main-container__content--block">
+{{page-title @model.name}}
+{{breadcrumb
+  @model.name
+  route="administrative-units.administrative-unit"
+  model=@model.id
+}}
+
+<div class="au-c-main-container">
   <div class="au-c-main-container__sidebar">
       <div class="au-d-component-block au-c-sidebar">
         <ul class="au-c-list-navigation">
           <li class="au-c-list-navigation__item">
-            <AuNavigationLink @linkRoute="administrative-units.administrative-unit">
+            <AuNavigationLink @route="administrative-units.administrative-unit.index">
               Kerngegevens
             </AuNavigationLink>
           </li>
           <li class="au-c-list-navigation__item">
-            <AuNavigationLink>
+            <AuNavigationLink @route="administrative-units.administrative-unit.sites">
               Vestigingen
             </AuNavigationLink>
           </li>
@@ -48,7 +55,7 @@
             </AuNavigationLink>
           </li>
         </ul>
-    </div> 
+    </div>
   </div>
   {{outlet}}
 </div>

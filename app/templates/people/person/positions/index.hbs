@@ -1,0 +1,67 @@
+<div class="au-c-main-container__content">
+  <div class="au-o-box">
+    <AuToolbar>
+      <AuToolbarGroup>
+        <AuHeading>
+          Posities
+        </AuHeading>
+      </AuToolbarGroup>
+      <AuToolbarGroup>
+        {{! TODO: Replace this with the "new" route once it is created }}
+        <AuLink
+          @route="people.person.positions"
+          @icon="add"
+          @iconAlignment="left"
+          @skin="button"
+        >
+          Nieuw
+        </AuLink>
+      </AuToolbarGroup>
+    </AuToolbar>
+    <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
+      {{@model.person.givenName}} {{@model.person.familyName}}
+    </AuHeading>
+  </div>
+
+  <AuDataTable @content={{@model.positions}} @noDataMessage="Geen posities" as |t|>
+    <t.content as |c|>
+      <c.header>
+        <th class="au-c-data-table__header-title">Positie</th>
+        <th class="au-c-data-table__header-title">Organisatie</th>
+        <th class="au-c-data-table__header-title">Status</th>
+        <th></th>
+      </c.header>
+      <c.body as |mandatory|>
+        <td>
+          {{!-- TODO Replace this with the correct route --}}
+          <AuLink
+            @route="people.person.positions"
+          >
+            {{mandatory.mandate.roleBoard.label}}
+          </AuLink>
+        </td>
+        <td>
+          {{#let mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit as |administrativeUnit|}}
+            {{#if administrativeUnit}}
+              <AuLink
+                @route="administrative-units.administrative-unit"
+                @model={{administrativeUnit.id}}
+              >
+                {{administrativeUnit.name}}
+              </AuLink>
+            {{/if}}
+          {{/let}}
+        </td>
+        <td>
+          <MandatoryStatus @mandatory={{mandatory}} />
+        </td>
+        <td>
+          {{!-- TODO Replace this with the correct route --}}
+          <AuLink
+            @route="people.person.positions"
+          >Bewerk</AuLink>
+        </td>
+      </c.body>
+    </t.content>
+  </AuDataTable>
+</div>

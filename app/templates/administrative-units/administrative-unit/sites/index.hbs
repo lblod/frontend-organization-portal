@@ -1,0 +1,35 @@
+<div class="au-c-main-container__content">
+  <div class="au-o-box">
+    <AuToolbar>
+      <AuToolbarGroup>
+        <AuHeading>
+          Vestigingen
+        </AuHeading>
+      </AuToolbarGroup>
+      <AuToolbarGroup>
+        {{! TODO: Replace this with a link once the "new" route is created }}
+        <AuButton @icon="add" @iconAlignment="left">
+          Nieuw
+        </AuButton>
+      </AuToolbarGroup>
+    </AuToolbar>
+    <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
+      {{@model.administrativeUnit.name}}
+    </AuHeading>
+  </div>
+
+  <AuDataTable @content={{this.sites}} @noDataMessage="Geen vestigingen" as |t|>
+    <t.content as |c|>
+      <c.header>
+        <th class="au-c-data-table__header-title">Locatie</th>
+        <th class="au-c-data-table__header-title">Hoofdgebouw</th>
+        <th></th>
+      </c.header>
+      <c.body as |site|>
+        <td><AuLink @route="administrative-units.administrative-unit.sites">{{site.address.fullAddress}}</AuLink></td>
+        <td>{{if (eq site.id this.model.primarySite.id) "Ja" "Nee"}}</td>
+        <td><AuLink @route="administrative-units.administrative-unit.sites">Bewerk</AuLink></td>
+      </c.body>
+    </t.content>
+  </AuDataTable>
+</div>
