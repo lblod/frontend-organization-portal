@@ -1,0 +1,31 @@
+<div class="au-c-main-container__content">
+  <div class="au-o-box">
+    <AuToolbar>
+      <AuToolbarGroup>
+        <AuHeading>
+          Bestuursorganen
+        </AuHeading>
+      </AuToolbarGroup>
+    </AuToolbar>
+    <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
+      {{@model.administrativeUnit.name}}
+    </AuHeading>
+  </div>
+
+  <AuDataTable @content={{this.governingBodies}} @noDataMessage="Geen bestuursorganen" as |t|>
+    <t.content as |c|>
+      <c.header>
+        <th class="au-c-data-table__header-title">Type bestuursorgaan</th>
+        <th class="au-c-data-table__header-title">Periode</th>
+        <th class="au-c-data-table__header-title">Status</th>
+        <th></th>
+      </c.header>
+      <c.body as |gbody|>
+        <td></td>
+        <td>{{gbody.startDate}} - {{gbody.endDate}}</td>
+        <OrganizationStatus @status={{@model.administrativeUnit.organizationStatus}} />
+        <td><AuLink @linkRoute="administrative-units.administrative-unit.governing-bodies">Bewerk</AuLink></td>
+      </c.body>
+    </t.content>
+  </AuDataTable>
+</div> 
