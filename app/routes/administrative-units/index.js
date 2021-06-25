@@ -29,7 +29,11 @@ export default class AdministrativeUnitsIndexRoute extends Route {
   @dropTask({ cancelOn: 'deactivate' })
   *loadAdministrativeUnitsTask(params) {
     let query = {
-      include: ['classification', 'organization-status', 'primary-site'].join(),
+      include: [
+        'classification',
+        'organization-status',
+        'primary-site.address',
+      ].join(),
       page: {
         number: params.page,
         size: params.size,
