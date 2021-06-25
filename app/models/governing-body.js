@@ -1,8 +1,8 @@
 import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
 
 export default class GoverningBodyModel extends Model {
-  @attr startDate;
-  @attr endDate;
+  @attr('date') startDate;
+  @attr('date') endDate;
   @belongsTo('administrative-unit') administrativeUnit;
   @belongsTo('governing-body-classification-code', { inverse: null })
   classification;
@@ -11,4 +11,17 @@ export default class GoverningBodyModel extends Model {
   @hasMany('governing-body', { inverse: 'isTimeSpecializationOf' })
   hasTimeSpecializations;
   @hasMany('mandate') mandates;
+
+  get periode() {
+    let periode = '';
+    if (this.startDate && this.endDate) {
+      periode =
+        this.startDate.getFullYear() + ' - ' + this.endDate.getFullYear();
+    } else if (this.startDate) {
+      periode = this.startDate.getFullYear();
+    } else if (this.endDate) {
+      periode = this.endDate.getFullYear();
+    }
+    return periode;
+  }
 }

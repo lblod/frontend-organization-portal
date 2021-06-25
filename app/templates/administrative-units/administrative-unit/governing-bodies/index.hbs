@@ -12,7 +12,7 @@
     </AuHeading>
   </div>
 
-  <AuDataTable @content={{this.governingBodies}} @noDataMessage="Geen bestuursorganen" as |t|>
+  <AuDataTable @content={{@model.governingBody.hasTimeSpecializations}} @noDataMessage="Geen bestuursorganen" as |t|>
     <t.content as |c|>
       <c.header>
         <th class="au-c-data-table__header-title">Type bestuursorgaan</th>
@@ -21,11 +21,11 @@
         <th></th>
       </c.header>
       <c.body as |gbody|>
-        <td></td>
-        <td>{{gbody.startDate}} - {{gbody.endDate}}</td>
+        <td><AuLink @route="administrative-units.administrative-unit.governing-bodies">{{@model.governingBody.classification.label}}</AuLink></td>
+        <td>{{gbody.periode}}</td>
         <OrganizationStatus @status={{@model.administrativeUnit.organizationStatus}} />
-        <td><AuLink @linkRoute="administrative-units.administrative-unit.governing-bodies">Bewerk</AuLink></td>
+        <td><AuLink @route="administrative-units.administrative-unit.governing-bodies">Bewerk</AuLink></td>
       </c.body>
     </t.content>
   </AuDataTable>
-</div> 
+</div>

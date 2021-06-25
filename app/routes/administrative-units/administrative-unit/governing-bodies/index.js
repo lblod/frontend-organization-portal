@@ -20,7 +20,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesIndexRo
 
     return {
       administrativeUnit: administrativeUnit,
-      governingBodies: await administrativeUnit.governingBodies,
+      governingBody: await administrativeUnit.governingBodies.firstObject,
     };
   }
 }
