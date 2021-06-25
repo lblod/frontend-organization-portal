@@ -11,6 +11,7 @@ Router.map(function () {
   this.route('people', { path: '/personen' }, function () {
     this.route('person', { path: '/:id/' }, function () {
       this.route('personal-information', { path: '/persoonlijke-gegevens' });
+      this.route('positions', { path: '/posities' }, function () {});
     });
   });
   this.route(
