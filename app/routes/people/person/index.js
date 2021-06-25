@@ -1,7 +1,10 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export default class PeoplePersonIndexRoute extends Route {
-  model() {
-    return this.modelFor('people.person');
+  @service router;
+
+  beforeModel() {
+    return this.router.replaceWith('people.person.personal-information');
   }
 }

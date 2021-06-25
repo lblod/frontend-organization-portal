@@ -31,9 +31,8 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     let query = {
       include: [
         'classification',
-        'province',
-        'municipality',
         'organization-status',
+        'primary-site.address',
       ].join(),
       page: {
         number: params.page,
@@ -51,7 +50,8 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     }
 
     if (params.municipality) {
-      query['filter[municipality]'] = params.municipality;
+      query['filter[primary-site][address][municipality]'] =
+        params.municipality;
     }
 
     if (params.organizationStatus) {
