@@ -29,12 +29,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
   @dropTask({ cancelOn: 'deactivate' })
   *loadAdministrativeUnitsTask(params) {
     let query = {
-      include: [
-        'classification',
-        'province',
-        'municipality',
-        'organization-status',
-      ].join(),
+      include: ['classification', 'organization-status', 'primary-site'].join(),
       page: {
         number: params.page,
         size: params.size,
@@ -51,7 +46,8 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     }
 
     if (params.municipality) {
-      query['filter[municipality]'] = params.municipality;
+      query['filter[primary-site][address][municipality]'] =
+        params.municipality;
     }
 
     if (params.organizationStatus) {
