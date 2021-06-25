@@ -23,7 +23,7 @@
                     </p>
                     <p>
                         <AuLabel for="statuses">Status</AuLabel>
-                        <PowerSelect @allowClear={{true}} {{!-- @disabled={{disabled}} --}} @searchEnabled={{true}}
+                        <PowerSelect @allowClear={{true}} @searchEnabled={{true}}
                             @loadingMessage="Aan het laden..." @noMatchesMessage="Geen resultaten" @searchField="label"
                             @searchMessage="Typ om te zoeken" @options={{@model.statuses}}
                             @selected={{this.selectedOrganizationStatus}} @onChange={{this.setOrganizationStatus}}
@@ -86,8 +86,8 @@
                             </LinkTo>
                         </td>
                         <td>{{adminUnit.classification.label}}</td>
-                        <td>{{adminUnit.province.label}}</td>
-                        <td>{{adminUnit.municipality.label}}</td>
+                        <td>{{adminUnit.primarySite.address.province}}</td>
+                        <td>{{adminUnit.primarySite.address.municipality}}</td>
                         <td>
                           {{#if adminUnit.organizationStatus}}
                             <OrganizationStatus @status={{adminUnit.organizationStatus}} />
