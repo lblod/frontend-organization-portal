@@ -23,7 +23,7 @@
       <c.body as |gbody|>
         <td><AuLink @route="administrative-units.administrative-unit.governing-bodies">{{@model.governingBody.classification.label}}</AuLink></td>
         <td>{{gbody.periode}}</td>
-        <OrganizationStatus @status={{@model.administrativeUnit.organizationStatus}} />
+        <OrganizationStatus @status={{gbody.status}} />
         <td><AuLink @route="administrative-units.administrative-unit.governing-bodies">Bewerk</AuLink></td>
       </c.body>
     </t.content>

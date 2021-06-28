@@ -24,4 +24,17 @@ export default class GoverningBodyModel extends Model {
     }
     return periode;
   }
+
+  get status() {
+    let status = '';
+    if (this.endDate) {
+      var today = new Date();
+      if (this.endDate <= today) {
+        status = '63cc561de9188d64ba5840a42ae8f0d6';
+      } else {
+        status = 'd02c4e12bf88d2fdf5123b07f29c9311';
+      }
+    }
+    return status;
+  }
 }
