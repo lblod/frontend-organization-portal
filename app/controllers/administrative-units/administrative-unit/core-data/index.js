@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 
-export default class AdministrativeUnitsAdministrativeUnitIndexController extends Controller {
+export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexController extends Controller {
   @tracked isSaving = false;
   @tracked isSavingContact = false;
 
