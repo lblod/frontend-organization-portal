@@ -12,16 +12,16 @@ export default class GoverningBodyModel extends Model {
   hasTimeSpecializations;
   @hasMany('mandate') mandates;
 
-  get periode() {
-    let periode = '';
+  get period() {
+    let period = '';
     if (this.startDate && this.endDate) {
-      periode =
+      period =
         this.startDate.getFullYear() + ' - ' + this.endDate.getFullYear();
     } else if (this.startDate) {
-      periode = this.startDate.getFullYear();
+      period = this.startDate.getFullYear();
     } else if (this.endDate) {
-      periode = this.endDate.getFullYear();
+      period = this.endDate.getFullYear();
     }
-    return periode;
+    return period;
   }
 }

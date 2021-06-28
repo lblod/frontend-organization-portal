@@ -1,29 +1,15 @@
 import Component from '@glimmer/component';
 
 export default class GoverningBodyStatusComponent extends Component {
-  get statusLabel() {
-    let status = '';
+  get isActive() {
     if (this.args.date) {
       var today = new Date();
       if (this.args.date > today) {
-        status = 'Actief';
+        return true;
       } else {
-        status = 'Niet Actief';
+        return false;
       }
     }
-    return status;
-  }
-
-  get statusSkin() {
-    let skin = '';
-    if (this.args.date) {
-      var today = new Date();
-      if (this.args.date > today) {
-        skin = 'success';
-      } else {
-        skin = 'error';
-      }
-    }
-    return skin;
+    return null;
   }
 }

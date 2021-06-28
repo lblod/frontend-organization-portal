@@ -14,12 +14,14 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesIndexRo
       administrativeUnitId,
       {
         reload: true,
-        include: 'governing-bodies.has-time-specializations',
+        include:
+          'governing-bodies.has-time-specializations,governing-bodies.classification',
       }
     );
 
     return {
       administrativeUnit: administrativeUnit,
+      //worship services related administrative units only have one governing body and many nested governing bodies "has-time-specializations"
       governingBody: await administrativeUnit.governingBodies.firstObject,
     };
   }
