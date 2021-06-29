@@ -1,0 +1,33 @@
+<div class="au-c-main-container__content">
+  <div class="au-o-box">
+    <AuToolbar>
+      <AuToolbarGroup>
+        <AuHeading>
+          Bedienaren
+        </AuHeading>
+      </AuToolbarGroup>
+    </AuToolbar>
+    <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
+      {{@model.administrativeUnit.name}}
+    </AuHeading>
+  </div>
+
+  <AuDataTable @noDataMessage="Geen bestuursorganen" as |t|>
+    <t.content as |c|>
+      <c.header>
+        <th class="au-c-data-table__header-title">Voornaam</th>
+        <th class="au-c-data-table__header-title">Achternaam</th>
+        <th class="au-c-data-table__header-title">Rol</th>
+        <th class="au-c-data-table__header-title">Status</th>
+        <th></th>
+      </c.header>
+      <c.body>
+        <td><AuLink @route="administrative-units.administrative-unit.ministers">Voornaam</AuLink></td>
+        <td><AuLink @route="administrative-units.administrative-unit.ministers">Achternaam</AuLink></td>
+        <td><AuLink @route="administrative-units.administrative-unit.ministers">Rol</AuLink></td>
+        <td><AuPill @skin={{"success"}}>Actief</AuPill></td>
+        <td><AuLink @route="administrative-units.administrative-unit.ministers">Bewerk</AuLink></td>
+      </c.body>
+    </t.content>
+  </AuDataTable>
+</div> 
