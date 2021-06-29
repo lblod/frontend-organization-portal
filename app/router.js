@@ -25,6 +25,7 @@ Router.map(function () {
           { path: '/bestuursorganen' },
           function () {}
         );
+        this.route('ministers', { path: '/bedienaren' }, function () {});
       });
     }
   );
