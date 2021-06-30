@@ -21,6 +21,11 @@ Router.map(function () {
       this.route('administrative-unit', { path: '/:id/' }, function () {
         this.route('core-data', { path: '/kerngegevens' }, function () {});
         this.route('sites', { path: '/vestigingen' }, function () {});
+        this.route(
+          'governing-bodies',
+          { path: '/bestuursorganen' },
+          function () {}
+        );
       });
     }
   );
