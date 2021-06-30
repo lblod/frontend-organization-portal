@@ -82,6 +82,9 @@
     "qunit-dom": "^1.6.0",
     "sass": "^1.32.8"
   },
+  "fastbootDependencies": [
+    "crypto"
+  ],
   "engines": {
     "node": "10.* || >= 12"
   },
