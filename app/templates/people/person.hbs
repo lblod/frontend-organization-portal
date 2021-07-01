@@ -5,8 +5,8 @@
   model=@model.id
 }}
 
-<div class="au-c-main-container au-c-main-container__content--block">
-  <div class="au-c-main-container__sidebar">
+<SidebarContainer>
+  <:sidebar>
       <div class="au-d-component-block au-c-sidebar">
         <ul class="au-c-list-navigation">
           <li class="au-c-list-navigation__item">
@@ -26,6 +26,8 @@
           </li>
         </ul>
     </div>
-  </div>
-  {{outlet}}
-</div>
+  </:sidebar>
+  <:content>
+    {{outlet}}
+  </:content>
+</SidebarContainer>
