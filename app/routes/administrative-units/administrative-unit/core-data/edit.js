@@ -18,7 +18,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     return hash({
       administrativeUnit,
       honoraryServiceTypes: this.store.findAll('honorary-service-type'),
-      // statuses: this.store.findAll('organization-status-code'),
+
+      // TODO: These are slow requests. We should do the data fetching only once per app boot.
+      // store.query always does an API call so it probably requires a custom service which does
+      // the request if needed and directly returns the data otherwise.
       provinces: this.store
         .query('location', {
           filter: {
