@@ -1,31 +1,29 @@
-<div class="au-c-main-container__content">
-  <div class="au-o-box">
-    <AuToolbar>
-      <AuToolbarGroup>
-        <AuHeading>
-          Bestuursorganen
-        </AuHeading>
-      </AuToolbarGroup>
-    </AuToolbar>
-    <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
-      {{@model.administrativeUnit.name}}
-    </AuHeading>
-  </div>
-
-  <AuDataTable @content={{@model.governingBody.hasTimeSpecializations}} @noDataMessage="Geen bestuursorganen" as |t|>
-    <t.content as |c|>
-      <c.header>
-        <th class="au-c-data-table__header-title">Type bestuursorgaan</th>
-        <th class="au-c-data-table__header-title">Periode</th>
-        <th class="au-c-data-table__header-title">Status</th>
-        <th></th>
-      </c.header>
-      <c.body as |gbody|>
-        <td><AuLink @route="administrative-units.administrative-unit.governing-bodies">{{@model.governingBody.classification.label}}</AuLink></td>
-        <td>{{gbody.period}}</td>
-        <GoverningBodyStatus @date={{gbody.endDate}} />
-        <td><AuLink @route="administrative-units.administrative-unit.governing-bodies">Bewerk</AuLink></td>
-      </c.body>
-    </t.content>
-  </AuDataTable>
+<div class="au-o-box">
+  <AuToolbar>
+    <AuToolbarGroup>
+      <AuHeading>
+        Bestuursorganen
+      </AuHeading>
+    </AuToolbarGroup>
+  </AuToolbar>
+  <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
+    {{@model.administrativeUnit.name}}
+  </AuHeading>
 </div>
+
+<AuDataTable @content={{@model.governingBody.hasTimeSpecializations}} @noDataMessage="Geen bestuursorganen" as |t|>
+  <t.content as |c|>
+    <c.header>
+      <th class="au-c-data-table__header-title">Type bestuursorgaan</th>
+      <th class="au-c-data-table__header-title">Periode</th>
+      <th class="au-c-data-table__header-title">Status</th>
+      <th></th>
+    </c.header>
+    <c.body as |gbody|>
+      <td><AuLink @route="administrative-units.administrative-unit.governing-bodies">{{@model.governingBody.classification.label}}</AuLink></td>
+      <td>{{gbody.period}}</td>
+      <GoverningBodyStatus @date={{gbody.endDate}} />
+      <td><AuLink @route="administrative-units.administrative-unit.governing-bodies">Bewerk</AuLink></td>
+    </c.body>
+  </t.content>
+</AuDataTable>

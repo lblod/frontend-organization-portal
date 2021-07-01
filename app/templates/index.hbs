@@ -1,5 +1,5 @@
-<div class="au-c-main-container">
-  <div class="au-c-main-container__sidebar">
+<SidebarContainer>
+  <:sidebar>
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content">
         <div class="au-c-sidebar__header">
@@ -30,8 +30,8 @@
         </a>
       </div>
     </div>
-  </div>
-  <div class="au-c-main-container__content">
+  </:sidebar>
+  <:content>
     <div class="au-o-box">
       <AuHeading @skin="2" class="au-u-margin-bottom-large">
         Lokale Financiën - Voornaam Achternaam
@@ -127,5 +127,5 @@
         </li>
       </ul>
     </div>
-  </div>
-</div>
+  </:content>
+</SidebarContainer>

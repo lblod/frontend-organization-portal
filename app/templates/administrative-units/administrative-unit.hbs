@@ -5,57 +5,65 @@
   model=@model.id
 }}
 
-<div class="au-c-main-container">
-  <div class="au-c-main-container__sidebar">
-      <div class="au-d-component-block au-c-sidebar">
-        <ul class="au-c-list-navigation">
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink @route="administrative-units.administrative-unit.core-data">
-              Kerngegevens
-            </AuNavigationLink>
-          </li>
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink @route="administrative-units.administrative-unit.sites">
-              Vestigingen
-            </AuNavigationLink>
-          </li>
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink>
-              Betrokken lokale besturen
-            </AuNavigationLink>
-          </li>
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink>
-              Verbonden Juridische structuren
-            </AuNavigationLink>
-          </li>
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink @route="administrative-units.administrative-unit.governing-bodies">
-              Bestuursorganen
-            </AuNavigationLink>
-          </li>
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink>
-              Bedienaren
-            </AuNavigationLink>
-          </li>
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink>
-              Veranderingsgebeurtenissen
-            </AuNavigationLink>
-          </li>
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink>
-              Documenten
-            </AuNavigationLink>
-          </li>
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink>
-              Dossiers
-            </AuNavigationLink>
-          </li>
-        </ul>
+<SidebarContainer>
+  <:sidebar>
+    <div class="au-c-sidebar">
+      <ul class="au-c-list-navigation">
+        <li class="au-c-list-navigation__item">
+          <AuNavigationLink
+            @route="administrative-units.administrative-unit.core-data"
+          >
+            Kerngegevens
+          </AuNavigationLink>
+        </li>
+        <li class="au-c-list-navigation__item">
+          <AuNavigationLink
+            @route="administrative-units.administrative-unit.sites"
+          >
+            Vestigingen
+          </AuNavigationLink>
+        </li>
+        <li class="au-c-list-navigation__item">
+          <AuNavigationLink>
+            Betrokken lokale besturen
+          </AuNavigationLink>
+        </li>
+        <li class="au-c-list-navigation__item">
+          <AuNavigationLink>
+            Verbonden Juridische structuren
+          </AuNavigationLink>
+        </li>
+        <li class="au-c-list-navigation__item">
+          <AuNavigationLink
+            @route="administrative-units.administrative-unit.governing-bodies"
+          >
+            Bestuursorganen
+          </AuNavigationLink>
+        </li>
+        <li class="au-c-list-navigation__item">
+          <AuNavigationLink>
+            Bedienaren
+          </AuNavigationLink>
+        </li>
+        <li class="au-c-list-navigation__item">
+          <AuNavigationLink>
+            Veranderingsgebeurtenissen
+          </AuNavigationLink>
+        </li>
+        <li class="au-c-list-navigation__item">
+          <AuNavigationLink>
+            Documenten
+          </AuNavigationLink>
+        </li>
+        <li class="au-c-list-navigation__item">
+          <AuNavigationLink>
+            Dossiers
+          </AuNavigationLink>
+        </li>
+      </ul>
     </div>
-  </div>
-  {{outlet}}
-</div>
+  </:sidebar>
+  <:content>
+    {{outlet}}
+  </:content>
+</SidebarContainer>
