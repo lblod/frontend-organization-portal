@@ -4,4 +4,6 @@ export default class PublicInvolvementModel extends Model {
   @attr percentage;
   @belongsTo('involvement-type') involvementType;
   @belongsTo('worship-service') worshipService;
+  @belongsTo('administrative-unit', { inverse: 'involvements' })
+  administrativeUnit;
 }
