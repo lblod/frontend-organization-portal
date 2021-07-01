@@ -32,9 +32,9 @@
     </c.header>
     <c.body as |mandatory|>
       <td>
-        {{!-- TODO Replace this with the correct route --}}
         <AuLink
-          @route="people.person.positions"
+          @route="people.person.positions.position"
+          @model={{mandatory.id}}
         >
           {{mandatory.mandate.roleBoard.label}}
         </AuLink>
