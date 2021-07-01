@@ -63,6 +63,7 @@
     "ember-source": "~3.26.1",
     "ember-template-lint": "^3.2.0",
     "ember-truth-helpers": "^3.0.0",
+    "ember-unique-id-helper-polyfill": "^0.1.0",
     "eslint": "^7.23.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-ember": "^10.3.0",
@@ -81,6 +82,9 @@
     "qunit-dom": "^1.6.0",
     "sass": "^1.32.8"
   },
+  "fastbootDependencies": [
+    "crypto"
+  ],
   "engines": {
     "node": "10.* || >= 12"
   },

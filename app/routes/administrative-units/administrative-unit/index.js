@@ -1,7 +1,12 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
 export default class AdministrativeUnitsAdministrativeUnitIndexRoute extends Route {
-  model() {
-    return this.modelFor('administrative-units.administrative-unit');
+  @service router;
+
+  beforeModel() {
+    return this.router.replaceWith(
+      'administrative-units.administrative-unit.core-data'
+    );
   }
 }

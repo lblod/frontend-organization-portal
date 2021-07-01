@@ -1,0 +1,264 @@
+<div class="au-c-main-container__content">
+  <div
+    class="au-o-box au-o-flow au-o-flow--large"
+  >
+    <div class="au-o-flow au-o-flow--tiny">
+      <AuToolbar>
+        <AuToolbarGroup>
+          <AuHeading>
+            Kerngegevens
+          </AuHeading>
+        </AuToolbarGroup>
+        <AuToolbarGroup>
+          <AuLink
+            @route="administrative-units.administrative-unit.core-data.edit"
+            @skin="button-secondary"
+            @icon="pencil"
+            @iconAlignment="left"
+          >
+            Bewerk
+          </AuLink>
+        </AuToolbarGroup>
+      </AuToolbar>
+      <AuHeading @level="2" @skin="3">
+        {{@model.administrativeUnit.name}}
+      </AuHeading>
+    </div>
+
+    <div>
+      <AuToolbar class="au-u-margin-bottom-small">
+        <AuToolbarGroup>
+          <AuHeading @level="4" @skin="5">Bestuur van de eredienst</AuHeading>
+        </AuToolbarGroup>
+      </AuToolbar>
+      <AuCard @standOut={{true}} as |c|>
+        <c.content>
+          <div class="au-flow au-o-flow--large">
+            <div class="au-o-grid">
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Naam eredienst</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p>{{@model.administrativeUnit.name}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Status</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                      <p><OrganizationStatus @status={{@model.administrativeUnit.organizationStatus}} /></p>
+                  </div>
+                </div>
+              </div>
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Type eredienst</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p
+                    >{{@model.administrativeUnit.honoraryServiceType.label}}</p>
+                  </div>
+                </div>
+              </div>
+              {{!-- TODO: Find out the logic behind this --}}
+              {{!-- <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Status datum</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p>{{log @model.administrativeUnit.changedBy}}</p>
+                    <p>{{log @model.administrativeUnit.resultedFrom}}</p>
+                  </div>
+                </div>
+              </div> --}}
+              {{#if @model.administrativeUnit.denomination}}
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Strekking</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>{{@model.administrativeUnit.denomination}}</p>
+                    </div>
+                  </div>
+                </div>
+              {{/if}}
+            </div>
+            <div class="au-o-grid">
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Grensoverschrijdend</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p>{{@model.administrativeUnit.crossBorderNominal}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {{#if @model.administrativeUnit.scope.label}}
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Werkingsgebied</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>{{@model.administrativeUnit.scope.label}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {{/if}}
+            <div class="au-o-grid">
+              {{#each @model.administrativeUnit.identifiers as |identifier|}}
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>{{identifier.idName}}</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>{{identifier.structuredIdentifier.localId}}</p>
+                    </div>
+                  </div>
+                </div>
+              {{/each}}
+            </div>
+          </div>
+        </c.content>
+      </AuCard>
+    </div>
+
+    <div>
+      <AuHeading
+        @level="3"
+        @skin="5"
+        class="au-u-margin-bottom-small"
+      >
+        Contactgegevens maatschappelijke zetel
+      </AuHeading>
+      <AuCard @standOut={{true}} as |c|>
+        <c.content>
+          <div class="au-o-grid">
+            <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-4">
+                  <p><strong>Adres</strong></p>
+                </div>
+                <div class="au-o-grid__item au-u-3-4">
+                  <p>
+                    {{@model.administrativeUnit.primarySite.address.fullAddress}}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-4">
+                  <p><strong>Provincie</strong></p>
+                </div>
+                <div class="au-o-grid__item au-u-3-4">
+                  <p>
+                    {{@model.administrativeUnit.primarySite.address.province}}
+                  </p>
+                </div>
+              </div>
+            </div>
+            {{#if @model.administrativeUnit.primarySite.contacts.firstObject.telephone}}
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Telefoonnummer</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p>
+                      {{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            {{/if}}
+            {{#if @model.administrativeUnit.primarySite.contacts.firstObject.website}}
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Website</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p>
+                      {{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            {{/if}}
+          </div>
+        </c.content>
+      </AuCard>
+    </div>
+
+    {{#if (or
+      @model.administrativeUnit.isSubOrganizationOf.name
+      @model.administrativeUnit.isAssociatedWith.name
+    )}}
+      <div>
+        <AuHeading
+          @level="3"
+          @skin="5"
+          class="au-u-margin-bottom-small"
+        >
+          Gerelateerde organisaties
+        </AuHeading>
+        <AuCard @standOut={{true}} as |c|>
+          <c.content>
+            {{#if @model.administrativeUnit.isSubOrganizationOf.name}}
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Centraal bestuur</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <AuLink
+                        @route="administrative-units.administrative-unit"
+                        @model={{@model.administrativeUnit.isSubOrganizationOf.id}}
+                      >
+                        {{@model.administrativeUnit.isSubOrganizationOf.name}}
+                      </AuLink>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {{/if}}
+            {{#if @model.administrativeUnit.isAssociatedWith.name}}
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Representatief orgaan</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <AuLink
+                        @route="administrative-units.administrative-unit"
+                        {{!-- @model={{@model.administrativeUnit.isAssociatedWith.id}} --}}
+                      >
+                        {{@model.administrativeUnit.isAssociatedWith.name}}
+                      </AuLink>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {{/if}}
+          </c.content>
+        </AuCard>
+      </div>
+    {{/if}}
+  </div>
+</div>
