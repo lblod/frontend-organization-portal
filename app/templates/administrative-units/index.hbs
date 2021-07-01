@@ -36,11 +36,6 @@
             <AuLabel for="statuses">Status</AuLabel>
             <PowerSelect
               @allowClear={{true}}
-              @searchEnabled={{true}}
-              @loadingMessage="Aan het laden..."
-              @noMatchesMessage="Geen resultaten"
-              @searchField="label"
-              @searchMessage="Typ om te zoeken"
               @options={{@model.statuses}}
               @selected={{this.selectedOrganizationStatus}}
               @onChange={{this.setOrganizationStatus}}
