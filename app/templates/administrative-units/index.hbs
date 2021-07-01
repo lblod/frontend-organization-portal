@@ -20,9 +20,9 @@
             <AuLabel for="classifications">Soort eredienst</AuLabel>
             <PowerSelect
               @allowClear={{true}}
-              @searchEnabled={{true}}
-              @noMatchesMessage="Geen resultaten"
-              @searchField="label"
+              {{!-- @searchEnabled={{true}} --}}
+              {{!-- @noMatchesMessage="Geen resultaten" --}}
+              {{!-- @searchField="label" --}}
               @options={{@model.classifications}}
               @selected={{this.selectedClassification}}
               @onChange={{this.setClassification}}

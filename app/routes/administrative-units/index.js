@@ -2,6 +2,17 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 
+const CLASSIFICATION = {
+  CENTRAL_WORSHIP_SERVICE: {
+    id: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
+    label: 'Centraal bestuur van de eredienst',
+  },
+  WORSHIP_SERVICE: {
+    id: '66ec74fd-8cfc-4e16-99c6-350b35012e86',
+    label: 'Bestuur van de eredienst',
+  },
+};
+
 export default class AdministrativeUnitsIndexRoute extends Route {
   @service store;
 
@@ -11,13 +22,10 @@ export default class AdministrativeUnitsIndexRoute extends Route {
   };
 
   async model(params) {
-    let [classifications, statuses] = await Promise.all([
-      this.store.findAll('administrative-unit-classification-code'),
-      this.store.findAll('organization-status-code'),
-    ]);
+    let statuses = await this.store.findAll('organization-status-code');
 
     return {
-      classifications,
+      classifications: Object.values(CLASSIFICATION),
       statuses,
       loadAdministrativeUnitsTaskInstance:
         this.loadAdministrativeUnitsTask.perform(params),
@@ -47,6 +55,12 @@ export default class AdministrativeUnitsIndexRoute extends Route {
 
     if (params.classification) {
       query['filter[classification][:id:]'] = params.classification;
+    } else {
+      // Only show worship related administrative units for now
+      query['filter[classification][:id:]'] = [
+        CLASSIFICATION.WORSHIP_SERVICE.id,
+        CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
+      ].join();
     }
 
     if (params.municipality) {
