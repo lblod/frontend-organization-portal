@@ -20,9 +20,9 @@
             <AuLabel for="classifications">Soort eredienst</AuLabel>
             <PowerSelect
               @allowClear={{true}}
-              @searchEnabled={{true}}
-              @noMatchesMessage="Geen resultaten"
-              @searchField="label"
+              {{!-- @searchEnabled={{true}} --}}
+              {{!-- @noMatchesMessage="Geen resultaten" --}}
+              {{!-- @searchField="label" --}}
               @options={{@model.classifications}}
               @selected={{this.selectedClassification}}
               @onChange={{this.setClassification}}
@@ -36,11 +36,6 @@
             <AuLabel for="statuses">Status</AuLabel>
             <PowerSelect
               @allowClear={{true}}
-              @searchEnabled={{true}}
-              @loadingMessage="Aan het laden..."
-              @noMatchesMessage="Geen resultaten"
-              @searchField="label"
-              @searchMessage="Typ om te zoeken"
               @options={{@model.statuses}}
               @selected={{this.selectedOrganizationStatus}}
               @onChange={{this.setOrganizationStatus}}
@@ -66,7 +61,6 @@
     <AuDataTable
       @content={{this.administrativeUnits}}
       @isLoading={{this.showTableLoader}}
-      @noDataMessage="No Administrative unit found"
       @page={{this.page}}
       @size={{this.size}}
       as |t|
