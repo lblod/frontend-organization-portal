@@ -14,7 +14,10 @@ export default class PeoplePersonPositionsPositionRoute extends Route {
     let mandatory = this.store.findRecord('mandatory', mandatoryId, {
       reload: true,
       include: [
+        'contacts',
+        'type-half',
         'mandate.role-board',
+        'mandate.governing-body.is-time-specialization-of.classification',
         'mandate.governing-body.is-time-specialization-of.administrative-unit',
       ].join(),
     });

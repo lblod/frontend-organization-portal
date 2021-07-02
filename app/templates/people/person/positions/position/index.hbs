@@ -120,7 +120,7 @@
                         <p><strong>Vaste telefoonnummer</strong></p>
                       </div>
                       <div class="au-o-grid__item au-u-3-4">
-                         {{!-- TODO: Detect if it is a landline or mobile number --}}
+                        {{! TODO: Detect if it is a landline or mobile number }}
                         <p>
                           {{@model.mandatory.contacts.firstObject.telephone}}
                         </p>
@@ -144,21 +144,21 @@
                     </div>
                   </div>
                 {{/if}}
-                {{#if @model.mandatory.contacts.firstObject.telephone}}
+                {{!-- {{#if @model.mandatory.contacts.lastObject.telephone}}
                   <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                     <div class="au-o-grid">
                       <div class="au-o-grid__item au-u-1-4">
                         <p><strong>GSM nummer</strong></p>
                       </div>
                       <div class="au-o-grid__item au-u-3-4">
-                        {{!-- TODO: Detect if it is a landline or mobile number --}}
+                        {{! TODO: Detect if it is a landline or mobile number }}
                         <p>
-                          {{@model.mandatory.contacts.firstObject.telephone}}
+                          {{@model.mandatory.contacts.lastObject.telephone}}
                         </p>
                       </div>
                     </div>
                   </div>
-                {{/if}}
+                {{/if}} --}}
               </div>
             </div>
           </c.content>
@@ -186,16 +186,18 @@
                   </div>
                 </div>
               </div>
-              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
-                <div class="au-o-grid">
-                  <div class="au-o-grid__item au-u-1-4">
-                    <p><strong>Bestuursperiode</strong></p>
-                  </div>
-                  <div class="au-o-grid__item au-u-3-4">
-                    <p>{{@model.mandatory.mandate.governingBody.period}}</p>
+              {{#if @model.mandatory.mandate.governingBody.period}}
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Bestuursperiode</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>{{@model.mandatory.mandate.governingBody.period}}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              {{/if}}
               <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                 <div class="au-o-grid">
                   <div class="au-o-grid__item au-u-1-4">
@@ -244,7 +246,7 @@
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
                       <p>
-                        {{@model.mandatory.typeHalf.label}}
+                        {{@model.mandatory.reasonStopped}}
                       </p>
                     </div>
                   </div>
