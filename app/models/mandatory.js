@@ -7,12 +7,4 @@ export default class MandatoryModel extends Model {
   @belongsTo('person') governingAlias;
   @belongsTo('mandate') mandate;
   @hasMany('contact-point', { inverse: null }) contacts;
-
-  get startDateFormat() {
-    return this.startDate.toLocaleString();
-  }
-
-  get endDateFormat() {
-    return this.endDate.toLocaleString();
-  }
 }
