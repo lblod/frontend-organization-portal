@@ -1,0 +1,261 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <AuToolbar>
+      <AuToolbarGroup>
+        <AuHeading>
+          {{#let
+            @model.mandatory.mandate.governingBody.isTimeSpecializationOf
+            as |governingBody|
+          }}
+            Positie:
+            {{@model.mandatory.mandate.roleBoard.label}},
+            <br />
+            {{governingBody.classification.label}}
+            {{governingBody.administrativeUnit.name}}
+          {{/let}}
+        </AuHeading>
+      </AuToolbarGroup>
+      <AuToolbarGroup>
+        {{! TODO: Replace this with the "edit" route once it is created }}
+        <AuLink
+          @route="people.person.positions.position"
+          @skin="button-secondary"
+          @icon="pencil"
+          @iconAlignment="left"
+        >
+          Bewerk
+        </AuLink>
+      </AuToolbarGroup>
+    </AuToolbar>
+    <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
+      {{@model.person.givenName}}
+      {{@model.person.familyName}}
+    </AuHeading>
+
+    <div>
+      <AuToolbar class="au-u-margin-bottom-small">
+        <AuToolbarGroup>
+          <AuHeading @level="4" @skin="5">Positie</AuHeading>
+        </AuToolbarGroup>
+      </AuToolbar>
+      <AuCard @standOut={{true}} as |c|>
+        <c.content>
+          <div class="au-flow au-o-flow--large">
+            <div class="au-o-grid">
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Type</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p>Mandaat</p>
+                  </div>
+                </div>
+              </div>
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Naam eredienst</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    {{#let
+                      @model.mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit
+                      as |administrativeUnit|
+                    }}
+                      <AuLink
+                        @route="administrative-units.administrative-unit"
+                        @model={{administrativeUnit.id}}
+                      >
+                        {{administrativeUnit.name}}
+                      </AuLink>
+                    {{/let}}
+                  </div>
+                </div>
+              </div>
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Bestuursfunctie</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p>
+                      {{@model.mandatory.mandate.roleBoard.label}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </c.content>
+      </AuCard>
+    </div>
+
+    {{#if @model.mandatory.contacts}}
+      <div>
+        <AuToolbar class="au-u-margin-bottom-small">
+          <AuToolbarGroup>
+            <AuHeading @level="4" @skin="5">Primaire contactgegevens</AuHeading>
+          </AuToolbarGroup>
+        </AuToolbar>
+        <AuCard @standOut={{true}} as |c|>
+          <c.content>
+            <div class="au-flow au-o-flow--large">
+              <div class="au-o-grid">
+                {{#if @model.mandatory.contacts.firstObject.email}}
+                  <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                    <div class="au-o-grid">
+                      <div class="au-o-grid__item au-u-1-4">
+                        <p><strong>Email</strong></p>
+                      </div>
+                      <div class="au-o-grid__item au-u-3-4">
+                        <p>{{@model.mandatory.contacts.firstObject.email}}</p>
+                      </div>
+                    </div>
+                  </div>
+                {{/if}}
+                {{#if @model.mandatory.contacts.firstObject.telephone}}
+                  <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                    <div class="au-o-grid">
+                      <div class="au-o-grid__item au-u-1-4">
+                        <p><strong>Vaste telefoonnummer</strong></p>
+                      </div>
+                      <div class="au-o-grid__item au-u-3-4">
+                        {{! TODO: Detect if it is a landline or mobile number }}
+                        <p>
+                          {{@model.mandatory.contacts.firstObject.telephone}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                {{/if}}
+                {{#if
+                  @model.mandatory.contacts.firstObject.address.fullAddress
+                }}
+                  <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                    <div class="au-o-grid">
+                      <div class="au-o-grid__item au-u-1-4">
+                        <p><strong>Adres</strong></p>
+                      </div>
+                      <div class="au-o-grid__item au-u-3-4">
+                        <p>
+                          {{@model.mandatory.contacts.firstObject.address.fullAddress}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                {{/if}}
+                {{!-- {{#if @model.mandatory.contacts.lastObject.telephone}}
+                  <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                    <div class="au-o-grid">
+                      <div class="au-o-grid__item au-u-1-4">
+                        <p><strong>GSM nummer</strong></p>
+                      </div>
+                      <div class="au-o-grid__item au-u-3-4">
+                        {{! TODO: Detect if it is a landline or mobile number }}
+                        <p>
+                          {{@model.mandatory.contacts.lastObject.telephone}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                {{/if}} --}}
+              </div>
+            </div>
+          </c.content>
+        </AuCard>
+      </div>
+    {{/if}}
+
+    <div>
+      <AuToolbar class="au-u-margin-bottom-small">
+        <AuToolbarGroup>
+          <AuHeading @level="4" @skin="5">Aanstelling</AuHeading>
+        </AuToolbarGroup>
+      </AuToolbar>
+      <AuCard @standOut={{true}} as |c|>
+        <c.content>
+          <div class="au-flow au-o-flow--large">
+            <div class="au-o-grid">
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Start mandaat</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p>{{date-format @model.mandatory.startDate}}</p>
+                  </div>
+                </div>
+              </div>
+              {{#if @model.mandatory.mandate.governingBody.period}}
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Bestuursperiode</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>{{@model.mandatory.mandate.governingBody.period}}</p>
+                    </div>
+                  </div>
+                </div>
+              {{/if}}
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Geplande einddatum</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p>
+                      {{date-format @model.mandatory.expectedEndDate}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              {{#if @model.mandatory.typeHalf.label}}
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Verkozen</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>
+                        {{@model.mandatory.typeHalf.label}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              {{/if}}
+              {{#if @model.mandatory.endDate}}
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Einddatum</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>
+                        {{date-format @model.mandatory.endDate}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              {{/if}}
+              {{#if @model.mandatory.reasonStopped}}
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Stopzetting</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>
+                        {{@model.mandatory.reasonStopped}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              {{/if}}
+            </div>
+          </div>
+        </c.content>
+      </AuCard>
+    </div>
+  </div>
+</div>
