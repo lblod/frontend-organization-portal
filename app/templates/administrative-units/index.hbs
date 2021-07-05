@@ -17,7 +17,7 @@
             />
           </p>
           <p>
-            <AuLabel for="classifications">Soort eredienst</AuLabel>
+            <AuLabel for="classifications">Type eredienst</AuLabel>
             <PowerSelect
               @allowClear={{true}}
               {{!-- @searchEnabled={{true}} --}}
@@ -30,6 +30,22 @@
               as |classification|
             >
               {{classification.label}}
+            </PowerSelect>
+          </p>
+          <p>
+            <AuLabel for="honoraryServiceTypes">Soort eredienst</AuLabel>
+            <PowerSelect
+              @allowClear={{true}}
+              {{!-- @searchEnabled={{true}} --}}
+              {{!-- @noMatchesMessage="Geen resultaten" --}}
+              {{!-- @searchField="label" --}}
+              @options={{@model.honoraryServiceTypes}}
+              @selected={{this.selectedHonoraryServiceType}}
+              @onChange={{this.setHonoraryServiceType}}
+              @triggerId="honoraryServiceTypes"
+              as |honoraryServiceType|
+            >
+              {{honoraryServiceType.label}}
             </PowerSelect>
           </p>
           <p>
@@ -88,6 +104,11 @@
             @currentSorting={{this.sort}}
             @label="Type bestuur"
           />
+           <AuDataTableThSortable
+            @field="honoraryServiceType.label"
+            @currentSorting={{this.sort}}
+            @label="Soort eredienst"
+          />
           <AuDataTableThSortable
             @field="province.label"
             @currentSorting={{this.sort}}
@@ -130,6 +151,7 @@
               </LinkTo>
             </td>
             <td>{{adminUnit.classification.label}}</td>
+            <td>{{adminUnit.honoraryServiceType.label}}</td>
             <td>{{adminUnit.primarySite.address.province}}</td>
             <td>{{adminUnit.primarySite.address.municipality}}</td>
             <td>

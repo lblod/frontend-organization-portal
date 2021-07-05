@@ -12,6 +12,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
     'name',
     'municipality',
     'classification',
+    'honoraryServiceType',
     'organizationStatus',
   ];
 
@@ -21,6 +22,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked name = '';
   @tracked municipality = '';
   @tracked classification = '';
+  @tracked honoraryServiceType = '';
   @tracked organizationStatus = '';
 
   get administrativeUnits() {
@@ -65,6 +67,16 @@ export default class AdministrativeUnitsIndexController extends Controller {
     });
   }
 
+  get selectedHonoraryServiceType() {
+    if (!this.honoraryServiceType) {
+      return null;
+    }
+
+    return this.model.honoraryServiceTypes.find((honoraryServiceType) => {
+      return honoraryServiceType.id === this.honoraryServiceType;
+    });
+  }
+
   get selectedOrganizationStatus() {
     if (!this.organizationStatus) {
       return null;
@@ -93,6 +105,15 @@ export default class AdministrativeUnitsIndexController extends Controller {
       this.classification = selection.id;
     } else {
       this.classification = '';
+    }
+  }
+
+  @action
+  setHonoraryServiceType(selection) {
+    if (selection !== null) {
+      this.honoraryServiceType = selection.id;
+    } else {
+      this.honoraryServiceType = '';
     }
   }
 
