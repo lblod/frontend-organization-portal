@@ -11,8 +11,8 @@ export default class AdministrativeUnitsIndexController extends Controller {
     'sort',
     'name',
     'municipality',
+    'province',
     'classification',
-    'honoraryServiceType',
     'organizationStatus',
   ];
 
@@ -21,6 +21,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked sort = 'name';
   @tracked name = '';
   @tracked municipality = '';
+  @tracked province = '';
   @tracked classification = '';
   @tracked honoraryServiceType = '';
   @tracked organizationStatus = '';
@@ -123,6 +124,24 @@ export default class AdministrativeUnitsIndexController extends Controller {
       this.organizationStatus = selection.id;
     } else {
       this.organizationStatus = '';
+    }
+  }
+
+  @action
+  setMunicipality(selection) {
+    if (selection !== null) {
+      this.municipality = selection;
+    } else {
+      this.municipality = '';
+    }
+  }
+
+  @action
+  setProvince(selection) {
+    if (selection !== null) {
+      this.province = selection;
+    } else {
+      this.province = '';
     }
   }
 

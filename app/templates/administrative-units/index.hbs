@@ -10,10 +10,18 @@
           </p>
           <p>
             <AuLabel for="filter-municipality">Gemeente</AuLabel>
-            <AuInput
-              id="filter-municipality"
-              @width="block"
-              @value={{this.municipality}}
+            <MunicipalitySelect
+              @location="municipality"
+              @selected={{this.municipality}}
+              @set={{this.setMunicipality}}
+            />
+          </p>
+          <p>
+            <AuLabel for="filter-province">Provincie</AuLabel>
+            <ProvinceSelect
+              @location="province"
+              @selected={{this.province}}
+              @set={{this.setProvince}}
             />
           </p>
           <p>
@@ -30,22 +38,6 @@
               as |classification|
             >
               {{classification.label}}
-            </PowerSelect>
-          </p>
-          <p>
-            <AuLabel for="honoraryServiceTypes">Soort eredienst</AuLabel>
-            <PowerSelect
-              @allowClear={{true}}
-              {{!-- @searchEnabled={{true}} --}}
-              {{!-- @noMatchesMessage="Geen resultaten" --}}
-              {{!-- @searchField="label" --}}
-              @options={{@model.honoraryServiceTypes}}
-              @selected={{this.selectedHonoraryServiceType}}
-              @onChange={{this.setHonoraryServiceType}}
-              @triggerId="honoraryServiceTypes"
-              as |honoraryServiceType|
-            >
-              {{honoraryServiceType.label}}
             </PowerSelect>
           </p>
           <p>
@@ -104,18 +96,20 @@
             @currentSorting={{this.sort}}
             @label="Type bestuur"
           />
-           <AuDataTableThSortable
+            {{!-- Not possible to sort Honorary Service Type due to different model specific for worship/central service --}}
+           {{!-- <AuDataTableThSortable
             @field="honoraryServiceType.label"
             @currentSorting={{this.sort}}
             @label="Soort eredienst"
-          />
+          /> --}}
+          <th>Soort eredienst</th>
           <AuDataTableThSortable
-            @field="province.label"
+            @field="primary-site.address.province"
             @currentSorting={{this.sort}}
             @label="Provincie"
           />
           <AuDataTableThSortable
-            @field="municipality.label"
+            @field="primary-site.address.municipality"
             @currentSorting={{this.sort}}
             @label="Gemeente"
           />

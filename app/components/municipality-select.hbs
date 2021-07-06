@@ -1,0 +1,15 @@
+<PowerSelect
+  @allowClear={{true}}
+  @searchEnabled={{true}}
+  @loadingMessage="Aan het laden..."
+  @noMatchesMessage="Geen resultaten"
+  @searchMessage="Typ om te zoeken"
+  @options={{this.municipalities}}
+  @selected={{@selected}}
+  @onChange={{@set}}
+  @search={{perform this.loadMunicipalities}}
+  as |municipality|
+>
+  {{municipality}}
+</PowerSelect>
+

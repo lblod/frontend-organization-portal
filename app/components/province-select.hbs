@@ -1,0 +1,12 @@
+<PowerSelect
+  @allowClear={{true}}
+  @loadingMessage="Aan het laden..."
+  @noMatchesMessage="Geen resultaten"
+  @searchMessage="Typ om te zoeken"
+  @options={{this.provinces}}
+  @selected={{@selected}}
+  @onChange={{@set}}
+  as |province|
+>
+  {{province}}
+</PowerSelect>
