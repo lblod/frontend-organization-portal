@@ -1,8 +1,8 @@
-{{page-title @model.givenName " " @model.familyName}}
+{{page-title this.model.givenName " " this.model.familyName}}
 {{breadcrumb
-  @model.givenName " " @model.familyName
+  this.model.givenName " " this.model.familyName
   route="people.person"
-  model=@model.id
+  model=this.model.id
 }}
 
 <SidebarContainer>
