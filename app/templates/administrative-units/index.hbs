@@ -27,8 +27,8 @@
             <PowerSelect
               @allowClear={{true}}
               {{!-- @searchEnabled={{true}} --}}
-              {{!-- @noMatchesMessage="Geen resultaten" --}}
-              {{!-- @searchField="label" --}}
+              {{! @noMatchesMessage="Geen resultaten" }}
+              {{! @searchField="label" }}
               @options={{@model.classifications}}
               @selected={{this.selectedClassification}}
               @onChange={{this.setClassification}}
@@ -36,6 +36,19 @@
               as |classification|
             >
               {{classification.label}}
+            </PowerSelect>
+          </p>
+          <p>
+            <AuLabel for="recognized-worship-types">Soort eredienst</AuLabel>
+            <PowerSelect
+              @allowClear={{true}}
+              @options={{@model.recognizedWorshipTypes}}
+              @selected={{this.selectedRecognizedWorshipType}}
+              @onChange={{this.setRecognizedWorshipType}}
+              @triggerId="recognized-worship-types"
+              as |recognizedWorshipType|
+            >
+              {{recognizedWorshipType.label}}
             </PowerSelect>
           </p>
           <p>
@@ -79,6 +92,12 @@
                 Bestuurseenheden
               </AuHeading>
             </AuToolbarGroup>
+            <AuToolbarGroup>
+              {{! TODO: Replace this with a link once the "new" route is created }}
+              <AuButton @icon="add" @iconAlignment="left">
+                Nieuw
+              </AuButton>
+            </AuToolbarGroup>
           </AuToolbar>
         </menu.general>
       </t.menu>
@@ -116,9 +135,9 @@
         {{else if this.hasNoResults}}
           <TableMessage>
             <p>
-              Er werden geen zoekresultaten gevonden. Kijk na op spelfouten,
-              of probeer een andere zoekopdracht. Indien een organisatie
-              ontbreekt, meldt dit aan
+              Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of
+              probeer een andere zoekopdracht. Indien een organisatie ontbreekt,
+              meldt dit aan
               <a
                 class="au-c-link"
                 href="mailto:TODO@vlaanderen.be"
@@ -146,9 +165,7 @@
             <td>{{adminUnit.primarySite.address.municipality}}</td>
             <td>
               {{#if adminUnit.organizationStatus}}
-                <OrganizationStatus
-                  @status={{adminUnit.organizationStatus}}
-                />
+                <OrganizationStatus @status={{adminUnit.organizationStatus}} />
               {{/if}}
             </td>
           </c.body>
