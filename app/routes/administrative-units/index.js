@@ -64,8 +64,12 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     }
 
     if (params.municipality) {
-      query['filter[primary-site][address][municipality]'] =
+      query['filter[primary-site][address][:exact:municipality]'] =
         params.municipality;
+    }
+
+    if (params.province) {
+      query['filter[primary-site][address][province]'] = params.province;
     }
 
     if (params.organizationStatus) {

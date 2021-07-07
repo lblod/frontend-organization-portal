@@ -11,6 +11,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
     'sort',
     'name',
     'municipality',
+    'province',
     'classification',
     'organizationStatus',
   ];
@@ -20,7 +21,9 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked sort = 'name';
   @tracked name = '';
   @tracked municipality = '';
+  @tracked province = '';
   @tracked classification = '';
+  @tracked honoraryServiceType = '';
   @tracked organizationStatus = '';
 
   get administrativeUnits() {
@@ -65,6 +68,16 @@ export default class AdministrativeUnitsIndexController extends Controller {
     });
   }
 
+  get selectedHonoraryServiceType() {
+    if (!this.honoraryServiceType) {
+      return null;
+    }
+
+    return this.model.honoraryServiceTypes.find((honoraryServiceType) => {
+      return honoraryServiceType.id === this.honoraryServiceType;
+    });
+  }
+
   get selectedOrganizationStatus() {
     if (!this.organizationStatus) {
       return null;
@@ -97,11 +110,38 @@ export default class AdministrativeUnitsIndexController extends Controller {
   }
 
   @action
+  setHonoraryServiceType(selection) {
+    if (selection !== null) {
+      this.honoraryServiceType = selection.id;
+    } else {
+      this.honoraryServiceType = '';
+    }
+  }
+
+  @action
   setOrganizationStatus(selection) {
     if (selection !== null) {
       this.organizationStatus = selection.id;
     } else {
       this.organizationStatus = '';
+    }
+  }
+
+  @action
+  setMunicipality(selection) {
+    if (selection !== null) {
+      this.municipality = selection;
+    } else {
+      this.municipality = '';
+    }
+  }
+
+  @action
+  setProvince(selection) {
+    if (selection !== null) {
+      this.province = selection;
+    } else {
+      this.province = '';
     }
   }
 
