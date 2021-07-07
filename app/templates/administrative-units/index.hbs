@@ -11,17 +11,15 @@
           <p>
             <AuLabel for="filter-municipality">Gemeente</AuLabel>
             <MunicipalitySelect
-              @location="municipality"
               @selected={{this.municipality}}
-              @set={{this.setMunicipality}}
+              @onChange={{this.setMunicipality}}
             />
           </p>
           <p>
             <AuLabel for="filter-province">Provincie</AuLabel>
             <ProvinceSelect
-              @location="province"
               @selected={{this.province}}
-              @set={{this.setProvince}}
+              @onChange={{this.setProvince}}
             />
           </p>
           <p>

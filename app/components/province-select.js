@@ -1,19 +1,22 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
-import { tracked } from '@glimmer/tracking';
 
 export default class ProvinceSelectComponent extends Component {
+  @service fastboot;
   @service store;
-  @tracked provinces;
+  provinces;
 
   constructor(...args) {
     super(...args);
-    this.loadProvinces.perform();
+
+    if (!this.fastboot.isFastBoot) {
+      this.provinces = this.loadProvincesTask.perform();
+    }
   }
 
   @restartableTask
-  *loadProvinces() {
+  *loadProvincesTask() {
     const query = {
       filter: {
         level: 'Provincie',
@@ -21,12 +24,8 @@ export default class ProvinceSelectComponent extends Component {
       sort: 'label',
     };
 
-    const options = yield this.store
-      .query('location', query)
-      .then(function (provinces) {
-        return provinces.mapBy('label');
-      });
+    const provinces = yield this.store.query('location', query);
 
-    this.provinces = options;
+    return provinces.mapBy('label');
   }
 }
