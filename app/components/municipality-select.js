@@ -1,19 +1,22 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
-import { tracked } from '@glimmer/tracking';
 
 export default class MunicipalitySelectComponent extends Component {
+  @service fastboot;
   @service store;
-  @tracked municipalities;
+  municipalities;
 
   constructor(...args) {
     super(...args);
-    this.loadMunicipalities.perform();
+
+    if (!this.fastboot.isFastBoot) {
+      this.municipalities = this.loadMunicipalitiesTask.perform();
+    }
   }
 
   @restartableTask
-  *loadMunicipalities(searchParams = '') {
+  *loadMunicipalitiesTask() {
     const query = {
       filter: {
         level: 'Gemeente',
@@ -24,16 +27,8 @@ export default class MunicipalitySelectComponent extends Component {
       sort: 'label',
     };
 
-    if (searchParams.length > 1) {
-      query['filter[label]'] = searchParams;
-    }
+    const municipalities = yield this.store.query('location', query);
 
-    const options = yield this.store
-      .query('location', query)
-      .then(function (municipalities) {
-        return municipalities.mapBy('label');
-      });
-
-    this.municipalities = options;
+    return municipalities.mapBy('label');
   }
 }
