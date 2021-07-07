@@ -76,6 +76,6 @@ export default class AdministrativeUnitsIndexRoute extends Route {
       query['filter[organization-status][:id:]'] = params.organizationStatus;
     }
 
-    return yield this.store.query('administrative-unit', query);
+    return yield this.store.query('worship-administrative-unit', query);
   }
 }

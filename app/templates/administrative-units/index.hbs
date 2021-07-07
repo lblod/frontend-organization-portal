@@ -94,13 +94,11 @@
             @currentSorting={{this.sort}}
             @label="Type bestuur"
           />
-            {{!-- Not possible to sort Honorary Service Type due to different model specific for worship/central service --}}
-           {{!-- <AuDataTableThSortable
-            @field="honoraryServiceType.label"
+          <AuDataTableThSortable
+            @field="recognizedWorshipType.label"
             @currentSorting={{this.sort}}
             @label="Soort eredienst"
-          /> --}}
-          <th>Soort eredienst</th>
+          />
           <AuDataTableThSortable
             @field="primary-site.address.province"
             @currentSorting={{this.sort}}
@@ -143,7 +141,7 @@
               </LinkTo>
             </td>
             <td>{{adminUnit.classification.label}}</td>
-            <td>{{adminUnit.honoraryServiceType.label}}</td>
+            <td>{{adminUnit.recognizedWorshipType.label}}</td>
             <td>{{adminUnit.primarySite.address.province}}</td>
             <td>{{adminUnit.primarySite.address.municipality}}</td>
             <td>
