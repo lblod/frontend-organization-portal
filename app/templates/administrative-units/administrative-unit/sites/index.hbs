@@ -25,9 +25,15 @@
       <th></th>
     </c.header>
     <c.body as |site|>
-      <td><AuLink @route="administrative-units.administrative-unit.sites">{{site.address.fullAddress}}</AuLink></td>
+      <td>
+        <LinkTo class="au-c-link" @model={{site.id}} @route="administrative-units.administrative-unit.sites.site.index">
+          {{site.address.fullAddress}}
+        </LinkTo>
+      </td>
       <td>{{if (eq site.id this.model.primarySite.id) "Ja" "Nee"}}</td>
-      <td><AuLink @route="administrative-units.administrative-unit.sites">Bewerk</AuLink></td>
+      <td>
+        <AuLink @route="administrative-units.administrative-unit.sites">Bewerk</AuLink>
+      </td>
     </c.body>
   </t.content>
 </AuDataTable>
