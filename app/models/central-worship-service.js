@@ -1,6 +1,3 @@
-import { belongsTo } from '@ember-data/model';
-import AdministrativeUnitModel from './administrative-unit';
+import WorshipAdministrativeUnitModel from './worship-administrative-unit';
 
-export default class CentralWorshipServiceModel extends AdministrativeUnitModel {
-  @belongsTo('honorary-service-type') honoraryServiceType;
-}
+export default class CentralWorshipServiceModel extends WorshipAdministrativeUnitModel {}

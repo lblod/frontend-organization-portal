@@ -13,6 +13,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
     'municipality',
     'province',
     'classification',
+    'recognizedWorshipType',
     'organizationStatus',
   ];
 
@@ -23,7 +24,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked municipality = '';
   @tracked province = '';
   @tracked classification = '';
-  @tracked honoraryServiceType = '';
+  @tracked recognizedWorshipType = '';
   @tracked organizationStatus = '';
 
   get administrativeUnits() {
@@ -68,13 +69,13 @@ export default class AdministrativeUnitsIndexController extends Controller {
     });
   }
 
-  get selectedHonoraryServiceType() {
-    if (!this.honoraryServiceType) {
+  get selectedRecognizedWorshipType() {
+    if (!this.recognizedWorshipType) {
       return null;
     }
 
-    return this.model.honoraryServiceTypes.find((honoraryServiceType) => {
-      return honoraryServiceType.id === this.honoraryServiceType;
+    return this.model.recognizedWorshipTypes.find((recognizedWorshipType) => {
+      return recognizedWorshipType.id === this.recognizedWorshipType;
     });
   }
 
@@ -110,11 +111,11 @@ export default class AdministrativeUnitsIndexController extends Controller {
   }
 
   @action
-  setHonoraryServiceType(selection) {
+  setRecognizedWorshipType(selection) {
     if (selection !== null) {
-      this.honoraryServiceType = selection.id;
+      this.recognizedWorshipType = selection.id;
     } else {
-      this.honoraryServiceType = '';
+      this.recognizedWorshipType = '';
     }
   }
 
