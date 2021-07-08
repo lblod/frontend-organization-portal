@@ -3,7 +3,9 @@
 {{breadcrumb
   this.model.site.address.fullAddress
   route="administrative-units.administrative-unit.sites"
-  model=(params-for "administrative-units.administrative-unit.sites.site" param="siteId")
+  models=(array this.model.site.id this.model.administrativeUnit.id)
 }}
+
+
 
 {{outlet}}
