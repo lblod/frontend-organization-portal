@@ -1,0 +1,14 @@
+<PowerSelect
+  @allowClear={{true}}
+  @searchEnabled={{true}}
+  @loadingMessage="Aan het laden..."
+  @noMatchesMessage="Geen resultaten"
+  @searchMessage="Typ om te zoeken"
+  @options={{this.recognizedWorshipTypes}}
+  @selected={{@selected}}
+  @onChange={{@onChange}}
+  as |recognizedWorshipType|
+>
+  {{recognizedWorshipType.label}}
+</PowerSelect>
+
