@@ -3,26 +3,25 @@
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content au-o-box">
         <form class="au-c-form" {{on "submit" this.search}}>
-          <p>
+          <div>
             <AuLabel for="filter-name">Naam</AuLabel>
             <AuInput id="filter-name" @width="block" @value={{this.name}} />
-
-          </p>
-          <p>
+          </div>
+          <div>
             <AuLabel for="filter-municipality">Gemeente</AuLabel>
             <MunicipalitySelect
               @selected={{this.municipality}}
               @onChange={{this.setMunicipality}}
             />
-          </p>
-          <p>
+          </div>
+          <div>
             <AuLabel for="filter-province">Provincie</AuLabel>
             <ProvinceSelect
               @selected={{this.province}}
               @onChange={{this.setProvince}}
             />
-          </p>
-          <p>
+          </div>
+          <div>
             <AuLabel for="classifications">Type bestuur</AuLabel>
             <PowerSelect
               @allowClear={{true}}
@@ -37,21 +36,15 @@
             >
               {{classification.label}}
             </PowerSelect>
-          </p>
-          <p>
+          </div>
+          <div>
             <AuLabel for="recognized-worship-types">Soort eredienst</AuLabel>
-            <PowerSelect
-              @allowClear={{true}}
-              @options={{@model.recognizedWorshipTypes}}
+            <RecognizedWorshipTypeSelect
               @selected={{this.selectedRecognizedWorshipType}}
               @onChange={{this.setRecognizedWorshipType}}
-              @triggerId="recognized-worship-types"
-              as |recognizedWorshipType|
-            >
-              {{recognizedWorshipType.label}}
-            </PowerSelect>
-          </p>
-          <p>
+            />
+          </div>
+          <div>
             <AuLabel for="statuses">Status</AuLabel>
             <PowerSelect
               @allowClear={{true}}
@@ -63,7 +56,7 @@
             >
               {{status.label}}
             </PowerSelect>
-          </p>
+          </div>
           <AuButton
             @loading={{this.isLoading}}
             @disabled={{this.isLoading}}
