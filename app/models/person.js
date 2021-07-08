@@ -5,6 +5,7 @@ export default class PersonModel extends Model {
   @attr familyName;
   @attr firstNameUsed;
   @hasMany('mandatory') mandatories;
+  @hasMany('minister') ministers;
   @hasMany('nationality') nationalities;
   @belongsTo('date-of-birth') dateOfBirth;
   @belongsTo('gender-code') gender;
