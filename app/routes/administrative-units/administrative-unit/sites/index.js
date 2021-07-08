@@ -14,13 +14,19 @@ export default class AdministrativeUnitsAdministrativeUnitSitesIndexRoute extend
       administrativeUnitId,
       {
         reload: true,
-        include: 'primary-site.address,sites.address',
+        include: [
+          'primary-site.address',
+          'primary-site.contacts',
+          'sites.address',
+          'sites.contacts',
+        ].join(),
       }
     );
 
     return {
       administrativeUnit: administrativeUnit,
       primarySite: await administrativeUnit.primarySite,
+      // temporary, sites data are not yet available
       sites: await administrativeUnit.primarySite,
     };
   }

@@ -1,0 +1,11 @@
+{{page-title @model.site.address.fullAddress}}
+
+{{breadcrumb
+  this.model.site.address.fullAddress
+  route="administrative-units.administrative-unit.sites"
+  models=(array this.model.administrativeUnit.id this.model.site.id)
+}}
+
+
+
+{{outlet}}
