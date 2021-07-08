@@ -61,26 +61,17 @@
                 <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
                   <div class="au-o-grid">
                     <div class="au-o-grid__item au-u-1-4">
-                      <AuLabel for="honorary-service-type-select">
+                      <AuLabel for="recognized-worship-type-select">
                         Type eredienst
                       </AuLabel>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <PowerSelect
-                        @searchEnabled={{true}}
-                        @searchField="label"
-                        @noMatchesMessage="Geen resultaten"
-                        @searchMessage="Typ om te zoeken"
-                        @options={{@model.honoraryServiceTypes}}
-                        @selected={{@model.administrativeUnit.honoraryServiceType}}
+                      <RecognizedWorshipTypeSelect
+                        @selected={{this.model.administrativeUnit.recognizedWorshipType}}
                         @onChange={{fn
-                          (mut this.administrativeUnit.honoraryServiceType)
+                          (mut this.administrativeUnit.recognizedWorshipType)
                         }}
-                        @triggerId="honorary-service-type-select"
-                        as |honoraryServiceType|
-                      >
-                        {{honoraryServiceType.label}}
-                      </PowerSelect>
+                      />
                     </div>
                   </div>
                 </div>
@@ -248,20 +239,10 @@
                       <AuLabel for="primary-site-address-municipality">Gemeente</AuLabel>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <PowerSelect
-                        @allowClear={{true}}
-                        @searchEnabled={{true}}
-                        @loadingMessage="Aan het laden..."
-                        @noMatchesMessage="Geen resultaten"
-                        @searchMessage="Typ om te zoeken"
-                        @options={{@model.municipalities}}
-                        @selected={{@model.administrativeUnit.primarySite.address.municipality}}
-                        @onChange={{fn (mut @model.administrativeUnit.primarySite.address.municipality)}}
-                        @triggerId="primary-site-address-municipality"
-                        as |municipality|
-                      >
-                        {{municipality}}
-                      </PowerSelect>
+                      <MunicipalitySelect
+                        @selected={{this.model.administrativeUnit.primarySite.address.municipality}}
+                        @onChange={{fn (mut this.model.administrativeUnit.primarySite.address.municipality)}}
+                      />
                     </div>
                   </div>
                 </div>
@@ -271,20 +252,10 @@
                       <AuLabel for="primary-site-address-province">Provincie</AuLabel>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <PowerSelect
-                        @allowClear={{true}}
-                        @searchEnabled={{true}}
-                        @loadingMessage="Aan het laden..."
-                        @noMatchesMessage="Geen resultaten"
-                        @searchMessage="Typ om te zoeken"
-                        @options={{@model.provinces}}
-                        @selected={{@model.administrativeUnit.primarySite.address.province}}
-                        @onChange={{fn (mut  @model.administrativeUnit.primarySite.address.province)}}
-                        @triggerId="primary-site-address-province"
-                        as |province|
-                      >
-                        {{province}}
-                      </PowerSelect>
+                      <ProvinceSelect
+                        @selected={{this.model.administrativeUnit.primarySite.address.province}}
+                        @onChange={{fn (mut this.model.administrativeUnit.primarySite.address.province)}}
+                      />
                     </div>
                   </div>
                 </div>
