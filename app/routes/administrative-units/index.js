@@ -23,9 +23,13 @@ export default class AdministrativeUnitsIndexRoute extends Route {
 
   async model(params) {
     let statuses = await this.store.findAll('organization-status-code');
+    let recognizedWorshipTypes = await this.store.findAll(
+      'recognized-worship-type'
+    );
 
     return {
       classifications: Object.values(CLASSIFICATION),
+      recognizedWorshipTypes,
       statuses,
       loadAdministrativeUnitsTaskInstance:
         this.loadAdministrativeUnitsTask.perform(params),
@@ -39,6 +43,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     let query = {
       include: [
         'classification',
+        'recognized-worship-type',
         'organization-status',
         'primary-site.address',
       ].join(),
@@ -72,10 +77,15 @@ export default class AdministrativeUnitsIndexRoute extends Route {
       query['filter[primary-site][address][province]'] = params.province;
     }
 
+    if (params.recognizedWorshipType) {
+      query['filter[recognized-worship-type][:id:]'] =
+        params.recognizedWorshipType;
+    }
+
     if (params.organizationStatus) {
       query['filter[organization-status][:id:]'] = params.organizationStatus;
     }
 
-    return yield this.store.query('administrative-unit', query);
+    return yield this.store.query('worship-administrative-unit', query);
   }
 }

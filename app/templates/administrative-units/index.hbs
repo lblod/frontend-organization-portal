@@ -23,12 +23,12 @@
             />
           </p>
           <p>
-            <AuLabel for="classifications">Type eredienst</AuLabel>
+            <AuLabel for="classifications">Type bestuur</AuLabel>
             <PowerSelect
               @allowClear={{true}}
               {{!-- @searchEnabled={{true}} --}}
-              {{!-- @noMatchesMessage="Geen resultaten" --}}
-              {{!-- @searchField="label" --}}
+              {{! @noMatchesMessage="Geen resultaten" }}
+              {{! @searchField="label" }}
               @options={{@model.classifications}}
               @selected={{this.selectedClassification}}
               @onChange={{this.setClassification}}
@@ -36,6 +36,19 @@
               as |classification|
             >
               {{classification.label}}
+            </PowerSelect>
+          </p>
+          <p>
+            <AuLabel for="recognized-worship-types">Soort eredienst</AuLabel>
+            <PowerSelect
+              @allowClear={{true}}
+              @options={{@model.recognizedWorshipTypes}}
+              @selected={{this.selectedRecognizedWorshipType}}
+              @onChange={{this.setRecognizedWorshipType}}
+              @triggerId="recognized-worship-types"
+              as |recognizedWorshipType|
+            >
+              {{recognizedWorshipType.label}}
             </PowerSelect>
           </p>
           <p>
@@ -79,6 +92,12 @@
                 Bestuurseenheden
               </AuHeading>
             </AuToolbarGroup>
+            <AuToolbarGroup>
+              {{! TODO: Replace this with a link once the "new" route is created }}
+              <AuButton @icon="add" @iconAlignment="left">
+                Nieuw
+              </AuButton>
+            </AuToolbarGroup>
           </AuToolbar>
         </menu.general>
       </t.menu>
@@ -94,13 +113,11 @@
             @currentSorting={{this.sort}}
             @label="Type bestuur"
           />
-            {{!-- Not possible to sort Honorary Service Type due to different model specific for worship/central service --}}
-           {{!-- <AuDataTableThSortable
-            @field="honoraryServiceType.label"
+          <AuDataTableThSortable
+            @field="recognized-worship-type.label"
             @currentSorting={{this.sort}}
             @label="Soort eredienst"
-          /> --}}
-          <th>Soort eredienst</th>
+          />
           <AuDataTableThSortable
             @field="primary-site.address.province"
             @currentSorting={{this.sort}}
@@ -118,9 +135,9 @@
         {{else if this.hasNoResults}}
           <TableMessage>
             <p>
-              Er werden geen zoekresultaten gevonden. Kijk na op spelfouten,
-              of probeer een andere zoekopdracht. Indien een organisatie
-              ontbreekt, meldt dit aan
+              Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of
+              probeer een andere zoekopdracht. Indien een organisatie ontbreekt,
+              meldt dit aan
               <a
                 class="au-c-link"
                 href="mailto:TODO@vlaanderen.be"
@@ -143,14 +160,12 @@
               </LinkTo>
             </td>
             <td>{{adminUnit.classification.label}}</td>
-            <td>{{adminUnit.honoraryServiceType.label}}</td>
+            <td>{{adminUnit.recognizedWorshipType.label}}</td>
             <td>{{adminUnit.primarySite.address.province}}</td>
             <td>{{adminUnit.primarySite.address.municipality}}</td>
             <td>
               {{#if adminUnit.organizationStatus}}
-                <OrganizationStatus
-                  @status={{adminUnit.organizationStatus}}
-                />
+                <OrganizationStatus @status={{adminUnit.organizationStatus}} />
               {{/if}}
             </td>
           </c.body>

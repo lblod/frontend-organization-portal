@@ -1,12 +1,9 @@
-import { attr, belongsTo, hasMany } from '@ember-data/model';
-import AdministrativeUnitModel from './administrative-unit';
+import { attr } from '@ember-data/model';
+import WorshipAdministrativeUnitModel from './worship-administrative-unit';
 
-export default class WorshipServiceModel extends AdministrativeUnitModel {
+export default class WorshipServiceModel extends WorshipAdministrativeUnitModel {
   @attr denomination;
   @attr crossBorder;
-  @belongsTo('honorary-service-type') honoraryServiceType;
-  @hasMany('local-involvement', { inverse: 'administrativeUnit' }) involvements;
-  @hasMany('associated-legal-structure') associatedStructure;
 
   get crossBorderNominal() {
     if (this.crossBorder) {
