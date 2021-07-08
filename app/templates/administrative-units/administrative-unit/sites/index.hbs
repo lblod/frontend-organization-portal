@@ -26,9 +26,9 @@
     </c.header>
     <c.body as |site|>
       <td>
-        <LinkTo class="au-c-link" @model={{site.id}} @route="administrative-units.administrative-unit.sites.site.index">
+        <AuLink @model={{site.id}} @route="administrative-units.administrative-unit.sites.site.index">
           {{site.address.fullAddress}}
-        </LinkTo>
+        </AuLink>
       </td>
       <td>{{if (eq site.id this.model.primarySite.id) "Ja" "Nee"}}</td>
       <td>

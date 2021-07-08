@@ -26,7 +26,8 @@ Router.map(function () {
           this.route('edit');
         });
         this.route('sites', { path: '/vestigingen' }, function () {
-          this.route('site', { path: '/:id/' }, function () {});
+          // eslint-disable-next-line ember/routes-segments-snake-case
+          this.route('site', { path: '/:siteId/' }, function () {});
         });
         this.route(
           'governing-bodies',

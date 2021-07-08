@@ -2,10 +2,10 @@
   <AuToolbar>
     <AuToolbarGroup>
       <AuHeading>
-        Vestiging: {{@model.sites.address.fullAddress}}
+        Vestiging: {{@model.site.address.fullAddress}}
       </AuHeading>
     </AuToolbarGroup>
-    <AuToolbarGroup>`
+    <AuToolbarGroup>
       {{! TODO: Replace this with a link once the "new" route is created }}
       <AuButton @icon="add" @iconAlignment="left">
         Nieuw
@@ -20,7 +20,7 @@
 <div class="au-o-box">
   <AuToolbar class="au-u-margin-bottom-small">
     <AuToolbarGroup>
-      <AuHeading @level="4" @skin="5">Kerngegevens</AuHeading>
+      <AuHeading @level="3" @skin="5">Kerngegevens</AuHeading>
     </AuToolbarGroup>
   </AuToolbar>
   <AuCard @standOut={{true}} as |c|>
@@ -33,7 +33,7 @@
                 <p><strong>Hoofgebouw</strong></p>
               </div>
               <div class="au-o-grid__item au-u-3-4">
-                <p>{{if (eq @model.sites.id @model.primarySite.id) "Ja" "Nee"}}</p>
+                <p>{{if (eq @model.site.id @model.administrativeUnit.primarySite.id) "Ja" "Nee"}}</p>
               </div>
             </div>
           </div>
@@ -59,7 +59,7 @@
                 <p><strong>Adres</strong></p>
               </div>
               <div class="au-o-grid__item au-u-3-4">
-                <p>{{@model.sites.address.fullAddress}}</p>
+                <p>{{@model.site.address.fullAddress}}</p>
               </div>
             </div>
           </div>
@@ -69,30 +69,34 @@
                 <p><strong>Provincie</strong></p>
               </div>
               <div class="au-o-grid__item au-u-3-4">
-                <p>{{@model.sites.address.province}}</p>
+                <p>{{@model.site.address.province}}</p>
               </div>
             </div>
           </div>
+          {{#if @model.site.contacts.firstObject.telephone}}
           <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
             <div class="au-o-grid">
               <div class="au-o-grid__item au-u-1-4">
                 <p><strong>Telefoonnummer</strong></p>
               </div>
               <div class="au-o-grid__item au-u-3-4">
-                <p>{{@model.sites.contacts.firstObject.telephone}}</p>
+                <p>{{@model.site.contacts.firstObject.telephone}}</p>
               </div>
             </div>
           </div>
+          {{/if}}
+          {{#if @model.site.contacts.firstObject.website}}
           <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
             <div class="au-o-grid">
               <div class="au-o-grid__item au-u-1-4">
                 <p><strong>Website</strong></p>
               </div>
               <div class="au-o-grid__item au-u-3-4">
-                <p>{{@model.sites.contacts.firstObject.website}}</p>
+                <p>{{@model.site.contacts.firstObject.website}}</p>
               </div>
             </div>
           </div>
+          {{/if}}
         </div>
       </div>
     </c.content>

@@ -1,9 +1,9 @@
-{{page-title "Vestiging"}}
+{{page-title @model.site.address.fullAddress}}
 
 {{breadcrumb
-  "Vestigingen"
+  this.model.site.address.fullAddress
   route="administrative-units.administrative-unit.sites"
-  model=(params-for "administrative-units.administrative-unit" param="id")
+  model=(params-for "administrative-units.administrative-unit.sites.site" param="siteId")
 }}
 
 {{outlet}}
