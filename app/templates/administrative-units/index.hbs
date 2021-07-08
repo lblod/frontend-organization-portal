@@ -40,16 +40,10 @@
           </p>
           <p>
             <AuLabel for="recognized-worship-types">Soort eredienst</AuLabel>
-            <PowerSelect
-              @allowClear={{true}}
-              @options={{@model.recognizedWorshipTypes}}
+            <RecognizedWorshipTypeSelect
               @selected={{this.selectedRecognizedWorshipType}}
               @onChange={{this.setRecognizedWorshipType}}
-              @triggerId="recognized-worship-types"
-              as |recognizedWorshipType|
-            >
-              {{recognizedWorshipType.label}}
-            </PowerSelect>
+            />
           </p>
           <p>
             <AuLabel for="statuses">Status</AuLabel>
