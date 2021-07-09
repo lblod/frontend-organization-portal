@@ -12,7 +12,6 @@ Router.map(function () {
     this.route('person', { path: '/:id/' }, function () {
       this.route('personal-information', { path: '/persoonlijke-gegevens' });
       this.route('positions', { path: '/posities' }, function () {
-        // eslint-disable-next-line ember/routes-segments-snake-case
         this.route('position', { path: '/:positionId/' }, function () {});
       });
     });
@@ -26,7 +25,6 @@ Router.map(function () {
           this.route('edit');
         });
         this.route('sites', { path: '/vestigingen' }, function () {
-          // eslint-disable-next-line ember/routes-segments-snake-case
           this.route('site', { path: '/:siteId/' }, function () {});
         });
         this.route(
