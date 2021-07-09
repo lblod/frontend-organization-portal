@@ -11,7 +11,12 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersIndexRoute ex
 
     let administrativeUnit = await this.store.findRecord(
       'worship-service',
-      administrativeUnitId
+      administrativeUnitId,
+      {
+        reload: true,
+        include:
+          'minister-positions.function,minister-positions.held-by-ministers',
+      }
     );
 
     return {

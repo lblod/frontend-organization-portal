@@ -5,5 +5,5 @@ export default class AgentInPositionModel extends Model {
   @attr('date') agentEndDate;
   @belongsTo('post') position;
   @belongsTo('person') person;
-  @hasMany('contact-point', { inverse: null }) contacts;
+  @hasMany('contact-point') contacts;
 }

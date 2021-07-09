@@ -18,7 +18,11 @@
     </AuHeading>
   </div>
 
-  <AuDataTable @content={{this.ministerPositions}} @noDataMessage="Geen bedienaren" as |t|>
+  <AuDataTable
+    @content={{@model.ministerPositions}}
+    @noDataMessage="Geen bedienaren"
+    as |t|
+  >
     <t.content as |c|>
       <c.header>
         <th class="au-c-data-table__header-title">Voornaam</th>
@@ -28,14 +32,14 @@
         <th></th>
       </c.header>
       <c.body as |ministerPosition|>
-        {{#let ministerPosition.heldyByMinisters.firstObject as |minister|}}
+        {{#let ministerPosition.agentsInPosition.firstObject as |minister|}}
           <td>
-            <AuLink @route="administrative-units.administrative-unit.ministers">
+            <AuLink @route="people.person" @model={{minister.person.id}}>
               {{minister.person.givenName}}
             </AuLink>
           </td>
           <td>
-            <AuLink @route="administrative-units.administrative-unit.ministers">
+            <AuLink @route="people.person" @model{{minister.person.id}}>
               {{minister.person.familyName}}
             </AuLink>
           </td>

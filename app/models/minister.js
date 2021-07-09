@@ -3,6 +3,6 @@ import AgentInPositionModel from './agent-in-position';
 
 export default class MinisterModel extends AgentInPositionModel {
   @belongsTo('minister-position') ministerPosition;
-  @belongsTo('financiering-code') financiering;
+  @belongsTo('financering-code') financiering;
   @hasMany('minister-condition') conditions;
 }
