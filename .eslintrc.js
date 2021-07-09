@@ -19,7 +19,9 @@ module.exports = {
   env: {
     browser: true,
   },
-  rules: {},
+  rules: {
+    'ember/routes-segments-snake-case': 'off',
+  },
   overrides: [
     // node files
     {
