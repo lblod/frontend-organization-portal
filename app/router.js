@@ -30,7 +30,13 @@ Router.map(function () {
         this.route(
           'governing-bodies',
           { path: '/bestuursorganen' },
-          function () {}
+          function () {
+            this.route(
+              'governing-body',
+              { path: '/:governingBodyId/' },
+              function () {}
+            );
+          }
         );
       });
     }

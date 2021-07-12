@@ -1,0 +1,214 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <AuToolbar>
+      <AuToolbarGroup>
+        <AuHeading>
+          Bestuursorgaan:
+          {{@model.adminGovModel.governingBody.classification.label}}
+        </AuHeading>
+      </AuToolbarGroup>
+      <AuToolbarGroup>
+        {{! TODO: Replace this with a link once the "edit" route is created }}
+        <AuLink
+          @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+          @skin="button-secondary"
+          @icon="pencil"
+          @iconAlignment="left"
+        >
+          Bewerk
+        </AuLink>
+      </AuToolbarGroup>
+    </AuToolbar>
+    <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
+      {{@model.adminGovModel.administrativeUnit.name}}
+    </AuHeading>
+
+    <div>
+      <AuToolbar class="au-u-margin-bottom-small">
+        <AuToolbarGroup>
+          <AuHeading @level="4" @skin="5">Bestuursorgaan</AuHeading>
+        </AuToolbarGroup>
+      </AuToolbar>
+      <AuCard @standOut={{true}} as |c|>
+        <c.content>
+          <div class="au-flow au-o-flow--large">
+            <div class="au-o-grid">
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Type</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p
+                    >{{@model.adminGovModel.governingBody.classification.label}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Start datum</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p>{{date-format @model.govBodyTimeSpec.startDate}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Termijn</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p>
+                      Bestuursperiode
+                      {{@model.govBodyTimeSpec.period}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                <div class="au-o-grid">
+                  <div class="au-o-grid__item au-u-1-4">
+                    <p><strong>Einddatum</strong></p>
+                  </div>
+                  <div class="au-o-grid__item au-u-3-4">
+                    <p>{{date-format @model.govBodyTimeSpec.endDate}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </c.content>
+      </AuCard>
+    </div>
+    <div>
+      <AuToolbar class="au-u-margin-bottom-small">
+        <AuToolbarGroup>
+          <AuHeading @level="4" @skin="5">Bestuursleden</AuHeading>
+        </AuToolbarGroup>
+      </AuToolbar>
+      <AuDataTable
+        @content={{@model.mandateLid}}
+        @noDataMessage="Geen bestuursorganen"
+        as |t|
+      >
+        <t.content as |c|>
+          <c.header>
+            <th class="au-c-data-table__header-title">Voornaam</th>
+            <th class="au-c-data-table__header-title">Achternaam</th>
+            <th class="au-c-data-table__header-title">Mandaat</th>
+            <th class="au-c-data-table__header-title">Start mandaat</th>
+            <th class="au-c-data-table__header-title">Einde mandaat</th>
+            <th></th>
+          </c.header>
+          <c.body as |mandatory|>
+
+              <td>
+                <AuLink
+                  @route="people.person"
+                  @model={{mandatory.governingAlias.id}}
+                >
+                  {{mandatory.governingAlias.givenName}}
+                </AuLink>
+              </td>
+              <td>
+                <AuLink
+                  @route="people.person"
+                  @model={{mandatory.governingAlias.id}}
+                >
+                  {{mandatory.governingAlias.familyName}}
+                </AuLink>
+              </td>
+              <td>
+                <AuLink
+                  @route="people.person.positions"
+                  @model={{mandatory.governingAlias.id}}
+                >
+                  {{mandatory.mandate.roleBoard.label}}
+                </AuLink>
+              </td>
+              <td>
+                {{date-format mandatory.startDate}}
+              </td>
+              <td>
+                {{date-format mandatory.endDate}}
+              </td>
+              <td>
+                <AuLink
+                  @route="administrative-units.administrative-unit.governing-bodies"
+                >
+                  Bewerk
+                </AuLink>
+              </td>
+          </c.body>
+        </t.content>
+      </AuDataTable>
+    </div>
+
+     <div>
+      <AuToolbar class="au-u-margin-bottom-small">
+        <AuToolbarGroup>
+          <AuHeading @level="4" @skin="5">Mandatarissen</AuHeading>
+        </AuToolbarGroup>
+      </AuToolbar>
+      <AuDataTable
+        @content={{@model.mandatesOther}}
+        @noDataMessage="Geen bestuursorganen"
+        as |t|
+      >
+        <t.content as |c|>
+          <c.header>
+            <th class="au-c-data-table__header-title">Voornaam</th>
+            <th class="au-c-data-table__header-title">Achternaam</th>
+            <th class="au-c-data-table__header-title">Mandaat</th>
+            <th class="au-c-data-table__header-title">Start mandaat</th>
+            <th class="au-c-data-table__header-title">Einde mandaat</th>
+            <th></th>
+          </c.header>
+          <c.body as |mandate|>
+            {{#let mandate.heldBy.firstObject as |mandatory|}}
+              <td>
+                <AuLink
+                  @route="people.person"
+                  @model={{mandatory.governingAlias.id}}
+                >
+                  {{mandatory.governingAlias.givenName}}
+                </AuLink>
+              </td>
+              <td>
+                <AuLink
+                  @route="people.person"
+                  @model={{mandatory.governingAlias.id}}
+                >
+                  {{mandatory.governingAlias.familyName}}
+                </AuLink>
+              </td>
+              <td>
+                <AuLink
+                  @route="people.person.positions.position"
+                  @model={{mandatory.id}}
+                >
+                  {{mandate.roleBoard.label}}
+                </AuLink>
+              </td>
+              <td>
+                {{date-format mandatory.startDate}}
+              </td>
+              <td>
+                {{date-format mandatory.endDate}}
+              </td>
+              <td>
+                <AuLink
+                  @route="administrative-units.administrative-unit.governing-bodies"
+                >
+                  Bewerk
+                </AuLink>
+              </td>
+            {{/let}}
+          </c.body>
+        </t.content>
+      </AuDataTable>
+    </div>
+  </div>
+</div>
