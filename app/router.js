@@ -25,7 +25,9 @@ Router.map(function () {
           this.route('edit');
         });
         this.route('sites', { path: '/vestigingen' }, function () {
-          this.route('site', { path: '/:siteId/' }, function () {});
+          this.route('site', { path: '/:siteId/' }, function () {
+            this.route('edit');
+          });
         });
         this.route(
           'governing-bodies',
