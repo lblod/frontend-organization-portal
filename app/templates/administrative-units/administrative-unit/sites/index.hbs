@@ -31,8 +31,8 @@
           {{site.address.fullAddress}}
         </AuLink>
       </td>
-      <td>{{site.siteTypes.label}}</td>
-      <td>{{if (eq site.id this.model.primarySite.id) "Ja" "NeeN"}}</td>
+      <td>{{site.siteType.label}}</td>
+      <td>{{if (eq site.id this.model.primarySite.id) "Ja" "Neen"}}</td>
       <td>
         <AuLink @route="administrative-units.administrative-unit.sites">Bewerk</AuLink>
       </td>
