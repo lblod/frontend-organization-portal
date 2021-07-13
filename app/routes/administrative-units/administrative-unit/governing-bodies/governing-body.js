@@ -4,13 +4,9 @@ import { inject as service } from '@ember/service';
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyRoute extends Route {
   @service store;
 
-  async model() {
+  async model({ governingBodyId: govBodyTimeSpecId }) {
     let adminGovModel = this.modelFor(
       'administrative-units.administrative-unit.governing-bodies'
-    );
-
-    let { governingBodyId: govBodyTimeSpecId } = this.paramsFor(
-      'administrative-units.administrative-unit.governing-bodies.governing-body'
     );
 
     let govBodyTimeSpec = await this.store.findRecord(
@@ -41,7 +37,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     return {
       adminGovModel: adminGovModel,
       govBodyTimeSpec: govBodyTimeSpec,
-      mandateLid: mandateLid.firstObject.heldBy,
+      mandateLid: mandateLid,
       mandatesOther: mandatesOther,
     };
   }
