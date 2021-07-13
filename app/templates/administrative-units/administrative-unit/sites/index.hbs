@@ -21,7 +21,8 @@
   <t.content as |c|>
     <c.header>
       <th class="au-c-data-table__header-title">Locatie</th>
-      <th class="au-c-data-table__header-title">Hoofdgebouw</th>
+      <th class="au-c-data-table__header-title">Vestigingstype</th>
+      <th class="au-c-data-table__header-title">Primair correspondentieadres </th>
       <th></th>
     </c.header>
     <c.body as |site|>
@@ -30,7 +31,8 @@
           {{site.address.fullAddress}}
         </AuLink>
       </td>
-      <td>{{if (eq site.id this.model.primarySite.id) "Ja" "Nee"}}</td>
+      <td>{{site.siteTypes.label}}</td>
+      <td>{{if (eq site.id this.model.primarySite.id) "Ja" "NeeN"}}</td>
       <td>
         <AuLink @route="administrative-units.administrative-unit.sites">Bewerk</AuLink>
       </td>

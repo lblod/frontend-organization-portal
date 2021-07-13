@@ -10,7 +10,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteRoute extends
 
     let site = await this.store.findRecord('site', siteId, {
       reload: true,
-      include: ['address', 'contacts'].join(),
+      include: ['address', 'contacts', 'site-type'].join(),
     });
 
     return {
