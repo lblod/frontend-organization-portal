@@ -15,6 +15,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataRoute extends 
       {
         reload: true,
         include: [
+          'classification',
           'organization-status',
           'recognized-worship-type',
           'scope',

@@ -38,6 +38,7 @@ Router.map(function () {
             );
           }
         );
+        this.route('ministers', { path: '/bedienaren' }, function () {});
       });
     }
   );
