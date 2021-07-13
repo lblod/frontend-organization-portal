@@ -17,8 +17,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesIndexRoute extend
         include: [
           'primary-site.address',
           'primary-site.contacts',
+          'primary-site.site-type',
           'sites.address',
           'sites.contacts',
+          'sites.site-type',
         ].join(),
       }
     );
