@@ -1,0 +1,7 @@
+<div class="card-grid" ...attributes>
+  {{#if @itemComponent}}
+    {{yield (component @itemComponent)}}
+  {{else}}
+    {{yield}}
+  {{/if}}
+</div>
