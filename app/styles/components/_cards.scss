@@ -1,0 +1,49 @@
+.card-title {
+  margin-bottom: $au-unit-tiny;
+}
+
+// Grid
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card-grid-item {
+  align-items: center;
+  display: flex;
+  padding: $au-unit-tiny;
+  width: 50%;
+}
+
+.card-grid-item__label {
+  flex-basis: 20rem; // This has to be wide enough to fit all labels properly
+  flex-shrink: 0;
+}
+
+.card-grid-item__content {
+  flex-shrink: 1;
+  flex-grow: 1;
+}
+
+// read-only card
+.data-card__card {
+  background-color: $au-gray-100;
+  padding: $au-unit-tiny $au-unit-small;
+}
+
+.data-card-item__label {
+  font-weight: 500;
+  color: $au-gray-600;
+}
+
+// editable card
+.edit-card__card {
+  background-color: $au-white;
+  border: 1px solid $au-gray-300  ;
+  padding: $au-unit-tiny $au-unit-small;
+}
+
+.edit-card-item__label {
+  margin-bottom: 0;
+}
+
