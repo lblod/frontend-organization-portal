@@ -5,17 +5,6 @@
         Contactgegevens
       </AuHeading>
     </AuToolbarGroup>
-    <AuToolbarGroup>
-      {{! TODO: Replace this with the "new" route once it is created }}
-      <AuLink
-        @route="people.person.positions"
-        @icon="add"
-        @iconAlignment="left"
-        @skin="button"
-      >
-        Nieuw
-      </AuLink>
-    </AuToolbarGroup>
   </AuToolbar>
   <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
     {{@model.person.givenName}} {{@model.person.familyName}}
