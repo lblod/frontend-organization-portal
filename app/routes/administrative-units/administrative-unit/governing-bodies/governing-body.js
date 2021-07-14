@@ -1,6 +1,8 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
+const MEMBER_ROLE_ID = '2e021095727b2464459a63e16ebeafd2';
+
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyRoute extends Route {
   @service store;
 
@@ -21,24 +23,18 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     let mandates = await govBodyTimeSpec.mandates;
 
     let mandateLid = mandates.filter((mandate) => {
-      return (
-        mandate.get('roleBoard.label') ===
-        'Bestuurslid van het bestuur van de eredienst'
-      );
+      return mandate.get('roleBoard.label') === MEMBER_ROLE_ID;
     });
 
     let mandatesOther = mandates.filter((mandate) => {
-      return (
-        mandate.get('roleBoard.label') !==
-        'Bestuurslid van het bestuur van de eredienst'
-      );
+      return mandate.get('roleBoard.label') !== MEMBER_ROLE_ID;
     });
 
     return {
-      adminGovModel: adminGovModel,
-      govBodyTimeSpec: govBodyTimeSpec,
-      mandateLid: mandateLid,
-      mandatesOther: mandatesOther,
+      adminGovModel,
+      govBodyTimeSpec,
+      mandateLid,
+      mandatesOther,
     };
   }
 }
