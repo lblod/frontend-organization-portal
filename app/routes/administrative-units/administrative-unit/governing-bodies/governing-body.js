@@ -23,11 +23,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     let mandates = await govBodyTimeSpec.mandates;
 
     let mandateLid = mandates.filter((mandate) => {
-      return mandate.get('roleBoard.label') === MEMBER_ROLE_ID;
+      return mandate.get('roleBoard.id') === MEMBER_ROLE_ID;
     });
 
     let mandatesOther = mandates.filter((mandate) => {
-      return mandate.get('roleBoard.label') !== MEMBER_ROLE_ID;
+      return mandate.get('roleBoard.id') !== MEMBER_ROLE_ID;
     });
 
     return {
