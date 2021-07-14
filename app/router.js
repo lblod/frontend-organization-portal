@@ -14,6 +14,7 @@ Router.map(function () {
       this.route('positions', { path: '/posities' }, function () {
         this.route('position', { path: '/:positionId/' }, function () {});
       });
+      this.route('contacts', function () {});
     });
   });
   this.route(
