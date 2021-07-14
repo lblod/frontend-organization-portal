@@ -1,0 +1,9 @@
+{{page-title this.model.adminGovModel.governingBody.classification.label}}
+
+{{breadcrumb
+  this.model.adminGovModel.governingBody.classification.label
+  route="administrative-units.administrative-unit.governing-bodies"
+  model=(array this.model.administrativeUnit.id this.model.governingBody.id)
+}}
+
+{{outlet}}

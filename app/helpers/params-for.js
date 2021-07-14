@@ -4,6 +4,10 @@ import { assert } from '@ember/debug';
 
 export default class ParamsForHelper extends Helper {
   @service router;
+  // Something forces the helper to recompute before it gets destroyed while transitioning out of the route where it's defined
+  // which means it sometimes will try to retrieve route params for a page that is no longer active.
+  // If that happens, we return the data from the last successful run.
+  routeParamsCache = null;
 
   compute([routeName], { param: paramName }) {
     let routeParams = this.getRouteParams(routeName);
@@ -14,7 +18,7 @@ export default class ParamsForHelper extends Helper {
         Boolean(routeParams[paramName])
       );
 
-      return routeParams[paramName];
+      return routeParams ? routeParams[paramName] : null;
     } else {
       return routeParams;
     }
@@ -27,9 +31,17 @@ export default class ParamsForHelper extends Helper {
 
     assert(
       `The "${routeName}" route doesn't exist or isn't currently active`,
-      Boolean(routeInfo)
+      Boolean(routeInfo) || this.routeParamsCache
     );
 
-    return routeInfo.params;
+    if (routeInfo) {
+      this.routeParamsCache = routeInfo.params;
+    }
+
+    return this.routeParamsCache;
+  }
+
+  willDestroy() {
+    this.routeParams = null;
   }
 }
