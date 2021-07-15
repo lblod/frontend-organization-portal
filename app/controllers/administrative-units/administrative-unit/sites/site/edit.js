@@ -1,12 +1,19 @@
 import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditController extends Controller {
   @service router;
+  @tracked isPrimarySite =
+    this.site.get('id') === this.administrativeUnit.get('primarySite.id');
 
   get site() {
     return this.model.adminUnitSite.site;
+  }
+
+  get administrativeUnit() {
+    return this.model.adminUnitSite.administrativeUnit;
   }
 
   @dropTask
@@ -41,6 +48,25 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     }
 
     yield this.site.save();
+
+    if (!this.isPrimarySite) {
+      this.administrativeUnit.sites.pushObject(this.site);
+
+      this.administrativeUnit.primarySite = null;
+
+      yield this.administrativeUnit.save();
+    }
+
+    if (
+      this.isPrimarySite &&
+      this.site.get('id') !== this.administrativeUnit.get('primarySite.id')
+    ) {
+      this.administrativeUnit.primarySite = this.site;
+
+      this.administrativeUnit.sites.removeObject(this.site);
+
+      yield this.administrativeUnit.save();
+    }
 
     this.router.transitionTo(
       'administrative-units.administrative-unit.sites.site',

@@ -1,123 +1,169 @@
-<div class="au-o-box">
-  <AuHeading class="au-u-margin-bottom-tiny">
-    Bewerk vestiging
-  </AuHeading>
-  <AuHeading @level="2" @skin="3" class="au-u-margin-bottom-large">
-    {{@model.adminUnitSite.site.address.fullAddress}},
-    {{@model.adminUnitSite.administrativeUnit.name}}
-  </AuHeading>
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <div class="au-o-flow au-o-flow--tiny">
+      <AuHeading class="au-u-margin-bottom-tiny">
+        Bewerk vestiging
+      </AuHeading>
+      <AuHeading @level="2" @skin="3" class="au-u-margin-bottom-tiny">
+        {{@model.adminUnitSite.site.address.fullAddress}},
+        {{@model.adminUnitSite.administrativeUnit.name}}
+      </AuHeading>
+    </div>
 
-  <form
-    id="edit-vestiging-form"
-    aria-label="edit-vestiging-form"
-    {{on "submit" (perform this.save)}}
-  >
-    <EditCard>
-      <:title>Contactgegevens</:title>
-      <:card as |Grid|>
-        <Grid as |Item|>
-          <Item @labelFor="primary-site-address-street-name">
-            <:label>Straat</:label>
-            <:content>
-              <AuInput
-                @value={{@model.adminUnitSite.site.address.street}}
-                @width="block"
-                id="primary-site-address-street-name"
-              />
-            </:content>
-          </Item>
-          <Item @labelFor="primary-site-address-house-number">
-            <:label>Huisnummer</:label>
-            <:content>
-              <AuInput
-                @value={{@model.adminUnitSite.site.address.number}}
-                @width="block"
-                id="primary-site-address-house-number"
-              />
-            </:content>
-          </Item>
-          <Item @labelFor="primary-site-address-bus-number">
-            <:label>Busnummer</:label>
-            <:content>
-              <AuInput
-                @value={{@model.adminUnitSite.site.address.boxNumber}}
-                @width="block"
-                id="primary-site-address-bus-number"
-              />
-            </:content>
-          </Item>
-          <Item @labelFor="primary-site-address-postal-code">
-            <:label>Postcode</:label>
-            <:content>
-              <AuInput
-                @value={{@model.adminUnitSite.site.address.postcode}}
-                @width="block"
-                id="primary-site-address-postal-code"
-              />
-            </:content>
-          </Item>
-          <Item>
-            <:label>Gemeente</:label>
-            <:content>
-              <MunicipalitySelect
-                @selected={{this.model.adminUnitSite.site.address.municipality}}
-                @onChange={{fn
-                  (mut this.model.adminUnitSite.site.address.municipality)
-                }}
-              />
-            </:content>
-          </Item>
-          <Item>
-            <:label>Provincie</:label>
-            <:content>
-              <ProvinceSelect
-                @selected={{this.model.adminUnitSite.site.address.province}}
-                @onChange={{fn
-                  (mut this.model.adminUnitSite.site.address.province)
-                }}
-              />
-            </:content>
-          </Item>
-          <Item @labelFor="primary-site-contact-phone-number">
-            <:label>Telefoonnummer</:label>
-            <:content>
-              <AuInput
-                @value={{@model.adminUnitSite.site.contacts.firstObject.telephone}}
-                @width="block"
-                id="primary-site-contact-phone-number"
-              />
-            </:content>
-          </Item>
-          <Item @labelFor="primary-site-contact-website">
-            <:label>Website</:label>
-            <:content>
-              <AuInput
-                @value={{@model.adminUnitSite.site.contacts.firstObject.website}}
-                @width="block"
-                id="primary-site-contact-website"
-              />
-            </:content>
-          </Item>
-        </Grid>
-      </:card>
-    </EditCard>
+    <form
+      id="edit-vestiging-form"
+      aria-label="edit-vestiging-form"
+      {{on "submit" (perform this.save)}}
+    >
+      <div class="au-o-flow au-o-flow--large">
+        <EditCard>
+          <:title>Kerngegevens</:title>
+          <:card as |Grid|>
+            <Grid as |Item|>
+              <Item>
+                <:label>Vestigingstype</:label>
+                <:content>
+                  <SiteTypeSelect
+                    @selected={{@model.adminUnitSite.site.siteType}}
+                    @onChange={{fn (mut @model.adminUnitSite.site.siteType)}}
+                  />
+                </:content>
+              </Item>
+              <Item>
+                <:label>Primair correspondentieadres</:label>
+                <:content>
+                  <AuControlRadio
+                    @label="Ja"
+                    @name="is-primary-site"
+                    @value={{this.isPrimarySite}}
+                    @identifier="primary-site-true"
+                    @onChange={{fn (mut this.isPrimarySite) true}}
+                    checked={{this.isPrimarySite}}
+                  />
 
-    <AuButtonGroup>
-      <AuButton
-        @loading={{this.save.isRunning}}
-        @disabled={{this.save.isRunning}}
-        type="submit"
-      >
-        Pas aan
-      </AuButton>
+                  <br />
 
-      <AuLink
-        @route="administrative-units.administrative-unit.sites.site"
-        @skin="button-secondary"
-      >
-        Annuleer
-      </AuLink>
-    </AuButtonGroup>
+                  <AuControlRadio
+                    @label="Nee"
+                    @name="is-primary-site"
+                    @value={{this.isPrimarySite}}
+                    @identifier="primary-site-false"
+                    @onChange={{fn (mut this.isPrimarySite) false}}
+                    checked={{not this.isPrimarySite}}
+                  />
+                </:content>
+              </Item>
+            </Grid>
+          </:card>
+        </EditCard>
 
-  </form>
+        <EditCard>
+          <:title>Contactgegevens</:title>
+          <:card as |Grid|>
+            <Grid as |Item|>
+              <Item @labelFor="primary-site-address-street-name">
+                <:label>Straat</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.adminUnitSite.site.address.street}}
+                    @width="block"
+                    id="primary-site-address-street-name"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="primary-site-address-house-number">
+                <:label>Huisnummer</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.adminUnitSite.site.address.number}}
+                    @width="block"
+                    id="primary-site-address-house-number"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="primary-site-address-bus-number">
+                <:label>Busnummer</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.adminUnitSite.site.address.boxNumber}}
+                    @width="block"
+                    id="primary-site-address-bus-number"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="primary-site-address-postal-code">
+                <:label>Postcode</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.adminUnitSite.site.address.postcode}}
+                    @width="block"
+                    id="primary-site-address-postal-code"
+                  />
+                </:content>
+              </Item>
+              <Item>
+                <:label>Gemeente</:label>
+                <:content>
+                  <MunicipalitySelect
+                    @selected={{this.model.adminUnitSite.site.address.municipality}}
+                    @onChange={{fn
+                      (mut this.model.adminUnitSite.site.address.municipality)
+                    }}
+                  />
+                </:content>
+              </Item>
+              <Item>
+                <:label>Provincie</:label>
+                <:content>
+                  <ProvinceSelect
+                    @selected={{this.model.adminUnitSite.site.address.province}}
+                    @onChange={{fn
+                      (mut this.model.adminUnitSite.site.address.province)
+                    }}
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="primary-site-contact-phone-number">
+                <:label>Telefoonnummer</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.adminUnitSite.site.contacts.firstObject.telephone}}
+                    @width="block"
+                    id="primary-site-contact-phone-number"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="primary-site-contact-website">
+                <:label>Website</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.adminUnitSite.site.contacts.firstObject.website}}
+                    @width="block"
+                    id="primary-site-contact-website"
+                  />
+                </:content>
+              </Item>
+            </Grid>
+          </:card>
+        </EditCard>
+
+        <AuButtonGroup>
+          <AuButton
+            @loading={{this.save.isRunning}}
+            @disabled={{this.save.isRunning}}
+            type="submit"
+          >
+            Pas aan
+          </AuButton>
+
+          <AuLink
+            @route="administrative-units.administrative-unit.sites.site"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>
+        </AuButtonGroup>
+      </div>
+    </form>
+  </div>
 </div>
