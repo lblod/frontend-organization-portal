@@ -1,0 +1,224 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow">
+    <div class="au-o-flow au-o-flow--tiny">
+      <AuToolbar>
+        <AuToolbarGroup>
+          <AuHeading @level="1" @skin="2">
+            Persoonlijke gegevens
+          </AuHeading>
+        </AuToolbarGroup>
+      </AuToolbar>
+      <AuHeading @level="2" @skin="3">
+        {{@model.givenName}} {{@model.familyName}}
+      </AuHeading>
+    </div>
+
+    <div class="au-o-flow au-o-flow--large">
+      <div>
+        <AuToolbar class="au-u-margin-bottom-small">
+          <AuToolbarGroup>
+            <AuHeading @level="3" @skin="5">Persoonlijke gegevens</AuHeading>
+          </AuToolbarGroup>
+          <AuToolbarGroup>
+            <AuLink @route="people.person.personal-information.edit" @skin="button-secondary" @icon="pencil"
+              @iconAlignment="left">
+              Bewerk
+            </AuLink>
+          </AuToolbarGroup>
+        </AuToolbar>
+
+        <AuCard @standOut={{true}} as |c|>
+          <c.content>
+            <div class="au-flow au-o-flow--large">
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p class="au-u-medium">Voornaam</p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>{{@model.givenName}}</p>
+                    </div>
+                  </div>
+                </div>
+                {{!-- <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p class="au-u-medium">Geboorte datum</p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p></p>
+                    </div>
+                  </div>
+                </div> --}}
+              </div>
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p class="au-u-medium">Achternaam</p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>{{@model.familyName}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p class="au-u-medium">Roepnaam</p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>{{@model.firstNameUsed}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </c.content>
+        </AuCard>
+      </div>
+
+{{!--       <div>
+        <AuToolbar class="au-u-margin-bottom-small">
+          <AuToolbarGroup>
+            <AuHeading @level="4" @skin="5">Contactgegevens: Gemeentebestuur
+            </AuHeading>
+          </AuToolbarGroup>
+        </AuToolbar>
+        <AuCard @standOut={{true}} as |c|>
+          <c.content>
+            <div class="au-flow au-o-flow--large">
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Organisatie</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Email</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Telefoonnummer</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Adres</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </c.content>
+        </AuCard>
+      </div> --}}
+
+      <div>
+        <AuToolbar class="au-u-margin-bottom-small">
+          <AuToolbarGroup>
+            <AuHeading @level="4" @skin="5">Contactgegevens: Bestuur van de
+              eredienst</AuHeading>
+          </AuToolbarGroup>
+        </AuToolbar>
+        <AuCard @standOut={{true}} as |c|>
+          <c.content>
+            <div class="au-flow au-o-flow--large">
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Organisatie</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>
+                        <LinkTo class="au-c-link"
+                          @model={{@model.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.id}}
+                          @route="administrative-units.administrative-unit">
+                          {{@model.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}
+                        </LinkTo>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Email</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>{{@model.mandatories.firstObject.contacts.firstObject.email}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Telefoonnummer</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>{{@model.mandatories.firstObject.contacts.firstObject.telephone}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="au-o-grid">
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>Adres</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p>{{@model.mandatories.firstObject.contacts.firstObject.contactAddress.fullAddress}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
+                  <div class="au-o-grid">
+                    <div class="au-o-grid__item au-u-1-4">
+                      <p><strong>GSM nummer</strong></p>
+                    </div>
+                    <div class="au-o-grid__item au-u-3-4">
+                      <p></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </c.content>
+        </AuCard>
+      </div>
+    </div>
+  </div>
+</div>
