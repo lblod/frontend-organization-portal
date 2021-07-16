@@ -16,4 +16,9 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute ext
 
     return adminUnitSite;
   }
+
+  setupController(controller) {
+    super.setupController(...arguments);
+    controller.setup();
+  }
 }

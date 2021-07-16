@@ -5,8 +5,11 @@ import { tracked } from '@glimmer/tracking';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditController extends Controller {
   @service router;
-  @tracked isPrimarySite =
-    this.site.get('id') === this.administrativeUnit.get('primarySite.id');
+  @tracked isPrimarySite;
+
+  setup() {
+    this.isPrimarySite = this.isPrimarySiteCurrent;
+  }
 
   get site() {
     return this.model.site;
