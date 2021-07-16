@@ -17,6 +17,6 @@ export default class SiteTypeSelectComponent extends Component {
 
   @task
   *loadSiteTypesTask() {
-    return yield this.store.findAll('site-type');
+    return yield this.store.findAll('site-type', { reload: true });
   }
 }

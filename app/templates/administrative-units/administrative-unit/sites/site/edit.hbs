@@ -5,14 +5,14 @@
         Bewerk vestiging
       </AuHeading>
       <AuHeading @level="2" @skin="3" class="au-u-margin-bottom-tiny">
-        {{@model.adminUnitSite.site.address.fullAddress}},
-        {{@model.adminUnitSite.administrativeUnit.name}}
+        {{@model.site.address.fullAddress}},
+        {{@model.administrativeUnit.name}}
       </AuHeading>
     </div>
 
     <form
       id="edit-vestiging-form"
-      aria-label="edit-vestiging-form"
+      aria-label="Edit site"
       {{on "submit" (perform this.save)}}
     >
       <div class="au-o-flow au-o-flow--large">
@@ -24,8 +24,8 @@
                 <:label>Vestigingstype</:label>
                 <:content>
                   <SiteTypeSelect
-                    @selected={{@model.adminUnitSite.site.siteType}}
-                    @onChange={{fn (mut @model.adminUnitSite.site.siteType)}}
+                    @selected={{@model.site.siteType}}
+                    @onChange={{fn (mut @model.site.siteType)}}
                   />
                 </:content>
               </Item>
@@ -65,7 +65,7 @@
                 <:label>Straat</:label>
                 <:content>
                   <AuInput
-                    @value={{@model.adminUnitSite.site.address.street}}
+                    @value={{@model.site.address.street}}
                     @width="block"
                     id="primary-site-address-street-name"
                   />
@@ -75,7 +75,7 @@
                 <:label>Huisnummer</:label>
                 <:content>
                   <AuInput
-                    @value={{@model.adminUnitSite.site.address.number}}
+                    @value={{@model.site.address.number}}
                     @width="block"
                     id="primary-site-address-house-number"
                   />
@@ -85,7 +85,7 @@
                 <:label>Busnummer</:label>
                 <:content>
                   <AuInput
-                    @value={{@model.adminUnitSite.site.address.boxNumber}}
+                    @value={{@model.site.address.boxNumber}}
                     @width="block"
                     id="primary-site-address-bus-number"
                   />
@@ -95,7 +95,7 @@
                 <:label>Postcode</:label>
                 <:content>
                   <AuInput
-                    @value={{@model.adminUnitSite.site.address.postcode}}
+                    @value={{@model.site.address.postcode}}
                     @width="block"
                     id="primary-site-address-postal-code"
                   />
@@ -105,9 +105,9 @@
                 <:label>Gemeente</:label>
                 <:content>
                   <MunicipalitySelect
-                    @selected={{this.model.adminUnitSite.site.address.municipality}}
+                    @selected={{this.model.site.address.municipality}}
                     @onChange={{fn
-                      (mut this.model.adminUnitSite.site.address.municipality)
+                      (mut this.model.site.address.municipality)
                     }}
                   />
                 </:content>
@@ -116,9 +116,9 @@
                 <:label>Provincie</:label>
                 <:content>
                   <ProvinceSelect
-                    @selected={{this.model.adminUnitSite.site.address.province}}
+                    @selected={{this.model.site.address.province}}
                     @onChange={{fn
-                      (mut this.model.adminUnitSite.site.address.province)
+                      (mut this.model.site.address.province)
                     }}
                   />
                 </:content>
@@ -127,7 +127,7 @@
                 <:label>Telefoonnummer</:label>
                 <:content>
                   <AuInput
-                    @value={{@model.adminUnitSite.site.contacts.firstObject.telephone}}
+                    @value={{@model.site.contacts.firstObject.telephone}}
                     @width="block"
                     id="primary-site-contact-phone-number"
                   />
@@ -137,7 +137,7 @@
                 <:label>Website</:label>
                 <:content>
                   <AuInput
-                    @value={{@model.adminUnitSite.site.contacts.firstObject.website}}
+                    @value={{@model.site.contacts.firstObject.website}}
                     @width="block"
                     id="primary-site-contact-website"
                   />

@@ -9,17 +9,24 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     this.site.get('id') === this.administrativeUnit.get('primarySite.id');
 
   get site() {
-    return this.model.adminUnitSite.site;
+    return this.model.site;
   }
 
   get administrativeUnit() {
-    return this.model.adminUnitSite.administrativeUnit;
+    return this.model.administrativeUnit;
+  }
+
+  get isPrimarySiteCurrent() {
+    return (
+      this.site.get('id') === this.administrativeUnit.get('primarySite.id')
+    );
   }
 
   @dropTask
   *save(event) {
     event.preventDefault();
 
+    // TODO: Make full address changes reusable
     let address = yield this.site.address;
 
     if (address.hasDirtyAttributes) {
@@ -49,7 +56,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
 
     yield this.site.save();
 
-    if (!this.isPrimarySite) {
+    if (this.isPrimarySiteCurrent && !this.isPrimarySite) {
       this.administrativeUnit.sites.pushObject(this.site);
 
       this.administrativeUnit.primarySite = null;
@@ -57,10 +64,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
       yield this.administrativeUnit.save();
     }
 
-    if (
-      this.isPrimarySite &&
-      this.site.get('id') !== this.administrativeUnit.get('primarySite.id')
-    ) {
+    if (this.isPrimarySite && !this.isPrimarySiteCurrent) {
       this.administrativeUnit.primarySite = this.site;
 
       this.administrativeUnit.sites.removeObject(this.site);

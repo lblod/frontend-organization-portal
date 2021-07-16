@@ -14,8 +14,6 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute ext
       contacts.pushObject(this.store.createRecord('contact-point'));
     }
 
-    return {
-      adminUnitSite,
-    };
+    return adminUnitSite;
   }
 }
