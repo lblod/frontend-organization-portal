@@ -1,29 +1,20 @@
 <div class="au-c-body-container au-c-body-container--scroll">
-  <div class="au-o-box au-o-flow">
-    <div class="au-o-flow au-o-flow--tiny">
-      <AuToolbar>
-        <AuToolbarGroup>
-          <AuHeading @level="1" @skin="2">
-            Bewerk Persoonlijke gegevens
-          </AuHeading>
-        </AuToolbarGroup>
-      </AuToolbar>
-      <AuHeading @level="2" @skin="3">
-        {{@model.givenName}} {{@model.familyName}}
-      </AuHeading>
-    </div>
+  <div class="au-o-box">
+    <AuHeading class="au-u-margin-bottom-tiny">
+      Bewerk Persoonlijke gegevens
+    </AuHeading>
+    <AuHeading @level="2" @skin="3" class="au-u-margin-bottom-large">
+      {{@model.person.givenName}} {{@model.person.familyName}}
+    </AuHeading>
 
-    <form id="edit-personal-information-form" aria-label="edit-personal-information-form" {{on "submit" (perform
-      this.save)}}>
-
+    <form
+      id="edit-personal-info-form"
+      aria-label="edit-personal-info-form"
+      {{on "submit" (perform this.save)}}
+    >
       <div class="au-o-flow au-o-flow--large">
-
         <div>
-          <AuToolbar class="au-u-margin-bottom-small">
-            <AuToolbarGroup>
-              <AuHeading @level="3" @skin="5">Persoonlijke gegevens</AuHeading>
-            </AuToolbarGroup>
-          </AuToolbar>
+          <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-small">Persoonlijke gegevens</AuHeading>
           <AuCard as |c|>
             <c.content>
               <div class="au-o-grid">
@@ -35,7 +26,7 @@
                       </AuLabel>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuInput @value={{@model.givenName}} @width="block" id="person-given-name" />
+                      <AuInput @value={{@model.person.givenName}} @width="block" id="person-given-name" />
                     </div>
                   </div>
                 </div>
@@ -62,7 +53,7 @@
                       </AuLabel>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuInput @width="block" @value={{@model.familyName}} id="person-family-name" />
+                      <AuInput @width="block" @value={{@model.person.familyName}} id="person-family-name" />
                     </div>
                   </div>
                 </div>
@@ -76,7 +67,7 @@
                       </AuLabel>
                     </div>
                     <div class="au-o-grid__item au-u-3-4">
-                      <AuInput @width="block" @value={{@model.firstNameUsed}} id="person-used-name" />
+                      <AuInput @width="block" @value={{@model.person.firstNameUsed}} id="person-used-name" />
                     </div>
                   </div>
                 </div>

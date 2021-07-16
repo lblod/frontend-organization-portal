@@ -9,11 +9,11 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
   *save(event) {
     event.preventDefault();
 
-    yield this.model.save();
+    yield this.model.person.save();
 
     this.router.transitionTo(
       'people.person.personal-information',
-      this.model.id
+      this.model.person.id
     );
   }
 }
