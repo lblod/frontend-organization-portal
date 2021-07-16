@@ -1,123 +1,77 @@
-<div class="au-o-box">
-  <AuToolbar>
-    <AuToolbarGroup>
-      <AuHeading>
-        Vestiging:
-        {{@model.site.address.fullAddress}}
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <div class="au-o-flow au-o-flow--tiny">
+      <AuToolbar>
+        <AuToolbarGroup>
+          <AuHeading>
+            Vestiging:
+            {{@model.site.address.fullAddress}}
+          </AuHeading>
+        </AuToolbarGroup>
+        <AuToolbarGroup>
+          <AuLink
+            @route="administrative-units.administrative-unit.sites.site.edit"
+            @skin="button-secondary"
+            @icon="pencil"
+            @iconAlignment="left"
+          >
+            Bewerk
+          </AuLink>
+        </AuToolbarGroup>
+      </AuToolbar>
+      <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
+        {{@model.administrativeUnit.name}}
       </AuHeading>
-    </AuToolbarGroup>
-    <AuToolbarGroup>
-      <AuLink
-        @route="administrative-units.administrative-unit.sites.site.edit"
-        @skin="button-secondary"
-        @icon="pencil"
-        @iconAlignment="left"
-      >
-        Bewerk
-      </AuLink>
-    </AuToolbarGroup>
-  </AuToolbar>
-  <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
-    {{@model.administrativeUnit.name}}
-  </AuHeading>
-</div>
+    </div>
 
-<div class="au-o-box">
-  <AuToolbar class="au-u-margin-bottom-small">
-    <AuToolbarGroup>
-      <AuHeading @level="3" @skin="5">Kerngegevens</AuHeading>
-    </AuToolbarGroup>
-  </AuToolbar>
-  <AuCard @standOut={{true}} as |c|>
-    <c.content>
-      <div class="au-flow au-o-flow--large">
-        <div class="au-o-grid">
-          <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
-            <div class="au-o-grid">
-              <div class="au-o-grid__item au-u-1-4">
-                <p><strong>Vestigingstype</strong></p>
-              </div>
-              <div class="au-o-grid__item au-u-3-4">
-                <p>{{@model.site.siteType.label}}</p>
-              </div>
-            </div>
-          </div>
-          <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
-            <div class="au-o-grid">
-              <div class="au-o-grid__item au-u-1-4">
-                <p><strong>Primair correspondentieadres</strong></p>
-              </div>
-              <div class="au-o-grid__item au-u-3-4">
-                <p>{{if
-                    (eq @model.site.id @model.administrativeUnit.primarySite.id)
-                    "Ja"
-                    "Nee"
-                  }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </c.content>
-  </AuCard>
-</div>
+    <DataCard>
+      <:title>Kerngegevens</:title>
+      <:card as |Grid|>
+        <Grid as |Item|>
+          <Item>
+            <:label>Vestigingstype</:label>
+            <:content>{{@model.site.siteType.label}}</:content>
+          </Item>
+          <Item>
+            <:label>Primair correspondentieadres</:label>
+            <:content>{{if
+                (eq @model.site.id @model.administrativeUnit.primarySite.id)
+                "Ja"
+                "Nee"
+              }}
+            </:content>
+          </Item>
+        </Grid>
+      </:card>
+    </DataCard>
 
-<div class="au-o-box">
-  <AuToolbar class="au-u-margin-bottom-small">
-    <AuToolbarGroup>
-      <AuHeading @level="4" @skin="5">Contactgegevens</AuHeading>
-    </AuToolbarGroup>
-  </AuToolbar>
-  <AuCard @standOut={{true}} as |c|>
-    <c.content>
-      <div class="au-flow au-o-flow--large">
-        <div class="au-o-grid">
-          <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
-            <div class="au-o-grid">
-              <div class="au-o-grid__item au-u-1-4">
-                <p><strong>Adres</strong></p>
-              </div>
-              <div class="au-o-grid__item au-u-3-4">
-                <p>{{@model.site.address.fullAddress}}</p>
-              </div>
-            </div>
-          </div>
-          <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
-            <div class="au-o-grid">
-              <div class="au-o-grid__item au-u-1-4">
-                <p><strong>Provincie</strong></p>
-              </div>
-              <div class="au-o-grid__item au-u-3-4">
-                <p>{{@model.site.address.province}}</p>
-              </div>
-            </div>
-          </div>
+    <DataCard>
+      <:title>Contactgegevens</:title>
+      <:card as |Grid|>
+        <Grid as |Item|>
+          <Item>
+            <:label>Adres</:label>
+            <:content>{{@model.site.address.fullAddress}}</:content>
+          </Item>
+          <Item>
+            <:label>Provincie</:label>
+            <:content>{{@model.site.address.province}}</:content>
+          </Item>
           {{#if @model.site.contacts.firstObject.telephone}}
-            <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
-              <div class="au-o-grid">
-                <div class="au-o-grid__item au-u-1-4">
-                  <p><strong>Telefoonnummer</strong></p>
-                </div>
-                <div class="au-o-grid__item au-u-3-4">
-                  <p>{{@model.site.contacts.firstObject.telephone}}</p>
-                </div>
-              </div>
-            </div>
+            <Item>
+              <:label>Telefoonnummer</:label>
+              <:content
+              >{{@model.site.contacts.firstObject.telephone}}</:content>
+            </Item>
           {{/if}}
           {{#if @model.site.contacts.firstObject.website}}
-            <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
-              <div class="au-o-grid">
-                <div class="au-o-grid__item au-u-1-4">
-                  <p><strong>Website</strong></p>
-                </div>
-                <div class="au-o-grid__item au-u-3-4">
-                  <p>{{@model.site.contacts.firstObject.website}}</p>
-                </div>
-              </div>
-            </div>
+            <Item>
+              <:label>Website</:label>
+              <:content>{{@model.site.contacts.firstObject.website}}</:content>
+            </Item>
           {{/if}}
-        </div>
-      </div>
-    </c.content>
-  </AuCard>
+        </Grid>
+      </:card>
+    </DataCard>
+  </div>
 </div>
