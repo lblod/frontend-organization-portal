@@ -1,0 +1,10 @@
+<PowerSelect
+  @allowClear={{true}}
+  @loadingMessage="Aan het laden..."
+  @options={{this.siteTypes}}
+  @selected={{@selected}}
+  @onChange={{@onChange}}
+  as |siteType|
+>
+  {{siteType.label}}
+</PowerSelect>

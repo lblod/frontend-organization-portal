@@ -28,8 +28,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesIndexRoute extend
     return {
       administrativeUnit: administrativeUnit,
       primarySite: await administrativeUnit.primarySite,
-      // temporary, sites data are not yet available
-      sites: await administrativeUnit.primarySite,
+      sites: await administrativeUnit.sites,
     };
   }
 }

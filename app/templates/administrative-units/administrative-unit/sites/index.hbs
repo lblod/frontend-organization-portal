@@ -34,7 +34,9 @@
       <td>{{site.siteType.label}}</td>
       <td>{{if (eq site.id this.model.primarySite.id) "Ja" "Neen"}}</td>
       <td>
-        <AuLink @route="administrative-units.administrative-unit.sites">Bewerk</AuLink>
+        <AuLink @model={{site.id}} @route="administrative-units.administrative-unit.sites.site.edit">
+          Bewerk
+        </AuLink>
       </td>
     </c.body>
   </t.content>
