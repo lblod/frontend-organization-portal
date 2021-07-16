@@ -8,12 +8,8 @@
           </AuHeading>
         </AuToolbarGroup>
         <AuToolbarGroup>
-          <AuLink
-            @route="people.person.personal-information.edit"
-            @skin="button-secondary"
-            @icon="pencil"
-            @iconAlignment="left"
-          >
+          <AuLink @route="people.person.personal-information.edit" @skin="button-secondary" @icon="pencil"
+            @iconAlignment="left">
             Bewerk
           </AuLink>
         </AuToolbarGroup>
@@ -38,15 +34,12 @@
             <:content>{{@model.person.familyName}}</:content>
           </Item>
         </Grid>
-        <Grid as |Item|>
-          {{#if @model.person.firstNameUsed}}
-          <Item>
-            <:label>Roepnaam</:label>
-            <:content>{{@model.person.firstNameUsed}}</:content>
-          </Item>
-          {{/if}}
-        </Grid>
-
+        {{#if @model.person.firstNameUsed}}
+        <Item>
+          <:label>Roepnaam</:label>
+          <:content>{{@model.person.firstNameUsed}}</:content>
+        </Item>
+        {{/if}}
       </:card>
     </DataCard>
 
@@ -68,24 +61,31 @@
           </Item>
         </Grid>
         <Grid as |Item|>
+          {{#if @model.person.mandatories.firstObject.contacts.firstObject.email}}
           <Item>
             <:label>Email</:label>
             <:content>{{@model.person.mandatories.firstObject.contacts.firstObject.email}}</:content>
           </Item>
+          {{/if}}
+          {{#if @model.person.mandatories.firstObject.contacts.firstObject.telephone}}
           <Item>
             <:label>Telefoonnummer</:label>
             <:content>{{@model.person.mandatories.firstObject.contacts.firstObject.telephone}}</:content>
           </Item>
+          {{/if}}
         </Grid>
         <Grid as |Item|>
+          {{#if @model.person.mandatories.firstObject.contacts.firstObject.contactAddress.fullAddress}}
           <Item>
             <:label>Adres</:label>
-            <:content>{{@model.person.mandatories.firstObject.contacts.firstObject.contactAddress.fullAddress}}</:content>
+            <:content>{{@model.person.mandatories.firstObject.contacts.firstObject.contactAddress.fullAddress}}
+            </:content>
           </Item>
-          <Item>
+          {{/if}}
+{{!--           <Item>
             <:label>GSM nummer</:label>
             <:content></:content>
-          </Item>
+          </Item> --}}
         </Grid>
       </:card>
     </DataCard>
