@@ -1,0 +1,85 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box">
+    <AuHeading class="au-u-margin-bottom-tiny">
+      Bewerk Persoonlijke gegevens
+    </AuHeading>
+    <AuHeading @level="2" @skin="3" class="au-u-margin-bottom-large">
+      {{@model.person.givenName}}
+      {{@model.person.familyName}}
+    </AuHeading>
+
+    <form
+      id="edit-personal-info-form"
+      aria-label="edit-personal-info-form"
+      {{on "submit" (perform this.save)}}
+    >
+      <div class="au-o-flow au-o-flow--large">
+        <EditCard>
+          <:title>Persoonlijke gegevens</:title>
+          <:card as |Grid|>
+            <Grid as |Item|>
+              <Item @labelFor="person-given-name">
+                <:label>Voornaam</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.person.givenName}}
+                    @width="block"
+                    id="person-given-name"
+                  />
+                </:content>
+              </Item>
+              {{! TODO: enable this once Date of Birth data is available }}
+              {{! <Item @labelFor="person-date-of-birth">
+              <:label>Geboorte datum</:label>
+              <:content>
+                <AuDatePicker @id="person-date-of-birth" />
+              </:content>
+            </Item> }}
+              <Item @labelFor="person-family-name">
+                <:label>Achternaam</:label>
+                <:content>
+                  <AuInput
+                    @width="block"
+                    @value={{@model.person.familyName}}
+                    id="person-family-name"
+                  />
+                </:content>
+              </Item>
+            </Grid>
+            <Grid as |Item|>
+              <Item @labelFor="person-used-name">
+                <:label>Roepnaam</:label>
+                <:content>
+                  <AuInput
+                    @width="block"
+                    @value={{@model.person.firstNameUsed}}
+                    id="person-used-name"
+                  />
+                </:content>
+              </Item>
+            </Grid>
+          </:card>
+        </EditCard>
+
+        <AuButtonGroup>
+          <AuButton
+            @loading={{this.save.isRunning}}
+            @disabled={{this.save.isRunning}}
+            type="submit"
+          >
+            Opslaan
+          </AuButton>
+
+          <AuLink
+            @route="people.person.personal-information"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>
+        </AuButtonGroup>
+      </div>
+
+    </form>
+
+  </div>
+</div>
