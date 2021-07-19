@@ -70,40 +70,38 @@
                   </:content>
                 </Item>
               </Grid>
-            {{/if}}
-            {{#if (eq @model.administrativeUnit.constructor.modelName "worship-service")}}
-            <Grid as |Item|>
-              <Item>
-                <:label>Grensoverschrijvend</:label>
-                <:content>
-                  <AuControlRadio
-                    @label="Ja"
-                    @name="is-cross-border"
-                    @value={{@model.administrativeUnit.crossBorder}}
-                    @identifier="cross-border-true"
-                    @onChange={{fn
-                      (mut @model.administrativeUnit.crossBorder)
-                      true
-                    }}
-                    checked={{@model.administrativeUnit.crossBorder}}
-                  />
+              <Grid as |Item|>
+                <Item>
+                  <:label>Grensoverschrijvend</:label>
+                  <:content>
+                    <AuControlRadio
+                      @label="Ja"
+                      @name="is-cross-border"
+                      @value={{@model.administrativeUnit.crossBorder}}
+                      @identifier="cross-border-true"
+                      @onChange={{fn
+                        (mut @model.administrativeUnit.crossBorder)
+                        true
+                      }}
+                      checked={{@model.administrativeUnit.crossBorder}}
+                    />
 
-                  <br />
+                    <br />
 
-                  <AuControlRadio
-                    @label="Nee"
-                    @name="is-cross-border"
-                    @value={{@model.administrativeUnit.crossBorder}}
-                    @identifier="cross-border-false"
-                    @onChange={{fn
-                      (mut @model.administrativeUnit.crossBorder)
-                      false
-                    }}
-                    checked={{not @model.administrativeUnit.crossBorder}}
-                  />
-                </:content>
-              </Item>
-            </Grid>
+                    <AuControlRadio
+                      @label="Nee"
+                      @name="is-cross-border"
+                      @value={{@model.administrativeUnit.crossBorder}}
+                      @identifier="cross-border-false"
+                      @onChange={{fn
+                        (mut @model.administrativeUnit.crossBorder)
+                        false
+                      }}
+                      checked={{not @model.administrativeUnit.crossBorder}}
+                    />
+                  </:content>
+                </Item>
+              </Grid>
             {{/if}}
             <Grid class="au-u-margin-top-large" as |Item|>
               <Item @labelFor="administrative-unit-scope">
@@ -130,7 +128,7 @@
                 <Item>
                   <:label>{{identifier.idName}}</:label>
                   <:content>
-                    <p>{{identifier.structuredIdentifier.localId}}</p>
+                    {{identifier.structuredIdentifier.localId}}
                   </:content>
                 </Item>
               {{/each}}

@@ -122,8 +122,8 @@
           Gerelateerde organisaties
         </:title>
         <:card as |Grid|>
-          <Grid as |Item|>
-            {{#if @model.administrativeUnit.isSubOrganizationOf.name}}
+          {{#if @model.administrativeUnit.isSubOrganizationOf.name}}
+            <Grid as |Item|>
               <Item>
                 <:label>Centraal bestuur</:label>
                 <:content>
@@ -135,23 +135,23 @@
                   </AuLink>
                 </:content>
               </Item>
-              {{/if}}
-          </Grid>
+            </Grid>
+          {{/if}}
+          {{#if @model.administrativeUnit.isAssociatedWith.name}}
             <Grid as |Item|>
-              {{#if @model.administrativeUnit.isAssociatedWith.name}}
-                <Item>
-                  <:label>Representatief orgaan</:label>
-                  <:content>
-                    <AuLink
-                      @route="administrative-units.administrative-unit"
-                      {{!-- @model={{@model.administrativeUnit.isAssociatedWith.id}} --}}
-                    >
-                      {{@model.administrativeUnit.isAssociatedWith.name}}
-                    </AuLink>
-                  </:content>
-                </Item>
-              {{/if}}
-          </Grid>
+              <Item>
+                <:label>Representatief orgaan</:label>
+                <:content>
+                  <AuLink
+                    @route="administrative-units.administrative-unit"
+                    {{!-- @model={{@model.administrativeUnit.isAssociatedWith.id}} --}}
+                  >
+                    {{@model.administrativeUnit.isAssociatedWith.name}}
+                  </AuLink>
+                </:content>
+              </Item>
+            </Grid>
+          {{/if}}
         </:card>
       </DataCard>
     {{/if}}
