@@ -4,7 +4,8 @@
       Bewerk Persoonlijke gegevens
     </AuHeading>
     <AuHeading @level="2" @skin="3" class="au-u-margin-bottom-large">
-      {{@model.person.givenName}} {{@model.person.familyName}}
+      {{@model.person.givenName}}
+      {{@model.person.familyName}}
     </AuHeading>
 
     <form
@@ -13,79 +14,71 @@
       {{on "submit" (perform this.save)}}
     >
       <div class="au-o-flow au-o-flow--large">
-        <div>
-          <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-small">Persoonlijke gegevens</AuHeading>
-          <AuCard as |c|>
-            <c.content>
-              <div class="au-o-grid">
-                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
-                  <div class="au-o-grid">
-                    <div class="au-o-grid__item au-u-1-4">
-                      <AuLabel for="person-given-name">
-                        Voornaam
-                      </AuLabel>
-                    </div>
-                    <div class="au-o-grid__item au-u-3-4">
-                      <AuInput @value={{@model.person.givenName}} @width="block" id="person-given-name" />
-                    </div>
-                  </div>
-                </div>
-                {{!-- TODO: enable this once Date of Birth data is available --}}
-                {{!-- <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
-                  <div class="au-o-grid">
-                    <div class="au-o-grid__item au-u-1-4">
-                      <AuLabel for="person-date-of-birth">
-                        Geboorte datum
-                      </AuLabel>
-                    </div>
-                    <div class="au-o-grid__item au-u-3-4">
-                      <AuDatePicker @id="person-date-of-birth" />
-                    </div>
-                  </div>
-                </div> --}}
-              </div>
-              <div class="au-o-grid">
-                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
-                  <div class="au-o-grid">
-                    <div class="au-o-grid__item au-u-1-4">
-                      <AuLabel for="person-family-name">
-                        Achternaam
-                      </AuLabel>
-                    </div>
-                    <div class="au-o-grid__item au-u-3-4">
-                      <AuInput @width="block" @value={{@model.person.familyName}} id="person-family-name" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="au-o-grid">
-                <div class="au-o-grid__item au-u-1-1 au-u-1-2@medium">
-                  <div class="au-o-grid">
-                    <div class="au-o-grid__item au-u-1-4">
-                      <AuLabel for="person-used-name">
-                        Roepnaam
-                      </AuLabel>
-                    </div>
-                    <div class="au-o-grid__item au-u-3-4">
-                      <AuInput @width="block" @value={{@model.person.firstNameUsed}} id="person-used-name" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </c.content>
-          </AuCard>
-        </div>
+        <EditCard>
+          <:title>Persoonlijke gegevens</:title>
+          <:card as |Grid|>
+            <Grid as |Item|>
+              <Item @labelFor="person-given-name">
+                <:label>Voornaam</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.person.givenName}}
+                    @width="block"
+                    id="person-given-name"
+                  />
+                </:content>
+              </Item>
+              {{! TODO: enable this once Date of Birth data is available }}
+              {{! <Item @labelFor="person-date-of-birth">
+              <:label>Geboorte datum</:label>
+              <:content>
+                <AuDatePicker @id="person-date-of-birth" />
+              </:content>
+            </Item> }}
+              <Item @labelFor="person-family-name">
+                <:label>Achternaam</:label>
+                <:content>
+                  <AuInput
+                    @width="block"
+                    @value={{@model.person.familyName}}
+                    id="person-family-name"
+                  />
+                </:content>
+              </Item>
+            </Grid>
+            <Grid as |Item|>
+              <Item @labelFor="person-used-name">
+                <:label>Roepnaam</:label>
+                <:content>
+                  <AuInput
+                    @width="block"
+                    @value={{@model.person.firstNameUsed}}
+                    id="person-used-name"
+                  />
+                </:content>
+              </Item>
+            </Grid>
+          </:card>
+        </EditCard>
 
         <AuButtonGroup>
-          <AuButton @loading={{this.save.isRunning}} @disabled={{this.save.isRunning}} type="submit">
+          <AuButton
+            @loading={{this.save.isRunning}}
+            @disabled={{this.save.isRunning}}
+            type="submit"
+          >
             Opslaan
           </AuButton>
 
-          <AuLink @route="people.person.personal-information" @skin="button-secondary">
+          <AuLink
+            @route="people.person.personal-information"
+            @skin="button-secondary"
+          >
             Annuleer
           </AuLink>
         </AuButtonGroup>
       </div>
+
     </form>
 
   </div>
