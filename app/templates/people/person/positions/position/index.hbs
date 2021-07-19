@@ -44,7 +44,7 @@
             <:content>Mandaat</:content>
           </Item>
           <Item>
-            <:title>Naam eredienst</:title>
+            <:label>Naam eredienst</:label>
             <:content>
               {{#let
                 @model.mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit
@@ -60,7 +60,7 @@
             </:content>
           </Item>
           <Item>
-            <:title>Bestuursfunctie</:title>
+            <:label>Bestuursfunctie</:label>
             <:content>{{@model.mandatory.mandate.roleBoard.label}}</:content>
           </Item>
         </Grid>

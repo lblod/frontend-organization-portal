@@ -1,0 +1,217 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <AuToolbar>
+      <AuToolbarGroup>
+        <AuHeading>
+          Bestuursorgaan:
+          {{@model.adminGovModel.governingBody.classification.label}}
+        </AuHeading>
+      </AuToolbarGroup>
+      <AuToolbarGroup>
+        {{! TODO: Replace this with a link once the "edit" route is created }}
+        <AuLink
+          @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+          @skin="button-secondary"
+          @icon="pencil"
+          @iconAlignment="left"
+        >
+          Bewerk
+        </AuLink>
+      </AuToolbarGroup>
+    </AuToolbar>
+    <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
+      {{@model.adminGovModel.administrativeUnit.name}}
+    </AuHeading>
+
+    <DataCard>
+      <:title>Bestuursorgaan</:title>
+      <:card as |Grid|>
+        <Grid as |Item|>
+          <Item>
+            <:label>Type</:label>
+            <:content
+            >{{@model.adminGovModel.governingBody.classification.label}}</:content>
+          </Item>
+          <Item>
+            <:label>Start datum</:label>
+            <:content>{{date-format
+                @model.govBodyTimeSpec.startDate
+              }}</:content>
+          </Item>
+          <Item>
+            <:label>Termijn</:label>
+            <:content>Bestuursperiode
+              {{@model.govBodyTimeSpec.period}}</:content>
+          </Item>
+          <Item>
+            <:label>Einddatum</:label>
+            <:content>{{date-format @model.govBodyTimeSpec.endDate}}</:content>
+          </Item>
+        </Grid>
+      </:card>
+    </DataCard>
+
+    {{#if @model.mandateLid}}
+      <div>
+        <AuToolbar class="au-u-margin-bottom-small">
+          <AuToolbarGroup>
+            <AuHeading @level="4" @skin="5">Bestuursleden</AuHeading>
+          </AuToolbarGroup>
+          <AuToolbarGroup>
+            {{! TODO: Replace this with a link once the "new" route is created }}
+            <AuLink
+              @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+              @skin="button-secondary"
+              @icon="add"
+              @iconAlignment="left"
+            >
+              Nieuw
+            </AuLink>
+          </AuToolbarGroup>
+        </AuToolbar>
+        <AuDataTable
+          @content={{@model.mandateLid}}
+          @noDataMessage="Geen Bestuursleden"
+          as |t|
+        >
+          <t.content as |c|>
+            <c.header>
+              <th class="au-c-data-table__header-title">Voornaam</th>
+              <th class="au-c-data-table__header-title">Achternaam</th>
+              <th class="au-c-data-table__header-title">Mandaat</th>
+              <th class="au-c-data-table__header-title">Start mandaat</th>
+              <th class="au-c-data-table__header-title">Einde mandaat</th>
+              <th></th>
+            </c.header>
+            <c.body as |mandate|>
+              {{#let mandate.heldBy.firstObject as |mandatory|}}
+                <td>
+                  <AuLink
+                    @route="people.person"
+                    @model={{mandatory.governingAlias.id}}
+                  >
+                    {{mandatory.governingAlias.givenName}}
+                  </AuLink>
+                </td>
+                <td>
+                  <AuLink
+                    @route="people.person"
+                    @model={{mandatory.governingAlias.id}}
+                  >
+                    {{mandatory.governingAlias.familyName}}
+                  </AuLink>
+                </td>
+                <td>
+                  <AuLink
+                    @route="people.person.positions.position"
+                    @models={{array mandatory.governingAlias.id mandatory.id}}
+                  >
+                    {{mandatory.mandate.roleBoard.label}}
+                  </AuLink>
+                </td>
+                <td>
+                  {{date-format mandatory.startDate}}
+                </td>
+                <td>
+                  {{#if mandatory.endDate}}
+                    {{date-format mandatory.endDate}}
+                  {{else}}
+                    {{date-format mandatory.expectedEndDate}}
+                  {{/if}}
+
+                </td>
+                <td>
+                  <AuLink
+                    @route="administrative-units.administrative-unit.governing-bodies"
+                  >
+                    Bewerk
+                  </AuLink>
+                </td>
+              {{/let}}
+            </c.body>
+          </t.content>
+        </AuDataTable>
+      </div>
+    {{/if}}
+
+    <div>
+      <AuToolbar class="au-u-margin-bottom-small">
+        <AuToolbarGroup>
+          <AuHeading @level="4" @skin="5">Mandatarissen</AuHeading>
+        </AuToolbarGroup>
+        <AuToolbarGroup>
+          {{! TODO: Replace this with a link once the "new" route is created }}
+          <AuLink
+            @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+            @skin="button-secondary"
+            @icon="add"
+            @iconAlignment="left"
+          >
+            Nieuw
+          </AuLink>
+        </AuToolbarGroup>
+      </AuToolbar>
+      <AuDataTable
+        @content={{@model.mandatesOther}}
+        @noDataMessage="Geen Mandatarissen"
+        as |t|
+      >
+        <t.content as |c|>
+          <c.header>
+            <th class="au-c-data-table__header-title">Voornaam</th>
+            <th class="au-c-data-table__header-title">Achternaam</th>
+            <th class="au-c-data-table__header-title">Mandaat</th>
+            <th class="au-c-data-table__header-title">Start mandaat</th>
+            <th class="au-c-data-table__header-title">Einde mandaat</th>
+            <th></th>
+          </c.header>
+          <c.body as |mandate|>
+            {{#let mandate.heldBy.firstObject as |mandatory|}}
+              <td>
+                <AuLink
+                  @route="people.person"
+                  @model={{mandatory.governingAlias.id}}
+                >
+                  {{mandatory.governingAlias.givenName}}
+                </AuLink>
+              </td>
+              <td>
+                <AuLink
+                  @route="people.person"
+                  @model={{mandatory.governingAlias.id}}
+                >
+                  {{mandatory.governingAlias.familyName}}
+                </AuLink>
+              </td>
+              <td>
+                <AuLink
+                  @route="people.person.positions.position"
+                  @models={{array mandatory.governingAlias.id mandatory.id}}
+                >
+                  {{mandate.roleBoard.label}}
+                </AuLink>
+              </td>
+              <td>
+                {{date-format mandatory.startDate}}
+              </td>
+              <td>
+                {{#if mandatory.endDate}}
+                  {{date-format mandatory.endDate}}
+                {{else}}
+                  {{date-format mandatory.expectedEndDate}}
+                {{/if}}
+              </td>
+              <td>
+                <AuLink
+                  @route="administrative-units.administrative-unit.governing-bodies"
+                >
+                  Bewerk
+                </AuLink>
+              </td>
+            {{/let}}
+          </c.body>
+        </t.content>
+      </AuDataTable>
+    </div>
+  </div>
+</div>

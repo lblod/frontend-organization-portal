@@ -14,6 +14,7 @@ Router.map(function () {
       this.route('positions', { path: '/posities' }, function () {
         this.route('position', { path: '/:positionId/' }, function () {});
       });
+      this.route('contacts', function () {});
     });
   });
   this.route(
@@ -32,7 +33,13 @@ Router.map(function () {
         this.route(
           'governing-bodies',
           { path: '/bestuursorganen' },
-          function () {}
+          function () {
+            this.route(
+              'governing-body',
+              { path: '/:governingBodyId/' },
+              function () {}
+            );
+          }
         );
         this.route('ministers', { path: '/bedienaren' }, function () {});
       });

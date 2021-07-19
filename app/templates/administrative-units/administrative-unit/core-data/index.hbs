@@ -135,20 +135,22 @@
                   </AuLink>
                 </:content>
               </Item>
-            {{/if}}
-            {{#if @model.administrativeUnit.isAssociatedWith.name}}
-              <Item>
-                <:label>Representatief orgaan</:label>
-                <:content>
-                  <AuLink
-                    @route="administrative-units.administrative-unit"
-                    {{!-- @model={{@model.administrativeUnit.isAssociatedWith.id}} --}}
-                  >
-                    {{@model.administrativeUnit.isAssociatedWith.name}}
-                  </AuLink>
-                </:content>
-              </Item>
-            {{/if}}
+              {{/if}}
+          </Grid>
+            <Grid as |Item|>
+              {{#if @model.administrativeUnit.isAssociatedWith.name}}
+                <Item>
+                  <:label>Representatief orgaan</:label>
+                  <:content>
+                    <AuLink
+                      @route="administrative-units.administrative-unit"
+                      {{!-- @model={{@model.administrativeUnit.isAssociatedWith.id}} --}}
+                    >
+                      {{@model.administrativeUnit.isAssociatedWith.name}}
+                    </AuLink>
+                  </:content>
+                </Item>
+              {{/if}}
           </Grid>
         </:card>
       </DataCard>
