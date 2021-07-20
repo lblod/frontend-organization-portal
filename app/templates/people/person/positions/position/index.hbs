@@ -38,8 +38,8 @@
       <:title>Positie</:title>
       <:card as |Grid|>
         <Grid as |Item|>
-          {{! TODO: Make it variable }}
           <Item>
+            {{! TODO: Make it variable to also have Bedienaar}}
             <:label>Type</:label>
             <:content>Mandaat</:content>
           </Item>
@@ -75,16 +75,18 @@
             {{#if @model.mandatory.contacts.firstObject.email}}
               <Item>
                 <:label>Email</:label>
-                <:content
-                >{{@model.mandatory.contacts.firstObject.email}}</:content>
+                <:content>
+                  {{@model.mandatory.contacts.firstObject.email}}
+                </:content>
               </Item>
             {{/if}}
             {{#if @model.mandatory.contacts.firstObject.telephone}}
               {{! TODO: Identify if it is a landline or mobile number }}
               <Item>
                 <:label>Vaste telefoonnummer</:label>
-                <:content
-                >{{@model.mandatory.contacts.firstObject.telephone}}</:content>
+                <:content>
+                  {{@model.mandatory.contacts.firstObject.telephone}}
+                </:content>
               </Item>
             {{/if}}
             {{#if
@@ -92,8 +94,9 @@
             }}
               <Item>
                 <:label>Adres</:label>
-                <:content
-                >{{@model.mandatory.contacts.firstObject.contactAddress.fullAddress}}</:content>
+                <:content>
+                  {{@model.mandatory.contacts.firstObject.contactAddress.fullAddress}}
+                </:content>
               </Item>
             {{/if}}
           </Grid>
@@ -106,10 +109,8 @@
       <:card as |Grid|>
         <Grid as |Item|>
           <Item>
-            {{! TODO: Ember complains about having a component inside a label component }}
             <:label>Start mandaat</:label>
-            <:content>{{@model.mandatory.startDate}}</:content>
-            {{!-- <:content>{{date-format @model.mandatory.startDate}}</:content> --}}
+            <:content>{{date-format @model.mandatory.startDate}}</:content>
           </Item>
           {{#if @model.mandatory.mandate.governingBody.period}}
             <Item>
@@ -120,12 +121,10 @@
             </Item>
           {{/if}}
           <Item>
-            {{! TODO: Ember complains about having a component inside a label component }}
             <:label>Geplande einddatum</:label>
-            <:content>{{@model.mandatory.expectedEndDate}}</:content>
-            {{!-- <:content>{{date-format
-                @model.mandatory.expectedEndDate
-              }}</:content> --}}
+            <:content>
+              {{date-format @model.mandatory.expectedEndDate}}
+            </:content>
           </Item>
           {{#if @model.mandatory.typeHalf.label}}
             <Item>
@@ -135,10 +134,8 @@
           {{/if}}
           {{#if @model.mandatory.endDate}}
             <Item>
-              {{! TODO: Ember complains about having a component inside a label component }}
               <:label>Einddatum</:label>
-              <:content>{{@model.mandatory.endDate}}</:content>
-              {{!-- <:content>{{date-format @model.mandatory.endDate}}</:content> --}}
+              <:content>{{date-format @model.mandatory.endDate}}</:content>
             </Item>
           {{/if}}
           {{#if @model.mandatory.reasonStopped}}
