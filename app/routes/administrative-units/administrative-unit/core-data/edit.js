@@ -14,6 +14,25 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
       contacts.pushObject(this.store.createRecord('contact-point'));
     }
 
+    let identifiers = await administrativeUnit.get('identifiers');
+    if (identifiers.length === 1) {
+      let idName;
+      if (identifiers.firstObject.idName === 'SharePoint identificator') {
+        idName = 'KBO nummer';
+      } else {
+        idName = 'SharePoint identificator';
+      }
+      let identifier = this.store.createRecord('identifier', {
+        idName: idName,
+      });
+      let structuredIdentifier = this.store.createRecord(
+        'structured-identifier'
+      );
+      identifier.structuredIdentifier = structuredIdentifier;
+
+      identifiers.pushObject(identifier);
+    }
+
     return {
       administrativeUnit,
     };

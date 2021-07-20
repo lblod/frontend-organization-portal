@@ -14,7 +14,7 @@
     >
       <div class="au-o-flow au-o-flow--large">
         <EditCard>
-          <:title>Bestuur van de eredienst</:title>
+          <:title>Bestuurseenheid</:title>
           <:card as |Grid|>
             <Grid as |Item|>
               <Item @labelFor="worship-service-name">
@@ -45,6 +45,19 @@
                   </PowerSelect>
                 </:content>
               </Item>
+              <Item>
+                <:label>Type bestuur</:label>
+                <:content>
+                  <PowerSelect
+                    @disabled={{true}}
+                    @selected={{@model.administrativeUnit.classification}}
+                    @onChange={{fn (mut @model.administrativeUnit.classification)}}
+                    as |classification|
+                  >
+                    {{classification.label}}
+                  </PowerSelect>
+                </:content>
+              </Item>
               <Item @labelFor="recognized-worship-type-select">
                 <:label>Type eredienst</:label>
                 <:content>
@@ -57,7 +70,12 @@
                 </:content>
               </Item>
             </Grid>
-            {{#if (eq @model.administrativeUnit.constructor.modelName "worship-service")}}
+            {{#if
+              (eq
+                @model.administrativeUnit.constructor.modelName
+                "worship-service"
+              )
+            }}
               <Grid as |Item|>
                 <Item @labelFor="denomination">
                   <:label>Strekking</:label>
@@ -128,7 +146,11 @@
                 <Item>
                   <:label>{{identifier.idName}}</:label>
                   <:content>
-                    {{identifier.structuredIdentifier.localId}}
+                    <AuInput
+                      @width="block"
+                      @value={{identifier.structuredIdentifier.localId}}
+                      id={{identifier.idName}}
+                    />
                   </:content>
                 </Item>
               {{/each}}
