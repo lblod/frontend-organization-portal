@@ -51,7 +51,9 @@
                   <PowerSelect
                     @disabled={{true}}
                     @selected={{@model.administrativeUnit.classification}}
-                    @onChange={{fn (mut @model.administrativeUnit.classification)}}
+                    @onChange={{fn
+                      (mut @model.administrativeUnit.classification)
+                    }}
                     as |classification|
                   >
                     {{classification.label}}
@@ -125,21 +127,10 @@
               <Item @labelFor="administrative-unit-scope">
                 <:label>Werkingsgebied</:label>
                 <:content>
-                  {{! TODO Make this work }}
-                  <PowerSelectMultiple
-                    @disabled={{true}}
-                    @allowClear={{true}}
-                    @searchEnabled={{true}}
-                    @loadingMessage="Aan het laden..."
-                    @noMatchesMessage="Geen resultaten"
-                    @searchMessage="Typ om te zoeken"
-                    @selected={{@model.administrativeUnit.scope}}
-                    @onChange={{fn (mut @model.administrativeUnit.scope)}}
-                    @triggerId="administrative-unit-scope"
-                    as |scope|
-                  >
-                    {{scope}}
-                  </PowerSelectMultiple>
+                  <ScopeSelect
+                    @selected={{this.model.administrativeUnit.scope}}
+                    @onChange={{fn (mut this.model.administrativeUnit.scope)}}
+                  />
                 </:content>
               </Item>
               {{#each @model.administrativeUnit.identifiers as |identifier|}}
@@ -251,7 +242,64 @@
             </Grid>
           </:card>
         </EditCard>
-
+        {{#if
+          (or
+            @model.administrativeUnit.isSubOrganizationOf.name
+            @model.administrativeUnit.isAssociatedWith.name
+            @model.administrativeUnit.subOrganizations
+          )
+        }}
+          <EditCard>
+            <:title>Gerelateerde organisaties</:title>
+            <:card as |Grid|>
+              {{#if @model.administrativeUnit.isSubOrganizationOf.name}}
+                <Grid as |Item|>
+                  <Item>
+                    <:label>Centraal bestuur</:label>
+                    <:content>
+                      <CentralWorshipServiceSelect
+                        @selected={{this.model.administrativeUnit.isSubOrganizationOf}}
+                        @onChange={{fn
+                          (mut
+                            this.model.administrativeUnit.isSubOrganizationOf
+                          )
+                        }}
+                      />
+                    </:content>
+                  </Item>
+                </Grid>
+              {{/if}}
+              {{#if @model.administrativeUnit.subOrganizations}}
+                {{#each
+                  @model.administrativeUnit.subOrganizations
+                  as |worship|
+                }}
+                  <Grid as |Item|>
+                    <Item>
+                      <:label>Bestuur van de eredienst</:label>
+                      <:content>
+                        {{worship.name}}
+                      </:content>
+                    </Item>
+                  </Grid>
+                {{/each}}
+              {{/if}}
+              {{#if @model.administrativeUnit.isAssociatedWith.name}}
+                <Grid as |Item|>
+                  <Item>
+                    <:label>Representatief orgaan</:label>
+                    <:content>
+                      <RepresentativeBodySelect
+                        @selected={{this.model.administrativeUnit.isAssociatedWith}}
+                        @onChange={{fn (mut this.model.administrativeUnit.isAssociatedWith)}}
+                      />
+                    </:content>
+                  </Item>
+                </Grid>
+              {{/if}}
+            </:card>
+          </EditCard>
+        {{/if}}
         <AuButtonGroup>
           <AuButton
             @loading={{this.save.isRunning}}

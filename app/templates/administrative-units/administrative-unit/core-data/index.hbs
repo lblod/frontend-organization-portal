@@ -33,9 +33,11 @@
           </Item>
           <Item>
             <:label>Status</:label>
-            <:content><OrganizationStatus
+            <:content>
+              <OrganizationStatus
                 @status={{@model.administrativeUnit.organizationStatus}}
-              /></:content>
+              />
+            </:content>
           </Item>
           <Item>
             <:label>Type bestuur</:label>
