@@ -15,6 +15,10 @@
   width: 50%;
 }
 
+.card-grid-item--align-top {
+  align-items: flex-start;
+}
+
 .card-grid-item__label {
   flex-basis: 20rem; // This has to be wide enough to fit all labels properly
   flex-shrink: 0;
