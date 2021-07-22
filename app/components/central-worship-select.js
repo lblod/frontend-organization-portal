@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { task } from 'ember-concurrency';
+import { restartableTask } from 'ember-concurrency';
 
 export default class CentralWorshipSelectComponent extends Component {
   @service fastboot;
@@ -16,14 +16,15 @@ export default class CentralWorshipSelectComponent extends Component {
     }
   }
 
-  @task
-  *loadCentralWorshipServicesTask() {
+  @restartableTask
+  *loadCentralWorshipServicesTask(searchParams = '') {
     const query = {
-      page: {
-        size: 1000,
-      },
       sort: 'name',
     };
+
+    if (searchParams.length > 1) {
+      query['filter[name]'] = searchParams;
+    }
 
     return yield this.store.query('central-worship-service', query);
   }

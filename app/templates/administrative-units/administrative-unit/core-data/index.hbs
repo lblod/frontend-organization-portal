@@ -52,7 +52,7 @@
             <Item>
               <:label> </:label>
               <:content>
-                <AuHelpText @skin="tertiary">Geweizigd op
+                <AuHelpText @skin="tertiary">Gewijzigd op
                   {{date-format
                     @model.administrativeUnit.resultedFrom.firstObject.date
                   }}</AuHelpText>
@@ -100,6 +100,11 @@
             <Item>
               <:label>{{identifier.idName}}</:label>
               <:content>{{identifier.structuredIdentifier.localId}}</:content>
+            </Item>
+            {{!-- Force to have only right column --}}
+            <Item>
+              <:label></:label>
+              <:content></:content>
             </Item>
           {{/each}}
         </Grid>

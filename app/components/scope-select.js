@@ -16,14 +16,14 @@ export default class ScopeSelectComponent extends Component {
   }
 
   @restartableTask
-  *loadScopesTask() {
+  *loadScopesTask(searchParams = '') {
     const query = {
-      page: {
-        size: 600,
-      },
       sort: 'label',
     };
 
+    if (searchParams.length > 1) {
+      query['filter[label]'] = searchParams;
+    }
     return yield this.store.query('location', query);
   }
 }

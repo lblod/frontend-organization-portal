@@ -48,25 +48,24 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     }
 
     let identifiers = yield this.administrativeUnit.identifiers;
-    if (
-      identifiers.firstObject.structuredIdentifier.get('hasDirtyAttributes')
-    ) {
-      let structuredIdentifier = yield identifiers.firstObject
-        .structuredIdentifier;
 
-      let isNewIdentifier = structuredIdentifier.get('isNew');
-      yield structuredIdentifier.save();
+    let structuredIdentifierFirst = yield identifiers.firstObject
+      .structuredIdentifier;
+
+    if (structuredIdentifierFirst.hasDirtyAttributes) {
+      let isNewIdentifier = structuredIdentifierFirst.isNew;
+      yield structuredIdentifierFirst.save();
 
       if (isNewIdentifier) {
         yield identifiers.firstObject.save();
       }
     }
-    if (identifiers.lastObject.structuredIdentifier.get('hasDirtyAttributes')) {
-      let structuredIdentifier = yield identifiers.lastObject
-        .structuredIdentifier;
 
-      let isNewIdentifier = structuredIdentifier.get('isNew');
-      yield structuredIdentifier.save();
+    let structuredIdentifierLast = yield identifiers.lastObject
+      .structuredIdentifier;
+    if (structuredIdentifierLast.hasDirtyAttributes) {
+      let isNewIdentifier = structuredIdentifierLast.isNew;
+      yield structuredIdentifierLast.save();
 
       if (isNewIdentifier) {
         yield identifiers.lastObject.save();

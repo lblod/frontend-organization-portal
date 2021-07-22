@@ -149,6 +149,10 @@
                     />
                   </:content>
                 </Item>
+                <Item>
+                  <:label></:label>
+                  <:content></:content>
+                </Item>
               {{/each}}
             </Grid>
           </:card>
@@ -280,7 +284,7 @@
               {{#each @model.administrativeUnit.subOrganizations as |worship|}}
                 <Grid as |Item|>
                   <Item>
-                    {{! TODO: Enalble edit worship service }}
+                    {{! TODO: Enable to edit the list of worship services that are linked to central worship service }}
                     <:label>Bestuur van de eredienst</:label>
                     <:content>
                       {{worship.name}}

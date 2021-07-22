@@ -1,6 +1,11 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
+const IDNAMES = {
+  SHAREPOINT: 'SharePoint identificator',
+  KBO: 'KBO nummer',
+};
+
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute extends Route {
   @service store;
 
@@ -17,10 +22,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     let identifiers = await administrativeUnit.get('identifiers');
     if (identifiers.length === 1) {
       let idName;
-      if (identifiers.firstObject.idName === 'SharePoint identificator') {
-        idName = 'KBO nummer';
+      if (identifiers.firstObject.idName === IDNAMES.SHAREPOINT) {
+        idName = IDNAMES.KBO;
       } else {
-        idName = 'SharePoint identificator';
+        idName = IDNAMES.SHAREPOINT;
       }
       let identifier = this.store.createRecord('identifier', {
         idName: idName,
