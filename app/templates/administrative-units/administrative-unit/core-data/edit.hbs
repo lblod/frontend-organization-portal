@@ -45,6 +45,8 @@
                   </PowerSelect>
                 </:content>
               </Item>
+            </Grid>
+            <Grid as |Item|>
               <Item>
                 <:label>Type bestuur</:label>
                 <:content>
@@ -60,6 +62,8 @@
                   </PowerSelect>
                 </:content>
               </Item>
+            </Grid>
+            <Grid as |Item|>
               <Item @labelFor="recognized-worship-type-select">
                 <:label>Type eredienst</:label>
                 <:content>
@@ -123,10 +127,11 @@
                 </Item>
               </Grid>
             {{/if}}
-            <Grid class="au-u-margin-top-large" as |Item|>
+            <Grid as |Item|>
               <Item @labelFor="administrative-unit-scope">
                 <:label>Werkingsgebied</:label>
                 <:content>
+                  {{! TODO: Enable multiple selections and concat the selections in one label }}
                   <ScopeSelect
                     @selected={{this.model.administrativeUnit.scope}}
                     @onChange={{fn (mut this.model.administrativeUnit.scope)}}
@@ -242,64 +247,64 @@
             </Grid>
           </:card>
         </EditCard>
-        {{#if
-          (or
-            @model.administrativeUnit.isSubOrganizationOf.name
-            @model.administrativeUnit.isAssociatedWith.name
-            @model.administrativeUnit.subOrganizations
-          )
-        }}
-          <EditCard>
-            <:title>Gerelateerde organisaties</:title>
-            <:card as |Grid|>
-              {{#if @model.administrativeUnit.isSubOrganizationOf.name}}
+
+        <EditCard>
+          <:title>Gerelateerde organisaties</:title>
+          <:card as |Grid|>
+            {{#if
+              (eq
+                @model.administrativeUnit.constructor.modelName
+                "worship-service"
+              )
+            }}
+              <Grid as |Item|>
+                <Item>
+                  <:label>Centraal bestuur</:label>
+                  <:content>
+                    <CentralWorshipSelect
+                      @selected={{this.model.administrativeUnit.isSubOrganizationOf}}
+                      @onChange={{fn
+                        (mut this.model.administrativeUnit.isSubOrganizationOf)
+                      }}
+                    />
+                  </:content>
+                </Item>
+              </Grid>
+            {{/if}}
+            {{#if
+              (eq
+                @model.administrativeUnit.constructor.modelName
+                "central-worship-service"
+              )
+            }}
+              {{#each @model.administrativeUnit.subOrganizations as |worship|}}
                 <Grid as |Item|>
                   <Item>
-                    <:label>Centraal bestuur</:label>
+                    {{! TODO: Enalble edit worship service }}
+                    <:label>Bestuur van de eredienst</:label>
                     <:content>
-                      <CentralWorshipServiceSelect
-                        @selected={{this.model.administrativeUnit.isSubOrganizationOf}}
-                        @onChange={{fn
-                          (mut
-                            this.model.administrativeUnit.isSubOrganizationOf
-                          )
-                        }}
-                      />
+                      {{worship.name}}
                     </:content>
                   </Item>
                 </Grid>
-              {{/if}}
-              {{#if @model.administrativeUnit.subOrganizations}}
-                {{#each
-                  @model.administrativeUnit.subOrganizations
-                  as |worship|
-                }}
-                  <Grid as |Item|>
-                    <Item>
-                      <:label>Bestuur van de eredienst</:label>
-                      <:content>
-                        {{worship.name}}
-                      </:content>
-                    </Item>
-                  </Grid>
-                {{/each}}
-              {{/if}}
-              {{#if @model.administrativeUnit.isAssociatedWith.name}}
-                <Grid as |Item|>
-                  <Item>
-                    <:label>Representatief orgaan</:label>
-                    <:content>
-                      <RepresentativeBodySelect
-                        @selected={{this.model.administrativeUnit.isAssociatedWith}}
-                        @onChange={{fn (mut this.model.administrativeUnit.isAssociatedWith)}}
-                      />
-                    </:content>
-                  </Item>
-                </Grid>
-              {{/if}}
-            </:card>
-          </EditCard>
-        {{/if}}
+              {{/each}}
+            {{/if}}
+            <Grid as |Item|>
+              <Item>
+                <:label>Representatief orgaan</:label>
+                <:content>
+                  <RepresentativeBodySelect
+                    @selected={{this.model.administrativeUnit.isAssociatedWith}}
+                    @onChange={{fn
+                      (mut this.model.administrativeUnit.isAssociatedWith)
+                    }}
+                  />
+                </:content>
+              </Item>
+            </Grid>
+          </:card>
+        </EditCard>
+
         <AuButtonGroup>
           <AuButton
             @loading={{this.save.isRunning}}

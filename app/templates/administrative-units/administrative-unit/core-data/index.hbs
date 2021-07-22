@@ -39,23 +39,43 @@
               />
             </:content>
           </Item>
+        </Grid>
+        <Grid as |Item|>
           <Item>
             <:label>Type bestuur</:label>
-            <:content
-            >{{@model.administrativeUnit.classification.label}}</:content>
+            <:content>
+              {{@model.administrativeUnit.classification.label}}
+            </:content>
           </Item>
+          {{!-- TODO: Take the last date from the change events --}}
+          {{#if @model.administrativeUnit.resultedFrom}}
+            <Item>
+              <:label> </:label>
+              <:content>
+                <AuHelpText @skin="tertiary">Geweizigd op
+                  {{date-format
+                    @model.administrativeUnit.resultedFrom.firstObject.date
+                  }}</AuHelpText>
+              </:content>
+            </Item>
+          {{/if}}
+        </Grid>
+        <Grid as |Item|>
           <Item>
             <:label>Type eredienst</:label>
             <:content
             >{{@model.administrativeUnit.recognizedWorshipType.label}}</:content>
           </Item>
-          {{#if @model.administrativeUnit.denomination}}
+        </Grid>
+
+        {{#if @model.administrativeUnit.denomination}}
+          <Grid as |Item|>
             <Item>
               <:label>Strekking</:label>
               <:content>{{@model.administrativeUnit.denomination}}</:content>
             </Item>
-          {{/if}}
-        </Grid>
+          </Grid>
+        {{/if}}
 
         {{#if
           (eq @model.administrativeUnit.constructor.modelName "worship-service")
@@ -69,7 +89,7 @@
           </Grid>
         {{/if}}
 
-        <Grid class="au-u-margin-top-large" as |Item|>
+        <Grid as |Item|>
           {{#if @model.administrativeUnit.scope.label}}
             <Item>
               <:label>Werkingsgebied</:label>
