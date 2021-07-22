@@ -15,8 +15,9 @@ export default class MinisterPositionFunctionSelectComponent extends Component {
   }
 
   @task *fetchMinisterPositionFunctionsTask() {
+    const ALL = 20;
     return yield this.store.query('minister-position-function', {
-      'page[size]': 1000,
+      'page[size]': ALL,
     });
   }
 }
