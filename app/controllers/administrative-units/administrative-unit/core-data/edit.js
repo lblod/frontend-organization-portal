@@ -49,26 +49,16 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
     let identifiers = yield this.administrativeUnit.identifiers;
 
-    let structuredIdentifierFirst = yield identifiers.firstObject
-      .structuredIdentifier;
+    for (let identifier of identifiers.toArray()) {
+      let structuredIdentifier = yield identifier.structuredIdentifier;
+      if (structuredIdentifier.hasDirtyAttributes) {
+        let isNewIdentifier = structuredIdentifier.isNew;
 
-    if (structuredIdentifierFirst.hasDirtyAttributes) {
-      let isNewIdentifier = structuredIdentifierFirst.isNew;
-      yield structuredIdentifierFirst.save();
+        yield structuredIdentifier.save();
 
-      if (isNewIdentifier) {
-        yield identifiers.firstObject.save();
-      }
-    }
-
-    let structuredIdentifierLast = yield identifiers.lastObject
-      .structuredIdentifier;
-    if (structuredIdentifierLast.hasDirtyAttributes) {
-      let isNewIdentifier = structuredIdentifierLast.isNew;
-      yield structuredIdentifierLast.save();
-
-      if (isNewIdentifier) {
-        yield identifiers.lastObject.save();
+        if (isNewIdentifier) {
+          yield identifier.save();
+        }
       }
     }
 
