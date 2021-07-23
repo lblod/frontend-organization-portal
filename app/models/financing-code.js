@@ -1,5 +1,5 @@
 import Model, { attr } from '@ember-data/model';
 
-export default class FinanceringCodeModel extends Model {
+export default class FinancingCodeModel extends Model {
   @attr label;
 }

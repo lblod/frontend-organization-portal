@@ -1,4 +1,4 @@
-<div class="data-card-item card-grid-item" ...attributes>
+<div class="data-card-item card-grid-item {{if @alignTop "card-grid-item--align-top"}}" ...attributes>
   {{#if (has-block "label")}}
     <dt class="data-card-item__label card-grid-item__label">
       {{yield to="label"}}

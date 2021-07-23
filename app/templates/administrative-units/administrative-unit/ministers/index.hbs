@@ -6,10 +6,14 @@
       </AuHeading>
     </AuToolbarGroup>
     <AuToolbarGroup>
-      {{! TODO: Replace this with a link once the "new" route is created }}
-      <AuButton @icon="add" @iconAlignment="left">
+      <AuLink
+        @route="administrative-units.administrative-unit.ministers.new"
+        @icon="add"
+        @iconAlignment="left"
+        @skin="button"
+      >
         Nieuw
-      </AuButton>
+      </AuLink>
     </AuToolbarGroup>
   </AuToolbar>
   <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
@@ -20,7 +24,8 @@
 <AuDataTable
   @content={{@model.ministerPositions}}
   @noDataMessage="Geen bedienaren"
-  as |t|>
+  as |t|
+>
   <t.content as |c|>
     <c.header>
       <th class="au-c-data-table__header-title">Voornaam</th>
