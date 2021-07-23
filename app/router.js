@@ -43,7 +43,11 @@ Router.map(function () {
             this.route(
               'governing-body',
               { path: '/:governingBodyId/' },
-              function () {}
+              function () {
+                this.route('mandatory', { path: '/mandataris' }, function () {
+                  this.route('edit', { path: '/:mandatoryId/' });
+                });
+              }
             );
           }
         );
