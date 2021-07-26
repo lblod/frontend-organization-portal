@@ -1,7 +1,5 @@
 <div class="au-c-body-container au-c-body-container--scroll">
-  <div
-    class="au-o-box au-o-flow au-o-flow--large"
-  >
+  <div class="au-o-box au-o-flow au-o-flow--large">
     <div class="au-o-flow au-o-flow--tiny">
       <AuToolbar>
         <AuToolbarGroup>
@@ -26,7 +24,7 @@
     </div>
 
     <DataCard>
-      <:title>{{@model.administrativeUnit.classification.label}}</:title>
+      <:title>Bestuurseenheid</:title>
       <:card as |Grid|>
         <Grid as |Item|>
           <Item>
@@ -35,30 +33,63 @@
           </Item>
           <Item>
             <:label>Status</:label>
-            <:content><OrganizationStatus @status={{@model.administrativeUnit.organizationStatus}} /></:content>
+            <:content>
+              <OrganizationStatus
+                @status={{@model.administrativeUnit.organizationStatus}}
+              />
+            </:content>
           </Item>
+        </Grid>
+        <Grid as |Item|>
+          <Item>
+            <:label>Type bestuur</:label>
+            <:content>
+              {{@model.administrativeUnit.classification.label}}
+            </:content>
+          </Item>
+          {{!-- TODO: Take the last date from the change events --}}
+          {{#if @model.administrativeUnit.resultedFrom}}
+            <Item>
+              <:label> </:label>
+              <:content>
+                <AuHelpText @skin="tertiary">Gewijzigd op
+                  {{date-format
+                    @model.administrativeUnit.resultedFrom.firstObject.date
+                  }}</AuHelpText>
+              </:content>
+            </Item>
+          {{/if}}
+        </Grid>
+        <Grid as |Item|>
           <Item>
             <:label>Type eredienst</:label>
-            <:content>{{@model.administrativeUnit.recognizedWorshipType.label}}</:content>
+            <:content
+            >{{@model.administrativeUnit.recognizedWorshipType.label}}</:content>
           </Item>
-          {{#if @model.administrativeUnit.denomination}}
+        </Grid>
+
+        {{#if @model.administrativeUnit.denomination}}
+          <Grid as |Item|>
             <Item>
               <:label>Strekking</:label>
               <:content>{{@model.administrativeUnit.denomination}}</:content>
             </Item>
-          {{/if}}
-        </Grid>
+          </Grid>
+        {{/if}}
 
-        {{#if (eq @model.administrativeUnit.constructor.modelName "worship-service")}}
+        {{#if
+          (eq @model.administrativeUnit.constructor.modelName "worship-service")
+        }}
           <Grid as |Item|>
             <Item>
               <:label>Grensoverschrijdend</:label>
-              <:content>{{@model.administrativeUnit.crossBorderNominal}}</:content>
+              <:content
+              >{{@model.administrativeUnit.crossBorderNominal}}</:content>
             </Item>
           </Grid>
         {{/if}}
 
-        <Grid class="au-u-margin-top-large" as |Item|>
+        <Grid as |Item|>
           {{#if @model.administrativeUnit.scope.label}}
             <Item>
               <:label>Werkingsgebied</:label>
@@ -69,6 +100,11 @@
             <Item>
               <:label>{{identifier.idName}}</:label>
               <:content>{{identifier.structuredIdentifier.localId}}</:content>
+            </Item>
+            {{!-- Force to have only right column --}}
+            <Item>
+              <:label></:label>
+              <:content></:content>
             </Item>
           {{/each}}
         </Grid>
@@ -93,7 +129,9 @@
               {{@model.administrativeUnit.primarySite.address.province}}
             </:content>
           </Item>
-          {{#if @model.administrativeUnit.primarySite.contacts.firstObject.telephone}}
+          {{#if
+            @model.administrativeUnit.primarySite.contacts.firstObject.telephone
+          }}
             <Item>
               <:label>Telefoonnummer</:label>
               <:content>
@@ -101,7 +139,9 @@
               </:content>
             </Item>
           {{/if}}
-          {{#if @model.administrativeUnit.primarySite.contacts.firstObject.website}}
+          {{#if
+            @model.administrativeUnit.primarySite.contacts.firstObject.website
+          }}
             <Item>
               <:label>Website</:label>
               <:content>
@@ -113,10 +153,12 @@
       </:card>
     </DataCard>
 
-    {{#if (or
-      @model.administrativeUnit.isSubOrganizationOf.name
-      @model.administrativeUnit.isAssociatedWith.name
-    )}}
+    {{#if
+      (or
+        @model.administrativeUnit.isSubOrganizationOf.name
+        @model.administrativeUnit.isAssociatedWith.name
+      )
+    }}
       <DataCard>
         <:title>
           Gerelateerde organisaties
@@ -136,6 +178,23 @@
                 </:content>
               </Item>
             </Grid>
+          {{/if}}
+          {{#if @model.administrativeUnit.subOrganizations}}
+            {{#each @model.administrativeUnit.subOrganizations as |worship|}}
+              <Grid as |Item|>
+                <Item>
+                  <:label>Bestuur van de eredienst</:label>
+                  <:content>
+                    <AuLink
+                      @route="administrative-units.administrative-unit"
+                      @model={{worship.id}}
+                    >
+                      {{worship.name}}
+                    </AuLink>
+                  </:content>
+                </Item>
+              </Grid>
+            {{/each}}
           {{/if}}
           {{#if @model.administrativeUnit.isAssociatedWith.name}}
             <Grid as |Item|>

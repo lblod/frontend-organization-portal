@@ -4,12 +4,12 @@
   @loadingMessage="Aan het laden..."
   @noMatchesMessage="Geen resultaten"
   @searchMessage="Typ om te zoeken"
-  @searchField="label"
-  @options={{this.recognizedWorshipTypes}}
+  @searchField="name"
+  @search={{perform this.loadCentralWorshipServicesTask}}
+  @options={{this.centralWorshipServices}}
   @selected={{@selected}}
   @onChange={{@onChange}}
-  as |recognizedWorshipType|
+  as |centralWorshipService|
 >
-  {{recognizedWorshipType.label}}
+  {{centralWorshipService.name}}
 </PowerSelect>
-
