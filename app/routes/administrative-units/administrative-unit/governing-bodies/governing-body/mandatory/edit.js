@@ -5,11 +5,9 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @service store;
 
   async model({ mandatoryId: mandatoryId }) {
-    let { id: adminUnitId } = this.paramsFor(
-      'administrative-units.administrative-unit'
+    let adminUnitGovBodyTemps = this.modelFor(
+      'administrative-units.administrative-unit.governing-bodies'
     );
-
-    let adminUnit = this.store.findRecord('administrative-unit', adminUnitId);
 
     let { governingBodyId: govBodyTempId } = this.paramsFor(
       'administrative-units.administrative-unit.governing-bodies.governing-body'
@@ -20,13 +18,35 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       govBodyTempId
     );
 
-    let mandatory = await this.store.findRecord('mandatory', mandatoryId);
+    let mandatory = await this.store.findRecord('mandatory', mandatoryId, {
+      include: 'mandate.role-board,contacts,contacts.contact-address',
+    });
+
+    let contacts = await mandatory.get('contacts');
+    if (contacts.length === 0) {
+      let address = this.store.createRecord('address');
+      let contact = this.store.createRecord('contact-point');
+      contact.address = address;
+      contacts.pushObject(contact);
+    } else if (contacts.length === 1) {
+      if (contacts.firstObject.contactAddress) {
+        let address = this.store.createRecord('address');
+        contacts.firstObject.address = address;
+      }
+    }
 
     return {
-      adminUnit,
+      administrativeUnit: await adminUnitGovBodyTemps.administrativeUnit,
+      govBodyTemps: await adminUnitGovBodyTemps.governingBody
+        .hasTimeSpecializations,
       govBodyTemp,
       mandatory,
       person: await mandatory.governingAlias,
     };
+  }
+
+  setupController(controller) {
+    super.setupController(...arguments);
+    controller.setup();
   }
 }

@@ -25,222 +25,249 @@
         </Grid>
       </:card>
     </DataCard>
+    <form
+      id="edit-mandatory-form"
+      aria-label="edit-mandatory-form"
+      {{on "submit" (perform this.save)}}
+    >
+      <div class="au-o-flow au-o-flow--large">
+        <EditCard>
+          <:title>Positie</:title>
+          <:card as |Grid|>
+            <Grid as |Item|>
+              <Item>
+                {{! TODO: Put in a disable PowerSelect }}
+                <:label>Type</:label>
+                <:content>Mandaat</:content>
+              </Item>
+              <Item>
+                <:label>Naam Eredienst</:label>
+                <:content>
+                    {{!-- TODO: Make it show the administrative unit's name --}}
+                    <PowerSelect
+                      @disabled={{true}}
+                      @selected={{this.model.administrativeUnit}}
+                      @onChange={{fn (mut this.model.administrativeUnit)}}
+                    />
+                </:content>
+              </Item>
+              <Item>
+                <:label>Bestuursfunctie</:label>
+                <:content>
+                  <MandateRoleSelect
+                    @selected={{this.model.mandatory.mandate.roleBoard}}
+                    @onChange={{fn (mut this.model.mandatory.mandate.roleBoard)}}
+                  />
+                </:content>
+              </Item>
+            </Grid>
+          </:card>
+        </EditCard>
 
-    <EditCard>
-      <:title>Positie</:title>
-      <:card as |Grid|>
-        <Grid as |Item|>
-          <Item>
-            {{! TODO: Put in a disable PowerSelect }}
-            <:label>Type</:label>
-            <:content>Mandaat</:content>
-          </Item>
-          <Item>
-            <:label>Naam Eredienst</:label>
-            <:content>
-              {{! TODO: Change to Worship or Central Select Component }}
-              {{@model.adminUnit.name}}
-            </:content>
-          </Item>
-          <Item>
-            <:label>Bestuursfunctie</:label>
-            <:content>
-              <MandateRoleSelect
-                @selected={{@model.mandatory.mandate.roadBoard}}
-                @onChange={{fn (mut this.model.mandatory.mandate.roadBoard)}}
-              />
-            </:content>
-          </Item>
-        </Grid>
-      </:card>
-    </EditCard>
+        <EditCard>
+          <:title>Primaire contactgegevens</:title>
+          <:card as |Grid|>
+            <Grid as |Item|>
+              <Item @labelFor="contact-email">
+                <:label>Email</:label>
+                <:content>
+                  <AuInput
+                    @width="block"
+                    @value={{@model.mandatory.contacts.firstObject.email}}
+                    id="contact-email"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-telephone">
+                <:label>Vaste telefoonnummer</:label>
+                <:content>
+                  <AuInput
+                    @width="block"
+                    @value={{@model.mandatory.contacts.firstObject.telephone}}
+                    id="contact-telephone"
+                  />
+                </:content>
+              </Item>
+              <Item>
+                <:label>Full address</:label>
+                <:content>{{@model.mandatory.contacts.firstObject.contactAddress.fullAddress}}</:content>
+              </Item>
+              <Item>
+                <:label></:label>
+                <:content></:content>
+              </Item>
+              <Item @labelFor="contact-address-street-name">
+                <:label>Straat</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.mandatory.contacts.firstObject.contactAddress.street}}
+                    @width="block"
+                    id="contact-address-street-name"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-address-house-number">
+                <:label>Huisnummer</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.mandatory.contacts.firstObject.contactAddress.number}}
+                    @width="block"
+                    id="contact-address-house-number"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-address-bus-number">
+                <:label>Busnummer</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.mandatory.contacts.firstObject.contactAddress.boxNumber}}
+                    @width="block"
+                    id="contact-address-bus-number"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-address-postal-code">
+                <:label>Postcode</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.mandatory.contacts.firstObject.contactAddress.postcode}}
+                    @width="block"
+                    id="contact-address-postal-code"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-address-municipality">
+                <:label>Gemeente</:label>
+                <:content>
+                  <MunicipalitySelect
+                    @selected={{this.model.mandatory.contacts.firstObject.contactAddress.municipality}}
+                    @onChange={{fn
+                      (mut
+                        this.model.mandatory.contacts.firstObject.contactAddress.municipality
+                      )
+                    }}
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-address-province">
+                <:label>Provincie</:label>
+                <:content>
+                  <ProvinceSelect
+                    @selected={{this.model.mandatory.contacts.firstObject.contactAddress.province}}
+                    @onChange={{fn
+                      (mut
+                        this.model.mandatory.contacts.firstObject.contactAddress.province
+                      )
+                    }}
+                  />
+                </:content>
+              </Item>
+            </Grid>
+          </:card>
+        </EditCard>
 
-    <EditCard>
-      <:title>Primaire contactgegevens</:title>
-      <:card as |Grid|>
-        <Grid as |Item|>
-          <Item @labelFor="contact-email">
-            <:label>Email</:label>
-            <:content>
-              <AuInput
-                @width="block"
-                @value={{@model.mandatory.contacts.firstObject.email}}
-                id="contact-email"
-              />
-            </:content>
-          </Item>
-          <Item @labelFor="contact-telephone">
-            <:label>Vaste telefoonnummer</:label>
-            <:content>
-              <AuInput
-                @width="block"
-                @value={{@model.mandatory.contacts.firstObject.telephone}}
-                id="contact-telephone"
-              />
-            </:content>
-          </Item>
-          <Item @labelFor="contact-address-street-name">
-            <:label>Straat</:label>
-            <:content>
-              <AuInput
-                @value={{@model.mandatory.contacts.firstObject.address.street}}
-                @width="block"
-                id="contact-address-street-name"
-              />
-            </:content>
-          </Item>
-          <Item @labelFor="contact-address-house-number">
-            <:label>Huisnummer</:label>
-            <:content>
-              <AuInput
-                @value={{@model.mandatory.contacts.firstObject.address.number}}
-                @width="block"
-                id="contact-address-house-number"
-              />
-            </:content>
-          </Item>
-          <Item @labelFor="contact-address-bus-number">
-            <:label>Busnummer</:label>
-            <:content>
-              <AuInput
-                @value={{@model.mandatory.contacts.firstObject.address.boxNumber}}
-                @width="block"
-                id="contact-address-bus-number"
-              />
-            </:content>
-          </Item>
-          <Item @labelFor="contact-address-postal-code">
-            <:label>Postcode</:label>
-            <:content>
-              <AuInput
-                @value={{@model.mandatory.contacts.firstObject.address.postcode}}
-                @width="block"
-                id="contact-address-postal-code"
-              />
-            </:content>
-          </Item>
-          <Item @labelFor="contact-address-municipality">
-            <:label>Gemeente</:label>
-            <:content>
-              <MunicipalitySelect
-                @selected={{this.model.mandatory.contacts.firstObject.address.municipality}}
-                @onChange={{fn
-                  (mut
-                    this.model.mandatory.contacts.firstObject.address.municipality
-                  )
-                }}
-              />
-            </:content>
-          </Item>
-          <Item @labelFor="contact-address-province">
-            <:label>Provincie</:label>
-            <:content>
-              <ProvinceSelect
-                @selected={{this.model.mandatory.contacts.firstObject.address.province}}
-                @onChange={{fn
-                  (mut
-                    this.model.mandatory.contacts.firstObject.address.province
-                  )
-                }}
-              />
-            </:content>
-          </Item>
-        </Grid>
-      </:card>
-    </EditCard>
+        <EditCard>
+          <:title>Aanstelling</:title>
+          <:card as |Grid|>
+            <Grid as |Item|>
+              <Item>
+                <:label>Start mandaat</:label>
+                <:content>
+                  <Datepicker
+                    @id="start-date"
+                    @onChange={{fn (mut this.model.mandatory.startDate)}}
+                    @value={{this.model.mandatory.startDate}}
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="governing-body-period-select">
+                <:label>Bestuursperiode</:label>
+                <:content>
+                  <PowerSelect
+                    @options={{@model.govBodyTemps}}
+                    @selected={{@model.govBodyTemp}}
+                    @onChange={{fn
+                      (mut @model.govBodyTemp)
+                    }}
+                    as |govBodyTemp|
+                  >
+                    {{govBodyTemp.period}}
+                  </PowerSelect>
+                </:content>
+              </Item>
+              <Item>
+                <:label>Geplande einddatum</:label>
+                <:content>
+                  <Datepicker
+                    @id="expected-end-date"
+                    @onChange={{fn (mut this.model.mandatory.expectedEndDate)}}
+                    @value={{this.model.mandatory.expectedEndDate}}
+                  />
+                </:content>
+              </Item>
+              <Item>
+                <:label>Effectieve einddatum</:label>
+                <:content>
+                  <Datepicker
+                    @id="end-date"
+                    @disabled={{this.isCurrentPositionCheck}}
+                    @onChange={{fn (mut this.model.mandatory.endDate)}}
+                    @value={{this.model.mandatory.endDate}}
+                  />
+                </:content>
+              </Item>
+              {{! Empty column placeholder }}
+              <Item>
+                <:label></:label>
+                <:content></:content>
+              </Item>
+              <Item>
+                <:label></:label>
+                <:content>
+                  <AuControlCheckbox
+                    @checked={{this.isCurrentPositionCheck}}
+                    @label="Huidige positie"
+                    @identifier="current-position"
+                    @onChange={{fn (mut this.isCurrentPositionCheck)}}
+                  />
+                </:content>
+              </Item>
+              {{! Empty column placeholder }}
+              <Item>
+                <:label></:label>
+                <:content></:content>
+              </Item>
+              <Item>
+                <:label>Reden stopzetting </:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.mandatory.reasonStopped}}
+                    @width="block"
+                    id="reason-stop"
+                  />
+                </:content>
+              </Item>
+            </Grid>
+          </:card>
+        </EditCard>
 
-    <EditCard>
-      <:title>Aanstelling</:title>
-      <:card as |Grid|>
-        <Grid as |Item|>
-          <Item>
-            <:label>Start mandaat</:label>
-            <:content>
-              <Datepicker
-                @id="start-date"
-                @onChange={{fn (mut this.model.mandatory.startDate)}}
-                @value={{this.model.mandatory.startDate}}
-              />
-            </:content>
-          </Item>
-          <Item>
-            {{! TODO: Put in a disable PowerSelect }}
-            <:label>Bestuursperiode</:label>
-            <:content>
-              {{@model.govBodyTemp.period}}
-            </:content>
-          </Item>
-          <Item>
-            <:label>Geplande einddatum</:label>
-            <:content>
-              <Datepicker
-                @id="expected-end-date"
-                @onChange={{fn (mut this.model.mandatory.expectedEndDate)}}
-                @value={{this.model.mandatory.expectedEndDate}}
-              />
-            </:content>
-          </Item>
-          <Item>
-            <:label>Effectieve einddatum</:label>
-            <:content>
-              <Datepicker
-                @id="end-date"
-                @onChange={{fn (mut this.model.mandatory.endDate)}}
-                @value={{this.model.mandatory.endDate}}
-              />
-            </:content>
-          </Item>
-          {{! Empty column placeholder }}
-          <Item>
-            <:label></:label>
-            <:content></:content>
-          </Item>
-          <Item>
-            <:label></:label>
-            <:content>
-              <AuControlCheckbox
-                @checked={{true}}
-                @label="Huidige positie"
-                @identifier="current-position"
-                @onChange={{fn (mut this.isCurrentPosition)}}
-              />
-            </:content>
-          </Item>
-          {{! Empty column placeholder }}
-          <Item>
-            <:label></:label>
-            <:content></:content>
-          </Item>
-          <Item>
-            <:label>Reden stopzetting </:label>
-            <:content>
-              <AuInput
-                @value={{@model.mandatory.reasonStopped}}
-                @width="block"
-                id="reason-stop"
-              />
-            </:content>
-          </Item>
-        </Grid>
-      </:card>
-    </EditCard>
+        <AuButtonGroup>
+          <AuButton
+            @loading={{this.save.isRunning}}
+            @disabled={{this.save.isRunning}}
+            type="submit"
+          >
+            Pas aan
+          </AuButton>
 
-    <AuButtonGroup>
-      <AuButton
-        {{!-- @loading={{this.save.isRunning}}
-        @disabled={{this.save.isRunning}} --}}
-        type="submit"
-      >
-        Pas aan
-      </AuButton>
-
-      <AuLink
-        @route="administrative-units.administrative-unit.governing-bodies.governing-body"
-        @skin="button-secondary"
-      >
-        Annuleer
-      </AuLink>
-    </AuButtonGroup>
-
+          <AuLink
+            @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>
+        </AuButtonGroup>
+      </div>
+    </form>
   </div>
 </div>

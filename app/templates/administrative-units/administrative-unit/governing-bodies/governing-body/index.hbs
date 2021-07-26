@@ -110,7 +110,9 @@
                   </AuLink>
                 </td>
                 <td>
-                  {{date-format mandatory.startDate}}
+                  {{#if mandatory.startDate}}
+                    {{date-format mandatory.startDate}}
+                  {{/if}}
                 </td>
                 <td>
                   {{#if mandatory.endDate}}
