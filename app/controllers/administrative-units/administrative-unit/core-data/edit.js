@@ -9,14 +9,6 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     return this.model.administrativeUnit;
   }
 
-  get isSaving() {
-    return this.editCoreInfoTask.isRunning;
-  }
-
-  get isSavingContact() {
-    return this.editContactInfoTask.isRunning;
-  }
-
   @dropTask
   *save(event) {
     event.preventDefault();
@@ -52,6 +44,21 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
       if (isNewContact) {
         yield primarySite.save();
+      }
+    }
+
+    let identifiers = yield this.administrativeUnit.identifiers;
+
+    for (let identifier of identifiers.toArray()) {
+      let structuredIdentifier = yield identifier.structuredIdentifier;
+      if (structuredIdentifier.hasDirtyAttributes) {
+        let isNewIdentifier = structuredIdentifier.isNew;
+
+        yield structuredIdentifier.save();
+
+        if (isNewIdentifier) {
+          yield identifier.save();
+        }
       }
     }
 

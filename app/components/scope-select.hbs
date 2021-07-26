@@ -5,11 +5,11 @@
   @noMatchesMessage="Geen resultaten"
   @searchMessage="Typ om te zoeken"
   @searchField="label"
-  @options={{this.recognizedWorshipTypes}}
+  @search={{perform this.loadScopesTask}}
+  @options={{this.scopes}}
   @selected={{@selected}}
   @onChange={{@onChange}}
-  as |recognizedWorshipType|
+  as |scope|
 >
-  {{recognizedWorshipType.label}}
+  {{scope.label}}
 </PowerSelect>
-
