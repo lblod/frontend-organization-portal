@@ -38,16 +38,20 @@
           <Item>
             <:label>Naam Eredienst</:label>
             <:content>
-              {{! TODO: Change to Worship or Central Select Component }}
-              {{@model.adminUnit.name}}
+                {{!-- TODO: Make it show the administrative unit's name --}}
+                <PowerSelect
+                  @disabled={{true}}
+                  @selected={{this.model.administrativeUnit}}
+                  @onChange={{fn (mut this.model.administrativeUnit)}}
+                />
             </:content>
           </Item>
           <Item>
             <:label>Bestuursfunctie</:label>
             <:content>
               <MandateRoleSelect
-                @selected={{@model.mandatory.mandate.roadBoard}}
-                @onChange={{fn (mut this.model.mandatory.mandate.roadBoard)}}
+                @selected={{this.model.mandatory.mandate.roleBoard}}
+                @onChange={{fn (mut this.model.mandatory.mandate.roleBoard)}}
               />
             </:content>
           </Item>
@@ -79,11 +83,15 @@
               />
             </:content>
           </Item>
+          <Item>
+            <:label>Full address</:label>
+            <:content>{{@model.mandatory.contacts.firstObject.contactAddress.fullAddress}}</:content>
+          </Item>
           <Item @labelFor="contact-address-street-name">
             <:label>Straat</:label>
             <:content>
               <AuInput
-                @value={{@model.mandatory.contacts.firstObject.address.street}}
+                @value={{@model.mandatory.contacts.firstObject.contactAddress.street}}
                 @width="block"
                 id="contact-address-street-name"
               />
@@ -93,7 +101,7 @@
             <:label>Huisnummer</:label>
             <:content>
               <AuInput
-                @value={{@model.mandatory.contacts.firstObject.address.number}}
+                @value={{@model.mandatory.contacts.firstObject.contactAddress.number}}
                 @width="block"
                 id="contact-address-house-number"
               />
@@ -103,7 +111,7 @@
             <:label>Busnummer</:label>
             <:content>
               <AuInput
-                @value={{@model.mandatory.contacts.firstObject.address.boxNumber}}
+                @value={{@model.mandatory.contacts.firstObject.contactAddress.boxNumber}}
                 @width="block"
                 id="contact-address-bus-number"
               />
@@ -113,7 +121,7 @@
             <:label>Postcode</:label>
             <:content>
               <AuInput
-                @value={{@model.mandatory.contacts.firstObject.address.postcode}}
+                @value={{@model.mandatory.contacts.firstObject.contactAddress.postcode}}
                 @width="block"
                 id="contact-address-postal-code"
               />
@@ -123,10 +131,10 @@
             <:label>Gemeente</:label>
             <:content>
               <MunicipalitySelect
-                @selected={{this.model.mandatory.contacts.firstObject.address.municipality}}
+                @selected={{this.model.mandatory.contacts.firstObject.contactAddress.municipality}}
                 @onChange={{fn
                   (mut
-                    this.model.mandatory.contacts.firstObject.address.municipality
+                    this.model.mandatory.contacts.firstObject.contactAddress.municipality
                   )
                 }}
               />
@@ -136,10 +144,10 @@
             <:label>Provincie</:label>
             <:content>
               <ProvinceSelect
-                @selected={{this.model.mandatory.contacts.firstObject.address.province}}
+                @selected={{this.model.mandatory.contacts.firstObject.contactAddress.province}}
                 @onChange={{fn
                   (mut
-                    this.model.mandatory.contacts.firstObject.address.province
+                    this.model.mandatory.contacts.firstObject.contactAddress.province
                   )
                 }}
               />
@@ -163,11 +171,19 @@
               />
             </:content>
           </Item>
-          <Item>
-            {{! TODO: Put in a disable PowerSelect }}
+          <Item @labelFor="governing-body-period-select">
             <:label>Bestuursperiode</:label>
             <:content>
-              {{@model.govBodyTemp.period}}
+              <PowerSelect
+                @options={{@model.govBodyTemps}}
+                @selected={{@model.govBodyTemp}}
+                @onChange={{fn
+                  (mut @model.govBodyTemp)
+                }}
+                as |govBodyTemp|
+              >
+                {{govBodyTemp.period}}
+              </PowerSelect>
             </:content>
           </Item>
           <Item>
@@ -227,8 +243,8 @@
 
     <AuButtonGroup>
       <AuButton
-        {{!-- @loading={{this.save.isRunning}}
-        @disabled={{this.save.isRunning}} --}}
+        @loading={{this.save.isRunning}}
+        @disabled={{this.save.isRunning}}
         type="submit"
       >
         Pas aan
