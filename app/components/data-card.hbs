@@ -9,7 +9,10 @@
 
   <dl class="data-card__card">
     {{yield
-      (hash Grid=(component 'card-grid' itemComponent=(component 'data-card/item')))
+      (hash
+        Grid=(component "card-grid" itemComponent=(component "data-card/item" isGrid=true))
+        Columns=(component "card-columns" itemComponent=(component "data-card/item"))
+      )
       to="card"
     }}
   </dl>

@@ -2,29 +2,43 @@
   margin-bottom: $au-unit-tiny;
 }
 
-// Grid
+// grid
 .card-grid {
   display: flex;
   flex-wrap: wrap;
 }
 
 .card-grid-item {
-  align-items: center;
-  display: flex;
-  padding: $au-unit-tiny;
   width: 50%;
 }
 
-.card-grid-item--align-top {
+// columns
+.card-columns {
+  display: flex;
+}
+
+.card-columns__column {
+  width: 50%;
+}
+
+
+// card item
+.card-item {
+  align-items: center;
+  display: flex;
+  padding: $au-unit-tiny;
+}
+
+.card-item--align-top {
   align-items: flex-start;
 }
 
-.card-grid-item__label {
+.card-item__label {
   flex-basis: 20rem; // This has to be wide enough to fit all labels properly
   flex-shrink: 0;
 }
 
-.card-grid-item__content {
+.card-item__content {
   flex-shrink: 1;
   flex-grow: 1;
 }
@@ -50,4 +64,3 @@
 .edit-card-item__label {
   margin-bottom: 0;
 }
-
