@@ -16,8 +16,8 @@
       <div class="au-o-flow au-o-flow--large">
         <EditCard>
           <:title>Persoonlijke gegevens</:title>
-          <:card as |Grid|>
-            <Grid as |Item|>
+          <:card as |Card|>
+            <Card.Grid as |Item|>
               <Item @labelFor="person-given-name">
                 <:label>Voornaam</:label>
                 <:content>
@@ -45,8 +45,8 @@
                   />
                 </:content>
               </Item>
-            </Grid>
-            <Grid as |Item|>
+            </Card.Grid>
+            <Card.Grid as |Item|>
               <Item @labelFor="person-used-name">
                 <:label>Roepnaam</:label>
                 <:content>
@@ -57,7 +57,7 @@
                   />
                 </:content>
               </Item>
-            </Grid>
+            </Card.Grid>
           </:card>
         </EditCard>
 

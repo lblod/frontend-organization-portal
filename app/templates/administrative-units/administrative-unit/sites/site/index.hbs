@@ -26,8 +26,8 @@
 
     <DataCard>
       <:title>Kerngegevens</:title>
-      <:card as |Grid|>
-        <Grid as |Item|>
+      <:card as |Card|>
+        <Card.Grid as |Item|>
           <Item>
             <:label>Vestigingstype</:label>
             <:content>{{@model.site.siteType.label}}</:content>
@@ -41,14 +41,14 @@
               }}
             </:content>
           </Item>
-        </Grid>
+        </Card.Grid>
       </:card>
     </DataCard>
 
     <DataCard>
       <:title>Contactgegevens</:title>
-      <:card as |Grid|>
-        <Grid as |Item|>
+      <:card as |Card|>
+        <Card.Grid as |Item|>
           <Item>
             <:label>Adres</:label>
             <:content>{{@model.site.address.fullAddress}}</:content>
@@ -70,7 +70,7 @@
               <:content>{{@model.site.contacts.firstObject.website}}</:content>
             </Item>
           {{/if}}
-        </Grid>
+        </Card.Grid>
       </:card>
     </DataCard>
   </div>

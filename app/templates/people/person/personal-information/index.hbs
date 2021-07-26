@@ -26,27 +26,27 @@
 
     <DataCard>
       <:title>Persoonlijke gegevens</:title>
-      <:card as |Grid|>
-        <Grid as |Item|>
+      <:card as |Card|>
+        <Card.Grid as |Item|>
           <Item>
             <:label>Voornaam</:label>
             <:content>{{@model.person.givenName}}</:content>
           </Item>
-        </Grid>
-        <Grid as |Item|>
+        </Card.Grid>
+        <Card.Grid as |Item|>
           <Item>
             <:label>Achternaam</:label>
             <:content>{{@model.person.familyName}}</:content>
           </Item>
-        </Grid>
-        <Grid as |Item|>
+        </Card.Grid>
+        <Card.Grid as |Item|>
           {{#if @model.person.firstNameUsed}}
             <Item>
               <:label>Roepnaam</:label>
               <:content>{{@model.person.firstNameUsed}}</:content>
             </Item>
           {{/if}}
-        </Grid>
+        </Card.Grid>
       </:card>
     </DataCard>
 
@@ -54,8 +54,8 @@
       <:title>Contactgegevens:
         {{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.classification.label}}
       </:title>
-      <:card as |Grid|>
-        <Grid as |Item|>
+      <:card as |Card|>
+        <Card.Grid as |Item|>
           <Item>
             <:label>Organisatie</:label>
             <:content>
@@ -67,8 +67,8 @@
               </AuLink>
             </:content>
           </Item>
-        </Grid>
-        <Grid as |Item|>
+        </Card.Grid>
+        <Card.Grid as |Item|>
           {{#if
             @model.person.mandatories.firstObject.contacts.firstObject.email
           }}
@@ -103,7 +103,7 @@
             <:label>GSM nummer</:label>
             <:content></:content>
           </Item> }}
-        </Grid>
+        </Card.Grid>
       </:card>
     </DataCard>
   </div>
