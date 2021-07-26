@@ -25,8 +25,8 @@
 
     <DataCard>
       <:title>Bestuursorgaan</:title>
-      <:card as |Grid|>
-        <Grid as |Item|>
+      <:card as |Card|>
+        <Card.Grid as |Item|>
           <Item>
             <:label>Type</:label>
             <:content
@@ -47,7 +47,7 @@
             <:label>Einddatum</:label>
             <:content>{{date-format @model.govBodyTimeSpec.endDate}}</:content>
           </Item>
-        </Grid>
+        </Card.Grid>
       </:card>
     </DataCard>
 

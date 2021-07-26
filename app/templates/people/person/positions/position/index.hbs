@@ -36,8 +36,8 @@
 
     <DataCard>
       <:title>Positie</:title>
-      <:card as |Grid|>
-        <Grid as |Item|>
+      <:card as |Card|>
+        <Card.Grid as |Item|>
           <Item>
             {{! TODO: Make it variable to also have Bedienaar}}
             <:label>Type</:label>
@@ -63,15 +63,15 @@
             <:label>Bestuursfunctie</:label>
             <:content>{{@model.mandatory.mandate.roleBoard.label}}</:content>
           </Item>
-        </Grid>
+        </Card.Grid>
       </:card>
     </DataCard>
 
     {{#if @model.mandatory.contacts}}
       <DataCard>
         <:title>Primaire contactgegevens</:title>
-        <:card as |Grid|>
-          <Grid as |Item|>
+        <:card as |Card|>
+          <Card.Grid as |Item|>
             {{#if @model.mandatory.contacts.firstObject.email}}
               <Item>
                 <:label>Email</:label>
@@ -99,15 +99,15 @@
                 </:content>
               </Item>
             {{/if}}
-          </Grid>
+          </Card.Grid>
         </:card>
       </DataCard>
     {{/if}}
 
     <DataCard>
       <:title>Aanstelling</:title>
-      <:card as |Grid|>
-        <Grid as |Item|>
+      <:card as |Card|>
+        <Card.Grid as |Item|>
           <Item>
             <:label>Start mandaat</:label>
             <:content>{{date-format @model.mandatory.startDate}}</:content>
@@ -144,7 +144,7 @@
               <:content>{{@model.mandatory.reasonStopped}}</:content>
             </Item>
           {{/if}}
-        </Grid>
+        </Card.Grid>
       </:card>
     </DataCard>
   </div>

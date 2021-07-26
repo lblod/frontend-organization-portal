@@ -20,8 +20,8 @@
     >
       <EditCard>
         <:title>Persoon zoeken</:title>
-        <:card as |Grid|>
-          <Grid as |Item|>
+        <:card as |Card|>
+          <Card.Grid as |Item|>
             <Item @labelFor="person-given-name">
               <:label>Voornaam</:label>
               <:content>
@@ -42,7 +42,7 @@
                 />
               </:content>
             </Item>
-          </Grid>
+          </Card.Grid>
           <div class="au-u-padding-tiny au-u-text-right">
             <AuButton
               @disabled={{not this.canSearch}}
@@ -120,8 +120,8 @@
     >
       <DataCard>
         <:title>Persoonlijke gegevens</:title>
-        <:card as |Grid|>
-          <Grid as |Item|>
+        <:card as |Card|>
+          <Card.Grid as |Item|>
             <Item>
               <:label>
                 Voornaam
@@ -138,14 +138,14 @@
                 {{this.targetPerson.familyName}}
               </:content>
             </Item>
-          </Grid>
+          </Card.Grid>
         </:card>
       </DataCard>
 
       <EditCard>
         <:title>Positie</:title>
-        <:card as |Grid|>
-          <Grid as |Item|>
+        <:card as |Card|>
+          <Card.Grid as |Item|>
             <Item>
               <:label>Positie</:label>
               <:content>
@@ -155,14 +155,14 @@
                 />
               </:content>
             </Item>
-          </Grid>
+          </Card.Grid>
         </:card>
       </EditCard>
 
       <EditCard>
         <:title>Contactgegevens</:title>
-        <:card as |Grid|>
-          <Grid as |Item|>
+        <:card as |Card|>
+          <Card.Grid as |Item|>
             <Item @labelFor="address-street-name">
               <:label>Straat</:label>
               <:content>
@@ -235,10 +235,10 @@
                 />
               </:content>
             </Item>
-          </Grid>
+          </Card.Grid>
 
           {{! Force a new row }}
-          <Grid as |Item|>
+          <Card.Grid as |Item|>
             <Item @labelFor="address-municipality">
               <:label>Gemeente</:label>
               <:content>
@@ -248,10 +248,10 @@
                 />
               </:content>
             </Item>
-          </Grid>
+          </Card.Grid>
 
           {{! Force a new row }}
-          <Grid as |Item|>
+          <Card.Grid as |Item|>
             <Item @labelFor="address-province">
               <:label>Provincie</:label>
               <:content>
@@ -261,14 +261,14 @@
                 />
               </:content>
             </Item>
-          </Grid>
+          </Card.Grid>
         </:card>
       </EditCard>
 
       <EditCard>
         <:title>Aanstelling</:title>
-        <:card as |Grid|>
-          <Grid as |Item|>
+        <:card as |Card|>
+          <Card.Grid as |Item|>
             <Item @labelFor="start-date">
               <:label>Startdatum</:label>
               <:content>
@@ -306,14 +306,14 @@
                 />
               </:content>
             </Item>
-          </Grid>
+          </Card.Grid>
         </:card>
       </EditCard>
 
       <EditCard>
         <:title>Financiering</:title>
-        <:card as |Grid|>
-          <Grid as |Item|>
+        <:card as |Card|>
+          <Card.Grid as |Item|>
             <Item @alignTop={{true}}>
               <:label>FOD financiering</:label>
               <:content>
@@ -335,7 +335,7 @@
                 />
               </:content>
             </Item>
-          </Grid>
+          </Card.Grid>
         </:card>
       </EditCard>
 
