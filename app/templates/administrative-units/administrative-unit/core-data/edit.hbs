@@ -15,8 +15,8 @@
       <div class="au-o-flow au-o-flow--large">
         <EditCard>
           <:title>Bestuurseenheid</:title>
-          <:card as |Grid|>
-            <Grid as |Item|>
+          <:card as |Card|>
+            <Card.Grid as |Item|>
               <Item @labelFor="worship-service-name">
                 <:label>Naam eredienst</:label>
                 <:content>
@@ -45,8 +45,8 @@
                   </PowerSelect>
                 </:content>
               </Item>
-            </Grid>
-            <Grid as |Item|>
+            </Card.Grid>
+            <Card.Grid as |Item|>
               <Item>
                 <:label>Type bestuur</:label>
                 <:content>
@@ -62,8 +62,8 @@
                   </PowerSelect>
                 </:content>
               </Item>
-            </Grid>
-            <Grid as |Item|>
+            </Card.Grid>
+            <Card.Grid as |Item|>
               <Item @labelFor="recognized-worship-type-select">
                 <:label>Type eredienst</:label>
                 <:content>
@@ -75,14 +75,14 @@
                   />
                 </:content>
               </Item>
-            </Grid>
+            </Card.Grid>
             {{#if
               (eq
                 @model.administrativeUnit.constructor.modelName
                 "worship-service"
               )
             }}
-              <Grid as |Item|>
+              <Card.Grid as |Item|>
                 <Item @labelFor="denomination">
                   <:label>Strekking</:label>
                   <:content>
@@ -93,8 +93,8 @@
                     />
                   </:content>
                 </Item>
-              </Grid>
-              <Grid as |Item|>
+              </Card.Grid>
+              <Card.Grid as |Item|>
                 <Item>
                   <:label>Grensoverschrijvend</:label>
                   <:content>
@@ -125,9 +125,9 @@
                     />
                   </:content>
                 </Item>
-              </Grid>
+              </Card.Grid>
             {{/if}}
-            <Grid as |Item|>
+            <Card.Grid as |Item|>
               <Item @labelFor="administrative-unit-scope">
                 <:label>Werkingsgebied</:label>
                 <:content>
@@ -154,14 +154,14 @@
                   <:content></:content>
                 </Item>
               {{/each}}
-            </Grid>
+            </Card.Grid>
           </:card>
         </EditCard>
 
         <EditCard>
           <:title>Primaire contactgegevens</:title>
-          <:card as |Grid|>
-            <Grid as |Item|>
+          <:card as |Card|>
+            <Card.Grid as |Item|>
               <Item @labelFor="primary-site-address-street-name">
                 <:label>Straat</:label>
                 <:content>
@@ -248,20 +248,20 @@
                   />
                 </:content>
               </Item>
-            </Grid>
+            </Card.Grid>
           </:card>
         </EditCard>
 
         <EditCard>
           <:title>Gerelateerde organisaties</:title>
-          <:card as |Grid|>
+          <:card as |Card|>
             {{#if
               (eq
                 @model.administrativeUnit.constructor.modelName
                 "worship-service"
               )
             }}
-              <Grid as |Item|>
+              <Card.Grid as |Item|>
                 <Item>
                   <:label>Centraal bestuur</:label>
                   <:content>
@@ -273,7 +273,7 @@
                     />
                   </:content>
                 </Item>
-              </Grid>
+              </Card.Grid>
             {{/if}}
             {{#if
               (eq
@@ -282,7 +282,7 @@
               )
             }}
               {{#each @model.administrativeUnit.subOrganizations as |worship|}}
-                <Grid as |Item|>
+                <Card.Grid as |Item|>
                   <Item>
                     {{! TODO: Enable to edit the list of worship services that are linked to central worship service }}
                     <:label>Bestuur van de eredienst</:label>
@@ -290,10 +290,10 @@
                       {{worship.name}}
                     </:content>
                   </Item>
-                </Grid>
+                </Card.Grid>
               {{/each}}
             {{/if}}
-            <Grid as |Item|>
+            <Card.Grid as |Item|>
               <Item>
                 <:label>Representatief orgaan</:label>
                 <:content>
@@ -305,7 +305,7 @@
                   />
                 </:content>
               </Item>
-            </Grid>
+            </Card.Grid>
           </:card>
         </EditCard>
 

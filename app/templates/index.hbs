@@ -28,6 +28,10 @@
           <AuIcon @icon="manual" @alignment="left" />
           Handleiding
         </a>
+        <AuHelpText @skin="secondary">
+          {{config "appName"}}
+          v{{app-version versionOnly=true}}
+        </AuHelpText>
       </div>
     </div>
   </:sidebar>

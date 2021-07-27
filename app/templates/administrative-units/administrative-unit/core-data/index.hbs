@@ -25,8 +25,8 @@
 
     <DataCard>
       <:title>Bestuurseenheid</:title>
-      <:card as |Grid|>
-        <Grid as |Item|>
+      <:card as |Card|>
+        <Card.Grid as |Item|>
           <Item>
             <:label>Naam eredienst</:label>
             <:content>{{@model.administrativeUnit.name}}</:content>
@@ -39,8 +39,8 @@
               />
             </:content>
           </Item>
-        </Grid>
-        <Grid as |Item|>
+        </Card.Grid>
+        <Card.Grid as |Item|>
           <Item>
             <:label>Type bestuur</:label>
             <:content>
@@ -59,37 +59,37 @@
               </:content>
             </Item>
           {{/if}}
-        </Grid>
-        <Grid as |Item|>
+        </Card.Grid>
+        <Card.Grid as |Item|>
           <Item>
             <:label>Type eredienst</:label>
             <:content
             >{{@model.administrativeUnit.recognizedWorshipType.label}}</:content>
           </Item>
-        </Grid>
+        </Card.Grid>
 
         {{#if @model.administrativeUnit.denomination}}
-          <Grid as |Item|>
+          <Card.Grid as |Item|>
             <Item>
               <:label>Strekking</:label>
               <:content>{{@model.administrativeUnit.denomination}}</:content>
             </Item>
-          </Grid>
+          </Card.Grid>
         {{/if}}
 
         {{#if
           (eq @model.administrativeUnit.constructor.modelName "worship-service")
         }}
-          <Grid as |Item|>
+          <Card.Grid as |Item|>
             <Item>
               <:label>Grensoverschrijdend</:label>
               <:content
               >{{@model.administrativeUnit.crossBorderNominal}}</:content>
             </Item>
-          </Grid>
+          </Card.Grid>
         {{/if}}
 
-        <Grid as |Item|>
+        <Card.Grid as |Item|>
           {{#if @model.administrativeUnit.scope.label}}
             <Item>
               <:label>Werkingsgebied</:label>
@@ -107,7 +107,7 @@
               <:content></:content>
             </Item>
           {{/each}}
-        </Grid>
+        </Card.Grid>
       </:card>
     </DataCard>
 
@@ -115,8 +115,8 @@
       <:title>
         Primaire contactgegevens
       </:title>
-      <:card as |Grid|>
-        <Grid as |Item|>
+      <:card as |Card|>
+        <Card.Grid as |Item|>
           <Item>
             <:label>Adres</:label>
             <:content>
@@ -149,7 +149,7 @@
               </:content>
             </Item>
           {{/if}}
-        </Grid>
+        </Card.Grid>
       </:card>
     </DataCard>
 
@@ -163,9 +163,9 @@
         <:title>
           Gerelateerde organisaties
         </:title>
-        <:card as |Grid|>
+        <:card as |Card|>
           {{#if @model.administrativeUnit.isSubOrganizationOf.name}}
-            <Grid as |Item|>
+            <Card.Grid as |Item|>
               <Item>
                 <:label>Centraal bestuur</:label>
                 <:content>
@@ -177,11 +177,11 @@
                   </AuLink>
                 </:content>
               </Item>
-            </Grid>
+            </Card.Grid>
           {{/if}}
           {{#if @model.administrativeUnit.subOrganizations}}
             {{#each @model.administrativeUnit.subOrganizations as |worship|}}
-              <Grid as |Item|>
+              <Card.Grid as |Item|>
                 <Item>
                   <:label>Bestuur van de eredienst</:label>
                   <:content>
@@ -193,11 +193,11 @@
                     </AuLink>
                   </:content>
                 </Item>
-              </Grid>
+              </Card.Grid>
             {{/each}}
           {{/if}}
           {{#if @model.administrativeUnit.isAssociatedWith.name}}
-            <Grid as |Item|>
+            <Card.Grid as |Item|>
               <Item>
                 <:label>Representatief orgaan</:label>
                 <:content>
@@ -209,7 +209,7 @@
                   </AuLink>
                 </:content>
               </Item>
-            </Grid>
+            </Card.Grid>
           {{/if}}
         </:card>
       </DataCard>
