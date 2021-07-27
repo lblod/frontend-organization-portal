@@ -5,7 +5,7 @@ LABEL maintainer="info@redpencil.io"
 WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
-RUN npm install
+RUN npm ci
 COPY . .
 RUN ember build -prod
 
