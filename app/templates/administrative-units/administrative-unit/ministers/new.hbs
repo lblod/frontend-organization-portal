@@ -21,28 +21,32 @@
       <EditCard>
         <:title>Persoon zoeken</:title>
         <:card as |Card|>
-          <Card.Grid as |Item|>
-            <Item @labelFor="person-given-name">
-              <:label>Voornaam</:label>
-              <:content>
-                <AuInput
-                  @value={{this.searchParams.givenName}}
-                  @width="block"
-                  id="person-given-name"
-                />
-              </:content>
-            </Item>
-            <Item @labelFor="person-family-name">
-              <:label>Achternaam</:label>
-              <:content>
-                <AuInput
-                  @value={{this.searchParams.familyName}}
-                  @width="block"
-                  id="person-family-name"
-                />
-              </:content>
-            </Item>
-          </Card.Grid>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item @labelFor="person-given-name">
+                <:label>Voornaam</:label>
+                <:content>
+                  <AuInput
+                    @value={{this.searchParams.givenName}}
+                    @width="block"
+                    id="person-given-name"
+                  />
+                </:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item @labelFor="person-family-name">
+                <:label>Achternaam</:label>
+                <:content>
+                  <AuInput
+                    @value={{this.searchParams.familyName}}
+                    @width="block"
+                    id="person-family-name"
+                  />
+                </:content>
+              </Item>
+            </:right>
+          </Card.Columns>
           <div class="au-u-padding-tiny au-u-text-right">
             <AuButton
               @disabled={{not this.canSearch}}
@@ -121,221 +125,224 @@
       <DataCard>
         <:title>Persoonlijke gegevens</:title>
         <:card as |Card|>
-          <Card.Grid as |Item|>
-            <Item>
-              <:label>
-                Voornaam
-              </:label>
-              <:content>
-                {{this.targetPerson.givenName}}
-              </:content>
-            </Item>
-            <Item>
-              <:label>
-                Achternaam
-              </:label>
-              <:content>
-                {{this.targetPerson.familyName}}
-              </:content>
-            </Item>
-          </Card.Grid>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item>
+                <:label>
+                  Voornaam
+                </:label>
+                <:content>
+                  {{this.targetPerson.givenName}}
+                </:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item>
+                <:label>
+                  Achternaam
+                </:label>
+                <:content>
+                  {{this.targetPerson.familyName}}
+                </:content>
+              </Item>
+            </:right>
+          </Card.Columns>
         </:card>
       </DataCard>
 
       <EditCard>
         <:title>Positie</:title>
         <:card as |Card|>
-          <Card.Grid as |Item|>
-            <Item>
-              <:label>Positie</:label>
-              <:content>
-                <MinisterPositionFunctionSelect
-                  @onChange={{fn (mut this.model.position.function)}}
-                  @selected={{this.model.position.function}}
-                />
-              </:content>
-            </Item>
-          </Card.Grid>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item>
+                <:label>Positie</:label>
+                <:content>
+                  <MinisterPositionFunctionSelect
+                    @onChange={{fn (mut this.model.position.function)}}
+                    @selected={{this.model.position.function}}
+                  />
+                </:content>
+              </Item>
+            </:left>
+          </Card.Columns>
         </:card>
       </EditCard>
 
       <EditCard>
         <:title>Contactgegevens</:title>
         <:card as |Card|>
-          <Card.Grid as |Item|>
-            <Item @labelFor="address-street-name">
-              <:label>Straat</:label>
-              <:content>
-                <AuInput
-                  @value={{this.model.address.street}}
-                  @width="block"
-                  id="address-street-name"
-                />
-              </:content>
-            </Item>
-            <Item @labelFor="contact-email">
-              <:label>E-mailadres</:label>
-              <:content>
-                <AuInput
-                  @value={{this.model.contact.email}}
-                  @width="block"
-                  id="contact-email"
-                  type="email"
-                />
-              </:content>
-            </Item>
-            <Item @labelFor="address-house-number">
-              <:label>Huisnummer</:label>
-              <:content>
-                <AuInput
-                  @value={{this.model.address.number}}
-                  @width="block"
-                  id="address-house-number"
-                />
-              </:content>
-            </Item>
-            <Item @labelFor="contact-landline">
-              <:label>Telefoonnummer</:label>
-              <:content>
-                <AuInput
-                  @value={{this.model.contact.telephone}}
-                  @width="block"
-                  id="contact-landline" type="tel"
-                />
-              </:content>
-            </Item>
-            <Item @labelFor="address-box-number">
-              <:label>Busnummer</:label>
-              <:content>
-                <AuInput
-                  @value={{this.model.address.boxNumber}}
-                  @width="block"
-                  id="address-box-number"
-                />
-              </:content>
-            </Item>
-            <Item @labelFor="contact-mobile">
-              <:label>GSM nummer</:label>
-              <:content>
-                <AuInput
-                  @width="block"
-                  @value={{this.model.contactMobile.telephone}}
-                  id="contact-mobile"
-                  type="tel"
-                />
-              </:content>
-            </Item>
-            <Item @labelFor="address-postal-code">
-              <:label>Postcode</:label>
-              <:content>
-                <AuInput
-                  @value={{this.model.address.postcode}}
-                  @width="block"
-                  id="address-postal-code"
-                />
-              </:content>
-            </Item>
-          </Card.Grid>
-
-          {{! Force a new row }}
-          <Card.Grid as |Item|>
-            <Item @labelFor="address-municipality">
-              <:label>Gemeente</:label>
-              <:content>
-                <MunicipalitySelect
-                  @selected={{this.model.address.municipality}}
-                  @onChange={{fn (mut this.model.address.municipality)}}
-                />
-              </:content>
-            </Item>
-          </Card.Grid>
-
-          {{! Force a new row }}
-          <Card.Grid as |Item|>
-            <Item @labelFor="address-province">
-              <:label>Provincie</:label>
-              <:content>
-                <ProvinceSelect
-                  @selected={{this.model.address.province}}
-                  @onChange={{fn (mut this.model.address.province)}}
-                />
-              </:content>
-            </Item>
-          </Card.Grid>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item @labelFor="address-street-name">
+                <:label>Straat</:label>
+                <:content>
+                  <AuInput
+                    @value={{this.model.address.street}}
+                    @width="block"
+                    id="address-street-name"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="address-house-number">
+                <:label>Huisnummer</:label>
+                <:content>
+                  <AuInput
+                    @value={{this.model.address.number}}
+                    @width="block"
+                    id="address-house-number"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="address-box-number">
+                <:label>Busnummer</:label>
+                <:content>
+                  <AuInput
+                    @value={{this.model.address.boxNumber}}
+                    @width="block"
+                    id="address-box-number"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="address-postal-code">
+                <:label>Postcode</:label>
+                <:content>
+                  <AuInput
+                    @value={{this.model.address.postcode}}
+                    @width="block"
+                    id="address-postal-code"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="address-municipality">
+                <:label>Gemeente</:label>
+                <:content>
+                  <MunicipalitySelect
+                    @selected={{this.model.address.municipality}}
+                    @onChange={{fn (mut this.model.address.municipality)}}
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="address-province">
+                <:label>Provincie</:label>
+                <:content>
+                  <ProvinceSelect
+                    @selected={{this.model.address.province}}
+                    @onChange={{fn (mut this.model.address.province)}}
+                  />
+                </:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item @labelFor="contact-email">
+                <:label>E-mailadres</:label>
+                <:content>
+                  <AuInput
+                    @value={{this.model.contact.email}}
+                    @width="block"
+                    id="contact-email"
+                    type="email"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-landline">
+                <:label>Telefoonnummer</:label>
+                <:content>
+                  <AuInput
+                    @value={{this.model.contact.telephone}}
+                    @width="block"
+                    id="contact-landline" type="tel"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-mobile">
+                <:label>GSM nummer</:label>
+                <:content>
+                  <AuInput
+                    @width="block"
+                    @value={{this.model.contactMobile.telephone}}
+                    id="contact-mobile"
+                    type="tel"
+                  />
+                </:content>
+              </Item>
+            </:right>
+          </Card.Columns>
         </:card>
       </EditCard>
 
       <EditCard>
         <:title>Aanstelling</:title>
         <:card as |Card|>
-          <Card.Grid as |Item|>
-            <Item @labelFor="start-date">
-              <:label>Startdatum</:label>
-              <:content>
-                <Datepicker
-                  @id="start-date"
-                  @onChange={{fn (mut this.model.minister.agentStartDate)}}
-                  @value={{this.model.minister.agentStartDate}}
-                />
-              </:content>
-            </Item>
-            <Item @labelFor="end-date">
-              <:label>Einddatum</:label>
-              <:content>
-                <Datepicker
-                  @disabled={{this.isCurrentPosition}}
-                  @id="end-date"
-                  @onChange={{fn (mut this.model.minister.agentEndDate)}}
-                  @value={{this.model.minister.agentEndDate}}
-                />
-              </:content>
-            </Item>
-            {{! Empty column placeholder }}
-            <Item>
-              <:label></:label>
-              <:content></:content>
-            </Item>
-            <Item @labelFor="end-date">
-              <:label></:label>
-              <:content>
-                <AuControlCheckbox
-                  @checked={{this.isCurrentPosition}}
-                  @label="Huidige positie"
-                  @identifier="current-position"
-                  @onChange={{fn (mut this.isCurrentPosition)}}
-                />
-              </:content>
-            </Item>
-          </Card.Grid>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item @labelFor="start-date">
+                <:label>Startdatum</:label>
+                <:content>
+                  <Datepicker
+                    @id="start-date"
+                    @onChange={{fn (mut this.model.minister.agentStartDate)}}
+                    @value={{this.model.minister.agentStartDate}}
+                  />
+                </:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item @labelFor="end-date">
+                <:label>Einddatum</:label>
+                <:content>
+                  <Datepicker
+                    @disabled={{this.isCurrentPosition}}
+                    @id="end-date"
+                    @onChange={{fn (mut this.model.minister.agentEndDate)}}
+                    @value={{this.model.minister.agentEndDate}}
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="end-date">
+                <:label></:label>
+                <:content>
+                  <AuControlCheckbox
+                    @checked={{this.isCurrentPosition}}
+                    @label="Huidige positie"
+                    @identifier="current-position"
+                    @onChange={{fn (mut this.isCurrentPosition)}}
+                  />
+                </:content>
+              </Item>
+            </:right>
+          </Card.Columns>
         </:card>
       </EditCard>
 
       <EditCard>
         <:title>Financiering</:title>
         <:card as |Card|>
-          <Card.Grid as |Item|>
-            <Item @alignTop={{true}}>
-              <:label>FOD financiering</:label>
-              <:content>
-                <AuControlRadio
-                  @label="Ja"
-                  @name="financing"
-                  @value={{true}}
-                  checked={{this.willReceiveFinancing}}
-                  @onChange={{fn (mut this.willReceiveFinancing) true}}
-                  @identifier="receives-financing"
-                /><br />
-                <AuControlRadio
-                  @label="Nee"
-                  @name="financing"
-                  @value={{false}}
-                  checked={{not this.willReceiveFinancing}}
-                  @onChange={{fn (mut this.willReceiveFinancing) false}}
-                  @identifier="receives-no-financing"
-                />
-              </:content>
-            </Item>
-          </Card.Grid>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item @alignTop={{true}}>
+                <:label>FOD financiering</:label>
+                <:content>
+                  <AuControlRadio
+                    @label="Ja"
+                    @name="financing"
+                    @value={{true}}
+                    checked={{this.willReceiveFinancing}}
+                    @onChange={{fn (mut this.willReceiveFinancing) true}}
+                    @identifier="receives-financing"
+                  /><br />
+                  <AuControlRadio
+                    @label="Nee"
+                    @name="financing"
+                    @value={{false}}
+                    checked={{not this.willReceiveFinancing}}
+                    @onChange={{fn (mut this.willReceiveFinancing) false}}
+                    @identifier="receives-no-financing"
+                  />
+                </:content>
+              </Item>
+            </:left>
+          </Card.Columns>
         </:card>
       </EditCard>
 
