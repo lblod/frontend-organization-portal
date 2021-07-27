@@ -1,4 +1,5 @@
 import Component from '@glimmer/component';
+import { action } from '@ember/object';
 
 export default class DatepickerComponent extends Component {
   get datePickerLocalization() {
@@ -16,6 +17,11 @@ export default class DatepickerComponent extends Component {
       monthNames: getLocalizedMonths(),
       monthNamesShort: getLocalizedMonths('short'),
     };
+  }
+
+  @action
+  onChange(isoDate, date) {
+    this.args.onChange?.(date);
   }
 }
 
