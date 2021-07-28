@@ -1,0 +1,33 @@
+<div class="au-o-box">
+  <AuToolbar>
+    <AuToolbarGroup>
+      <AuHeading>
+        Betrokken lokale besturen
+      </AuHeading>
+    </AuToolbarGroup>
+  </AuToolbar>
+  <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
+    {{@model.administrativeUnit.name}}
+  </AuHeading>
+</div>
+
+<AuDataTable @content={{@model.involvements}} @noDataMessage="Geen bestuursorganen" as |t|>
+  <t.content as |c|>
+    <c.header>
+      <th class="au-c-data-table__header-title">Naam</th>
+      <th class="au-c-data-table__header-title">Type instelling</th>
+      <th class="au-c-data-table__header-title">Type betrokkenheid</th>
+      <th class="au-c-data-table__header-title">Financieel percentage</th>
+      <th></th>
+    </c.header>
+    <c.body as |involvement|>
+      <td>{{involvement.administrativeUnit.name}}</td>
+      <td>{{involvement.administrativeUnit.classification.label}}</td>
+      <td>{{involvement.involvementType.label}}</td>
+      <td>{{involvement.percentage}}%</td>
+      <td>
+        <AuLink @route="administrative-units.administrative-unit.local-involvements">Bewerk</AuLink>
+      </td>
+    </c.body>
+  </t.content>
+</AuDataTable>
