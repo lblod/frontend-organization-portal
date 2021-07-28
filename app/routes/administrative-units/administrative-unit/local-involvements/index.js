@@ -15,7 +15,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsIndex
       {
         reload: true,
         include:
-          'involvements,involvements.involvement-type,involvements.administrative-unit.classification',
+          'involvements.involvement-type,involvements.administrative-unit.classification',
       }
     );
 
