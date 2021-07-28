@@ -25,7 +25,7 @@
         </li>
         {{#if (not-eq @model.constructor.modelName "central-worship-service")}}
           <li class="au-c-list-navigation__item">
-            <AuNavigationLink>
+            <AuNavigationLink @route="administrative-units.administrative-unit.local-involvements">
               Betrokken lokale besturen
             </AuNavigationLink>
           </li>

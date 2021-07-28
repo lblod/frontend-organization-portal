@@ -50,6 +50,11 @@ Router.map(function () {
         this.route('ministers', { path: '/bedienaren' }, function () {
           this.route('new', { path: '/nieuwe-bedienaar' });
         });
+        this.route(
+          'local-involvements',
+          { path: '/betrokken-lokale-besturen' },
+          function () {}
+        );
       });
     }
   );
