@@ -1,27 +1,21 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { restartableTask } from 'ember-concurrency';
+import { restartableTask, timeout } from 'ember-concurrency';
 
 export default class WorshipServiceSelectComponent extends Component {
   @service fastboot;
   @service store;
   worshipServices;
 
-  constructor(...args) {
-    super(...args);
-
-    if (!this.fastboot.isFastBoot) {
-      this.worshipServices = this.loadWorshipServicesTask.perform();
-    }
-  }
-
   @restartableTask
   *loadWorshipServicesTask(searchParams = '') {
+    yield timeout(500);
+
     const query = {
       sort: 'name',
     };
 
-    if (searchParams.length > 1) {
+    if (searchParams.trim().length !== '') {
       query['filter[name]'] = searchParams;
     }
 

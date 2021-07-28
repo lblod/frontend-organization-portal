@@ -26,7 +26,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   }
 
   get governingBody() {
-    return this.model.govBodyTemp;
+    return this.model.governingBody;
   }
 
   @dropTask
@@ -37,30 +37,14 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     if (contacts.firstObject.hasDirtyAttributes) {
       let address = yield contacts.firstObject.contactAddress;
 
-      if (address.hasDirtyAttributes) {
+      if (address && address.hasDirtyAttributes) {
         address.fullAddress = combineFullAddress(address);
         yield address.save();
       }
-      let isNewContact = contacts.firstObject.isNew;
       yield contacts.firstObject.save();
-
-      if (isNewContact) {
-        yield this.mandatory.save();
-      }
-    }
-
-    if (this.governingBody.hasDirtyAttributes) {
-      let mandate = yield this.mandatory.mandate;
-      mandate.governingBody = this.governingBody;
-
-      yield mandate.save();
     }
 
     yield this.mandatory.save();
-
-    yield this.governingBody.save();
-
-    yield this.administrativeUnit.save();
 
     this.router.transitionTo(
       'administrative-units.administrative-unit.governing-bodies.governing-body',
