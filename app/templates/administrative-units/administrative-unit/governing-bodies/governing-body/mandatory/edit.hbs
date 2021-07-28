@@ -1,15 +1,12 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box au-o-flow au-o-flow--large">
-    <div class="au-o-flow au-o-flow--tiny">
-      <AuHeading>
-        Bewerk mandataris
-      </AuHeading>
-
-      <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
+    <PageHeader>
+      <:title>Bewerk mandataris</:title>
+      <:subtitle>
         {{@model.person.givenName}}
         {{@model.person.familyName}}
-      </AuHeading>
-    </div>
+      </:subtitle>
+    </PageHeader>
 
     <DataCard>
       <:title>Persoonlijke gegevens</:title>

@@ -1,28 +1,19 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box au-o-flow au-o-flow--large">
-    <div class="au-o-flow au-o-flow--tiny">
-      <AuToolbar>
-        <AuToolbarGroup>
-          <AuHeading>
-            Vestiging:
-            {{@model.site.address.fullAddress}}
-          </AuHeading>
-        </AuToolbarGroup>
-        <AuToolbarGroup>
-          <AuLink
-            @route="administrative-units.administrative-unit.sites.site.edit"
-            @skin="button-secondary"
-            @icon="pencil"
-            @iconAlignment="left"
-          >
-            Bewerk
-          </AuLink>
-        </AuToolbarGroup>
-      </AuToolbar>
-      <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
-        {{@model.administrativeUnit.name}}
-      </AuHeading>
-    </div>
+    <PageHeader>
+      <:title>Vestiging: {{@model.site.address.fullAddress}}</:title>
+      <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+      <:action>
+        <AuLink
+          @route="administrative-units.administrative-unit.sites.site.edit"
+          @skin="button-secondary"
+          @icon="pencil"
+          @iconAlignment="left"
+        >
+          Bewerk
+        </AuLink>
+      </:action>
+    </PageHeader>
 
     <DataCard>
       <:title>Kerngegevens</:title>

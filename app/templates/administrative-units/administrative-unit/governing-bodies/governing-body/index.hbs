@@ -1,13 +1,12 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box au-o-flow au-o-flow--large">
-    <AuToolbar>
-      <AuToolbarGroup>
-        <AuHeading>
-          Bestuursorgaan:
-          {{@model.adminGovModel.governingBody.classification.label}}
-        </AuHeading>
-      </AuToolbarGroup>
-      <AuToolbarGroup>
+    <PageHeader>
+      <:title>
+        Bestuursorgaan:
+        {{@model.adminGovModel.governingBody.classification.label}}
+      </:title>
+      <:subtitle>{{@model.adminGovModel.administrativeUnit.name}}</:subtitle>
+      <:action>
         {{! TODO: Replace this with a link once the "edit" route is created }}
         <AuLink
           @route="administrative-units.administrative-unit.governing-bodies.governing-body"
@@ -17,11 +16,8 @@
         >
           Bewerk
         </AuLink>
-      </AuToolbarGroup>
-    </AuToolbar>
-    <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
-      {{@model.adminGovModel.administrativeUnit.name}}
-    </AuHeading>
+      </:action>
+    </PageHeader>
 
     <DataCard>
       <:title>Bestuursorgaan</:title>
