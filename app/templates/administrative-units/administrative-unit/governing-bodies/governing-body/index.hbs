@@ -110,7 +110,9 @@
                   </AuLink>
                 </td>
                 <td>
-                  {{date-format mandatory.startDate}}
+                  {{#if mandatory.startDate}}
+                    {{date-format mandatory.startDate}}
+                  {{/if}}
                 </td>
                 <td>
                   {{#if mandatory.endDate}}
@@ -122,7 +124,8 @@
                 </td>
                 <td>
                   <AuLink
-                    @route="administrative-units.administrative-unit.governing-bodies"
+                    @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
+                    @model={{mandatory.id}}
                   >
                     Bewerk
                   </AuLink>
@@ -203,7 +206,8 @@
               </td>
               <td>
                 <AuLink
-                  @route="administrative-units.administrative-unit.governing-bodies"
+                  @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
+                  @model={{mandatory.id}}
                 >
                   Bewerk
                 </AuLink>
