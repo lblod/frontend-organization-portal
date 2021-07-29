@@ -15,16 +15,25 @@
       <th class="au-c-data-table__header-title">Status</th>
       <th></th>
     </c.header>
-    <c.body as |gbody|>
-      <td><AuLink
+    <c.body as |governingBody|>
+      <td>
+        <AuLink
           @route="administrative-units.administrative-unit.governing-bodies.governing-body"
-          @model={{gbody.id}}
-        >{{@model.governingBody.classification.label}}</AuLink></td>
-      <td>{{gbody.period}}</td>
-      <td><GoverningBodyStatus @date={{gbody.endDate}} /></td>
-      <td><AuLink
-          @route="administrative-units.administrative-unit.governing-bodies"
-        >Bewerk</AuLink></td>
+          @model={{governingBody.id}}
+        >
+          {{@model.governingBody.classification.label}}
+        </AuLink>
+      </td>
+      <td>{{governingBody.period}}</td>
+      <td><GoverningBodyStatus @date={{governingBody.endDate}} /></td>
+      <td>
+        <AuLink
+          @route="administrative-units.administrative-unit.governing-bodies.governing-body.edit"
+          @model={{governingBody.id}}
+        >
+          Bewerk
+        </AuLink>
+      </td>
     </c.body>
   </t.content>
 </AuDataTable>
