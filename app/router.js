@@ -47,6 +47,7 @@ Router.map(function () {
                 this.route('mandatory', { path: '/mandataris' }, function () {
                   this.route('edit', { path: '/:mandatoryId/' });
                 });
+                this.route('edit');
               }
             );
           }
