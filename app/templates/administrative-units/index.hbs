@@ -79,19 +79,15 @@
     >
       <t.menu as |menu|>
         <menu.general>
-          <AuToolbar class="au-o-box">
-            <AuToolbarGroup>
-              <AuHeading @skin="2">
-                Bestuurseenheden
-              </AuHeading>
-            </AuToolbarGroup>
-            <AuToolbarGroup>
+          <PageHeader class="au-o-box">
+            <:title>Bestuurseenheden</:title>
+            <:action>
               {{! TODO: Replace this with a link once the "new" route is created }}
               <AuButton @icon="add" @iconAlignment="left">
                 Nieuw
               </AuButton>
-            </AuToolbarGroup>
-          </AuToolbar>
+            </:action>
+          </PageHeader>
         </menu.general>
       </t.menu>
       <t.content class="au-c-data-table__table--small" as |c|>

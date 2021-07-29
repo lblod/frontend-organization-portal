@@ -1,25 +1,17 @@
-<div class="au-o-box">
-  <AuToolbar>
-    <AuToolbarGroup>
-      <AuHeading>
-        Bedienaren
-      </AuHeading>
-    </AuToolbarGroup>
-    <AuToolbarGroup>
-      <AuLink
-        @route="administrative-units.administrative-unit.ministers.new"
-        @icon="add"
-        @iconAlignment="left"
-        @skin="button"
-      >
-        Nieuw
-      </AuLink>
-    </AuToolbarGroup>
-  </AuToolbar>
-  <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
-    {{@model.administrativeUnit.name}}
-  </AuHeading>
-</div>
+<PageHeader class="au-o-box">
+  <:title>Bedienaren</:title>
+  <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+  <:action>
+    <AuLink
+      @route="administrative-units.administrative-unit.ministers.new"
+      @icon="add"
+      @iconAlignment="left"
+      @skin="button"
+    >
+      Nieuw
+    </AuLink>
+  </:action>
+</PageHeader>
 
 <AuDataTable
   @content={{@model.ministerPositions}}

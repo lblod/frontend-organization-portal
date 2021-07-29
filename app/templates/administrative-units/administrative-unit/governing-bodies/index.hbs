@@ -1,15 +1,7 @@
-<div class="au-o-box">
-  <AuToolbar>
-    <AuToolbarGroup>
-      <AuHeading>
-        Bestuursorganen
-      </AuHeading>
-    </AuToolbarGroup>
-  </AuToolbar>
-  <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
-    {{@model.administrativeUnit.name}}
-  </AuHeading>
-</div>
+<PageHeader class="au-o-box">
+  <:title>Bestuursorganen</:title>
+  <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+</PageHeader>
 
 <AuDataTable
   @content={{@model.governingBody.hasTimeSpecializations}}

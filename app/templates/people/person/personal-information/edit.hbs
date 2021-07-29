@@ -1,12 +1,12 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box">
-    <AuHeading class="au-u-margin-bottom-tiny">
-      Bewerk Persoonlijke gegevens
-    </AuHeading>
-    <AuHeading @level="2" @skin="3" class="au-u-margin-bottom-large">
-      {{@model.person.givenName}}
-      {{@model.person.familyName}}
-    </AuHeading>
+    <PageHeader class="au-u-margin-bottom-large">
+      <:title>Bewerk persoonlijke gegevens</:title>
+      <:subtitle>
+        {{@model.person.givenName}}
+        {{@model.person.familyName}}
+      </:subtitle>
+    </PageHeader>
 
     <form
       id="edit-personal-info-form"
@@ -78,8 +78,6 @@
           </AuLink>
         </AuButtonGroup>
       </div>
-
     </form>
-
   </div>
 </div>

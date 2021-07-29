@@ -1,14 +1,12 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box au-o-flow au-o-flow--large">
-    <div class="au-o-flow au-o-flow--tiny">
-      <AuHeading class="au-u-margin-bottom-tiny">
-        Bewerk vestiging
-      </AuHeading>
-      <AuHeading @level="2" @skin="3" class="au-u-margin-bottom-tiny">
+    <PageHeader>
+      <:title>Bewerk vestiging</:title>
+      <:subtitle>
         {{@model.site.address.fullAddress}},
         {{@model.administrativeUnit.name}}
-      </AuHeading>
-    </div>
+      </:subtitle>
+    </PageHeader>
 
     <form
       id="edit-vestiging-form"

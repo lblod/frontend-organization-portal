@@ -49,13 +49,11 @@
     >
       <t.menu as |menu|>
         <menu.general>
-          <AuToolbar class="au-o-box">
-            <AuToolbarGroup>
-              <AuHeading @skin="2">
-                Personen
-              </AuHeading>
-            </AuToolbarGroup>
-          </AuToolbar>
+          <PageHeader class="au-o-box">
+            <:title>
+              Personen
+            </:title>
+          </PageHeader>
         </menu.general>
       </t.menu>
       <t.content class="au-c-data-table__table--small" as |c|>
