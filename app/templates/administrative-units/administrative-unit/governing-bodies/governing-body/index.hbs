@@ -7,9 +7,8 @@
       </:title>
       <:subtitle>{{@model.adminGovModel.administrativeUnit.name}}</:subtitle>
       <:action>
-        {{! TODO: Replace this with a link once the "edit" route is created }}
         <AuLink
-          @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+          @route="administrative-units.administrative-unit.governing-bodies.governing-body.edit"
           @skin="button-secondary"
           @icon="pencil"
           @iconAlignment="left"
