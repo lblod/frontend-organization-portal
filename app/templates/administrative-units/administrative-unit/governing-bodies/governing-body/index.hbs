@@ -24,24 +24,35 @@
         <Card.Grid as |Item|>
           <Item>
             <:label>Type</:label>
-            <:content
-            >{{@model.adminGovModel.governingBody.classification.label}}</:content>
+            <:content>
+              {{@model.adminGovModel.governingBody.classification.label}}
+            </:content>
           </Item>
-          <Item>
-            <:label>Start datum</:label>
-            <:content>{{date-format
-                @model.govBodyTimeSpec.startDate
-              }}</:content>
-          </Item>
-          <Item>
-            <:label>Termijn</:label>
-            <:content>Bestuursperiode
-              {{@model.govBodyTimeSpec.period}}</:content>
-          </Item>
-          <Item>
-            <:label>Einddatum</:label>
-            <:content>{{date-format @model.govBodyTimeSpec.endDate}}</:content>
-          </Item>
+          {{#if @model.govBodyTimeSpec.startDate}}
+            <Item>
+              <:label>Start datum</:label>
+              <:content>
+                {{date-format @model.govBodyTimeSpec.startDate}}
+              </:content>
+            </Item>
+          {{/if}}
+          {{#if @model.govBodyTimeSpec.period}}
+            <Item>
+              <:label>Termijn</:label>
+              <:content>
+                Bestuursperiode
+                {{@model.govBodyTimeSpec.period}}
+              </:content>
+            </Item>
+          {{/if}}
+          {{#if @model.govBodyTimeSpec.endDate}}
+            <Item>
+              <:label>Einddatum</:label>
+              <:content>
+                {{date-format @model.govBodyTimeSpec.endDate}}
+              </:content>
+            </Item>
+          {{/if}}
         </Card.Grid>
       </:card>
     </DataCard>
@@ -112,10 +123,9 @@
                 <td>
                   {{#if mandatory.endDate}}
                     {{date-format mandatory.endDate}}
-                  {{else}}
+                  {{else if mandatory.expectedEndDate}}
                     {{date-format mandatory.expectedEndDate}}
                   {{/if}}
-
                 </td>
                 <td>
                   <AuLink
@@ -190,12 +200,14 @@
                 </AuLink>
               </td>
               <td>
-                {{date-format mandatory.startDate}}
+                {{#if mandatory.startDate}}
+                  {{date-format mandatory.startDate}}
+                {{/if}}
               </td>
               <td>
                 {{#if mandatory.endDate}}
                   {{date-format mandatory.endDate}}
-                {{else}}
+                {{else if mandatory.expectedEndDate}}
                   {{date-format mandatory.expectedEndDate}}
                 {{/if}}
               </td>
