@@ -104,10 +104,12 @@
       <:title>Aanstelling</:title>
       <:card as |Card|>
         <Card.Grid as |Item|>
-          <Item>
-            <:label>Start mandaat</:label>
-            <:content>{{date-format @model.mandatory.startDate}}</:content>
-          </Item>
+          {{#if @model.mandatory.startDate}}
+            <Item>
+              <:label>Start mandaat</:label>
+              <:content>{{date-format @model.mandatory.startDate}}</:content>
+            </Item>
+          {{/if}}
           {{#if @model.mandatory.mandate.governingBody.period}}
             <Item>
               <:label>Bestuursperiode</:label>
@@ -116,12 +118,14 @@
               </:content>
             </Item>
           {{/if}}
-          <Item>
-            <:label>Geplande einddatum</:label>
-            <:content>
-              {{date-format @model.mandatory.expectedEndDate}}
-            </:content>
-          </Item>
+          {{#if @model.mandatory.expectedEndDate}}
+            <Item>
+              <:label>Geplande einddatum</:label>
+              <:content>
+                {{date-format @model.mandatory.expectedEndDate}}
+              </:content>
+            </Item>
+          {{/if}}
           {{#if @model.mandatory.typeHalf.label}}
             <Item>
               <:label>Verkozen</:label>
