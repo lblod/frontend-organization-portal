@@ -3,7 +3,7 @@
   <:subtitle>{{@model.person.givenName}} {{@model.person.familyName}}</:subtitle>
 </PageHeader>
 
-<AuDataTable @content={{@model.positions}} @noDataMessage="Geen posities" as |t|>
+<AuDataTable @content={{@model.positions}} @noDataMessage="Geen contactgegevens" as |t|>
   <t.content as |c|>
     <c.header>
       <th class="au-c-data-table__header-title">Positie</th>
