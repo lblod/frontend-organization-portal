@@ -10,7 +10,7 @@ export default class PeoplePersonContactsIndexRoute extends Route {
     let person = await this.store.findRecord('person', personId, {
       reload: true,
       include: [
-        'mandatories.contacts',
+        'mandatories.contacts.contact-address',
         'mandatories.mandate.role-board',
         'mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit',
       ].join(),

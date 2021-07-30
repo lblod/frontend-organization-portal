@@ -11,7 +11,7 @@ export default class PeoplePersonPositionsPositionRoute extends Route {
       'people.person.positions.position'
     );
 
-    let mandatory = this.store.findRecord('mandatory', mandatoryId, {
+    let mandatory = await this.store.findRecord('mandatory', mandatoryId, {
       reload: true,
       include: [
         'contacts',
