@@ -1,17 +1,5 @@
-<AuContentHeader
-  @titlePartOne="Vlaanderen"
-  @titlePartTwo="is het organisatieportaal"
->
-  <img
-    sizes="50vw"
-    src="/assets/images/loket-header-1600.jpg"
-    srcset="/assets/images/loket-header-320.jpg 320w, /assets/images/loket-header-1024.jpg 1024w, /assets/images/loket-header-1600.jpg 1600w"
-    alt="" role="presentation"
-  />
-</AuContentHeader>
-
-<section class="au-o-region-large">
-  <div class="au-o-layout">
+<StaticPage>
+  <section class="au-o-layout au-o-region-large">
     <div class="au-o-grid au-o-grid--small">
       <div class="au-o-grid__item au-u-3-4@small au-u-1-2@medium">
         <AuContent @skin="large">
@@ -37,97 +25,75 @@
         </AuButton>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="au-o-region-large au-u-background-gray-200">
-  <div class="au-o-layout">
-    <AuHeading @level="2" @skin="3" class="au-u-margin-bottom">
-      De functionaliteiten van het organisatieportaal
-    </AuHeading>
-    <div class="au-o-grid au-o-grid--small">
-      <div class="au-o-grid__item au-u-1-2@small">
-        <AuCard @flex="true" as |c|>
-          <c.header @badgeSkin="brand" @badgeIcon="sitemap">
-            <AuHeading @level="3" @skin="4">
-              Bestuurseenheden
-            </AuHeading>
-          </c.header>
-          <c.content>
-            <p>Bekijk en bewerk</p>
-            <ul>
-              <li>Kerninformatie over besturen</li>
-              <li>Bestuursorganen</li>
-              <li>Documenten en dossiers</li>
-            </ul>
-          </c.content>
-          <c.footer>
-            <p>
-              <a
-                class="au-c-link au-c-link--secondary"
-                href=""
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <AuIcon @icon="manual" @alignment="left" />
-                Handleiding
-              </a>
-            </p>
-          </c.footer>
-        </AuCard>
-      </div>
-      <div class="au-o-grid__item au-u-1-2@small">
-        <AuCard @flex="true" as |c|>
-          <c.header @badgeSkin="brand" @badgeIcon="users">
-            <AuHeading @level="3" @skin="4">
-              Personen
-            </AuHeading>
-          </c.header>
-          <c.content>
-            <p>Bekijk en bewerk</p>
-            <ul>
-              <li>Kerngegevens over personen</li>
-              <li>Contactgegevens</li>
-              <li>Posities</li>
-            </ul>
-          </c.content>
-          <c.footer>
-            <p>
-              <a
-                class="au-c-link au-c-link--secondary"
-                href=""
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <AuIcon @icon="manual" @alignment="left" />
-                Handleiding
-              </a>
-            </p>
-          </c.footer>
-        </AuCard>
+  <section class="au-o-region-large au-u-background-gray-200">
+    <div class="au-o-layout">
+      <AuHeading @level="2" @skin="3" class="au-u-margin-bottom">
+        De functionaliteiten van het organisatieportaal
+      </AuHeading>
+      <div class="au-o-grid au-o-grid--small">
+        <div class="au-o-grid__item au-u-1-2@small">
+          <AuCard @flex="true" as |c|>
+            <c.header @badgeSkin="brand" @badgeIcon="sitemap">
+              <AuHeading @level="3" @skin="4">
+                Bestuurseenheden
+              </AuHeading>
+            </c.header>
+            <c.content>
+              <p>Bekijk en bewerk</p>
+              <ul>
+                <li>Kerninformatie over besturen</li>
+                <li>Bestuursorganen</li>
+                <li>Documenten en dossiers</li>
+              </ul>
+            </c.content>
+            <c.footer>
+              <p>
+                <a
+                  class="au-c-link au-c-link--secondary"
+                  href=""
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <AuIcon @icon="manual" @alignment="left" />
+                  Handleiding
+                </a>
+              </p>
+            </c.footer>
+          </AuCard>
+        </div>
+        <div class="au-o-grid__item au-u-1-2@small">
+          <AuCard @flex="true" as |c|>
+            <c.header @badgeSkin="brand" @badgeIcon="users">
+              <AuHeading @level="3" @skin="4">
+                Personen
+              </AuHeading>
+            </c.header>
+            <c.content>
+              <p>Bekijk en bewerk</p>
+              <ul>
+                <li>Kerngegevens over personen</li>
+                <li>Contactgegevens</li>
+                <li>Posities</li>
+              </ul>
+            </c.content>
+            <c.footer>
+              <p>
+                <a
+                  class="au-c-link au-c-link--secondary"
+                  href=""
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <AuIcon @icon="manual" @alignment="left" />
+                  Handleiding
+                </a>
+              </p>
+            </c.footer>
+          </AuCard>
+        </div>
       </div>
     </div>
-  </div>
-</section>
-
-<AuMainFooter>
-  <AuHeading @level="3" @skin="4">
-    Organisaties.abb.vlaanderen.be is een officiële website van de Vlaamse
-    overheid
-  </AuHeading>
-  <AuContent @skin="small">
-    <p>Uitgegeven door
-      <a
-        class="au-c-link"
-        href="https://www.vlaanderen.be/organisaties/administratieve-diensten-van-de-vlaamse-overheid/beleidsdomein-kanselarij-en-bestuur/agentschap-binnenlands-bestuur"
-      >Agentschap Binnenlands Bestuur</a></p>
-    <ul class="au-c-list-horizontal">
-      <li class="au-c-list-horizontal__item">
-        <AuLink @route="index" @skin="secondary">Disclaimer</AuLink>
-      </li>
-      <li class="au-c-list-horizontal__item">
-        <AuLink @route="index" @skin="secondary">Cookieverklaring</AuLink>
-      </li>
-    </ul>
-  </AuContent>
-</AuMainFooter>
+  </section>
+</StaticPage>
