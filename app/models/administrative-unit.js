@@ -5,5 +5,4 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   @belongsTo('administrative-unit-classification-code') classification;
   @belongsTo('location', { inverse: 'administrativeUnit' }) scope;
   @hasMany('governing-body', { inverse: 'administrativeUnit' }) governingBodies;
-  @hasMany('local-involvement') involvedBoards;
 }
