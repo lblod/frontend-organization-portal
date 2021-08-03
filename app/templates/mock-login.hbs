@@ -3,16 +3,38 @@
         <main id="content">
             <div class="au-o-region-large">
                 <div class="au-o-layout">
-                    <AuHeading @skin="4">{{t 'mockLogin.pick'}}</AuHeading>
+                    {{#if this.session.isAuthenticated}}
+                    Logged in
+                    <MockLogout />
+                    {{else}}
                     <MockLogin as |login|>
+                        {{#if login.isLoading}}
+                        loading...
+                        {{else}}
+                        {{#if login.errorMessage}}
+                        {{login.errorMessage}}
+                        {{/if}}
+                        <AuHeading @skin="4">Kies een bestuurseenheid om mee in te loggen.</AuHeading>
+
                         <login.each-account @accounts={{this.model}} as |account|>
                             <div class="au-o-box au-o-box--small au-c-card au-u-margin-bottom-small">
-                                <p>
-                                    {{account.user.fullName}}
-                                </p>
+                                <strong>{{account.user.firstName}} {{account.user.lastName}}</strong>
+                                {{account.user.group.name}}
                             </div>
                         </login.each-account>
+                        <ul>
+                            {{#each this.accounts as |account|}}
+                            <li>
+                                <button type="button" {{on "click" (fn login.login account.id account.user.group.id)}}>
+                                    <strong>{{account.user.firstName}} {{account.user.lastName}}</strong>
+                                    {{account.user.group.name}}
+                                </button>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
                     </MockLogin>
+                    {{/if}}
                 </div>
             </div>
         </main>
