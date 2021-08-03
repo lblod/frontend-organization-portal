@@ -1,15 +1,7 @@
-<div class="au-o-box">
-  <AuToolbar>
-    <AuToolbarGroup>
-      <AuHeading>
-        Betrokken lokale besturen
-      </AuHeading>
-    </AuToolbarGroup>
-  </AuToolbar>
-  <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
-    {{@model.administrativeUnit.name}}
-  </AuHeading>
-</div>
+<PageHeader class="au-o-box">
+  <:title>Betrokken lokale besturen</:title>
+  <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+</PageHeader>
 
 <AuDataTable @content={{@model.involvements}} @noDataMessage="Geen betrokken lokale besturen" as |t|>
   <t.content as |c|>

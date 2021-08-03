@@ -1,0 +1,85 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box">
+    <PageHeader class="au-u-margin-bottom-large">
+      <:title>Bewerk bestuursorgaan</:title>
+      <:subtitle>{{@model.adminGovModel.governingBody.classification.label}}
+        {{@model.adminGovModel.administrativeUnit.name}}</:subtitle>
+    </PageHeader>
+    <form
+      id="edit-governing-body-form"
+      aria-label="edit-governing-body-form"
+      {{on "submit" (perform this.save)}}
+    >
+      <div class="au-o-flow au-o-flow--large">
+        <EditCard>
+          <:title>Bestuursorgaan</:title>
+          <:card as |Card|>
+            <Card.Columns>
+              <:left as |Item|>
+                <Item>
+                  <:label>Type</:label>
+                  <:content>
+                    <AuInput
+                      @width="block"
+                      @value={{@model.adminGovModel.governingBody.classification.label}}
+                      disabled="true"
+                    />
+                  </:content>
+                </Item>
+                <Item>
+                  <:label>Termijn</:label>
+                  <:content>
+                    <AuInput
+                      @width="block"
+                      @value={{@model.govBodyTimeSpec.period}}
+                      disabled="true"
+                    />
+                  </:content>
+                </Item>
+              </:left>
+              <:right as |Item|>
+                <Item @labelFor="governing-body-start-date">
+                  <:label>Start datum</:label>
+                  <:content>
+                    <Datepicker
+                      @id="governing-body-start-date"
+                      @onChange={{fn (mut @model.govBodyTimeSpec.startDate)}}
+                      @value={{@model.govBodyTimeSpec.startDate}}
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="governing-body-end-date">
+                  <:label>Einddatum</:label>
+                  <:content>
+                    <Datepicker
+                      @id="governing-body-end-date"
+                      @onChange={{fn (mut @model.govBodyTimeSpec.endDate)}}
+                      @value={{@model.govBodyTimeSpec.endDate}}
+                    />
+                  </:content>
+                </Item>
+              </:right>
+            </Card.Columns>
+          </:card>
+        </EditCard>
+
+        <AuButtonGroup>
+          <AuButton
+            @loading={{this.save.isRunning}}
+            @disabled={{this.save.isRunning}}
+            type="submit"
+          >
+            Pas aan
+          </AuButton>
+
+          <AuLink
+            @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>
+        </AuButtonGroup>
+      </div>
+    </form>
+  </div>
+</div>

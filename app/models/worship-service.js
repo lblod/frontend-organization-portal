@@ -4,8 +4,16 @@ import WorshipAdministrativeUnitModel from './worship-administrative-unit';
 export default class WorshipServiceModel extends WorshipAdministrativeUnitModel {
   @attr denomination;
   @attr crossBorder;
-  @hasMany('minister-position') ministerPositions;
-  @hasMany('local-involvements', { inverse: 'worshipService' }) involvements;
+
+  @hasMany('minister-position', {
+    inverse: 'worshipService',
+  })
+  ministerPositions;
+
+  @hasMany('local-involvements', {
+    inverse: 'worshipService',
+  })
+  involvements;
 
   get crossBorderNominal() {
     if (this.crossBorder) {

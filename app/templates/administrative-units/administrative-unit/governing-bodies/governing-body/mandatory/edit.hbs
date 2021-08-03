@@ -1,0 +1,261 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <PageHeader>
+      <:title>Bewerk mandataris</:title>
+      <:subtitle>
+        {{@model.person.givenName}}
+        {{@model.person.familyName}}
+      </:subtitle>
+    </PageHeader>
+
+    <DataCard>
+      <:title>Persoonlijke gegevens</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Naam</:label>
+              <:content>
+                {{@model.person.givenName}}
+                {{@model.person.familyName}}
+              </:content>
+            </Item>
+          </:left>
+
+        </Card.Columns>
+      </:card>
+    </DataCard>
+    <form
+      id="edit-mandatory-form"
+      aria-label="edit-mandatory-form"
+      {{on "submit" (perform this.save)}}
+    >
+      <div class="au-o-flow au-o-flow--large">
+        <DataCard>
+          <:title>Positie</:title>
+          <:card as |Card|>
+            <Card.Columns>
+              <:left as |Item|>
+                <Item>
+                  <:label>Type</:label>
+                  <:content>Mandaat</:content>
+                </Item>
+                <Item>
+                  <:label>Bestuursfunctie</:label>
+                  <:content>
+                    {{this.mandatory.mandate.roleBoard.label}}
+                  </:content>
+                </Item>
+              </:left>
+              <:right as |Item|>
+                <Item>
+                  <:label>Naam Eredienst</:label>
+                  <:content>
+                    {{this.administrativeUnit.name}}
+                  </:content>
+                </Item>
+              </:right>
+            </Card.Columns>
+          </:card>
+        </DataCard>
+
+        <EditCard>
+          <:title>Primaire contactgegevens</:title>
+          <:card as |Card|>
+            <Card.Columns>
+              <:left as |Item|>
+                {{#if this.mandatory.contacts.firstObject.contactAddress.fullAddress}}
+                  <Item>
+                    <:label>Full address</:label>
+                    <:content>
+                      {{this.mandatory.contacts.firstObject.contactAddress.fullAddress}}
+                    </:content>
+                  </Item>
+                {{/if}}
+                <Item @labelFor="contact-address-street-name">
+                  <:label>Straat</:label>
+                  <:content>
+                    <AuInput
+                      @value={{this.mandatory.contacts.firstObject.contactAddress.street}}
+                      @width="block"
+                      id="contact-address-street-name"
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="contact-address-house-number">
+                  <:label>Huisnummer</:label>
+                  <:content>
+                    <AuInput
+                      @value={{this.mandatory.contacts.firstObject.contactAddress.number}}
+                      @width="block"
+                      id="contact-address-house-number"
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="contact-address-bus-number">
+                  <:label>Busnummer</:label>
+                  <:content>
+                    <AuInput
+                      @value={{this.mandatory.contacts.firstObject.contactAddress.boxNumber}}
+                      @width="block"
+                      id="contact-address-bus-number"
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="contact-address-postal-code">
+                  <:label>Postcode</:label>
+                  <:content>
+                    <AuInput
+                      @value={{this.mandatory.contacts.firstObject.contactAddress.postcode}}
+                      @width="block"
+                      id="contact-address-postal-code"
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="contact-address-municipality">
+                  <:label>Gemeente</:label>
+                  <:content>
+                    <MunicipalitySelect
+                      @selected={{this.mandatory.contacts.firstObject.contactAddress.municipality}}
+                      @onChange={{fn
+                        (mut
+                          this.mandatory.contacts.firstObject.contactAddress.municipality
+                        )
+                      }}
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="contact-address-province">
+                  <:label>Provincie</:label>
+                  <:content>
+                    <ProvinceSelect
+                      @selected={{this.mandatory.contacts.firstObject.contactAddress.province}}
+                      @onChange={{fn
+                        (mut
+                          this.mandatory.contacts.firstObject.contactAddress.province
+                        )
+                      }}
+                    />
+                  </:content>
+                </Item>
+              </:left>
+              <:right as |Item|>
+                <Item @labelFor="contact-email">
+                  <:label>Email</:label>
+                  <:content>
+                    <AuInput
+                      @width="block"
+                      @value={{this.mandatory.contacts.firstObject.email}}
+                      id="contact-email"
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="contact-telephone">
+                  <:label>Vaste telefoonnummer</:label>
+                  <:content>
+                    <AuInput
+                      @width="block"
+                      @value={{this.mandatory.contacts.firstObject.telephone}}
+                      id="contact-telephone"
+                    />
+                  </:content>
+                </Item>
+              </:right>
+            </Card.Columns>
+          </:card>
+        </EditCard>
+
+        <EditCard>
+          <:title>Aanstelling</:title>
+          <:card as |Card|>
+            <Card.Columns>
+              <:left as |Item|>
+                <Item @labelFor="start-date">
+                  <:label>Start mandaat</:label>
+                  <:content>
+                    <Datepicker
+                      @id="start-date"
+                      @onChange={{fn (mut this.mandatory.startDate)}}
+                      @value={{this.mandatory.startDate}}
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="expected-end-date">
+                  <:label>Geplande einddatum</:label>
+                  <:content>
+                    <Datepicker
+                      @id="expected-end-date"
+                      @onChange={{fn (mut this.mandatory.expectedEndDate)}}
+                      @value={{this.mandatory.expectedEndDate}}
+                    />
+                  </:content>
+                </Item>
+              </:left>
+              <:right as |Item|>
+                <Item>
+                  <:label>Bestuursperiode</:label>
+                  <:content>
+                    <AuInput
+                      @width="block"
+                      @value={{this.governingBody.period}}
+                      disabled={{true}}
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="end-date">
+                  <:label>Effectieve einddatum</:label>
+                  <:content>
+                    <Datepicker
+                      @id="end-date"
+                      @disabled={{this.isCurrentPositionCheck}}
+                      @onChange={{fn (mut this.mandatory.endDate)}}
+                      @value={{this.mandatory.endDate}}
+                    />
+                  </:content>
+                </Item>
+                <Item>
+                  <:label></:label>
+                  <:content>
+                    <AuControlCheckbox
+                      @checked={{this.isCurrentPositionCheck}}
+                      @label="Huidige positie"
+                      @identifier="current-position"
+                      @onChange={{fn (mut this.isCurrentPositionCheck)}}
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="reason-stop">
+                  <:label>Reden stopzetting </:label>
+                  <:content>
+                    <AuInput
+                      @value={{this.mandatory.reasonStopped}}
+                      @width="block"
+                      id="reason-stop"
+                    />
+                  </:content>
+                </Item>
+              </:right>
+            </Card.Columns>
+          </:card>
+        </EditCard>
+
+        <AuButtonGroup>
+          <AuButton
+            @loading={{this.save.isRunning}}
+            @disabled={{this.save.isRunning}}
+            type="submit"
+          >
+            Pas aan
+          </AuButton>
+
+          <AuLink
+            @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>
+        </AuButtonGroup>
+      </div>
+    </form>
+  </div>
+</div>

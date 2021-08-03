@@ -1,28 +1,22 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box au-o-flow au-o-flow--large">
-    <div class="au-o-flow au-o-flow--tiny">
-      <AuToolbar>
-        <AuToolbarGroup>
-          <AuHeading>
-            Persoonlijke gegevens
-          </AuHeading>
-        </AuToolbarGroup>
-        <AuToolbarGroup>
-          <AuLink
-            @route="people.person.personal-information.edit"
-            @skin="button-secondary"
-            @icon="pencil"
-            @iconAlignment="left"
-          >
-            Bewerk
-          </AuLink>
-        </AuToolbarGroup>
-      </AuToolbar>
-      <AuHeading @level="2" @skin="3">
+    <PageHeader>
+      <:title>Persoonlijke gegevens</:title>
+      <:subtitle>
         {{@model.person.givenName}}
         {{@model.person.familyName}}
-      </AuHeading>
-    </div>
+      </:subtitle>
+      <:action>
+        <AuLink
+          @route="people.person.personal-information.edit"
+          @skin="button-secondary"
+          @icon="pencil"
+          @iconAlignment="left"
+        >
+          Bewerk
+        </AuLink>
+      </:action>
+    </PageHeader>
 
     <DataCard>
       <:title>Persoonlijke gegevens</:title>

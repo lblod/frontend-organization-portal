@@ -4,5 +4,9 @@ import MandatoryModel from './mandatory';
 export default class WorshipMandatoryModel extends MandatoryModel {
   @attr('date') expectedEndDate;
   @attr reasonStopped;
-  @belongsTo('half-election') typeHalf;
+
+  @belongsTo('half-election', {
+    inverse: null,
+  })
+  typeHalf;
 }

@@ -1,38 +1,34 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box au-o-flow au-o-flow--large">
-    <div class="au-o-flow au-o-flow--tiny">
-      <AuToolbar>
-        <AuToolbarGroup>
-          <AuHeading>
-            {{#let
-              @model.mandatory.mandate.governingBody.isTimeSpecializationOf
-              as |governingBody|
-            }}
-              Positie:
-              {{@model.mandatory.mandate.roleBoard.label}},
-              <br />
-              {{governingBody.classification.label}}
-              {{governingBody.administrativeUnit.name}}
-            {{/let}}
-          </AuHeading>
-        </AuToolbarGroup>
-        <AuToolbarGroup>
-          {{! TODO: Replace this with the "edit" route once it is created }}
-          <AuLink
-            @route="people.person.positions.mandatory"
-            @skin="button-secondary"
-            @icon="pencil"
-            @iconAlignment="left"
-          >
-            Bewerk
-          </AuLink>
-        </AuToolbarGroup>
-      </AuToolbar>
-      <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
+    <PageHeader>
+      <:title>
+        {{#let
+          @model.mandatory.mandate.governingBody.isTimeSpecializationOf
+          as |governingBody|
+        }}
+          Positie:
+          {{@model.mandatory.mandate.roleBoard.label}},
+          <br />
+          {{governingBody.classification.label}}
+          {{governingBody.administrativeUnit.name}}
+        {{/let}}
+      </:title>
+      <:subtitle>
         {{@model.person.givenName}}
         {{@model.person.familyName}}
-      </AuHeading>
-    </div>
+      </:subtitle>
+      <:action>
+        {{! TODO: Replace this with the "edit" route once it is created }}
+        <AuLink
+          @route="people.person.positions.position"
+          @skin="button-secondary"
+          @icon="pencil"
+          @iconAlignment="left"
+        >
+          Bewerk
+        </AuLink>
+      </:action>
+    </PageHeader>
 
     <DataCard>
       <:title>Positie</:title>
@@ -108,10 +104,12 @@
       <:title>Aanstelling</:title>
       <:card as |Card|>
         <Card.Grid as |Item|>
-          <Item>
-            <:label>Start mandaat</:label>
-            <:content>{{date-format @model.mandatory.startDate}}</:content>
-          </Item>
+          {{#if @model.mandatory.startDate}}
+            <Item>
+              <:label>Start mandaat</:label>
+              <:content>{{date-format @model.mandatory.startDate}}</:content>
+            </Item>
+          {{/if}}
           {{#if @model.mandatory.mandate.governingBody.period}}
             <Item>
               <:label>Bestuursperiode</:label>
@@ -120,12 +118,14 @@
               </:content>
             </Item>
           {{/if}}
-          <Item>
-            <:label>Geplande einddatum</:label>
-            <:content>
-              {{date-format @model.mandatory.expectedEndDate}}
-            </:content>
-          </Item>
+          {{#if @model.mandatory.expectedEndDate}}
+            <Item>
+              <:label>Geplande einddatum</:label>
+              <:content>
+                {{date-format @model.mandatory.expectedEndDate}}
+              </:content>
+            </Item>
+          {{/if}}
           {{#if @model.mandatory.typeHalf.label}}
             <Item>
               <:label>Verkozen</:label>

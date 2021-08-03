@@ -9,7 +9,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
     let person = await this.store.findRecord('person', personId, {
       reload: true,
       include: [
-        'mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit',
+        'mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.classification',
         'mandatories.contacts',
       ].join(),
     });

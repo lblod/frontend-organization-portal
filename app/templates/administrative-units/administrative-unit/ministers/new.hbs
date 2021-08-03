@@ -2,15 +2,10 @@
 {{breadcrumb "Nieuw"}}
 
 <div class="au-c-body-container au-c-body-container--scroll">
-  <div class="au-u-margin au-u-margin-bottom-large">
-    <AuHeading>
-      Voeg bedienaar toe
-    </AuHeading>
-
-    <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
-      {{@model.administrativeUnit.name}}
-    </AuHeading>
-  </div>
+  <PageHeader class="au-u-margin au-u-margin-bottom-large">
+    <:title>Voeg bedienaar toe</:title>
+    <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+  </PageHeader>
 
   {{#if this.isSelectingTargetPerson}}
     <form

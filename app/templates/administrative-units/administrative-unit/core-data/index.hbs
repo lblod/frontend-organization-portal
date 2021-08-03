@@ -1,27 +1,19 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box au-o-flow au-o-flow--large">
-    <div class="au-o-flow au-o-flow--tiny">
-      <AuToolbar>
-        <AuToolbarGroup>
-          <AuHeading>
-            Kerngegevens
-          </AuHeading>
-        </AuToolbarGroup>
-        <AuToolbarGroup>
-          <AuLink
-            @route="administrative-units.administrative-unit.core-data.edit"
-            @skin="button-secondary"
-            @icon="pencil"
-            @iconAlignment="left"
-          >
-            Bewerk
-          </AuLink>
-        </AuToolbarGroup>
-      </AuToolbar>
-      <AuHeading @level="2" @skin="3">
-        {{@model.administrativeUnit.name}}
-      </AuHeading>
-    </div>
+    <PageHeader>
+      <:title>Kerngegevens</:title>
+      <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+      <:action>
+        <AuLink
+          @route="administrative-units.administrative-unit.core-data.edit"
+          @skin="button-secondary"
+          @icon="pencil"
+          @iconAlignment="left"
+        >
+          Bewerk
+        </AuLink>
+      </:action>
+    </PageHeader>
 
     <DataCard>
       <:title>Bestuurseenheid</:title>
