@@ -20,7 +20,7 @@
       <:action>
         {{! TODO: Replace this with the "edit" route once it is created }}
         <AuLink
-          @route="people.person.positions.position"
+          @route="people.person.positions.mandatory"
           @skin="button-secondary"
           @icon="pencil"
           @iconAlignment="left"
@@ -35,7 +35,6 @@
       <:card as |Card|>
         <Card.Grid as |Item|>
           <Item>
-            {{! TODO: Make it variable to also have Bedienaar}}
             <:label>Type</:label>
             <:content>Mandaat</:content>
           </Item>
@@ -77,7 +76,6 @@
               </Item>
             {{/if}}
             {{#if @model.mandatory.contacts.firstObject.telephone}}
-              {{! TODO: Identify if it is a landline or mobile number }}
               <Item>
                 <:label>Vaste telefoonnummer</:label>
                 <:content>

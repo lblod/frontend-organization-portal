@@ -39,7 +39,7 @@
           </AuLink>
         </td>
         <td>
-          <AuLink @route="administrative-units.administrative-unit.ministers">
+          <AuLink @route="people.person.positions.minister" @model={{array minister.person.id ministerPosition.id}}>
             {{ministerPosition.function.label}}
           </AuLink>
         </td>
