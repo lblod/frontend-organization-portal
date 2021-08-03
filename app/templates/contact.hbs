@@ -1,0 +1,43 @@
+{{page-title "Contact"}}
+
+<StaticPage>
+  <div class="au-o-region-large au-o-layout">
+    <AuHeading class="au-u-margin-bottom">Contact</AuHeading>
+    <p class="au-u-margin-bottom">
+      FAQ en andere informatie over de werking van het OrganisatiePortaal kan
+      je terugvinden in onze
+      {{!-- TODO: Add user manual link --}}
+      <a href="" class="au-u-link">handleiding</a>.
+    </p>
+
+    <form class="au-c-form">
+      <fieldset>
+        <legend class="au-c-label">Waar gaat uw bericht over?</legend>
+        <ul>
+          {{#each this.subjectOptions as |subject|}}
+            <li>
+              <AuControlRadio
+                @label={{subject}}
+                @value={{subject}}
+                @name="contact-subject"
+                @onChange={{fn (mut this.subject) subject}}
+                checked={{eq this.subject subject}}
+              />
+            </li>
+          {{/each}}
+        </ul>
+      </fieldset>
+
+      {{#if this.canSend}}
+        <a href={{this.mailto}} class="au-c-button">Bericht versturen</a>
+      {{else}}
+        <AuButton @disabled="true">Stel bericht op</AuButton>
+      {{/if}}
+    </form>
+
+    <p class="au-u-margin-top">Of neem rechtstreeks contact op via mail
+      <a
+        href="mailto:organisaties.abb@vlaanderen.be"
+      >organisaties.abb@vlaanderen.be</a>.</p>
+  </div>
+</StaticPage>
