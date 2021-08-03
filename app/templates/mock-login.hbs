@@ -1,0 +1,20 @@
+<div class="au-c-main-container" itemprop="mainContentOfPage">
+    <div class="au-c-main-container__content au-c-main-container__content--scroll">
+        <main id="content">
+            <div class="au-o-region-large">
+                <div class="au-o-layout">
+                    <AuHeading @skin="4">{{t 'mockLogin.pick'}}</AuHeading>
+                    <MockLogin as |login|>
+                        <login.each-account @accounts={{this.model}} as |account|>
+                            <div class="au-o-box au-o-box--small au-c-card au-u-margin-bottom-small">
+                                <p>
+                                    {{account.user.fullName}}
+                                </p>
+                            </div>
+                        </login.each-account>
+                    </MockLogin>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
