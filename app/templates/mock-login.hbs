@@ -16,19 +16,17 @@
                         {{/if}}
                         <AuHeading @skin="4">Kies een bestuurseenheid om mee in te loggen.</AuHeading>
 
-                        <login.each-account @accounts={{this.model}} as |account|>
-                            <div class="au-o-box au-o-box--small au-c-card au-u-margin-bottom-small">
-                                <strong>{{account.user.firstName}} {{account.user.lastName}}</strong>
-                                {{account.user.group.name}}
-                            </div>
-                        </login.each-account>
                         <ul>
-                            {{#each this.accounts as |account|}}
+                            {{#each this.model as |account|}}
                             <li>
-                                <button type="button" {{on "click" (fn login.login account.id account.user.group.id)}}>
-                                    <strong>{{account.user.firstName}} {{account.user.lastName}}</strong>
-                                    {{account.user.group.name}}
-                                </button>
+                                <div class="au-o-box au-o-box--small au-c-card au-u-margin-bottom-small">
+                                    <button type="button" {{on "click" (fn login.login account.id
+                                        account.user.group.id)}}>
+                                        <strong>{{account.user.firstName}} {{account.user.lastName}}</strong>
+                                        {{account.user.group.name}}
+                                    </button>
+                                </div>
+
                             </li>
                             {{/each}}
                         </ul>
