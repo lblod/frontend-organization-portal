@@ -3,6 +3,7 @@
 module.exports = function (environment) {
   let ENV = {
     appName: 'Organisatieportaal',
+    contactEmail: 'organisaties.abb@vlaanderen.be',
     fastboot: {
       hostWhitelist: [/^localhost:\d+$/],
     },
