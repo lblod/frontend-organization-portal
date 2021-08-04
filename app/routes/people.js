@@ -1,3 +1,10 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
-export default class PeopleRoute extends Route {}
+export default class PeopleRoute extends Route {
+  @service session;
+
+  beforeModel(transition) {
+    this.session.requireAuthentication(transition, 'login');
+  }
+}
