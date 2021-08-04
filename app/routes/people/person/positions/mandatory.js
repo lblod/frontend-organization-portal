@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 export default class PeoplePersonPositionsMandatoryRoute extends Route {
   @service store;
 
-  async model({ positionId: mandatoryId }) {
+  async model({ mandatoryId }) {
     let person = this.modelFor('people.person');
 
     let mandatory = await this.store.findRecord('mandatory', mandatoryId, {

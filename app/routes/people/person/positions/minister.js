@@ -4,10 +4,10 @@ import { inject as service } from '@ember/service';
 export default class PeoplePersonPositionsMinisterRoute extends Route {
   @service store;
 
-  async model({ positionId: ministerId }) {
+  async model({ ministerId }) {
     let person = this.modelFor('people.person');
 
-    let minister = this.store.findRecord('minister', ministerId, {
+    let minister = await this.store.findRecord('minister', ministerId, {
       reload: true,
       include: [
         'contacts.contact-address',

@@ -20,12 +20,12 @@ Router.map(function () {
       this.route('positions', { path: '/posities' }, function () {
         this.route(
           'mandatory',
-          { path: '/mandataris/:positionId/' },
+          { path: '/mandataris/:mandatoryId/' },
           function () {}
         );
         this.route(
           'minister',
-          { path: '/bedienaar/:positionId/' },
+          { path: '/bedienaar/:ministerId/' },
           function () {}
         );
       });
