@@ -20,11 +20,10 @@
                             {{#each this.model as |account|}}
                             <li>
                                 <div class="au-o-box au-o-box--small au-c-card au-u-margin-bottom-small">
-                                    <button type="button" {{on "click" (fn login.login account.id
-                                        account.user.group.id)}}>
-                                        <strong>{{account.user.firstName}} {{account.user.lastName}}</strong>
+                                    <AuButton {{on "click" (fn login.login account.id account.user.group.id)}}>
+                                        <strong>{{account.user.firstName}} {{account.user.lastName}}-&nbsp;</strong>
                                         {{account.user.group.name}}
-                                    </button>
+                                    </AuButton>
                                 </div>
 
                             </li>
