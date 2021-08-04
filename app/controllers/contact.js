@@ -1,7 +1,8 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
+import config from 'frontend-contact-hub/config/environment';
 
-const CONTACT_EMAIL = 'organisaties.abb@vlaanderen.be';
+const CONTACT_EMAIL = config.contactEmail;
 
 export default class ContactController extends Controller {
   @tracked subject = null;
