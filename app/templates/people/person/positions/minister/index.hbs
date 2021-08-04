@@ -1,0 +1,136 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <PageHeader>
+      <:title>
+        Positie:
+        {{@model.minister.ministerPosition.function.label}}
+        <br />
+        {{@model.minister.ministerPosition.worshipService.classification.label}}
+        {{@model.minister.ministerPosition.worshipService.name}}
+      </:title>
+      <:subtitle>
+        {{@model.person.givenName}}
+        {{@model.person.familyName}}
+      </:subtitle>
+      <:action>
+        {{! TODO: Replace this with the "edit" route once it is created }}
+        <AuLink @route="people.person.positions.minister" @skin="button-secondary" @icon="pencil" @iconAlignment="left">
+          Bewerk
+        </AuLink>
+      </:action>
+    </PageHeader>
+
+    <DataCard>
+      <:title>Positie</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Type</:label>
+              <:content>Bedienaar</:content>
+            </Item>
+            <Item>
+              <:label>Rol</:label>
+              <:content>{{@model.minister.ministerPosition.function.label}}</:content>
+            </Item>
+          </:left>
+          <:right as |Item|>
+            <Item>
+              <:label>Naam eredienst</:label>
+              <:content>
+                {{#let
+                @model.minister.ministerPosition.worshipService
+                as |administrativeUnit|
+                }}
+                <AuLink @route="administrative-units.administrative-unit" @model={{administrativeUnit.id}}>
+                  {{administrativeUnit.name}}
+                </AuLink>
+                {{/let}}
+              </:content>
+            </Item>
+          </:right>
+        </Card.Columns>
+      </:card>
+    </DataCard>
+
+    {{#if @model.minister.contacts}}
+    <DataCard>
+      <:title>Primaire contactgegevens</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            {{#if @model.minister.contacts.firstObject.email}}
+            <Item>
+              <:label>Email</:label>
+              <:content>
+                {{@model.minister.contacts.firstObject.email}}
+              </:content>
+            </Item>
+            {{/if}}
+            {{#if
+            @model.minister.contacts.firstObject.contactAddress.fullAddress
+            }}
+            <Item>
+              <:label>Adres</:label>
+              <:content>
+                {{@model.minister.contacts.firstObject.contactAddress.fullAddress}}
+              </:content>
+            </Item>
+            {{/if}}
+          </:left>
+          <:right as |Item|>
+            {{#if @model.minister.contacts.firstObject.telephone}}
+            <Item>
+              <:label>Vaste telefoonnummer</:label>
+              <:content>
+                {{@model.minister.contacts.firstObject.telephone}}
+              </:content>
+            </Item>
+            {{/if}}
+            {{#if (get (object-at 1 @model.minister.contacts) 'telephone')}}
+            <Item>
+              <:label>GSM nummer</:label>
+              <:content>
+                {{get (object-at 1 @model.minister.contacts) 'telephone'}}
+              </:content>
+            </Item>
+            {{/if}}
+          </:right>
+        </Card.Columns>
+      </:card>
+    </DataCard>
+    {{/if}}
+
+    {{#if @model.minister.agentStartDate}}
+    <DataCard>
+      <:title>Aanstelling</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Startdatum</:label>
+              <:content>{{date-format @model.minister.agentStartDate}}</:content>
+            </Item>
+          </:left>
+        </Card.Columns>
+      </:card>
+    </DataCard>
+    {{/if}}
+
+    {{#if @model.minister.financing}}
+    <DataCard>
+      <:title>Financiering</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>FOD Financiering?</:label>
+              <:content>{{receives-financing @model.minister.financing.id}}</:content>
+            </Item>
+          </:left>
+        </Card.Columns>
+      </:card>
+    </DataCard>
+    {{/if}}
+  </div>
+</div>

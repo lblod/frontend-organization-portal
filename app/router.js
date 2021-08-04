@@ -18,7 +18,16 @@ Router.map(function () {
         }
       );
       this.route('positions', { path: '/posities' }, function () {
-        this.route('position', { path: '/:positionId/' }, function () {});
+        this.route(
+          'mandatory',
+          { path: '/mandataris/:mandatoryId/' },
+          function () {}
+        );
+        this.route(
+          'minister',
+          { path: '/bedienaar/:ministerId/' },
+          function () {}
+        );
       });
       this.route('contacts', function () {});
     });
