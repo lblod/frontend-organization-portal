@@ -4,13 +4,27 @@
   @appTitle={{config "appName"}}
   @contactRoute="contact"
 >
-  <AuDropdown
-    @dropdownTitle="Voornaam"
-    @dropdownButtonLabel="Account settings"
-    @alignment="right"
-  >
-    <AuButton @skin="tertiary" role="menuitem">
-      <AuIcon @icon="logout" @alignment="left" />Afmelden
+  {{#if this.session.isAuthenticated}}
+    <AuDropdown
+      @dropdownTitle="Voornaam"
+      @dropdownButtonLabel="Account settings"
+      @alignment="right"
+    >
+      <AuButton
+        @skin="tertiary" role="menuitem"
+        {{on "click" this.logout}}
+      >
+        <AuIcon @icon="logout" @alignment="left" />Afmelden
+      </AuButton>
+    </AuDropdown>
+  {{else}}
+    {{!-- TODO: integrate ACM/IDM flow --}}
+    <AuButton
+      @skin="tertiary"
+      @icon="login"
+      @iconAlignment="left"
+    >
+      Aanmelden
     </AuButton>
-  </AuDropdown>
+  {{/if}}
 </AuMainHeader>
