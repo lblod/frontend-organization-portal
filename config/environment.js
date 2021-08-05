@@ -4,12 +4,6 @@ module.exports = function (environment) {
   let ENV = {
     appName: 'Organisatieportaal',
     contactEmail: 'organisaties.abb@vlaanderen.be',
-    fastboot: {
-      hostWhitelist: [/^localhost:\d+$/],
-    },
-    metis: {
-      baseUrl: 'EMBER_METIS_BASE_URL',
-    },
     yasgui: {
       // NOTE: look at app/modifiers/yasgui.js when changing this variable
       defaultQuery: 'EMBER_YASGUI_DEFAULT_QUERY',
