@@ -60,7 +60,7 @@
     "ember-resolver": "^8.0.2",
     "ember-router-service-refresh-polyfill": "^0.1.0",
     "ember-source": "~3.26.1",
-    "@lblod/ember-acmidm-login": "^1.1.1",
+    "@lblod/ember-acmidm-login": "https://github.com/lblod/ember-acmidm-login.git#chore/modernize-code",
     "ember-template-lint": "^3.5.1",
     "ember-truth-helpers": "^3.0.0",
     "@lblod/ember-mock-login": "0.6.0",
