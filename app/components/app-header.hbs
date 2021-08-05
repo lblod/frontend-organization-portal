@@ -6,7 +6,7 @@
 >
   {{#if this.session.isAuthenticated}}
     <AuDropdown
-      @dropdownTitle="Voornaam"
+      @dropdownTitle={{this.currentSession.user.firstName}}
       @dropdownButtonLabel="Account settings"
       @alignment="right"
     >

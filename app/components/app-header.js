@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 
 export default class AppHeaderComponent extends Component {
+  @service currentSession;
   @service session;
 
   @action
