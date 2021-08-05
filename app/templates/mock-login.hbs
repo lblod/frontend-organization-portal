@@ -1,0 +1,38 @@
+<StaticPage>
+  <div class="au-o-layout au-o-region-large">
+    <MockLogin as |login|>
+      {{#if login.isLoading}}
+        <AuLoader />
+      {{else}}
+        {{#if login.errorMessage}}
+          {{login.errorMessage}}
+        {{/if}}
+        <AuHeading @skin="4" class="au-u-margin-bottom">Kies een testgebruiker</AuHeading>
+        <ul>
+          {{#each this.model.accounts as |account|}}
+            <li>
+              <div
+                class="au-o-box au-o-box--small au-c-card au-u-margin-bottom-small"
+              >
+                <AuButton
+                  @skin="tertiary"
+                  {{on
+                    "click"
+                    (fn login.login account.id account.user.group.id)
+                  }}
+                >
+                  <strong>
+                    {{account.user.firstName}}
+                    {{account.user.familyName}}
+                    -&nbsp;
+                  </strong>
+                  {{account.user.group.name}}
+                </AuButton>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    </MockLogin>
+  </div>
+</StaticPage>
