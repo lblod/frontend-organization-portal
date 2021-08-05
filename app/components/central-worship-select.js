@@ -3,17 +3,13 @@ import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 
 export default class CentralWorshipSelectComponent extends Component {
-  @service fastboot;
   @service store;
   centralWorshipServices;
 
   constructor(...args) {
     super(...args);
 
-    if (!this.fastboot.isFastBoot) {
-      this.centralWorshipServices =
-        this.loadCentralWorshipServicesTask.perform();
-    }
+    this.centralWorshipServices = this.loadCentralWorshipServicesTask.perform();
   }
 
   @restartableTask

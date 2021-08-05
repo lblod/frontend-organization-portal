@@ -3,16 +3,13 @@ import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 
 export default class ProvinceSelectComponent extends Component {
-  @service fastboot;
   @service store;
   provinces;
 
   constructor(...args) {
     super(...args);
 
-    if (!this.fastboot.isFastBoot) {
-      this.provinces = this.loadProvincesTask.perform();
-    }
+    this.provinces = this.loadProvincesTask.perform();
   }
 
   @restartableTask
