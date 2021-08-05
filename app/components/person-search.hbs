@@ -1,0 +1,102 @@
+<form
+  class="au-u-margin-left au-u-margin-right"
+  aria-label="people-search-form"
+  {{on "submit" (perform this.searchPeopleTask)}}
+>
+  <EditCard>
+    <:title>Persoon zoeken</:title>
+    <:card as |Card|>
+      <Card.Columns>
+        <:left as |Item|>
+          <Item @labelFor="person-given-name">
+            <:label>Voornaam</:label>
+            <:content>
+              <AuInput
+                @value={{this.searchParams.givenName}}
+                @width="block"
+                id="person-given-name"
+              />
+            </:content>
+          </Item>
+        </:left>
+        <:right as |Item|>
+          <Item @labelFor="person-family-name">
+            <:label>Achternaam</:label>
+            <:content>
+              <AuInput
+                @value={{this.searchParams.familyName}}
+                @width="block"
+                id="person-family-name"
+              />
+            </:content>
+          </Item>
+        </:right>
+      </Card.Columns>
+      <div class="au-u-padding-tiny au-u-text-right">
+        <AuButton
+          @disabled={{not this.canSearch}}
+          @loading={{this.searchPeopleTask.isRunning}}
+          class="au-u-padding-left au-u-padding-right"
+          type="submit"
+        >Zoek</AuButton>
+      </div>
+    </:card>
+  </EditCard>
+</form>
+
+{{#if this.searchPeopleTask.last}}
+  <div class="au-u-margin-top-large">
+    <AuDataTable
+      @content={{this.searchPeopleTask.lastSuccessful.value}}
+      @isLoading={{and
+        (not this.searchPeopleTask.lastSuccessful.value)
+        this.searchPeopleTask.isRunning
+      }}
+      as |t|
+    >
+      <t.content class="au-c-data-table__table--small" as |c|>
+        <c.header>
+          <th>Voornaam</th>
+          <th>Achternaam</th>
+          <th></th>
+        </c.header>
+        {{#if this.searchPeopleTask.last.isError}}
+          <TableMessage::Error />
+        {{else if (and
+          (not this.searchPeopleTask.lastSuccessful.value)
+          (not this.searchPeopleTask.isRunning)
+        )}}
+          <TableMessage>
+            <p>
+              Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of
+              probeer een andere zoekopdracht. Indien een persoon ontbreekt,
+              meldt dit aan
+              <a
+                href="mailto:{{config "contactEmail"}}"
+                class="au-c-link"
+              >{{config "contactEmail"}}</a>.
+            </p>
+          </TableMessage>
+        {{else}}
+          <c.body as |person|>
+            <td>
+              {{person.givenName}}
+            </td>
+            <td>
+              {{person.familyName}}
+            </td>
+            <td>
+              <AuButton @skin="tertiary" {{on "click" (fn @onSelect person)}}>
+                Selecteer
+              </AuButton>
+            </td>
+          </c.body>
+        {{/if}}
+      </t.content>
+    </AuDataTable>
+  </div>
+{{else}}
+  <p class="au-u-margin au-u-margin-top-huge">
+    Zoek een reeds gekende persoon in de databank van het loket op naam.
+  </p>
+{{/if}}
