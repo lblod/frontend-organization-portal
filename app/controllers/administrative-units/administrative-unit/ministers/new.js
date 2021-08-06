@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { dropTask, restartableTask } from 'ember-concurrency';
+import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
 
 const FINANCING_CODE = {
@@ -17,39 +17,8 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
   @tracked isCurrentPosition = true;
   @tracked willReceiveFinancing = true;
 
-  constructor() {
-    super(...arguments);
-
-    this.searchParams = new SeachParams();
-  }
-
   get isSelectingTargetPerson() {
     return !this.targetPerson;
-  }
-
-  get canSearch() {
-    return (
-      this.searchParams.givenName.trim() || this.searchParams.familyName.trim()
-    );
-  }
-
-  @restartableTask
-  *searchPeopleTask(event) {
-    event.preventDefault();
-
-    if (this.canSearch) {
-      let query = {};
-
-      if (this.searchParams.givenName) {
-        query['filter[given-name]'] = this.searchParams.givenName;
-      }
-
-      if (this.searchParams.familyName) {
-        query['filter[family-name]'] = this.searchParams.familyName;
-      }
-
-      return yield this.store.query('person', query);
-    }
   }
 
   @dropTask
@@ -99,11 +68,9 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
   }
 
   reset() {
-    this.searchParams.reset();
     this.targetPerson = null;
     this.isCurrentPosition = true;
     this.willReceiveFunding = true;
-    this.searchPeopleTask.cancelAll({ resetState: true });
     this.removeUnsavedRecords();
   }
 
@@ -113,19 +80,5 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
     this.model.contactMobile.rollbackAttributes();
     this.model.address.rollbackAttributes();
     this.model.position.rollbackAttributes();
-  }
-}
-
-class SeachParams {
-  @tracked givenName;
-  @tracked familyName;
-
-  constructor() {
-    this.reset();
-  }
-
-  reset() {
-    this.givenName = '';
-    this.familyName = '';
   }
 }
