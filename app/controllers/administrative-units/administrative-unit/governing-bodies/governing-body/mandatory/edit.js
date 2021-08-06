@@ -26,7 +26,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   }
 
   get governingBody() {
-    return this.model.govBodyTimeSpec;
+    return this.model.governingBody;
   }
 
   @dropTask
