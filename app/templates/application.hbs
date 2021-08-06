@@ -1,21 +1,6 @@
 {{page-title (config "appName")}}
 
-<AuMainHeader
-  @brandLink="https://www.vlaanderen.be/nl"
-  @homeRoute="index"
-  @appTitle={{config "appName"}}
-  @contactRoute="contact"
->
-  <AuDropdown
-    @dropdownTitle="Voornaam"
-    @dropdownButtonLabel="Account settings"
-    @alignment="right"
-  >
-    <AuButton @skin="tertiary" role="menuitem">
-      <AuIcon @icon="logout" @alignment="left" />Afmelden
-    </AuButton>
-  </AuDropdown>
-</AuMainHeader>
+<AppHeader />
 
 <main id="main" class="au-c-main-container">
   <div
