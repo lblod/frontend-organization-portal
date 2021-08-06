@@ -9,11 +9,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   *save(event) {
     event.preventDefault();
 
-    yield this.model.govBodyTimeSpec.save();
+    yield this.model.governingBody.save();
 
     this.router.transitionTo(
       'administrative-units.administrative-unit.governing-bodies.governing-body',
-      this.model.govBodyTimeSpec.id
+      this.model.governingBody.id
     );
   }
 }

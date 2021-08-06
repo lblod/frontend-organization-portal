@@ -3,9 +3,9 @@
     <PageHeader>
       <:title>
         Bestuursorgaan:
-        {{@model.adminGovModel.governingBody.classification.label}}
+        {{@model.governingBodyClassification.label}}
       </:title>
-      <:subtitle>{{@model.adminGovModel.administrativeUnit.name}}</:subtitle>
+      <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
       <:action>
         <AuLink
           @route="administrative-units.administrative-unit.governing-bodies.governing-body.edit"
@@ -25,31 +25,31 @@
           <Item>
             <:label>Type</:label>
             <:content>
-              {{@model.adminGovModel.governingBody.classification.label}}
+              {{@model.governingBodyClassification.label}}
             </:content>
           </Item>
-          {{#if @model.govBodyTimeSpec.startDate}}
+          {{#if @model.governingBody.startDate}}
             <Item>
               <:label>Start datum</:label>
               <:content>
-                {{date-format @model.govBodyTimeSpec.startDate}}
+                {{date-format @model.governingBody.startDate}}
               </:content>
             </Item>
           {{/if}}
-          {{#if @model.govBodyTimeSpec.period}}
+          {{#if @model.governingBody.period}}
             <Item>
               <:label>Termijn</:label>
               <:content>
                 Bestuursperiode
-                {{@model.govBodyTimeSpec.period}}
+                {{@model.governingBody.period}}
               </:content>
             </Item>
           {{/if}}
-          {{#if @model.govBodyTimeSpec.endDate}}
+          {{#if @model.governingBody.endDate}}
             <Item>
               <:label>Einddatum</:label>
               <:content>
-                {{date-format @model.govBodyTimeSpec.endDate}}
+                {{date-format @model.governingBody.endDate}}
               </:content>
             </Item>
           {{/if}}
@@ -57,7 +57,7 @@
       </:card>
     </DataCard>
 
-    {{#if @model.mandateLid}}
+    {{#if @model.memberMandates}}
       <div>
         <AuToolbar class="au-u-margin-bottom-small">
           <AuToolbarGroup>
@@ -76,7 +76,7 @@
           </AuToolbarGroup>
         </AuToolbar>
         <AuDataTable
-          @content={{@model.mandateLid}}
+          @content={{@model.memberMandates}}
           @noDataMessage="Geen Bestuursleden"
           as |t|
         >
@@ -160,7 +160,7 @@
         </AuToolbarGroup>
       </AuToolbar>
       <AuDataTable
-        @content={{@model.mandatesOther}}
+        @content={{@model.otherMandates}}
         @noDataMessage="Geen Mandatarissen"
         as |t|
       >

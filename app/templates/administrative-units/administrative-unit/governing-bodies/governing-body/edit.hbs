@@ -2,8 +2,10 @@
   <div class="au-o-box">
     <PageHeader class="au-u-margin-bottom-large">
       <:title>Bewerk bestuursorgaan</:title>
-      <:subtitle>{{@model.adminGovModel.governingBody.classification.label}}
-        {{@model.adminGovModel.administrativeUnit.name}}</:subtitle>
+      <:subtitle>
+        {{@model.governingBodyClassification.label}}
+        {{@model.administrativeUnit.name}}
+      </:subtitle>
     </PageHeader>
     <form
       id="edit-governing-body-form"
@@ -21,7 +23,7 @@
                   <:content>
                     <AuInput
                       @width="block"
-                      @value={{@model.adminGovModel.governingBody.classification.label}}
+                      @value={{@model.governingBodyClassification.label}}
                       disabled="true"
                     />
                   </:content>
@@ -31,7 +33,7 @@
                   <:content>
                     <AuInput
                       @width="block"
-                      @value={{@model.govBodyTimeSpec.period}}
+                      @value={{@model.governingBody.period}}
                       disabled="true"
                     />
                   </:content>
@@ -43,8 +45,8 @@
                   <:content>
                     <Datepicker
                       @id="governing-body-start-date"
-                      @onChange={{fn (mut @model.govBodyTimeSpec.startDate)}}
-                      @value={{@model.govBodyTimeSpec.startDate}}
+                      @onChange={{fn (mut @model.governingBody.startDate)}}
+                      @value={{@model.governingBody.startDate}}
                     />
                   </:content>
                 </Item>
@@ -53,8 +55,8 @@
                   <:content>
                     <Datepicker
                       @id="governing-body-end-date"
-                      @onChange={{fn (mut @model.govBodyTimeSpec.endDate)}}
-                      @value={{@model.govBodyTimeSpec.endDate}}
+                      @onChange={{fn (mut @model.governingBody.endDate)}}
+                      @value={{@model.governingBody.endDate}}
                     />
                   </:content>
                 </Item>
