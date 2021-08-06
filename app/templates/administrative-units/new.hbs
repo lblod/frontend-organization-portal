@@ -1,0 +1,175 @@
+{{page-title "Voeg bestuurseenheid toe"}}
+{{breadcrumb "Voeg bestuurseenheid toe"}}
+
+<div class="au-c-body-container au-c-body-container--scroll">=
+  <PageHeader class="au-u-margin au-u-margin-bottom-large">
+    <:title>Voeg bestuurseenheid toe</:title>
+  </PageHeader>
+
+  <form class="au-o-box au-o-flow au-o-flow--large" aria-label="administrative-unit-creation-form" {{on "submit"
+    (perform this.createAdministrativeUnitTask)}}>
+    <EditCard>
+      <:title>Bestuurseenheid</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Naam eredienst</:label>
+              <:content>
+                <AuInput/>
+              </:content>
+            </Item>
+            <Item>
+              <:label>Type eredienst</:label>
+              <:content>
+              </:content>
+            </Item>
+            <Item>
+              <:label>Type Bestuur</:label>
+              <:content>
+              </:content>
+            </Item>
+            <Item>
+              <:label>Strekking</:label>
+              <:content>
+                <AuInput/>
+              </:content>
+            </Item>
+          </:left>
+          <:right as |Item|>
+            <Item @labelFor="status-select">
+              <:label>Status</:label>
+              <:content>
+                <OrganizationStatusSelect @onChange={{fn (mut this.model.status)}}
+                  @selected={{this.model.status}} />
+              </:content>
+            </Item>
+          </:right>
+        </Card.Columns>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Grensoverschijdend?</:label>
+              <:content>
+                <AuControlRadio @label="Ja" @name="grensoverschijdend" @value={{true}} @identifier="grensoverschijdend" /><br />
+                <AuControlRadio @label="Nee" @name="grensoverschijdend" @value={{false}} @identifier="no-grensoverschijdend" />
+              </:content>
+            </Item>
+            <Item>
+              <:label>Werkingsgebied</:label>
+              <:content>
+                <AuInput/>
+              </:content>
+            </Item>
+          </:left>
+          <:right as |Item|>
+            <Item>
+              <:label>KBO Nummer</:label>
+              <:content>
+                <AuInput/>
+              </:content>
+            </Item>
+            <Item>
+              <:label>Sharepoint Identificator</:label>
+              <:content>
+                <AuInput/>
+              </:content>
+            </Item>
+          </:right>
+        </Card.Columns>
+      </:card>
+    </EditCard>
+
+    <EditCard>
+      <:title>Primaire contactgegevens</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item @labelFor="address-street-name">
+              <:label>Straat</:label>
+              <:content>
+                <AuInput @value={{this.model.address.street}} id="address-street-name" />
+              </:content>
+            </Item>
+            <Item @labelFor="address-box-number">
+              <:label>Busnummer</:label>
+              <:content>
+                <AuInput @value={{this.model.address.boxNumber}} id="address-box-number" />
+              </:content>
+            </Item>
+            <Item @labelFor="address-municipality">
+              <:label>Gemeente</:label>
+              <:content>
+                <MunicipalitySelect @selected={{this.model.address.municipality}} @onChange={{fn (mut
+                  this.model.address.municipality)}} />
+              </:content>
+            </Item>
+            <Item @labelFor="contact-landline">
+              <:label>Telefoonnummer</:label>
+              <:content>
+                <AuInput @value={{this.model.contact.telephone}} id="contact-landline" type="tel" />
+              </:content>
+            </Item>
+          </:left>
+          <:right as |Item|>
+            <Item @labelFor="address-house-number">
+              <:label>Huisnummer</:label>
+              <:content>
+                <AuInput @value={{this.model.address.number}} id="address-house-number" />
+              </:content>
+            </Item>
+            <Item @labelFor="address-postal-code">
+              <:label>Postcode</:label>
+              <:content>
+                <AuInput @value={{this.model.address.postcode}} id="address-postal-code" />
+              </:content>
+            </Item>
+            <Item @labelFor="address-province">
+              <:label>Provincie</:label>
+              <:content>
+                <ProvinceSelect @selected={{this.model.address.province}} @onChange={{fn (mut
+                  this.model.address.province)}} />
+              </:content>
+            </Item>
+            <Item @labelFor="website">
+              <:label>Website</:label>
+              <:content>
+                <AuInput/>
+              </:content>
+            </Item>
+          </:right>
+        </Card.Columns>
+      </:card>
+    </EditCard>
+
+    <EditCard>
+      <:title>Gerelateerde organisaties</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Centraal bestuur</:label>
+              <:content>
+              </:content>
+            </Item>
+            <Item>
+              <:label>Representatief orgaan</:label>
+              <:content>
+              </:content>
+            </Item>
+          </:left>
+        </Card.Columns>
+      </:card>
+    </EditCard>
+
+    <AuButtonGroup>
+      <AuButton @loading={{this.save.isRunning}} @disabled={{this.save.isRunning}} type="submit">
+        Pas aan
+      </AuButton>
+
+      <AuLink @route="administrative-units" @skin="button-secondary">
+        Annuleer
+      </AuLink>
+    </AuButtonGroup>
+  </form>
+</div>

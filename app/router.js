@@ -71,6 +71,7 @@ Router.map(function () {
           function () {}
         );
       });
+      this.route('new', { path: '/nieuwe-besturen' });
     }
   );
   this.route('login');

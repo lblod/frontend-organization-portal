@@ -1,0 +1,14 @@
+<PowerSelect
+  @allowClear={{true}}
+  @loadingMessage="Aan het laden..."
+  @noMatchesMessage="Geen resultaten"
+  @searchEnabled={{true}}
+  @searchMessage="Typ om te zoeken"
+  @searchField="label"
+  @options={{this.fetchOrganizationStatusTask.last}}
+  @selected={{@selected}}
+  @onChange={{@onChange}}
+  as |organizationStatus|
+>
+  {{organizationStatus.label}}
+</PowerSelect>
