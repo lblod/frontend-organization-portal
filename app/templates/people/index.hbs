@@ -2,8 +2,8 @@
   <:sidebar>
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content au-o-box">
-        <form {{on "submit" this.search}} class="au-c-form">
-          <p>
+        <form {{on "submit" this.search}} class="au-o-grid au-o-grid--small">
+          <p class="au-o-grid__item">
             <AuLabel for="filter-given-name">Voornaam</AuLabel>
             <AuInput
               @width="block"
@@ -11,7 +11,7 @@
               id="filter-given-name"
             />
           </p>
-          <p>
+          <p  class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-family-name">Achternaam</AuLabel>
             <AuInput
               @width="block"
@@ -19,7 +19,7 @@
               id="filter-family-name"
             />
           </p>
-          <p>
+          <p class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-organization">Organisatie</AuLabel>
             <AuInput
               @width="block"
@@ -27,14 +27,16 @@
               id="filter-organization"
             />
           </p>
-          <AuButton
-            @loading={{this.isLoading}}
-            @disabled={{this.isLoading}}
-            @width="block"
-            type="submit"
-          >
-            Zoeken
-          </AuButton>
+          <div class="au-o-grid__item">
+            <AuButton
+              @loading={{this.isLoading}}
+              @disabled={{this.isLoading}}
+              @width="block"
+              type="submit"
+            >
+              Zoeken
+            </AuButton>
+          </div>
         </form>
       </div>
     </div>
