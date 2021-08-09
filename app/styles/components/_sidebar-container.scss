@@ -11,6 +11,8 @@
 }
 
 .au-c-sidebar-container__sidebar {
+  flex-basis: 100%;
+
   @include mq(medium) {
     height: 100%;
     flex-basis: 25rem;
