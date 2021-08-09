@@ -119,7 +119,11 @@
             @currentSorting={{this.sort}}
             @label="Gemeente"
           />
-          <th>Status</th>
+          <AuDataTableThSortable
+            @field="organizationStatus"
+            @currentSorting={{this.sort}}
+            @label="Status"
+          />
         </c.header>
         {{#if this.hasErrored}}
           <TableMessage::Error />
