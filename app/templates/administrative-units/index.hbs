@@ -2,26 +2,26 @@
   <:sidebar>
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content au-o-box">
-        <form class="au-c-form" {{on "submit" this.search}}>
-          <div>
+        <form class="au-o-grid au-o-grid--small" {{on "submit" this.search}}>
+          <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-name">Naam</AuLabel>
             <AuInput id="filter-name" @width="block" @value={{this.name}} />
           </div>
-          <div>
+          <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-municipality">Gemeente</AuLabel>
             <MunicipalitySelect
               @selected={{this.municipality}}
               @onChange={{this.setMunicipality}}
             />
           </div>
-          <div>
+          <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-province">Provincie</AuLabel>
             <ProvinceSelect
               @selected={{this.province}}
               @onChange={{this.setProvince}}
             />
           </div>
-          <div>
+          <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="classifications">Type bestuur</AuLabel>
             <PowerSelect
               @allowClear={{true}}
@@ -37,14 +37,14 @@
               {{classification.label}}
             </PowerSelect>
           </div>
-          <div>
+          <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="recognized-worship-types">Soort eredienst</AuLabel>
             <RecognizedWorshipTypeSelect
               @selected={{this.selectedRecognizedWorshipType}}
               @onChange={{this.setRecognizedWorshipType}}
             />
           </div>
-          <div>
+          <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="statuses">Status</AuLabel>
             <PowerSelect
               @allowClear={{true}}
@@ -57,14 +57,16 @@
               {{status.label}}
             </PowerSelect>
           </div>
-          <AuButton
-            @loading={{this.isLoading}}
-            @disabled={{this.isLoading}}
-            @width="block"
-            type="submit"
-          >
-            Zoeken
-          </AuButton>
+          <div class="au-o-grid__item">
+            <AuButton
+              @loading={{this.isLoading}}
+              @disabled={{this.isLoading}}
+              @width="block"
+              type="submit"
+            >
+              Zoeken
+            </AuButton>
+          </div>
         </form>
       </div>
     </div>
