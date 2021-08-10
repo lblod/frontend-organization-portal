@@ -6,12 +6,18 @@ export default class AdministrativeUnitsNewRoute extends Route {
 
   model() {
     return {
-      administrativeUnit: this.modelFor(
-        'administrative-units.administrative-unit'
+      administrativeUnit: this.store.createRecord(
+        'worship-administrative-unit'
       ),
-      contact: this.store.createRecord('contact-point'),
-      contactMobile: this.store.createRecord('contact-point'),
+      primarySite: this.store.createRecord('site'),
       address: this.store.createRecord('address'),
+      contact: this.store.createRecord('contact-point'),
+      structuredIdentifierKBO: this.store.createRecord('structured-identifier'),
+      structuredIdentifierSharepoint: this.store.createRecord(
+        'structured-identifier'
+      ),
+      identifierSharepoint: this.store.createRecord('identifier'),
+      identifierKBO: this.store.createRecord('identifier'),
     };
   }
 

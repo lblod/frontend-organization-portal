@@ -6,33 +6,37 @@
     <:title>Voeg bestuurseenheid toe</:title>
   </PageHeader>
 
-  <form class="au-o-box au-o-flow au-o-flow--large" aria-label="administrative-unit-creation-form" {{on "submit"
-    (perform this.createAdministrativeUnitTask)}}>
+  <form class="au-o-box au-o-flow au-o-flow--large" aria-label="administrative-unit-creation-form"
+  {{on "submit" (perform this.createAdministrativeUnitTask)}}>
     <EditCard>
       <:title>Bestuurseenheid</:title>
       <:card as |Card|>
         <Card.Columns>
           <:left as |Item|>
-            <Item>
+            <Item @labelFor="administrative-unit-name">
               <:label>Naam eredienst</:label>
               <:content>
-                <AuInput/>
+                <AuInput @value={{this.model.administrativeUnit.name}} id="worship-service-name" />
               </:content>
             </Item>
-            <Item>
+            <Item @labelFor="recognized-worship-type-select">
               <:label>Type eredienst</:label>
               <:content>
+                <RecognizedWorshipTypeSelect @selected={{this.model.administrativeUnit.recognizedWorshipType}}
+                  @onChange={{fn (mut this.model.administrativeUnit.recognizedWorshipType) }} />
               </:content>
             </Item>
             <Item>
-              <:label>Type Bestuur</:label>
+              <:label>Type bestuur</:label>
               <:content>
+              <ClassificationSelect @selected={{this.model.administrativeUnit.classification}}
+                  @onChange={{fn (mut this.model.administrativeUnit.classification) }} />
               </:content>
             </Item>
-            <Item>
+            <Item @labelFor="denomination">
               <:label>Strekking</:label>
               <:content>
-                <AuInput/>
+                <AuInput   @value={{this.model.administrativeUnit.denomination}} id="denomination" />
               </:content>
             </Item>
           </:left>
@@ -40,8 +44,12 @@
             <Item @labelFor="status-select">
               <:label>Status</:label>
               <:content>
-                <OrganizationStatusSelect @onChange={{fn (mut this.model.status)}}
-                  @selected={{this.model.status}} />
+                  <OrganizationStatusSelect
+                    @selected={{this.model.administrativeUnit.organizationStatus}}
+                    @onChange={{fn
+                      (mut this.model.administrativeUnit.organizationStatus)
+                    }}
+                  />
               </:content>
             </Item>
           </:right>
@@ -49,16 +57,23 @@
         <Card.Columns>
           <:left as |Item|>
             <Item>
-              <:label>Grensoverschijdend?</:label>
+              <:label>Grensoverschrijvend</:label>
               <:content>
-                <AuControlRadio @label="Ja" @name="grensoverschijdend" @value={{true}} @identifier="grensoverschijdend" /><br />
-                <AuControlRadio @label="Nee" @name="grensoverschijdend" @value={{false}} @identifier="no-grensoverschijdend" />
+                <AuControlRadio @label="Ja" @name="is-cross-border" @value={{this.model.administrativeUnit.crossBorder}}
+                  @identifier="cross-border-true" @onChange={{fn (mut this.model.administrativeUnit.crossBorder) true }}
+                  checked={{this.model.administrativeUnit.crossBorder}} />
+                <br />
+                <AuControlRadio @label="Nee" @name="is-cross-border" @value={{this.model.administrativeUnit.crossBorder}}
+                  @identifier="cross-border-false" @onChange={{fn (mut this.model.administrativeUnit.crossBorder) false }}
+                  checked={{not this.model.administrativeUnit.crossBorder}} />
               </:content>
             </Item>
-            <Item>
+            <Item @labelFor="administrative-unit-scope">
               <:label>Werkingsgebied</:label>
               <:content>
-                <AuInput/>
+                {{! TODO: Enable multiple selections and concat the selections in one label }}
+                <ScopeSelect @selected={{this.model.administrativeUnit.scope}} @onChange={{fn (mut
+                  this.model.administrativeUnit.scope)}} />
               </:content>
             </Item>
           </:left>
@@ -66,13 +81,15 @@
             <Item>
               <:label>KBO Nummer</:label>
               <:content>
-                <AuInput/>
+                <AuInput @value={{this.model.structuredIdentifierKBO.localId}}  
+                  id="kbo-identifier" />
               </:content>
             </Item>
             <Item>
               <:label>Sharepoint Identificator</:label>
               <:content>
-                <AuInput/>
+                <AuInput @value={{this.model.structuredIdentifierSharepoint.localId}}  
+                  id="sharepoint-identifier" />
               </:content>
             </Item>
           </:right>
@@ -85,56 +102,62 @@
       <:card as |Card|>
         <Card.Columns>
           <:left as |Item|>
-            <Item @labelFor="address-street-name">
+            <Item @labelFor="primary-site-address-street-name">
               <:label>Straat</:label>
               <:content>
-                <AuInput @value={{this.model.address.street}} id="address-street-name" />
+                <AuInput @value={{this.model.address.street}}  
+                  id="primary-site-address-street-name" />
               </:content>
             </Item>
-            <Item @labelFor="address-box-number">
+            <Item @labelFor="primary-site-address-bus-number">
               <:label>Busnummer</:label>
               <:content>
-                <AuInput @value={{this.model.address.boxNumber}} id="address-box-number" />
+                <AuInput @value={{this.model.address.boxNumber}}  
+                  id="primary-site-address-bus-number" />
               </:content>
             </Item>
-            <Item @labelFor="address-municipality">
+            <Item @labelFor="primary-site-address-municipality">
               <:label>Gemeente</:label>
               <:content>
-                <MunicipalitySelect @selected={{this.model.address.municipality}} @onChange={{fn (mut
-                  this.model.address.municipality)}} />
+                <MunicipalitySelect @selected={{this.model.address.municipality}}
+                  @onChange={{fn (mut this.model.address.municipality)}} />
               </:content>
             </Item>
-            <Item @labelFor="contact-landline">
+            <Item @labelFor="primary-site-contact-phone-number">
               <:label>Telefoonnummer</:label>
               <:content>
-                <AuInput @value={{this.model.contact.telephone}} id="contact-landline" type="tel" />
+                <AuInput @value={{this.model.contact.telephone}}  
+                  id="primary-site-contact-phone-number" />
               </:content>
             </Item>
           </:left>
           <:right as |Item|>
-            <Item @labelFor="address-house-number">
+            <Item @labelFor="primary-site-address-house-number">
               <:label>Huisnummer</:label>
               <:content>
-                <AuInput @value={{this.model.address.number}} id="address-house-number" />
+                <AuInput @value={{this.model.address.number}}  
+                  id="primary-site-address-house-number" />
               </:content>
             </Item>
-            <Item @labelFor="address-postal-code">
+            <Item @labelFor="primary-site-address-postal-code">
               <:label>Postcode</:label>
               <:content>
-                <AuInput @value={{this.model.address.postcode}} id="address-postal-code" />
+                <AuInput @value={{this.model.address.postcode}}  
+                  id="primary-site-address-postal-code" />
               </:content>
             </Item>
-            <Item @labelFor="address-province">
+            <Item @labelFor="primary-site-address-province">
               <:label>Provincie</:label>
               <:content>
-                <ProvinceSelect @selected={{this.model.address.province}} @onChange={{fn (mut
-                  this.model.address.province)}} />
+                <ProvinceSelect @selected={{this.model.address.province}} @onChange={{fn
+                  (mut this.model.address.province ) }} />
               </:content>
             </Item>
-            <Item @labelFor="website">
+            <Item @labelFor="primary-site-contact-website">
               <:label>Website</:label>
               <:content>
-                <AuInput/>
+                <AuInput @value={{this.model.contact.website}}  
+                  id="primary-site-contact-website" />
               </:content>
             </Item>
           </:right>
@@ -150,11 +173,15 @@
             <Item>
               <:label>Centraal bestuur</:label>
               <:content>
+                <CentralWorshipSelect @selected={{this.model.administrativeUnit.isSubOrganizationOf}} @onChange={{fn
+                  (mut this.model.administrativeUnit.isSubOrganizationOf) }} />
               </:content>
             </Item>
             <Item>
               <:label>Representatief orgaan</:label>
               <:content>
+                <RepresentativeBodySelect @selected={{this.model.administrativeUnit.isAssociatedWith}} @onChange={{fn
+                  (mut this.model.administrativeUnit.isAssociatedWith) }} />
               </:content>
             </Item>
           </:left>
@@ -163,7 +190,11 @@
     </EditCard>
 
     <AuButtonGroup>
-      <AuButton @loading={{this.save.isRunning}} @disabled={{this.save.isRunning}} type="submit">
+      <AuButton
+        @icon="add"
+        @loading={{this.createAdministrativeUnitTask.isRunning}}
+        type="submit"
+      >
         Pas aan
       </AuButton>
 
