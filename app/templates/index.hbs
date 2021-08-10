@@ -30,7 +30,16 @@
         </a>
         <AuHelpText @skin="secondary">
           {{config "appName"}}
-          v{{app-version versionOnly=true}}
+          {{#if (config "showAppVersionHash")}}
+            (<a
+              class="au-c-link"
+              href="https://github.com/lblod/frontend-contact-hub/commit/{{app-version
+                shaOnly=true
+              }}"
+            >{{app-version shaOnly=true}}</a>)
+          {{else}}
+            v{{app-version versionOnly=true}}
+          {{/if}}
         </AuHelpText>
       </div>
     </div>

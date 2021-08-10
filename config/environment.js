@@ -20,6 +20,7 @@ module.exports = function (environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
+
     torii: {
       disableRedirectInitializer: true,
       providers: {
@@ -32,9 +33,12 @@ module.exports = function (environment) {
         },
       },
     },
+
+    showAppVersionHash: process.env.SHOW_APP_VERSION_HASH === 'true',
   };
 
   if (environment === 'development') {
+    ENV.showAppVersionHash = true;
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
