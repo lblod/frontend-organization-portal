@@ -34,7 +34,6 @@ module.exports = function (environment) {
           scope: 'openid vo profile abb_organisatieportaal',
           redirectUri:
             'https://organisaties.abb.lblod.info/authorization/callback',
-          switchUrl: 'https://organisaties.abb.lblod.info/switch-login',
           logoutUrl: 'https://authenticatie-ti.vlaanderen.be/op/v1/logout',
         },
       },
