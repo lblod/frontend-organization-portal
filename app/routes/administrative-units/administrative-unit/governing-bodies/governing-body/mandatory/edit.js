@@ -9,7 +9,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       'administrative-units.administrative-unit'
     );
 
-    let { govBodyTimeSpec } = this.modelFor(
+    let { governingBody } = this.modelFor(
       'administrative-units.administrative-unit.governing-bodies.governing-body'
     );
 
@@ -21,16 +21,16 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     if (contacts.length === 0) {
       let contact = this.store.createRecord('contact-point');
       let address = this.store.createRecord('address');
-      contact.address = address;
+      contact.contactAddress = address;
       contacts.pushObject(contact);
     } else if (!contacts.firstObject.contactAddress) {
       let address = this.store.createRecord('address');
-      contacts.firstObject.address = address;
+      contacts.firstObject.contactAddress = address;
     }
 
     return {
       administrativeUnit,
-      govBodyTimeSpec,
+      governingBody,
       mandatory,
       person: await mandatory.governingAlias,
     };
