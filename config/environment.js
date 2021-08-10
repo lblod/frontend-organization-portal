@@ -64,13 +64,16 @@ module.exports = function (environment) {
     // here you can enable a production-specific feature
   }
 
-  if (process.env.DEPLOY_ENV === 'production') {
+  if (environment === 'production') {
     // TODO set the proper value for production
-    // ENV['torii']['providers']['acmidm-oauth2']['apiKey'] = '';
-    // ENV['torii']['providers']['acmidm-oauth2']['baseUrl'] = 'https://authenticatie.vlaanderen.be/op/v1/auth';
-    // ENV['torii']['providers']['acmidm-oauth2']['switchUrl'] = '';
-    // ENV['torii']['providers']['acmidm-oauth2']['redirectUri'] = '';
-    //  ENV['torii']['providers']['acmidm-oauth2']['logoutUrl'] = 'https://authenticatie.vlaanderen.be/op/v1/logout';
+    ENV['torii']['providers']['acmidm-oauth2']['apiKey'] = '{{OAUTH_API_KEY}}';
+    ENV['torii']['providers']['acmidm-oauth2']['scope'] = '{{OAUTH_API_SCOPE}}';
+    ENV['torii']['providers']['acmidm-oauth2']['baseUrl'] =
+      '{{OAUTH_API_BASE_URL}}';
+    ENV['torii']['providers']['acmidm-oauth2']['redirectUri'] =
+      '{{OAUTH_API_REDIRECT_URL}}';
+    ENV['torii']['providers']['acmidm-oauth2']['logoutUrl'] =
+      '{{OAUTH_API_LOGOUT_URL}}';
   }
 
   return ENV;
