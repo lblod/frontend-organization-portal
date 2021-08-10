@@ -4,11 +4,6 @@ module.exports = function (environment) {
   let ENV = {
     appName: 'Organisatieportaal',
     contactEmail: 'organisaties.abb@vlaanderen.be',
-    yasgui: {
-      // NOTE: look at app/modifiers/yasgui.js when changing this variable
-      defaultQuery: 'EMBER_YASGUI_DEFAULT_QUERY',
-      extraPrefixes: 'EMBER_YASGUI_EXTRA_PREFIXES',
-    },
     modulePrefix: 'frontend-contact-hub',
     environment,
     rootURL: '/',
