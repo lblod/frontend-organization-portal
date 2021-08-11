@@ -4,11 +4,6 @@ module.exports = function (environment) {
   let ENV = {
     appName: 'Organisatieportaal',
     contactEmail: 'organisaties.abb@vlaanderen.be',
-    yasgui: {
-      // NOTE: look at app/modifiers/yasgui.js when changing this variable
-      defaultQuery: 'EMBER_YASGUI_DEFAULT_QUERY',
-      extraPrefixes: 'EMBER_YASGUI_EXTRA_PREFIXES',
-    },
     modulePrefix: 'frontend-contact-hub',
     environment,
     rootURL: '/',
@@ -25,6 +20,7 @@ module.exports = function (environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
+
     torii: {
       disableRedirectInitializer: true,
       providers: {
@@ -37,9 +33,12 @@ module.exports = function (environment) {
         },
       },
     },
+
+    showAppVersionHash: process.env.SHOW_APP_VERSION_HASH === 'true',
   };
 
   if (environment === 'development') {
+    ENV.showAppVersionHash = true;
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;

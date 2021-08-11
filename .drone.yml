@@ -44,6 +44,8 @@ steps:
     password:
       from_secret: docker_password
     purge: true
+    build_args:
+      - SHOW_APP_VERSION_HASH=true
 trigger:
   branch:
     - master

@@ -2,6 +2,8 @@ FROM madnificent/ember:3.22.0 as builder
 
 LABEL maintainer="info@redpencil.io"
 
+ARG SHOW_APP_VERSION_HASH=false
+
 WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
