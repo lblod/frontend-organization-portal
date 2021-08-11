@@ -4,21 +4,29 @@
 
 // grid
 .card-grid {
-  display: flex;
-  flex-wrap: wrap;
+  @include mq(medium) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }
 
 .card-grid-item {
-  width: 50%;
+  @include mq(medium) {
+    width: 50%;
+  }
 }
 
 // columns
 .card-columns {
-  display: flex;
+  @include mq(medium) {
+    display: flex;
+  }
 }
 
 .card-columns__column {
-  width: 50%;
+  @include mq(medium) {
+    width: 50%;
+  }
 }
 
 
