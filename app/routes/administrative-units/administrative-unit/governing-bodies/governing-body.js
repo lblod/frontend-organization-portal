@@ -1,8 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-const MEMBER_ROLE_ID = '2e021095727b2464459a63e16ebeafd2';
-
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyRoute extends Route {
   @service store;
 
@@ -20,25 +18,14 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       governingBodyId,
       {
         reload: true,
-        include: 'mandates,mandates.role-board,mandates.held-by',
+        include: 'mandates.role-board,mandates.held-by.governing-alias',
       }
     );
-
-    let mandates = await governingBody.mandates;
-    let memberMandates = mandates.filter((mandate) => {
-      return mandate.get('roleBoard.id') === MEMBER_ROLE_ID;
-    });
-
-    let otherMandates = mandates.filter((mandate) => {
-      return mandate.get('roleBoard.id') !== MEMBER_ROLE_ID;
-    });
 
     return {
       administrativeUnit,
       governingBodyClassification,
       governingBody,
-      memberMandates,
-      otherMandates,
     };
   }
 }
