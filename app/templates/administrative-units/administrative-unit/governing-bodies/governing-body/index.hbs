@@ -64,9 +64,8 @@
             <AuHeading @level="4" @skin="5">Bestuursleden</AuHeading>
           </AuToolbarGroup>
           <AuToolbarGroup>
-            {{! TODO: Replace this with a link once the "new" route is created }}
             <AuLink
-              @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+              @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
               @skin="button-secondary"
               @icon="add"
               @iconAlignment="left"
@@ -130,7 +129,11 @@
                 <td>
                   <AuLink
                     @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
-                    @model={{mandatory.id}}
+                    @models={{array
+                      @model.administrativeUnit.id
+                      @model.governingBody.id
+                      mandatory.id
+                    }}
                   >
                     Bewerk
                   </AuLink>
@@ -148,9 +151,8 @@
           <AuHeading @level="4" @skin="5">Mandatarissen</AuHeading>
         </AuToolbarGroup>
         <AuToolbarGroup>
-          {{! TODO: Replace this with a link once the "new" route is created }}
           <AuLink
-            @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+            @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
             @skin="button-secondary"
             @icon="add"
             @iconAlignment="left"
@@ -214,7 +216,11 @@
               <td>
                 <AuLink
                   @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
-                  @model={{mandatory.id}}
+                  @models={{array
+                    @model.administrativeUnit.id
+                    @model.governingBody.id
+                    mandatory.id
+                  }}
                 >
                   Bewerk
                 </AuLink>
