@@ -7,6 +7,7 @@ export default class Router extends EmberRouter {
 }
 
 Router.map(function () {
+  this.route('login');
   this.route('mock-login');
   this.route('index', { path: '' });
   this.route('people', { path: '/personen' }, function () {
@@ -73,6 +74,5 @@ Router.map(function () {
       });
     }
   );
-  this.route('login');
   this.route('contact');
 });

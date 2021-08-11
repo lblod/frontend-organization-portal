@@ -25,6 +25,18 @@ module.exports = function (environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
+    torii: {
+      disableRedirectInitializer: true,
+      providers: {
+        'acmidm-oauth2': {
+          apiKey: '{{OAUTH_API_KEY}}',
+          baseUrl: '{{OAUTH_API_BASE_URL}}',
+          scope: '{{OAUTH_API_SCOPE}}',
+          redirectUri: '{{OAUTH_API_REDIRECT_URL}}',
+          logoutUrl: '{{OAUTH_API_LOGOUT_URL}}',
+        },
+      },
+    },
   };
 
   if (environment === 'development') {

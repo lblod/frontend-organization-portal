@@ -21,8 +21,9 @@ export default class CurrentSessionService extends Service {
       });
       this.user = this.account.user;
 
-      let groupId = sessionData.group.data.id;
-      this.group = await this.store.findRecord('group', groupId);
+      // TODO no group / roles for now. not defined for acm idm, thus break the app when using acm idm login
+      //let groupId = sessionData?.group?.data?.id;
+      //this.group = await this.store.findRecord('group', groupId);
     }
   }
 }
