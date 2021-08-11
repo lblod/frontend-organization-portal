@@ -36,7 +36,7 @@
             <Item @labelFor="denomination">
               <:label>Strekking</:label>
               <:content>
-                <AuInput   @value={{this.model.administrativeUnit.denomination}} id="denomination" />
+                <AuInput   @value={{this.model.worshipService.denomination}} id="denomination" />
               </:content>
             </Item>
           </:left>
@@ -59,13 +59,11 @@
             <Item>
               <:label>Grensoverschrijvend</:label>
               <:content>
-                <AuControlRadio @label="Ja" @name="is-cross-border" @value={{this.model.administrativeUnit.crossBorder}}
-                  @identifier="cross-border-true" @onChange={{fn (mut this.model.administrativeUnit.crossBorder) true }}
-                  checked={{this.model.administrativeUnit.crossBorder}} />
+                <AuControlRadio @label="Ja" @name="is-cross-border" @value={{this.model.worshipService.crossBorder}}
+                  @identifier="cross-border-true" @onChange={{fn (mut this.model.worshipService.crossBorder) true }}/>
                 <br />
-                <AuControlRadio @label="Nee" @name="is-cross-border" @value={{this.model.administrativeUnit.crossBorder}}
-                  @identifier="cross-border-false" @onChange={{fn (mut this.model.administrativeUnit.crossBorder) false }}
-                  checked={{not this.model.administrativeUnit.crossBorder}} />
+                <AuControlRadio @label="Nee" @name="is-cross-border" @value={{this.model.worshipService.crossBorder}}
+                  @identifier="cross-border-false" @onChange={{fn (mut this.model.worshipService.crossBorder) false }}/>
               </:content>
             </Item>
             <Item @labelFor="administrative-unit-scope">

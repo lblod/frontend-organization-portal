@@ -8,6 +8,11 @@ const IDNAMES = {
   KBO: 'KBO nummer',
 };
 
+const CLASSIFICATION = {
+  CENTRAL_WORSHIP_SERVICE: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
+  WORSHIP_SERVICE: '66ec74fd-8cfc-4e16-99c6-350b35012e86',
+};
+
 export default class AdministrativeUnitsNewController extends Controller {
   @service router;
   @service store;
@@ -18,6 +23,8 @@ export default class AdministrativeUnitsNewController extends Controller {
 
     let {
       administrativeUnit,
+      centralWorshipService,
+      worshipService,
       primarySite,
       address,
       contact,
@@ -54,6 +61,21 @@ export default class AdministrativeUnitsNewController extends Controller {
     administrativeUnit.primarySite = primarySite;
     yield administrativeUnit.save();
 
+    //wrong...
+    if (
+      administrativeUnit.classification.get('id') ==
+      CLASSIFICATION.CENTRAL_WORSHIP_SERVICE
+    ) {
+      centralWorshipService = administrativeUnit;
+      yield centralWorshipService.save();
+    } else if (
+      administrativeUnit.classification.get('id') ==
+      CLASSIFICATION.WORSHIP_SERVICE
+    ) {
+      worshipService = administrativeUnit;
+      yield worshipService.save();
+    }
+
     this.router.transitionTo('administrative-units');
   }
 
@@ -70,5 +92,9 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.identifierKBO.rollbackAttributes();
     this.model.structuredIdentifierSharepoint.rollbackAttributes();
     this.model.structuredIdentifierKBO.rollbackAttributes();
+    if (this.model.centralWorshipService)
+      this.model.centralWorshipService.rollbackAttributes();
+    if (this.model.worshipService)
+      this.model.worshipService.rollbackAttributes();
   }
 }
