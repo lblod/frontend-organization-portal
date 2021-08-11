@@ -29,12 +29,11 @@ module.exports = function (environment) {
       disableRedirectInitializer: true,
       providers: {
         'acmidm-oauth2': {
-          apiKey: '677af572-2e2f-4e61-ad38-036723bb314c',
-          baseUrl: 'https://authenticatie-ti.vlaanderen.be/op/v1/auth',
-          scope: 'openid vo profile abb_organisatieportaal',
-          redirectUri:
-            'https://organisaties.abb.lblod.info/authorization/callback',
-          logoutUrl: 'https://authenticatie-ti.vlaanderen.be/op/v1/logout',
+          apiKey: '{{OAUTH_API_KEY}}',
+          baseUrl: '{{OAUTH_API_BASE_URL}}',
+          scope: '{{OAUTH_API_SCOPE}}',
+          redirectUri: '{{OAUTH_API_REDIRECT_URL}}',
+          logoutUrl: '{{OAUTH_API_LOGOUT_URL}}',
         },
       },
     },
@@ -62,18 +61,6 @@ module.exports = function (environment) {
 
   if (environment === 'production') {
     // here you can enable a production-specific feature
-  }
-
-  if (environment === 'production') {
-    // TODO set the proper value for production
-    ENV['torii']['providers']['acmidm-oauth2']['apiKey'] = '{{OAUTH_API_KEY}}';
-    ENV['torii']['providers']['acmidm-oauth2']['scope'] = '{{OAUTH_API_SCOPE}}';
-    ENV['torii']['providers']['acmidm-oauth2']['baseUrl'] =
-      '{{OAUTH_API_BASE_URL}}';
-    ENV['torii']['providers']['acmidm-oauth2']['redirectUri'] =
-      '{{OAUTH_API_REDIRECT_URL}}';
-    ENV['torii']['providers']['acmidm-oauth2']['logoutUrl'] =
-      '{{OAUTH_API_LOGOUT_URL}}';
   }
 
   return ENV;
