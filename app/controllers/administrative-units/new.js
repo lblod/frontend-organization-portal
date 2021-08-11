@@ -59,20 +59,42 @@ export default class AdministrativeUnitsNewController extends Controller {
       identifierSharepoint,
     ]);
     administrativeUnit.primarySite = primarySite;
-    yield administrativeUnit.save();
 
-    //wrong...
     if (
       administrativeUnit.classification.get('id') ==
       CLASSIFICATION.CENTRAL_WORSHIP_SERVICE
     ) {
-      centralWorshipService = administrativeUnit;
+      centralWorshipService.name = administrativeUnit.name;
+      centralWorshipService.recognizedWorshipType =
+        administrativeUnit.recognizedWorshipType;
+      centralWorshipService.classification = administrativeUnit.classification;
+      centralWorshipService.organizationStatus =
+        administrativeUnit.organizationStatus;
+      centralWorshipService.scope = administrativeUnit.scope;
+      centralWorshipService.isSubOrganizationOf =
+        administrativeUnit.isSubOrganizationOf;
+      centralWorshipService.isAssociatedWith =
+        administrativeUnit.isAssociatedWith;
+      centralWorshipService.identifiers = administrativeUnit.identifiers;
+      centralWorshipService.primarySite = administrativeUnit.primarySite;
+
       yield centralWorshipService.save();
     } else if (
       administrativeUnit.classification.get('id') ==
       CLASSIFICATION.WORSHIP_SERVICE
     ) {
-      worshipService = administrativeUnit;
+      worshipService.name = administrativeUnit.name;
+      worshipService.recognizedWorshipType =
+        administrativeUnit.recognizedWorshipType;
+      worshipService.classification = administrativeUnit.classification;
+      worshipService.organizationStatus = administrativeUnit.organizationStatus;
+      worshipService.scope = administrativeUnit.scope;
+      worshipService.isSubOrganizationOf =
+        administrativeUnit.isSubOrganizationOf;
+      worshipService.isAssociatedWith = administrativeUnit.isAssociatedWith;
+      worshipService.identifiers = administrativeUnit.identifiers;
+      worshipService.primarySite = administrativeUnit.primarySite;
+
       yield worshipService.save();
     }
 
