@@ -58,7 +58,14 @@
           {{#if @model.site.contacts.firstObject.website}}
             <Item>
               <:label>Website</:label>
-              <:content>{{@model.site.contacts.firstObject.website}}</:content>
+              <:content>
+                <a
+                  href={{@model.site.contacts.firstObject.website}}
+                  class="au-c-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >{{@model.site.contacts.firstObject.website}}</a>
+              </:content>
             </Item>
           {{/if}}
         </Card.Grid>
