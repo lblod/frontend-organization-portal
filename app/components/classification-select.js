@@ -18,8 +18,8 @@ export default class ClassificationSelectComponent extends Component {
   @task *fetchClassificationTask() {
     return yield this.store.query('administrative-unit-classification-code', {
       'filter[:id:]': [
-        CLASSIFICATION.WORSHIP_SERVICE.id,
-        CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
+        CLASSIFICATION.WORSHIP_SERVICE,
+        CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
       ].join(),
     });
   }
