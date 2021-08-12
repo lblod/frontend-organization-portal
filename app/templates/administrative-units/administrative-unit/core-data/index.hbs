@@ -137,7 +137,12 @@
             <Item>
               <:label>Website</:label>
               <:content>
-                {{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
+                <a
+                  href={{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
+                  class="au-c-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >{{@model.administrativeUnit.primarySite.contacts.firstObject.website}}</a>
               </:content>
             </Item>
           {{/if}}
