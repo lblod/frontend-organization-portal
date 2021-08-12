@@ -10,7 +10,7 @@ export default class AdministrativeUnitsNewRoute extends Route {
         'worship-administrative-unit'
       ),
       worshipService: this.store.createRecord('worship-service'),
-      centalWorshipService: this.store.createRecord('central-worship-service'),
+      centralWorshipService: this.store.createRecord('central-worship-service'),
       primarySite: this.store.createRecord('site'),
       address: this.store.createRecord('address'),
       contact: this.store.createRecord('contact-point'),

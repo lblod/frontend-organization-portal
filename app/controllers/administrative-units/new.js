@@ -34,6 +34,31 @@ export default class AdministrativeUnitsNewController extends Controller {
       structuredIdentifierKBO,
     } = this.model;
 
+    let newAdministrativeUnit;
+    if (
+      administrativeUnit.classification.get('id') ==
+      CLASSIFICATION.CENTRAL_WORSHIP_SERVICE
+    ) {
+      newAdministrativeUnit = centralWorshipService;
+    } else if (
+      administrativeUnit.classification.get('id') ==
+      CLASSIFICATION.WORSHIP_SERVICE
+    ) {
+      newAdministrativeUnit = worshipService;
+    }
+
+    newAdministrativeUnit.name = administrativeUnit.name;
+    newAdministrativeUnit.recognizedWorshipType =
+      administrativeUnit.recognizedWorshipType;
+    newAdministrativeUnit.classification = administrativeUnit.classification;
+    newAdministrativeUnit.organizationStatus =
+      administrativeUnit.organizationStatus;
+    newAdministrativeUnit.scope = administrativeUnit.scope;
+    newAdministrativeUnit.isSubOrganizationOf =
+      administrativeUnit.isSubOrganizationOf;
+    newAdministrativeUnit.isAssociatedWith =
+      administrativeUnit.isAssociatedWith;
+
     yield structuredIdentifierSharepoint.save();
     yield structuredIdentifierKBO.save();
 
@@ -54,51 +79,18 @@ export default class AdministrativeUnitsNewController extends Controller {
     primarySite.contacts.pushObjects([contact]);
     yield primarySite.save();
 
-    administrativeUnit.identifiers.pushObjects([
+    newAdministrativeUnit.identifiers.pushObjects([
       identifierKBO,
       identifierSharepoint,
     ]);
-    administrativeUnit.primarySite = primarySite;
+    newAdministrativeUnit.primarySite = primarySite;
 
-    if (
-      administrativeUnit.classification.get('id') ==
-      CLASSIFICATION.CENTRAL_WORSHIP_SERVICE
-    ) {
-      centralWorshipService.name = administrativeUnit.name;
-      centralWorshipService.recognizedWorshipType =
-        administrativeUnit.recognizedWorshipType;
-      centralWorshipService.classification = administrativeUnit.classification;
-      centralWorshipService.organizationStatus =
-        administrativeUnit.organizationStatus;
-      centralWorshipService.scope = administrativeUnit.scope;
-      centralWorshipService.isSubOrganizationOf =
-        administrativeUnit.isSubOrganizationOf;
-      centralWorshipService.isAssociatedWith =
-        administrativeUnit.isAssociatedWith;
-      centralWorshipService.identifiers = administrativeUnit.identifiers;
-      centralWorshipService.primarySite = administrativeUnit.primarySite;
+    yield newAdministrativeUnit.save();
 
-      yield centralWorshipService.save();
-    } else if (
-      administrativeUnit.classification.get('id') ==
-      CLASSIFICATION.WORSHIP_SERVICE
-    ) {
-      worshipService.name = administrativeUnit.name;
-      worshipService.recognizedWorshipType =
-        administrativeUnit.recognizedWorshipType;
-      worshipService.classification = administrativeUnit.classification;
-      worshipService.organizationStatus = administrativeUnit.organizationStatus;
-      worshipService.scope = administrativeUnit.scope;
-      worshipService.isSubOrganizationOf =
-        administrativeUnit.isSubOrganizationOf;
-      worshipService.isAssociatedWith = administrativeUnit.isAssociatedWith;
-      worshipService.identifiers = administrativeUnit.identifiers;
-      worshipService.primarySite = administrativeUnit.primarySite;
-
-      yield worshipService.save();
-    }
-
-    this.router.transitionTo('administrative-units');
+    this.router.replaceWith(
+      'administrative-units.administrative-unit',
+      newAdministrativeUnit.id
+    );
   }
 
   reset() {
@@ -114,9 +106,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.identifierKBO.rollbackAttributes();
     this.model.structuredIdentifierSharepoint.rollbackAttributes();
     this.model.structuredIdentifierKBO.rollbackAttributes();
-    if (this.model.centralWorshipService)
-      this.model.centralWorshipService.rollbackAttributes();
-    if (this.model.worshipService)
-      this.model.worshipService.rollbackAttributes();
+    this.model.centralWorshipService.rollbackAttributes();
+    this.model.worshipService.rollbackAttributes();
   }
 }
