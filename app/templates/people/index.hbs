@@ -124,7 +124,14 @@
                   {{/if}}
                 {{/let}}
               </td>
-              <td>{{mandatory.mandate.roleBoard.label}}</td>
+              <td>
+                <AuLink
+                  @route="people.person.positions.mandatory"
+                  @models={{array person.id mandatory.id}}
+                >
+                  {{mandatory.mandate.roleBoard.label}}
+                </AuLink>
+              </td>
               <td>
                 {{#if mandatory}}
                   <MandatoryStatus @mandatory={{mandatory}} />
