@@ -6,8 +6,11 @@
     <:title>Voeg bestuurseenheid toe</:title>
   </PageHeader>
 
-  <form class="au-o-box au-o-flow au-o-flow--large" aria-label="administrative-unit-creation-form" {{on "submit"
-    (perform this.createAdministrativeUnitTask)}}>
+  <form
+    class="au-o-box au-o-flow au-o-flow--large"
+    aria-label="administrative-unit-creation-form"
+    {{on "submit" (perform this.createAdministrativeUnitTask)}}
+  >
     <EditCard>
       <:title>Bestuurseenheid</:title>
       <:card as |Card|>
@@ -16,33 +19,44 @@
             <Item @labelFor="administrative-unit-name">
               <:label>Naam</:label>
               <:content>
-                <AuInput @width="block" @value={{this.model.administrativeUnit.name}} id="administrative-unit-name" />
+                <AuInput
+                  @width="block"
+                  @value={{this.model.administrativeUnit.name}}
+                  id="administrative-unit-name"
+                />
               </:content>
             </Item>
             <Item @labelFor="recognized-worship-type-select">
               <:label>Type eredienst</:label>
               <:content>
-                <RecognizedWorshipTypeSelect @selected={{this.model.administrativeUnit.recognizedWorshipType}}
-                  @onChange={{fn (mut this.model.administrativeUnit.recognizedWorshipType) }} />
+                <RecognizedWorshipTypeSelect
+                  @selected={{this.model.administrativeUnit.recognizedWorshipType}}
+                  @onChange={{fn
+                    (mut this.model.administrativeUnit.recognizedWorshipType)
+                  }}
+                />
               </:content>
             </Item>
             <Item>
               <:label>Type bestuur</:label>
               <:content>
-                <ClassificationSelect @selected={{this.model.administrativeUnit.classification}} @onChange={{fn (mut
-                  this.model.administrativeUnit.classification) }} />
+                <ClassificationSelect
+                  @selected={{this.model.administrativeUnit.classification}}
+                  @onChange={{fn
+                    (mut this.model.administrativeUnit.classification)
+                  }}
+                />
               </:content>
             </Item>
-            {{#if
-              (eq
-                this.model.administrativeUnit.classification.id
-                "66ec74fd-8cfc-4e16-99c6-350b35012e86"
-              )
-            }}
+            {{#if this.isNewWorshipService}}
               <Item @labelFor="denomination">
                 <:label>Strekking</:label>
                 <:content>
-                  <AuInput @width="block" @value={{this.model.worshipService.denomination}} id="denomination" />
+                  <AuInput
+                    @width="block"
+                    @value={{this.model.worshipService.denomination}}
+                    id="denomination"
+                  />
                 </:content>
               </Item>
             {{/if}}
@@ -51,42 +65,59 @@
             <Item @labelFor="status-select">
               <:label>Status</:label>
               <:content>
-                <OrganizationStatusSelect @selected={{this.model.administrativeUnit.organizationStatus}} @onChange={{fn
-                  (mut this.model.administrativeUnit.organizationStatus) }} />
+                <OrganizationStatusSelect
+                  @selected={{this.model.administrativeUnit.organizationStatus}}
+                  @onChange={{fn
+                    (mut this.model.administrativeUnit.organizationStatus)
+                  }}
+                />
               </:content>
             </Item>
             <Item @labelFor="kbo-identifier">
               <:label>KBO Nummer</:label>
               <:content>
-                <AuInput @width="block" @value={{this.model.structuredIdentifierKBO.localId}} id="kbo-identifier" />
+                <AuInput
+                  @width="block"
+                  @value={{this.model.structuredIdentifierKBO.localId}}
+                  id="kbo-identifier"
+                />
               </:content>
             </Item>
           </:right>
         </Card.Columns>
         <Card.Columns>
           <:left as |Item|>
-            {{#if
-              (eq
-                this.model.administrativeUnit.classification.id
-                "66ec74fd-8cfc-4e16-99c6-350b35012e86"
-              )
-            }}
+            {{#if this.isNewWorshipService}}
               <Item @alignTop={{true}}>
                 <:label>Grensoverschrijvend</:label>
                 <:content>
-                  <AuControlRadio @label="Ja" @name="is-cross-border" @value={{this.model.worshipService.crossBorder}}
-                    @identifier="cross-border-true" @onChange={{fn (mut this.model.worshipService.crossBorder) true }}
+                  <AuControlRadio
+                    @label="Ja"
+                    @name="is-cross-border"
+                    @value={{this.model.worshipService.crossBorder}}
+                    @identifier="cross-border-true"
+                    @onChange={{fn
+                      (mut this.model.worshipService.crossBorder)
+                      true
+                    }}
                     checked={{this.model.worshipService.crossBorder}}
                   />
                   <br />
-                  <AuControlRadio @label="Nee" @name="is-cross-border" @value={{this.model.worshipService.crossBorder}}
-                    @identifier="cross-border-false" @onChange={{fn (mut this.model.worshipService.crossBorder) false }} 
+                  <AuControlRadio
+                    @label="Nee"
+                    @name="is-cross-border"
+                    @value={{this.model.worshipService.crossBorder}}
+                    @identifier="cross-border-false"
+                    @onChange={{fn
+                      (mut this.model.worshipService.crossBorder)
+                      false
+                    }}
                     checked={{not this.model.worshipService.crossBorder}}
                   />
                 </:content>
               </Item>
             {{/if}}
-            {{!-- hide for now, until we know how we are going to implement this correctly --}}
+            {{! hide for now, until we know how we are going to implement this correctly }}
             {{!-- <Item @labelFor="administrative-unit-scope">
               <:label>Werkingsgebied</:label>
               <:content>
@@ -100,8 +131,11 @@
             <Item @labelFor="sharepoint-identifier">
               <:label>Sharepoint Identificator</:label>
               <:content>
-                <AuInput @width="block" @value={{this.model.structuredIdentifierSharepoint.localId}}
-                  id="sharepoint-identifier" />
+                <AuInput
+                  @width="block"
+                  @value={{this.model.structuredIdentifierSharepoint.localId}}
+                  id="sharepoint-identifier"
+                />
               </:content>
             </Item>
           </:right>
@@ -117,27 +151,40 @@
             <Item @labelFor="primary-site-address-street-name">
               <:label>Straat</:label>
               <:content>
-                <AuInput @width="block" @value={{this.model.address.street}} id="primary-site-address-street-name" />
+                <AuInput
+                  @width="block"
+                  @value={{this.model.address.street}}
+                  id="primary-site-address-street-name"
+                />
               </:content>
             </Item>
             <Item @labelFor="primary-site-address-bus-number">
               <:label>Busnummer</:label>
               <:content>
-                <AuInput @width="block" @value={{this.model.address.boxNumber}} id="primary-site-address-bus-number" />
+                <AuInput
+                  @width="block"
+                  @value={{this.model.address.boxNumber}}
+                  id="primary-site-address-bus-number"
+                />
               </:content>
             </Item>
             <Item @labelFor="primary-site-address-municipality">
               <:label>Gemeente</:label>
               <:content>
-                <MunicipalitySelect @selected={{this.model.address.municipality}} @onChange={{fn (mut
-                  this.model.address.municipality)}} />
+                <MunicipalitySelect
+                  @selected={{this.model.address.municipality}}
+                  @onChange={{fn (mut this.model.address.municipality)}}
+                />
               </:content>
             </Item>
             <Item @labelFor="primary-site-contact-phone-number">
               <:label>Telefoonnummer</:label>
               <:content>
-                <AuInput @width="block" @value={{this.model.contact.telephone}}
-                  id="primary-site-contact-phone-number" />
+                <AuInput
+                  @width="block"
+                  @value={{this.model.contact.telephone}}
+                  id="primary-site-contact-phone-number"
+                />
               </:content>
             </Item>
           </:left>
@@ -145,26 +192,40 @@
             <Item @labelFor="primary-site-address-house-number">
               <:label>Huisnummer</:label>
               <:content>
-                <AuInput @width="block" @value={{this.model.address.number}} id="primary-site-address-house-number" />
+                <AuInput
+                  @width="block"
+                  @value={{this.model.address.number}}
+                  id="primary-site-address-house-number"
+                />
               </:content>
             </Item>
             <Item @labelFor="primary-site-address-postal-code">
               <:label>Postcode</:label>
               <:content>
-                <AuInput @width="block" @value={{this.model.address.postcode}} id="primary-site-address-postal-code" />
+                <AuInput
+                  @width="block"
+                  @value={{this.model.address.postcode}}
+                  id="primary-site-address-postal-code"
+                />
               </:content>
             </Item>
             <Item @labelFor="primary-site-address-province">
               <:label>Provincie</:label>
               <:content>
-                <ProvinceSelect @selected={{this.model.address.province}} @onChange={{fn (mut
-                  this.model.address.province ) }} />
+                <ProvinceSelect
+                  @selected={{this.model.address.province}}
+                  @onChange={{fn (mut this.model.address.province)}}
+                />
               </:content>
             </Item>
             <Item @labelFor="primary-site-contact-website">
               <:label>Website</:label>
               <:content>
-                <AuInput @width="block" @value={{this.model.contact.website}} id="primary-site-contact-website" />
+                <AuInput
+                  @width="block"
+                  @value={{this.model.contact.website}}
+                  id="primary-site-contact-website"
+                />
               </:content>
             </Item>
           </:right>
@@ -180,15 +241,23 @@
             <Item>
               <:label>Centraal bestuur</:label>
               <:content>
-                <CentralWorshipSelect @selected={{this.model.administrativeUnit.isSubOrganizationOf}} @onChange={{fn
-                  (mut this.model.administrativeUnit.isSubOrganizationOf) }} />
+                <CentralWorshipSelect
+                  @selected={{this.model.administrativeUnit.isSubOrganizationOf}}
+                  @onChange={{fn
+                    (mut this.model.administrativeUnit.isSubOrganizationOf)
+                  }}
+                />
               </:content>
             </Item>
             <Item>
               <:label>Representatief orgaan</:label>
               <:content>
-                <RepresentativeBodySelect @selected={{this.model.administrativeUnit.isAssociatedWith}} @onChange={{fn
-                  (mut this.model.administrativeUnit.isAssociatedWith) }} />
+                <RepresentativeBodySelect
+                  @selected={{this.model.administrativeUnit.isAssociatedWith}}
+                  @onChange={{fn
+                    (mut this.model.administrativeUnit.isAssociatedWith)
+                  }}
+                />
               </:content>
             </Item>
           </:left>
@@ -197,7 +266,11 @@
     </EditCard>
 
     <AuButtonGroup>
-      <AuButton @icon="add" @loading={{this.createAdministrativeUnitTask.isRunning}} type="submit">
+      <AuButton
+        @icon="add"
+        @loading={{this.createAdministrativeUnitTask.isRunning}}
+        type="submit"
+      >
         Voeg toe
       </AuButton>
 

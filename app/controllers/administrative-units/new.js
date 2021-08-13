@@ -3,11 +3,6 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
 
-const IDNAMES = {
-  SHAREPOINT: 'SharePoint identificator',
-  KBO: 'KBO nummer',
-};
-
 const CLASSIFICATION = {
   CENTRAL_WORSHIP_SERVICE: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
   WORSHIP_SERVICE: '66ec74fd-8cfc-4e16-99c6-350b35012e86',
@@ -16,6 +11,20 @@ const CLASSIFICATION = {
 export default class AdministrativeUnitsNewController extends Controller {
   @service router;
   @service store;
+
+  get isNewWorshipService() {
+    return (
+      this.model.administrativeUnit.classification.get('id') ===
+      CLASSIFICATION.WORSHIP_SERVICE
+    );
+  }
+
+  get isNewCentralWorshipService() {
+    return (
+      this.model.administrativeUnit.classification.get('id') ===
+      CLASSIFICATION.CENTRAL_WORSHIP_SERVICE
+    );
+  }
 
   @dropTask
   *createAdministrativeUnitTask(event) {
@@ -34,40 +43,19 @@ export default class AdministrativeUnitsNewController extends Controller {
       structuredIdentifierKBO,
     } = this.model;
 
-    let newAdministrativeUnit;
-    if (
-      administrativeUnit.classification.get('id') ==
-      CLASSIFICATION.CENTRAL_WORSHIP_SERVICE
-    ) {
-      newAdministrativeUnit = centralWorshipService;
-    } else if (
-      administrativeUnit.classification.get('id') ==
-      CLASSIFICATION.WORSHIP_SERVICE
-    ) {
-      newAdministrativeUnit = worshipService;
-    }
+    let newAdministrativeUnit = this.isNewCentralWorshipService
+      ? centralWorshipService
+      : worshipService;
 
-    newAdministrativeUnit.name = administrativeUnit.name;
-    newAdministrativeUnit.recognizedWorshipType =
-      administrativeUnit.recognizedWorshipType;
-    newAdministrativeUnit.classification = administrativeUnit.classification;
-    newAdministrativeUnit.organizationStatus =
-      administrativeUnit.organizationStatus;
-    newAdministrativeUnit.scope = administrativeUnit.scope;
-    newAdministrativeUnit.isSubOrganizationOf =
-      administrativeUnit.isSubOrganizationOf;
-    newAdministrativeUnit.isAssociatedWith =
-      administrativeUnit.isAssociatedWith;
+    copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
     yield structuredIdentifierSharepoint.save();
     yield structuredIdentifierKBO.save();
 
     identifierSharepoint.structuredIdentifier = structuredIdentifierSharepoint;
-    identifierSharepoint.idName = IDNAMES.SHAREPOINT;
     yield identifierSharepoint.save();
 
     identifierKBO.structuredIdentifier = structuredIdentifierKBO;
-    identifierKBO.idName = IDNAMES.KBO;
     yield identifierKBO.save();
 
     yield contact.save();
@@ -109,4 +97,17 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.centralWorshipService.rollbackAttributes();
     this.model.worshipService.rollbackAttributes();
   }
+}
+
+function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
+  newAdministrativeUnit.name = administrativeUnit.name;
+  newAdministrativeUnit.recognizedWorshipType =
+    administrativeUnit.recognizedWorshipType;
+  newAdministrativeUnit.classification = administrativeUnit.classification;
+  newAdministrativeUnit.organizationStatus =
+    administrativeUnit.organizationStatus;
+  newAdministrativeUnit.scope = administrativeUnit.scope;
+  newAdministrativeUnit.isSubOrganizationOf =
+    administrativeUnit.isSubOrganizationOf;
+  newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
 }
