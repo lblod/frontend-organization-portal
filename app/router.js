@@ -71,7 +71,7 @@ Router.map(function () {
           function () {}
         );
       });
-      this.route('new', { path: '/nieuw-bestuur' });
+      this.route('new', { path: '/nieuwe-bestuurseenheid' });
     }
   );
   this.route('login');
