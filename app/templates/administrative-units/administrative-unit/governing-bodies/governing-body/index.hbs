@@ -75,7 +75,7 @@
           </AuToolbarGroup>
         </AuToolbar>
         <AuDataTable
-          @content={{@model.memberMandates}}
+          @content={{@model.memberMandates.firstObject.heldBy}}
           @noDataMessage="Geen Bestuursleden"
           as |t|
         >
@@ -88,8 +88,8 @@
               <th class="au-c-data-table__header-title">Einde mandaat</th>
               <th></th>
             </c.header>
-            <c.body as |mandate|>
-              {{#let mandate.heldBy.firstObject as |mandatory|}}
+            <c.body as |mandatory|>
+
                 <td>
                   <AuLink
                     @route="people.person"
@@ -111,7 +111,7 @@
                     @route="people.person.positions.mandatory"
                     @models={{array mandatory.governingAlias.id mandatory.id}}
                   >
-                    {{mandate.roleBoard.label}}
+                    {{mandatory.mandate.roleBoard.label}}
                   </AuLink>
                 </td>
                 <td>
@@ -138,7 +138,6 @@
                     Bewerk
                   </AuLink>
                 </td>
-              {{/let}}
             </c.body>
           </t.content>
         </AuDataTable>
@@ -176,6 +175,7 @@
             <th></th>
           </c.header>
           <c.body as |mandate|>
+            {{!-- TODO: Each mandate with one roleBoard can have multiple people in the case of a change during a governing body --}}
             {{#let mandate.heldBy.firstObject as |mandatory|}}
               <td>
                 <AuLink
