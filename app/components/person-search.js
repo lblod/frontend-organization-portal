@@ -29,6 +29,11 @@ export default class PersonSearchComponent extends Component {
         query['filter[family-name]'] = this.searchParams.familyName;
       }
 
+      // TODO: implement pagination once it's possible without 2-way-binding
+      // More information: https://github.com/mu-semtech/ember-data-table/issues/27
+      // We temporarily increase the number of results to increase the chances that everything fits on one page
+      query['page[size]'] = 100;
+
       return yield this.store.query('person', query);
     }
   }
