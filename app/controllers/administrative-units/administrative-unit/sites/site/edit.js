@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { combineFullAddress } from 'frontend-contact-hub/models/address';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditController extends Controller {
   @service router;
@@ -29,26 +30,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
   *save(event) {
     event.preventDefault();
 
-    // TODO: Make full address changes reusable
     let address = yield this.site.address;
 
     if (address.hasDirtyAttributes) {
-      let fullStreet = `${address.street || ''} ${address.number || ''} ${
-        address.boxNumber || ''
-      }`.trim();
-
-      let muncipalityInformation = `${address.postcode || ''} ${
-        address.municipality || ''
-      }`.trim();
-
-      if (fullStreet && muncipalityInformation) {
-        address.fullAddress = `${fullStreet}, ${muncipalityInformation}`;
-      } else if (fullStreet) {
-        address.fullAddress = fullStreet;
-      } else {
-        address.fullAddress = muncipalityInformation;
-      }
-
+      address.fullAddress = combineFullAddress(address);
       yield address.save();
     }
 
