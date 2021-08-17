@@ -5,23 +5,22 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsIndex
   @service store;
 
   async model() {
-    let { id: administrativeUnitId } = this.paramsFor(
+    let administrativeUnit = this.modelFor(
       'administrative-units.administrative-unit'
     );
 
-    let administrativeUnit = await this.store.findRecord(
-      'worship-service',
-      administrativeUnitId,
-      {
-        reload: true,
-        include:
-          'involvements.involvement-type,involvements.administrative-unit.classification',
-      }
-    );
+    let involvements = await this.store.query('local-involvement', {
+      include: 'involvement-type,administrative-unit.classification',
+      filter: {
+        ['worship-service']: {
+          [':id:']: administrativeUnit.id,
+        },
+      },
+    });
 
     return {
-      administrativeUnit: administrativeUnit,
-      involvements: await administrativeUnit.involvements,
+      administrativeUnit,
+      involvements,
     };
   }
 }
