@@ -2,8 +2,6 @@
 
 module.exports = function (environment) {
   let ENV = {
-    appName: 'Organisatieportaal',
-    contactEmail: 'organisaties.abb@vlaanderen.be',
     modulePrefix: 'frontend-contact-hub',
     environment,
     rootURL: '/',
@@ -21,6 +19,9 @@ module.exports = function (environment) {
       // when it is created
     },
 
+    appName: 'Organisatieportaal',
+    contactEmail: 'organisaties.abb@vlaanderen.be',
+
     torii: {
       disableRedirectInitializer: true,
       providers: {
@@ -35,6 +36,17 @@ module.exports = function (environment) {
     },
 
     showAppVersionHash: process.env.SHOW_APP_VERSION_HASH === 'true',
+
+    userManual: {
+      general:
+        'https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal',
+      module: {
+        administrativeUnits:
+          'https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/modules/bestuurseenheden',
+        people:
+          'https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/modules/personen',
+      },
+    },
   };
 
   if (environment === 'development') {
