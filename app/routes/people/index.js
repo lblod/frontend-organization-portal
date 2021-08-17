@@ -8,6 +8,9 @@ export default class PeopleIndexRoute extends Route {
   queryParams = {
     page: { refreshModel: true },
     sort: { refreshModel: true },
+    givenName: { replace: true },
+    familyName: { replace: true },
+    organization: { replace: true },
   };
 
   model(params) {
