@@ -4,10 +4,14 @@
   <div class="au-o-region-large au-o-layout">
     <AuHeading class="au-u-margin-bottom">Contact</AuHeading>
     <p class="au-u-margin-bottom">
-      FAQ en andere informatie over de werking van het OrganisatiePortaal kan
-      je terugvinden in onze
-      {{!-- TODO: Add user manual link --}}
-      <a href="" class="au-u-link">handleiding</a>.
+      FAQ en andere informatie over de werking van het OrganisatiePortaal kan je
+      terugvinden in onze
+      <a
+        href={{config "userManual.general"}}
+        class="au-c-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >handleiding</a>.
     </p>
 
     <form class="au-c-form">
@@ -35,9 +39,11 @@
       {{/if}}
     </form>
 
-    <p class="au-u-margin-top">Of neem rechtstreeks contact op via mail
-      <a
-        href="mailto:{{config "contactEmail"}}"
-      >{{config "contactEmail"}}</a>.</p>
+    <p class="au-u-margin-top">
+      Of neem rechtstreeks contact op via mail
+      <a href="mailto:{{config "contactEmail"}}" class="au-c-link">{{config
+          "contactEmail"
+        }}</a>.
+    </p>
   </div>
 </StaticPage>
