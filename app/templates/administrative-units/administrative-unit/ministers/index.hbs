@@ -43,7 +43,9 @@
             {{ministerPosition.function.label}}
           </AuLink>
         </td>
-        <td><AuPill @skin={{"success"}}>Actief</AuPill></td>
+        <td>
+          <PositionStatus @endDate={{minister.agentEndDate}}/>
+        </td>
         <td>
           <AuLink @route="administrative-units.administrative-unit.ministers">
             Bewerk
