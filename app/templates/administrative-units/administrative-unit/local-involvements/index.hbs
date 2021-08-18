@@ -6,17 +6,37 @@
 <AuDataTable @content={{@model.involvements}} @noDataMessage="Geen betrokken lokale besturen" as |t|>
   <t.content as |c|>
     <c.header>
-      <th class="au-c-data-table__header-title">Naam</th>
-      <th class="au-c-data-table__header-title">Type instelling</th>
-      <th class="au-c-data-table__header-title">Type betrokkenheid</th>
-      <th class="au-c-data-table__header-title">Financieel percentage</th>
+      <AuDataTableThSortable
+        @field="administrative-unit.name"
+        @currentSorting={{this.sort}}
+        @label="Naam"
+      />
+      <AuDataTableThSortable
+        @field="administrative-unit.classification.label"
+        @currentSorting={{this.sort}}
+        @label="Type instelling"
+      />
+      <AuDataTableThSortable
+        @field="involvement-type.label"
+        @currentSorting={{this.sort}}
+        @label="Type betrokkenheid"
+      />
+      <AuDataTableThSortable
+        @field="percentage"
+        @currentSorting={{this.sort}}
+        @label="Financieel percentage"
+      />
       <th></th>
     </c.header>
     <c.body as |involvement|>
       <td>{{involvement.administrativeUnit.name}}</td>
       <td>{{involvement.administrativeUnit.classification.label}}</td>
       <td>{{involvement.involvementType.label}}</td>
-      <td>{{involvement.percentage}}%</td>
+      <td>
+        {{#if involvement.percentage}}
+          {{involvement.percentage}}%
+        {{/if}}
+      </td>
       <td>
         <AuLink @route="administrative-units.administrative-unit.local-involvements">Bewerk</AuLink>
       </td>
