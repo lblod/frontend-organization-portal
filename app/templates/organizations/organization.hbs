@@ -1,20 +1,20 @@
-{{page-title this.model.name}}
+{{page-title this.model.representativeBody.name}}
 {{breadcrumb
-  this.model.name
+  this.model.representativeBody.name
   route="organizations.organization"
-  model=this.model.id
+  model=this.model.representativeBody.id
 }}
 
 <SidebarContainer>
   <:sidebar>
-      <div class="au-d-component-block au-c-sidebar">
-        <ul class="au-c-list-navigation">
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink @route="organizations.organization">
-              Kerngegevens
-            </AuNavigationLink>
-          </li>
-        </ul>
+    <div class="au-c-sidebar">
+      <ul class="au-c-list-navigation">
+        <li class="au-c-list-navigation__item">
+          <AuNavigationLink @route="organizations.organization">
+            Kerngegevens
+          </AuNavigationLink>
+        </li>
+      </ul>
     </div>
   </:sidebar>
   <:content>

@@ -2,7 +2,7 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Kerngegevens</:title>
-      <:subtitle>{{@model.name}}</:subtitle>
+      <:subtitle>{{@model.representativeBody.name}}</:subtitle>
     </PageHeader>
 
     <DataCard>
@@ -12,33 +12,36 @@
           <:left as |Item|>
             <Item>
               <:label>Naam</:label>
-              <:content>{{@model.name}}</:content>
+              <:content>{{@model.representativeBody.name}}</:content>
             </Item>
             <Item>
               <:label>Type eredienst</:label>
-              <:content>{{@model.recognizedWorshipType.label}}</:content>
+              <:content
+              >{{@model.representativeBody.recognizedWorshipType.label}}</:content>
             </Item>
           </:left>
           <:right as |Item|>
             <Item>
               <:label>Status</:label>
               <:content>
-                <OrganizationStatus @status={{@model.organizationStatus}} />
+                <OrganizationStatus
+                  @status={{@model.representativeBody.organizationStatus}}
+                />
               </:content>
             </Item>
             {{! TODO: Take the last date from the change events }}
-            {{#if @model.resultedFrom}}
+            {{#if @model.representativeBody.resultedFrom}}
               <Item>
                 <:label></:label>
                 <:content>
                   <AuHelpText @skin="tertiary">Gewijzigd op
                     {{date-format
-                      @model.resultedFrom.firstObject.date
+                      @model.representativeBody.resultedFrom.firstObject.date
                     }}</AuHelpText>
                 </:content>
               </Item>
             {{/if}}
-            {{#each @model.identifiers as |identifier|}}
+            {{#each @model.representativeBody.identifiers as |identifier|}}
               <Item>
                 <:label>{{identifier.idName}}</:label>
                 <:content>{{identifier.structuredIdentifier.localId}}</:content>
@@ -59,14 +62,16 @@
             <Item>
               <:label>Adres</:label>
               <:content>
-                {{@model.primarySite.address.fullAddress}}
+                {{@model.representativeBody.primarySite.address.fullAddress}}
               </:content>
             </Item>
-            {{#if @model.primarySite.contacts.firstObject.telephone}}
+            {{#if
+              @model.representativeBody.primarySite.contacts.firstObject.telephone
+            }}
               <Item>
                 <:label>Telefoonnummer</:label>
                 <:content>
-                  {{@model.primarySite.contacts.firstObject.telephone}}
+                  {{@model.representativeBody.primarySite.contacts.firstObject.telephone}}
                 </:content>
               </Item>
             {{/if}}
@@ -75,19 +80,21 @@
             <Item>
               <:label>Provincie</:label>
               <:content>
-                {{@model.primarySite.address.province}}
+                {{@model.representativeBody.primarySite.address.province}}
               </:content>
             </Item>
-            {{#if @model.primarySite.contacts.firstObject.website}}
+            {{#if
+              @model.representativeBody.primarySite.contacts.firstObject.website
+            }}
               <Item>
                 <:label>Website</:label>
                 <:content>
                   <a
-                    href={{@model.primarySite.contacts.firstObject.website}}
+                    href={{@model.representativeBody.primarySite.contacts.firstObject.website}}
                     class="au-c-link"
                     target="_blank"
                     rel="noopener noreferrer"
-                  >{{@model.primarySite.contacts.firstObject.website}}</a>
+                  >{{@model.representativeBody.primarySite.contacts.firstObject.website}}</a>
                 </:content>
               </Item>
             {{/if}}
@@ -96,8 +103,7 @@
       </:card>
     </DataCard>
 
-
-    {{#if @model.associatedOrganizations}}
+    {{#if @model.representativeBody.associatedOrganizations}}
       <DataCard>
         <:title>
           Gerelateerde organisaties
@@ -105,7 +111,10 @@
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              {{#each @model.associatedOrganizations as |organization|}}
+              {{#each
+                @model.representativeBody.associatedOrganizations
+                as |organization|
+              }}
                 <Item>
                   <:label>{{organization.classification.label}}</:label>
                   <:content>
@@ -117,7 +126,7 @@
                     </AuLink>
                   </:content>
                 </Item>
-            {{/each}}
+              {{/each}}
             </:left>
           </Card.Columns>
         </:card>
