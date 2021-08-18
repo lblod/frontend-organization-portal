@@ -76,6 +76,9 @@ Router.map(function () {
       this.route('new', { path: '/nieuwe-bestuurseenheid' });
     }
   );
+  this.route('organizations', { path: '/organisaties' }, function () {
+    this.route('organization', { path: '/:id/' }, function () {});
+  });
   this.route('contact');
   this.route('route-not-found', {
     path: '/*wildcard',

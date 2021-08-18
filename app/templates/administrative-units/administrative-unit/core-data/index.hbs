@@ -199,8 +199,8 @@
                 <:label>Representatief orgaan</:label>
                 <:content>
                   <AuLink
-                    @route="administrative-units.administrative-unit"
-                    {{!-- @model={{@model.administrativeUnit.isAssociatedWith.id}} --}}
+                    @route="organizations.organization"
+                    @model={{@model.administrativeUnit.isAssociatedWith.id}}
                   >
                     {{@model.administrativeUnit.isAssociatedWith.name}}
                   </AuLink>

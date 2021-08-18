@@ -1,0 +1,136 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <PageHeader>
+      <:title>Kerngegevens</:title>
+      <:subtitle>{{@model.representativeBody.name}}</:subtitle>
+    </PageHeader>
+
+    <DataCard>
+      <:title>Organisatie</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Naam</:label>
+              <:content>{{@model.representativeBody.name}}</:content>
+            </Item>
+            <Item>
+              <:label>Type eredienst</:label>
+              <:content
+              >{{@model.representativeBody.recognizedWorshipType.label}}</:content>
+            </Item>
+          </:left>
+          <:right as |Item|>
+            <Item>
+              <:label>Status</:label>
+              <:content>
+                <OrganizationStatus
+                  @status={{@model.representativeBody.organizationStatus}}
+                />
+              </:content>
+            </Item>
+            {{! TODO: Take the last date from the change events }}
+            {{#if @model.representativeBody.resultedFrom}}
+              <Item>
+                <:label></:label>
+                <:content>
+                  <AuHelpText @skin="tertiary">Gewijzigd op
+                    {{date-format
+                      @model.representativeBody.resultedFrom.firstObject.date
+                    }}</AuHelpText>
+                </:content>
+              </Item>
+            {{/if}}
+            {{#each @model.representativeBody.identifiers as |identifier|}}
+              <Item>
+                <:label>{{identifier.idName}}</:label>
+                <:content>{{identifier.structuredIdentifier.localId}}</:content>
+              </Item>
+            {{/each}}
+          </:right>
+        </Card.Columns>
+      </:card>
+    </DataCard>
+
+    <DataCard>
+      <:title>
+        Primaire contactgegevens
+      </:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Adres</:label>
+              <:content>
+                {{@model.representativeBody.primarySite.address.fullAddress}}
+              </:content>
+            </Item>
+            {{#if
+              @model.representativeBody.primarySite.contacts.firstObject.telephone
+            }}
+              <Item>
+                <:label>Telefoonnummer</:label>
+                <:content>
+                  {{@model.representativeBody.primarySite.contacts.firstObject.telephone}}
+                </:content>
+              </Item>
+            {{/if}}
+          </:left>
+          <:right as |Item|>
+            <Item>
+              <:label>Provincie</:label>
+              <:content>
+                {{@model.representativeBody.primarySite.address.province}}
+              </:content>
+            </Item>
+            {{#if
+              @model.representativeBody.primarySite.contacts.firstObject.website
+            }}
+              <Item>
+                <:label>Website</:label>
+                <:content>
+                  <a
+                    href={{@model.representativeBody.primarySite.contacts.firstObject.website}}
+                    class="au-c-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >{{@model.representativeBody.primarySite.contacts.firstObject.website}}</a>
+                </:content>
+              </Item>
+            {{/if}}
+          </:right>
+        </Card.Columns>
+      </:card>
+    </DataCard>
+
+    {{#if @model.representativeBody.associatedOrganizations}}
+      <DataCard>
+        <:title>
+          Gerelateerde organisaties
+        </:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              {{#each
+                @model.representativeBody.associatedOrganizations
+                as |organization|
+              }}
+                <Item>
+                  <:label>{{organization.classification.label}}</:label>
+                  <:content>
+                    <AuLink
+                      @route="administrative-units.administrative-unit"
+                      @model={{organization.id}}
+                    >
+                      {{organization.name}}
+                    </AuLink>
+                  </:content>
+                </Item>
+              {{/each}}
+            </:left>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+    {{/if}}
+  </div>
+</div>

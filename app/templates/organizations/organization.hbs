@@ -1,0 +1,23 @@
+{{page-title this.model.representativeBody.name}}
+{{breadcrumb
+  this.model.representativeBody.name
+  route="organizations.organization"
+  model=this.model.representativeBody.id
+}}
+
+<SidebarContainer>
+  <:sidebar>
+    <div class="au-c-sidebar">
+      <ul class="au-c-list-navigation">
+        <li class="au-c-list-navigation__item">
+          <AuNavigationLink @route="organizations.organization">
+            Kerngegevens
+          </AuNavigationLink>
+        </li>
+      </ul>
+    </div>
+  </:sidebar>
+  <:content>
+    {{outlet}}
+  </:content>
+</SidebarContainer>
