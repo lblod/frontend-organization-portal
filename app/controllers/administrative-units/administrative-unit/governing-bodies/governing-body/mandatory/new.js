@@ -54,7 +54,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     mandatory.governingAlias = this.targetPerson;
     mandatory.contacts.pushObjects([contact, contactMobile]);
     mandatory.mandate = mandate;
-    mandatory.save();
+    yield mandatory.save();
 
     this.router.transitionTo(
       'administrative-units.administrative-unit.governing-bodies.governing-body'
