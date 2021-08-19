@@ -17,7 +17,11 @@ const OTHER_ROLES = [
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyIndexRoute extends Route {
   @service store;
 
-  async model() {
+  queryParams = {
+    sort: { refreshModel: true },
+  };
+
+  async model({ sort }) {
     let { administrativeUnit, governingBodyClassification, governingBody } =
       this.modelFor(
         'administrative-units.administrative-unit.governing-bodies.governing-body'
@@ -36,6 +40,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         'mandate.governing-body',
         'mandate.role-board',
       ].join(),
+      sort,
     };
 
     let memberMandatories = await this.store.query('worship-mandatory', {

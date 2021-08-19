@@ -81,9 +81,21 @@
         >
           <t.content as |c|>
             <c.header>
-              <th class="au-c-data-table__header-title">Voornaam</th>
-              <th class="au-c-data-table__header-title">Achternaam</th>
-              <th class="au-c-data-table__header-title">Mandaat</th>
+              <AuDataTableThSortable
+                @field="governing-alias.given-name"
+                @currentSorting={{this.sort}}
+                @label="Voornaam"
+              />
+              <AuDataTableThSortable
+                @field="governing-alias.family-name"
+                @currentSorting={{this.sort}}
+                @label="Achternaam"
+              />
+              <AuDataTableThSortable
+                @field="mandate.role-board.label"
+                @currentSorting={{this.sort}}
+                @label="Mandaat"
+              />
               <th class="au-c-data-table__header-title">Start mandaat</th>
               <th class="au-c-data-table__header-title">Einde mandaat</th>
               <th></th>
@@ -167,9 +179,21 @@
       >
         <t.content as |c|>
           <c.header>
-            <th class="au-c-data-table__header-title">Voornaam</th>
-            <th class="au-c-data-table__header-title">Achternaam</th>
-            <th class="au-c-data-table__header-title">Mandaat</th>
+            <AuDataTableThSortable
+              @field="governing-alias.given-name"
+              @currentSorting={{this.sort}}
+              @label="Voornaam"
+            />
+            <AuDataTableThSortable
+              @field="governing-alias.family-name"
+              @currentSorting={{this.sort}}
+              @label="Achternaam"
+            />
+            <AuDataTableThSortable
+              @field="mandate.role-board.label"
+              @currentSorting={{this.sort}}
+              @label="Mandaat"
+            />
             <th class="au-c-data-table__header-title">Start mandaat</th>
             <th class="au-c-data-table__header-title">Einde mandaat</th>
             <th></th>
