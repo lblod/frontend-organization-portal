@@ -14,31 +14,27 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @service store;
 
   @tracked targetPerson = null;
+  @tracked selectedRole = null;
 
   get isSelectingTargetPerson() {
     return !this.targetPerson;
   }
 
   get showHalfElectionTypeSelect() {
-    return (
-      this.model.mandate.roleBoard.get('id') === MANDATORY_ROLE.WORSHIP_MEMBER
-    );
+    return this.selectedRole?.id === MANDATORY_ROLE.WORSHIP_MEMBER;
   }
 
   @action
-  handleMandateRoleSelect(role) {
-    this.model.mandate.roleBoard = role;
-
-    if (role !== MANDATORY_ROLE.WORSHIP_MEMBER) {
-      this.model.mandatory.typeHalf = undefined;
-    }
+  async handleMandateRoleSelect(role) {
+    this.model.mandatory.typeHalf = undefined;
+    this.selectedRole = role;
   }
 
   @dropTask
   *createMandatoryPositionTask(event) {
     event.preventDefault();
 
-    let { mandatory, mandate, governingBody, contact, contactMobile, address } =
+    let { mandatory, governingBody, contact, contactMobile, address } =
       this.model;
 
     address.fullAddress = combineFullAddress(address);
@@ -48,8 +44,15 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     yield contact.save();
     yield contactMobile.save();
 
-    mandate.governingBody = governingBody;
-    yield mandate.save();
+    let mandates = yield governingBody.mandates;
+    let mandate = findExistingMandateByRole(mandates, this.selectedRole);
+
+    if (!mandate) {
+      mandate = this.store.createRecord('mandate');
+      mandate.roleBoard = this.selectedRole;
+      mandate.governingBody = governingBody;
+      yield mandate.save();
+    }
 
     mandatory.governingAlias = this.targetPerson;
     mandatory.contacts.pushObjects([contact, contactMobile]);
@@ -63,14 +66,20 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
   reset() {
     this.targetPerson = null;
+    this.selectedRole = null;
     this.removeUnsavedRecords();
   }
 
   removeUnsavedRecords() {
     this.model.mandatory.rollbackAttributes();
-    this.model.mandate.rollbackAttributes();
     this.model.contact.rollbackAttributes();
     this.model.contactMobile.rollbackAttributes();
     this.model.address.rollbackAttributes();
   }
+}
+
+function findExistingMandateByRole(mandates, role) {
+  return mandates.find((mandate) => {
+    return mandate.roleBoard.get('id') === role.id;
+  });
 }
