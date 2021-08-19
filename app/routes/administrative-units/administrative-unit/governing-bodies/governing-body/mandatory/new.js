@@ -15,7 +15,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       ),
       governingBody,
       mandatory: this.store.createRecord('worship-mandatory'),
-      mandate: this.store.createRecord('mandate'),
       contact: this.store.createRecord('contact-point'),
       contactMobile: this.store.createRecord('contact-point'),
       address: this.store.createRecord('address'),
