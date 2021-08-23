@@ -1,9 +1,21 @@
 <PageHeader class="au-o-box">
   <:title>Betrokken lokale besturen</:title>
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+  <:action>
+    <AuLink
+      @route="administrative-units.administrative-unit.local-involvements.edit"
+      @skin="button"
+    >
+      Bewerk
+    </AuLink>
+  </:action>
 </PageHeader>
 
-<AuDataTable @content={{@model.involvements}} @noDataMessage="Geen betrokken lokale besturen" as |t|>
+<AuDataTable
+  @content={{@model.involvements}}
+  @noDataMessage="Geen betrokken lokale besturen"
+  as |t|
+>
   <t.content as |c|>
     <c.header>
       <AuDataTableThSortable
@@ -38,7 +50,9 @@
         {{/if}}
       </td>
       <td>
-        <AuLink @route="administrative-units.administrative-unit.local-involvements">Bewerk</AuLink>
+        <AuLink
+          @route="administrative-units.administrative-unit.local-involvements"
+        >Bewerk</AuLink>
       </td>
     </c.body>
   </t.content>

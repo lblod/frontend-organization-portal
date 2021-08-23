@@ -1,0 +1,71 @@
+{{page-title "Bewerk"}}
+
+<PageHeader class="au-o-box">
+  <:title>Bewerk betrokken lokale besturen</:title>
+  <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+  <:action>
+    <AuButton
+      {{! TODO Disable the button when the total financing percentage is < 100% }}
+      @disabled={{true}}
+      form="local-involvements-edit-creation"
+      type="submit"
+    >
+      Opslaan
+    </AuButton>
+    <AuLink
+      @route="administrative-units.administrative-unit.local-involvements"
+      @skin="button-secondary"
+    >
+      Annuleer
+    </AuLink>
+  </:action>
+</PageHeader>
+
+<form
+  id="local-involvements-edit-creation"
+  {{on "submit" (perform this.save)}}
+>
+  <AuDataTable
+    @content={{@model.involvements}}
+    @noDataMessage="Geen betrokken lokale besturen"
+    as |t|
+  >
+    <t.content as |c|>
+      <c.header>
+        <th>Naam</th>
+        <th>Type instelling</th>
+        <th>Type betrokkenheid</th>
+        <th>Financieel percentage</th>
+        <th></th>
+      </c.header>
+      <c.body as |involvement|>
+        <td>{{involvement.administrativeUnit.name}}</td>
+        <td>{{involvement.administrativeUnit.classification.label}}</td>
+        <td>{{involvement.involvementType.label}}</td>
+        <td>
+          {{!-- TODO disable the input when the involvement type isn't financial --}}
+          {{#let (unique-id) as |id|}}
+            <label class="au-u-hidden-visually" for={{id}}>
+              Financieel percentage
+            </label>
+            <AuInput @value={{involvement.percentage}} id={{id}} />
+          {{/let}}
+        </td>
+        <td>
+        </td>
+      </c.body>
+    </t.content>
+  </AuDataTable>
+</form>
+
+<div class="au-o-box au-o-box--small">
+  <AuButton
+    @skin="secondary"
+    @width="block"
+    @icon="add"
+    @iconAlignment="left"
+    {{on "click" this.addNewLocalInvolvement}}
+  >
+    Voeg nieuw betrokken lokaal bestuur toe
+  </AuButton>
+</div>
