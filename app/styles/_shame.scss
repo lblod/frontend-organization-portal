@@ -39,3 +39,22 @@ table.dataTable tbody th {
     box-shadow: inset 0 -.2rem 0 0 $au-gray-300;
   }
 }
+
+// Inline list for radio buttons
+.au-c-list-inline {
+  display: flex;
+  flex-direction: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: $au-unit-tiny;
+  margin-bottom: $au-unit-tiny;
+}
+
+.au-c-list-inline__item {
+  display: flex;
+  align-items: center;
+
+  & + & {
+    margin-left: $au-unit;
+  }
+}
