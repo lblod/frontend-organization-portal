@@ -10,10 +10,17 @@
         {{yield to="action"}}
       </AuToolbarGroup>
     </AuToolbar>
-  {{else}}
-    <AuHeading>
-      {{yield to="title"}}
-    </AuHeading>
+  {{else if (has-block "alert")}}
+    <AuToolbar>
+      <AuToolbarGroup>
+        <AuHeading>
+          {{yield to="title"}}
+        </AuHeading>
+      </AuToolbarGroup>
+      <AuToolbarGroup>
+        {{yield to="alert"}}
+      </AuToolbarGroup>
+    </AuToolbar>
   {{/if}}
   {{#if (has-block "subtitle")}}
     <AuHeading @level="2" @skin="3" class="au-u-margin-top-tiny">
