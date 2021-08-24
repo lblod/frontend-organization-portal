@@ -21,26 +21,24 @@
     <DataCard>
       <:title>Persoonlijke gegevens</:title>
       <:card as |Card|>
-        <Card.Grid as |Item|>
-          <Item>
-            <:label>Voornaam</:label>
-            <:content>{{@model.person.givenName}}</:content>
-          </Item>
-        </Card.Grid>
-        <Card.Grid as |Item|>
-          <Item>
-            <:label>Achternaam</:label>
-            <:content>{{@model.person.familyName}}</:content>
-          </Item>
-        </Card.Grid>
-        <Card.Grid as |Item|>
-          {{#if @model.person.firstNameUsed}}
+        <Card.Columns>
+          <:left as |Item|>
             <Item>
-              <:label>Roepnaam</:label>
-              <:content>{{@model.person.firstNameUsed}}</:content>
+              <:label>Voornaam</:label>
+              <:content>{{@model.person.givenName}}</:content>
             </Item>
-          {{/if}}
-        </Card.Grid>
+            <Item>
+              <:label>Achternaam</:label>
+              <:content>{{@model.person.familyName}}</:content>
+            </Item>
+            {{#if @model.person.firstNameUsed}}
+              <Item>
+                <:label>Roepnaam</:label>
+                <:content>{{@model.person.firstNameUsed}}</:content>
+              </Item>
+            {{/if}}
+          </:left>
+        </Card.Columns>
       </:card>
     </DataCard>
 
@@ -49,55 +47,57 @@
         {{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.classification.label}}
       </:title>
       <:card as |Card|>
-        <Card.Grid as |Item|>
-          <Item>
-            <:label>Organisatie</:label>
-            <:content>
-              <AuLink
-                @model={{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.id}}
-                @route="administrative-units.administrative-unit"
-              >
-                {{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}
-              </AuLink>
-            </:content>
-          </Item>
-        </Card.Grid>
-        <Card.Grid as |Item|>
-          {{#if
-            @model.person.mandatories.firstObject.contacts.firstObject.email
-          }}
+        <Card.Columns>
+          <:left as |Item|>
             <Item>
-              <:label>Email</:label>
+              <:label>Organisatie</:label>
               <:content>
-                {{@model.person.mandatories.firstObject.contacts.firstObject.email}}
+                <AuLink
+                  @model={{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.id}}
+                  @route="administrative-units.administrative-unit"
+                >
+                  {{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}
+                </AuLink>
               </:content>
             </Item>
-          {{/if}}
-          {{#if
-            @model.person.mandatories.firstObject.contacts.firstObject.telephone
-          }}
-            <Item>
-              <:label>Telefoonnummer</:label>
-              <:content>
-                {{@model.person.mandatories.firstObject.contacts.firstObject.telephone}}
-              </:content>
-            </Item>
-          {{/if}}
-          {{#if
-            @model.person.mandatories.firstObject.contacts.firstObject.contactAddress.fullAddress
-          }}
-            <Item>
-              <:label>Adres</:label>
-              <:content>
-                {{@model.person.mandatories.firstObject.contacts.firstObject.contactAddress.fullAddress}}
-              </:content>
-            </Item>
-          {{/if}}
-          {{!           <Item>
-            <:label>GSM nummer</:label>
-            <:content></:content>
-          </Item> }}
-        </Card.Grid>
+            {{#if
+              @model.person.mandatories.firstObject.contacts.firstObject.email
+            }}
+              <Item>
+                <:label>Email</:label>
+                <:content>
+                  {{@model.person.mandatories.firstObject.contacts.firstObject.email}}
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if
+              @model.person.mandatories.firstObject.contacts.firstObject.contactAddress.fullAddress
+            }}
+              <Item>
+                <:label>Adres</:label>
+                <:content>
+                  {{@model.person.mandatories.firstObject.contacts.firstObject.contactAddress.fullAddress}}
+                </:content>
+              </Item>
+            {{/if}}
+          </:left>
+          <:right as |Item|>
+            {{#if
+              @model.person.mandatories.firstObject.contacts.firstObject.telephone
+            }}
+              <Item>
+                <:label>Telefoonnummer</:label>
+                <:content>
+                  {{@model.person.mandatories.firstObject.contacts.firstObject.telephone}}
+                </:content>
+              </Item>
+            {{/if}}
+            {{!-- <Item>
+              <:label>GSM nummer</:label>
+              <:content />
+            </Item> --}}
+          </:right>
+        </Card.Columns>
       </:card>
     </DataCard>
   </div>

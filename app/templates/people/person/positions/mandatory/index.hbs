@@ -33,32 +33,36 @@
     <DataCard>
       <:title>Positie</:title>
       <:card as |Card|>
-        <Card.Grid as |Item|>
-          <Item>
-            <:label>Type</:label>
-            <:content>Mandaat</:content>
-          </Item>
-          <Item>
-            <:label>Naam eredienst</:label>
-            <:content>
-              {{#let
-                @model.mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit
-                as |administrativeUnit|
-              }}
-                <AuLink
-                  @route="administrative-units.administrative-unit"
-                  @model={{administrativeUnit.id}}
-                >
-                  {{administrativeUnit.name}}
-                </AuLink>
-              {{/let}}
-            </:content>
-          </Item>
-          <Item>
-            <:label>Bestuursfunctie</:label>
-            <:content>{{@model.mandatory.mandate.roleBoard.label}}</:content>
-          </Item>
-        </Card.Grid>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Type</:label>
+              <:content>Mandaat</:content>
+            </Item>
+            <Item>
+              <:label>Bestuursfunctie</:label>
+              <:content>{{@model.mandatory.mandate.roleBoard.label}}</:content>
+            </Item>
+          </:left>
+          <:right as |Item|>
+            <Item>
+              <:label>Naam eredienst</:label>
+              <:content>
+                {{#let
+                  @model.mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit
+                  as |administrativeUnit|
+                }}
+                  <AuLink
+                    @route="administrative-units.administrative-unit"
+                    @model={{administrativeUnit.id}}
+                  >
+                    {{administrativeUnit.name}}
+                  </AuLink>
+                {{/let}}
+              </:content>
+            </Item>
+          </:right>
+        </Card.Columns>
       </:card>
     </DataCard>
 
@@ -66,34 +70,38 @@
       <DataCard>
         <:title>Primaire contactgegevens</:title>
         <:card as |Card|>
-          <Card.Grid as |Item|>
-            {{#if @model.mandatory.contacts.firstObject.email}}
-              <Item>
-                <:label>Email</:label>
-                <:content>
-                  {{@model.mandatory.contacts.firstObject.email}}
-                </:content>
-              </Item>
-            {{/if}}
-            {{#if @model.mandatory.contacts.firstObject.telephone}}
-              <Item>
-                <:label>Vaste telefoonnummer</:label>
-                <:content>
-                  {{@model.mandatory.contacts.firstObject.telephone}}
-                </:content>
-              </Item>
-            {{/if}}
-            {{#if
-              @model.mandatory.contacts.firstObject.contactAddress.fullAddress
-            }}
-              <Item>
-                <:label>Adres</:label>
-                <:content>
-                  {{@model.mandatory.contacts.firstObject.contactAddress.fullAddress}}
-                </:content>
-              </Item>
-            {{/if}}
-          </Card.Grid>
+          <Card.Columns>
+            <:left as |Item|>
+              {{#if @model.mandatory.contacts.firstObject.email}}
+                <Item>
+                  <:label>Email</:label>
+                  <:content>
+                    {{@model.mandatory.contacts.firstObject.email}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if
+                @model.mandatory.contacts.firstObject.contactAddress.fullAddress
+              }}
+                <Item>
+                  <:label>Adres</:label>
+                  <:content>
+                    {{@model.mandatory.contacts.firstObject.contactAddress.fullAddress}}
+                  </:content>
+                </Item>
+              {{/if}}
+            </:left>
+            <:right as |Item|>
+              {{#if @model.mandatory.contacts.firstObject.telephone}}
+                <Item>
+                  <:label>Vaste telefoonnummer</:label>
+                  <:content>
+                    {{@model.mandatory.contacts.firstObject.telephone}}
+                  </:content>
+                </Item>
+              {{/if}}
+            </:right>
+          </Card.Columns>
         </:card>
       </DataCard>
     {{/if}}
@@ -101,48 +109,52 @@
     <DataCard>
       <:title>Aanstelling</:title>
       <:card as |Card|>
-        <Card.Grid as |Item|>
-          {{#if @model.mandatory.startDate}}
-            <Item>
-              <:label>Start mandaat</:label>
-              <:content>{{date-format @model.mandatory.startDate}}</:content>
-            </Item>
-          {{/if}}
-          {{#if @model.mandatory.mandate.governingBody.period}}
-            <Item>
-              <:label>Bestuursperiode</:label>
-              <:content>
-                {{@model.mandatory.mandate.governingBody.period}}
-              </:content>
-            </Item>
-          {{/if}}
-          {{#if @model.mandatory.expectedEndDate}}
-            <Item>
-              <:label>Geplande einddatum</:label>
-              <:content>
-                {{date-format @model.mandatory.expectedEndDate}}
-              </:content>
-            </Item>
-          {{/if}}
-          {{#if @model.mandatory.typeHalf.label}}
-            <Item>
-              <:label>Verkozen</:label>
-              <:content>{{@model.mandatory.typeHalf.label}}</:content>
-            </Item>
-          {{/if}}
-          {{#if @model.mandatory.endDate}}
-            <Item>
-              <:label>Einddatum</:label>
-              <:content>{{date-format @model.mandatory.endDate}}</:content>
-            </Item>
-          {{/if}}
-          {{#if @model.mandatory.reasonStopped}}
-            <Item>
-              <:label>Stopzetting</:label>
-              <:content>{{@model.mandatory.reasonStopped}}</:content>
-            </Item>
-          {{/if}}
-        </Card.Grid>
+        <Card.Columns>
+          <:left as |Item|>
+            {{#if @model.mandatory.startDate}}
+              <Item>
+                <:label>Start mandaat</:label>
+                <:content>{{date-format @model.mandatory.startDate}}</:content>
+              </Item>
+            {{/if}}
+            {{#if @model.mandatory.expectedEndDate}}
+              <Item>
+                <:label>Geplande einddatum</:label>
+                <:content>
+                  {{date-format @model.mandatory.expectedEndDate}}
+                </:content>
+              </Item>
+            {{/if}}
+          </:left>
+          <:right as |Item|>
+            {{#if @model.mandatory.mandate.governingBody.period}}
+              <Item>
+                <:label>Bestuursperiode</:label>
+                <:content>
+                  {{@model.mandatory.mandate.governingBody.period}}
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if @model.mandatory.typeHalf.label}}
+              <Item>
+                <:label>Verkozen</:label>
+                <:content>{{@model.mandatory.typeHalf.label}}</:content>
+              </Item>
+            {{/if}}
+            {{#if @model.mandatory.endDate}}
+              <Item>
+                <:label>Einddatum</:label>
+                <:content>{{date-format @model.mandatory.endDate}}</:content>
+              </Item>
+            {{/if}}
+            {{#if @model.mandatory.reasonStopped}}
+              <Item>
+                <:label>Stopzetting</:label>
+                <:content>{{@model.mandatory.reasonStopped}}</:content>
+              </Item>
+            {{/if}}
+          </:right>
+        </Card.Columns>
       </:card>
     </DataCard>
   </div>

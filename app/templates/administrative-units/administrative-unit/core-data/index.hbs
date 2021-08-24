@@ -18,88 +18,78 @@
     <DataCard>
       <:title>Bestuurseenheid</:title>
       <:card as |Card|>
-        <Card.Grid as |Item|>
-          <Item>
-            <:label>Naam eredienst</:label>
-            <:content>{{@model.administrativeUnit.name}}</:content>
-          </Item>
-          <Item>
-            <:label>Status</:label>
-            <:content>
-              <OrganizationStatus
-                @status={{@model.administrativeUnit.organizationStatus}}
-              />
-            </:content>
-          </Item>
-        </Card.Grid>
-        <Card.Grid as |Item|>
-          <Item>
-            <:label>Type bestuur</:label>
-            <:content>
-              {{@model.administrativeUnit.classification.label}}
-            </:content>
-          </Item>
-          {{!-- TODO: Take the last date from the change events --}}
-          {{#if @model.administrativeUnit.resultedFrom}}
+        <Card.Columns>
+          <:left as |Item|>
             <Item>
-              <:label> </:label>
+              <:label>Naam</:label>
+              <:content>{{@model.administrativeUnit.name}}</:content>
+            </Item>
+            <Item>
+              <:label>Type bestuur</:label>
               <:content>
-                <AuHelpText @skin="tertiary">Gewijzigd op
-                  {{date-format
-                    @model.administrativeUnit.resultedFrom.firstObject.date
-                  }}</AuHelpText>
+                {{@model.administrativeUnit.classification.label}}
               </:content>
             </Item>
-          {{/if}}
-        </Card.Grid>
-        <Card.Grid as |Item|>
-          <Item>
-            <:label>Soort eredienst</:label>
-            <:content
-            >{{@model.administrativeUnit.recognizedWorshipType.label}}</:content>
-          </Item>
-        </Card.Grid>
-
-        {{#if @model.administrativeUnit.denomination}}
-          <Card.Grid as |Item|>
             <Item>
-              <:label>Strekking</:label>
-              <:content>{{@model.administrativeUnit.denomination}}</:content>
-            </Item>
-          </Card.Grid>
-        {{/if}}
-
-        {{#if
-          (eq @model.administrativeUnit.constructor.modelName "worship-service")
-        }}
-          <Card.Grid as |Item|>
-            <Item>
-              <:label>Grensoverschrijdend</:label>
+              <:label>Soort eredienst</:label>
               <:content
-              >{{@model.administrativeUnit.crossBorderNominal}}</:content>
+              >{{@model.administrativeUnit.recognizedWorshipType.label}}</:content>
             </Item>
-          </Card.Grid>
-        {{/if}}
-
-        <Card.Grid as |Item|>
-          {{#if @model.administrativeUnit.scope.label}}
+            {{#if @model.administrativeUnit.denomination}}
+              <Item>
+                <:label>Strekking</:label>
+                <:content>{{@model.administrativeUnit.denomination}}</:content>
+              </Item>
+            {{/if}}
+            {{#if
+              (eq
+                @model.administrativeUnit.constructor.modelName
+                "worship-service"
+              )
+            }}
+              <Item>
+                <:label>Grensoverschrijdend</:label>
+                <:content>
+                  {{@model.administrativeUnit.crossBorderNominal}}
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if @model.administrativeUnit.scope.label}}
+              <Item>
+                <:label>Werkingsgebied</:label>
+                <:content>{{@model.administrativeUnit.scope.label}}</:content>
+              </Item>
+            {{/if}}
+          </:left>
+          <:right as |Item|>
             <Item>
-              <:label>Werkingsgebied</:label>
-              <:content>{{@model.administrativeUnit.scope.label}}</:content>
+              <:label>Status</:label>
+              <:content>
+                <OrganizationStatus
+                  @status={{@model.administrativeUnit.organizationStatus}}
+                />
+              </:content>
             </Item>
-          {{/if}}
-          {{#each @model.administrativeUnit.identifiers as |identifier|}}
-            <Item>
-              <:label>{{identifier.idName}}</:label>
-              <:content>{{identifier.structuredIdentifier.localId}}</:content>
-            </Item>
-            {{!-- Force to have only right column --}}
-            <Item>
-              <:label></:label>
-              <:content></:content>
-            </Item>
-          {{/each}}
-        </Card.Grid>
+            {{! TODO: Take the last date from the change events }}
+            {{#if @model.administrativeUnit.resultedFrom}}
+              <Item>
+                <:label></:label>
+                <:content>
+                  <AuHelpText @skin="tertiary">Gewijzigd op
+                    {{date-format
+                      @model.administrativeUnit.resultedFrom.firstObject.date
+                    }}</AuHelpText>
+                </:content>
+              </Item>
+            {{/if}}
+            {{#each @model.administrativeUnit.identifiers as |identifier|}}
+              <Item>
+                <:label>{{identifier.idName}}</:label>
+                <:content>{{identifier.structuredIdentifier.localId}}</:content>
+              </Item>
+            {{/each}}
+          </:right>
+        </Card.Columns>
       </:card>
     </DataCard>
 
@@ -108,45 +98,49 @@
         Primaire contactgegevens
       </:title>
       <:card as |Card|>
-        <Card.Grid as |Item|>
-          <Item>
-            <:label>Adres</:label>
-            <:content>
-              {{@model.administrativeUnit.primarySite.address.fullAddress}}
-            </:content>
-          </Item>
-          <Item>
-            <:label>Provincie</:label>
-            <:content>
-              {{@model.administrativeUnit.primarySite.address.province}}
-            </:content>
-          </Item>
-          {{#if
-            @model.administrativeUnit.primarySite.contacts.firstObject.telephone
-          }}
+        <Card.Columns>
+          <:left as |Item|>
             <Item>
-              <:label>Telefoonnummer</:label>
+              <:label>Adres</:label>
               <:content>
-                {{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}
+                {{@model.administrativeUnit.primarySite.address.fullAddress}}
               </:content>
             </Item>
-          {{/if}}
-          {{#if
-            @model.administrativeUnit.primarySite.contacts.firstObject.website
-          }}
+            {{#if
+              @model.administrativeUnit.primarySite.contacts.firstObject.telephone
+            }}
+              <Item>
+                <:label>Telefoonnummer</:label>
+                <:content>
+                  {{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}
+                </:content>
+              </Item>
+            {{/if}}
+          </:left>
+          <:right as |Item|>
             <Item>
-              <:label>Website</:label>
+              <:label>Provincie</:label>
               <:content>
-                <a
-                  href={{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
-                  class="au-c-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >{{@model.administrativeUnit.primarySite.contacts.firstObject.website}}</a>
+                {{@model.administrativeUnit.primarySite.address.province}}
               </:content>
             </Item>
-          {{/if}}
-        </Card.Grid>
+            {{#if
+              @model.administrativeUnit.primarySite.contacts.firstObject.website
+            }}
+              <Item>
+                <:label>Website</:label>
+                <:content>
+                  <a
+                    href={{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
+                    class="au-c-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >{{@model.administrativeUnit.primarySite.contacts.firstObject.website}}</a>
+                </:content>
+              </Item>
+            {{/if}}
+          </:right>
+        </Card.Columns>
       </:card>
     </DataCard>
 
@@ -161,53 +155,54 @@
           Gerelateerde organisaties
         </:title>
         <:card as |Card|>
-          {{#if @model.administrativeUnit.isSubOrganizationOf.name}}
-            <Card.Grid as |Item|>
-              <Item>
-                <:label>Centraal bestuur</:label>
-                <:content>
-                  <AuLink
-                    @route="administrative-units.administrative-unit"
-                    @model={{@model.administrativeUnit.isSubOrganizationOf.id}}
-                  >
-                    {{@model.administrativeUnit.isSubOrganizationOf.name}}
-                  </AuLink>
-                </:content>
-              </Item>
-            </Card.Grid>
-          {{/if}}
-          {{#if @model.administrativeUnit.subOrganizations}}
-            {{#each @model.administrativeUnit.subOrganizations as |worship|}}
-              <Card.Grid as |Item|>
+          <Card.Columns>
+            <:left as |Item|>
+              {{#if @model.administrativeUnit.isSubOrganizationOf.name}}
                 <Item>
-                  <:label>Bestuur van de eredienst</:label>
+                  <:label>Centraal bestuur</:label>
                   <:content>
                     <AuLink
                       @route="administrative-units.administrative-unit"
-                      @model={{worship.id}}
+                      @model={{@model.administrativeUnit.isSubOrganizationOf.id}}
                     >
-                      {{worship.name}}
+                      {{@model.administrativeUnit.isSubOrganizationOf.name}}
                     </AuLink>
                   </:content>
                 </Item>
-              </Card.Grid>
-            {{/each}}
-          {{/if}}
-          {{#if @model.administrativeUnit.isAssociatedWith.name}}
-            <Card.Grid as |Item|>
-              <Item>
-                <:label>Representatief orgaan</:label>
-                <:content>
-                  <AuLink
-                    @route="organizations.organization"
-                    @model={{@model.administrativeUnit.isAssociatedWith.id}}
-                  >
-                    {{@model.administrativeUnit.isAssociatedWith.name}}
-                  </AuLink>
-                </:content>
-              </Item>
-            </Card.Grid>
-          {{/if}}
+              {{/if}}
+              {{#if @model.administrativeUnit.subOrganizations}}
+                {{#each
+                  @model.administrativeUnit.subOrganizations
+                  as |worship|
+                }}
+                  <Item>
+                    <:label>Bestuur van de eredienst</:label>
+                    <:content>
+                      <AuLink
+                        @route="administrative-units.administrative-unit"
+                        @model={{worship.id}}
+                      >
+                        {{worship.name}}
+                      </AuLink>
+                    </:content>
+                  </Item>
+                {{/each}}
+              {{/if}}
+              {{#if @model.administrativeUnit.isAssociatedWith.name}}
+                <Item>
+                  <:label>Representatief orgaan</:label>
+                  <:content>
+                    <AuLink
+                      @route="organizations.organization"
+                      @model={{@model.administrativeUnit.isAssociatedWith.id}}
+                    >
+                      {{@model.administrativeUnit.isAssociatedWith.name}}
+                    </AuLink>
+                  </:content>
+                </Item>
+              {{/if}}
+            </:left>
+          </Card.Columns>
         </:card>
       </DataCard>
     {{/if}}
