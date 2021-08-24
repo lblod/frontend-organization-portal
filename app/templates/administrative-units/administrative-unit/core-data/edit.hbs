@@ -14,299 +14,298 @@
         <EditCard>
           <:title>Bestuurseenheid</:title>
           <:card as |Card|>
-            <Card.Grid as |Item|>
-              <Item @labelFor="worship-service-name">
-                <:label>Naam eredienst</:label>
-                <:content>
-                  <AuInput
-                    @width="block"
-                    @value={{@model.administrativeUnit.name}}
-                    id="worship-service-name"
-                  />
-                </:content>
-              </Item>
-              <Item @labelFor="status-select">
-                <:label>Status</:label>
-                <:content>
-                  <PowerSelect
-                    @noMatchesMessage="Geen resultaten"
-                    @options={{@model.statuses}}
-                    @selected={{@model.administrativeUnit.organizationStatus}}
-                    @onChange={{fn
-                      (mut @model.administrativeUnit.organizationStatus)
-                    }}
-                    @disabled={{true}}
-                    @triggerId="status-select"
-                    as |status|
-                  >
-                    {{status.label}}
-                  </PowerSelect>
-                </:content>
-              </Item>
-            </Card.Grid>
-            <Card.Grid as |Item|>
-              <Item>
-                <:label>Type bestuur</:label>
-                <:content>
-                  <PowerSelect
-                    @disabled={{true}}
-                    @selected={{@model.administrativeUnit.classification}}
-                    @onChange={{fn
-                      (mut @model.administrativeUnit.classification)
-                    }}
-                    as |classification|
-                  >
-                    {{classification.label}}
-                  </PowerSelect>
-                </:content>
-              </Item>
-            </Card.Grid>
-            <Card.Grid as |Item|>
-              <Item @labelFor="recognized-worship-type-select">
-                <:label>Soort eredienst</:label>
-                <:content>
-                  <RecognizedWorshipTypeSelect
-                    @selected={{this.model.administrativeUnit.recognizedWorshipType}}
-                    @onChange={{fn
-                      (mut this.administrativeUnit.recognizedWorshipType)
-                    }}
-                  />
-                </:content>
-              </Item>
-            </Card.Grid>
-            {{#if
-              (eq
-                @model.administrativeUnit.constructor.modelName
-                "worship-service"
-              )
-            }}
-              <Card.Grid as |Item|>
-                <Item @labelFor="denomination">
-                  <:label>Strekking</:label>
+            <Card.Columns>
+              <:left as |Item|>
+                <Item @labelFor="worship-service-name">
+                  <:label>Naam</:label>
                   <:content>
                     <AuInput
                       @width="block"
-                      @value={{@model.administrativeUnit.denomination}}
-                      id="denomination"
-                    />
-                  </:content>
-                </Item>
-              </Card.Grid>
-              <Card.Grid as |Item|>
-                <Item>
-                  <:label>Grensoverschrijvend</:label>
-                  <:content>
-                    <ul class="au-c-list-inline">
-                      <li class="au-c-list-inline__item">
-                        <AuControlRadio
-                          @label="Ja"
-                          @name="is-cross-border"
-                          @value={{@model.administrativeUnit.crossBorder}}
-                          @identifier="cross-border-true"
-                          @onChange={{fn
-                            (mut @model.administrativeUnit.crossBorder)
-                            true
-                          }}
-                          checked={{@model.administrativeUnit.crossBorder}}
-                        />
-                      </li>
-                      <li class="au-c-list-inline__item">
-                        <AuControlRadio
-                          @label="Nee"
-                          @name="is-cross-border"
-                          @value={{@model.administrativeUnit.crossBorder}}
-                          @identifier="cross-border-false"
-                          @onChange={{fn
-                            (mut @model.administrativeUnit.crossBorder)
-                            false
-                          }}
-                          checked={{not @model.administrativeUnit.crossBorder}}
-                        />
-                      </li>
-                    </ul>
-                  </:content>
-                </Item>
-              </Card.Grid>
-            {{/if}}
-            <Card.Grid as |Item|>
-              {{!-- Temporarily disabled - cf https://binnenland.atlassian.net/browse/OP-583
-              <Item @labelFor="administrative-unit-scope">
-                <:label>Werkingsgebied</:label>
-                <:content>
-                  <ScopeSelect
-                    @selected={{this.model.administrativeUnit.scope}}
-                    @onChange={{fn (mut this.model.administrativeUnit.scope)}}
-                  />
-                </:content>
-              </Item> --}}
-              {{#each @model.administrativeUnit.identifiers as |identifier|}}
-                <Item>
-                  <:label>{{identifier.idName}}</:label>
-                  <:content>
-                    <AuInput
-                      @width="block"
-                      @value={{identifier.structuredIdentifier.localId}}
-                      id={{identifier.idName}}
+                      @value={{@model.administrativeUnit.name}}
+                      id="worship-service-name"
                     />
                   </:content>
                 </Item>
                 <Item>
-                  <:label></:label>
-                  <:content></:content>
+                  <:label>Type bestuur</:label>
+                  <:content>
+                    <PowerSelect
+                      @disabled={{true}}
+                      @selected={{@model.administrativeUnit.classification}}
+                      @onChange={{fn
+                        (mut @model.administrativeUnit.classification)
+                      }}
+                      as |classification|
+                    >
+                      {{classification.label}}
+                    </PowerSelect>
+                  </:content>
                 </Item>
-              {{/each}}
-            </Card.Grid>
+                <Item @labelFor="recognized-worship-type-select">
+                  <:label>Soort eredienst</:label>
+                  <:content>
+                    <RecognizedWorshipTypeSelect
+                      @selected={{this.model.administrativeUnit.recognizedWorshipType}}
+                      @onChange={{fn
+                        (mut this.administrativeUnit.recognizedWorshipType)
+                      }}
+                    />
+                  </:content>
+                </Item>
+                {{#if
+                  (eq
+                    @model.administrativeUnit.constructor.modelName
+                    "worship-service"
+                  )
+                }}
+                  <Item @labelFor="denomination">
+                    <:label>Strekking</:label>
+                    <:content>
+                      <AuInput
+                        @width="block"
+                        @value={{@model.administrativeUnit.denomination}}
+                        id="denomination"
+                      />
+                    </:content>
+                  </Item>
+                  <Item>
+                    <:label>Grensoverschrijvend</:label>
+                    <:content>
+                      <ul class="au-c-list-inline">
+                        <li class="au-c-list-inline__item">
+                          <AuControlRadio
+                            @label="Ja"
+                            @name="is-cross-border"
+                            @value={{@model.administrativeUnit.crossBorder}}
+                            @identifier="cross-border-true"
+                            @onChange={{fn
+                              (mut @model.administrativeUnit.crossBorder)
+                              true
+                            }}
+                            checked={{@model.administrativeUnit.crossBorder}}
+                          />
+                        </li>
+                        <li class="au-c-list-inline__item">
+                          <AuControlRadio
+                            @label="Nee"
+                            @name="is-cross-border"
+                            @value={{@model.administrativeUnit.crossBorder}}
+                            @identifier="cross-border-false"
+                            @onChange={{fn
+                              (mut @model.administrativeUnit.crossBorder)
+                              false
+                            }}
+                            checked={{not @model.administrativeUnit.crossBorder}}
+                          />
+                        </li>
+                      </ul>
+                    </:content>
+                  </Item>
+                {{/if}}
+
+                {{!-- Temporarily disabled - cf https://binnenland.atlassian.net/browse/OP-583
+                <Item @labelFor="administrative-unit-scope">
+                  <:label>Werkingsgebied</:label>
+                  <:content>
+                    <ScopeSelect
+                      @selected={{this.model.administrativeUnit.scope}}
+                      @onChange={{fn (mut this.model.administrativeUnit.scope)}}
+                    />
+                  </:content>
+                </Item> --}}
+              </:left>
+              <:right as |Item|>
+                <Item @labelFor="status-select">
+                  <:label>Status</:label>
+                  <:content>
+                    <PowerSelect
+                      @noMatchesMessage="Geen resultaten"
+                      @options={{@model.statuses}}
+                      @selected={{@model.administrativeUnit.organizationStatus}}
+                      @onChange={{fn
+                        (mut @model.administrativeUnit.organizationStatus)
+                      }}
+                      @disabled={{true}}
+                      @triggerId="status-select"
+                      as |status|
+                    >
+                      {{status.label}}
+                    </PowerSelect>
+                  </:content>
+                </Item>
+
+                {{#each @model.administrativeUnit.identifiers as |identifier|}}
+                  <Item>
+                    <:label>{{identifier.idName}}</:label>
+                    <:content>
+                      <AuInput
+                        @width="block"
+                        @value={{identifier.structuredIdentifier.localId}}
+                        id={{identifier.idName}}
+                      />
+                    </:content>
+                  </Item>
+                {{/each}}
+              </:right>
+            </Card.Columns>
           </:card>
         </EditCard>
 
         <EditCard>
           <:title>Primaire contactgegevens</:title>
           <:card as |Card|>
-            <Card.Grid as |Item|>
-              <Item @labelFor="primary-site-address-street-name">
-                <:label>Straat</:label>
-                <:content>
-                  <AuInput
-                    @value={{@model.administrativeUnit.primarySite.address.street}}
-                    @width="block"
-                    id="primary-site-address-street-name"
-                  />
-                </:content>
-              </Item>
-              <Item @labelFor="primary-site-address-house-number">
-                <:label>Huisnummer</:label>
-                <:content>
-                  <AuInput
-                    @value={{@model.administrativeUnit.primarySite.address.number}}
-                    @width="block"
-                    id="primary-site-address-house-number"
-                  />
-                </:content>
-              </Item>
-              <Item @labelFor="primary-site-address-bus-number">
-                <:label>Busnummer</:label>
-                <:content>
-                  <AuInput
-                    @value={{@model.administrativeUnit.primarySite.address.boxNumber}}
-                    @width="block"
-                    id="primary-site-address-bus-number"
-                  />
-                </:content>
-              </Item>
-              <Item @labelFor="primary-site-address-postal-code">
-                <:label>Postcode</:label>
-                <:content>
-                  <AuInput
-                    @value={{@model.administrativeUnit.primarySite.address.postcode}}
-                    @width="block"
-                    id="primary-site-address-postal-code"
-                  />
-                </:content>
-              </Item>
-              <Item @labelFor="primary-site-address-municipality">
-                <:label>Gemeente</:label>
-                <:content>
-                  <MunicipalitySelect
-                    @selected={{this.model.administrativeUnit.primarySite.address.municipality}}
-                    @onChange={{fn
-                      (mut
-                        this.model.administrativeUnit.primarySite.address.municipality
-                      )
-                    }}
-                  />
-                </:content>
-              </Item>
-              <Item @labelFor="primary-site-address-province">
-                <:label>Provincie</:label>
-                <:content>
-                  <ProvinceSelect
-                    @selected={{this.model.administrativeUnit.primarySite.address.province}}
-                    @onChange={{fn
-                      (mut
-                        this.model.administrativeUnit.primarySite.address.province
-                      )
-                    }}
-                  />
-                </:content>
-              </Item>
-              <Item @labelFor="primary-site-contact-phone-number">
-                <:label>Telefoonnummer</:label>
-                <:content>
-                  <AuInput
-                    @value={{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}
-                    @width="block"
-                    id="primary-site-contact-phone-number"
-                  />
-                </:content>
-              </Item>
-              <Item @labelFor="primary-site-contact-website">
-                <:label>Website</:label>
-                <:content>
-                  <AuInput
-                    @value={{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
-                    @width="block"
-                    id="primary-site-contact-website"
-                  />
-                </:content>
-              </Item>
-            </Card.Grid>
+            <Card.Columns>
+              <:left as |Item|>
+                <Item @labelFor="primary-site-address-street-name">
+                  <:label>Straat</:label>
+                  <:content>
+                    <AuInput
+                      @value={{@model.administrativeUnit.primarySite.address.street}}
+                      @width="block"
+                      id="primary-site-address-street-name"
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="primary-site-address-bus-number">
+                  <:label>Busnummer</:label>
+                  <:content>
+                    <AuInput
+                      @value={{@model.administrativeUnit.primarySite.address.boxNumber}}
+                      @width="block"
+                      id="primary-site-address-bus-number"
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="primary-site-address-municipality">
+                  <:label>Gemeente</:label>
+                  <:content>
+                    <MunicipalitySelect
+                      @selected={{this.model.administrativeUnit.primarySite.address.municipality}}
+                      @onChange={{fn
+                        (mut
+                          this.model.administrativeUnit.primarySite.address.municipality
+                        )
+                      }}
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="primary-site-contact-phone-number">
+                  <:label>Telefoonnummer</:label>
+                  <:content>
+                    <AuInput
+                      @value={{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}
+                      @width="block"
+                      id="primary-site-contact-phone-number"
+                    />
+                  </:content>
+                </Item>
+              </:left>
+              <:right as |Item|>
+                <Item @labelFor="primary-site-address-house-number">
+                  <:label>Huisnummer</:label>
+                  <:content>
+                    <AuInput
+                      @value={{@model.administrativeUnit.primarySite.address.number}}
+                      @width="block"
+                      id="primary-site-address-house-number"
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="primary-site-address-postal-code">
+                  <:label>Postcode</:label>
+                  <:content>
+                    <AuInput
+                      @value={{@model.administrativeUnit.primarySite.address.postcode}}
+                      @width="block"
+                      id="primary-site-address-postal-code"
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="primary-site-address-province">
+                  <:label>Provincie</:label>
+                  <:content>
+                    <ProvinceSelect
+                      @selected={{this.model.administrativeUnit.primarySite.address.province}}
+                      @onChange={{fn
+                        (mut
+                          this.model.administrativeUnit.primarySite.address.province
+                        )
+                      }}
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="primary-site-contact-website">
+                  <:label>Website</:label>
+                  <:content>
+                    <AuInput
+                      @value={{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
+                      @width="block"
+                      id="primary-site-contact-website"
+                    />
+                  </:content>
+                </Item>
+              </:right>
+            </Card.Columns>
           </:card>
         </EditCard>
 
         <EditCard>
           <:title>Gerelateerde organisaties</:title>
           <:card as |Card|>
-            {{#if
-              (eq
-                @model.administrativeUnit.constructor.modelName
-                "worship-service"
-              )
-            }}
-              <Card.Grid as |Item|>
+            <Card.Columns>
+              <:left as |Item|>
+                {{#if
+                  (eq
+                    @model.administrativeUnit.constructor.modelName
+                    "worship-service"
+                  )
+                }}
+                  <Item>
+                    <:label>Centraal bestuur</:label>
+                    <:content>
+                      <CentralWorshipSelect
+                        @selected={{this.model.administrativeUnit.isSubOrganizationOf}}
+                        @onChange={{fn
+                          (mut
+                            this.model.administrativeUnit.isSubOrganizationOf
+                          )
+                        }}
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#if
+                  (eq
+                    @model.administrativeUnit.constructor.modelName
+                    "central-worship-service"
+                  )
+                }}
+                  {{#each
+                    @model.administrativeUnit.subOrganizations
+                    as |worship|
+                  }}
+                    <Item>
+                      {{! TODO: Enable to edit the list of worship services that are linked to central worship service }}
+                      <:label>Bestuur van de eredienst</:label>
+                      <:content>
+                        {{worship.name}}
+                      </:content>
+                    </Item>
+                  {{/each}}
+                {{/if}}
                 <Item>
-                  <:label>Centraal bestuur</:label>
+                  <:label>Representatief orgaan</:label>
                   <:content>
-                    <CentralWorshipSelect
-                      @selected={{this.model.administrativeUnit.isSubOrganizationOf}}
+                    <RepresentativeBodySelect
+                      @selected={{this.model.administrativeUnit.isAssociatedWith}}
                       @onChange={{fn
-                        (mut this.model.administrativeUnit.isSubOrganizationOf)
+                        (mut this.model.administrativeUnit.isAssociatedWith)
                       }}
                     />
                   </:content>
                 </Item>
-              </Card.Grid>
-            {{/if}}
-            {{#if
-              (eq
-                @model.administrativeUnit.constructor.modelName
-                "central-worship-service"
-              )
-            }}
-              {{#each @model.administrativeUnit.subOrganizations as |worship|}}
-                <Card.Grid as |Item|>
-                  <Item>
-                    {{! TODO: Enable to edit the list of worship services that are linked to central worship service }}
-                    <:label>Bestuur van de eredienst</:label>
-                    <:content>
-                      {{worship.name}}
-                    </:content>
-                  </Item>
-                </Card.Grid>
-              {{/each}}
-            {{/if}}
-            <Card.Grid as |Item|>
-              <Item>
-                <:label>Representatief orgaan</:label>
-                <:content>
-                  <RepresentativeBodySelect
-                    @selected={{this.model.administrativeUnit.isAssociatedWith}}
-                    @onChange={{fn
-                      (mut this.model.administrativeUnit.isAssociatedWith)
-                    }}
-                  />
-                </:content>
-              </Item>
-            </Card.Grid>
+              </:left>
+            </Card.Columns>
           </:card>
         </EditCard>
 
