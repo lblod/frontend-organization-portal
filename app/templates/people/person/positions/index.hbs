@@ -4,7 +4,11 @@
     {{@model.person.givenName}}
     {{@model.person.familyName}}
   </:subtitle>
-  <:action>
+  <:alert>
+    <AuAlert @alertIcon="info-circle" @alertTitle="Momenteel kan u nieuwe posities toevoegen en bestaande posities bewerken via het bestuursorgaan waar de persoon een positie heeft." @alertskin="info" @alertsize="small" class="au-u-margin-bottom-none">
+    </AuAlert>
+  </:alert>
+  {{!-- <:action>
     {{! TODO: Replace this with the "new" route once it is created }}
     <AuLink
       @route="people.person.positions"
@@ -14,7 +18,7 @@
     >
       Nieuw
     </AuLink>
-  </:action>
+  </:action> --}}
 </PageHeader>
 
 <div class="au-o-box">
