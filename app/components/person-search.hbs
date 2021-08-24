@@ -96,7 +96,9 @@
     </AuDataTable>
   </div>
 {{else}}
-  <p class="au-u-margin au-u-margin-top-huge">
-    Zoek een reeds gekende persoon in de databank van het loket op naam.
-  </p>
+  <div class="au-o-box">
+    <AuAlert @alertIcon="info-circle" @alertTitle="Zoek een reeds gekende persoon in de databank van het loket op naam." @alertskin="info" @alertsize="small" class="au-u-margin-bottom-none">
+      <p>Momenteel kan u nog geen nieuwe personen toevoegen aan de databank.</p>
+    </AuAlert>
+  </div>
 {{/if}}
