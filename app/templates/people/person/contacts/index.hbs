@@ -1,6 +1,10 @@
 <PageHeader class="au-o-box">
   <:title>Contactgegevens</:title>
   <:subtitle>{{@model.person.givenName}} {{@model.person.familyName}}</:subtitle>
+  <:alert>
+    <AuAlert @alertIcon="info-circle" @alertTitle="Momenteel kan u de contactgegevens enkel bewerken via het bestuursorgaan waar de persoon een positie heeft." @alertskin="info" @alertsize="small" class="au-u-margin-bottom-none">
+    </AuAlert>
+  </:alert>
 </PageHeader>
 
 <AuDataTable @content={{@model.positions}} @noDataMessage="Geen contactgegevens" as |t|>
