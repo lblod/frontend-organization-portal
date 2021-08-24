@@ -1,12 +1,17 @@
 <PageHeader class="au-o-box">
   <:title>Vestigingen</:title>
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
-  <:action>
+  <:alert>
+    <AuAlert @alertIcon="info-circle" @alertskin="info" @alertsize="small" class="au-u-margin-bottom-none">
+      <p>Momenteel kan u nog geen nieuwe vestiging toevoegen.</p>
+    </AuAlert>
+  </:alert>
+  {{!-- <:action>
     {{! TODO: Replace this with a link once the "new" route is created }}
     <AuButton @icon="add" @iconAlignment="left">
       Nieuw
     </AuButton>
-  </:action>
+  </:action> --}}
 </PageHeader>
 
 <AuDataTable @content={{this.sites}} @noDataMessage="Geen vestigingen" as |t|>
