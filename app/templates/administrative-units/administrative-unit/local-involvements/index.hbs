@@ -38,22 +38,12 @@
         @currentSorting={{this.sort}}
         @label="Financieel percentage"
       />
-      <th></th>
     </c.header>
     <c.body as |involvement|>
       <td>{{involvement.administrativeUnit.name}}</td>
       <td>{{involvement.administrativeUnit.classification.label}}</td>
       <td>{{involvement.involvementType.label}}</td>
-      <td>
-        {{#if involvement.percentage}}
-          {{involvement.percentage}}%
-        {{/if}}
-      </td>
-      <td>
-        <AuLink
-          @route="administrative-units.administrative-unit.local-involvements"
-        >Bewerk</AuLink>
-      </td>
+      <td>{{involvement.percentage}}%</td>
     </c.body>
   </t.content>
 </AuDataTable>

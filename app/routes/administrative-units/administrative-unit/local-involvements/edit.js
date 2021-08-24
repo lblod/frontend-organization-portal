@@ -2,30 +2,48 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { addPaginationMeta } from 'frontend-contact-hub/utils/data-table';
 
+// const CLASSIFICATION = {
+//   MUNICIPALITY: {
+//     id: '5ab0e9b8a3b2ca7c5e000001',
+//   },
+//   PROVINCE: {
+//     id: '5ab0e9b8a3b2ca7c5e000000',
+//   },
+// };
+
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditRoute extends Route {
   @service store;
 
   async model() {
-    let administrativeUnit = this.modelFor(
+    let { id: administrativeUnitId } = this.paramsFor(
       'administrative-units.administrative-unit'
     );
 
-    let involvements = await this.store
-      .query('local-involvement', {
-        include: 'involvement-type,administrative-unit.classification',
-        filter: {
-          ['worship-service']: {
-            [':id:']: administrativeUnit.id,
-          },
-        },
-      })
-      .toArray(); // the result of store.query is immutable so we convert it to something mutable.
+    let administrativeUnit = await this.store.findRecord(
+      'worship-service',
+      administrativeUnitId,
+      {
+        reload: true,
+        include:
+          'involvements.involvement-type,involvements.administrative-unit.classification',
+      }
+    );
+
+    let localAdministrativeUnits = await this.store.findAll(
+      'administrative-unit'
+    );
+
+    let involvementTypes = await this.store.findAll('involvement-type');
+
+    let involvements = await administrativeUnit.involvements;
 
     addPaginationMeta(involvements);
 
     return {
       administrativeUnit,
       involvements,
+      involvementTypes,
+      localAdministrativeUnits,
     };
   }
 
