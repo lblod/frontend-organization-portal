@@ -2,15 +2,6 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { addPaginationMeta } from 'frontend-contact-hub/utils/data-table';
 
-// const CLASSIFICATION = {
-//   MUNICIPALITY: {
-//     id: '5ab0e9b8a3b2ca7c5e000001',
-//   },
-//   PROVINCE: {
-//     id: '5ab0e9b8a3b2ca7c5e000000',
-//   },
-// };
-
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditRoute extends Route {
   @service store;
 
@@ -29,10 +20,6 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
       }
     );
 
-    let localAdministrativeUnits = await this.store.findAll(
-      'administrative-unit'
-    );
-
     let involvementTypes = await this.store.findAll('involvement-type');
 
     let involvements = await administrativeUnit.involvements;
@@ -43,7 +30,6 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
       administrativeUnit,
       involvements,
       involvementTypes,
-      localAdministrativeUnits,
     };
   }
 

@@ -39,16 +39,10 @@
         </c.header>
         <c.body as |involvement|>
           <td>
-            <PowerSelect
-              @noMatchesMessage="Geen resultaten"
-              @options={{@model.localAdministrativeUnits}}
+            <AdministrativeUnitSelect
               @selected={{involvement.administrativeUnit}}
               @onChange={{fn (mut involvement.administrativeUnit)}}
-              @triggerId="local-administrative-unit-select"
-              as |localAdministrativeUnit|
-            >
-              {{localAdministrativeUnit.name}}
-            </PowerSelect>
+            />
           </td>
           <td>
             <AuInput
