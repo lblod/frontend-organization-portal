@@ -6,12 +6,16 @@
       <p>Momenteel kan u nog geen nieuwe vestiging toevoegen.</p>
     </AuAlert>
   </:alert>
-  {{!-- <:action>
-    {{! TODO: Replace this with a link once the "new" route is created }}
-    <AuButton @icon="add" @iconAlignment="left">
+  <:action>
+    <AuLink
+      @route="administrative-units.administrative-unit.sites.new"
+      @icon="add"
+      @iconAlignment="left"
+      @skin="button"
+    >
       Nieuw
-    </AuButton>
-  </:action> --}}
+    </AuLink>
+  </:action>
 </PageHeader>
 
 <AuDataTable @content={{this.sites}} @noDataMessage="Geen vestigingen" as |t|>
