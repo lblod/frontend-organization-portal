@@ -30,39 +30,43 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
   *save(event) {
     event.preventDefault();
 
-    let address = yield this.site.address;
+    if (
+      !(this.isPrimarySite && this.administrativeUnit.primarySite.get('id'))
+    ) {
+      let address = yield this.site.address;
 
-    if (address.hasDirtyAttributes) {
-      address.fullAddress = combineFullAddress(address);
-      yield address.save();
+      if (address.hasDirtyAttributes) {
+        address.fullAddress = combineFullAddress(address);
+        yield address.save();
+      }
+
+      let contacts = yield this.site.contacts;
+      if (contacts.firstObject.hasDirtyAttributes) {
+        yield contacts.firstObject.save();
+      }
+
+      yield this.site.save();
+
+      if (this.isPrimarySiteCurrent && !this.isPrimarySite) {
+        this.administrativeUnit.sites.pushObject(this.site);
+
+        this.administrativeUnit.primarySite = null;
+
+        yield this.administrativeUnit.save();
+      }
+
+      if (this.isPrimarySite && !this.isPrimarySiteCurrent) {
+        this.administrativeUnit.primarySite = this.site;
+
+        this.administrativeUnit.sites.removeObject(this.site);
+
+        yield this.administrativeUnit.save();
+      }
+
+      this.router.transitionTo(
+        'administrative-units.administrative-unit.sites.site',
+        this.site.id
+      );
     }
-
-    let contacts = yield this.site.contacts;
-    if (contacts.firstObject.hasDirtyAttributes) {
-      yield contacts.firstObject.save();
-    }
-
-    yield this.site.save();
-
-    if (this.isPrimarySiteCurrent && !this.isPrimarySite) {
-      this.administrativeUnit.sites.pushObject(this.site);
-
-      this.administrativeUnit.primarySite = null;
-
-      yield this.administrativeUnit.save();
-    }
-
-    if (this.isPrimarySite && !this.isPrimarySiteCurrent) {
-      this.administrativeUnit.primarySite = this.site;
-
-      this.administrativeUnit.sites.removeObject(this.site);
-
-      yield this.administrativeUnit.save();
-    }
-
-    this.router.transitionTo(
-      'administrative-units.administrative-unit.sites.site',
-      this.site.id
-    );
   }
 }

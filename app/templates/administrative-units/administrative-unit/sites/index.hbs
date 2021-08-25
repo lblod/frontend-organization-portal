@@ -2,10 +2,14 @@
   <:title>Vestigingen</:title>
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
   <:action>
-    {{! TODO: Replace this with a link once the "new" route is created }}
-    <AuButton @icon="add" @iconAlignment="left">
+    <AuLink
+      @route="administrative-units.administrative-unit.sites.new"
+      @icon="add"
+      @iconAlignment="left"
+      @skin="button"
+    >
       Nieuw
-    </AuButton>
+    </AuLink>
   </:action>
 </PageHeader>
 

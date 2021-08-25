@@ -46,6 +46,7 @@ Router.map(function () {
           this.route('site', { path: '/:siteId/' }, function () {
             this.route('edit');
           });
+          this.route('new', { path: '/nieuwe-vestiging' });
         });
         this.route(
           'governing-bodies',
