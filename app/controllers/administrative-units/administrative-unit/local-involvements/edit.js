@@ -1,13 +1,20 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 
+const INVOLVEMENT_TYPE = {
+  FINANCIAL: 'ac400cc9f135ac7873fb3e551ec738c1',
+};
+
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditController extends Controller {
+  @service router;
   @service store;
 
+  @tracked selectedInvolvementType;
+
   get totalFinancingPercentage() {
-    // TODO loop over all involvements and sum the percentages
     let total = 0;
 
     let involvements = this.model.involvements;
@@ -19,9 +26,17 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     return total;
   }
 
-  get isFinancingTotalValid() {
-    // TODO check if the total is valid
-    return this.totalFinancingPercentage != 100;
+  get isFinancingTotalNotValid() {
+    return this.totalFinancingPercentage !== 100;
+  }
+
+  get isNotFinancialType() {
+    return this.selectedInvolvementType?.id !== INVOLVEMENT_TYPE.FINANCIAL;
+  }
+
+  @action
+  async handleInvolvimentTypeSelect(involvementType) {
+    this.selectedInvolvementType = involvementType;
   }
 
   setup() {
@@ -31,7 +46,6 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   }
 
   reset() {
-    // TODO loop over all involvements and rollback any unsaved changes
     this.removeUnsavedRecords();
   }
 
@@ -60,10 +74,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
 
     let involvements = yield this.model.involvements;
 
-    // TODO check if the total financing percentage is valid before saving
-
-    // TODO loop over all  involvements items and save them
-    if (~this.isFinancingTotalValid) {
+    if (~this.isFinancingTotalNotValid) {
       for (let involvement of involvements.toArray()) {
         if (involvement.hasDirtyAttributes) {
           yield involvement.save();
@@ -71,7 +82,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
       }
 
       this.router.transitionTo(
-        'administrative-units.administrative-unit.local-involvements.index',
+        'administrative-units.administrative-unit.local-involvements',
         this.model.administrativeUnit.id
       );
     }
