@@ -1,16 +1,8 @@
-<AuContentHeader
-  @titlePartOne="Vlaanderen"
-  @titlePartTwo="is het organisatieportaal"
->
-  <img
-    sizes="50vw"
-    src="/assets/images/loket-header-1600.jpg"
-    srcset="/assets/images/loket-header-320.jpg 320w, /assets/images/loket-header-1024.jpg 1024w, /assets/images/loket-header-1600.jpg 1600w"
-    alt="" role="presentation"
-  />
-</AuContentHeader>
-
-{{yield}}
+<div class="au-o-region-large">
+  <div class="au-o-layout">
+    {{outlet}}
+  </div>
+</div>
 
 <AuMainFooter>
   <AuHeading @level="3" @skin="4">
