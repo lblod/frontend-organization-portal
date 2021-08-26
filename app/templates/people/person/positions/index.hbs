@@ -28,7 +28,7 @@
       <th class="au-c-data-table__header-title">Positie</th>
       <th class="au-c-data-table__header-title">Organisatie</th>
       <th class="au-c-data-table__header-title">Status</th>
-      <th></th>
+      {{!-- <th></th> --}}
     </c.header>
     <c.body as |mandatory|>
       <td>
@@ -48,10 +48,10 @@
       <td>
         <PositionStatus @endDate={{mandatory.endDate}} />
       </td>
-      <td>
-        {{!-- TODO Replace this with the correct route --}}
+      {{!-- <td>
+        TODO Replace this with the correct route
         <AuLink @route="people.person.positions">Bewerk</AuLink>
-      </td>
+      </td> --}}
     </c.body>
   </t.content>
 </AuDataTable>
