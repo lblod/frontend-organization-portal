@@ -96,31 +96,34 @@
                 <Item>
                   <:label>Grensoverschrijvend</:label>
                   <:content>
-                    <AuControlRadio
-                      @label="Ja"
-                      @name="is-cross-border"
-                      @value={{@model.administrativeUnit.crossBorder}}
-                      @identifier="cross-border-true"
-                      @onChange={{fn
-                        (mut @model.administrativeUnit.crossBorder)
-                        true
-                      }}
-                      checked={{@model.administrativeUnit.crossBorder}}
-                    />
-
-                    <br />
-
-                    <AuControlRadio
-                      @label="Nee"
-                      @name="is-cross-border"
-                      @value={{@model.administrativeUnit.crossBorder}}
-                      @identifier="cross-border-false"
-                      @onChange={{fn
-                        (mut @model.administrativeUnit.crossBorder)
-                        false
-                      }}
-                      checked={{not @model.administrativeUnit.crossBorder}}
-                    />
+                    <ul class="au-c-list-inline">
+                      <li class="au-c-list-inline__item">
+                        <AuControlRadio
+                          @label="Ja"
+                          @name="is-cross-border"
+                          @value={{@model.administrativeUnit.crossBorder}}
+                          @identifier="cross-border-true"
+                          @onChange={{fn
+                            (mut @model.administrativeUnit.crossBorder)
+                            true
+                          }}
+                          checked={{@model.administrativeUnit.crossBorder}}
+                        />
+                      </li>
+                      <li class="au-c-list-inline__item">
+                        <AuControlRadio
+                          @label="Nee"
+                          @name="is-cross-border"
+                          @value={{@model.administrativeUnit.crossBorder}}
+                          @identifier="cross-border-false"
+                          @onChange={{fn
+                            (mut @model.administrativeUnit.crossBorder)
+                            false
+                          }}
+                          checked={{not @model.administrativeUnit.crossBorder}}
+                        />
+                      </li>
+                    </ul>
                   </:content>
                 </Item>
               </Card.Grid>

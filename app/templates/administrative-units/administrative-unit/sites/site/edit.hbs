@@ -30,25 +30,28 @@
               <Item>
                 <:label>Primair correspondentieadres</:label>
                 <:content>
-                  <AuControlRadio
-                    @label="Ja"
-                    @name="is-primary-site"
-                    @value={{this.isPrimarySite}}
-                    @identifier="primary-site-true"
-                    @onChange={{fn (mut this.isPrimarySite) true}}
-                    checked={{this.isPrimarySite}}
-                  />
-
-                  <br />
-
-                  <AuControlRadio
-                    @label="Nee"
-                    @name="is-primary-site"
-                    @value={{this.isPrimarySite}}
-                    @identifier="primary-site-false"
-                    @onChange={{fn (mut this.isPrimarySite) false}}
-                    checked={{not this.isPrimarySite}}
-                  />
+                  <ul class="au-c-list-inline">
+                    <li class="au-c-list-inline__item">
+                      <AuControlRadio
+                        @label="Ja"
+                        @name="is-primary-site"
+                        @value={{this.isPrimarySite}}
+                        @identifier="primary-site-true"
+                        @onChange={{fn (mut this.isPrimarySite) true}}
+                        checked={{this.isPrimarySite}}
+                      />
+                    </li>
+                    <li class="au-c-list-inline__item">
+                      <AuControlRadio
+                        @label="Nee"
+                        @name="is-primary-site"
+                        @value={{this.isPrimarySite}}
+                        @identifier="primary-site-false"
+                        @onChange={{fn (mut this.isPrimarySite) false}}
+                        checked={{not this.isPrimarySite}}
+                      />
+                    </li>
+                  </ul>
                 </:content>
               </Item>
             </Card.Grid>

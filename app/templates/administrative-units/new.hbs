@@ -91,29 +91,34 @@
               <Item @alignTop={{true}}>
                 <:label>Grensoverschrijvend</:label>
                 <:content>
-                  <AuControlRadio
-                    @label="Ja"
-                    @name="is-cross-border"
-                    @value={{this.model.worshipService.crossBorder}}
-                    @identifier="cross-border-true"
-                    @onChange={{fn
-                      (mut this.model.worshipService.crossBorder)
-                      true
-                    }}
-                    checked={{this.model.worshipService.crossBorder}}
-                  />
-                  <br />
-                  <AuControlRadio
-                    @label="Nee"
-                    @name="is-cross-border"
-                    @value={{this.model.worshipService.crossBorder}}
-                    @identifier="cross-border-false"
-                    @onChange={{fn
-                      (mut this.model.worshipService.crossBorder)
-                      false
-                    }}
-                    checked={{not this.model.worshipService.crossBorder}}
-                  />
+                  <ul class="au-c-list-inline">
+                    <li class="au-c-list-inline__item">
+                      <AuControlRadio
+                        @label="Ja"
+                        @name="is-cross-border"
+                        @value={{this.model.worshipService.crossBorder}}
+                        @identifier="cross-border-true"
+                        @onChange={{fn
+                          (mut this.model.worshipService.crossBorder)
+                          true
+                        }}
+                        checked={{this.model.worshipService.crossBorder}}
+                      />
+                    </li>
+                    <li class="au-c-list-inline__item">
+                      <AuControlRadio
+                        @label="Nee"
+                        @name="is-cross-border"
+                        @value={{this.model.worshipService.crossBorder}}
+                        @identifier="cross-border-false"
+                        @onChange={{fn
+                          (mut this.model.worshipService.crossBorder)
+                          false
+                        }}
+                        checked={{not this.model.worshipService.crossBorder}}
+                      />
+                    </li>
+                  </ul>
                 </:content>
               </Item>
             {{/if}}
