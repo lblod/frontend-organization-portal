@@ -39,10 +39,10 @@
               {{@model.administrativeUnit.classification.label}}
             </:content>
           </Item>
-          {{!-- TODO: Take the last date from the change events --}}
+          {{! TODO: Take the last date from the change events }}
           {{#if @model.administrativeUnit.resultedFrom}}
             <Item>
-              <:label> </:label>
+              <:label />
               <:content>
                 <AuHelpText @skin="tertiary" class="au-u-margin-top-none">Gewijzigd op
                   {{date-format
@@ -81,25 +81,7 @@
           </Card.Grid>
         {{/if}}
 
-        <Card.Grid as |Item|>
-          {{#if @model.administrativeUnit.scope.label}}
-            <Item>
-              <:label>Werkingsgebied</:label>
-              <:content>{{@model.administrativeUnit.scope.label}}</:content>
-            </Item>
-          {{/if}}
-          {{#each @model.administrativeUnit.identifiers as |identifier|}}
-            <Item>
-              <:label>{{identifier.idName}}</:label>
-              <:content>{{identifier.structuredIdentifier.localId}}</:content>
-            </Item>
-            {{!-- Force to have only right column --}}
-            <Item>
-              <:label></:label>
-              <:content></:content>
-            </Item>
-          {{/each}}
-        </Card.Grid>
+        {{! Removed werkingsgebied cf https://binnenland.atlassian.net/browse/OP-583  }}
       </:card>
     </DataCard>
 
