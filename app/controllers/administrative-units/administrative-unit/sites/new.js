@@ -2,45 +2,42 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
-
+import { tracked } from '@glimmer/tracking';
 export default class AdministrativeUnitsAdministrativeUnitSitesNewController extends Controller {
   @service router;
   @service store;
+  @tracked isPrimarySite;
 
   @dropTask
   *createSiteTask(event) {
     event.preventDefault();
 
-    if (
-      !(
-        this.isPrimarySite &&
-        this.model.administrativeUnit.primarySite.get('id')
-      )
-    ) {
-      let { site, address, contact } = this.model;
+    let { site, address, contact } = this.model;
 
-      yield contact.save();
+    yield contact.save();
 
-      address.fullAddress = combineFullAddress(address);
-      yield address.save();
+    address.fullAddress = combineFullAddress(address);
+    yield address.save();
 
-      site.address = address;
-      site.contacts.pushObjects([contact]);
-      yield site.save();
+    site.address = address;
+    site.contacts.pushObject(contact);
+    yield site.save();
 
-      if (this.isPrimarySite) {
-        this.model.administrativeUnit.primarySite = site;
-      } else {
-        this.model.administrativeUnit.sites.pushObject(site);
-      }
+    if (this.isPrimarySite) {
+      let currentPrimarySite = yield this.model.administrativeUnit.primarySite;
+      this.model.administrativeUnit.sites.pushObject(currentPrimarySite);
 
-      yield this.model.administrativeUnit.save();
-
-      this.router.replaceWith(
-        'administrative-units.administrative-unit.sites.site',
-        site.id
-      );
+      this.model.administrativeUnit.primarySite = site;
+    } else {
+      this.model.administrativeUnit.sites.pushObject(site);
     }
+
+    yield this.model.administrativeUnit.save();
+
+    this.router.replaceWith(
+      'administrative-units.administrative-unit.sites.site',
+      site.id
+    );
   }
 
   reset() {
