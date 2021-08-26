@@ -7,7 +7,7 @@
   margin: -$au-unit-small -#{$au-unit};
   min-height: $au-unit-small; // Fix for empty grids
 
-  @include mq(large) {
+  @include mq(1279px) {
     display: flex;
     flex-wrap: wrap;
   }
@@ -16,7 +16,7 @@
 .card-grid-item {
   padding: $au-unit-small $au-unit;
 
-  @include mq(large) {
+  @include mq(1279px) {
     width: 50%;
   }
 }
