@@ -128,7 +128,7 @@
             </:left>
             <:right as |Item|>
               <Item @labelFor="contact-email">
-                <:label>E-mailadres</:label>
+                <:label>E-mail</:label>
                 <:content>
                   <AuInput
                     @value={{this.model.contact.email}}
@@ -216,22 +216,28 @@
               <Item @alignTop={{true}}>
                 <:label>FOD financiering</:label>
                 <:content>
-                  <AuControlRadio
-                    @label="Ja"
-                    @name="financing"
-                    @value={{true}}
-                    checked={{this.willReceiveFinancing}}
-                    @onChange={{fn (mut this.willReceiveFinancing) true}}
-                    @identifier="receives-financing"
-                  /><br />
-                  <AuControlRadio
-                    @label="Nee"
-                    @name="financing"
-                    @value={{false}}
-                    checked={{not this.willReceiveFinancing}}
-                    @onChange={{fn (mut this.willReceiveFinancing) false}}
-                    @identifier="receives-no-financing"
-                  />
+                  <ul class="au-c-list-inline">
+                    <li class="au-c-list-inline__item">
+                      <AuControlRadio
+                        @label="Ja"
+                        @name="financing"
+                        @value={{true}}
+                        checked={{this.willReceiveFinancing}}
+                        @onChange={{fn (mut this.willReceiveFinancing) true}}
+                        @identifier="receives-financing"
+                      />
+                    </li>
+                    <li class="au-c-list-inline__item">
+                      <AuControlRadio
+                        @label="Nee"
+                        @name="financing"
+                        @value={{false}}
+                        checked={{not this.willReceiveFinancing}}
+                        @onChange={{fn (mut this.willReceiveFinancing) false}}
+                        @identifier="receives-no-financing"
+                      />
+                    </li>
+                  </ul>
                 </:content>
               </Item>
             </:left>

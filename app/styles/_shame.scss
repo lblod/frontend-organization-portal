@@ -25,3 +25,51 @@ table.dataTable tbody th {
     display: none;
   }
 }
+
+// Data table fixes > @TODO: port to ember-appuniversum
+.au-c-data-table__table.au-c-data-table__table--small {
+  th:first-child,
+  td:first-child {
+    padding-left: $au-unit;
+  }
+}
+
+.au-c-data-table__header {
+  th {
+    box-shadow: inset 0 -.2rem 0 0 $au-gray-300;
+  }
+}
+
+// Inline list for radio buttons
+.au-c-list-inline {
+  display: flex;
+  flex-direction: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: $au-unit-tiny;
+  margin-bottom: $au-unit-tiny;
+}
+
+.au-c-list-inline__item {
+  display: flex;
+  align-items: center;
+
+  & + & {
+    margin-left: $au-unit;
+  }
+}
+
+// Tweak breadcrumb list: improve responsive behaviour
+.au-c-list-horizontal--breadcrumbs {
+  @include au-font-size($au-base);
+
+  @include mq($until:small) {
+    .au-c-list-horizontal__item {
+      display: none;
+    }
+
+    .au-c-list-horizontal__item:first-child {
+      display: block;
+    }
+  }
+}
