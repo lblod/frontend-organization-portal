@@ -42,9 +42,12 @@
           {{! TODO: Take the last date from the change events }}
           {{#if @model.administrativeUnit.resultedFrom}}
             <Item>
-              <:label />
+              <:label> </:label>
               <:content>
-                <AuHelpText @skin="tertiary" class="au-u-margin-top-none">Gewijzigd op
+                <AuHelpText
+                  @skin="tertiary"
+                  class="au-u-margin-top-none"
+                >Gewijzigd op
                   {{date-format
                     @model.administrativeUnit.resultedFrom.firstObject.date
                   }}</AuHelpText>
