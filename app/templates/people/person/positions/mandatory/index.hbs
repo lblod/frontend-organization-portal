@@ -19,14 +19,14 @@
       </:subtitle>
       <:action>
         {{! TODO: Replace this with the "edit" route once it is created }}
-        <AuLink
+        {{!-- <AuLink
           @route="people.person.positions.mandatory"
           @skin="button-secondary"
           @icon="pencil"
           @iconAlignment="left"
         >
           Bewerk
-        </AuLink>
+        </AuLink> --}}
       </:action>
     </PageHeader>
 
@@ -69,7 +69,7 @@
           <Card.Grid as |Item|>
             {{#if @model.mandatory.contacts.firstObject.email}}
               <Item>
-                <:label>Email</:label>
+                <:label>E-mail</:label>
                 <:content>
                   {{@model.mandatory.contacts.firstObject.email}}
                 </:content>
@@ -77,7 +77,7 @@
             {{/if}}
             {{#if @model.mandatory.contacts.firstObject.telephone}}
               <Item>
-                <:label>Vaste telefoonnummer</:label>
+                <:label>Vast telefoonnummer</:label>
                 <:content>
                   {{@model.mandatory.contacts.firstObject.telephone}}
                 </:content>

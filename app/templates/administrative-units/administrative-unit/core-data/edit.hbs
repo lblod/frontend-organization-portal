@@ -63,7 +63,7 @@
             </Card.Grid>
             <Card.Grid as |Item|>
               <Item @labelFor="recognized-worship-type-select">
-                <:label>Type eredienst</:label>
+                <:label>Soort eredienst</:label>
                 <:content>
                   <RecognizedWorshipTypeSelect
                     @selected={{this.model.administrativeUnit.recognizedWorshipType}}
@@ -96,46 +96,49 @@
                 <Item>
                   <:label>Grensoverschrijvend</:label>
                   <:content>
-                    <AuControlRadio
-                      @label="Ja"
-                      @name="is-cross-border"
-                      @value={{@model.administrativeUnit.crossBorder}}
-                      @identifier="cross-border-true"
-                      @onChange={{fn
-                        (mut @model.administrativeUnit.crossBorder)
-                        true
-                      }}
-                      checked={{@model.administrativeUnit.crossBorder}}
-                    />
-
-                    <br />
-
-                    <AuControlRadio
-                      @label="Nee"
-                      @name="is-cross-border"
-                      @value={{@model.administrativeUnit.crossBorder}}
-                      @identifier="cross-border-false"
-                      @onChange={{fn
-                        (mut @model.administrativeUnit.crossBorder)
-                        false
-                      }}
-                      checked={{not @model.administrativeUnit.crossBorder}}
-                    />
+                    <ul class="au-c-list-inline">
+                      <li class="au-c-list-inline__item">
+                        <AuControlRadio
+                          @label="Ja"
+                          @name="is-cross-border"
+                          @value={{@model.administrativeUnit.crossBorder}}
+                          @identifier="cross-border-true"
+                          @onChange={{fn
+                            (mut @model.administrativeUnit.crossBorder)
+                            true
+                          }}
+                          checked={{@model.administrativeUnit.crossBorder}}
+                        />
+                      </li>
+                      <li class="au-c-list-inline__item">
+                        <AuControlRadio
+                          @label="Nee"
+                          @name="is-cross-border"
+                          @value={{@model.administrativeUnit.crossBorder}}
+                          @identifier="cross-border-false"
+                          @onChange={{fn
+                            (mut @model.administrativeUnit.crossBorder)
+                            false
+                          }}
+                          checked={{not @model.administrativeUnit.crossBorder}}
+                        />
+                      </li>
+                    </ul>
                   </:content>
                 </Item>
               </Card.Grid>
             {{/if}}
             <Card.Grid as |Item|>
+              {{!-- Temporarily disabled - cf https://binnenland.atlassian.net/browse/OP-583
               <Item @labelFor="administrative-unit-scope">
                 <:label>Werkingsgebied</:label>
                 <:content>
-                  {{! TODO: Enable multiple selections and concat the selections in one label }}
                   <ScopeSelect
                     @selected={{this.model.administrativeUnit.scope}}
                     @onChange={{fn (mut this.model.administrativeUnit.scope)}}
                   />
                 </:content>
-              </Item>
+              </Item> --}}
               {{#each @model.administrativeUnit.identifiers as |identifier|}}
                 <Item>
                   <:label>{{identifier.idName}}</:label>

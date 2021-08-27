@@ -44,7 +44,7 @@
             <Item>
               <:label> </:label>
               <:content>
-                <AuHelpText @skin="tertiary">Gewijzigd op
+                <AuHelpText @skin="tertiary" class="au-u-margin-top-none">Gewijzigd op
                   {{date-format
                     @model.administrativeUnit.resultedFrom.firstObject.date
                   }}</AuHelpText>
@@ -54,7 +54,7 @@
         </Card.Grid>
         <Card.Grid as |Item|>
           <Item>
-            <:label>Type eredienst</:label>
+            <:label>Soort eredienst</:label>
             <:content
             >{{@model.administrativeUnit.recognizedWorshipType.label}}</:content>
           </Item>
@@ -82,12 +82,13 @@
         {{/if}}
 
         <Card.Grid as |Item|>
+          {{!-- Temporarily disabled - cf https://binnenland.atlassian.net/browse/OP-583
           {{#if @model.administrativeUnit.scope.label}}
             <Item>
               <:label>Werkingsgebied</:label>
               <:content>{{@model.administrativeUnit.scope.label}}</:content>
             </Item>
-          {{/if}}
+          {{/if}} --}}
           {{#each @model.administrativeUnit.identifiers as |identifier|}}
             <Item>
               <:label>{{identifier.idName}}</:label>
