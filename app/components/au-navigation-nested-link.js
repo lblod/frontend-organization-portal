@@ -1,3 +1,5 @@
+// Temporary component to fix the focus management inside the app when a secondary sidebar navigation is used.
+// @TODO: investigate if the id can be passed inside the navigation link component so the use is more flexible
 import Component from '@glimmer/component';
 import { deprecate } from '@ember/debug';
 import { action } from '@ember/object';
@@ -24,6 +26,6 @@ export default class AuNavigationNestedLink extends Component {
   @action
   linkFocus() {
     // Focus content window
-    document.querySelectorAll('#container')[0].focus();
+    document.getElementById('container').focus();
   }
 }
