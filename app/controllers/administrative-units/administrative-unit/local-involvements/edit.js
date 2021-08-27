@@ -68,9 +68,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     let involvements = yield this.model.involvements;
 
     for (let involvement of involvements.toArray()) {
-      if (involvement.hasDirtyAttributes) {
-        yield involvement.save();
-      }
+      yield involvement.save();
     }
 
     this.router.transitionTo(

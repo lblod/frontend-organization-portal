@@ -1,7 +1,7 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 
 export default class PublicInvolvementModel extends Model {
-  @attr percentage;
+  @attr('number') percentage;
 
   @belongsTo('involvement-type', {
     inverse: null,
