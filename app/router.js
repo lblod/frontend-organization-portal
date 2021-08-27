@@ -71,7 +71,9 @@ Router.map(function () {
         this.route(
           'local-involvements',
           { path: '/betrokken-lokale-besturen' },
-          function () {}
+          function () {
+            this.route('edit');
+          }
         );
       });
       this.route('new', { path: '/nieuwe-bestuurseenheid' });

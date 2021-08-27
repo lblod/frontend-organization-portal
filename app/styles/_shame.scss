@@ -73,3 +73,8 @@ table.dataTable tbody th {
     }
   }
 }
+
+// Fix alignment issue on data tables containing input fields
+.au-c-data-table__table td {
+  vertical-align: top;
+}
