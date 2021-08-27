@@ -82,12 +82,13 @@
         {{/if}}
 
         <Card.Grid as |Item|>
+          {{!-- Temporarily disabled - cf https://binnenland.atlassian.net/browse/OP-583
           {{#if @model.administrativeUnit.scope.label}}
             <Item>
               <:label>Werkingsgebied</:label>
               <:content>{{@model.administrativeUnit.scope.label}}</:content>
             </Item>
-          {{/if}}
+          {{/if}} --}}
           {{#each @model.administrativeUnit.identifiers as |identifier|}}
             <Item>
               <:label>{{identifier.idName}}</:label>

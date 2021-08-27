@@ -129,16 +129,16 @@
               </Card.Grid>
             {{/if}}
             <Card.Grid as |Item|>
+              {{!-- Temporarily disabled - cf https://binnenland.atlassian.net/browse/OP-583
               <Item @labelFor="administrative-unit-scope">
                 <:label>Werkingsgebied</:label>
                 <:content>
-                  {{! TODO: Enable multiple selections and concat the selections in one label }}
                   <ScopeSelect
                     @selected={{this.model.administrativeUnit.scope}}
                     @onChange={{fn (mut this.model.administrativeUnit.scope)}}
                   />
                 </:content>
-              </Item>
+              </Item> --}}
               {{#each @model.administrativeUnit.identifiers as |identifier|}}
                 <Item>
                   <:label>{{identifier.idName}}</:label>
