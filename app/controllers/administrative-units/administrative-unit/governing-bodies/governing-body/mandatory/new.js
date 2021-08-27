@@ -13,6 +13,9 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @service router;
   @service store;
 
+  queryParams = ['personId'];
+
+  @tracked personId;
   @tracked targetPerson = null;
   @tracked selectedRole = null;
 
@@ -65,6 +68,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   }
 
   reset() {
+    this.personId = null;
     this.targetPerson = null;
     this.selectedRole = null;
     this.removeUnsavedRecords();
