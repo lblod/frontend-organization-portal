@@ -5,7 +5,6 @@
     <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
     <:action>
       <AuButton
-        {{! TODO Disable the button when the total financing percentage is not equals 100% }}
         @disabled={{this.isFinancingTotalNotValid}}
         form="local-involvements-edit-creation"
         type="submit"
@@ -48,15 +47,15 @@
             <AuInput
               @width="block"
               @value={{involvement.administrativeUnit.classification.label}}
-              disabled={{true}}
+              @disabled={{true}}
             />
           </td>
           <td>
             <PowerSelect
               @noMatchesMessage="Geen resultaten"
               @options={{@model.involvementTypes}}
-              @selected={{this.selectedInvolvementType}}
-              @onChange={{this.handleInvolvimentTypeSelect}}
+              @selected={{involvement.involvementType}}
+              @onChange={{fn (mut involvement.involvementType)}}
               @triggerId="involvement-type-select"
               as |involvementType|
             >
@@ -64,7 +63,6 @@
             </PowerSelect>
           </td>
           <td>
-            {{! TODO disable the input when the involvement type isn't financial }}
             {{#let (unique-id) as |id|}}
               <label class="au-u-hidden-visually" for={{id}}>
                 Financieel percentage
@@ -72,7 +70,7 @@
               <AuInput
                 @value={{involvement.percentage}}
                 id={{id}}
-                disabled={{this.isNotFinancialType}}
+                @disabled={{not-eq involvement.involvementType.id this.INVOLVEMENT_TYPE.FINANCIAL}}
               />
             {{/let}}
           </td>

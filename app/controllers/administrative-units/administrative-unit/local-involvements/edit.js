@@ -1,18 +1,15 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
-
-const INVOLVEMENT_TYPE = {
-  FINANCIAL: 'ac400cc9f135ac7873fb3e551ec738c1',
-};
 
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditController extends Controller {
   @service router;
   @service store;
 
-  @tracked selectedInvolvementType;
+  INVOLVEMENT_TYPE = {
+    FINANCIAL: 'ac400cc9f135ac7873fb3e551ec738c1',
+  };
 
   get totalFinancingPercentage() {
     let total = 0;
@@ -30,15 +27,6 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     return this.totalFinancingPercentage !== 100;
   }
 
-  get isNotFinancialType() {
-    return this.selectedInvolvementType?.id !== INVOLVEMENT_TYPE.FINANCIAL;
-  }
-
-  @action
-  async handleInvolvimentTypeSelect(involvementType) {
-    this.selectedInvolvementType = involvementType;
-  }
-
   setup() {
     if (this.model.involvements.length === 0) {
       this.addNewLocalInvolvement();
@@ -53,7 +41,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     let involvements = this.model.involvements;
 
     for (const involvement of involvements.toArray()) {
-      if (involvement.isNew) {
+      if (involvement.hasDirtyAttributes) {
         involvement.rollbackAttributes();
       }
     }
@@ -64,6 +52,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     this.model.involvements.pushObject(
       this.store.createRecord('local-involvement', {
         worshipService: this.model.administrativeUnit,
+        percentage: 0,
       })
     );
   }
@@ -72,21 +61,21 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   *save(event) {
     event.preventDefault();
 
-    let involvements = yield this.model.involvements;
-
-    if (~this.isFinancingTotalNotValid) {
-      for (let involvement of involvements.toArray()) {
-        if (involvement.hasDirtyAttributes) {
-          yield involvement.save();
-        }
-      }
-
-      this.router.transitionTo(
-        'administrative-units.administrative-unit.local-involvements',
-        this.model.administrativeUnit.id
-      );
+    if (this.isFinancingTotalNotValid) {
+      return;
     }
 
-    return false;
+    let involvements = yield this.model.involvements;
+
+    for (let involvement of involvements.toArray()) {
+      if (involvement.hasDirtyAttributes) {
+        yield involvement.save();
+      }
+    }
+
+    this.router.transitionTo(
+      'administrative-units.administrative-unit.local-involvements',
+      this.model.administrativeUnit.id
+    );
   }
 }
