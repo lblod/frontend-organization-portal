@@ -54,12 +54,13 @@
                 </:content>
               </Item>
             {{/if}}
+            {{!-- Temporarily disabled - cf https://binnenland.atlassian.net/browse/OP-583
             {{#if @model.administrativeUnit.scope.label}}
               <Item>
                 <:label>Werkingsgebied</:label>
                 <:content>{{@model.administrativeUnit.scope.label}}</:content>
               </Item>
-            {{/if}}
+            {{/if}} --}}
           </:left>
           <:right as |Item|>
             <Item>
@@ -75,7 +76,7 @@
               <Item>
                 <:label></:label>
                 <:content>
-                  <AuHelpText @skin="tertiary">Gewijzigd op
+                  <AuHelpText @skin="tertiary" class="au-u-margin-top-none">Gewijzigd op
                     {{date-format
                       @model.administrativeUnit.resultedFrom.firstObject.date
                     }}</AuHelpText>

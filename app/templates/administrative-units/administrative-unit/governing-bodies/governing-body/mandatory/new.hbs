@@ -109,7 +109,7 @@
             </:left>
             <:right as |Item|>
               <Item @labelFor="contact-email">
-                <:label>E-mailadres</:label>
+                <:label>E-mail</:label>
                 <:content>
                   <AuInput
                     @value={{@model.contact.email}}
@@ -182,7 +182,7 @@
                   <AuInput
                     @value={{@model.administrativeUnit.name}}
                     @width="block"
-                    disabled={{true}}
+                    @disabled={{true}}
                   />
                 </:content>
               </Item>
@@ -219,7 +219,7 @@
                   <AuInput
                     @width="block"
                     @value={{@model.governingBody.period}}
-                    disabled={{true}}
+                    @disabled={{true}}
                   />
                 </:content>
               </Item>

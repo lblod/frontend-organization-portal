@@ -1,6 +1,11 @@
 <PageHeader class="au-o-box">
   <:title>Betrokken lokale besturen</:title>
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+  <:alert>
+    <AuAlert @alertIcon="info-circle" @alertskin="info" @alertsize="small" class="au-u-margin-bottom-small au-u-margin-top-small">
+      <p>Momenteel kan u nog geen betrokken lokale bestuur toevoegen.</p>
+    </AuAlert>
+  </:alert>
 </PageHeader>
 
 <AuDataTable @content={{@model.involvements}} @noDataMessage="Geen betrokken lokale besturen" as |t|>

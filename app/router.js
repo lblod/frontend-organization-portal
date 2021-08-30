@@ -46,6 +46,7 @@ Router.map(function () {
           this.route('site', { path: '/:siteId/' }, function () {
             this.route('edit');
           });
+          this.route('new', { path: '/nieuwe-vestiging' });
         });
         this.route(
           'governing-bodies',
@@ -80,6 +81,13 @@ Router.map(function () {
     this.route('organization', { path: '/:id/' }, function () {});
   });
   this.route('contact');
+  this.route('legal', { path: '/legaal' }, function () {
+    this.route('disclaimer');
+    this.route('cookiestatement', { path: '/cookieverklaring' });
+    this.route('accessibilitystatement', {
+      path: '/toegankelijkheidsverklaring',
+    });
+  });
   this.route('route-not-found', {
     path: '/*wildcard',
   });
