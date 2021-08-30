@@ -1,0 +1,114 @@
+{{page-title "Nieuwe persoon"}}
+{{breadcrumb "Nieuwe persoon" route="people.new"}}
+
+<AuBodyContainer @scroll={{true}}>
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <PageHeader>
+      <:title>Voeg een nieuwe persoon toe</:title>
+    </PageHeader>
+
+    <form
+      id="person-creation"
+      {{on "submit" (perform this.savePersonTask)}}
+    >
+      <EditCard>
+        <:title>Persoonlijke gegevens</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item @labelFor="person-given-name">
+                <:label>Voornaam</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.person.givenName}}
+                    @width="block"
+                    @type="number"
+                    id="person-given-name"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="person-family-name">
+                <:label>Achternaam</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.person.familyName}}
+                    @width="block"
+                    id="person-family-name"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="person-first-name-used">
+                <:label>Roepnaam</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.person.firstNameUsed}}
+                    @width="block"
+                    id="person-first-name-used"
+                  />
+                </:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item @labelFor="person-gender" @alignTop={{true}}>
+                <:label>Geslacht</:label>
+                <:content>
+                  <GenderSelect
+                    @selected={{@model.person.gender}}
+                    @onChange={{fn (mut @model.person.gender)}}
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="person-date-of-birth">
+                <:label>Geboortedatum</:label>
+                <:content>
+                  <Datepicker
+                    @id="person-date-of-birth"
+                    @value={{@model.dateOfBirth.date}}
+                    @onChange={{fn (mut @model.dateOfBirth.date)}}
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="person-nationality">
+                <:label>Nationaliteit</:label>
+                <:content>
+                  <NationalitySelect
+                    @selected={{@model.person.nationality}}
+                    @onChange={{fn (mut @model.person.nationality)}}
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="person-ssn">
+                <:label>Rijksregisternummer</:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.structuredIdentifierSSN.localId}}
+                    @width="block"
+                    id="person-ssn"
+                  />
+                </:content>
+              </Item>
+            </:right>
+          </Card.Columns>
+        </:card>
+      </EditCard>
+    </form>
+
+    <AuButtonGroup>
+      <AuButton
+        @loading={{this.savePersonTask.isRunning}}
+        @disabled={{this.savePersonTask.isRunning}}
+        form="person-creation"
+        type="submit"
+      >
+        Opslaan
+      </AuButton>
+
+      <AuButton
+        @skin="secondary"
+        {{on "click" this.cancel}}
+      >
+        Annuleer
+      </AuButton>
+    </AuButtonGroup>
+  </div>
+</AuBodyContainer>

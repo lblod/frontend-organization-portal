@@ -8,7 +8,10 @@
   </PageHeader>
 
   {{#if this.isSelectingTargetPerson}}
-    <PersonSearch @onSelect={{fn (mut this.targetPerson)}} />
+    <PersonSearch
+      @onSelect={{fn (mut this.targetPerson)}}
+      @personCreationRedirectUrl={{this.router.currentURL}}
+    />
   {{else}}
     <form
       class="au-o-box au-o-flow au-o-flow--large"

@@ -13,6 +13,9 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
   @service router;
   @service store;
 
+  queryParams = ['personId'];
+
+  @tracked personId;
   @tracked targetPerson = null;
   @tracked isCurrentPosition = true;
   @tracked willReceiveFinancing = true;
@@ -68,6 +71,7 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
   }
 
   reset() {
+    this.personId = null;
     this.targetPerson = null;
     this.isCurrentPosition = true;
     this.willReceiveFunding = true;

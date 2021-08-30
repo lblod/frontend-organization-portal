@@ -1,0 +1,14 @@
+<PowerSelect
+  @allowClear={{true}}
+  @loadingMessage="Aan het laden..."
+  @noMatchesMessage="Geen resultaten"
+  @onChange={{@onChange}}
+  @search={{perform this.searchNationalitiesTask}}
+  @searchEnabled={{true}}
+  @searchField="label"
+  @searchMessage="Typ om te zoeken"
+  @selected={{@selected}}
+  as |nationality|
+>
+  {{nationality.label}}
+</PowerSelect>

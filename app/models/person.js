@@ -29,4 +29,9 @@ export default class PersonModel extends Model {
     inverse: null,
   })
   gender;
+
+  @belongsTo('identifier', {
+    inverse: null,
+  })
+  registration;
 }

@@ -4,7 +4,11 @@ import { inject as service } from '@ember/service';
 export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute extends Route {
   @service store;
 
-  model() {
+  async model({ personId }, transition) {
+    if (personId) {
+      transition.data.person = await this.store.findRecord('person', personId);
+    }
+
     return {
       administrativeUnit: this.modelFor(
         'administrative-units.administrative-unit'
@@ -15,6 +19,14 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute exte
       address: this.store.createRecord('address'),
       position: this.store.createRecord('minister-position'),
     };
+  }
+
+  setupController(controller, model, transition) {
+    super.setupController(...arguments);
+
+    if (transition.data.person) {
+      controller.targetPerson = transition.data.person;
+    }
   }
 
   resetController(controller) {
