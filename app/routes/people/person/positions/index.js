@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { addPaginationMeta } from 'frontend-contact-hub/utils/data-table';
 
 export default class PeoplePersonPositionsIndexRoute extends Route {
   @service store;
@@ -16,9 +17,12 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
       ].join(),
     });
 
+    let positions = await person.mandatories;
+    addPaginationMeta(positions);
+
     return {
       person,
-      positions: await person.mandatories,
+      positions,
       ministerPositions: await person.agentsInPosition,
     };
   }
