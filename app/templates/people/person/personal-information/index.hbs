@@ -42,7 +42,8 @@
       </:card>
     </DataCard>
 
-    <DataCard>
+    {{!-- Hide contact information for now because it needs further changes. https://binnenland.atlassian.net/browse/OP-600 --}}
+    {{!-- <DataCard>
       <:title>Contactgegevens:
         {{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.classification.label}}
       </:title>
@@ -92,13 +93,13 @@
                 </:content>
               </Item>
             {{/if}}
-            {{!-- <Item>
+            <Item>
               <:label>GSM nummer</:label>
               <:content />
-            </Item> --}}
+            </Item>
           </:right>
         </Card.Columns>
       </:card>
-    </DataCard>
+    </DataCard> --}}
   </div>
 </div>
