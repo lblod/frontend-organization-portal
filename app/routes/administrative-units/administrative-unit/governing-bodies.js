@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { addPaginationMeta } from 'frontend-contact-hub/utils/data-table';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute extends Route {
   @service store;
@@ -22,9 +23,12 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
     //worship services related administrative units only have one governing body and many nested governing bodies "has-time-specializations"
     let governingBody = await administrativeUnit.governingBodies.firstObject;
 
+    let governingBodies = await governingBody.hasTimeSpecializations;
+    addPaginationMeta(governingBodies);
+
     return {
       administrativeUnit,
-      governingBodies: await governingBody.hasTimeSpecializations,
+      governingBodies,
       governingBodyClassification: await governingBody.classification,
     };
   }
