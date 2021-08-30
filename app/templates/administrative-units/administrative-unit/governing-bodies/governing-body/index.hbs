@@ -21,39 +21,43 @@
     <DataCard>
       <:title>Bestuursorgaan</:title>
       <:card as |Card|>
-        <Card.Grid as |Item|>
-          <Item>
-            <:label>Type</:label>
-            <:content>
-              {{@model.governingBodyClassification.label}}
-            </:content>
-          </Item>
-          {{#if @model.governingBody.startDate}}
+        <Card.Columns>
+          <:left as |Item|>
             <Item>
-              <:label>Start datum</:label>
+              <:label>Type</:label>
               <:content>
-                {{date-format @model.governingBody.startDate}}
+                {{@model.governingBodyClassification.label}}
               </:content>
             </Item>
-          {{/if}}
-          {{#if @model.governingBody.period}}
-            <Item>
-              <:label>Termijn</:label>
-              <:content>
-                Bestuursperiode
-                {{@model.governingBody.period}}
-              </:content>
-            </Item>
-          {{/if}}
-          {{#if @model.governingBody.endDate}}
-            <Item>
-              <:label>Einddatum</:label>
-              <:content>
-                {{date-format @model.governingBody.endDate}}
-              </:content>
-            </Item>
-          {{/if}}
-        </Card.Grid>
+            {{#if @model.governingBody.period}}
+              <Item>
+                <:label>Termijn</:label>
+                <:content>
+                  Bestuursperiode
+                  {{@model.governingBody.period}}
+                </:content>
+              </Item>
+            {{/if}}
+          </:left>
+          <:right as |Item|>
+            {{#if @model.governingBody.startDate}}
+              <Item>
+                <:label>Start datum</:label>
+                <:content>
+                  {{date-format @model.governingBody.startDate}}
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if @model.governingBody.endDate}}
+              <Item>
+                <:label>Einddatum</:label>
+                <:content>
+                  {{date-format @model.governingBody.endDate}}
+                </:content>
+              </Item>
+            {{/if}}
+          </:right>
+        </Card.Columns>
       </:card>
     </DataCard>
 
