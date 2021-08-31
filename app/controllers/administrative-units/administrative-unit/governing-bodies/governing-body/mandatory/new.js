@@ -27,6 +27,10 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     return this.selectedRole?.id === MANDATORY_ROLE.WORSHIP_MEMBER;
   }
 
+  get canSubmit() {
+    return Boolean(this.selectedRole);
+  }
+
   @action
   async handleMandateRoleSelect(role) {
     this.model.mandatory.typeHalf = undefined;
@@ -36,6 +40,10 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @dropTask
   *createMandatoryPositionTask(event) {
     event.preventDefault();
+
+    if (!this.canSubmit) {
+      return;
+    }
 
     let { mandatory, governingBody, contact, contactMobile, address } =
       this.model;

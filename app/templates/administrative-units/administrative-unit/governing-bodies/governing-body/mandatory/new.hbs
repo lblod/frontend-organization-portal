@@ -154,7 +154,7 @@
           <Card.Columns>
             <:left as |Item|>
               <Item @labelFor="board-position">
-                <:label>Bestuursfunctie</:label>
+                <:label>Bestuursfunctie*</:label>
                 <:content>
                   <MandateRoleSelect
                     @selected={{this.selectedRole}}
@@ -228,6 +228,9 @@
               </Item>
             </:right>
           </Card.Columns>
+          <AuHelpText @skin="secondary" class="au-u-margin-top">
+            * Verplicht veld
+          </AuHelpText>
         </:card>
       </EditCard>
 
@@ -236,6 +239,7 @@
           @icon="add"
           @iconAlignment="left"
           @loading={{this.createMandatoryPositionTask.isRunning}}
+          @disabled={{or (not this.canSubmit) this.createMandatoryPositionTask.isRunning}}
           class="au-u-margin-right-small"
           type="submit"
         >
