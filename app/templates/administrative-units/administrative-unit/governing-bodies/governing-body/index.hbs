@@ -61,104 +61,102 @@
       </:card>
     </DataCard>
 
-    {{#if @model.memberMandatories}}
-      <div>
-        <AuToolbar class="au-u-margin-bottom-small">
-          <AuToolbarGroup>
-            <AuHeading @level="4" @skin="5">Bestuursleden</AuHeading>
-          </AuToolbarGroup>
-          <AuToolbarGroup>
-            <AuLink
-              @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
-              @skin="button-secondary"
-              @icon="add"
-              @iconAlignment="left"
-            >
-              Nieuw
-            </AuLink>
-          </AuToolbarGroup>
-        </AuToolbar>
-        <AuDataTable
-          @content={{@model.memberMandatories}}
-          @noDataMessage="Geen Bestuursleden"
-          as |t|
-        >
-          <t.content as |c|>
-            <c.header>
-              <AuDataTableThSortable
-                @field="governing-alias.given-name"
-                @currentSorting={{this.sort}}
-                @label="Voornaam"
-              />
-              <AuDataTableThSortable
-                @field="governing-alias.family-name"
-                @currentSorting={{this.sort}}
-                @label="Achternaam"
-              />
-              <AuDataTableThSortable
-                @field="mandate.role-board.label"
-                @currentSorting={{this.sort}}
-                @label="Mandaat"
-              />
-              <th class="au-c-data-table__header-title">Start mandaat</th>
-              <th class="au-c-data-table__header-title">Einde mandaat</th>
-              <th></th>
-            </c.header>
-            <c.body as |mandatory|>
+    <div>
+      <AuToolbar class="au-u-margin-bottom-small">
+        <AuToolbarGroup>
+          <AuHeading @level="4" @skin="5">Bestuursleden</AuHeading>
+        </AuToolbarGroup>
+        <AuToolbarGroup>
+          <AuLink
+            @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
+            @skin="button-secondary"
+            @icon="add"
+            @iconAlignment="left"
+          >
+            Nieuw
+          </AuLink>
+        </AuToolbarGroup>
+      </AuToolbar>
+      <AuDataTable
+        @content={{@model.memberMandatories}}
+        @noDataMessage="Geen bestuursleden"
+        as |t|
+      >
+        <t.content as |c|>
+          <c.header>
+            <AuDataTableThSortable
+              @field="governing-alias.given-name"
+              @currentSorting={{this.sort}}
+              @label="Voornaam"
+            />
+            <AuDataTableThSortable
+              @field="governing-alias.family-name"
+              @currentSorting={{this.sort}}
+              @label="Achternaam"
+            />
+            <AuDataTableThSortable
+              @field="mandate.role-board.label"
+              @currentSorting={{this.sort}}
+              @label="Mandaat"
+            />
+            <th class="au-c-data-table__header-title">Start mandaat</th>
+            <th class="au-c-data-table__header-title">Einde mandaat</th>
+            <th></th>
+          </c.header>
+          <c.body as |mandatory|>
 
-              <td>
-                <AuLink
-                  @route="people.person"
-                  @model={{mandatory.governingAlias.id}}
-                >
-                  {{mandatory.governingAlias.givenName}}
-                </AuLink>
-              </td>
-              <td>
-                <AuLink
-                  @route="people.person"
-                  @model={{mandatory.governingAlias.id}}
-                >
-                  {{mandatory.governingAlias.familyName}}
-                </AuLink>
-              </td>
-              <td>
-                <AuLink
-                  @route="people.person.positions.mandatory"
-                  @models={{array mandatory.governingAlias.id mandatory.id}}
-                >
-                  {{mandatory.mandate.roleBoard.label}}
-                </AuLink>
-              </td>
-              <td>
-                {{#if mandatory.startDate}}
-                  {{date-format mandatory.startDate}}
-                {{/if}}
-              </td>
-              <td>
-                {{#if mandatory.endDate}}
-                  {{date-format mandatory.endDate}}
-                {{else if mandatory.expectedEndDate}}
-                  {{date-format mandatory.expectedEndDate}}
-                {{/if}}
-              </td>
-              <td>
-                <AuLink
-                  @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
-                  @models={{array
-                    @model.administrativeUnit.id
-                    @model.governingBody.id
-                    mandatory.id
-                  }}
-                >
-                  Bewerk
-                </AuLink>
-              </td>
-            </c.body>
-          </t.content>
-        </AuDataTable>
-      </div>
-    {{/if}}
+            <td>
+              <AuLink
+                @route="people.person"
+                @model={{mandatory.governingAlias.id}}
+              >
+                {{mandatory.governingAlias.givenName}}
+              </AuLink>
+            </td>
+            <td>
+              <AuLink
+                @route="people.person"
+                @model={{mandatory.governingAlias.id}}
+              >
+                {{mandatory.governingAlias.familyName}}
+              </AuLink>
+            </td>
+            <td>
+              <AuLink
+                @route="people.person.positions.mandatory"
+                @models={{array mandatory.governingAlias.id mandatory.id}}
+              >
+                {{mandatory.mandate.roleBoard.label}}
+              </AuLink>
+            </td>
+            <td>
+              {{#if mandatory.startDate}}
+                {{date-format mandatory.startDate}}
+              {{/if}}
+            </td>
+            <td>
+              {{#if mandatory.endDate}}
+                {{date-format mandatory.endDate}}
+              {{else if mandatory.expectedEndDate}}
+                {{date-format mandatory.expectedEndDate}}
+              {{/if}}
+            </td>
+            <td>
+              <AuLink
+                @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
+                @models={{array
+                  @model.administrativeUnit.id
+                  @model.governingBody.id
+                  mandatory.id
+                }}
+              >
+                Bewerk
+              </AuLink>
+            </td>
+          </c.body>
+        </t.content>
+      </AuDataTable>
+    </div>
 
     <div>
       <AuToolbar class="au-u-margin-bottom-small">
@@ -178,7 +176,7 @@
       </AuToolbar>
       <AuDataTable
         @content={{@model.otherMandatories}}
-        @noDataMessage="Geen Mandatarissen"
+        @noDataMessage="Geen mandatarissen"
         as |t|
       >
         <t.content as |c|>
