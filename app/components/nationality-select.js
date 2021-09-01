@@ -10,11 +10,11 @@ export default class NationalitySelectComponent extends Component {
     yield timeout(500);
 
     const query = {
-      sort: 'label',
+      sort: 'nationality-label',
     };
 
     if (search.trim() !== '') {
-      query['filter[label]'] = search;
+      query['filter[nationality-label]'] = search;
     }
 
     return yield this.store.query('nationality', query);
