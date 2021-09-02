@@ -59,35 +59,6 @@
                   />
                 </:content>
               </Item>
-            {{/if}}
-          </:left>
-          <:right as |Item|>
-            <Item @labelFor="status-select">
-              <:label>Status</:label>
-              <:content>
-                <OrganizationStatusSelect
-                  @selected={{this.model.administrativeUnit.organizationStatus}}
-                  @onChange={{fn
-                    (mut this.model.administrativeUnit.organizationStatus)
-                  }}
-                />
-              </:content>
-            </Item>
-            <Item @labelFor="kbo-identifier">
-              <:label>KBO Nummer</:label>
-              <:content>
-                <AuInput
-                  @width="block"
-                  @value={{this.model.structuredIdentifierKBO.localId}}
-                  id="kbo-identifier"
-                />
-              </:content>
-            </Item>
-          </:right>
-        </Card.Columns>
-        <Card.Columns>
-          <:left as |Item|>
-            {{#if this.isNewWorshipService}}
               <Item @alignTop={{true}}>
                 <:label>Grensoverschrijvend</:label>
                 <:content>
@@ -133,6 +104,27 @@
             </Item> --}}
           </:left>
           <:right as |Item|>
+            <Item @labelFor="status-select">
+              <:label>Status</:label>
+              <:content>
+                <OrganizationStatusSelect
+                  @selected={{this.model.administrativeUnit.organizationStatus}}
+                  @onChange={{fn
+                    (mut this.model.administrativeUnit.organizationStatus)
+                  }}
+                />
+              </:content>
+            </Item>
+            <Item @labelFor="kbo-identifier">
+              <:label>KBO Nummer</:label>
+              <:content>
+                <AuInput
+                  @width="block"
+                  @value={{this.model.structuredIdentifierKBO.localId}}
+                  id="kbo-identifier"
+                />
+              </:content>
+            </Item>
             <Item @labelFor="sharepoint-identifier">
               <:label>Sharepoint Identificator</:label>
               <:content>
@@ -243,6 +235,19 @@
       <:card as |Card|>
         <Card.Columns>
           <:left as |Item|>
+          {{#if this.isNewCentralWorshipService}}
+            <Item>
+              <:label>Bestuur van de eredienst</:label>
+              <:content>
+                <WorshipServiceSelect
+                  @selected={{this.model.administrativeUnit.subOrganizations}}
+                  @onChange={{fn
+                    (mut this.model.administrativeUnit.subOrganizations)
+                  }}
+                />
+              </:content>
+            </Item>
+          {{else}}
             <Item>
               <:label>Centraal bestuur</:label>
               <:content>
@@ -254,6 +259,7 @@
                 />
               </:content>
             </Item>
+          {{/if}}
             <Item>
               <:label>Representatief orgaan</:label>
               <:content>
