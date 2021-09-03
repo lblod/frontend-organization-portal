@@ -78,3 +78,9 @@ table.dataTable tbody th {
 .au-c-data-table__table td {
   vertical-align: top;
 }
+
+// Button group alignment fix
+.au-c-button-group {
+  display: flex;
+  align-items: center;
+}
