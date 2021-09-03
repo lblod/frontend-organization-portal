@@ -1,0 +1,167 @@
+{{page-title "Bewerk"}}
+
+<div class="au-c-body-container au-c-body-container--scroll">
+    <div class="au-o-box au-o-flow au-o-flow--large">
+        <PageHeader>
+        <:title>
+            Positie:
+            {{@model.minister.ministerPosition.function.label}}
+            <br />
+            {{@model.minister.ministerPosition.worshipService.classification.label}}
+            {{@model.minister.ministerPosition.worshipService.name}}
+        </:title>
+        <:subtitle>
+            {{@model.person.givenName}}
+            {{@model.person.familyName}}
+        </:subtitle>
+        </PageHeader>
+    
+
+        <form
+            aria-label="minister-position-edit-form"
+            {{on "submit" (perform this.save)}}
+            class="au-o-flow au-o-flow--large"
+        >
+            <EditCard>
+                <:title>Positie</:title>
+                <:card as |Card|>
+                <Card.Columns>
+                    <:left as |Item|>
+                        <Item>
+                            <:label>Rol</:label>
+                            <:content>
+                            <MinisterPositionFunctionSelect
+                                @onChange={{fn (mut this.model.minister.ministerPosition.function)}}
+                                @selected={{this.model.minister.ministerPosition.function}}
+                            />
+                            </:content>
+                        </Item>
+                        <Item>
+                            <:label>Type</:label>
+                            <:content>
+                                <PowerSelect
+                                    @disabled={{true}}
+                                    @onChange={{fn (mut this.model.minister.ministerPosition.function)}}
+                                    @selected={{this.model.minister.ministerPosition.function}}
+                                >
+                                    Bedienaar
+                                </PowerSelect>
+                            </:content>
+                        </Item>
+                    </:left>
+                    <:right as |Item|>
+                        <Item>
+                            <:label>Naam eredienst</:label>
+                            <:content>
+                            <WorshipServiceSelect
+                                @onChange={{fn (mut this.model.minister.ministerPosition.worshipService)}}
+                                @selected={{this.model.minister.ministerPosition.worshipService}}
+                            />
+                            </:content>
+                        </Item>
+                    </:right>
+                </Card.Columns>
+                </:card>
+            </EditCard>
+
+            <EditCard>
+                <:title>Aanstelling</:title>
+                <:card as |Card|>
+                <Card.Columns>
+                    <:left as |Item|>
+                    <Item @labelFor="start-date">
+                        <:label>Startdatum</:label>
+                        <:content>
+                        <Datepicker
+                            @id="start-date"
+                            @onChange={{fn (mut this.model.minister.agentStartDate)}}
+                            @value={{this.model.minister.agentStartDate}}
+                        />
+                        </:content>
+                    </Item>
+                    </:left>
+                    <:right as |Item|>
+                    <Item @labelFor="end-date">
+                        <:label>Einddatum</:label>
+                        <:content>
+                        <Datepicker
+                            @disabled={{this.isCurrentPosition}}
+                            @id="end-date"
+                            @onChange={{fn (mut this.model.minister.agentEndDate)}}
+                            @value={{this.model.minister.agentEndDate}}
+                        />
+                        </:content>
+                    </Item>
+                    <Item @labelFor="end-date">
+                        <:label></:label>
+                        <:content>
+                        <AuControlCheckbox
+                            @checked={{this.isCurrentPosition}}
+                            @label="Huidige positie"
+                            @identifier="current-position"
+                            @onChange={{fn (mut this.isCurrentPosition)}}
+                        />
+                        </:content>
+                    </Item>
+                    </:right>
+                </Card.Columns>
+                </:card>
+            </EditCard>
+
+            <EditCard>
+                <:title>Financiering</:title>
+                <:card as |Card|>
+                <Card.Columns>
+                    <:left as |Item|>
+                    <Item @alignTop={{true}}>
+                        <:label>FOD financiering</:label>
+                        <:content>
+                        <ul class="au-c-list-inline">
+                            <li class="au-c-list-inline__item">
+                            <AuControlRadio
+                                @label="Ja"
+                                @name="financing"
+                                @value={{this.willReceiveFinancing}}
+                                checked={{this.willReceiveFinancing}}
+                                @onChange={{fn (mut this.willReceiveFinancing) true}}
+                                @identifier="receives-financing"
+                            />
+                            </li>
+                            <li class="au-c-list-inline__item">
+                            <AuControlRadio
+                                @label="Nee"
+                                @name="financing"
+                                @value={{this.willReceiveFinancing}}
+                                checked={{not this.willReceiveFinancing}}
+                                @onChange={{fn (mut this.willReceiveFinancing) false}}
+                                @identifier="receives-no-financing"
+                            />
+                            </li>
+                        </ul>
+                        </:content>
+                    </Item>
+                    </:left>
+                </Card.Columns>
+                </:card>
+            </EditCard>
+
+            {{! TODO: add "Voorwaarde" section once file uploads are supported }}
+
+            <div>
+                <AuButton
+                    @iconAlignment="left"
+                    @loading={{this.save.isRunning}}
+                    @disabled={{this.save.isRunning}}
+                    class="au-u-margin-right-small"
+                    type="submit"
+                >
+                    Opslaan
+                </AuButton>
+                <AuLink @route="people.person.positions.minister">
+                    Annuleer
+                </AuLink>
+            </div>
+        </form>
+    </div>
+</div>
+

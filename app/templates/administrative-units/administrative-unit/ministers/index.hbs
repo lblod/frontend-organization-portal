@@ -47,7 +47,7 @@
           <PositionStatus @endDate={{minister.agentEndDate}}/>
         </td>
         <td>
-          <AuLink @route="administrative-units.administrative-unit.ministers">
+          <AuLink @route="people.person.positions.minister.edit" @models={{array minister.person.id minister.id}}>
             Bewerk
           </AuLink>
         </td>

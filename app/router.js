@@ -28,7 +28,9 @@ Router.map(function () {
         this.route(
           'minister',
           { path: '/bedienaar/:ministerId/' },
-          function () {}
+          function () {
+            this.route('edit');
+          }
         );
       });
       this.route('contacts', function () {});
