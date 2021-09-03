@@ -250,20 +250,21 @@
 
       {{! TODO: add "Voorwaarde" section once file uploads are supported }}
 
-      <div>
+      <AuButtonGroup>
         <AuButton
           @icon="add"
           @iconAlignment="left"
           @loading={{this.createMinisterPositionTask.isRunning}}
-          class="au-u-margin-right-small"
           type="submit"
         >
           Voeg toe
         </AuButton>
-        <AuLink @route="administrative-units.administrative-unit.ministers">
+        <AuLink
+          @route="administrative-units.administrative-unit.ministers"
+          @skin="button-secondary">
           Annuleer
         </AuLink>
-      </div>
+      </AuButtonGroup>
     </form>
   {{/if}}
 </div>
