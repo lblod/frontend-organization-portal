@@ -5,7 +5,8 @@
     <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
     <:action>
       <AuButton
-        @disabled={{this.isFinancingTotalNotValid}}
+        @loading={{this.save.isRunning}}
+        @disabled={{or this.isFinancingTotalNotValid this.save.isRunning}}
         form="local-involvements-edit-creation"
         type="submit"
       >
