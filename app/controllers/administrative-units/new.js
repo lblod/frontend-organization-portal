@@ -109,5 +109,6 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
   newAdministrativeUnit.scope = administrativeUnit.scope;
   newAdministrativeUnit.isSubOrganizationOf =
     administrativeUnit.isSubOrganizationOf;
+  newAdministrativeUnit.subOrganizations = administrativeUnit.subOrganizations;
   newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
 }
