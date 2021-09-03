@@ -67,9 +67,8 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
 
     let involvements = yield this.model.involvements;
 
-    for (let involvement of involvements.toArray()) {
-      yield involvement.save();
-    }
+    let savePromises = involvements.map((involvement) => involvement.save());
+    yield Promise.all(savePromises);
 
     this.router.transitionTo(
       'administrative-units.administrative-unit.local-involvements',
