@@ -95,7 +95,9 @@
                               (mut @model.administrativeUnit.crossBorder)
                               false
                             }}
-                            checked={{not @model.administrativeUnit.crossBorder}}
+                            checked={{not
+                              @model.administrativeUnit.crossBorder
+                            }}
                           />
                         </li>
                       </ul>
@@ -280,18 +282,17 @@
                     "central-worship-service"
                   )
                 }}
-                  {{#each
-                    @model.administrativeUnit.subOrganizations
-                    as |worship|
-                  }}
-                    <Item>
-                      {{! TODO: Enable to edit the list of worship services that are linked to central worship service }}
-                      <:label>Bestuur van de eredienst</:label>
-                      <:content>
-                        {{worship.name}}
-                      </:content>
-                    </Item>
-                  {{/each}}
+                  <Item>
+                    <:label>Bestuur van de eredienst</:label>
+                    <:content>
+                      <WorshipServiceSelect
+                        @selected={{this.model.administrativeUnit.subOrganizations}}
+                        @onChange={{fn
+                          (mut this.model.administrativeUnit.subOrganizations)
+                        }}
+                      />
+                    </:content>
+                  </Item>
                 {{/if}}
                 <Item>
                   <:label>Representatief orgaan</:label>
