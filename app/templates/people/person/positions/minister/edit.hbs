@@ -7,7 +7,6 @@
             Positie:
             {{@model.minister.ministerPosition.function.label}}
             <br />
-            {{@model.minister.ministerPosition.worshipService.classification.label}}
             {{@model.minister.ministerPosition.worshipService.name}}
         </:title>
         <:subtitle>
@@ -177,7 +176,7 @@
                         <:label>Einddatum</:label>
                         <:content>
                         <Datepicker
-                            @disabled={{this.isCurrentPosition}}
+                            @disabled={{this.isCurrentPositionCheck}}
                             @id="end-date"
                             @onChange={{fn (mut this.model.minister.agentEndDate)}}
                             @value={{this.model.minister.agentEndDate}}
@@ -188,10 +187,10 @@
                         <:label></:label>
                         <:content>
                         <AuControlCheckbox
-                            @checked={{this.isCurrentPosition}}
+                            @checked={{this.isCurrentPositionCheck}}
                             @label="Huidige positie"
                             @identifier="current-position"
-                            @onChange={{fn (mut this.isCurrentPosition)}}
+                            @onChange={{fn (mut this.isCurrentPositionCheck)}}
                         />
                         </:content>
                     </Item>

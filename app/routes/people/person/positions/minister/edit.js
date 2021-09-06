@@ -4,4 +4,9 @@ export default class PeoplePersonPositionsMinisterEditRoute extends Route {
   model() {
     return this.modelFor('people.person.positions.minister');
   }
+
+  setupController(controller) {
+    super.setupController(...arguments);
+    controller.setup();
+  }
 }

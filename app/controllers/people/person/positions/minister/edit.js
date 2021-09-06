@@ -11,8 +11,18 @@ const FINANCING_CODE = {
 
 export default class PeoplePersonPositionsMinisterEditController extends Controller {
   @service router;
-
   @tracked willReceiveFinancing;
+  @tracked isCurrentPositionCheck;
+
+  get isCurrentPosition() {
+    return this.model.minister.agentEndDate === null;
+  }
+
+  setup() {
+    this.willReceiveFinancing =
+      this.model.minister.financing.get('id') === FINANCING_CODE.FOD_FINANCED;
+    this.isCurrentPositionCheck = this.isCurrentPosition;
+  }
 
   @dropTask
   *save(event) {
@@ -21,7 +31,7 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
     let contacts = yield this.model.minister.contacts;
     let address = yield contacts.firstObject.contactAddress;
 
-    if (address.isNew || address.hasDirtyAttributes) {
+    if (address.hasDirtyAttributes) {
       address.fullAddress = combineFullAddress(address);
       yield address.save();
     }
