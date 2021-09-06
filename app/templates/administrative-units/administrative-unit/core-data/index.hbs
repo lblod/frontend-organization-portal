@@ -107,6 +107,15 @@
                 {{@model.administrativeUnit.primarySite.address.fullAddress}}
               </:content>
             </Item>
+
+            <Item>
+              <:label>Provincie</:label>
+              <:content>
+                {{@model.administrativeUnit.primarySite.address.province}}
+              </:content>
+            </Item>
+          </:left>
+          <:right as |Item|>
             {{#if
               @model.administrativeUnit.primarySite.contacts.firstObject.telephone
             }}
@@ -117,14 +126,6 @@
                 </:content>
               </Item>
             {{/if}}
-          </:left>
-          <:right as |Item|>
-            <Item>
-              <:label>Provincie</:label>
-              <:content>
-                {{@model.administrativeUnit.primarySite.address.province}}
-              </:content>
-            </Item>
             {{#if
               @model.administrativeUnit.primarySite.contacts.firstObject.website
             }}

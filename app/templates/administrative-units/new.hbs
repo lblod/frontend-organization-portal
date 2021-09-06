@@ -155,37 +155,6 @@
                 />
               </:content>
             </Item>
-            <Item @labelFor="primary-site-address-bus-number">
-              <:label>Busnummer</:label>
-              <:content>
-                <AuInput
-                  @width="block"
-                  @value={{this.model.address.boxNumber}}
-                  id="primary-site-address-bus-number"
-                />
-              </:content>
-            </Item>
-            <Item @labelFor="primary-site-address-municipality">
-              <:label>Gemeente</:label>
-              <:content>
-                <MunicipalitySelect
-                  @selected={{this.model.address.municipality}}
-                  @onChange={{fn (mut this.model.address.municipality)}}
-                />
-              </:content>
-            </Item>
-            <Item @labelFor="primary-site-contact-phone-number">
-              <:label>Telefoonnummer</:label>
-              <:content>
-                <AuInput
-                  @width="block"
-                  @value={{this.model.contact.telephone}}
-                  id="primary-site-contact-phone-number"
-                />
-              </:content>
-            </Item>
-          </:left>
-          <:right as |Item|>
             <Item @labelFor="primary-site-address-house-number">
               <:label>Huisnummer</:label>
               <:content>
@@ -193,6 +162,16 @@
                   @width="block"
                   @value={{this.model.address.number}}
                   id="primary-site-address-house-number"
+                />
+              </:content>
+            </Item>
+            <Item @labelFor="primary-site-address-bus-number">
+              <:label>Busnummer</:label>
+              <:content>
+                <AuInput
+                  @width="block"
+                  @value={{this.model.address.boxNumber}}
+                  id="primary-site-address-bus-number"
                 />
               </:content>
             </Item>
@@ -206,12 +185,33 @@
                 />
               </:content>
             </Item>
+            <Item @labelFor="primary-site-address-municipality">
+              <:label>Gemeente</:label>
+              <:content>
+                <MunicipalitySelect
+                  @selected={{this.model.address.municipality}}
+                  @onChange={{fn (mut this.model.address.municipality)}}
+                />
+              </:content>
+            </Item>
             <Item @labelFor="primary-site-address-province">
               <:label>Provincie</:label>
               <:content>
                 <ProvinceSelect
                   @selected={{this.model.address.province}}
                   @onChange={{fn (mut this.model.address.province)}}
+                />
+              </:content>
+            </Item>
+          </:left>
+          <:right as |Item|>
+            <Item @labelFor="primary-site-contact-phone-number">
+              <:label>Telefoonnummer</:label>
+              <:content>
+                <AuInput
+                  @width="block"
+                  @value={{this.model.contact.telephone}}
+                  id="primary-site-contact-phone-number"
                 />
               </:content>
             </Item>

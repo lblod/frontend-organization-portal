@@ -168,6 +168,16 @@
                     />
                   </:content>
                 </Item>
+                <Item @labelFor="primary-site-address-house-number">
+                  <:label>Huisnummer</:label>
+                  <:content>
+                    <AuInput
+                      @value={{@model.administrativeUnit.primarySite.address.number}}
+                      @width="block"
+                      id="primary-site-address-house-number"
+                    />
+                  </:content>
+                </Item>
                 <Item @labelFor="primary-site-address-bus-number">
                   <:label>Busnummer</:label>
                   <:content>
@@ -175,6 +185,16 @@
                       @value={{@model.administrativeUnit.primarySite.address.boxNumber}}
                       @width="block"
                       id="primary-site-address-bus-number"
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="primary-site-address-postal-code">
+                  <:label>Postcode</:label>
+                  <:content>
+                    <AuInput
+                      @value={{@model.administrativeUnit.primarySite.address.postcode}}
+                      @width="block"
+                      id="primary-site-address-postal-code"
                     />
                   </:content>
                 </Item>
@@ -191,38 +211,6 @@
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-contact-phone-number">
-                  <:label>Telefoonnummer</:label>
-                  <:content>
-                    <AuInput
-                      @value={{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}
-                      @width="block"
-                      id="primary-site-contact-phone-number"
-                    />
-                  </:content>
-                </Item>
-              </:left>
-              <:right as |Item|>
-                <Item @labelFor="primary-site-address-house-number">
-                  <:label>Huisnummer</:label>
-                  <:content>
-                    <AuInput
-                      @value={{@model.administrativeUnit.primarySite.address.number}}
-                      @width="block"
-                      id="primary-site-address-house-number"
-                    />
-                  </:content>
-                </Item>
-                <Item @labelFor="primary-site-address-postal-code">
-                  <:label>Postcode</:label>
-                  <:content>
-                    <AuInput
-                      @value={{@model.administrativeUnit.primarySite.address.postcode}}
-                      @width="block"
-                      id="primary-site-address-postal-code"
-                    />
-                  </:content>
-                </Item>
                 <Item @labelFor="primary-site-address-province">
                   <:label>Provincie</:label>
                   <:content>
@@ -233,6 +221,18 @@
                           this.model.administrativeUnit.primarySite.address.province
                         )
                       }}
+                    />
+                  </:content>
+                </Item>
+              </:left>
+              <:right as |Item|>
+                <Item @labelFor="primary-site-contact-phone-number">
+                  <:label>Telefoonnummer</:label>
+                  <:content>
+                    <AuInput
+                      @value={{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}
+                      @width="block"
+                      id="primary-site-contact-phone-number"
                     />
                   </:content>
                 </Item>
