@@ -40,6 +40,11 @@ table.dataTable tbody th {
   }
 }
 
+// Keep pills on one line in the table
+.au-c-data-table .au-c-pill {
+  white-space: nowrap;
+}
+
 // Inline list for radio buttons
 .au-c-list-inline {
   display: flex;
