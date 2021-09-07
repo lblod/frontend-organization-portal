@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 import { dropTask } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
@@ -12,16 +13,30 @@ const FINANCING_CODE = {
 export default class PeoplePersonPositionsMinisterEditController extends Controller {
   @service router;
   @tracked willReceiveFinancing;
-  @tracked isCurrentPositionCheck;
+  @tracked isCurrentPosition;
+  @tracked redirectUrl;
 
-  get isCurrentPosition() {
-    return this.model.minister.agentEndDate === null;
-  }
+  queryParams = ['redirectUrl'];
 
   setup() {
     this.willReceiveFinancing =
       this.model.minister.financing.get('id') === FINANCING_CODE.FOD_FINANCED;
-    this.isCurrentPositionCheck = this.isCurrentPosition;
+    this.isCurrentPosition = !this.model.minister.agentEndDate;
+  }
+
+  @action
+  async clearOnCheck() {
+    this.model.minister.agentEndDate = undefined;
+    this.isCurrentPosition = true;
+  }
+
+  @action
+  cancel() {
+    if (this.redirectUrl) {
+      this.router.transitionTo(this.redirectUrl);
+    } else {
+      this.router.transitionTo('people.person.positions.minister');
+    }
   }
 
   @dropTask
@@ -53,9 +68,18 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
     this.model.minister.financing = financing;
     yield this.model.minister.save();
 
-    this.router.transitionTo(
-      'people.person.positions.minister',
-      this.model.minister.id
-    );
+    if (this.redirectUrl) {
+      // When passing a url the query params are ignored so we add the person id manually for now
+      this.router.transitionTo(this.redirectUrl);
+    } else {
+      this.router.transitionTo(
+        'people.person.positions.minister',
+        this.model.minister.id
+      );
+    }
+  }
+
+  reset() {
+    this.redirectUrl = null;
   }
 }

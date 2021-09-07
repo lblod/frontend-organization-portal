@@ -54,14 +54,6 @@
             <:card as |Card|>
                 <Card.Columns>
                 <:left as |Item|>
-                    {{#if this.model.minister.contacts.firstObject.contactAddress.fullAddress}}
-                    <Item>
-                        <:label>Full address</:label>
-                        <:content>
-                        {{this.model.minister.contacts.firstObject.contactAddress.fullAddress}}
-                        </:content>
-                    </Item>
-                    {{/if}}
                     <Item @labelFor="contact-address-street-name">
                     <:label>Straat</:label>
                     <:content>
@@ -176,7 +168,7 @@
                         <:label>Einddatum</:label>
                         <:content>
                         <Datepicker
-                            @disabled={{this.isCurrentPositionCheck}}
+                            @disabled={{this.isCurrentPosition}}
                             @id="end-date"
                             @onChange={{fn (mut this.model.minister.agentEndDate)}}
                             @value={{this.model.minister.agentEndDate}}
@@ -187,10 +179,10 @@
                         <:label></:label>
                         <:content>
                         <AuControlCheckbox
-                            @checked={{this.isCurrentPositionCheck}}
+                            @checked={{this.isCurrentPosition}}
                             @label="Huidige positie"
                             @identifier="current-position"
-                            @onChange={{fn (mut this.isCurrentPositionCheck)}}
+                            @onChange={{this.clearOnCheck}}
                         />
                         </:content>
                     </Item>
@@ -240,7 +232,6 @@
 
             <AuButtonGroup>
                 <AuButton
-                    @iconAlignment="left"
                     @loading={{this.save.isRunning}}
                     @disabled={{this.save.isRunning}}
                     type="submit"
@@ -248,8 +239,8 @@
                     Opslaan
                 </AuButton>
                 <AuLink 
-                    @route="people.person.positions.minister"
-                     @skin="button-secondary">
+                    {{on "click" this.cancel}}
+                    @skin="button-secondary">
                     Annuleer
                 </AuLink>
             </AuButtonGroup>

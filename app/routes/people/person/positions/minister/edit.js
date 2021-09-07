@@ -9,4 +9,9 @@ export default class PeoplePersonPositionsMinisterEditRoute extends Route {
     super.setupController(...arguments);
     controller.setup();
   }
+
+  resetController(controller) {
+    super.resetController(...arguments);
+    controller.reset();
+  }
 }
