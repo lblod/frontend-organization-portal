@@ -50,6 +50,12 @@
               <:label>Adres</:label>
               <:content>{{@model.site.address.fullAddress}}</:content>
             </Item>
+            <Item>
+              <:label>Provincie</:label>
+              <:content>{{@model.site.address.province}}</:content>
+            </Item>
+          </:left>
+          <:right as |Item|>
             {{#if @model.site.contacts.firstObject.telephone}}
               <Item>
                 <:label>Telefoonnummer</:label>
@@ -57,12 +63,6 @@
                 >{{@model.site.contacts.firstObject.telephone}}</:content>
               </Item>
             {{/if}}
-          </:left>
-          <:right as |Item|>
-            <Item>
-              <:label>Provincie</:label>
-              <:content>{{@model.site.address.province}}</:content>
-            </Item>
             {{#if @model.site.contacts.firstObject.website}}
               <Item>
                 <:label>Website</:label>

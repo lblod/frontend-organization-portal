@@ -77,6 +77,16 @@
                     />
                   </:content>
                 </Item>
+                <Item @labelFor="primary-site-address-house-number">
+                  <:label>Huisnummer</:label>
+                  <:content>
+                    <AuInput
+                      @value={{@model.site.address.number}}
+                      @width="block"
+                      id="primary-site-address-house-number"
+                    />
+                  </:content>
+                </Item>
                 <Item @labelFor="primary-site-address-bus-number">
                   <:label>Busnummer</:label>
                   <:content>
@@ -84,6 +94,16 @@
                       @value={{@model.site.address.boxNumber}}
                       @width="block"
                       id="primary-site-address-bus-number"
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="primary-site-address-postal-code">
+                  <:label>Postcode</:label>
+                  <:content>
+                    <AuInput
+                      @value={{@model.site.address.postcode}}
+                      @width="block"
+                      id="primary-site-address-postal-code"
                     />
                   </:content>
                 </Item>
@@ -98,6 +118,18 @@
                     />
                   </:content>
                 </Item>
+                <Item>
+                  <:label>Provincie</:label>
+                  <:content>
+                    <ProvinceSelect
+                      @selected={{this.model.site.address.province}}
+                      @onChange={{fn (mut this.model.site.address.province)}}
+                    />
+                  </:content>
+                </Item>
+
+              </:left>
+              <:right as |Item|>
                 <Item @labelFor="primary-site-contact-phone-number">
                   <:label>Telefoonnummer</:label>
                   <:content>
@@ -105,38 +137,6 @@
                       @value={{@model.site.contacts.firstObject.telephone}}
                       @width="block"
                       id="primary-site-contact-phone-number"
-                    />
-                  </:content>
-                </Item>
-              </:left>
-              <:right as |Item|>
-                <Item @labelFor="primary-site-address-house-number">
-                  <:label>Huisnummer</:label>
-                  <:content>
-                    <AuInput
-                      @value={{@model.site.address.number}}
-                      @width="block"
-                      id="primary-site-address-house-number"
-                    />
-                  </:content>
-                </Item>
-
-                <Item @labelFor="primary-site-address-postal-code">
-                  <:label>Postcode</:label>
-                  <:content>
-                    <AuInput
-                      @value={{@model.site.address.postcode}}
-                      @width="block"
-                      id="primary-site-address-postal-code"
-                    />
-                  </:content>
-                </Item>
-                <Item>
-                  <:label>Provincie</:label>
-                  <:content>
-                    <ProvinceSelect
-                      @selected={{this.model.site.address.province}}
-                      @onChange={{fn (mut this.model.site.address.province)}}
                     />
                   </:content>
                 </Item>

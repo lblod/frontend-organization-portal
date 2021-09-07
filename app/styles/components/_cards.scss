@@ -1,54 +1,44 @@
-.card-title {
-  margin-bottom: $au-unit-tiny;
+/* ==================================
+   #CARD EXTENSION
+   Extends the default appuniversum card component
+   ================================== */
+
+// Read-only card
+.au-c-card--data {
+  border-color: $au-gray-100;
+  background-color: $au-gray-100;
 }
 
-// grid
-.card-grid {
-  margin: -$au-unit-small -#{$au-unit};
-  min-height: $au-unit-small; // Fix for empty grids
+// Columns
+.au-c-card-columns {
+  margin: -$au-unit-tiny -#{$au-unit};
 
   @include mq(1279px) {
+    margin: -$au-unit-small -#{$au-unit};
     display: flex;
     flex-wrap: wrap;
   }
 }
 
-.card-grid-item {
-  padding: $au-unit-small $au-unit;
+.au-c-card-columns__column {
+  padding: $au-unit-tiny $au-unit;
 
   @include mq(1279px) {
+    padding: $au-unit-small $au-unit;
     width: 50%;
   }
 }
 
-// columns
-.card-columns {
-  margin: -$au-unit-small -#{$au-unit};
-
-  @include mq(medium) {
-    display: flex;
-  }
-}
-
-.card-columns__column {
-  padding: $au-unit-small $au-unit;
-
-  @include mq(medium) {
-    width: 50%;
-  }
-}
-
-
-// card item
-.card-item {
+// Card item
+.au-c-card-item {
   display: flex;
 
-  .edit-card__card & {
-    align-items: center;
+  & + & {
+    margin-top: $au-unit-small;
   }
 
-  .card-columns & + & {
-    margin-top: $au-unit-small;
+  .au-c-card--fill & {
+    align-items: center;
   }
 
   @include mq($until: small) {
@@ -56,11 +46,11 @@
   }
 }
 
-.card-item--align-top {
+.au-c-card-item--align-top {
   align-items: flex-start;
 }
 
-.card-item__label {
+.au-c-card-item__label {
   width: 100%;
 
   @include mq(small) {
@@ -69,36 +59,26 @@
   }
 }
 
-.card-item__content {
+.au-c-card-item__label--data {
+  font-weight: 500;
+  color: $au-gray-600;
+}
+
+.au-c-card-item__label--edit {
+  @include mq(small) {
+    margin-right: $au-unit-small;
+
+    .au-c-label {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.au-c-card-item__content {
   width: 100%;
 
   @include mq(small) {
     flex-shrink: 1;
     flex-grow: 1;
   }
-}
-
-// read-only card
-.data-card__card {
-  background-color: $au-gray-100;
-  padding: $au-unit-small;
-  border-radius: .3rem;
-}
-
-.data-card-item__label {
-  font-weight: 500;
-  color: $au-gray-600;
-}
-
-// editable card
-.edit-card__card {
-  background-color: $au-white;
-  border: .1rem solid $au-gray-300  ;
-  padding: $au-unit-small;
-  border-radius: .3rem;
-}
-
-.edit-card-item__label {
-  margin-bottom: 0;
-  margin-right: $au-unit-small;
 }
