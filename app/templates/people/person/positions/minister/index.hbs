@@ -5,7 +5,6 @@
         Positie:
         {{@model.minister.ministerPosition.function.label}}
         <br />
-        {{@model.minister.ministerPosition.worshipService.classification.label}}
         {{@model.minister.ministerPosition.worshipService.name}}
       </:title>
       <:subtitle>
@@ -13,15 +12,14 @@
         {{@model.person.familyName}}
       </:subtitle>
       <:action>
-        {{! TODO: Replace this with the "edit" route once it is created }}
-        {{!-- <AuLink
-          @route="people.person.positions.minister"
+        <AuLink
+          @route="people.person.positions.minister.edit"
           @skin="button-secondary"
           @icon="pencil"
           @iconAlignment="left"
         >
           Bewerk
-        </AuLink> --}}
+        </AuLink>
       </:action>
     </PageHeader>
 
