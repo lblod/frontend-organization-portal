@@ -33,7 +33,7 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
   }
 
   @action
-  async handleIsCurrentPositionChange() {
+  handleIsCurrentPositionChange() {
     this.isCurrentPosition = !this.isCurrentPosition;
     if (this.isCurrentPosition) {
       this.model.minister.agentEndDate = undefined;
