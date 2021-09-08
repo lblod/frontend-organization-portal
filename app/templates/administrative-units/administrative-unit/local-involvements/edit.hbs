@@ -56,7 +56,7 @@
               @noMatchesMessage="Geen resultaten"
               @options={{@model.involvementTypes}}
               @selected={{involvement.involvementType}}
-              @onChange={{fn (mut involvement.involvementType)}}
+              @onChange={{fn this.handleInvolvementTypeSelection involvement}}
               @triggerId="involvement-type-select"
               as |involvementType|
             >

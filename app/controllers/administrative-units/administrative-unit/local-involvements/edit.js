@@ -48,6 +48,15 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   }
 
   @action
+  handleInvolvementTypeSelection(involvement, involvementType) {
+    involvement.involvementType = involvementType;
+
+    if (involvementType.id !== this.INVOLVEMENT_TYPE.FINANCIAL) {
+      involvement.percentage = 0;
+    }
+  }
+
+  @action
   addNewLocalInvolvement() {
     this.model.involvements.pushObject(
       this.store.createRecord('local-involvement', {
