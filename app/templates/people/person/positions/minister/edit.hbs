@@ -179,10 +179,10 @@
                         <:label></:label>
                         <:content>
                         <AuControlCheckbox
-                            @checked={{this.isCurrentPosition}}
+                            checked={{this.isCurrentPosition}}
                             @label="Huidige positie"
                             @identifier="current-position"
-                            @onChange={{this.clearOnCheck}}
+                            @onChange={{this.handleIsCurrentPositionChange}}
                         />
                         </:content>
                     </Item>

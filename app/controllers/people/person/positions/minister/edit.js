@@ -24,19 +24,25 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
     this.isCurrentPosition = !this.model.minister.agentEndDate;
   }
 
-  @action
-  async clearOnCheck() {
-    this.model.minister.agentEndDate = undefined;
-    this.isCurrentPosition = true;
-  }
-
-  @action
-  cancel() {
+  handleTransitionTo() {
     if (this.redirectUrl) {
       this.router.transitionTo(this.redirectUrl);
     } else {
       this.router.transitionTo('people.person.positions.minister');
     }
+  }
+
+  @action
+  async handleIsCurrentPositionChange() {
+    this.isCurrentPosition = !this.isCurrentPosition;
+    if (this.isCurrentPosition) {
+      this.model.minister.agentEndDate = undefined;
+    }
+  }
+
+  @action
+  cancel() {
+    this.handleTransitionTo();
   }
 
   @dropTask
@@ -68,15 +74,7 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
     this.model.minister.financing = financing;
     yield this.model.minister.save();
 
-    if (this.redirectUrl) {
-      // When passing a url the query params are ignored so we add the person id manually for now
-      this.router.transitionTo(this.redirectUrl);
-    } else {
-      this.router.transitionTo(
-        'people.person.positions.minister',
-        this.model.minister.id
-      );
-    }
+    this.handleTransitionTo();
   }
 
   reset() {
