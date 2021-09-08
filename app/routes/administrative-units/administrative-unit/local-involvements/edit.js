@@ -1,6 +1,5 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { addPaginationMeta } from 'frontend-contact-hub/utils/data-table';
 
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditRoute extends Route {
   @service store;
@@ -23,8 +22,6 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
     let involvementTypes = await this.store.findAll('involvement-type');
 
     let involvements = await administrativeUnit.involvements;
-
-    addPaginationMeta(involvements);
 
     return {
       administrativeUnit,
