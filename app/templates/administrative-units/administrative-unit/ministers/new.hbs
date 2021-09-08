@@ -46,12 +46,12 @@
         </:card>
       </DataCard>
 
-      <EditCard>
+      <EditCard @containsRequiredFields={{true}}>
         <:title>Positie</:title>
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              <Item>
+              <Item @required={{true}}>
                 <:label>Positie</:label>
                 <:content>
                   <MinisterPositionFunctionSelect
@@ -255,6 +255,7 @@
           @icon="add"
           @iconAlignment="left"
           @loading={{this.createMinisterPositionTask.isRunning}}
+          @disabled={{or (not this.canSubmit) this.createMinisterPositionTask.isRunning}}
           type="submit"
         >
           Voeg toe
