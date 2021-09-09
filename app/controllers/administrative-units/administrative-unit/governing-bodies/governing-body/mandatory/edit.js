@@ -1,20 +1,25 @@
 import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditController extends Controller {
   @service router;
 
-  @tracked isCurrentPositionCheck;
+  @tracked isCurrentPosition;
 
   setup() {
-    this.isCurrentPositionCheck = this.isCurrentPosition;
+    this.isCurrentPosition = !this.mandatory.endDate;
   }
 
-  get isCurrentPosition() {
-    return this.mandatory.endDate !== null;
+  @action
+  handleIsCurrentPositionChange() {
+    this.isCurrentPosition = !this.isCurrentPosition;
+    if (this.isCurrentPosition) {
+      this.mandatory.endDate = undefined;
+    }
   }
 
   get mandatory() {
