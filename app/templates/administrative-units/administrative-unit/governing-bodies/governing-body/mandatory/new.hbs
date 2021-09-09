@@ -148,13 +148,13 @@
         </:card>
       </EditCard>
 
-      <EditCard>
+      <EditCard @containsRequiredFields={{true}}>
         <:title>Mandaat</:title>
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              <Item @labelFor="board-position">
-                <:label>Bestuursfunctie*</:label>
+              <Item @labelFor="board-position" @required={{true}}>
+                <:label>Bestuursfunctie</:label>
                 <:content>
                   <MandateRoleSelect
                     @selected={{this.selectedRole}}
@@ -228,9 +228,6 @@
               </Item>
             </:right>
           </Card.Columns>
-          <AuHelpText @skin="secondary" class="au-u-margin-top">
-            * Verplicht veld
-          </AuHelpText>
         </:card>
       </EditCard>
 

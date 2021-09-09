@@ -7,6 +7,9 @@
       <AuLabel
         class="{{@labelClass}}"
         for={{@labelFor}}
+        @required={{@required}}
+        @requiredLabel="*"
+        @inline={{true}}
       >
         {{yield to="label"}}
       </AuLabel>

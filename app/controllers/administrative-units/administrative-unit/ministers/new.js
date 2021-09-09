@@ -24,9 +24,17 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
     return !this.targetPerson;
   }
 
+  get canSubmit() {
+    return Boolean(this.model.position.function.get('id'));
+  }
+
   @dropTask
   *createMinisterPositionTask(event) {
     event.preventDefault();
+
+    if (!this.canSubmit) {
+      return;
+    }
 
     let {
       administrativeUnit,
