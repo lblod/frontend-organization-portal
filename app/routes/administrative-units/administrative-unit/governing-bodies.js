@@ -1,6 +1,5 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { addPaginationMeta } from 'frontend-contact-hub/utils/data-table';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute extends Route {
   @service store;
@@ -24,7 +23,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
     let governingBody = await administrativeUnit.governingBodies.firstObject;
 
     let governingBodies = await governingBody.hasTimeSpecializations;
-    addPaginationMeta(governingBodies);
 
     return {
       administrativeUnit,

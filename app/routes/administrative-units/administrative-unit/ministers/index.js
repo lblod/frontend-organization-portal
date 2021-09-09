@@ -1,6 +1,5 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { addPaginationMeta } from 'frontend-contact-hub/utils/data-table';
 
 export default class AdministrativeUnitsAdministrativeUnitMinistersIndexRoute extends Route {
   @service store;
@@ -21,7 +20,6 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersIndexRoute ex
     );
 
     let ministerPositions = await administrativeUnit.ministerPositions;
-    addPaginationMeta(ministerPositions);
 
     return {
       administrativeUnit: administrativeUnit,
