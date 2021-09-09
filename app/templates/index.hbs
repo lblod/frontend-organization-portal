@@ -26,7 +26,7 @@
           rel="noopener noreferrer"
         >
           <AuIcon @icon="manual" @alignment="left" />
-          Handleiding
+          Handleiding (externe link)
         </a>
         <AuHelpText @skin="secondary">
           {{config "appName"}}
@@ -55,7 +55,7 @@
       </AuHeading>
 
       <ul class="au-o-grid au-o-grid">
-        <li class="au-o-grid__item au-u-1-2@medium au-u-1-3@large">
+        <li class="au-o-grid__item au-u-1-2@medium au-u-2-5@large">
           <AuCard @flex={{true}} as |c|>
             <c.header @badgeSkin="brand" @badgeIcon="sitemap">
               <AuHeading @level="3" @skin="4">
@@ -79,26 +79,24 @@
               </ul>
             </c.content>
             <c.footer>
-              <AuButtonGroup>
+              <AuButtonGroup class="au-c-button-group--wrap">
                 <LinkTo class="au-c-button" @route="administrative-units">
                   Ga naar bestuurseenheden
                 </LinkTo>
-
                 <a
                   href={{config "userManual.module.administrativeUnits"}}
-                  class="au-c-link au-c-link--secondary"
+                  class="au-c-button au-c-button--link-secondary"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <AuIcon @icon="manual" @alignment="left" />
-                  Handleiding
+                  Handleiding (externe link)
                 </a>
               </AuButtonGroup>
-
             </c.footer>
           </AuCard>
         </li>
-        <li class="au-o-grid__item au-u-1-2@medium au-u-1-3@large">
+        <li class="au-o-grid__item au-u-1-2@medium au-u-2-5@large">
           <AuCard @flex={{true}} as |c|>
             <c.header @badgeSkin="brand" @badgeIcon="users">
               <AuHeading @level="2" @skin="4">
@@ -122,19 +120,20 @@
               </ul>
             </c.content>
             <c.footer>
-              <LinkTo class="au-c-button" @route="people">
-                Ga naar personen
-              </LinkTo>
-              &nbsp;
-              <a
-                href={{config "userManual.module.people"}}
-                class="au-c-link au-c-link--secondary"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <AuIcon @icon="manual" @alignment="left" />
-                Handleiding
-              </a>
+              <AuButtonGroup class="au-c-button-group--wrap">
+                <LinkTo class="au-c-button" @route="people">
+                  Ga naar personen
+                </LinkTo>
+                <a
+                  href={{config "userManual.module.people"}}
+                  class="au-c-button au-c-button--link-secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <AuIcon @icon="manual" @alignment="left" />
+                  Handleiding (externe link)
+                </a>
+              </AuButtonGroup>
             </c.footer>
           </AuCard>
         </li>

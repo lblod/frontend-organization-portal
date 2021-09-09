@@ -89,3 +89,15 @@ table.dataTable tbody th {
   display: flex;
   align-items: center;
 }
+
+// Hide outline for legal pages content focus fix
+.au-c-content {
+  &:focus {
+    outline: 0;
+  }
+}
+
+// Fix index page card button group
+.au-c-button-group--wrap {
+  flex-wrap: wrap;
+}
