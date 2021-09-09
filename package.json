@@ -33,6 +33,7 @@
     "@glimmer/tracking": "^1.0.4",
     "@lblod/ember-acmidm-login": "^1.2.0",
     "@lblod/ember-mock-login": "0.6.0",
+    "@zestia/ember-auto-focus": "^4.1.7",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-auto-import": "^1.11.2",

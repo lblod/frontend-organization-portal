@@ -137,7 +137,7 @@
                 </Item>
 
                 {{#each @model.administrativeUnit.identifiers as |identifier|}}
-                  <Item>
+                  <Item @labelFor={{identifier.idName}}>
                     <:label>{{identifier.idName}}</:label>
                     <:content>
                       <AuInput
