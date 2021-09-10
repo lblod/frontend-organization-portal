@@ -14,8 +14,10 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersIndexRoute ex
       administrativeUnitId,
       {
         reload: true,
-        include:
-          'minister-positions.function,minister-positions.held-by-ministers',
+        include: [
+          'minister-positions.function',
+          'minister-positions.agents-in-position.person',
+        ].join(),
       }
     );
 
