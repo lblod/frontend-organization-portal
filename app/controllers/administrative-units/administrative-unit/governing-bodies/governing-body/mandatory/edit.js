@@ -2,22 +2,18 @@ import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditController extends Controller {
   @service router;
 
-  @tracked isCurrentPosition;
-
-  setup() {
-    this.isCurrentPosition = !this.mandatory.endDate;
+  get isCurrentPosition() {
+    return !this.mandatory.endDate;
   }
 
   @action
   handleIsCurrentPositionChange() {
-    this.isCurrentPosition = !this.isCurrentPosition;
-    if (this.isCurrentPosition) {
+    if (!this.isCurrentPosition) {
       this.mandatory.endDate = undefined;
     }
   }
@@ -41,7 +37,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     let contacts = yield this.mandatory.contacts;
     let address = yield contacts.firstObject.contactAddress;
 
-    if (address.isNew || address.hasDirtyAttributes) {
+    if (address.hasDirtyAttributes) {
       address.fullAddress = combineFullAddress(address);
       yield address.save();
     }
