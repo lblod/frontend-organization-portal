@@ -101,3 +101,8 @@ table.dataTable tbody th {
 .au-c-button-group--wrap {
   flex-wrap: wrap;
 }
+
+// Tailwind based util to align table contents
+.align-middle {
+  vertical-align: middle !important;
+}

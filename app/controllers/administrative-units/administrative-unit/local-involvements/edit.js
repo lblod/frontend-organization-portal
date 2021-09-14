@@ -51,7 +51,10 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   handleInvolvementTypeSelection(involvement, involvementType) {
     involvement.involvementType = involvementType;
 
-    if (involvementType.id !== this.INVOLVEMENT_TYPE.FINANCIAL) {
+    if (
+      !involvementType ||
+      involvementType.id !== this.INVOLVEMENT_TYPE.FINANCIAL
+    ) {
       involvement.percentage = 0;
     }
   }
@@ -64,6 +67,12 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
         percentage: 0,
       })
     );
+  }
+
+  @action
+  deleteUnsavedLocalInvolvement(involvement) {
+    this.model.involvements.removeObject(involvement);
+    involvement.destroyRecord();
   }
 
   @dropTask
