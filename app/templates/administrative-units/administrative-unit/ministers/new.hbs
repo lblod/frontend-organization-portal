@@ -51,12 +51,13 @@
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              <Item @required={{true}}>
+              <Item @labelFor="minister-position-function" @required={{true}}>
                 <:label>Positie</:label>
                 <:content>
                   <MinisterPositionFunctionSelect
                     @onChange={{fn (mut this.model.position.function)}}
                     @selected={{this.model.position.function}}
+                    @id="minister-position-function"
                   />
                 </:content>
               </Item>
@@ -116,6 +117,7 @@
                   <MunicipalitySelect
                     @selected={{this.model.address.municipality}}
                     @onChange={{fn (mut this.model.address.municipality)}}
+                    @id="address-municipality"
                   />
                 </:content>
               </Item>
@@ -125,6 +127,7 @@
                   <ProvinceSelect
                     @selected={{this.model.address.province}}
                     @onChange={{fn (mut this.model.address.province)}}
+                    @id="address-province"
                   />
                 </:content>
               </Item>
@@ -147,7 +150,8 @@
                   <AuInput
                     @value={{this.model.contact.telephone}}
                     @width="block"
-                    id="contact-landline" type="tel"
+                    id="contact-landline"
+                    type="tel"
                   />
                 </:content>
               </Item>
@@ -195,8 +199,8 @@
                   />
                 </:content>
               </Item>
-              <Item @labelFor="end-date">
-                <:label></:label>
+              <Item>
+                <:label>{{! No label }}</:label>
                 <:content>
                   <AuControlCheckbox
                     @checked={{this.isCurrentPosition}}
@@ -255,14 +259,18 @@
           @icon="add"
           @iconAlignment="left"
           @loading={{this.createMinisterPositionTask.isRunning}}
-          @disabled={{or (not this.canSubmit) this.createMinisterPositionTask.isRunning}}
+          @disabled={{or
+            (not this.canSubmit)
+            this.createMinisterPositionTask.isRunning
+          }}
           type="submit"
         >
           Voeg toe
         </AuButton>
         <AuLink
           @route="administrative-units.administrative-unit.ministers"
-          @skin="button-secondary">
+          @skin="button-secondary"
+        >
           Annuleer
         </AuLink>
       </AuButtonGroup>

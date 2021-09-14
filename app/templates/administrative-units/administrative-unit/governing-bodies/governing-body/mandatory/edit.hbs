@@ -64,7 +64,9 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                {{#if this.mandatory.contacts.firstObject.contactAddress.fullAddress}}
+                {{#if
+                  this.mandatory.contacts.firstObject.contactAddress.fullAddress
+                }}
                   <Item>
                     <:label>Full address</:label>
                     <:content>
@@ -122,6 +124,7 @@
                           this.mandatory.contacts.firstObject.contactAddress.municipality
                         )
                       }}
+                      @id="contact-address-municipality"
                     />
                   </:content>
                 </Item>
@@ -135,6 +138,7 @@
                           this.mandatory.contacts.firstObject.contactAddress.province
                         )
                       }}
+                      @id="contact-address-province"
                     />
                   </:content>
                 </Item>
@@ -214,7 +218,7 @@
                   </:content>
                 </Item>
                 <Item>
-                  <:label></:label>
+                  <:label>{{! No label }}</:label>
                   <:content>
                     <AuControlCheckbox
                       @checked={{this.isCurrentPositionCheck}}

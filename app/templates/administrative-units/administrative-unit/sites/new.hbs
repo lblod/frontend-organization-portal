@@ -4,22 +4,20 @@
       <:title>Voeg vestiging toe</:title>
     </PageHeader>
 
-    <form
-      id="new-vestiging-form"
-      {{on "submit" (perform this.createSiteTask)}}
-    >
+    <form id="new-vestiging-form" {{on "submit" (perform this.createSiteTask)}}>
       <div class="au-o-flow au-o-flow--large">
         <EditCard>
           <:title>Kerngegevens</:title>
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <Item>
+                <Item @labelFor="site-type">
                   <:label>Type vestiging</:label>
                   <:content>
                     <SiteTypeSelect
                       @selected={{@model.site.siteType}}
                       @onChange={{fn (mut @model.site.siteType)}}
+                      @id="site-type"
                     />
                   </:content>
                 </Item>
@@ -102,25 +100,23 @@
                     />
                   </:content>
                 </Item>
-                <Item>
+                <Item @labelFor="site-address-municipality">
                   <:label>Gemeente</:label>
                   <:content>
                     <MunicipalitySelect
                       @selected={{this.model.address.municipality}}
-                      @onChange={{fn
-                        (mut this.model.address.municipality)
-                      }}
+                      @onChange={{fn (mut this.model.address.municipality)}}
+                      @id="site-address-municipality"
                     />
                   </:content>
                 </Item>
-                <Item>
+                <Item @labelFor="site-address-province">
                   <:label>Provincie</:label>
                   <:content>
                     <ProvinceSelect
                       @selected={{this.model.address.province}}
-                      @onChange={{fn
-                        (mut this.model.address.province)
-                      }}
+                      @onChange={{fn (mut this.model.address.province)}}
+                      @id="site-address-province"
                     />
                   </:content>
                 </Item>
