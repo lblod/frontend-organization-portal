@@ -32,16 +32,17 @@
     >
       <t.content as |c|>
         <c.header>
-          <th>Naam</th>
-          <th>Type instelling</th>
-          <th>Type betrokkenheid</th>
-          <th>Financieel percentage</th>
+          <th id="administrative-unit">Naam</th>
+          <th id="classification">Type instelling</th>
+          <th id="involvement-type">Type betrokkenheid</th>
+          <th id="financial-percentage">Financieel percentage</th>
         </c.header>
         <c.body as |involvement|>
           <td>
             <AdministrativeUnitSelect
               @selected={{involvement.administrativeUnit}}
               @onChange={{fn (mut involvement.administrativeUnit)}}
+              @ariaLabelledBy="administrative-unit"
             />
           </td>
           <td>
@@ -49,6 +50,7 @@
               @width="block"
               @value={{involvement.administrativeUnit.classification.label}}
               @disabled={{true}}
+              aria-labelledby="classification"
             />
           </td>
           <td>
@@ -57,23 +59,21 @@
               @options={{@model.involvementTypes}}
               @selected={{involvement.involvementType}}
               @onChange={{fn this.handleInvolvementTypeSelection involvement}}
-              @triggerId="involvement-type-select"
+              @ariaLabelledBy="involvement-type"
               as |involvementType|
             >
               {{involvementType.label}}
             </PowerSelect>
           </td>
           <td>
-            {{#let (unique-id) as |id|}}
-              <label class="au-u-hidden-visually" for={{id}}>
-                Financieel percentage
-              </label>
-              <AuInput
-                @value={{involvement.percentage}}
-                id={{id}}
-                @disabled={{not-eq involvement.involvementType.id this.INVOLVEMENT_TYPE.FINANCIAL}}
-              />
-            {{/let}}
+            <AuInput
+              @value={{involvement.percentage}}
+              @disabled={{not-eq
+                involvement.involvementType.id
+                this.INVOLVEMENT_TYPE.FINANCIAL
+              }}
+              aria-labelledby="financial-percentage"
+            />
           </td>
         </c.body>
       </t.content>

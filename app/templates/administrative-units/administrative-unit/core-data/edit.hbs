@@ -26,7 +26,7 @@
                     />
                   </:content>
                 </Item>
-                <Item>
+                <Item @labelFor="classification">
                   <:label>Type bestuur</:label>
                   <:content>
                     <PowerSelect
@@ -35,6 +35,7 @@
                       @onChange={{fn
                         (mut @model.administrativeUnit.classification)
                       }}
+                      @triggerId="classification"
                       as |classification|
                     >
                       {{classification.label}}
@@ -49,6 +50,7 @@
                       @onChange={{fn
                         (mut this.administrativeUnit.recognizedWorshipType)
                       }}
+                      @id="recognized-worship-type-select"
                     />
                   </:content>
                 </Item>
@@ -208,6 +210,7 @@
                           this.model.administrativeUnit.primarySite.address.municipality
                         )
                       }}
+                      @id="primary-site-address-municipality"
                     />
                   </:content>
                 </Item>
@@ -221,6 +224,7 @@
                           this.model.administrativeUnit.primarySite.address.province
                         )
                       }}
+                      @id="primary-site-address-province"
                     />
                   </:content>
                 </Item>
@@ -262,7 +266,7 @@
                     "worship-service"
                   )
                 }}
-                  <Item>
+                  <Item @labelFor="related-central-worship-service">
                     <:label>Centraal bestuur</:label>
                     <:content>
                       <CentralWorshipSelect
@@ -272,6 +276,7 @@
                             this.model.administrativeUnit.isSubOrganizationOf
                           )
                         }}
+                        @id="related-central-worship-service"
                       />
                     </:content>
                   </Item>
@@ -282,7 +287,7 @@
                     "central-worship-service"
                   )
                 }}
-                  <Item>
+                  <Item @labelFor="related-worship-service">
                     <:label>Bestuur van de eredienst</:label>
                     <:content>
                       <WorshipServiceSelect
@@ -290,11 +295,12 @@
                         @onChange={{fn
                           (mut this.model.administrativeUnit.subOrganizations)
                         }}
+                        @id="related-worship-service"
                       />
                     </:content>
                   </Item>
                 {{/if}}
-                <Item>
+                <Item @labelFor="related-representative-body">
                   <:label>Representatief orgaan</:label>
                   <:content>
                     <RepresentativeBodySelect
@@ -302,6 +308,7 @@
                       @onChange={{fn
                         (mut this.model.administrativeUnit.isAssociatedWith)
                       }}
+                      @id="related-representative-body"
                     />
                   </:content>
                 </Item>

@@ -19,12 +19,13 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <Item>
+                <Item @labelFor="site-type">
                   <:label>Type vestiging</:label>
                   <:content>
                     <SiteTypeSelect
                       @selected={{@model.site.siteType}}
                       @onChange={{fn (mut @model.site.siteType)}}
+                      @id="site-type"
                     />
                   </:content>
                 </Item>
@@ -107,7 +108,7 @@
                     />
                   </:content>
                 </Item>
-                <Item>
+                <Item @labelFor="primary-site-address-municipality">
                   <:label>Gemeente</:label>
                   <:content>
                     <MunicipalitySelect
@@ -115,15 +116,17 @@
                       @onChange={{fn
                         (mut this.model.site.address.municipality)
                       }}
+                      @id="primary-site-address-municipality"
                     />
                   </:content>
                 </Item>
-                <Item>
+                <Item @labelFor="primary-site-address-province">
                   <:label>Provincie</:label>
                   <:content>
                     <ProvinceSelect
                       @selected={{this.model.site.address.province}}
                       @onChange={{fn (mut this.model.site.address.province)}}
+                      @id="primary-site-address-province"
                     />
                   </:content>
                 </Item>

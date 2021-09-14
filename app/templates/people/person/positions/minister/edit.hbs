@@ -1,250 +1,248 @@
 {{page-title "Bewerk"}}
 
 <div class="au-c-body-container au-c-body-container--scroll">
-    <div class="au-o-box au-o-flow au-o-flow--large">
-        <PageHeader>
-        <:title>
-            Positie:
-            {{@model.minister.ministerPosition.function.label}}
-            <br />
-            {{@model.minister.ministerPosition.worshipService.name}}
-        </:title>
-        <:subtitle>
-            {{@model.person.givenName}}
-            {{@model.person.familyName}}
-        </:subtitle>
-        </PageHeader>
-    
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <PageHeader>
+      <:title>
+        Positie:
+        {{@model.minister.ministerPosition.function.label}}
+        <br />
+        {{@model.minister.ministerPosition.worshipService.name}}
+      </:title>
+      <:subtitle>
+        {{@model.person.givenName}}
+        {{@model.person.familyName}}
+      </:subtitle>
+    </PageHeader>
 
-        <form
-            aria-label="minister-position-edit-form"
-            {{on "submit" (perform this.save)}}
-            class="au-o-flow au-o-flow--large"
+    <form
+      aria-label="minister-position-edit-form"
+      {{on "submit" (perform this.save)}}
+      class="au-o-flow au-o-flow--large"
+    >
+      <DataCard>
+        <:title>Positie</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item>
+                <:label>Rol</:label>
+                <:content>
+                  {{this.model.minister.ministerPosition.function.label}}
+                </:content>
+              </Item>
+              <Item>
+                <:label>Type</:label>
+                <:content>Bedienaar</:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item>
+                <:label>Naam eredienst</:label>
+                <:content>
+                  {{this.model.minister.ministerPosition.worshipService.name}}
+                </:content>
+              </Item>
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+
+      <EditCard>
+        <:title>Primaire contactgegevens</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item @labelFor="contact-address-street-name">
+                <:label>Straat</:label>
+                <:content>
+                  <AuInput
+                    @value={{this.model.minister.contacts.firstObject.contactAddress.street}}
+                    @width="block"
+                    id="contact-address-street-name"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-address-house-number">
+                <:label>Huisnummer</:label>
+                <:content>
+                  <AuInput
+                    @value={{this.model.minister.contacts.firstObject.contactAddress.number}}
+                    @width="block"
+                    id="contact-address-house-number"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-address-bus-number">
+                <:label>Busnummer</:label>
+                <:content>
+                  <AuInput
+                    @value={{this.model.minister.contacts.firstObject.contactAddress.boxNumber}}
+                    @width="block"
+                    id="contact-address-bus-number"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-address-postal-code">
+                <:label>Postcode</:label>
+                <:content>
+                  <AuInput
+                    @value={{this.model.minister.contacts.firstObject.contactAddress.postcode}}
+                    @width="block"
+                    id="contact-address-postal-code"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-address-municipality">
+                <:label>Gemeente</:label>
+                <:content>
+                  <MunicipalitySelect
+                    @selected={{this.model.minister.contacts.firstObject.contactAddress.municipality}}
+                    @onChange={{fn
+                      (mut
+                        this.model.minister.contacts.firstObject.contactAddress.municipality
+                      )
+                    }}
+                    @id="contact-address-municipality"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-address-province">
+                <:label>Provincie</:label>
+                <:content>
+                  <ProvinceSelect
+                    @selected={{this.model.minister.contacts.firstObject.contactAddress.province}}
+                    @onChange={{fn
+                      (mut
+                        this.model.minister.contacts.firstObject.contactAddress.province
+                      )
+                    }}
+                    @id="contact-address-province"
+                  />
+                </:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item @labelFor="contact-email">
+                <:label>E-mail</:label>
+                <:content>
+                  <AuInput
+                    @width="block"
+                    @value={{this.model.minister.contacts.firstObject.email}}
+                    id="contact-email"
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="contact-telephone">
+                <:label>Telefoonnummer</:label>
+                <:content>
+                  <AuInput
+                    @width="block"
+                    @value={{this.model.minister.contacts.firstObject.telephone}}
+                    id="contact-telephone"
+                  />
+                </:content>
+              </Item>
+            </:right>
+          </Card.Columns>
+        </:card>
+      </EditCard>
+
+      <EditCard>
+        <:title>Aanstelling</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item @labelFor="start-date">
+                <:label>Startdatum</:label>
+                <:content>
+                  <Datepicker
+                    @id="start-date"
+                    @onChange={{fn (mut this.model.minister.agentStartDate)}}
+                    @value={{this.model.minister.agentStartDate}}
+                  />
+                </:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item @labelFor="end-date">
+                <:label>Einddatum</:label>
+                <:content>
+                  <Datepicker
+                    @disabled={{this.isCurrentPosition}}
+                    @id="end-date"
+                    @onChange={{fn (mut this.model.minister.agentEndDate)}}
+                    @value={{this.model.minister.agentEndDate}}
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="end-date">
+                <:label>{{! No label }}</:label>
+                <:content>
+                  <AuControlCheckbox
+                    checked={{this.isCurrentPosition}}
+                    @label="Huidige positie"
+                    @identifier="current-position"
+                    @onChange={{this.handleIsCurrentPositionChange}}
+                  />
+                </:content>
+              </Item>
+            </:right>
+          </Card.Columns>
+        </:card>
+      </EditCard>
+
+      <EditCard>
+        <:title>Financiering</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item @alignTop={{true}}>
+                <:label>FOD financiering</:label>
+                <:content>
+                  <ul class="au-c-list-inline">
+                    <li class="au-c-list-inline__item">
+                      <AuControlRadio
+                        @label="Ja"
+                        @name="financing"
+                        @value={{this.willReceiveFinancing}}
+                        checked={{this.willReceiveFinancing}}
+                        @onChange={{fn (mut this.willReceiveFinancing) true}}
+                        @identifier="receives-financing"
+                      />
+                    </li>
+                    <li class="au-c-list-inline__item">
+                      <AuControlRadio
+                        @label="Nee"
+                        @name="financing"
+                        @value={{this.willReceiveFinancing}}
+                        checked={{not this.willReceiveFinancing}}
+                        @onChange={{fn (mut this.willReceiveFinancing) false}}
+                        @identifier="receives-no-financing"
+                      />
+                    </li>
+                  </ul>
+                </:content>
+              </Item>
+            </:left>
+          </Card.Columns>
+        </:card>
+      </EditCard>
+
+      {{! TODO: add "Voorwaarde" section once file uploads are supported }}
+
+      <AuButtonGroup>
+        <AuButton
+          @loading={{this.save.isRunning}}
+          @disabled={{this.save.isRunning}}
+          type="submit"
         >
-            <DataCard>
-                <:title>Positie</:title>
-                <:card as |Card|>
-                <Card.Columns>
-                    <:left as |Item|>
-                        <Item>
-                            <:label>Rol</:label>
-                            <:content>
-                                {{this.model.minister.ministerPosition.function.label}}
-                            </:content>
-                        </Item>
-                        <Item>
-                            <:label>Type</:label>
-                            <:content>Bedienaar</:content>
-                        </Item>
-                    </:left>
-                    <:right as |Item|>
-                        <Item>
-                            <:label>Naam eredienst</:label>
-                            <:content>
-                                {{this.model.minister.ministerPosition.worshipService.name}}
-                            </:content>
-                        </Item>
-                    </:right>
-                </Card.Columns>
-                </:card>
-            </DataCard>
-
-            <EditCard>
-            <:title>Primaire contactgegevens</:title>
-            <:card as |Card|>
-                <Card.Columns>
-                <:left as |Item|>
-                    <Item @labelFor="contact-address-street-name">
-                    <:label>Straat</:label>
-                    <:content>
-                        <AuInput
-                        @value={{this.model.minister.contacts.firstObject.contactAddress.street}}
-                        @width="block"
-                        id="contact-address-street-name"
-                        />
-                    </:content>
-                    </Item>
-                    <Item @labelFor="contact-address-house-number">
-                    <:label>Huisnummer</:label>
-                    <:content>
-                        <AuInput
-                        @value={{this.model.minister.contacts.firstObject.contactAddress.number}}
-                        @width="block"
-                        id="contact-address-house-number"
-                        />
-                    </:content>
-                    </Item>
-                    <Item @labelFor="contact-address-bus-number">
-                    <:label>Busnummer</:label>
-                    <:content>
-                        <AuInput
-                        @value={{this.model.minister.contacts.firstObject.contactAddress.boxNumber}}
-                        @width="block"
-                        id="contact-address-bus-number"
-                        />
-                    </:content>
-                    </Item>
-                    <Item @labelFor="contact-address-postal-code">
-                    <:label>Postcode</:label>
-                    <:content>
-                        <AuInput
-                        @value={{this.model.minister.contacts.firstObject.contactAddress.postcode}}
-                        @width="block"
-                        id="contact-address-postal-code"
-                        />
-                    </:content>
-                    </Item>
-                    <Item @labelFor="contact-address-municipality">
-                    <:label>Gemeente</:label>
-                    <:content>
-                        <MunicipalitySelect
-                        @selected={{this.model.minister.contacts.firstObject.contactAddress.municipality}}
-                        @onChange={{fn
-                            (mut
-                            this.model.minister.contacts.firstObject.contactAddress.municipality
-                            )
-                        }}
-                        />
-                    </:content>
-                    </Item>
-                    <Item @labelFor="contact-address-province">
-                    <:label>Provincie</:label>
-                    <:content>
-                        <ProvinceSelect
-                        @selected={{this.model.minister.contacts.firstObject.contactAddress.province}}
-                        @onChange={{fn
-                            (mut
-                            this.model.minister.contacts.firstObject.contactAddress.province
-                            )
-                        }}
-                        />
-                    </:content>
-                    </Item>
-                </:left>
-                <:right as |Item|>
-                    <Item @labelFor="contact-email">
-                    <:label>E-mail</:label>
-                    <:content>
-                        <AuInput
-                        @width="block"
-                        @value={{this.model.minister.contacts.firstObject.email}}
-                        id="contact-email"
-                        />
-                    </:content>
-                    </Item>
-                    <Item @labelFor="contact-telephone">
-                    <:label>Telefoonnummer</:label>
-                    <:content>
-                        <AuInput
-                        @width="block"
-                        @value={{this.model.minister.contacts.firstObject.telephone}}
-                        id="contact-telephone"
-                        />
-                    </:content>
-                    </Item>
-                </:right>
-                </Card.Columns>
-            </:card>
-            </EditCard>
-
-            <EditCard>
-                <:title>Aanstelling</:title>
-                <:card as |Card|>
-                <Card.Columns>
-                    <:left as |Item|>
-                    <Item @labelFor="start-date">
-                        <:label>Startdatum</:label>
-                        <:content>
-                        <Datepicker
-                            @id="start-date"
-                            @onChange={{fn (mut this.model.minister.agentStartDate)}}
-                            @value={{this.model.minister.agentStartDate}}
-                        />
-                        </:content>
-                    </Item>
-                    </:left>
-                    <:right as |Item|>
-                    <Item @labelFor="end-date">
-                        <:label>Einddatum</:label>
-                        <:content>
-                        <Datepicker
-                            @disabled={{this.isCurrentPosition}}
-                            @id="end-date"
-                            @onChange={{fn (mut this.model.minister.agentEndDate)}}
-                            @value={{this.model.minister.agentEndDate}}
-                        />
-                        </:content>
-                    </Item>
-                    <Item @labelFor="end-date">
-                        <:label></:label>
-                        <:content>
-                        <AuControlCheckbox
-                            checked={{this.isCurrentPosition}}
-                            @label="Huidige positie"
-                            @identifier="current-position"
-                            @onChange={{this.handleIsCurrentPositionChange}}
-                        />
-                        </:content>
-                    </Item>
-                    </:right>
-                </Card.Columns>
-                </:card>
-            </EditCard>
-
-            <EditCard>
-                <:title>Financiering</:title>
-                <:card as |Card|>
-                <Card.Columns>
-                    <:left as |Item|>
-                    <Item @alignTop={{true}}>
-                        <:label>FOD financiering</:label>
-                        <:content>
-                        <ul class="au-c-list-inline">
-                            <li class="au-c-list-inline__item">
-                            <AuControlRadio
-                                @label="Ja"
-                                @name="financing"
-                                @value={{this.willReceiveFinancing}}
-                                checked={{this.willReceiveFinancing}}
-                                @onChange={{fn (mut this.willReceiveFinancing) true}}
-                                @identifier="receives-financing"
-                            />
-                            </li>
-                            <li class="au-c-list-inline__item">
-                            <AuControlRadio
-                                @label="Nee"
-                                @name="financing"
-                                @value={{this.willReceiveFinancing}}
-                                checked={{not this.willReceiveFinancing}}
-                                @onChange={{fn (mut this.willReceiveFinancing) false}}
-                                @identifier="receives-no-financing"
-                            />
-                            </li>
-                        </ul>
-                        </:content>
-                    </Item>
-                    </:left>
-                </Card.Columns>
-                </:card>
-            </EditCard>
-
-            {{! TODO: add "Voorwaarde" section once file uploads are supported }}
-
-            <AuButtonGroup>
-                <AuButton
-                    @loading={{this.save.isRunning}}
-                    @disabled={{this.save.isRunning}}
-                    type="submit"
-                >
-                    Opslaan
-                </AuButton>
-                <AuLink 
-                    {{on "click" this.cancel}}
-                    @skin="button-secondary">
-                    Annuleer
-                </AuLink>
-            </AuButtonGroup>
-        </form>
-    </div>
+          Opslaan
+        </AuButton>
+        <AuLink {{on "click" this.cancel}} @skin="button-secondary">
+          Annuleer
+        </AuLink>
+      </AuButtonGroup>
+    </form>
+  </div>
 </div>
-

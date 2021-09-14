@@ -97,6 +97,7 @@
                   <MunicipalitySelect
                     @selected={{@model.address.municipality}}
                     @onChange={{fn (mut @model.address.municipality)}}
+                    @id="address-municipality"
                   />
                 </:content>
               </Item>
@@ -106,6 +107,7 @@
                   <ProvinceSelect
                     @selected={{@model.address.province}}
                     @onChange={{fn (mut @model.address.province)}}
+                    @id="address-province"
                   />
                 </:content>
               </Item>
@@ -128,7 +130,8 @@
                   <AuInput
                     @value={{@model.contact.telephone}}
                     @width="block"
-                    id="contact-landline" type="tel"
+                    id="contact-landline"
+                    type="tel"
                   />
                 </:content>
               </Item>
@@ -159,17 +162,19 @@
                   <MandateRoleSelect
                     @selected={{this.selectedRole}}
                     @onChange={{this.handleMandateRoleSelect}}
+                    @id="board-position"
                   />
                 </:content>
               </Item>
               {{#if this.showHalfElectionTypeSelect}}
-                <Item @labelFor="">
+                <Item @labelFor="half-election-type">
                   <:label>Verkozen</:label>
                   <:content>
                     <PowerSelect
                       @selected={{@model.mandatory.typeHalf}}
                       @options={{@model.halfElectionTypes}}
                       @onChange={{fn (mut @model.mandatory.typeHalf)}}
+                      @triggerId="half-election-type"
                       as |type|
                     >
                       {{type.label}}
@@ -203,7 +208,7 @@
                   />
                 </:content>
               </Item>
-              {{!-- TODO: Hide this if the when "lid van rechtswege" is selected --}}
+              {{! TODO: Hide this if the when "lid van rechtswege" is selected }}
               <Item @labelFor="expected-end-date">
                 <:label>Geplande einddatum</:label>
                 <:content>
@@ -236,7 +241,10 @@
           @icon="add"
           @iconAlignment="left"
           @loading={{this.createMandatoryPositionTask.isRunning}}
-          @disabled={{or (not this.canSubmit) this.createMandatoryPositionTask.isRunning}}
+          @disabled={{or
+            (not this.canSubmit)
+            this.createMandatoryPositionTask.isRunning
+          }}
           type="submit"
         >
           Voeg toe

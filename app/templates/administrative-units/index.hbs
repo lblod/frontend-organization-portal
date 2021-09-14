@@ -12,6 +12,7 @@
             <MunicipalitySelect
               @selected={{this.municipality}}
               @onChange={{this.setMunicipality}}
+              @id="filter-municipality"
             />
           </div>
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
@@ -19,10 +20,11 @@
             <ProvinceSelect
               @selected={{this.province}}
               @onChange={{this.setProvince}}
+              @id="filter-province"
             />
           </div>
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
-            <AuLabel for="classifications">Type bestuur</AuLabel>
+            <AuLabel for="classification">Type bestuur</AuLabel>
             <PowerSelect
               @allowClear={{true}}
               {{!-- @searchEnabled={{true}} --}}
@@ -31,7 +33,7 @@
               @options={{@model.classifications}}
               @selected={{this.selectedClassification}}
               @onChange={{this.setClassification}}
-              @triggerId="classifications"
+              @triggerId="classification"
               as |classification|
             >
               {{classification.label}}
@@ -42,6 +44,7 @@
             <RecognizedWorshipTypeSelect
               @selected={{this.selectedRecognizedWorshipType}}
               @onChange={{this.setRecognizedWorshipType}}
+              @id="recognized-worship-types"
             />
           </div>
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
@@ -142,7 +145,8 @@
                 href="mailto:{{config "contactEmail"}}"
               >{{config "contactEmail"}}</a>
               of
-              <AuLink @route="administrative-units.new">maak een organisatie aan.</AuLink>
+              <AuLink @route="administrative-units.new">maak een organisatie
+                aan.</AuLink>
             </p>
           </TableMessage>
         {{else}}

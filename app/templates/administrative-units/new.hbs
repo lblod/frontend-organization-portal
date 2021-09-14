@@ -34,10 +34,11 @@
                   @onChange={{fn
                     (mut this.model.administrativeUnit.recognizedWorshipType)
                   }}
+                  @id="recognized-worship-type-select"
                 />
               </:content>
             </Item>
-            <Item>
+            <Item @labelFor="classification-select">
               <:label>Type bestuur</:label>
               <:content>
                 <ClassificationSelect
@@ -45,6 +46,7 @@
                   @onChange={{fn
                     (mut this.model.administrativeUnit.classification)
                   }}
+                  @id="classification-select"
                 />
               </:content>
             </Item>
@@ -112,6 +114,7 @@
                   @onChange={{fn
                     (mut this.model.administrativeUnit.organizationStatus)
                   }}
+                  @id="status-select"
                 />
               </:content>
             </Item>
@@ -191,6 +194,7 @@
                 <MunicipalitySelect
                   @selected={{this.model.address.municipality}}
                   @onChange={{fn (mut this.model.address.municipality)}}
+                  @id="primary-site-address-municipality"
                 />
               </:content>
             </Item>
@@ -200,6 +204,7 @@
                 <ProvinceSelect
                   @selected={{this.model.address.province}}
                   @onChange={{fn (mut this.model.address.province)}}
+                  @id="primary-site-address-province"
                 />
               </:content>
             </Item>
@@ -235,32 +240,34 @@
       <:card as |Card|>
         <Card.Columns>
           <:left as |Item|>
-          {{#if this.isNewCentralWorshipService}}
-            <Item>
-              <:label>Bestuur van de eredienst</:label>
-              <:content>
-                <WorshipServiceSelect
-                  @selected={{this.model.administrativeUnit.subOrganizations}}
-                  @onChange={{fn
-                    (mut this.model.administrativeUnit.subOrganizations)
-                  }}
-                />
-              </:content>
-            </Item>
-          {{else}}
-            <Item>
-              <:label>Centraal bestuur</:label>
-              <:content>
-                <CentralWorshipSelect
-                  @selected={{this.model.administrativeUnit.isSubOrganizationOf}}
-                  @onChange={{fn
-                    (mut this.model.administrativeUnit.isSubOrganizationOf)
-                  }}
-                />
-              </:content>
-            </Item>
-          {{/if}}
-            <Item>
+            {{#if this.isNewCentralWorshipService}}
+              <Item @labelFor="related-worship-service">
+                <:label>Bestuur van de eredienst</:label>
+                <:content>
+                  <WorshipServiceSelect
+                    @selected={{this.model.administrativeUnit.subOrganizations}}
+                    @onChange={{fn
+                      (mut this.model.administrativeUnit.subOrganizations)
+                    }}
+                    id="related-worship-service"
+                  />
+                </:content>
+              </Item>
+            {{else}}
+              <Item @labelFor="related-central-worship-service">
+                <:label>Centraal bestuur</:label>
+                <:content>
+                  <CentralWorshipSelect
+                    @selected={{this.model.administrativeUnit.isSubOrganizationOf}}
+                    @onChange={{fn
+                      (mut this.model.administrativeUnit.isSubOrganizationOf)
+                    }}
+                    @id="related-central-worship-service"
+                  />
+                </:content>
+              </Item>
+            {{/if}}
+            <Item @labelFor="related-representative-body">
               <:label>Representatief orgaan</:label>
               <:content>
                 <RepresentativeBodySelect
@@ -268,6 +275,7 @@
                   @onChange={{fn
                     (mut this.model.administrativeUnit.isAssociatedWith)
                   }}
+                  @id="related-representative-body"
                 />
               </:content>
             </Item>

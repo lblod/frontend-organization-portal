@@ -7,10 +7,7 @@
       <:title>Voeg een nieuwe persoon toe</:title>
     </PageHeader>
 
-    <form
-      id="person-creation"
-      {{on "submit" (perform this.savePersonTask)}}
-    >
+    <form id="person-creation" {{on "submit" (perform this.savePersonTask)}}>
       <EditCard>
         <:title>Persoonlijke gegevens</:title>
         <:card as |Card|>
@@ -55,6 +52,7 @@
                   <GenderSelect
                     @selected={{@model.person.gender}}
                     @onChange={{fn (mut @model.person.gender)}}
+                    @id="person-gender"
                   />
                 </:content>
               </Item>
@@ -74,6 +72,7 @@
                   <NationalitySelect
                     @selected={{@model.person.nationalities}}
                     @onChange={{fn (mut @model.person.nationalities)}}
+                    @id="person-nationality"
                   />
                 </:content>
               </Item>
@@ -103,10 +102,7 @@
         Opslaan
       </AuButton>
 
-      <AuButton
-        @skin="secondary"
-        {{on "click" this.cancel}}
-      >
+      <AuButton @skin="secondary" {{on "click" this.cancel}}>
         Annuleer
       </AuButton>
     </AuButtonGroup>
