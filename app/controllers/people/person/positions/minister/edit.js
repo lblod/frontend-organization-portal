@@ -13,7 +13,6 @@ const FINANCING_CODE = {
 export default class PeoplePersonPositionsMinisterEditController extends Controller {
   @service router;
   @tracked willReceiveFinancing;
-  @tracked isCurrentPosition;
   @tracked redirectUrl;
 
   queryParams = ['redirectUrl'];
@@ -21,7 +20,6 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
   setup() {
     this.willReceiveFinancing =
       this.model.minister.financing.get('id') === FINANCING_CODE.FOD_FINANCED;
-    this.isCurrentPosition = !this.model.minister.agentEndDate;
   }
 
   handleTransitionTo() {
@@ -32,10 +30,13 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
     }
   }
 
+  get isCurrentPosition() {
+    return !this.model.minister.agentEndDate;
+  }
+
   @action
   handleIsCurrentPositionChange() {
-    this.isCurrentPosition = !this.isCurrentPosition;
-    if (this.isCurrentPosition) {
+    if (!this.isCurrentPosition) {
       this.model.minister.agentEndDate = undefined;
     }
   }

@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
+import { action } from '@ember/object';
 
 const FINANCING_CODE = {
   SELF_FINANCED: '997073905f839ac6bafe92b76050ab0b',
@@ -17,7 +18,6 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
 
   @tracked personId;
   @tracked targetPerson = null;
-  @tracked isCurrentPosition = true;
   @tracked willReceiveFinancing = true;
 
   get isSelectingTargetPerson() {
@@ -26,6 +26,17 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
 
   get canSubmit() {
     return Boolean(this.model.position.function.get('id'));
+  }
+
+  get isCurrentPosition() {
+    return !this.model.minister.agentEndDate;
+  }
+
+  @action
+  handleIsCurrentPositionChange() {
+    if (!this.isCurrentPosition) {
+      this.model.minister.agentEndDate = undefined;
+    }
   }
 
   @dropTask
@@ -81,7 +92,6 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
   reset() {
     this.personId = null;
     this.targetPerson = null;
-    this.isCurrentPosition = true;
     this.willReceiveFunding = true;
     this.removeUnsavedRecords();
   }
