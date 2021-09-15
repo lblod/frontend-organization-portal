@@ -14,7 +14,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     );
 
     let mandatory = await this.store.findRecord('mandatory', mandatoryId, {
-      include: 'mandate.role-board,contacts.contact-address',
+      include: 'mandate.role-board,contacts.contact-address,type-half',
     });
 
     let contacts = await mandatory.contacts;
@@ -28,10 +28,13 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       contacts.firstObject.contactAddress = address;
     }
 
+    let mandate = await mandatory.mandate;
+
     return {
       administrativeUnit,
       governingBody,
       mandatory,
+      roleBoard: await mandate.roleBoard,
       person: await mandatory.governingAlias,
     };
   }
