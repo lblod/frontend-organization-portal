@@ -169,7 +169,6 @@
                 <:label>Einddatum</:label>
                 <:content>
                   <Datepicker
-                    @disabled={{this.isCurrentPosition}}
                     @id="end-date"
                     @onChange={{fn (mut this.model.minister.agentEndDate)}}
                     @value={{this.model.minister.agentEndDate}}
