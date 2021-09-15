@@ -32,16 +32,27 @@
     >
       <t.content as |c|>
         <c.header>
-          <th id="administrative-unit">Naam</th>
+          <th
+            id="administrative-unit"
+            style="min-width: 18rem;"
+            {{!TODO: replace this with some width utilities}}
+            {{! template-lint-disable no-inline-styles }}
+          >Naam</th>
           <th id="classification">Type instelling</th>
           <th id="involvement-type">Type betrokkenheid</th>
           <th id="financial-percentage">Financieel percentage</th>
+          {{! Make sure this column has a minimum width so the columns don't shift when the button is shown }}
+          <th
+            style="min-width: 18rem;"
+            {{! template-lint-disable no-inline-styles }}
+          ></th>
         </c.header>
         <c.body as |involvement|>
           <td>
             <AdministrativeUnitSelect
               @selected={{involvement.administrativeUnit}}
               @onChange={{fn (mut involvement.administrativeUnit)}}
+              @allowClear={{involvement.isNew}}
               @ariaLabelledBy="administrative-unit"
             />
           </td>
@@ -60,6 +71,7 @@
               @selected={{involvement.involvementType}}
               @onChange={{fn this.handleInvolvementTypeSelection involvement}}
               @ariaLabelledBy="involvement-type"
+              @allowClear={{involvement.isNew}}
               as |involvementType|
             >
               {{involvementType.label}}
@@ -74,6 +86,27 @@
               }}
               aria-labelledby="financial-percentage"
             />
+          </td>
+          <td class="align-middle">
+            {{#if
+              (and
+                involvement.isNew
+                (not involvement.administrativeUnit.id)
+                (not involvement.involvementType.id)
+                (eq involvement.percentage 0)
+              )
+            }}
+              <AuButton
+                @alert={{true}}
+                @icon="bin"
+                @iconAlignment="left"
+                @skin="link"
+                {{on
+                  "click"
+                  (fn this.deleteUnsavedLocalInvolvement involvement)
+                }}
+              >Verwijder</AuButton>
+            {{/if}}
           </td>
         </c.body>
       </t.content>
