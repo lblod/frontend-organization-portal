@@ -4,10 +4,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
-
-const MANDATORY_ROLE = {
-  WORSHIP_MEMBER: '2e021095727b2464459a63e16ebeafd2',
-};
+import { BOARD_POSITION } from 'frontend-contact-hub/models/board-position';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryNewController extends Controller {
   @service router;
@@ -24,7 +21,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   }
 
   get showHalfElectionTypeSelect() {
-    return this.selectedRole?.id === MANDATORY_ROLE.WORSHIP_MEMBER;
+    return this.selectedRole?.id === BOARD_POSITION.WORSHIP_MEMBER;
   }
 
   get canSubmit() {

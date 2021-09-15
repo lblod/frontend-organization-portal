@@ -43,7 +43,7 @@
                 <Item>
                   <:label>Bestuursfunctie</:label>
                   <:content>
-                    {{this.mandatory.mandate.roleBoard.label}}
+                    {{@model.roleBoard.label}}
                   </:content>
                 </Item>
               </:left>
@@ -174,6 +174,18 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
+                {{#if this.showHalfElectionTypeSelect}}
+                  <Item @labelFor="half-election-type">
+                    <:label>Verkozen</:label>
+                    <:content>
+                      <HalfElectionTypeSelect
+                        @selected={{this.mandatory.typeHalf}}
+                        @onChange={{fn (mut this.mandatory.typeHalf)}}
+                        @id="half-election-type"
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
                 <Item @labelFor="start-date">
                   <:label>Start mandaat</:label>
                   <:content>

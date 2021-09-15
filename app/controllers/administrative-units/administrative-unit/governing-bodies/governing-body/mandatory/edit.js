@@ -3,6 +3,7 @@ import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
+import { BOARD_POSITION } from 'frontend-contact-hub/models/board-position';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditController extends Controller {
   @service router;
@@ -27,6 +28,10 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
   get governingBody() {
     return this.model.governingBody;
+  }
+
+  get showHalfElectionTypeSelect() {
+    return this.model.roleBoard.id === BOARD_POSITION.WORSHIP_MEMBER;
   }
 
   @dropTask
