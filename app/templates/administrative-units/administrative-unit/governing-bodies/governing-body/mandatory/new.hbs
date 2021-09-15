@@ -170,15 +170,11 @@
                 <Item @labelFor="half-election-type">
                   <:label>Verkozen</:label>
                   <:content>
-                    <PowerSelect
+                    <HalfElectionTypeSelect
                       @selected={{@model.mandatory.typeHalf}}
-                      @options={{@model.halfElectionTypes}}
                       @onChange={{fn (mut @model.mandatory.typeHalf)}}
-                      @triggerId="half-election-type"
-                      as |type|
-                    >
-                      {{type.label}}
-                    </PowerSelect>
+                      @id="half-election-type"
+                    />
                   </:content>
                 </Item>
               {{/if}}

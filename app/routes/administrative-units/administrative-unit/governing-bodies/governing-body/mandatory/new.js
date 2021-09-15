@@ -22,7 +22,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       contact: this.store.createRecord('contact-point'),
       contactMobile: this.store.createRecord('contact-point'),
       address: this.store.createRecord('address'),
-      halfElectionTypes: await this.store.findAll('half-election'),
     };
   }
 
