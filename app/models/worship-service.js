@@ -10,10 +10,12 @@ export default class WorshipServiceModel extends WorshipAdministrativeUnitModel 
   })
   ministerPositions;
 
-  @hasMany('local-involvements', {
+  @hasMany('local-involvement', {
     inverse: 'worshipService',
   })
   involvements;
+
+  @hasMany('associated-legal-structure') associatedStructures;
 
   get crossBorderNominal() {
     if (this.crossBorder) {
