@@ -19,6 +19,17 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @tracked targetPerson = null;
   @tracked selectedRole = null;
 
+  get isCurrentPosition() {
+    return !this.model.mandatory.endDate;
+  }
+
+  @action
+  handleIsCurrentPositionChange() {
+    if (!this.isCurrentPosition) {
+      this.model.mandatory.endDate = undefined;
+    }
+  }
+
   get isSelectingTargetPerson() {
     return !this.targetPerson;
   }
