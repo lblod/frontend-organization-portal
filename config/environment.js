@@ -21,6 +21,7 @@ module.exports = function (environment) {
 
     appName: 'Organisatieportaal',
     contactEmail: 'organisaties.abb@vlaanderen.be',
+    environmentName: '{{ENVIRONMENT_NAME}}', // Supported values: LOCAL, DEV, QA
 
     torii: {
       disableRedirectInitializer: true,
@@ -51,6 +52,7 @@ module.exports = function (environment) {
 
   if (environment === 'development') {
     ENV.showAppVersionHash = true;
+    ENV.environmentName = 'LOCAL';
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
