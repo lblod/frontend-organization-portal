@@ -4,6 +4,11 @@
   @appTitle={{config "appName"}}
   @contactRoute="contact"
 >
+  {{#if this.environmentName}}
+    <div class="au-c-environment-pill {{this.environmentClass}}">
+      {{this.environmentName}}
+    </div>
+  {{/if}}
   {{#if this.session.isAuthenticated}}
     <AuDropdown
       @dropdownTitle={{this.currentSession.user.firstName}}
@@ -18,7 +23,7 @@
       </AuButton>
     </AuDropdown>
   {{else}}
-    {{!-- 
+    {{!--
     TODO: integrate ACM/IDM flow
     <AuButton
       @skin="tertiary"
