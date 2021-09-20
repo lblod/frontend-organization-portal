@@ -18,23 +18,27 @@ export default class PeopleNewController extends Controller {
     let { dateOfBirth, identifierSSN, person, structuredIdentifierSSN } =
       this.model;
 
-    yield dateOfBirth.save();
+    yield person.validate();
 
-    yield structuredIdentifierSSN.save();
-    identifierSSN.structuredIdentifier = structuredIdentifierSSN;
-    yield identifierSSN.save();
+    if (person.isValid) {
+      yield dateOfBirth.save();
 
-    person.dateOfBirth = dateOfBirth;
-    person.registration = identifierSSN;
-    yield person.save();
+      yield structuredIdentifierSSN.save();
+      identifierSSN.structuredIdentifier = structuredIdentifierSSN;
+      yield identifierSSN.save();
 
-    let personId = this.model.person.id;
+      person.dateOfBirth = dateOfBirth;
+      person.registration = identifierSSN;
+      yield person.save();
 
-    if (this.redirectUrl) {
-      // When passing a url the query params are ignored so we add the person id manually for now
-      this.router.transitionTo(`${this.redirectUrl}?personId=${personId}`);
-    } else {
-      this.router.transitionTo('people.person', personId);
+      let personId = this.model.person.id;
+
+      if (this.redirectUrl) {
+        // When passing a url the query params are ignored so we add the person id manually for now
+        this.router.transitionTo(`${this.redirectUrl}?personId=${personId}`);
+      } else {
+        this.router.transitionTo('people.person', personId);
+      }
     }
   }
 
