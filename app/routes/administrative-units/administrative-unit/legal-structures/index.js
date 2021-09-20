@@ -16,8 +16,8 @@ export default class AdministrativeUnitsAdministrativeUnitLegalStructuresIndexRo
         reload: true,
         include: [
           'associated-structures.registration.structured-identifier',
-          'associated-structures.registration.legal-type',
-          'associated-structures.registration.address',
+          'associated-structures.legal-type',
+          'associated-structures.address',
         ].join(),
       }
     );
