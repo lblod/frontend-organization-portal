@@ -14,13 +14,14 @@ export default class AddressRegisterSelectorComponent extends Component {
   @tracked addressWithBusNumber;
 
   get isDisabledBusNumberSelect() {
-    return this.addressWithBusNumber || true;
+    return !this.addressWithBusNumber;
   }
 
   constructor() {
     super(...arguments);
     this.getAddressInfo();
   }
+
   async getAddressInfo() {
     const address = await this.args.address;
     if (address) {
@@ -34,17 +35,17 @@ export default class AddressRegisterSelectorComponent extends Component {
         const selectedAddress = addresses.find(
           (a) => a.busNumber == address.busnummer
         );
-        this.addressesWithBusnumbers = addresses.sortBy('busNumber');
+        this.addressesWithBusNumbers = addresses.sortBy('busNumber');
         set(this, 'addressWithBusNumber', selectedAddress);
       } else {
-        this.addressesWithBusnumbers = null;
+        this.addressesWithBusNumbers = null;
         set(this, 'addressWithBusNumber', null);
       }
     }
   }
   @task
   *selectSuggestion(addressSuggestion) {
-    this.addressesWithBusnumbers = null;
+    this.addressesWithBusNumbers = null;
     set(this, 'addressWithBusNumber', null);
     this.addressSuggestion = addressSuggestion;
 
@@ -55,7 +56,7 @@ export default class AddressRegisterSelectorComponent extends Component {
       } else {
         // selection of busNumber required
         const sortedBusNumbers = addresses.sortBy('busNumber');
-        this.addressesWithBusnumbers = sortedBusNumbers;
+        this.addressesWithBusNumbers = sortedBusNumbers;
         set(this, 'addressWithBusNumber', sortedBusNumbers[0]);
         this.args.onChange(this.addressWithBusNumber.adresProperties);
       }
