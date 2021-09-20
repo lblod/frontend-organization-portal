@@ -62,7 +62,7 @@ class Address {
 export default class AddressRegisterService extends Service {
   async suggest(query) {
     const results = await (
-      await fetch(`/adressenregister/search?query=${query}`)
+      await fetch(`/adresses-register/search?query=${query}`)
     ).json();
     return results.adressen.map(function (result) {
       return new AddressSuggestion({
