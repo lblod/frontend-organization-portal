@@ -4,11 +4,7 @@
   @appTitle={{config "appName"}}
   @contactRoute="contact"
 >
-  {{#if this.environmentName}}
-    <div class="au-c-environment-pill {{this.environmentClass}}">
-      {{this.environmentName}}
-    </div>
-  {{/if}}
+  <EnvironmentLabel />
   {{#if this.session.isAuthenticated}}
     <AuDropdown
       @dropdownTitle={{this.currentSession.user.firstName}}
