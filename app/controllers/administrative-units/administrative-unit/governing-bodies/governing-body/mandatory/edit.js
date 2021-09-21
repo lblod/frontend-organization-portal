@@ -15,6 +15,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   handleIsCurrentPositionChange() {
     if (!this.isCurrentPosition) {
       this.mandatory.endDate = undefined;
+      this.mandatory.reasonStopped = undefined;
     }
   }
 
