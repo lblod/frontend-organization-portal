@@ -1,0 +1,51 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <PageHeader>
+      <:title>Verbonden juridische structuur: {{@model.associatedStructure.name}}</:title>
+      <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+      {{! TODO: Replace this with the "edit" route once it is created }}
+{{!--       <:action>
+        <AuLink
+          @route="administrative-units.administrative-unit.legal-structures.legal-structure.edit"
+          @skin="button-secondary"
+          @icon="pencil"
+          @iconAlignment="left"
+        >
+          Bewerk
+        </AuLink>
+      </:action> --}}
+    </PageHeader>
+
+    <DataCard>
+      <:title>Contactgegevens</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Naam</:label>
+              <:content>{{@model.associatedStructure.name}}</:content>
+            </Item>
+            <Item>
+              <:label>Locatie</:label>
+              <:content>{{@model.associatedStructure.address.fullAddress}}</:content>
+            </Item>
+            <Item>
+              <:label>Provincie</:label>
+              <:content>{{@model.associatedStructure.address.province}}</:content>
+            </Item>
+          </:left>
+          <:right as |Item|>
+            <Item>
+              <:label>Rechtsvorm</:label>
+              <:content>{{@model.associatedStructure.legalType.label}}</:content>
+            </Item>
+            <Item>
+              <:label>KBO Nummer</:label>
+              <:content>{{@model.associatedStructure.registration.structuredIdentifier.localId}}</:content>
+            </Item>
+          </:right>
+        </Card.Columns>
+      </:card>
+    </DataCard>
+  </div>
+</div>

@@ -81,7 +81,13 @@ Router.map(function () {
         this.route(
           'legal-structures',
           { path: '/verbonden-juridische-structuren' },
-          function () {}
+          function () {
+            this.route(
+              'legal-structure',
+              { path: '/:legalStructureId/' },
+              function () {}
+            );
+          }
         );
       });
       this.route('new', { path: '/nieuwe-bestuurseenheid' });
