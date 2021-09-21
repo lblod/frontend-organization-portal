@@ -49,7 +49,9 @@
 
 
 // COMPONENTS
+@import "ember-appuniversum/c-accordion";
 @import "ember-appuniversum/c-alert";
+@import "ember-appuniversum/c-app";
 @import "ember-appuniversum/c-badge";
 @import "ember-appuniversum/c-body-container";
 @import "ember-appuniversum/c-brand";
@@ -61,6 +63,7 @@
 @import "ember-appuniversum/c-control";
 @import "ember-appuniversum/c-data-table";
 @import "ember-appuniversum/c-dropdown";
+@import "ember-appuniversum/c-file-upload";
 @import "ember-appuniversum/c-form";
 @import "ember-appuniversum/c-heading";
 @import "ember-appuniversum/c-help-text";
@@ -80,11 +83,15 @@
 @import "ember-appuniversum/c-modal";
 @import "ember-appuniversum/c-sidebar";
 @import "ember-appuniversum/c-sidebar-action";
+@import "ember-appuniversum/c-table";
 @import "ember-appuniversum/c-textarea";
+@import "ember-appuniversum/c-timepicker";
 @import "ember-appuniversum/c-toolbar";
+@import "ember-appuniversum/c-toggle-switch";
 @import "components/cards";
 @import "components/sidebar-container";
 @import "components/table-message";
+@import "components/environment-pill";
 
 // PLUGINS
 @import "ember-appuniversum/p-ember-power-select";
@@ -93,6 +100,8 @@
 
 // UTILITIES
 @import "appuniversum/u-align-text";
+@import "appuniversum/u-background";
+@import "appuniversum/u-break-word";
 @import "appuniversum/u-headings";
 @import "appuniversum/u-hide";
 @import "appuniversum/u-font-family";
@@ -104,8 +113,6 @@
 @import "appuniversum/u-spacings";
 @import "appuniversum/u-visible";
 @import "appuniversum/u-widths";
-@import "appuniversum/u-background";
-@import "appuniversum/u-break-word";
 
 // TEMPORARY HACKS AND QUICKFIXES
 @import 'shame';
