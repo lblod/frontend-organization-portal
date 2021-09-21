@@ -8,28 +8,37 @@
     </PageHeader>
 
     <form id="person-creation" {{on "submit" (perform this.savePersonTask)}}>
-      <EditCard>
+      <EditCard @containsRequiredFields={{true}}>
         <:title>Persoonlijke gegevens</:title>
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              <Item @labelFor="person-given-name">
+              <Item
+                @labelFor="person-given-name"
+                @required={{true}}
+                @errorMessage={{@model.person.error.givenName.validation}}
+              >
                 <:label>Voornaam</:label>
-                <:content>
+                <:content as |hasError|>
                   <AuInput
                     @value={{@model.person.givenName}}
                     @width="block"
-                    @type="number"
+                    @error={{hasError}}
                     id="person-given-name"
                   />
                 </:content>
               </Item>
-              <Item @labelFor="person-family-name">
+              <Item
+                @labelFor="person-family-name"
+                @required={{true}}
+                @errorMessage={{@model.person.error.familyName.validation}}
+              >
                 <:label>Achternaam</:label>
-                <:content>
+                <:content as |hasError|>
                   <AuInput
                     @value={{@model.person.familyName}}
                     @width="block"
+                    @error={{hasError}}
                     id="person-family-name"
                   />
                 </:content>

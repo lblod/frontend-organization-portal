@@ -1,15 +1,18 @@
 <div
-  class="au-c-card-item {{if @alignTop "au-c-card-item--align-top"}} {{if @isGrid "au-o-grid__item au-u-1-2@medium"}}"
+  class="au-c-card-item
+    {{if @alignTop "au-c-card-item--align-top"}}
+    {{if @isGrid "au-o-grid__item au-u-1-2@medium"}}"
   ...attributes
 >
   {{#if (has-block "label")}}
     <div class="au-c-card-item__label au-c-card-item__label--edit">
       <AuLabel
-        class="{{@labelClass}}"
-        for={{@labelFor}}
         @required={{@required}}
         @requiredLabel="*"
         @inline={{true}}
+        @error={{@errorMessage}}
+        class={{@labelClass}}
+        for={{@labelFor}}
       >
         {{yield to="label"}}
       </AuLabel>
@@ -18,7 +21,11 @@
 
   {{#if (has-block "content")}}
     <div class="au-c-card-item__content">
-      {{yield to="content"}}
+      {{yield @errorMessage to="content"}}
+
+      {{#if @errorMessage}}
+        <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
+      {{/if}}
     </div>
   {{/if}}
 </div>
