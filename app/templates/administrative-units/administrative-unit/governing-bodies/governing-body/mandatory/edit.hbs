@@ -223,7 +223,6 @@
                   <:content>
                     <Datepicker
                       @id="end-date"
-                      @disabled={{this.isCurrentPositionCheck}}
                       @onChange={{fn (mut this.mandatory.endDate)}}
                       @value={{this.mandatory.endDate}}
                     />
@@ -233,10 +232,10 @@
                   <:label>{{! No label }}</:label>
                   <:content>
                     <AuControlCheckbox
-                      @checked={{this.isCurrentPositionCheck}}
+                      checked={{this.isCurrentPosition}}
                       @label="Huidige positie"
                       @identifier="current-position"
-                      @onChange={{fn (mut this.isCurrentPositionCheck)}}
+                      @onChange={{this.handleIsCurrentPositionChange}}
                     />
                   </:content>
                 </Item>

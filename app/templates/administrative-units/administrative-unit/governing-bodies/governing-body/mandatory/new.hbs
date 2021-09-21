@@ -227,6 +227,37 @@
                   />
                 </:content>
               </Item>
+              <Item @labelFor="end-date">
+                <:label>Effectieve einddatum</:label>
+                <:content>
+                  <Datepicker
+                    @id="end-date"
+                    @onChange={{fn (mut @model.mandatory.endDate)}}
+                    @value={{@model.mandatory.endDate}}
+                  />
+                </:content>
+              </Item>
+              <Item>
+                <:label></:label>
+                <:content>
+                  <AuControlCheckbox
+                    checked={{this.isCurrentPosition}}
+                    @label="Huidige positie"
+                    @identifier="current-position"
+                    @onChange={{this.handleIsCurrentPositionChange}}
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="reason-stop">
+                <:label>Reden stopzetting </:label>
+                <:content>
+                  <AuInput
+                    @value={{@model.mandatory.reasonStopped}}
+                    @width="block"
+                    id="reason-stop"
+                  />
+                </:content>
+              </Item>
             </:right>
           </Card.Columns>
         </:card>

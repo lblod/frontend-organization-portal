@@ -38,9 +38,4 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       person: await mandatory.governingAlias,
     };
   }
-
-  setupController(controller) {
-    super.setupController(...arguments);
-    controller.setup();
-  }
 }
