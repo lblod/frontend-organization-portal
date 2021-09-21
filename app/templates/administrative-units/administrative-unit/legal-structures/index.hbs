@@ -1,0 +1,50 @@
+<PageHeader class="au-o-box">
+  <:title>Verbonden juridische structuren</:title>
+  <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+    {{!-- <:action>
+    {{! TODO: Replace this with the "new" route once it is created }}
+    <AuLink
+      @route="administrative-units.administrative-unit.legal-structures
+      @icon="add"
+      @iconAlignment="left"
+      @skin="button"
+    >
+      Nieuw
+    </AuLink>
+  </:action> --}}
+</PageHeader>
+
+<AuDataTable
+  @content={{@model.associatedStructures}}
+  @noDataMessage="Geen verbonden juridische structuren"
+  as |t|
+>
+  <t.content as |c|>
+    <c.header>
+      <th class="au-c-data-table__header-title">Naam</th>
+      <th class="au-c-data-table__header-title">Rechtsvorm</th>
+      <th class="au-c-data-table__header-title">KBO Nummer</th>
+      <th class="au-c-data-table__header-title">Locatie</th>
+      <th></th>
+    </c.header>
+    <c.body as |associatedStructure|>
+        <td>
+          {{!-- TODO Replace this with the correct details route and model ids --}}
+          <AuLink @route="administrative-units.administrative-unit.legal-structures" @model={{this.admininistrativeUnit.id}}>
+            {{associatedStructure.name}}
+          </AuLink>
+        </td>
+        <td>{{associatedStructure.legalType.label}}</td>
+        <td>{{associatedStructure.registration.structuredIdentifier.localId}}</td>
+        <td>{{associatedStructure.address.fullAddress}}</td>
+        <td>
+          {{!-- TODO Replace this with the correct edit route and model ids--}}
+          <AuLink @route="administrative-units.administrative-unit.legal-structures"
+                  @model={{this.admininistrativeUnit.id}}
+          >
+            Bewerk
+          </AuLink>
+        </td>
+    </c.body>
+  </t.content>
+</AuDataTable>
