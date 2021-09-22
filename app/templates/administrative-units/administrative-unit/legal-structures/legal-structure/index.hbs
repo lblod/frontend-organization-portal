@@ -29,10 +29,12 @@
               <:label>Locatie</:label>
               <:content>{{@model.associatedStructure.address.fullAddress}}</:content>
             </Item>
-            <Item>
-              <:label>Provincie</:label>
-              <:content>{{@model.associatedStructure.address.province}}</:content>
-            </Item>
+            {{#if @model.associatedStructure.address.province}}
+                <Item>
+                <:label>Provincie</:label>
+                <:content>{{@model.associatedStructure.address.province}}</:content>
+                </Item>
+            {{/if}}
           </:left>
           <:right as |Item|>
             <Item>

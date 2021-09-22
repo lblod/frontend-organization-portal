@@ -29,7 +29,6 @@
     </c.header>
     <c.body as |associatedStructure|>
         <td>
-          {{!-- TODO Replace this with the correct details route and model ids --}}
           <AuLink @route="administrative-units.administrative-unit.legal-structures.legal-structure" @model={{associatedStructure.id}}>
             {{associatedStructure.name}}
           </AuLink>
