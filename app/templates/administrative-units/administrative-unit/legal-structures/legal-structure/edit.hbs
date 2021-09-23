@@ -9,8 +9,6 @@
     </PageHeader>
 
     <form
-      id="edit-juridische-structuur-form"
-      aria-label="Edit legal structure"
       {{on "submit" (perform this.save)}}
     >
     <div class="au-o-flow au-o-flow--large">
@@ -109,7 +107,7 @@
                 </:left>
                 <:right as |Item|>
                     <Item 
-                      @labelFor="associated-structure-address-legal-type"
+                      @labelFor="associated-structure-legal-type"
                       @required={{true}}
                       @errorMessage={{@model.associatedStructure.error.legalType.label.validation}}
                     >
@@ -119,7 +117,7 @@
                             @value={{@model.associatedStructure.legalType.label}}
                             @width="block"
                             @error={{hasError}}
-                            id="associated-structure-address-legal-type"
+                            id="associated-structure-legal-type"
                             />
                         </:content>
                     </Item>

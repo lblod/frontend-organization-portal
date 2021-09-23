@@ -10,16 +10,16 @@ export default class AdministrativeUnitsAdministrativeUnitLegalStructuresLegalSt
   *save(event) {
     event.preventDefault();
 
-    let address = yield this.model.associatedStructure.address;
-
-    if (address.hasDirtyAttributes) {
-      address.fullAddress = combineFullAddress(address);
-      yield address.save();
-    }
-
     yield this.model.associatedStructure.validate();
 
     if (this.model.associatedStructure.isValid) {
+      let address = yield this.model.associatedStructure.address;
+
+      if (address.hasDirtyAttributes) {
+        address.fullAddress = combineFullAddress(address);
+        yield address.save();
+      }
+
       yield this.model.associatedStructure.save();
 
       this.router.transitionTo(
