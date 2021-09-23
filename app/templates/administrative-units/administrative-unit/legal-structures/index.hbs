@@ -37,9 +37,8 @@
         <td>{{associatedStructure.registration.structuredIdentifier.localId}}</td>
         <td>{{associatedStructure.address.fullAddress}}</td>
         <td>
-          {{!-- TODO Replace this with the correct edit route and model ids--}}
-          <AuLink @route="administrative-units.administrative-unit.legal-structures"
-                  @model={{this.admininistrativeUnit.id}}
+          <AuLink @route="administrative-units.administrative-unit.legal-structures.legal-structure.edit"
+                  @model={{associatedStructure.id}}
           >
             Bewerk
           </AuLink>

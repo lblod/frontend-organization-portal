@@ -85,7 +85,9 @@ Router.map(function () {
             this.route(
               'legal-structure',
               { path: '/:legalStructureId/' },
-              function () {}
+              function () {
+                this.route('edit');
+              }
             );
           }
         );

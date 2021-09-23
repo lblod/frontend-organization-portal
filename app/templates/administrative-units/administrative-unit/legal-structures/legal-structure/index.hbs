@@ -3,8 +3,7 @@
     <PageHeader>
       <:title>Verbonden juridische structuur: {{@model.associatedStructure.name}}</:title>
       <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
-      {{! TODO: Replace this with the "edit" route once it is created }}
-{{!--       <:action>
+      <:action>
         <AuLink
           @route="administrative-units.administrative-unit.legal-structures.legal-structure.edit"
           @skin="button-secondary"
@@ -13,7 +12,7 @@
         >
           Bewerk
         </AuLink>
-      </:action> --}}
+      </:action>
     </PageHeader>
 
     <DataCard>
