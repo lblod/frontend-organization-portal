@@ -20,6 +20,13 @@ export default class AdministrativeUnitsAdministrativeUnitLegalStructuresLegalSt
         yield address.save();
       }
 
+      let registration = yield this.model.associatedStructure.registration;
+      let structuredIdentifier = yield registration.structuredIdentifier;
+      yield structuredIdentifier.save();
+
+      let legalType = yield this.model.associatedStructure;
+      yield legalType.save();
+
       yield this.model.associatedStructure.save();
 
       this.router.transitionTo(
