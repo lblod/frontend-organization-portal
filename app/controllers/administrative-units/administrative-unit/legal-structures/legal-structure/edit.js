@@ -24,7 +24,7 @@ export default class AdministrativeUnitsAdministrativeUnitLegalStructuresLegalSt
       let structuredIdentifier = yield registration.structuredIdentifier;
       yield structuredIdentifier.save();
 
-      let legalType = yield this.model.associatedStructure;
+      let legalType = yield this.model.associatedStructure.legalType;
       yield legalType.save();
 
       yield this.model.associatedStructure.save();
