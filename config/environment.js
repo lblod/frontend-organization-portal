@@ -17,6 +17,10 @@ module.exports = function (environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+      analytics: {
+        appDomain: '{{ANALYTICS_APP_DOMAIN}}',
+        plausibleScript: '{{ANALYTICS_PLAUSIBLE_SCRIPT}}',
+      },
     },
 
     appName: 'Organisatieportaal',
