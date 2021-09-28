@@ -1,5 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
+import localInvolvementValidations from 'frontend-contact-hub/validations/local-involvement';
 
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditRoute extends Route {
   @service store;
@@ -22,6 +24,9 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
     let involvementTypes = await this.store.findAll('involvement-type');
 
     let involvements = await administrativeUnit.involvements;
+    involvements = involvements.map((involvement) => {
+      return createValidatedChangeset(involvement, localInvolvementValidations);
+    });
 
     return {
       administrativeUnit,

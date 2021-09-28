@@ -1,30 +1,35 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
+import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
+import localInvolvementValidations from 'frontend-contact-hub/validations/local-involvement';
+import { INVOLVEMENT_TYPE } from 'frontend-contact-hub/models/involvement-type';
 
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditController extends Controller {
   @service router;
   @service store;
+  @tracked showTotalFinancingPercentageError = false;
 
-  INVOLVEMENT_TYPE = {
-    FINANCIAL: 'ac400cc9f135ac7873fb3e551ec738c1',
-  };
+  INVOLVEMENT_TYPE = INVOLVEMENT_TYPE;
 
   get totalFinancingPercentage() {
-    let total = 0;
+    return this.model.involvements.reduce((percentageTotal, involvement) => {
+      let percentage = parseFloat(involvement.percentage);
 
-    let involvements = this.model.involvements;
+      let isValidPercentage = !Number.isNaN(percentage);
 
-    for (const involvement of involvements.toArray()) {
-      total = total + parseFloat(involvement.percentage);
-    }
-
-    return total;
+      if (isValidPercentage) {
+        return percentageTotal + percentage;
+      } else {
+        return percentageTotal;
+      }
+    }, 0);
   }
 
-  get isFinancingTotalNotValid() {
-    return this.totalFinancingPercentage !== 100;
+  get isValidTotalFinancingPercentage() {
+    return this.totalFinancingPercentage === 100;
   }
 
   setup() {
@@ -34,38 +39,46 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   }
 
   reset() {
-    this.removeUnsavedRecords();
+    this.deleteAllUnsavedLocalInvolvements();
+    this.hideTotalFinancingPercentageError();
   }
 
-  removeUnsavedRecords() {
-    let involvements = this.model.involvements;
+  deleteAllUnsavedLocalInvolvements() {
+    this.model.involvements
+      .filter((involvement) => involvement.isNew)
+      .forEach(this.deleteUnsavedLocalInvolvement);
+  }
 
-    for (const involvement of involvements.toArray()) {
-      if (involvement.hasDirtyAttributes) {
-        involvement.rollbackAttributes();
-      }
-    }
+  hideTotalFinancingPercentageError() {
+    this.showTotalFinancingPercentageError = false;
   }
 
   @action
   handleInvolvementTypeSelection(involvement, involvementType) {
     involvement.involvementType = involvementType;
 
-    if (
-      !involvementType ||
-      involvementType.id !== this.INVOLVEMENT_TYPE.FINANCIAL
-    ) {
+    if (!involvementType || involvementType.id !== INVOLVEMENT_TYPE.FINANCIAL) {
       involvement.percentage = 0;
     }
   }
 
   @action
+  handlePercentageChange(involvement, event) {
+    let newPercentage = event.target.value;
+    involvement.percentage = newPercentage;
+
+    this.hideTotalFinancingPercentageError();
+  }
+
+  @action
   addNewLocalInvolvement() {
+    let involvement = this.store.createRecord('local-involvement', {
+      worshipService: this.model.administrativeUnit,
+      percentage: 0,
+    });
+
     this.model.involvements.pushObject(
-      this.store.createRecord('local-involvement', {
-        worshipService: this.model.administrativeUnit,
-        percentage: 0,
-      })
+      createValidatedChangeset(involvement, localInvolvementValidations)
     );
   }
 
@@ -79,18 +92,39 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   *save(event) {
     event.preventDefault();
 
-    if (this.isFinancingTotalNotValid) {
-      return;
-    }
-
     let involvements = yield this.model.involvements;
 
-    let savePromises = involvements.map((involvement) => involvement.save());
-    yield Promise.all(savePromises);
-
-    this.router.transitionTo(
-      'administrative-units.administrative-unit.local-involvements',
-      this.model.administrativeUnit.id
+    let validationPromises = involvements.map((involvement) =>
+      involvement.validate()
     );
+    yield Promise.all(validationPromises);
+
+    let areSomeLocalInvolvementsInvalid = involvements
+      .toArray()
+      .some((involvement) => involvement.isInvalid);
+
+    if (!this.isValidTotalFinancingPercentage) {
+      this.showTotalFinancingPercentageError = true;
+    }
+
+    if (
+      !areSomeLocalInvolvementsInvalid &&
+      this.isValidTotalFinancingPercentage
+    ) {
+      let localInvolvementsWithUnsavedChanges = involvements.filter(
+        (involvement) => involvement.isDirty
+      );
+
+      let savePromises = localInvolvementsWithUnsavedChanges.map(
+        (involvement) => involvement.save()
+      );
+
+      yield Promise.all(savePromises);
+
+      this.router.transitionTo(
+        'administrative-units.administrative-unit.local-involvements',
+        this.model.administrativeUnit.id
+      );
+    }
   }
 }
