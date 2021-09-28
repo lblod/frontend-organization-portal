@@ -6,7 +6,7 @@
     <:action>
       <AuButton
         @loading={{this.save.isRunning}}
-        @disabled={{or this.isFinancingTotalNotValid this.save.isRunning}}
+        @disabled={{this.save.isRunning}}
         form="local-involvements-edit-creation"
         type="submit"
       >
@@ -40,7 +40,12 @@
           >Naam</th>
           <th id="classification">Type instelling</th>
           <th id="involvement-type">Type betrokkenheid</th>
-          <th id="financial-percentage">Financieel percentage</th>
+          <th id="financial-percentage">
+            Financieel percentage
+            <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
+              Het totaal van alle percentages moet gelijk zijn aan 100
+            </AuHelpText>
+          </th>
           {{! Make sure this column has a minimum width so the columns don't shift when the button is shown }}
           <th
             style="min-width: 18rem;"
@@ -49,12 +54,21 @@
         </c.header>
         <c.body as |involvement|>
           <td>
-            <AdministrativeUnitSelect
-              @selected={{involvement.administrativeUnit}}
-              @onChange={{fn (mut involvement.administrativeUnit)}}
-              @allowClear={{involvement.isNew}}
-              @ariaLabelledBy="administrative-unit"
-            />
+            {{#let
+              involvement.error.administrativeUnit.validation
+              as |errorMessage|
+            }}
+              <AdministrativeUnitSelect
+                @selected={{involvement.administrativeUnit}}
+                @onChange={{fn (mut involvement.administrativeUnit)}}
+                @allowClear={{involvement.isNew}}
+                @ariaLabelledBy="administrative-unit"
+                @error={{errorMessage}}
+              />
+              {{#if errorMessage}}
+                <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+              {{/if}}
+            {{/let}}
           </td>
           <td>
             <AuInput
@@ -65,27 +79,63 @@
             />
           </td>
           <td>
-            <PowerSelect
-              @noMatchesMessage="Geen resultaten"
-              @options={{@model.involvementTypes}}
-              @selected={{involvement.involvementType}}
-              @onChange={{fn this.handleInvolvementTypeSelection involvement}}
-              @ariaLabelledBy="involvement-type"
-              @allowClear={{involvement.isNew}}
-              as |involvementType|
-            >
-              {{involvementType.label}}
-            </PowerSelect>
+            {{#let
+              involvement.error.involvementType.validation
+              as |errorMessage|
+            }}
+              <div class={{if errorMessage "ember-power-select--error"}}>
+                <PowerSelect
+                  @noMatchesMessage="Geen resultaten"
+                  @options={{@model.involvementTypes}}
+                  @selected={{involvement.involvementType}}
+                  @onChange={{fn
+                    this.handleInvolvementTypeSelection
+                    involvement
+                  }}
+                  @ariaLabelledBy="involvement-type"
+                  @allowClear={{involvement.isNew}}
+                  as |involvementType|
+                >
+                  {{involvementType.label}}
+                </PowerSelect>
+              </div>
+              {{#if errorMessage}}
+                <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+              {{/if}}
+            {{/let}}
           </td>
           <td>
-            <AuInput
-              @value={{involvement.percentage}}
-              @disabled={{not-eq
-                involvement.involvementType.id
-                this.INVOLVEMENT_TYPE.FINANCIAL
+            {{#let
+              (eq
+                involvement.involvementType.id this.INVOLVEMENT_TYPE.FINANCIAL
+              )
+              as |isFinancialInvolvementType|
+            }}
+              {{#let
+                (or
+                  involvement.error.percentage.validation
+                  (if
+                    (and
+                      isFinancialInvolvementType
+                      this.showTotalFinancingPercentageError
+                    )
+                    "Het totaal van alle percentages moet gelijk zijn aan 100"
+                  )
+                )
+                as |errorMessage|
               }}
-              aria-labelledby="financial-percentage"
-            />
+                <AuInput
+                  @disabled={{not isFinancialInvolvementType}}
+                  @error={{errorMessage}}
+                  aria-labelledby="financial-percentage"
+                  value={{involvement.percentage}}
+                  {{on "input" (fn this.handlePercentageChange involvement)}}
+                />
+                {{#if errorMessage}}
+                  <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+                {{/if}}
+              {{/let}}
+            {{/let}}
           </td>
           <td class="align-middle">
             {{#if

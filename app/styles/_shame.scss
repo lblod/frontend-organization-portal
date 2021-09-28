@@ -106,3 +106,8 @@ table.dataTable tbody th {
 .align-middle {
   vertical-align: middle !important;
 }
+
+// Make sure the help text doesn't inherit the font weight of the parent
+.au-c-help-text:not(.au-c-help-text--error) {
+  font-weight: 400;
+}
