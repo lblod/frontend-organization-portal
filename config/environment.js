@@ -57,6 +57,7 @@ module.exports = function (environment) {
   if (environment === 'development') {
     ENV.showAppVersionHash = true;
     ENV.environmentName = 'LOCAL';
+    ENV.torii.providers['acmidm-oauth2'].logoutUrl = '/mock-login';
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
