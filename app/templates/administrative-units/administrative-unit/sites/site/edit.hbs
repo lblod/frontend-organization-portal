@@ -68,12 +68,16 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <Item @labelFor="primary-site-address-street-name">
+                <Item @labelFor="primary-site-address-street-name"
+                      @required={{true}}
+                      @errorMessage={{@model.site.address.street.validation}}
+                >
                   <:label>Straat</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
                       @value={{@model.site.address.street}}
                       @width="block"
+                      @error={{hasError}}
                       id="primary-site-address-street-name"
                     />
                   </:content>
