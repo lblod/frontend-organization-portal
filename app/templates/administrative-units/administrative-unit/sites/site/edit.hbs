@@ -70,7 +70,7 @@
               <:left as |Item|>
                 <Item @labelFor="primary-site-address-street-name"
                       @required={{true}}
-                      @errorMessage={{@model.site.address.street.validation}}
+                      @errorMessage={{@model.site.error.address.street.validation}}
                 >
                   <:label>Straat</:label>
                   <:content as |hasError|>
@@ -82,12 +82,15 @@
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-address-house-number">
+                <Item @labelFor="primary-site-address-house-number"
+                      @required={{true}}
+                      @errorMessage={{@model.site.error.address.number.validation}}>
                   <:label>Huisnummer</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
                       @value={{@model.site.address.number}}
                       @width="block"
+                      @error={{hasError}}
                       id="primary-site-address-house-number"
                     />
                   </:content>
@@ -102,39 +105,63 @@
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-address-postal-code">
+                <Item @labelFor="primary-site-address-postal-code"
+                      @required={{true}}
+                      @errorMessage={{@model.site.error.address.postcode.validation}}>
                   <:label>Postcode</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
                       @value={{@model.site.address.postcode}}
                       @width="block"
+                      @error={{hasError}}
                       id="primary-site-address-postal-code"
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-address-municipality">
+                <Item @labelFor="primary-site-address-municipality"
+                      @required={{true}}
+                >
                   <:label>Gemeente</:label>
                   <:content>
+                  {{#let
+                    @model.site.error.address.municipality.validation
+                    as |errorMessage|
+                  }}
                     <MunicipalitySelect
-                      @selected={{this.model.site.address.municipality}}
+                      @selected={{@model.site.address.municipality}}
                       @onChange={{fn
-                        (mut this.model.site.address.municipality)
+                        (mut @model.site.address.municipality)
                       }}
                       @id="primary-site-address-municipality"
+                      @error={{errorMessage}}
                     />
+                    {{#if errorMessage}}
+                      <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+                    {{/if}}
+                  {{/let}}
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-address-province">
+                <Item @labelFor="primary-site-address-province"
+                      @required={{true}}
+                >
                   <:label>Provincie</:label>
                   <:content>
+                  {{#let
+                    @model.site.error.address.province.validation
+                    as |errorMessage|
+                  }}
                     <ProvinceSelect
-                      @selected={{this.model.site.address.province}}
-                      @onChange={{fn (mut this.model.site.address.province)}}
+                      @selected={{@model.site.address.province}}
+                      @onChange={{fn (mut @model.site.address.province)}}
                       @id="primary-site-address-province"
+                      @error={{errorMessage}}
                     />
+                    {{#if errorMessage}}
+                      <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+                    {{/if}}
+                  {{/let}}
                   </:content>
                 </Item>
-
               </:left>
               <:right as |Item|>
                 <Item @labelFor="primary-site-contact-phone-number">
