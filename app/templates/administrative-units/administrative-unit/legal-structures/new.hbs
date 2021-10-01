@@ -1,0 +1,139 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <PageHeader>
+      <:title>Voeg juridische structuur toe</:title>
+    </PageHeader>
+
+    <form
+      {{on "submit" (perform this.createAssociatedStructureTask)}}
+    >
+    <div class="au-o-flow au-o-flow--large">
+        <EditCard @containsRequiredFields={{true}}>
+            <:title>Contactgegevens</:title>
+            <:card as |Card|>
+                <Card.Columns>
+                <:left as |Item|>
+                    <Item 
+                      @labelFor="associated-structure-name"
+                    >
+                        <:label>Naam</:label>
+                        <:content>
+                            <AuInput
+                            @value={{@model.associatedStructure.name}}
+                            @width="block"
+                            id="associated-structure-name"
+                            />
+                        </:content>
+                    </Item>
+                    <Item @labelFor="associated-structure-address-street-name">
+                      <:label>Straat</:label>
+                      <:content>
+                          <AuInput
+                          @value={{@model.address.street}}
+                          @width="block"
+                          id="associated-structure-address-street-name"
+                          />
+                      </:content>
+                    </Item>
+                    <Item @labelFor="associated-structure-address-house-number">
+                        <:label>Huisnummer</:label>
+                        <:content>
+                            <AuInput
+                            @value={{@model.address.number}}
+                            @width="block"
+                            id="associated-structure-address-house-number"
+                            />
+                        </:content>
+                    </Item>
+                    <Item @labelFor="associated-structure-address-bus-number">
+                        <:label>Busnummer</:label>
+                        <:content>
+                            <AuInput
+                            @value={{@model.address.boxNumber}}
+                            @width="block"
+                            id="associated-structure-address-bus-number"
+                            />
+                        </:content>
+                    </Item>
+                    <Item @labelFor="associated-structure-address-postal-code">
+                        <:label>Postcode</:label>
+                        <:content>
+                            <AuInput
+                            @value={{@model.address.postcode}}
+                            @width="block"
+                            id="associated-structure-address-postal-code"
+                            />
+                        </:content>
+                    </Item>
+                    <Item @labelFor="associated-structure-address-municipality">
+                        <:label>Gemeente</:label>
+                        <:content>
+                            <MunicipalitySelect
+                            @selected={{@model.address.municipality}}
+                            @onChange={{fn
+                                (mut @model.address.municipality)
+                            }}
+                            @id="associated-structure-address-municipality"
+                            />
+                        </:content>
+                    </Item>
+                    <Item @labelFor="associated-structure-address-province">
+                        <:label>Provincie</:label>
+                        <:content>
+                            <ProvinceSelect
+                            @selected={{@model.address.province}}
+                            @onChange={{fn (mut @model.address.province)}}
+                            @id="associated-structure-address-province"
+                            />
+                        </:content>
+                    </Item>
+                </:left>
+                <:right as |Item|>
+                    <Item 
+                      @labelFor="associated-structure-legal-type"
+                    >
+                        <:label>Rechtsvorm</:label>
+                        <:content>
+                            <AuInput
+                            @value={{@model.legalType.label}}
+                            @width="block"
+                            id="associated-structure-legal-type"
+                            />
+                        </:content>
+                    </Item>
+                    <Item @labelFor="associated-structure-kbo-number">
+                        <:label>KBO Nummer</:label>
+                        <:content>
+                            <AuInput
+                            @value={{@model.structuredIdentifier.localId}}
+                            @width="block"
+                            id="associated-structure-kbo-number"
+                            />
+                        </:content>
+                    </Item>
+                </:right>
+                </Card.Columns>
+            </:card>
+        </EditCard>
+        <AuButtonGroup>
+          <AuButton
+            @loading={{this.createAssociatedStructureTask.isRunning}}
+            @disabled={{this.createAssociatedStructureTask.isRunning}}
+            type="submit"
+            @icon="add"
+            @iconAlignment="left"
+          >
+            Voeg toe
+          </AuButton>
+
+          <AuLink
+            @route="administrative-units.administrative-unit.legal-structures"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>
+        </AuButtonGroup>
+      </div>
+    </form>
+  </div>
+</div>
