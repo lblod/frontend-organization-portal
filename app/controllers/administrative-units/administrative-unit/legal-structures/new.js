@@ -19,29 +19,34 @@ export default class AdministrativeUnitsAdministrativeUnitLegalStructuresNewCont
       structuredIdentifier,
     } = this.model;
 
-    address.fullAddress = combineFullAddress(address);
-    yield address.save();
+    yield associatedStructure.validate();
+    yield legalType.validate();
 
-    yield legalType.save();
+    if (associatedStructure.isValid && legalType.isValid) {
+      address.fullAddress = combineFullAddress(address);
+      yield address.save();
 
-    yield structuredIdentifier.save();
-    registration.structuredIdentifier = structuredIdentifier;
-    yield registration.save();
+      yield legalType.save();
 
-    associatedStructure.address = address;
-    associatedStructure.legalType = legalType;
-    associatedStructure.registration = registration;
-    yield associatedStructure.save();
+      yield structuredIdentifier.save();
+      registration.structuredIdentifier = structuredIdentifier;
+      yield registration.save();
 
-    this.model.administrativeUnit.associatedStructures.pushObject(
-      associatedStructure
-    );
-    yield this.model.administrativeUnit.save();
+      associatedStructure.address = address;
+      associatedStructure.legalType = legalType;
+      associatedStructure.registration = registration;
+      yield associatedStructure.save();
 
-    this.router.replaceWith(
-      'administrative-units.administrative-unit.legal-structures.legal-structure',
-      associatedStructure.id
-    );
+      this.model.administrativeUnit.associatedStructures.pushObject(
+        associatedStructure
+      );
+      yield this.model.administrativeUnit.save();
+
+      this.router.replaceWith(
+        'administrative-units.administrative-unit.legal-structures.legal-structure',
+        associatedStructure.id
+      );
+    }
   }
 
   reset() {

@@ -15,12 +15,15 @@
                 <:left as |Item|>
                     <Item 
                       @labelFor="associated-structure-name"
+                      @required={{true}}
+                      @errorMessage={{@model.associatedStructure.error.name.validation}}
                     >
                         <:label>Naam</:label>
-                        <:content>
+                        <:content as |hasError|>
                             <AuInput
                             @value={{@model.associatedStructure.name}}
                             @width="block"
+                            @error={{hasError}}
                             id="associated-structure-name"
                             />
                         </:content>
@@ -91,12 +94,15 @@
                 <:right as |Item|>
                     <Item 
                       @labelFor="associated-structure-legal-type"
+                      @required={{true}}
+                      @errorMessage={{@model.legalType.error.label.validation}}
                     >
                         <:label>Rechtsvorm</:label>
-                        <:content>
+                        <:content as |hasError|>
                             <AuInput
                             @value={{@model.legalType.label}}
                             @width="block"
+                            @error={{hasError}}
                             id="associated-structure-legal-type"
                             />
                         </:content>
