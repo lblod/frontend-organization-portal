@@ -89,6 +89,9 @@ Router.map(function () {
                 this.route('edit');
               }
             );
+            this.route('new', {
+              path: '/nieuwe-verbonden-juridische-structuur',
+            });
           }
         );
       });
