@@ -53,6 +53,7 @@ export default class AdministrativeUnitsAdministrativeUnitLegalStructuresNewCont
   }
 
   removeUnsavedRecords() {
+    // @TODO: The new record isn't destroyed like this if it's wrapped in a changeset. Investigate why .destroyRecord() instead doesn't work proprerly.
     this.model.associatedStructure.rollbackAttributes();
     this.model.address.rollbackAttributes();
     this.model.legalType.rollbackAttributes();
