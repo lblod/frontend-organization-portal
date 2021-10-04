@@ -1,17 +1,16 @@
 <PageHeader class="au-o-box">
   <:title>Verbonden juridische structuren</:title>
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
-    {{!-- <:action>
-    {{! TODO: Replace this with the "new" route once it is created }}
+    <:action>
     <AuLink
-      @route="administrative-units.administrative-unit.legal-structures
+      @route="administrative-units.administrative-unit.legal-structures.new"
       @icon="add"
       @iconAlignment="left"
       @skin="button"
     >
       Nieuw
     </AuLink>
-  </:action> --}}
+  </:action>
 </PageHeader>
 
 <AuDataTable
