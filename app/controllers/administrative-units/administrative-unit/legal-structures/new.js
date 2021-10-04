@@ -12,6 +12,7 @@ export default class AdministrativeUnitsAdministrativeUnitLegalStructuresNewCont
     event.preventDefault();
 
     let {
+      administrativeUnit,
       associatedStructure,
       address,
       legalType,
@@ -37,10 +38,8 @@ export default class AdministrativeUnitsAdministrativeUnitLegalStructuresNewCont
       associatedStructure.registration = registration;
       yield associatedStructure.save();
 
-      this.model.administrativeUnit.associatedStructures.pushObject(
-        associatedStructure
-      );
-      yield this.model.administrativeUnit.save();
+      administrativeUnit.associatedStructures.pushObject(associatedStructure);
+      yield administrativeUnit.save();
 
       this.router.replaceWith(
         'administrative-units.administrative-unit.legal-structures.legal-structure',
