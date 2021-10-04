@@ -6,3 +6,7 @@ export default {
     label: validatePresence({ presence: true, ignoreBlank: true }),
   },
 };
+
+export const legalTypeValidations = {
+  label: validatePresence({ presence: true, ignoreBlank: true }),
+};
