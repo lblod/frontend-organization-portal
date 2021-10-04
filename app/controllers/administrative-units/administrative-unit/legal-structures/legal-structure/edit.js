@@ -11,21 +11,22 @@ export default class AdministrativeUnitsAdministrativeUnitLegalStructuresLegalSt
     event.preventDefault();
 
     yield this.model.associatedStructure.validate();
+    yield this.model.legalType.validate();
 
-    if (this.model.associatedStructure.isValid) {
-      let address = yield this.model.associatedStructure.address;
-
-      if (address.hasDirtyAttributes) {
-        address.fullAddress = combineFullAddress(address);
-        yield address.save();
+    if (
+      this.model.associatedStructure.isValid &&
+      this.model.legalType.isValid
+    ) {
+      if (this.model.address.hasDirtyAttributes) {
+        this.model.address.fullAddress = combineFullAddress(this.model.address);
+        yield this.model.address.save();
       }
 
       let registration = yield this.model.associatedStructure.registration;
       let structuredIdentifier = yield registration.structuredIdentifier;
       yield structuredIdentifier.save();
 
-      let legalType = yield this.model.associatedStructure.legalType;
-      yield legalType.save();
+      yield this.model.legalType.save();
 
       yield this.model.associatedStructure.save();
 
