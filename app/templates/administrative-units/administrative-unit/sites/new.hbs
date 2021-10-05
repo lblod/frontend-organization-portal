@@ -60,22 +60,32 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <Item @labelFor="site-address-street-name">
+                <Item 
+                  @labelFor="site-address-street-name"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.street.validation}}
+                >
                   <:label>Straat</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
                       @value={{@model.address.street}}
                       @width="block"
+                      @error={{hasError}}
                       id="site-address-street-name"
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="site-address-house-number">
+                <Item 
+                  @labelFor="site-address-house-number"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.number.validation}}
+                >
                   <:label>Huisnummer</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
                       @value={{@model.address.number}}
                       @width="block"
+                      @error={{hasError}}
                       id="site-address-house-number"
                     />
                   </:content>
@@ -90,33 +100,48 @@
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="site-address-postal-code">
+                <Item 
+                  @labelFor="site-address-postal-code"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.postcode.validation}}
+                >
                   <:label>Postcode</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
                       @value={{@model.address.postcode}}
                       @width="block"
+                      @error={{hasError}}
                       id="site-address-postal-code"
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="site-address-municipality">
+                <Item 
+                  @labelFor="site-address-municipality"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.municipality.validation}}
+                >
                   <:label>Gemeente</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <MunicipalitySelect
                       @selected={{this.model.address.municipality}}
                       @onChange={{fn (mut this.model.address.municipality)}}
                       @id="site-address-municipality"
+                      @error={{errorMessage}}
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="site-address-province">
+                <Item 
+                  @labelFor="site-address-province"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.province.validation}}
+                >
                   <:label>Provincie</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <ProvinceSelect
                       @selected={{this.model.address.province}}
                       @onChange={{fn (mut this.model.address.province)}}
                       @id="site-address-province"
+                      @error={{errorMessage}}
                     />
                   </:content>
                 </Item>

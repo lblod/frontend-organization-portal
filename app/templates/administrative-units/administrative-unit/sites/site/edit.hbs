@@ -3,7 +3,7 @@
     <PageHeader>
       <:title>Bewerk vestiging</:title>
       <:subtitle>
-        {{@model.site.address.fullAddress}},
+        {{@model.address.fullAddress}},
         {{@model.administrativeUnit.name}}
       </:subtitle>
     </PageHeader>
@@ -70,12 +70,12 @@
               <:left as |Item|>
                 <Item @labelFor="primary-site-address-street-name"
                       @required={{true}}
-                      @errorMessage={{@model.site.error.address.street.validation}}
+                      @errorMessage={{@model.address.error.street.validation}}
                 >
                   <:label>Straat</:label>
                   <:content as |hasError|>
                     <AuInput
-                      @value={{@model.site.address.street}}
+                      @value={{@model.address.street}}
                       @width="block"
                       @error={{hasError}}
                       id="primary-site-address-street-name"
@@ -84,11 +84,11 @@
                 </Item>
                 <Item @labelFor="primary-site-address-house-number"
                       @required={{true}}
-                      @errorMessage={{@model.site.error.address.number.validation}}>
+                      @errorMessage={{@model.address.error.number.validation}}>
                   <:label>Huisnummer</:label>
                   <:content as |hasError|>
                     <AuInput
-                      @value={{@model.site.address.number}}
+                      @value={{@model.address.number}}
                       @width="block"
                       @error={{hasError}}
                       id="primary-site-address-house-number"
@@ -99,7 +99,7 @@
                   <:label>Busnummer</:label>
                   <:content>
                     <AuInput
-                      @value={{@model.site.address.boxNumber}}
+                      @value={{@model.address.boxNumber}}
                       @width="block"
                       id="primary-site-address-bus-number"
                     />
@@ -107,11 +107,11 @@
                 </Item>
                 <Item @labelFor="primary-site-address-postal-code"
                       @required={{true}}
-                      @errorMessage={{@model.site.error.address.postcode.validation}}>
+                      @errorMessage={{@model.address.error.postcode.validation}}>
                   <:label>Postcode</:label>
                   <:content as |hasError|>
                     <AuInput
-                      @value={{@model.site.address.postcode}}
+                      @value={{@model.address.postcode}}
                       @width="block"
                       @error={{hasError}}
                       id="primary-site-address-postal-code"
@@ -120,46 +120,32 @@
                 </Item>
                 <Item @labelFor="primary-site-address-municipality"
                       @required={{true}}
+                      @errorMessage={{@model.address.error.municipality.validation}}
                 >
                   <:label>Gemeente</:label>
-                  <:content>
-                  {{#let
-                    @model.site.error.address.municipality.validation
-                    as |errorMessage|
-                  }}
+                  <:content as |errorMessage|>
                     <MunicipalitySelect
-                      @selected={{@model.site.address.municipality}}
+                      @selected={{@model.address.municipality}}
                       @onChange={{fn
-                        (mut @model.site.address.municipality)
+                        (mut @model.address.municipality)
                       }}
                       @id="primary-site-address-municipality"
                       @error={{errorMessage}}
                     />
-                    {{#if errorMessage}}
-                      <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
-                    {{/if}}
-                  {{/let}}
                   </:content>
                 </Item>
                 <Item @labelFor="primary-site-address-province"
                       @required={{true}}
+                      @errorMessage={{@model.address.error.province.validation}}
                 >
                   <:label>Provincie</:label>
-                  <:content>
-                  {{#let
-                    @model.site.error.address.province.validation
-                    as |errorMessage|
-                  }}
+                  <:content as |errorMessage|>
                     <ProvinceSelect
-                      @selected={{@model.site.address.province}}
-                      @onChange={{fn (mut @model.site.address.province)}}
+                      @selected={{@model.address.province}}
+                      @onChange={{fn (mut @model.address.province)}}
                       @id="primary-site-address-province"
                       @error={{errorMessage}}
                     />
-                    {{#if errorMessage}}
-                      <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
-                    {{/if}}
-                  {{/let}}
                   </:content>
                 </Item>
               </:left>
@@ -168,7 +154,7 @@
                   <:label>Telefoonnummer</:label>
                   <:content>
                     <AuInput
-                      @value={{@model.site.contacts.firstObject.telephone}}
+                      @value={{@model.contacts.firstObject.telephone}}
                       @width="block"
                       id="primary-site-contact-phone-number"
                     />
@@ -178,7 +164,7 @@
                   <:label>Website</:label>
                   <:content>
                     <AuInput
-                      @value={{@model.site.contacts.firstObject.website}}
+                      @value={{@model.contacts.firstObject.website}}
                       @width="block"
                       id="primary-site-contact-website"
                     />

@@ -16,6 +16,14 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     return this.model.site;
   }
 
+  get address() {
+    return this.model.address;
+  }
+
+  get contacts() {
+    return this.model.contacts;
+  }
+
   get administrativeUnit() {
     return this.model.administrativeUnit;
   }
@@ -31,18 +39,16 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     event.preventDefault();
 
     yield this.site.validate();
+    yield this.address.validate();
 
-    if (this.site.isValid) {
-      let address = yield this.site.address;
-
-      if (address.hasDirtyAttributes) {
-        address.fullAddress = combineFullAddress(address);
-        yield address.save();
+    if (this.site.isValid && this.address.isValid) {
+      if (this.address.hasDirtyAttributes) {
+        this.address.fullAddress = combineFullAddress(this.address);
+        yield this.address.save();
       }
 
-      let contacts = yield this.site.contacts;
-      if (contacts.firstObject.hasDirtyAttributes) {
-        yield contacts.firstObject.save();
+      if (this.contacts.firstObject.hasDirtyAttributes) {
+        yield this.contacts.firstObject.save();
       }
 
       yield this.site.save();
