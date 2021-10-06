@@ -14,10 +14,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
 
     let { site, address, contact } = this.model;
 
-    yield site.validate();
     yield address.validate();
+    yield contact.validate();
 
-    if (site.isValid && address.isValid) {
+    if (address.isValid && contact.isValid) {
       yield contact.save();
 
       address.fullAddress = combineFullAddress(address);

@@ -20,8 +20,8 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     return this.model.address;
   }
 
-  get contacts() {
-    return this.model.contacts;
+  get contact() {
+    return this.model.contact;
   }
 
   get administrativeUnit() {
@@ -38,17 +38,17 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
   *save(event) {
     event.preventDefault();
 
-    yield this.site.validate();
     yield this.address.validate();
+    yield this.contact.validate();
 
-    if (this.site.isValid && this.address.isValid) {
+    if (this.contact.isValid && this.address.isValid) {
       if (this.address.hasDirtyAttributes) {
         this.address.fullAddress = combineFullAddress(this.address);
         yield this.address.save();
       }
 
-      if (this.contacts.firstObject.hasDirtyAttributes) {
-        yield this.contacts.firstObject.save();
+      if (this.contact.hasDirtyAttributes) {
+        yield this.contact.save();
       }
 
       yield this.site.save();
@@ -74,5 +74,14 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
         this.site.id
       );
     }
+  }
+
+  reset() {
+    this.removeUnsavedRecords();
+  }
+
+  removeUnsavedRecords() {
+    // @TODO: The new record isn't destroyed like this if it's wrapped in a changeset. Investigate why .destroyRecord() instead doesn't work proprerly.
+    this.model.contact.rollbackAttributes();
   }
 }

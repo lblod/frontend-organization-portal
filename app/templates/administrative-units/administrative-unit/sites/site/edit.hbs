@@ -150,22 +150,30 @@
                 </Item>
               </:left>
               <:right as |Item|>
-                <Item @labelFor="primary-site-contact-phone-number">
+                <Item 
+                  @labelFor="primary-site-contact-phone-number"
+                  @errorMessage={{@model.contact.error.telephone.validation}}
+                >
                   <:label>Telefoonnummer</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <AuInput
-                      @value={{@model.contacts.firstObject.telephone}}
+                      @value={{@model.contact.telephone}}
                       @width="block"
+                      @error={{errorMessage}}
                       id="primary-site-contact-phone-number"
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-contact-website">
+                <Item 
+                  @labelFor="primary-site-contact-website"
+                  @errorMessage={{@model.contact.error.website.validation}}
+                >
                   <:label>Website</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <AuInput
-                      @value={{@model.contacts.firstObject.website}}
+                      @value={{@model.contact.website}}
                       @width="block"
+                      @error={{errorMessage}}
                       id="primary-site-contact-website"
                     />
                   </:content>

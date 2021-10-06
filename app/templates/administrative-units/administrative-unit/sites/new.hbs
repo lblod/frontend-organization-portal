@@ -147,23 +147,31 @@
                 </Item>
               </:left>
               <:right as |Item|>
-                <Item @labelFor="site-contact-phone-number">
+                <Item 
+                  @labelFor="site-contact-phone-number"
+                  @errorMessage={{@model.contact.error.telephone.validation}}
+                >
                   <:label>Telefoonnummer</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <AuInput
                       @value={{@model.contact.telephone}}
                       @width="block"
                       id="site-contact-phone-number"
+                      @error={{errorMessage}}
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="site-contact-website">
+                <Item 
+                  @labelFor="site-contact-website"
+                  @errorMessage={{@model.contact.error.website.validation}}
+                >
                   <:label>Website</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <AuInput
                       @value={{@model.contact.website}}
                       @width="block"
                       id="site-contact-website"
+                      @error={{errorMessage}}
                     />
                   </:content>
                 </Item>
