@@ -123,8 +123,8 @@
                   <:label>Gemeente</:label>
                   <:content as |errorMessage|>
                     <MunicipalitySelect
-                      @selected={{this.model.address.municipality}}
-                      @onChange={{fn (mut this.model.address.municipality)}}
+                      @selected={{@model.address.municipality}}
+                      @onChange={{fn (mut @model.address.municipality)}}
                       @id="site-address-municipality"
                       @error={{errorMessage}}
                     />
@@ -138,8 +138,8 @@
                   <:label>Provincie</:label>
                   <:content as |errorMessage|>
                     <ProvinceSelect
-                      @selected={{this.model.address.province}}
-                      @onChange={{fn (mut this.model.address.province)}}
+                      @selected={{@model.address.province}}
+                      @onChange={{fn (mut @model.address.province)}}
                       @id="site-address-province"
                       @error={{errorMessage}}
                     />
