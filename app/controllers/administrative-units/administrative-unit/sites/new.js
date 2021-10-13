@@ -3,50 +3,72 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
 import { tracked } from '@glimmer/tracking';
+
 export default class AdministrativeUnitsAdministrativeUnitSitesNewController extends Controller {
   @service router;
   @service store;
-  @tracked isPrimarySite;
+  @tracked isPrimarySite = false;
 
   @dropTask
   *createSiteTask(event) {
     event.preventDefault();
 
-    let { site, address, contact } = this.model;
+    let { address, administrativeUnit, contact, site } = this.model;
 
-    yield contact.save();
+    yield address.validate();
+    yield contact.validate();
 
-    address.fullAddress = combineFullAddress(address);
-    yield address.save();
+    if (address.isValid && contact.isValid) {
+      yield contact.save();
 
-    site.address = address;
-    site.contacts.pushObject(contact);
-    yield site.save();
+      address.fullAddress = combineFullAddress(address);
+      yield address.save();
 
-    if (this.isPrimarySite) {
-      let currentPrimarySite = yield this.model.administrativeUnit.primarySite;
-      this.model.administrativeUnit.sites.pushObject(currentPrimarySite);
+      site.address = address;
+      site.contacts.pushObject(contact);
+      yield site.save();
 
-      this.model.administrativeUnit.primarySite = site;
-    } else {
-      this.model.administrativeUnit.sites.pushObject(site);
+      let nonPrimarySites = yield administrativeUnit.sites;
+
+      if (this.isPrimarySite) {
+        let previousPrimarySite = yield administrativeUnit.primarySite;
+
+        if (previousPrimarySite) {
+          nonPrimarySites.pushObject(previousPrimarySite);
+        }
+
+        administrativeUnit.primarySite = site;
+      } else {
+        nonPrimarySites.pushObject(site);
+      }
+
+      yield administrativeUnit.save();
+
+      this.router.replaceWith(
+        'administrative-units.administrative-unit.sites.site',
+        site.id
+      );
     }
-
-    yield this.model.administrativeUnit.save();
-
-    this.router.replaceWith(
-      'administrative-units.administrative-unit.sites.site',
-      site.id
-    );
   }
 
   reset() {
+    this.isPrimarySite = false;
     this.removeUnsavedRecords();
   }
 
   removeUnsavedRecords() {
-    this.model.site.rollbackAttributes();
-    this.model.address.rollbackAttributes();
-    this.model.contact.rollbackAttributes();
+    let { site, address, contact } = this.model;
+
+    if (site.isNew) {
+      site.destroyRecord();
+    }
+
+    if (address.isNew) {
+      address.destroyRecord();
+    }
+
+    if (contact.isNew) {
+      contact.destroyRecord();
+    }
   }
 }

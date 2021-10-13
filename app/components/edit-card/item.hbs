@@ -26,6 +26,10 @@
       {{#if @errorMessage}}
         <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
       {{/if}}
+
+      {{#if (has-block "help-text")}}
+        <AuHelpText @skin="tertiary">{{yield to="help-text"}}</AuHelpText>
+      {{/if}}
     </div>
   {{/if}}
 </div>

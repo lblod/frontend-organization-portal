@@ -3,7 +3,7 @@
     <PageHeader>
       <:title>Bewerk vestiging</:title>
       <:subtitle>
-        {{@model.site.address.fullAddress}},
+        {{@model.address.fullAddress}},
         {{@model.administrativeUnit.name}}
       </:subtitle>
     </PageHeader>
@@ -68,90 +68,127 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <Item @labelFor="primary-site-address-street-name">
+                <Item
+                  @labelFor="site-address-street-name"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.street.validation}}
+                >
                   <:label>Straat</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
-                      @value={{@model.site.address.street}}
+                      @value={{@model.address.street}}
                       @width="block"
-                      id="primary-site-address-street-name"
+                      @error={{hasError}}
+                      id="site-address-street-name"
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-address-house-number">
+                <Item
+                  @labelFor="site-address-house-number"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.number.validation}}
+                >
                   <:label>Huisnummer</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
-                      @value={{@model.site.address.number}}
+                      @value={{@model.address.number}}
                       @width="block"
-                      id="primary-site-address-house-number"
+                      @error={{hasError}}
+                      id="site-address-house-number"
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-address-bus-number">
+                <Item @labelFor="site-address-bus-number">
                   <:label>Busnummer</:label>
                   <:content>
                     <AuInput
-                      @value={{@model.site.address.boxNumber}}
+                      @value={{@model.address.boxNumber}}
                       @width="block"
-                      id="primary-site-address-bus-number"
+                      id="site-address-bus-number"
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-address-postal-code">
+                <Item
+                  @labelFor="site-address-postal-code"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.postcode.validation}}
+                >
                   <:label>Postcode</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
-                      @value={{@model.site.address.postcode}}
+                      @value={{@model.address.postcode}}
                       @width="block"
-                      id="primary-site-address-postal-code"
+                      @error={{hasError}}
+                      id="site-address-postal-code"
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-address-municipality">
+                <Item
+                  @labelFor="site-address-municipality"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.municipality.validation}}
+                >
                   <:label>Gemeente</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <MunicipalitySelect
-                      @selected={{this.model.site.address.municipality}}
-                      @onChange={{fn
-                        (mut this.model.site.address.municipality)
-                      }}
-                      @id="primary-site-address-municipality"
+                      @selected={{@model.address.municipality}}
+                      @onChange={{fn (mut @model.address.municipality)}}
+                      @id="site-address-municipality"
+                      @error={{errorMessage}}
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-address-province">
+                <Item
+                  @labelFor="site-address-province"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.province.validation}}
+                >
                   <:label>Provincie</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <ProvinceSelect
-                      @selected={{this.model.site.address.province}}
-                      @onChange={{fn (mut this.model.site.address.province)}}
-                      @id="primary-site-address-province"
+                      @selected={{@model.address.province}}
+                      @onChange={{fn (mut @model.address.province)}}
+                      @id="site-address-province"
+                      @error={{errorMessage}}
                     />
                   </:content>
                 </Item>
-
               </:left>
               <:right as |Item|>
-                <Item @labelFor="primary-site-contact-phone-number">
+                <Item
+                  @labelFor="site-contact-phone-number"
+                  @errorMessage={{@model.contact.error.telephone.validation}}
+                >
                   <:label>Telefoonnummer</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <AuInput
-                      @value={{@model.site.contacts.firstObject.telephone}}
+                      @value={{@model.contact.telephone}}
                       @width="block"
-                      id="primary-site-contact-phone-number"
+                      @error={{errorMessage}}
+                      type="tel"
+                      id="site-contact-phone-number"
                     />
                   </:content>
+                  <:help-text>
+                    {{help-text "phone-number"}}
+                  </:help-text>
                 </Item>
-                <Item @labelFor="primary-site-contact-website">
+                <Item
+                  @labelFor="site-contact-website"
+                  @errorMessage={{@model.contact.error.website.validation}}
+                >
                   <:label>Website</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <AuInput
-                      @value={{@model.site.contacts.firstObject.website}}
+                      @value={{@model.contact.website}}
                       @width="block"
-                      id="primary-site-contact-website"
+                      @error={{errorMessage}}
+                      id="site-contact-website"
                     />
                   </:content>
+                  <:help-text>
+                    {{help-text "url"}}
+                  </:help-text>
                 </Item>
               </:right>
             </Card.Columns>

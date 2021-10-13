@@ -1,13 +1,15 @@
-<PowerSelect
-  @allowClear={{true}}
-  @loadingMessage="Aan het laden..."
-  @noMatchesMessage="Geen resultaten"
-  @searchMessage="Typ om te zoeken"
-  @options={{this.provinces}}
-  @selected={{@selected}}
-  @onChange={{@onChange}}
-  @triggerId={{@id}}
-  as |province|
->
-  {{province}}
-</PowerSelect>
+<div class={{if @error "ember-power-select--error"}}>
+  <PowerSelect
+    @allowClear={{true}}
+    @loadingMessage="Aan het laden..."
+    @noMatchesMessage="Geen resultaten"
+    @searchMessage="Typ om te zoeken"
+    @options={{this.provinces}}
+    @selected={{@selected}}
+    @onChange={{@onChange}}
+    @triggerId={{@id}}
+    as |province|
+  >
+    {{province}}
+  </PowerSelect>
+</div>
