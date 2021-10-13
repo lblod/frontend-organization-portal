@@ -60,7 +60,7 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <Item 
+                <Item
                   @labelFor="site-address-street-name"
                   @required={{true}}
                   @errorMessage={{@model.address.error.street.validation}}
@@ -75,7 +75,7 @@
                     />
                   </:content>
                 </Item>
-                <Item 
+                <Item
                   @labelFor="site-address-house-number"
                   @required={{true}}
                   @errorMessage={{@model.address.error.number.validation}}
@@ -100,7 +100,7 @@
                     />
                   </:content>
                 </Item>
-                <Item 
+                <Item
                   @labelFor="site-address-postal-code"
                   @required={{true}}
                   @errorMessage={{@model.address.error.postcode.validation}}
@@ -115,7 +115,7 @@
                     />
                   </:content>
                 </Item>
-                <Item 
+                <Item
                   @labelFor="site-address-municipality"
                   @required={{true}}
                   @errorMessage={{@model.address.error.municipality.validation}}
@@ -130,7 +130,7 @@
                     />
                   </:content>
                 </Item>
-                <Item 
+                <Item
                   @labelFor="site-address-province"
                   @required={{true}}
                   @errorMessage={{@model.address.error.province.validation}}
@@ -147,7 +147,7 @@
                 </Item>
               </:left>
               <:right as |Item|>
-                <Item 
+                <Item
                   @labelFor="site-contact-phone-number"
                   @errorMessage={{@model.contact.error.telephone.validation}}
                 >
@@ -156,12 +156,16 @@
                     <AuInput
                       @value={{@model.contact.telephone}}
                       @width="block"
-                      id="site-contact-phone-number"
                       @error={{errorMessage}}
+                      id="site-contact-phone-number"
+                      type="tel"
                     />
                   </:content>
+                  <:help-text>
+                    {{help-text "phone-number"}}
+                  </:help-text>
                 </Item>
-                <Item 
+                <Item
                   @labelFor="site-contact-website"
                   @errorMessage={{@model.contact.error.website.validation}}
                 >
@@ -174,6 +178,9 @@
                       @error={{errorMessage}}
                     />
                   </:content>
+                  <:help-text>
+                   {{help-text "url"}}
+                  </:help-text>
                 </Item>
               </:right>
             </Card.Columns>
@@ -184,9 +191,9 @@
           <AuButton
             @loading={{this.createSiteTask.isRunning}}
             @disabled={{this.createSiteTask.isRunning}}
-            type="submit"
             @icon="add"
             @iconAlignment="left"
+            type="submit"
           >
             Voeg toe
           </AuButton>

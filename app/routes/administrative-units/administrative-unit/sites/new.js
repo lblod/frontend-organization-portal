@@ -1,10 +1,8 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
-import {
-  addressValidations,
-  contactValidations,
-} from 'frontend-contact-hub/validations/site';
+import { contactValidations } from 'frontend-contact-hub/validations/site';
+import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesNewRoute extends Route {
   @service store;
@@ -19,7 +17,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewRoute extends 
       site: this.store.createRecord('site'),
       address: createValidatedChangeset(
         this.store.createRecord('address'),
-        addressValidations
+        getAddressValidations(true)
       ),
       contact: createValidatedChangeset(
         this.store.createRecord('contact-point'),

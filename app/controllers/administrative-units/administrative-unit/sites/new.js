@@ -3,16 +3,17 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
 import { tracked } from '@glimmer/tracking';
+
 export default class AdministrativeUnitsAdministrativeUnitSitesNewController extends Controller {
   @service router;
   @service store;
-  @tracked isPrimarySite;
+  @tracked isPrimarySite = false;
 
   @dropTask
   *createSiteTask(event) {
     event.preventDefault();
 
-    let { site, address, contact } = this.model;
+    let { address, administrativeUnit, contact, site } = this.model;
 
     yield address.validate();
     yield contact.validate();
@@ -27,17 +28,21 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
       site.contacts.pushObject(contact);
       yield site.save();
 
-      if (this.isPrimarySite) {
-        let currentPrimarySite = yield this.model.administrativeUnit
-          .primarySite;
-        this.model.administrativeUnit.sites.pushObject(currentPrimarySite);
+      let nonPrimarySites = yield administrativeUnit.sites;
 
-        this.model.administrativeUnit.primarySite = site;
+      if (this.isPrimarySite) {
+        let previousPrimarySite = yield administrativeUnit.primarySite;
+
+        if (previousPrimarySite) {
+          nonPrimarySites.pushObject(previousPrimarySite);
+        }
+
+        administrativeUnit.primarySite = site;
       } else {
-        this.model.administrativeUnit.sites.pushObject(site);
+        nonPrimarySites.pushObject(site);
       }
 
-      yield this.model.administrativeUnit.save();
+      yield administrativeUnit.save();
 
       this.router.replaceWith(
         'administrative-units.administrative-unit.sites.site',
@@ -47,13 +52,23 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
   }
 
   reset() {
+    this.isPrimarySite = false;
     this.removeUnsavedRecords();
   }
 
   removeUnsavedRecords() {
-    // @TODO: The new record isn't destroyed like this if it's wrapped in a changeset. Investigate why .destroyRecord() instead doesn't work proprerly.
-    this.model.site.rollbackAttributes();
-    this.model.address.rollbackAttributes();
-    this.model.contact.rollbackAttributes();
+    let { site, address, contact } = this.model;
+
+    if (site.isNew) {
+      site.destroyRecord();
+    }
+
+    if (address.isNew) {
+      address.destroyRecord();
+    }
+
+    if (contact.isNew) {
+      contact.destroyRecord();
+    }
   }
 }
