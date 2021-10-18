@@ -46,14 +46,14 @@
             </AuNavigationNestedLink>
           </li>
         {{/if}}
+        <li class="au-c-list-navigation__item">
+          <AuNavigationNestedLink
+            @route="administrative-units.administrative-unit.change-events"
+          >
+            Veranderingsgebeurtenissen
+          </AuNavigationNestedLink>
+        </li>
         {{!--         Links temporarily hidden until page is completed
-        {{#if (not-eq @model.constructor.modelName "central-worship-service")}}
-          <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink>
-              Veranderingsgebeurtenissen
-            </AuNavigationNestedLink>
-          </li>
-        {{/if}}
         <li class="au-c-list-navigation__item">
           <AuNavigationNestedLink>
             Documenten

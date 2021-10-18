@@ -78,6 +78,11 @@ Router.map(function () {
             this.route('edit');
           }
         );
+        this.route(
+          'change-events',
+          { path: '/veranderingsgebeurtenissen' },
+          function () {}
+        );
       });
       this.route('new', { path: '/nieuwe-bestuurseenheid' });
     }

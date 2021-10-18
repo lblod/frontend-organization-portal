@@ -25,12 +25,12 @@ export default class OrganizationModel extends Model {
   sites;
 
   @hasMany('change-event', {
-    inverse: null,
+    inverse: 'originalOrganization',
   })
   changedBy;
 
   @hasMany('change-event', {
-    inverse: null,
+    inverse: 'resultingOrganization',
   })
   resultedFrom;
 
