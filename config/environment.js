@@ -41,6 +41,7 @@ module.exports = function (environment) {
     },
 
     showAppVersionHash: process.env.SHOW_APP_VERSION_HASH === 'true',
+    uriInfoServiceUrl: '/uri-info',
 
     userManual: {
       general:
