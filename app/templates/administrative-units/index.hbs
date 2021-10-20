@@ -25,40 +25,30 @@
           </div>
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="classification">Type bestuur</AuLabel>
-            <PowerSelect
-              @allowClear={{true}}
-              {{!-- @searchEnabled={{true}} --}}
-              {{! @noMatchesMessage="Geen resultaten" }}
-              {{! @searchField="label" }}
-              @options={{@model.classifications}}
-              @selected={{this.selectedClassification}}
+            <ClassificationSelect
+              @selected={{this.classification}}
               @onChange={{this.setClassification}}
-              @triggerId="classification"
-              as |classification|
-            >
-              {{classification.label}}
-            </PowerSelect>
+              @allowClear={{true}}
+              @id="classification"
+            />
           </div>
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="recognized-worship-types">Soort eredienst</AuLabel>
             <RecognizedWorshipTypeSelect
-              @selected={{this.selectedRecognizedWorshipType}}
+              @selected={{this.recognizedWorshipType}}
               @onChange={{this.setRecognizedWorshipType}}
+              @allowClear={{true}}
               @id="recognized-worship-types"
             />
           </div>
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="statuses">Status</AuLabel>
-            <PowerSelect
-              @allowClear={{true}}
-              @options={{@model.statuses}}
-              @selected={{this.selectedOrganizationStatus}}
+            <OrganizationStatusSelect
+              @selected={{this.organizationStatus}}
               @onChange={{this.setOrganizationStatus}}
-              @triggerId="statuses"
-              as |status|
-            >
-              {{status.label}}
-            </PowerSelect>
+              @allowClear={{true}}
+              @id="statuses"
+            />
           </div>
           <div class="au-o-grid__item">
             <AuButton

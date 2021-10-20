@@ -4,12 +4,28 @@ import { task } from 'ember-concurrency';
 
 export default class RecognizedWorshipTypeSelect extends Component {
   @service store;
-  recognizedWorshipTypes;
 
   constructor(...args) {
     super(...args);
 
-    this.recognizedWorshipTypes = this.loadRecognizedWorshipTypesTask.perform();
+    this.loadRecognizedWorshipTypesTask.perform();
+  }
+
+  get selectedRecognizedWorshipType() {
+    if (typeof this.args.selected === 'string') {
+      return this.getRecognizedWorshipTypeById(this.args.selected);
+    }
+
+    return this.args.selected;
+  }
+
+  getRecognizedWorshipTypeById(id) {
+    if (this.loadRecognizedWorshipTypesTask.isRunning) {
+      return null;
+    }
+
+    let recognizedWorshipTypes = this.loadRecognizedWorshipTypesTask.last.value;
+    return recognizedWorshipTypes.find((worshipType) => worshipType.id === id);
   }
 
   @task

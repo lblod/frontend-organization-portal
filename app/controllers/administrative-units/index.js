@@ -59,36 +59,6 @@ export default class AdministrativeUnitsIndexController extends Controller {
     return this.model.loadAdministrativeUnitsTaskInstance.isError;
   }
 
-  get selectedClassification() {
-    if (!this.classification) {
-      return null;
-    }
-
-    return this.model.classifications.find((classification) => {
-      return classification.id === this.classification;
-    });
-  }
-
-  get selectedRecognizedWorshipType() {
-    if (!this.recognizedWorshipType) {
-      return null;
-    }
-
-    return this.model.recognizedWorshipTypes.find((recognizedWorshipType) => {
-      return recognizedWorshipType.id === this.recognizedWorshipType;
-    });
-  }
-
-  get selectedOrganizationStatus() {
-    if (!this.organizationStatus) {
-      return null;
-    }
-
-    return this.model.statuses.find((organizationStatus) => {
-      return organizationStatus.id === this.organizationStatus;
-    });
-  }
-
   @action
   search(event) {
     event.preventDefault();

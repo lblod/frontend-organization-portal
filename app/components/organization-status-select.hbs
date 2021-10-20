@@ -1,14 +1,13 @@
-<PowerSelect
-  @allowClear={{true}}
-  @loadingMessage="Aan het laden..."
-  @noMatchesMessage="Geen resultaten"
-  @searchMessage="Typ om te zoeken"
-  @searchField="label"
-  @options={{this.fetchOrganizationStatusTask.last}}
-  @selected={{@selected}}
-  @onChange={{@onChange}}
-  @triggerId={{@id}}
-  as |organizationStatus|
->
-  {{organizationStatus.label}}
-</PowerSelect>
+<div class={{if @error "ember-power-select--error"}}>
+  <PowerSelect
+    @allowClear={{@allowClear}}
+    @loadingMessage="Aan het laden..."
+    @options={{this.loadOrganizationStatusesTask.last}}
+    @selected={{this.selectedOrganizationStatus}}
+    @onChange={{@onChange}}
+    @triggerId={{@id}}
+    as |organizationStatus|
+  >
+    {{organizationStatus.label}}
+  </PowerSelect>
+</div>

@@ -13,10 +13,27 @@ export default class ClassificationSelectComponent extends Component {
   constructor() {
     super(...arguments);
 
-    this.fetchClassificationTask.perform();
+    this.loadClassificationsTask.perform();
   }
 
-  @task *fetchClassificationTask() {
+  get selectedClassification() {
+    if (typeof this.args.selected === 'string') {
+      return this.findClassificationById(this.args.selected);
+    }
+
+    return this.args.selected;
+  }
+
+  findClassificationById(id) {
+    if (this.loadClassificationsTask.isRunning) {
+      return null;
+    }
+
+    let classifications = this.loadClassificationsTask.last.value;
+    return classifications.find((status) => status.id === id);
+  }
+
+  @task *loadClassificationsTask() {
     return yield this.store.query('administrative-unit-classification-code', {
       'filter[:id:]': [
         CLASSIFICATION.WORSHIP_SERVICE,
