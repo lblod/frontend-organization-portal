@@ -8,10 +8,27 @@ export default class OrganizationStatusSelectComponent extends Component {
   constructor() {
     super(...arguments);
 
-    this.fetchOrganizationStatusTask.perform();
+    this.loadOrganizationStatusesTask.perform();
   }
 
-  @task *fetchOrganizationStatusTask() {
+  get selectedOrganizationStatus() {
+    if (typeof this.args.selected === 'string') {
+      return this.findOrganizationStatusById(this.args.selected);
+    }
+
+    return this.args.selected;
+  }
+
+  findOrganizationStatusById(id) {
+    if (this.loadOrganizationStatusesTask.isRunning) {
+      return null;
+    }
+
+    let organizationStatuses = this.loadOrganizationStatusesTask.last.value;
+    return organizationStatuses.find((status) => status.id === id);
+  }
+
+  @task *loadOrganizationStatusesTask() {
     return yield this.store.findAll('organization-status-code');
   }
 }

@@ -1,14 +1,16 @@
-<PowerSelect
-  @allowClear={{true}}
-  @loadingMessage="Aan het laden..."
-  @noMatchesMessage="Geen resultaten"
-  @searchMessage="Typ om te zoeken"
-  @searchField="label"
-  @options={{this.fetchClassificationTask.last}}
-  @selected={{@selected}}
-  @onChange={{@onChange}}
-  @triggerId={{@id}}
-  as |classification|
->
-  {{classification.label}}
-</PowerSelect>
+<div class={{if @error "ember-power-select--error"}}>
+  <PowerSelect
+    @allowClear={{@allowClear}}
+    @loadingMessage="Aan het laden..."
+    @noMatchesMessage="Geen resultaten"
+    @searchMessage="Typ om te zoeken"
+    @searchField="label"
+    @options={{this.loadClassificationsTask.last}}
+    @selected={{this.selectedClassification}}
+    @onChange={{@onChange}}
+    @triggerId={{@id}}
+    as |classification|
+  >
+    {{classification.label}}
+  </PowerSelect>
+</div>

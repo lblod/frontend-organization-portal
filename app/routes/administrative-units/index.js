@@ -28,15 +28,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
   };
 
   async model(params) {
-    let statuses = await this.store.findAll('organization-status-code');
-    let recognizedWorshipTypes = await this.store.findAll(
-      'recognized-worship-type'
-    );
-
     return {
-      classifications: Object.values(CLASSIFICATION),
-      recognizedWorshipTypes,
-      statuses,
       loadAdministrativeUnitsTaskInstance:
         this.loadAdministrativeUnitsTask.perform(params),
       loadedAdministrativeUnits:
