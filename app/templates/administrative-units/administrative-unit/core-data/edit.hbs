@@ -11,17 +11,22 @@
       {{on "submit" (perform this.save)}}
     >
       <div class="au-o-flow au-o-flow--large">
-        <EditCard>
+        <EditCard @containsRequiredFields={{true}}>
           <:title>Bestuurseenheid</:title>
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <Item @labelFor="worship-service-name">
+                <Item
+                  @labelFor="worship-service-name"
+                  @required={{true}}
+                  @errorMessage={{@model.administrativeUnit.error.name.validation}}
+                >
                   <:label>Naam</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
                       @width="block"
                       @value={{@model.administrativeUnit.name}}
+                      @error={{hasError}}
                       id="worship-service-name"
                     />
                   </:content>
@@ -42,21 +47,27 @@
                     </PowerSelect>
                   </:content>
                 </Item>
-                <Item @labelFor="recognized-worship-type-select">
+                <Item
+                  @labelFor="recognized-worship-type-select"
+                  @required={{true}}
+                  @errorMessage={{@model.administrativeUnit.error.recognizedWorshipType.validation}}
+                >
                   <:label>Soort eredienst</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <RecognizedWorshipTypeSelect
-                      @selected={{this.model.administrativeUnit.recognizedWorshipType}}
+                      @selected={{@model.administrativeUnit.recognizedWorshipType}}
                       @onChange={{fn
-                        (mut this.administrativeUnit.recognizedWorshipType)
+                        (mut @model.administrativeUnit.recognizedWorshipType)
                       }}
+                      @allowClear={{false}}
+                      @error={{hasError}}
                       @id="recognized-worship-type-select"
                     />
                   </:content>
                 </Item>
                 {{#if
                   (eq
-                    @model.administrativeUnit.constructor.modelName
+                    @model.worshipAdministrativeUnitType
                     "worship-service"
                   )
                 }}
@@ -112,8 +123,8 @@
                   <:label>Werkingsgebied</:label>
                   <:content>
                     <ScopeSelect
-                      @selected={{this.model.administrativeUnit.scope}}
-                      @onChange={{fn (mut this.model.administrativeUnit.scope)}}
+                      @selected={{@model.administrativeUnit.scope}}
+                      @onChange={{fn (mut @model.administrativeUnit.scope)}}
                     />
                   </:content>
                 </Item> --}}
@@ -155,27 +166,37 @@
           </:card>
         </EditCard>
 
-        <EditCard>
+        <EditCard @containsRequiredFields={{true}}>
           <:title>Primaire contactgegevens</:title>
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <Item @labelFor="primary-site-address-street-name">
+                <Item
+                  @labelFor="primary-site-address-street-name"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.street.validation}}
+                >
                   <:label>Straat</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
-                      @value={{@model.administrativeUnit.primarySite.address.street}}
+                      @value={{@model.address.street}}
                       @width="block"
+                      @error={{hasError}}
                       id="primary-site-address-street-name"
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-address-house-number">
+                <Item
+                  @labelFor="primary-site-address-house-number"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.number.validation}}
+                >
                   <:label>Huisnummer</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
-                      @value={{@model.administrativeUnit.primarySite.address.number}}
+                      @value={{@model.address.number}}
                       @width="block"
+                      @error={{hasError}}
                       id="primary-site-address-house-number"
                     />
                   </:content>
@@ -184,85 +205,106 @@
                   <:label>Busnummer</:label>
                   <:content>
                     <AuInput
-                      @value={{@model.administrativeUnit.primarySite.address.boxNumber}}
+                      @value={{@model.address.boxNumber}}
                       @width="block"
                       id="primary-site-address-bus-number"
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-address-postal-code">
+                <Item
+                  @labelFor="primary-site-address-postal-code"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.postcode.validation}}
+                >
                   <:label>Postcode</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
-                      @value={{@model.administrativeUnit.primarySite.address.postcode}}
+                      @value={{@model.address.postcode}}
                       @width="block"
+                      @error={{hasError}}
                       id="primary-site-address-postal-code"
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-address-municipality">
+                <Item
+                  @labelFor="primary-site-address-municipality"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.municipality.validation}}
+                >
                   <:label>Gemeente</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <MunicipalitySelect
-                      @selected={{this.model.administrativeUnit.primarySite.address.municipality}}
-                      @onChange={{fn
-                        (mut
-                          this.model.administrativeUnit.primarySite.address.municipality
-                        )
-                      }}
+                      @selected={{@model.address.municipality}}
+                      @onChange={{fn (mut @model.address.municipality)}}
+                      @error={{hasError}}
                       @id="primary-site-address-municipality"
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="primary-site-address-province">
+                <Item
+                  @labelFor="primary-site-address-province"
+                  @required={{true}}
+                  @errorMessage={{@model.address.error.province.validation}}
+                >
                   <:label>Provincie</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <ProvinceSelect
-                      @selected={{this.model.administrativeUnit.primarySite.address.province}}
-                      @onChange={{fn
-                        (mut
-                          this.model.administrativeUnit.primarySite.address.province
-                        )
-                      }}
+                      @selected={{@model.address.province}}
+                      @onChange={{fn (mut @model.address.province)}}
+                      @error={{hasError}}
                       @id="primary-site-address-province"
                     />
                   </:content>
                 </Item>
               </:left>
               <:right as |Item|>
-                <Item @labelFor="primary-site-contact-phone-number">
+                <Item
+                  @labelFor="primary-site-contact-phone-number"
+                  @errorMessage={{@model.contact.error.telephone.validation}}
+                >
                   <:label>Telefoonnummer</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
-                      @value={{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}
+                      @value={{@model.contact.telephone}}
                       @width="block"
+                      @error={{hasError}}
                       id="primary-site-contact-phone-number"
                     />
                   </:content>
+                  <:help-text>
+                    {{help-text "phone-number"}}
+                  </:help-text>
                 </Item>
-                <Item @labelFor="primary-site-contact-website">
+                <Item
+                  @labelFor="primary-site-contact-website"
+                  @errorMessage={{@model.contact.error.website.validation}}
+                >
                   <:label>Website</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <AuInput
-                      @value={{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
+                      @value={{@model.contact.website}}
                       @width="block"
+                      @error={{hasError}}
                       id="primary-site-contact-website"
                     />
                   </:content>
+                  <:help-text>
+                    {{help-text "url"}}
+                  </:help-text>
                 </Item>
               </:right>
             </Card.Columns>
           </:card>
         </EditCard>
 
-        <EditCard>
+        <EditCard @containsRequiredFields={{true}}>
           <:title>Gerelateerde organisaties</:title>
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
                 {{#if
                   (eq
-                    @model.administrativeUnit.constructor.modelName
+                    @model.worshipAdministrativeUnitType
                     "worship-service"
                   )
                 }}
@@ -270,11 +312,9 @@
                     <:label>Centraal bestuur</:label>
                     <:content>
                       <CentralWorshipSelect
-                        @selected={{this.model.administrativeUnit.isSubOrganizationOf}}
+                        @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                         @onChange={{fn
-                          (mut
-                            this.model.administrativeUnit.isSubOrganizationOf
-                          )
+                          (mut @model.administrativeUnit.isSubOrganizationOf)
                         }}
                         @id="related-central-worship-service"
                       />
@@ -283,7 +323,7 @@
                 {{/if}}
                 {{#if
                   (eq
-                    @model.administrativeUnit.constructor.modelName
+                    @model.worshipAdministrativeUnitType
                     "central-worship-service"
                   )
                 }}
@@ -291,23 +331,28 @@
                     <:label>Bestuur van de eredienst</:label>
                     <:content>
                       <WorshipServiceSelect
-                        @selected={{this.model.administrativeUnit.subOrganizations}}
+                        @selected={{@model.administrativeUnit.subOrganizations}}
                         @onChange={{fn
-                          (mut this.model.administrativeUnit.subOrganizations)
+                          (mut @model.administrativeUnit.subOrganizations)
                         }}
                         @id="related-worship-service"
                       />
                     </:content>
                   </Item>
                 {{/if}}
-                <Item @labelFor="related-representative-body">
+                <Item
+                  @labelFor="related-representative-body"
+                  @required={{true}}
+                  @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
+                >
                   <:label>Representatief orgaan</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <RepresentativeBodySelect
-                      @selected={{this.model.administrativeUnit.isAssociatedWith}}
+                      @selected={{@model.administrativeUnit.isAssociatedWith}}
                       @onChange={{fn
-                        (mut this.model.administrativeUnit.isAssociatedWith)
+                        (mut @model.administrativeUnit.isAssociatedWith)
                       }}
+                      @error={{hasError}}
                       @id="related-representative-body"
                     />
                   </:content>
