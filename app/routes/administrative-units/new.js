@@ -1,5 +1,9 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
+import { getAddressValidations } from 'frontend-contact-hub/validations/address';
+import contactValidations from 'frontend-contact-hub/validations/contact-point';
+import worshipAdministrativeUnitValidations from 'frontend-contact-hub/validations/worship-administrative-unit';
 
 const ID_NAME = {
   SHAREPOINT: 'SharePoint identificator',
@@ -11,16 +15,23 @@ export default class AdministrativeUnitsNewRoute extends Route {
 
   model() {
     return {
-      administrativeUnit: this.store.createRecord(
-        'worship-administrative-unit'
+      administrativeUnit: createValidatedChangeset(
+        this.store.createRecord('worship-administrative-unit'),
+        worshipAdministrativeUnitValidations
       ),
       worshipService: this.store.createRecord('worship-service', {
         crossBorder: false,
       }),
       centralWorshipService: this.store.createRecord('central-worship-service'),
       primarySite: this.store.createRecord('site'),
-      address: this.store.createRecord('address'),
-      contact: this.store.createRecord('contact-point'),
+      address: createValidatedChangeset(
+        this.store.createRecord('address'),
+        getAddressValidations(true)
+      ),
+      contact: createValidatedChangeset(
+        this.store.createRecord('contact-point'),
+        contactValidations
+      ),
       identifierKBO: this.store.createRecord('identifier', {
         idName: ID_NAME.KBO,
       }),
