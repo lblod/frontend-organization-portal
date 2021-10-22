@@ -1,5 +1,9 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
+import { getAddressValidations } from 'frontend-contact-hub/validations/address';
+import contactValidations from 'frontend-contact-hub/validations/contact-point';
+import worshipAdministrativeUnitValidations from 'frontend-contact-hub/validations/worship-administrative-unit';
 
 const IDNAMES = {
   SHAREPOINT: 'SharePoint identificator',
@@ -14,12 +18,14 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
       'administrative-units.administrative-unit.core-data'
     );
 
-    let contacts = await administrativeUnit.get('primarySite.contacts');
+    let primarySite = await administrativeUnit.primarySite;
+    let address = await primarySite.address;
+    let contacts = await primarySite.contacts;
     if (contacts.length === 0) {
       contacts.pushObject(this.store.createRecord('contact-point'));
     }
 
-    let identifiers = await administrativeUnit.get('identifiers');
+    let identifiers = await administrativeUnit.identifiers;
     if (identifiers.length === 1) {
       let idName;
       if (identifiers.firstObject.idName === IDNAMES.SHAREPOINT) {
@@ -27,19 +33,30 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
       } else {
         idName = IDNAMES.SHAREPOINT;
       }
+
       let identifier = this.store.createRecord('identifier', {
         idName: idName,
       });
+
       let structuredIdentifier = this.store.createRecord(
         'structured-identifier'
       );
-      identifier.structuredIdentifier = structuredIdentifier;
 
+      identifier.structuredIdentifier = structuredIdentifier;
       identifiers.pushObject(identifier);
     }
 
     return {
-      administrativeUnit,
+      administrativeUnit: createValidatedChangeset(
+        administrativeUnit,
+        worshipAdministrativeUnitValidations
+      ),
+      address: createValidatedChangeset(address, getAddressValidations(true)),
+      contact: createValidatedChangeset(
+        contacts.firstObject,
+        contactValidations
+      ),
+      worshipAdministrativeUnitType: administrativeUnit.constructor.modelName,
     };
   }
 }

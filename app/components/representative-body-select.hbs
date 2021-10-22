@@ -1,15 +1,17 @@
-<PowerSelect
-  @allowClear={{true}}
-  @searchEnabled={{true}}
-  @loadingMessage="Aan het laden..."
-  @noMatchesMessage="Geen resultaten"
-  @searchMessage="Typ om te zoeken"
-  @searchField="name"
-  @options={{this.representativeBodies}}
-  @selected={{@selected}}
-  @onChange={{@onChange}}
-  @triggerId={{@id}}
-  as |representativeBody|
->
-  {{representativeBody.name}}
-</PowerSelect>
+<div class={{if @error "ember-power-select--error"}}>
+  <PowerSelect
+    @allowClear={{@allowClear}}
+    @searchEnabled={{true}}
+    @loadingMessage="Aan het laden..."
+    @noMatchesMessage="Geen resultaten"
+    @searchMessage="Typ om te zoeken"
+    @searchField="name"
+    @options={{this.representativeBodies}}
+    @selected={{@selected}}
+    @onChange={{@onChange}}
+    @triggerId={{@id}}
+    as |representativeBody|
+  >
+    {{representativeBody.name}}
+  </PowerSelect>
+</div>

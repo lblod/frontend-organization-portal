@@ -11,41 +11,56 @@
     aria-label="administrative-unit-creation-form"
     {{on "submit" (perform this.createAdministrativeUnitTask)}}
   >
-    <EditCard>
+    <EditCard @containsRequiredFields={{true}}>
       <:title>Bestuurseenheid</:title>
       <:card as |Card|>
         <Card.Columns>
           <:left as |Item|>
-            <Item @labelFor="administrative-unit-name">
+            <Item
+              @labelFor="administrative-unit-name"
+              @required={{true}}
+              @errorMessage={{@model.administrativeUnit.error.name.validation}}
+            >
               <:label>Naam</:label>
-              <:content>
+              <:content as |hasError|>
                 <AuInput
                   @width="block"
-                  @value={{this.model.administrativeUnit.name}}
+                  @value={{@model.administrativeUnit.name}}
+                  @error={{hasError}}
                   id="administrative-unit-name"
                 />
               </:content>
             </Item>
-            <Item @labelFor="recognized-worship-type-select">
+            <Item
+              @labelFor="recognized-worship-type-select"
+              @required={{true}}
+              @errorMessage={{@model.administrativeUnit.error.recognizedWorshipType.validation}}
+            >
               <:label>Soort eredienst</:label>
-              <:content>
+              <:content as |hasError|>
                 <RecognizedWorshipTypeSelect
-                  @selected={{this.model.administrativeUnit.recognizedWorshipType}}
+                  @selected={{@model.administrativeUnit.recognizedWorshipType}}
                   @onChange={{fn
-                    (mut this.model.administrativeUnit.recognizedWorshipType)
+                    (mut @model.administrativeUnit.recognizedWorshipType)
                   }}
+                  @error={{hasError}}
                   @id="recognized-worship-type-select"
                 />
               </:content>
             </Item>
-            <Item @labelFor="classification-select">
+            <Item
+              @labelFor="classification-select"
+              @required={{true}}
+              @errorMessage={{@model.administrativeUnit.error.classification.validation}}
+            >
               <:label>Type bestuur</:label>
-              <:content>
+              <:content as |hasError|>
                 <ClassificationSelect
-                  @selected={{this.model.administrativeUnit.classification}}
+                  @selected={{@model.administrativeUnit.classification}}
                   @onChange={{fn
-                    (mut this.model.administrativeUnit.classification)
+                    (mut @model.administrativeUnit.classification)
                   }}
+                  @error={{hasError}}
                   @id="classification-select"
                 />
               </:content>
@@ -56,7 +71,7 @@
                 <:content>
                   <AuInput
                     @width="block"
-                    @value={{this.model.worshipService.denomination}}
+                    @value={{@model.worshipService.denomination}}
                     id="denomination"
                   />
                 </:content>
@@ -69,26 +84,26 @@
                       <AuControlRadio
                         @label="Ja"
                         @name="is-cross-border"
-                        @value={{this.model.worshipService.crossBorder}}
+                        @value={{@model.worshipService.crossBorder}}
                         @identifier="cross-border-true"
                         @onChange={{fn
-                          (mut this.model.worshipService.crossBorder)
+                          (mut @model.worshipService.crossBorder)
                           true
                         }}
-                        checked={{this.model.worshipService.crossBorder}}
+                        checked={{@model.worshipService.crossBorder}}
                       />
                     </li>
                     <li class="au-c-list-inline__item">
                       <AuControlRadio
                         @label="Nee"
                         @name="is-cross-border"
-                        @value={{this.model.worshipService.crossBorder}}
+                        @value={{@model.worshipService.crossBorder}}
                         @identifier="cross-border-false"
                         @onChange={{fn
-                          (mut this.model.worshipService.crossBorder)
+                          (mut @model.worshipService.crossBorder)
                           false
                         }}
-                        checked={{not this.model.worshipService.crossBorder}}
+                        checked={{not @model.worshipService.crossBorder}}
                       />
                     </li>
                   </ul>
@@ -100,20 +115,25 @@
               <:label>Werkingsgebied</:label>
               <:content>
                 {{! TODO: Enable multiple selections and concat the selections in one label }}
-                <ScopeSelect @selected={{this.model.administrativeUnit.scope}} @onChange={{fn (mut
-                  this.model.administrativeUnit.scope)}} />
+                <ScopeSelect @selected={{@model.administrativeUnit.scope}} @onChange={{fn (mut
+                  @model.administrativeUnit.scope)}} />
               </:content>
             </Item> --}}
           </:left>
           <:right as |Item|>
-            <Item @labelFor="status-select">
+            <Item
+              @labelFor="status-select"
+              @required={{true}}
+              @errorMessage={{@model.administrativeUnit.error.organizationStatus.validation}}
+            >
               <:label>Status</:label>
-              <:content>
+              <:content as |hasError|>
                 <OrganizationStatusSelect
-                  @selected={{this.model.administrativeUnit.organizationStatus}}
+                  @selected={{@model.administrativeUnit.organizationStatus}}
                   @onChange={{fn
-                    (mut this.model.administrativeUnit.organizationStatus)
+                    (mut @model.administrativeUnit.organizationStatus)
                   }}
+                  @error={{hasError}}
                   @id="status-select"
                 />
               </:content>
@@ -123,7 +143,7 @@
               <:content>
                 <AuInput
                   @width="block"
-                  @value={{this.model.structuredIdentifierKBO.localId}}
+                  @value={{@model.structuredIdentifierKBO.localId}}
                   id="kbo-identifier"
                 />
               </:content>
@@ -133,7 +153,7 @@
               <:content>
                 <AuInput
                   @width="block"
-                  @value={{this.model.structuredIdentifierSharepoint.localId}}
+                  @value={{@model.structuredIdentifierSharepoint.localId}}
                   id="sharepoint-identifier"
                 />
               </:content>
@@ -143,27 +163,37 @@
       </:card>
     </EditCard>
 
-    <EditCard>
+    <EditCard @containsRequiredFields={{true}}>
       <:title>Primaire contactgegevens</:title>
       <:card as |Card|>
         <Card.Columns>
           <:left as |Item|>
-            <Item @labelFor="primary-site-address-street-name">
+            <Item
+              @labelFor="primary-site-address-street-name"
+              @required={{true}}
+              @errorMessage={{@model.address.error.street.validation}}
+            >
               <:label>Straat</:label>
-              <:content>
+              <:content as |hasError|>
                 <AuInput
                   @width="block"
-                  @value={{this.model.address.street}}
+                  @value={{@model.address.street}}
+                  @error={{hasError}}
                   id="primary-site-address-street-name"
                 />
               </:content>
             </Item>
-            <Item @labelFor="primary-site-address-house-number">
+            <Item
+              @labelFor="primary-site-address-house-number"
+              @required={{true}}
+              @errorMessage={{@model.address.error.number.validation}}
+            >
               <:label>Huisnummer</:label>
-              <:content>
+              <:content as |hasError|>
                 <AuInput
                   @width="block"
-                  @value={{this.model.address.number}}
+                  @value={{@model.address.number}}
+                  @error={{hasError}}
                   id="primary-site-address-house-number"
                 />
               </:content>
@@ -173,69 +203,99 @@
               <:content>
                 <AuInput
                   @width="block"
-                  @value={{this.model.address.boxNumber}}
+                  @value={{@model.address.boxNumber}}
                   id="primary-site-address-bus-number"
                 />
               </:content>
             </Item>
-            <Item @labelFor="primary-site-address-postal-code">
+            <Item
+              @labelFor="primary-site-address-postal-code"
+              @required={{true}}
+              @errorMessage={{@model.address.error.postcode.validation}}
+            >
               <:label>Postcode</:label>
-              <:content>
+              <:content as |hasError|>
                 <AuInput
                   @width="block"
-                  @value={{this.model.address.postcode}}
+                  @value={{@model.address.postcode}}
+                  @error={{hasError}}
                   id="primary-site-address-postal-code"
                 />
               </:content>
             </Item>
-            <Item @labelFor="primary-site-address-municipality">
+            <Item
+              @labelFor="primary-site-address-municipality"
+              @required={{true}}
+              @errorMessage={{@model.address.error.municipality.validation}}
+            >
               <:label>Gemeente</:label>
-              <:content>
+              <:content as |hasError|>
                 <MunicipalitySelect
-                  @selected={{this.model.address.municipality}}
-                  @onChange={{fn (mut this.model.address.municipality)}}
+                  @selected={{@model.address.municipality}}
+                  @onChange={{fn (mut @model.address.municipality)}}
                   @id="primary-site-address-municipality"
+                  @error={{hasError}}
                 />
               </:content>
             </Item>
-            <Item @labelFor="primary-site-address-province">
+            <Item
+              @labelFor="primary-site-address-province"
+              @required={{true}}
+              @errorMessage={{@model.address.error.province.validation}}
+            >
               <:label>Provincie</:label>
-              <:content>
+              <:content as |hasError|>
                 <ProvinceSelect
-                  @selected={{this.model.address.province}}
-                  @onChange={{fn (mut this.model.address.province)}}
+                  @selected={{@model.address.province}}
+                  @onChange={{fn (mut @model.address.province)}}
                   @id="primary-site-address-province"
+                  @error={{hasError}}
                 />
               </:content>
             </Item>
           </:left>
           <:right as |Item|>
-            <Item @labelFor="primary-site-contact-phone-number">
+            <Item
+              @labelFor="primary-site-contact-phone-number"
+              @errorMessage={{@model.contact.error.telephone.validation}}
+            >
               <:label>Telefoonnummer</:label>
-              <:content>
+              <:content as |hasError|>
                 <AuInput
                   @width="block"
-                  @value={{this.model.contact.telephone}}
+                  @value={{@model.contact.telephone}}
+                  @error={{hasError}}
                   id="primary-site-contact-phone-number"
+                  type="tel"
                 />
               </:content>
+              <:help-text>
+                {{help-text "phone-number"}}
+              </:help-text>
             </Item>
-            <Item @labelFor="primary-site-contact-website">
+            <Item
+              @labelFor="primary-site-contact-website"
+              @errorMessage={{@model.contact.error.website.validation}}
+            >
               <:label>Website</:label>
-              <:content>
+              <:content as |hasError|>
                 <AuInput
                   @width="block"
-                  @value={{this.model.contact.website}}
+                  @value={{@model.contact.website}}
+                  @error={{hasError}}
                   id="primary-site-contact-website"
                 />
               </:content>
+              <:help-text>
+                {{help-text "url"}}
+              </:help-text>
             </Item>
           </:right>
         </Card.Columns>
       </:card>
     </EditCard>
 
-    <EditCard>
+    <EditCard @containsRequiredFields={{true}}>
       <:title>Gerelateerde organisaties</:title>
       <:card as |Card|>
         <Card.Columns>
@@ -245,9 +305,9 @@
                 <:label>Bestuur van de eredienst</:label>
                 <:content>
                   <WorshipServiceSelect
-                    @selected={{this.model.administrativeUnit.subOrganizations}}
+                    @selected={{@model.administrativeUnit.subOrganizations}}
                     @onChange={{fn
-                      (mut this.model.administrativeUnit.subOrganizations)
+                      (mut @model.administrativeUnit.subOrganizations)
                     }}
                     id="related-worship-service"
                   />
@@ -258,23 +318,28 @@
                 <:label>Centraal bestuur</:label>
                 <:content>
                   <CentralWorshipSelect
-                    @selected={{this.model.administrativeUnit.isSubOrganizationOf}}
+                    @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                     @onChange={{fn
-                      (mut this.model.administrativeUnit.isSubOrganizationOf)
+                      (mut @model.administrativeUnit.isSubOrganizationOf)
                     }}
                     @id="related-central-worship-service"
                   />
                 </:content>
               </Item>
             {{/if}}
-            <Item @labelFor="related-representative-body">
+            <Item
+              @labelFor="related-representative-body"
+              @required={{true}}
+              @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
+            >
               <:label>Representatief orgaan</:label>
-              <:content>
+              <:content as |hasError|>
                 <RepresentativeBodySelect
-                  @selected={{this.model.administrativeUnit.isAssociatedWith}}
+                  @selected={{@model.administrativeUnit.isAssociatedWith}}
                   @onChange={{fn
-                    (mut this.model.administrativeUnit.isAssociatedWith)
+                    (mut @model.administrativeUnit.isAssociatedWith)
                   }}
+                  @error={{hasError}}
                   @id="related-representative-body"
                 />
               </:content>

@@ -14,14 +14,14 @@ export default class AdministrativeUnitsNewController extends Controller {
 
   get isNewWorshipService() {
     return (
-      this.model.administrativeUnit.classification.get('id') ===
+      this.model.administrativeUnit.classification?.id ===
       CLASSIFICATION.WORSHIP_SERVICE
     );
   }
 
   get isNewCentralWorshipService() {
     return (
-      this.model.administrativeUnit.classification.get('id') ===
+      this.model.administrativeUnit.classification?.id ===
       CLASSIFICATION.CENTRAL_WORSHIP_SERVICE
     );
   }
@@ -47,38 +47,45 @@ export default class AdministrativeUnitsNewController extends Controller {
       ? centralWorshipService
       : worshipService;
 
-    copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
+    yield administrativeUnit.validate();
+    yield address.validate();
+    yield contact.validate();
 
-    yield structuredIdentifierSharepoint.save();
-    yield structuredIdentifierKBO.save();
+    if (administrativeUnit.isValid && address.isValid && contact.isValid) {
+      copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
-    identifierSharepoint.structuredIdentifier = structuredIdentifierSharepoint;
-    yield identifierSharepoint.save();
+      yield structuredIdentifierSharepoint.save();
+      yield structuredIdentifierKBO.save();
 
-    identifierKBO.structuredIdentifier = structuredIdentifierKBO;
-    yield identifierKBO.save();
+      identifierSharepoint.structuredIdentifier =
+        structuredIdentifierSharepoint;
+      yield identifierSharepoint.save();
 
-    yield contact.save();
+      identifierKBO.structuredIdentifier = structuredIdentifierKBO;
+      yield identifierKBO.save();
 
-    address.fullAddress = combineFullAddress(address);
-    yield address.save();
+      yield contact.save();
 
-    primarySite.address = address;
-    primarySite.contacts.pushObjects([contact]);
-    yield primarySite.save();
+      address.fullAddress = combineFullAddress(address);
+      yield address.save();
 
-    newAdministrativeUnit.identifiers.pushObjects([
-      identifierKBO,
-      identifierSharepoint,
-    ]);
-    newAdministrativeUnit.primarySite = primarySite;
+      primarySite.address = address;
+      primarySite.contacts.pushObject(contact);
+      yield primarySite.save();
 
-    yield newAdministrativeUnit.save();
+      newAdministrativeUnit.identifiers.pushObjects([
+        identifierKBO,
+        identifierSharepoint,
+      ]);
+      newAdministrativeUnit.primarySite = primarySite;
 
-    this.router.replaceWith(
-      'administrative-units.administrative-unit',
-      newAdministrativeUnit.id
-    );
+      yield newAdministrativeUnit.save();
+
+      this.router.replaceWith(
+        'administrative-units.administrative-unit',
+        newAdministrativeUnit.id
+      );
+    }
   }
 
   reset() {
@@ -86,16 +93,28 @@ export default class AdministrativeUnitsNewController extends Controller {
   }
 
   removeUnsavedRecords() {
-    this.model.administrativeUnit.rollbackAttributes();
+    this.removeUnsavedChangesetRecords();
     this.model.primarySite.rollbackAttributes();
-    this.model.address.rollbackAttributes();
-    this.model.contact.rollbackAttributes();
     this.model.identifierSharepoint.rollbackAttributes();
     this.model.identifierKBO.rollbackAttributes();
     this.model.structuredIdentifierSharepoint.rollbackAttributes();
     this.model.structuredIdentifierKBO.rollbackAttributes();
     this.model.centralWorshipService.rollbackAttributes();
     this.model.worshipService.rollbackAttributes();
+  }
+
+  removeUnsavedChangesetRecords() {
+    if (this.model.administrativeUnit.isNew) {
+      this.model.administrativeUnit.destroyRecord();
+    }
+
+    if (this.model.address.isNew) {
+      this.model.address.destroyRecord();
+    }
+
+    if (this.model.contact.isNew) {
+      this.model.contact.destroyRecord();
+    }
   }
 }
 
