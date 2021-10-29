@@ -78,7 +78,8 @@ Router.map(function () {
             this.route('edit');
           }
         );
-        this.route(
+        //Connected Legal Structures no longer to be published
+        /*         this.route(
           'legal-structures',
           { path: '/verbonden-juridische-structuren' },
           function () {
@@ -93,7 +94,7 @@ Router.map(function () {
               path: '/nieuwe-verbonden-juridische-structuur',
             });
           }
-        );
+        ); */
       });
       this.route('new', { path: '/nieuwe-bestuurseenheid' });
     }
