@@ -1,14 +1,10 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { ID_NAME } from 'frontend-contact-hub/models/identifier';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
 import worshipAdministrativeUnitValidations from 'frontend-contact-hub/validations/worship-administrative-unit';
-
-const ID_NAME = {
-  SHAREPOINT: 'SharePoint identificator',
-  KBO: 'KBO nummer',
-};
 
 export default class AdministrativeUnitsNewRoute extends Route {
   @service store;

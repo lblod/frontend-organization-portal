@@ -1,14 +1,10 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { ID_NAME } from 'frontend-contact-hub/models/identifier';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
 import worshipAdministrativeUnitValidations from 'frontend-contact-hub/validations/worship-administrative-unit';
-
-const IDNAMES = {
-  SHAREPOINT: 'SharePoint identificator',
-  KBO: 'KBO nummer',
-};
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute extends Route {
   @service store;
@@ -28,10 +24,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     let identifiers = await administrativeUnit.identifiers;
     if (identifiers.length === 1) {
       let idName;
-      if (identifiers.firstObject.idName === IDNAMES.SHAREPOINT) {
-        idName = IDNAMES.KBO;
+      if (identifiers.firstObject.idName === ID_NAME.SHAREPOINT) {
+        idName = ID_NAME.KBO;
       } else {
-        idName = IDNAMES.SHAREPOINT;
+        idName = ID_NAME.SHAREPOINT;
       }
 
       let identifier = this.store.createRecord('identifier', {
