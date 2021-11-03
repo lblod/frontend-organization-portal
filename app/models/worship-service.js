@@ -15,8 +15,6 @@ export default class WorshipServiceModel extends WorshipAdministrativeUnitModel 
   })
   involvements;
 
-  @hasMany('associated-legal-structure') associatedStructures;
-
   get crossBorderNominal() {
     if (this.crossBorder) {
       return 'Ja';
