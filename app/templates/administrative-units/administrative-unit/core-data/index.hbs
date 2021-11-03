@@ -84,10 +84,12 @@
               </Item>
             {{/if}}
             {{#each @model.administrativeUnit.identifiers as |identifier|}}
-              <Item>
-                <:label>{{identifier.idName}}</:label>
-                <:content>{{identifier.structuredIdentifier.localId}}</:content>
-              </Item>
+              {{#if identifier.structuredIdentifier.localId}}
+                <Item>
+                  <:label>{{identifier.idName}}</:label>
+                  <:content>{{identifier.structuredIdentifier.localId}}</:content>
+                </Item>
+              {{/if}}
             {{/each}}
           </:right>
         </Card.Columns>
