@@ -4,7 +4,9 @@ import { ID_NAME } from 'frontend-contact-hub/models/identifier';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
-import worshipAdministrativeUnitValidations from 'frontend-contact-hub/validations/worship-administrative-unit';
+import worshipAdministrativeUnitValidations, {
+  getStructuredIdentifierKBOValidations,
+} from 'frontend-contact-hub/validations/worship-administrative-unit';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute extends Route {
   @service store;
@@ -25,6 +27,13 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     let missingIdentifiers = this.createMissingIdentifiers(identifiers);
     identifiers.pushObjects(missingIdentifiers);
 
+    let identifierKBO = identifiers.findBy('idName', ID_NAME.KBO);
+    let structuredIdentifierKBO = await identifierKBO.structuredIdentifier;
+
+    let identifierSharepoint = identifiers.findBy('idName', ID_NAME.SHAREPOINT);
+    let structuredIdentifierSharepoint =
+      await identifierSharepoint.structuredIdentifier;
+
     return {
       administrativeUnit: createValidatedChangeset(
         administrativeUnit,
@@ -35,6 +44,13 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
         contacts.firstObject,
         contactValidations
       ),
+      identifierKBO,
+      structuredIdentifierKBO: createValidatedChangeset(
+        structuredIdentifierKBO,
+        getStructuredIdentifierKBOValidations(this.store)
+      ),
+      identifierSharepoint,
+      structuredIdentifierSharepoint,
       worshipAdministrativeUnitType: administrativeUnit.constructor.modelName,
     };
   }

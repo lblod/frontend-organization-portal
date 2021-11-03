@@ -47,11 +47,19 @@ export default class AdministrativeUnitsNewController extends Controller {
       ? centralWorshipService
       : worshipService;
 
-    yield administrativeUnit.validate();
-    yield address.validate();
-    yield contact.validate();
+    yield Promise.all([
+      administrativeUnit.validate(),
+      address.validate(),
+      contact.validate(),
+      structuredIdentifierKBO.validate(),
+    ]);
 
-    if (administrativeUnit.isValid && address.isValid && contact.isValid) {
+    if (
+      administrativeUnit.isValid &&
+      address.isValid &&
+      contact.isValid &&
+      structuredIdentifierKBO.isValid
+    ) {
       copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
       yield structuredIdentifierSharepoint.save();
@@ -98,7 +106,6 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.identifierSharepoint.rollbackAttributes();
     this.model.identifierKBO.rollbackAttributes();
     this.model.structuredIdentifierSharepoint.rollbackAttributes();
-    this.model.structuredIdentifierKBO.rollbackAttributes();
     this.model.centralWorshipService.rollbackAttributes();
     this.model.worshipService.rollbackAttributes();
   }
@@ -114,6 +121,10 @@ export default class AdministrativeUnitsNewController extends Controller {
 
     if (this.model.contact.isNew) {
       this.model.contact.destroyRecord();
+    }
+
+    if (this.model.structuredIdentifierKBO.isNew) {
+      this.model.structuredIdentifierKBO.destroyRecord();
     }
   }
 }

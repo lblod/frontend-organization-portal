@@ -138,18 +138,25 @@
                 />
               </:content>
             </Item>
-            <Item @labelFor="kbo-identifier">
-              <:label>KBO Nummer</:label>
-              <:content>
+            <Item
+              @labelFor="kbo-identifier"
+              @errorMessage={{@model.structuredIdentifierKBO.error.localId.validation}}
+            >
+              <:label>{{@model.identifierKBO.idName}}</:label>
+              <:content as |hasError|>
                 <AuInput
                   @width="block"
                   @value={{@model.structuredIdentifierKBO.localId}}
+                  @error={{hasError}}
                   id="kbo-identifier"
                 />
               </:content>
+              <:error as |error|>
+                <Error::KboNumber @error={{error}} />
+              </:error>
             </Item>
             <Item @labelFor="sharepoint-identifier">
-              <:label>Sharepoint Identificator</:label>
+              <:label>{{@model.identifierSharepoint.idName}}</:label>
               <:content>
                 <AuInput
                   @width="block"

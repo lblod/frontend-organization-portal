@@ -10,13 +10,29 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   *save(event) {
     event.preventDefault();
 
-    let { administrativeUnit, address, contact } = this.model;
+    let {
+      administrativeUnit,
+      address,
+      contact,
+      identifierKBO,
+      identifierSharepoint,
+      structuredIdentifierKBO,
+      structuredIdentifierSharepoint,
+    } = this.model;
 
-    yield administrativeUnit.validate();
-    yield address.validate();
-    yield contact.validate();
+    yield Promise.all([
+      administrativeUnit.validate(),
+      address.validate(),
+      contact.validate(),
+      structuredIdentifierKBO.validate(),
+    ]);
 
-    if (administrativeUnit.isValid && address.isValid && contact.isValid) {
+    if (
+      administrativeUnit.isValid &&
+      address.isValid &&
+      contact.isValid &&
+      structuredIdentifierKBO.isValid
+    ) {
       let primarySite = yield administrativeUnit.primarySite;
 
       if (address.isDirty) {
@@ -33,20 +49,11 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         }
       }
 
-      let identifiers = yield administrativeUnit.identifiers;
+      yield structuredIdentifierKBO.save();
+      yield identifierKBO.save();
 
-      for (let identifier of identifiers.toArray()) {
-        let structuredIdentifier = yield identifier.structuredIdentifier;
-        if (structuredIdentifier.hasDirtyAttributes) {
-          let isNewIdentifier = structuredIdentifier.isNew;
-
-          yield structuredIdentifier.save();
-
-          if (isNewIdentifier) {
-            yield identifier.save();
-          }
-        }
-      }
+      yield structuredIdentifierSharepoint.save();
+      yield identifierSharepoint.save();
 
       yield administrativeUnit.save();
 
