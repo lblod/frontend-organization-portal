@@ -22,25 +22,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     }
 
     let identifiers = await administrativeUnit.identifiers;
-    if (identifiers.length === 1) {
-      let idName;
-      if (identifiers.firstObject.idName === ID_NAME.SHAREPOINT) {
-        idName = ID_NAME.KBO;
-      } else {
-        idName = ID_NAME.SHAREPOINT;
-      }
-
-      let identifier = this.store.createRecord('identifier', {
-        idName: idName,
-      });
-
-      let structuredIdentifier = this.store.createRecord(
-        'structured-identifier'
-      );
-
-      identifier.structuredIdentifier = structuredIdentifier;
-      identifiers.pushObject(identifier);
-    }
+    let missingIdentifiers = this.createMissingIdentifiers(identifiers);
+    identifiers.pushObjects(missingIdentifiers);
 
     return {
       administrativeUnit: createValidatedChangeset(
@@ -54,5 +37,28 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
       ),
       worshipAdministrativeUnitType: administrativeUnit.constructor.modelName,
     };
+  }
+
+  createMissingIdentifiers(currentIdentifiers) {
+    const requiredIdNames = [ID_NAME.KBO, ID_NAME.SHAREPOINT];
+
+    return requiredIdNames.reduce((missingIdentifiers, requiredIdName) => {
+      let identifier = currentIdentifiers.findBy('idName', requiredIdName);
+
+      if (!identifier) {
+        identifier = this.store.createRecord('identifier', {
+          idName: requiredIdName,
+        });
+
+        let structuredIdentifier = this.store.createRecord(
+          'structured-identifier'
+        );
+
+        identifier.structuredIdentifier = structuredIdentifier;
+        missingIdentifiers.push(identifier);
+
+        return missingIdentifiers;
+      }
+    }, []);
   }
 }
