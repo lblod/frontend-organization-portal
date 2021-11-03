@@ -1,11 +1,8 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { ID_NAME } from 'frontend-contact-hub/models/identifier';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import personValidations from 'frontend-contact-hub/validations/person';
-
-const ID_NAME = {
-  SSN: 'Rijksregisternummer',
-};
 
 export default class PeopleNewRoute extends Route {
   @service store;

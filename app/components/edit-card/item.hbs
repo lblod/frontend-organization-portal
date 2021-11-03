@@ -24,7 +24,11 @@
       {{yield @errorMessage to="content"}}
 
       {{#if @errorMessage}}
-        <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
+        {{#if (has-block "error")}}
+          {{yield @errorMessage to="error"}}
+        {{else}}
+          <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
+        {{/if}}
       {{/if}}
 
       {{#if (has-block "help-text")}}

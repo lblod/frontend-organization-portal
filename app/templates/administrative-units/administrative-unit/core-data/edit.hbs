@@ -148,19 +148,33 @@
                     </PowerSelect>
                   </:content>
                 </Item>
-
-                {{#each @model.administrativeUnit.identifiers as |identifier|}}
-                  <Item @labelFor={{identifier.idName}}>
-                    <:label>{{identifier.idName}}</:label>
+                <Item
+                  @labelFor="kbo-identifier"
+                  @errorMessage={{@model.structuredIdentifierKBO.error.localId.validation}}
+                >
+                  <:label>{{@model.identifierKBO.idName}}</:label>
+                  <:content as |hasError|>
+                    <AuInput
+                      @width="block"
+                      @value={{@model.structuredIdentifierKBO.localId}}
+                      @error={{hasError}}
+                      id="kbo-identifier"
+                    />
+                  </:content>
+                  <:error as |error|>
+                    <Error::KboNumber @error={{error}} />
+                  </:error>
+                </Item>
+                <Item @labelFor="sharepoint-identifier">
+                  <:label>{{@model.identifierSharepoint.idName}}</:label>
                     <:content>
                       <AuInput
                         @width="block"
-                        @value={{identifier.structuredIdentifier.localId}}
-                        id={{identifier.idName}}
+                      @value={{@model.structuredIdentifierSharepoint.localId}}
+                      id="sharepoint-identifier"
                       />
                     </:content>
                   </Item>
-                {{/each}}
               </:right>
             </Card.Columns>
           </:card>

@@ -1,0 +1,10 @@
+<AuHelpText @error={{true}}>
+  {{@error.message}}
+  <AuLink
+    @route="administrative-units.administrative-unit"
+    @model={{@error.meta.administrativeUnit.id}}
+    target="_blank"
+  >
+    {{@error.meta.administrativeUnit.name}}
+  </AuLink>
+</AuHelpText>

@@ -1,14 +1,12 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { ID_NAME } from 'frontend-contact-hub/models/identifier';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
-import worshipAdministrativeUnitValidations from 'frontend-contact-hub/validations/worship-administrative-unit';
-
-const ID_NAME = {
-  SHAREPOINT: 'SharePoint identificator',
-  KBO: 'KBO nummer',
-};
+import worshipAdministrativeUnitValidations, {
+  getStructuredIdentifierKBOValidations,
+} from 'frontend-contact-hub/validations/worship-administrative-unit';
 
 export default class AdministrativeUnitsNewRoute extends Route {
   @service store;
@@ -35,7 +33,10 @@ export default class AdministrativeUnitsNewRoute extends Route {
       identifierKBO: this.store.createRecord('identifier', {
         idName: ID_NAME.KBO,
       }),
-      structuredIdentifierKBO: this.store.createRecord('structured-identifier'),
+      structuredIdentifierKBO: createValidatedChangeset(
+        this.store.createRecord('structured-identifier'),
+        getStructuredIdentifierKBOValidations(this.store)
+      ),
       identifierSharepoint: this.store.createRecord('identifier', {
         idName: ID_NAME.SHAREPOINT,
       }),

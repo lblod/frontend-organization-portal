@@ -1,14 +1,12 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { ID_NAME } from 'frontend-contact-hub/models/identifier';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
-import worshipAdministrativeUnitValidations from 'frontend-contact-hub/validations/worship-administrative-unit';
-
-const IDNAMES = {
-  SHAREPOINT: 'SharePoint identificator',
-  KBO: 'KBO nummer',
-};
+import worshipAdministrativeUnitValidations, {
+  getStructuredIdentifierKBOValidations,
+} from 'frontend-contact-hub/validations/worship-administrative-unit';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute extends Route {
   @service store;
@@ -26,25 +24,15 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     }
 
     let identifiers = await administrativeUnit.identifiers;
-    if (identifiers.length === 1) {
-      let idName;
-      if (identifiers.firstObject.idName === IDNAMES.SHAREPOINT) {
-        idName = IDNAMES.KBO;
-      } else {
-        idName = IDNAMES.SHAREPOINT;
-      }
+    let missingIdentifiers = this.createMissingIdentifiers(identifiers);
+    identifiers.pushObjects(missingIdentifiers);
 
-      let identifier = this.store.createRecord('identifier', {
-        idName: idName,
-      });
+    let identifierKBO = identifiers.findBy('idName', ID_NAME.KBO);
+    let structuredIdentifierKBO = await identifierKBO.structuredIdentifier;
 
-      let structuredIdentifier = this.store.createRecord(
-        'structured-identifier'
-      );
-
-      identifier.structuredIdentifier = structuredIdentifier;
-      identifiers.pushObject(identifier);
-    }
+    let identifierSharepoint = identifiers.findBy('idName', ID_NAME.SHAREPOINT);
+    let structuredIdentifierSharepoint =
+      await identifierSharepoint.structuredIdentifier;
 
     return {
       administrativeUnit: createValidatedChangeset(
@@ -56,7 +44,37 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
         contacts.firstObject,
         contactValidations
       ),
+      identifierKBO,
+      structuredIdentifierKBO: createValidatedChangeset(
+        structuredIdentifierKBO,
+        getStructuredIdentifierKBOValidations(this.store)
+      ),
+      identifierSharepoint,
+      structuredIdentifierSharepoint,
       worshipAdministrativeUnitType: administrativeUnit.constructor.modelName,
     };
+  }
+
+  createMissingIdentifiers(currentIdentifiers) {
+    const requiredIdNames = [ID_NAME.KBO, ID_NAME.SHAREPOINT];
+
+    return requiredIdNames.reduce((missingIdentifiers, requiredIdName) => {
+      let identifier = currentIdentifiers.findBy('idName', requiredIdName);
+
+      if (!identifier) {
+        identifier = this.store.createRecord('identifier', {
+          idName: requiredIdName,
+        });
+
+        let structuredIdentifier = this.store.createRecord(
+          'structured-identifier'
+        );
+
+        identifier.structuredIdentifier = structuredIdentifier;
+        missingIdentifiers.push(identifier);
+
+        return missingIdentifiers;
+      }
+    }, []);
   }
 }
