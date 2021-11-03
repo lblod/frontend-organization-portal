@@ -1,9 +1,0 @@
-{{page-title @model.associatedStructure.name}}
-
-{{breadcrumb
-  @model.associatedStructure.name
-  route="administrative-units.administrative-unit.legal-structures"
-  models=(array @model.administrativeUnit.id @model.associatedStructure.id)
-}}
-
-{{outlet}}

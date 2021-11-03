@@ -78,22 +78,6 @@ Router.map(function () {
             this.route('edit');
           }
         );
-        this.route(
-          'legal-structures',
-          { path: '/verbonden-juridische-structuren' },
-          function () {
-            this.route(
-              'legal-structure',
-              { path: '/:legalStructureId/' },
-              function () {
-                this.route('edit');
-              }
-            );
-            this.route('new', {
-              path: '/nieuwe-verbonden-juridische-structuur',
-            });
-          }
-        );
       });
       this.route('new', { path: '/nieuwe-bestuurseenheid' });
     }
