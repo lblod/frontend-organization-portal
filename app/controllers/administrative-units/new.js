@@ -2,10 +2,42 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
+import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-contact-hub/models/recognized-worship-type';
+import { GOVERNING_BODY_CLASSIFICATION } from 'frontend-contact-hub/models/governing-body-classification-code';
 
 const CLASSIFICATION = {
   CENTRAL_WORSHIP_SERVICE: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
   WORSHIP_SERVICE: '66ec74fd-8cfc-4e16-99c6-350b35012e86',
+};
+
+const GOVERNING_BODY_CLASSIFICATION_MAP = {
+  [CLASSIFICATION.WORSHIP_SERVICE]: {
+    [RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC]:
+      GOVERNING_BODY_CLASSIFICATION.CATHEDRAL_CHURCH_COUNCIL,
+    [RECOGNIZED_WORSHIP_TYPE.ANGLICAN]:
+      GOVERNING_BODY_CLASSIFICATION.CHURCH_COUNCIL,
+    [RECOGNIZED_WORSHIP_TYPE.ISRAELITE]:
+      GOVERNING_BODY_CLASSIFICATION.BOARD_OF_DIRECTORS,
+    [RECOGNIZED_WORSHIP_TYPE.ISLAMIC]: GOVERNING_BODY_CLASSIFICATION.COMMITTEE,
+    [RECOGNIZED_WORSHIP_TYPE.ORTHODOX]:
+      GOVERNING_BODY_CLASSIFICATION.CHURCH_FACTORY_COUNCIL,
+    [RECOGNIZED_WORSHIP_TYPE.PROTESTANT]:
+      GOVERNING_BODY_CLASSIFICATION.BOARD_OF_DIRECTORS,
+  },
+  [CLASSIFICATION.CENTRAL_WORSHIP_SERVICE]: {
+    [RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC]:
+      GOVERNING_BODY_CLASSIFICATION.CENTRAL_CHURCH_BOARD,
+    [RECOGNIZED_WORSHIP_TYPE.ANGLICAN]:
+      GOVERNING_BODY_CLASSIFICATION.CENTRAL_CHURCH_BOARD,
+    [RECOGNIZED_WORSHIP_TYPE.ISRAELITE]:
+      GOVERNING_BODY_CLASSIFICATION.CENTRAL_ADMINISTRATION,
+    [RECOGNIZED_WORSHIP_TYPE.ISLAMIC]:
+      GOVERNING_BODY_CLASSIFICATION.CENTRAL_ADMINISTRATION,
+    [RECOGNIZED_WORSHIP_TYPE.ORTHODOX]:
+      GOVERNING_BODY_CLASSIFICATION.CENTRAL_CHURCH_BOARD,
+    [RECOGNIZED_WORSHIP_TYPE.PROTESTANT]:
+      GOVERNING_BODY_CLASSIFICATION.CENTRAL_CHURCH_BOARD,
+  },
 };
 
 export default class AdministrativeUnitsNewController extends Controller {
@@ -89,6 +121,18 @@ export default class AdministrativeUnitsNewController extends Controller {
 
       yield newAdministrativeUnit.save();
 
+      let governingBody = this.store.createRecord('governing-body');
+      governingBody.administrativeUnit = newAdministrativeUnit;
+      governingBody.classification = yield this.getGoverningBodyClassification(
+        administrativeUnit
+      );
+      yield governingBody.save();
+
+      let governingBodyTimeSpecialization =
+        this.store.createRecord('governing-body');
+      governingBodyTimeSpecialization.isTimeSpecializationOf = governingBody;
+      yield governingBodyTimeSpecialization.save();
+
       this.router.replaceWith(
         'administrative-units.administrative-unit',
         newAdministrativeUnit.id
@@ -126,6 +170,24 @@ export default class AdministrativeUnitsNewController extends Controller {
     if (this.model.structuredIdentifierKBO.isNew) {
       this.model.structuredIdentifierKBO.destroyRecord();
     }
+  }
+
+  async getGoverningBodyClassification(worshipAdministrativeUnit) {
+    let administrativeUnitClassification =
+      await worshipAdministrativeUnit.classification;
+    let worshipType = await worshipAdministrativeUnit.recognizedWorshipType;
+
+    let governingBodyClassificationId =
+      GOVERNING_BODY_CLASSIFICATION_MAP[administrativeUnitClassification.id][
+        worshipType.id
+      ];
+
+    let governingBodyClassification = await this.store.findRecord(
+      'governing-body-classification-code',
+      governingBodyClassificationId
+    );
+
+    return governingBodyClassification;
   }
 }
 
