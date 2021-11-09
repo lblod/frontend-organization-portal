@@ -97,4 +97,5 @@ Router.map(function () {
     path: '/*wildcard',
   });
   this.route('redirect');
+  this.route('sparql');
 });

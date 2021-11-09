@@ -99,5 +99,8 @@
   "lint-staged": {
     "*.js": "eslint --cache --fix",
     "*.hbs": "ember-template-lint --fix"
+  },
+  "dependencies": {
+    "@triply/yasgui": "^4.2.20"
   }
 }
