@@ -75,10 +75,12 @@
             {{#if @model.administrativeUnit.resultedFrom}}
               <Item>
                 <:content>
-                  <AuHelpText @skin="tertiary" class="au-u-margin-top-none">Gewijzigd op
+                  <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
+                    Gewijzigd op
                     {{date-format
                       @model.administrativeUnit.resultedFrom.firstObject.date
-                    }}</AuHelpText>
+                    }}
+                  </AuHelpText>
                 </:content>
               </Item>
             {{/if}}
@@ -86,7 +88,23 @@
               {{#if identifier.structuredIdentifier.localId}}
                 <Item>
                   <:label>{{identifier.idName}}</:label>
-                  <:content>{{identifier.structuredIdentifier.localId}}</:content>
+                  <:content>
+                    {{#let
+                      identifier.structuredIdentifier.localId
+                      as |localId|
+                    }}
+                      {{#if (this.isSharePointIdentifier identifier)}}
+                        <AuLinkExternal
+                          href="{{this.sharePointLinkBase}}{{localId}}"
+                        >
+                          {{localId}}
+                          (externe link)
+                        </AuLinkExternal>
+                      {{else}}
+                        {{localId}}
+                      {{/if}}
+                    {{/let}}
+                  </:content>
                 </Item>
               {{/if}}
             {{/each}}
@@ -138,7 +156,8 @@
                     class="au-c-link"
                     target="_blank"
                     rel="noopener noreferrer"
-                  >{{@model.administrativeUnit.primarySite.contacts.firstObject.website}} (externe link)</a>
+                  >{{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
+                    (externe link)</a>
                 </:content>
               </Item>
             {{/if}}
