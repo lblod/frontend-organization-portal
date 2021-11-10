@@ -10,6 +10,7 @@
       <:content as |errorMessage|>
         <AddressRegisterSelector
           @id="{{id}}-address-search"
+          @address={{@address}}
           @onChange={{this.handleAddressChange}}
           @error={{errorMessage}}
         />
