@@ -1,9 +1,9 @@
 import { modifier } from 'ember-modifier';
-import env from '../config/environment';
+import config from 'frontend-contact-hub/config/environment';
 
 const defaultQuery =
-  env.yasgui.defaultQuery !== '{{YASGUI_DEFAULT_QUERY}}'
-    ? env.yasgui.defaultQuery
+  config.yasgui.defaultQuery !== '{{YASGUI_DEFAULT_QUERY}}'
+    ? config.yasgui.defaultQuery
     : `
         SELECT * WHERE {
             ?s ?p ?o .
@@ -21,7 +21,7 @@ export default modifier(function yasgui(element /*, params, hash*/) {
       autofocus: true,
     });
     yasgui.config.yasqe.value = defaultQuery;
-    if (env.yasgui.extraPrefixes !== '{{YASGUI_EXTRA_PREFIXES}}')
-      yasgui.config.yasqe.addPrefixes(JSON.parse(env.yasgui.extraPrefixes));
+    if (config.yasgui.extraPrefixes !== '{{YASGUI_EXTRA_PREFIXES}}')
+      yasgui.config.yasqe.addPrefixes(JSON.parse(config.yasgui.extraPrefixes));
   });
 });
