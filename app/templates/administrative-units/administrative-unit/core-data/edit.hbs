@@ -66,10 +66,7 @@
                   </:content>
                 </Item>
                 {{#if
-                  (eq
-                    @model.worshipAdministrativeUnitType
-                    "worship-service"
-                  )
+                  (eq @model.worshipAdministrativeUnitType "worship-service")
                 }}
                   <Item @labelFor="denomination">
                     <:label>Strekking</:label>
@@ -122,10 +119,8 @@
                 <Item @labelFor="administrative-unit-scope">
                   <:label>Werkingsgebied</:label>
                   <:content>
-                    <ScopeSelect
-                      @selected={{@model.administrativeUnit.scope}}
-                      @onChange={{fn (mut @model.administrativeUnit.scope)}}
-                    />
+                    <ScopeSelect @selected={{@model.administrativeUnit.scope}} @onChange={{fn (mut
+                      @model.administrativeUnit.scope)}} />
                   </:content>
                 </Item> --}}
               </:left>
@@ -167,14 +162,14 @@
                 </Item>
                 <Item @labelFor="sharepoint-identifier">
                   <:label>{{@model.identifierSharepoint.idName}}</:label>
-                    <:content>
-                      <AuInput
-                        @width="block"
+                  <:content>
+                    <AuInput
+                      @width="block"
                       @value={{@model.structuredIdentifierSharepoint.localId}}
                       id="sharepoint-identifier"
-                      />
-                    </:content>
-                  </Item>
+                    />
+                  </:content>
+                </Item>
               </:right>
             </Card.Columns>
           </:card>
@@ -185,91 +180,101 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <Item
-                  @labelFor="primary-site-address-street-name"
+                <AddressSearch
+                  @address={{@model.address}}
+                  @itemComponent={{Item}}
+                  @isSearchEnabledInitially={{if
+                    @model.address.addressRegisterUri
+                    true
+                    false
+                  }}
                   @required={{true}}
-                  @errorMessage={{@model.address.error.street.validation}}
+                  @error={{@model.address.isInvalid}}
                 >
-                  <:label>Straat</:label>
-                  <:content as |hasError|>
-                    <AuInput
-                      @value={{@model.address.street}}
-                      @width="block"
-                      @error={{hasError}}
-                      id="primary-site-address-street-name"
-                    />
-                  </:content>
-                </Item>
-                <Item
-                  @labelFor="primary-site-address-house-number"
-                  @required={{true}}
-                  @errorMessage={{@model.address.error.number.validation}}
-                >
-                  <:label>Huisnummer</:label>
-                  <:content as |hasError|>
-                    <AuInput
-                      @value={{@model.address.number}}
-                      @width="block"
-                      @error={{hasError}}
-                      id="primary-site-address-house-number"
-                    />
-                  </:content>
-                </Item>
-                <Item @labelFor="primary-site-address-bus-number">
-                  <:label>Busnummer</:label>
-                  <:content>
-                    <AuInput
-                      @value={{@model.address.boxNumber}}
-                      @width="block"
-                      id="primary-site-address-bus-number"
-                    />
-                  </:content>
-                </Item>
-                <Item
-                  @labelFor="primary-site-address-postal-code"
-                  @required={{true}}
-                  @errorMessage={{@model.address.error.postcode.validation}}
-                >
-                  <:label>Postcode</:label>
-                  <:content as |hasError|>
-                    <AuInput
-                      @value={{@model.address.postcode}}
-                      @width="block"
-                      @error={{hasError}}
-                      id="primary-site-address-postal-code"
-                    />
-                  </:content>
-                </Item>
-                <Item
-                  @labelFor="primary-site-address-municipality"
-                  @required={{true}}
-                  @errorMessage={{@model.address.error.municipality.validation}}
-                >
-                  <:label>Gemeente</:label>
-                  <:content as |hasError|>
-                    <MunicipalitySelect
-                      @selected={{@model.address.municipality}}
-                      @onChange={{fn (mut @model.address.municipality)}}
-                      @error={{hasError}}
-                      @id="primary-site-address-municipality"
-                    />
-                  </:content>
-                </Item>
-                <Item
-                  @labelFor="primary-site-address-province"
-                  @required={{true}}
-                  @errorMessage={{@model.address.error.province.validation}}
-                >
-                  <:label>Provincie</:label>
-                  <:content as |hasError|>
-                    <ProvinceSelect
-                      @selected={{@model.address.province}}
-                      @onChange={{fn (mut @model.address.province)}}
-                      @error={{hasError}}
-                      @id="primary-site-address-province"
-                    />
-                  </:content>
-                </Item>
+                  <:manual-address-input>
+                    <Item
+                      @labelFor="primary-site-address-street-name"
+                      @required={{true}}
+                      @errorMessage={{@model.address.error.street.validation}}
+                    >
+                      <:label>Straat</:label>
+                      <:content as |hasError|>
+                        <AuInput
+                          @value={{@model.address.street}}
+                          @width="block"
+                          @error={{hasError}}
+                          id="primary-site-address-street-name"
+                        />
+                      </:content>
+                    </Item>
+                    <Item
+                      @labelFor="primary-site-address-house-number"
+                      @required={{true}}
+                      @errorMessage={{@model.address.error.number.validation}}
+                    >
+                      <:label>Huisnummer</:label>
+                      <:content as |hasError|>
+                        <AuInput
+                          @value={{@model.address.number}}
+                          @width="block"
+                          @error={{hasError}}
+                          id="primary-site-address-house-number"
+                        />
+                      </:content>
+                    </Item>
+                    <Item @labelFor="primary-site-address-bus-number">
+                      <:label>Busnummer</:label>
+                      <:content>
+                        <AuInput
+                          @value={{@model.address.boxNumber}}
+                          @width="block"
+                          id="primary-site-address-bus-number"
+                        />
+                      </:content>
+                    </Item>
+                    <Item
+                      @labelFor="primary-site-address-postal-code"
+                      @required={{true}}
+                      @errorMessage={{@model.address.error.postcode.validation}}
+                    >
+                      <:label>Postcode</:label>
+                      <:content as |hasError|>
+                        <AuInput
+                          @value={{@model.address.postcode}}
+                          @width="block"
+                          @error={{hasError}}
+                          id="primary-site-address-postal-code"
+                        />
+                      </:content>
+                    </Item>
+                    <Item
+                      @labelFor="primary-site-address-municipality"
+                      @required={{true}}
+                      @errorMessage={{@model.address.error.municipality.validation}}
+                    >
+                      <:label>Gemeente</:label>
+                      <:content as |hasError|>
+                        <MunicipalitySelect
+                          @selected={{@model.address.municipality}}
+                          @onChange={{fn (mut @model.address.municipality)}}
+                          @error={{hasError}}
+                          @id="primary-site-address-municipality"
+                        />
+                      </:content>
+                    </Item>
+                    <Item @labelFor="primary-site-address-province">
+                      <:label>Provincie</:label>
+                      <:content as |hasError|>
+                        <ProvinceSelect
+                          @selected={{@model.address.province}}
+                          @onChange={{fn (mut @model.address.province)}}
+                          @error={{hasError}}
+                          @id="primary-site-address-province"
+                        />
+                      </:content>
+                    </Item>
+                  </:manual-address-input>
+                </AddressSearch>
               </:left>
               <:right as |Item|>
                 <Item
@@ -317,10 +322,7 @@
             <Card.Columns>
               <:left as |Item|>
                 {{#if
-                  (eq
-                    @model.worshipAdministrativeUnitType
-                    "worship-service"
-                  )
+                  (eq @model.worshipAdministrativeUnitType "worship-service")
                 }}
                   <Item @labelFor="related-central-worship-service">
                     <:label>Centraal bestuur</:label>

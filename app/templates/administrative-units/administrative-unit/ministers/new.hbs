@@ -71,66 +71,73 @@
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              <Item @labelFor="address-street-name">
-                <:label>Straat</:label>
-                <:content>
-                  <AuInput
-                    @value={{this.model.address.street}}
-                    @width="block"
-                    id="address-street-name"
-                  />
-                </:content>
-              </Item>
-              <Item @labelFor="address-house-number">
-                <:label>Huisnummer</:label>
-                <:content>
-                  <AuInput
-                    @value={{this.model.address.number}}
-                    @width="block"
-                    id="address-house-number"
-                  />
-                </:content>
-              </Item>
-              <Item @labelFor="address-box-number">
-                <:label>Busnummer</:label>
-                <:content>
-                  <AuInput
-                    @value={{this.model.address.boxNumber}}
-                    @width="block"
-                    id="address-box-number"
-                  />
-                </:content>
-              </Item>
-              <Item @labelFor="address-postal-code">
-                <:label>Postcode</:label>
-                <:content>
-                  <AuInput
-                    @value={{this.model.address.postcode}}
-                    @width="block"
-                    id="address-postal-code"
-                  />
-                </:content>
-              </Item>
-              <Item @labelFor="address-municipality">
-                <:label>Gemeente</:label>
-                <:content>
-                  <MunicipalitySelect
-                    @selected={{this.model.address.municipality}}
-                    @onChange={{fn (mut this.model.address.municipality)}}
-                    @id="address-municipality"
-                  />
-                </:content>
-              </Item>
-              <Item @labelFor="address-province">
-                <:label>Provincie</:label>
-                <:content>
-                  <ProvinceSelect
-                    @selected={{this.model.address.province}}
-                    @onChange={{fn (mut this.model.address.province)}}
-                    @id="address-province"
-                  />
-                </:content>
-              </Item>
+              <AddressSearch
+                @address={{@model.address}}
+                @itemComponent={{Item}}
+              >
+                <:manual-address-input>
+                  <Item @labelFor="address-street-name">
+                    <:label>Straat</:label>
+                    <:content>
+                      <AuInput
+                        @value={{this.model.address.street}}
+                        @width="block"
+                        id="address-street-name"
+                      />
+                    </:content>
+                  </Item>
+                  <Item @labelFor="address-house-number">
+                    <:label>Huisnummer</:label>
+                    <:content>
+                      <AuInput
+                        @value={{this.model.address.number}}
+                        @width="block"
+                        id="address-house-number"
+                      />
+                    </:content>
+                  </Item>
+                  <Item @labelFor="address-box-number">
+                    <:label>Busnummer</:label>
+                    <:content>
+                      <AuInput
+                        @value={{this.model.address.boxNumber}}
+                        @width="block"
+                        id="address-box-number"
+                      />
+                    </:content>
+                  </Item>
+                  <Item @labelFor="address-postal-code">
+                    <:label>Postcode</:label>
+                    <:content>
+                      <AuInput
+                        @value={{this.model.address.postcode}}
+                        @width="block"
+                        id="address-postal-code"
+                      />
+                    </:content>
+                  </Item>
+                  <Item @labelFor="address-municipality">
+                    <:label>Gemeente</:label>
+                    <:content>
+                      <MunicipalitySelect
+                        @selected={{this.model.address.municipality}}
+                        @onChange={{fn (mut this.model.address.municipality)}}
+                        @id="address-municipality"
+                      />
+                    </:content>
+                  </Item>
+                  <Item @labelFor="address-province">
+                    <:label>Provincie</:label>
+                    <:content>
+                      <ProvinceSelect
+                        @selected={{this.model.address.province}}
+                        @onChange={{fn (mut this.model.address.province)}}
+                        @id="address-province"
+                      />
+                    </:content>
+                  </Item>
+                </:manual-address-input>
+              </AddressSearch>
             </:left>
             <:right as |Item|>
               <Item @labelFor="contact-email">

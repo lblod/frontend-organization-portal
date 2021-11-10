@@ -74,74 +74,86 @@
                     </:content>
                   </Item>
                 {{/if}}
-                <Item @labelFor="contact-address-street-name">
-                  <:label>Straat</:label>
-                  <:content>
-                    <AuInput
-                      @value={{this.mandatory.contacts.firstObject.contactAddress.street}}
-                      @width="block"
-                      id="contact-address-street-name"
-                    />
-                  </:content>
-                </Item>
-                <Item @labelFor="contact-address-house-number">
-                  <:label>Huisnummer</:label>
-                  <:content>
-                    <AuInput
-                      @value={{this.mandatory.contacts.firstObject.contactAddress.number}}
-                      @width="block"
-                      id="contact-address-house-number"
-                    />
-                  </:content>
-                </Item>
-                <Item @labelFor="contact-address-bus-number">
-                  <:label>Busnummer</:label>
-                  <:content>
-                    <AuInput
-                      @value={{this.mandatory.contacts.firstObject.contactAddress.boxNumber}}
-                      @width="block"
-                      id="contact-address-bus-number"
-                    />
-                  </:content>
-                </Item>
-                <Item @labelFor="contact-address-postal-code">
-                  <:label>Postcode</:label>
-                  <:content>
-                    <AuInput
-                      @value={{this.mandatory.contacts.firstObject.contactAddress.postcode}}
-                      @width="block"
-                      id="contact-address-postal-code"
-                    />
-                  </:content>
-                </Item>
-                <Item @labelFor="contact-address-municipality">
-                  <:label>Gemeente</:label>
-                  <:content>
-                    <MunicipalitySelect
-                      @selected={{this.mandatory.contacts.firstObject.contactAddress.municipality}}
-                      @onChange={{fn
-                        (mut
-                          this.mandatory.contacts.firstObject.contactAddress.municipality
-                        )
-                      }}
-                      @id="contact-address-municipality"
-                    />
-                  </:content>
-                </Item>
-                <Item @labelFor="contact-address-province">
-                  <:label>Provincie</:label>
-                  <:content>
-                    <ProvinceSelect
-                      @selected={{this.mandatory.contacts.firstObject.contactAddress.province}}
-                      @onChange={{fn
-                        (mut
-                          this.mandatory.contacts.firstObject.contactAddress.province
-                        )
-                      }}
-                      @id="contact-address-province"
-                    />
-                  </:content>
-                </Item>
+                <AddressSearch
+                  @address={{this.mandatory.contacts.firstObject.contactAddress}}
+                  @itemComponent={{Item}}
+                  @isSearchEnabledInitially={{if
+                    this.mandatory.contacts.firstObject.contactAddress.addressRegisterUri
+                    true
+                    false
+                  }}
+                >
+                  <:manual-address-input>
+                    <Item @labelFor="contact-address-street-name">
+                      <:label>Straat</:label>
+                      <:content>
+                        <AuInput
+                          @value={{this.mandatory.contacts.firstObject.contactAddress.street}}
+                          @width="block"
+                          id="contact-address-street-name"
+                        />
+                      </:content>
+                    </Item>
+                    <Item @labelFor="contact-address-house-number">
+                      <:label>Huisnummer</:label>
+                      <:content>
+                        <AuInput
+                          @value={{this.mandatory.contacts.firstObject.contactAddress.number}}
+                          @width="block"
+                          id="contact-address-house-number"
+                        />
+                      </:content>
+                    </Item>
+                    <Item @labelFor="contact-address-bus-number">
+                      <:label>Busnummer</:label>
+                      <:content>
+                        <AuInput
+                          @value={{this.mandatory.contacts.firstObject.contactAddress.boxNumber}}
+                          @width="block"
+                          id="contact-address-bus-number"
+                        />
+                      </:content>
+                    </Item>
+                    <Item @labelFor="contact-address-postal-code">
+                      <:label>Postcode</:label>
+                      <:content>
+                        <AuInput
+                          @value={{this.mandatory.contacts.firstObject.contactAddress.postcode}}
+                          @width="block"
+                          id="contact-address-postal-code"
+                        />
+                      </:content>
+                    </Item>
+                    <Item @labelFor="contact-address-municipality">
+                      <:label>Gemeente</:label>
+                      <:content>
+                        <MunicipalitySelect
+                          @selected={{this.mandatory.contacts.firstObject.contactAddress.municipality}}
+                          @onChange={{fn
+                            (mut
+                              this.mandatory.contacts.firstObject.contactAddress.municipality
+                            )
+                          }}
+                          @id="contact-address-municipality"
+                        />
+                      </:content>
+                    </Item>
+                    <Item @labelFor="contact-address-province">
+                      <:label>Provincie</:label>
+                      <:content>
+                        <ProvinceSelect
+                          @selected={{this.mandatory.contacts.firstObject.contactAddress.province}}
+                          @onChange={{fn
+                            (mut
+                              this.mandatory.contacts.firstObject.contactAddress.province
+                            )
+                          }}
+                          @id="contact-address-province"
+                        />
+                      </:content>
+                    </Item>
+                  </:manual-address-input>
+                </AddressSearch>
               </:left>
               <:right as |Item|>
                 <Item @labelFor="contact-email">

@@ -1,0 +1,17 @@
+<div class={{if @error "ember-power-select--error"}}>
+  <PowerSelect
+    @width="block"
+    @triggerId={{@id}}
+    @allowClear={{true}}
+    @search={{perform this.search}}
+    @selected={{this.addressSuggestion}}
+    @onChange={{perform this.selectSuggestion}}
+    @loadingMessage="Aan het laden..."
+    @searchEnabled={{true}}
+    @noMatchesMessage="Geen resultaten"
+    @searchMessage="Typ om te zoeken"
+    as |suggestion|
+  >
+    {{suggestion.fullAddress}}
+  </PowerSelect>
+</div>

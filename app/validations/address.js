@@ -36,13 +36,5 @@ export function getAddressValidations(isAlwaysRequired = false) {
         ? null
         : ['street', 'number', 'postcode', 'province'],
     }),
-    province: validatePresence({
-      presence: true,
-      ignoreBlank: true,
-      message: REQUIRED_MESSAGE,
-      on: isAlwaysRequired
-        ? null
-        : ['street', 'number', 'postcode', 'municipality'],
-    }),
   };
 }
