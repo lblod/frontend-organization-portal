@@ -11,16 +11,17 @@ export default class AddressRegisterSelectorComponent extends Component {
 
   sourceCrab;
 
-  get isDisabledBusNumberSelect() {
-    return !this.addressWithBusNumber;
-  }
-
   constructor() {
     super(...arguments);
+
     if (this.args.address) {
-      this.addressSuggestion = this.addressRegister.toAddressSuggestion(
+      let addressSuggestion = this.addressRegister.toAddressSuggestion(
         this.args.address
       );
+
+      if (!addressSuggestion.isEmpty()) {
+        this.addressSuggestion = addressSuggestion;
+      }
     }
   }
 

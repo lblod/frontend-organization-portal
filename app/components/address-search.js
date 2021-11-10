@@ -27,16 +27,6 @@ export default class AddressSearchComponent extends Component {
     super(...arguments);
 
     this.detectInitialInputMode();
-
-    if (this.isAddressSearchMode) {
-      let addressWithBusNumber = this.addressRegister.toAddressSuggestion(
-        this.args.address
-      );
-
-      if (!addressWithBusNumber.isEmpty()) {
-        this.addressWithBusNumber = addressWithBusNumber;
-      }
-    }
   }
 
   @action
