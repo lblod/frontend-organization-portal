@@ -17,6 +17,9 @@ module.exports = function (defaults) {
       cascade: true,
       sourcemap: true,
     },
+    babel: {
+      plugins: [require.resolve('ember-auto-import/babel-plugin')],
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated

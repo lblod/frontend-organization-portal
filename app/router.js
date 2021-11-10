@@ -93,6 +93,7 @@ Router.map(function () {
       path: '/toegankelijkheidsverklaring',
     });
   });
+  this.route('sparql');
   this.route('route-not-found', {
     path: '/*wildcard',
   });
