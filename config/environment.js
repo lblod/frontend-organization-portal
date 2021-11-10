@@ -7,8 +7,8 @@ module.exports = function (environment) {
     rootURL: '/',
     locationType: 'auto',
     yasgui: {
-      defaultQuery: 'EMBER_YASGUI_DEFAULT_QUERY',
-      extraPrefixes: 'EMBER_YASGUI_EXTRA_PREFIXES',
+      defaultQuery: '{{YASGUI_DEFAULT_QUERY}}',
+      extraPrefixes: '{{YASGUI_EXTRA_PREFIXES}}',
     },
     EmberENV: {
       FEATURES: {

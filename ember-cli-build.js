@@ -10,13 +10,15 @@ module.exports = function (defaults) {
       includePaths: [
         'node_modules/@appuniversum/appuniversum',
         'node_modules/@appuniversum/ember-appuniversum/app/styles',
-        'node_modules/@triply',
       ],
     },
     autoprefixer: {
       enabled: true,
       cascade: true,
       sourcemap: true,
+    },
+    babel: {
+      plugins: [require.resolve('ember-auto-import/babel-plugin')],
     },
   });
 
