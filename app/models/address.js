@@ -1,4 +1,4 @@
-import Model, { attr } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@ember-data/model';
 
 export default class AddressModel extends Model {
   @attr number;
@@ -7,8 +7,14 @@ export default class AddressModel extends Model {
   @attr postcode;
   @attr municipality;
   @attr province;
+  @attr addressRegisterUri;
   @attr country;
   @attr fullAddress;
+
+  @belongsTo('concept', {
+    inverse: null,
+  })
+  source;
 }
 
 export function combineFullAddress(address) {

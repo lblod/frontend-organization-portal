@@ -1,0 +1,16 @@
+<PowerSelect
+  @disabled={{@disabled}}
+  @placeholder={{@placeholder}}
+  @selected={{@address}}
+  @options={{@options}}
+  @onChange={{@onChange}}
+  @loadingMessage="Aan het laden..."
+  as |address|
+>
+  {{#if address.busNumber}}
+    Bus
+    {{address.busNumber}}
+  {{else}}
+    Geen busnummer
+  {{/if}}
+</PowerSelect>
