@@ -55,8 +55,6 @@
     {{yield to="manual-address-input"}}
 
     <Item>
-      {{! TODO: Add a placeholder to the Item component so we don't output a label element if it's not needed }}
-      <:label>&nbsp;</:label>
       <:content>
         <AuButton @skin="link" {{on "click" this.toggleInputMode}}>
           Vind adres in lijst
