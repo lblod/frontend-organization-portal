@@ -17,28 +17,28 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
 
   queryParams = ['redirectUrl'];
 
-  setup() {
-    this.willReceiveFinancing =
-      this.model.minister.financing.get('id') === FINANCING_CODE.FOD_FINANCED;
-  }
+  @action
+  handleEndDateChange(endDate) {
+    let { minister } = this.model;
+    minister.agentEndDate = endDate;
 
-  handleTransitionTo() {
-    if (this.redirectUrl) {
-      this.router.transitionTo(this.redirectUrl);
+    if (!endDate) {
+      minister.isCurrentPosition = true;
     } else {
-      this.router.transitionTo('people.person.positions.minister');
+      minister.isCurrentPosition = false;
     }
-  }
-
-  get isCurrentPosition() {
-    return !this.model.minister.agentEndDate;
   }
 
   @action
   handleIsCurrentPositionChange() {
-    if (!this.isCurrentPosition) {
-      this.model.minister.agentEndDate = undefined;
+    let { minister } = this.model;
+    let isCurrentPosition = minister.isCurrentPosition;
+
+    if (!isCurrentPosition) {
+      minister.agentEndDate = undefined;
     }
+
+    minister.isCurrentPosition = !isCurrentPosition;
   }
 
   @action
@@ -50,35 +50,65 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
   *save(event) {
     event.preventDefault();
 
-    let contacts = yield this.model.minister.contacts;
-    let address = yield contacts.firstObject.contactAddress;
+    let { minister, contact, address } = this.model;
 
-    if (address.hasDirtyAttributes) {
-      address.fullAddress = combineFullAddress(address);
-      yield address.save();
-    }
+    yield Promise.all([
+      contact.validate(),
+      minister.validate(),
+      address.validate(),
+    ]);
 
-    yield contacts.firstObject.save();
-
-    let financingCodeId = this.willReceiveFinancing
-      ? FINANCING_CODE.FOD_FINANCED
-      : FINANCING_CODE.SELF_FINANCED;
-
-    let financing = yield this.store.findRecord(
-      'financing-code',
-      financingCodeId,
-      {
-        backgroundReload: false,
+    if (minister.isValid && contact.isValid && address.isValid) {
+      if (address.isDirty) {
+        address.fullAddress = combineFullAddress(address);
+        yield address.save();
       }
-    );
 
-    this.model.minister.financing = financing;
-    yield this.model.minister.save();
+      contact.contactAddress = address;
 
-    this.handleTransitionTo();
+      if (contact.isDirty) {
+        yield contact.save();
+      }
+
+      let financingCodeId = this.willReceiveFinancing
+        ? FINANCING_CODE.FOD_FINANCED
+        : FINANCING_CODE.SELF_FINANCED;
+
+      let financing = yield this.store.findRecord(
+        'financing-code',
+        financingCodeId,
+        {
+          backgroundReload: false,
+        }
+      );
+
+      minister.financing = financing;
+      yield minister.save();
+
+      this.handleTransitionTo();
+    }
+  }
+
+  setup() {
+    this.willReceiveFinancing =
+      this.model.minister.financing.get('id') === FINANCING_CODE.FOD_FINANCED;
   }
 
   reset() {
     this.redirectUrl = null;
+    this.removeUnsavedRecords();
+  }
+
+  removeUnsavedRecords() {
+    this.model.addressRecord.rollbackAttributes();
+    this.model.contactRecord.rollbackAttributes();
+  }
+
+  handleTransitionTo() {
+    if (this.redirectUrl) {
+      this.router.transitionTo(this.redirectUrl);
+    } else {
+      this.router.transitionTo('people.person.positions.minister');
+    }
   }
 }
