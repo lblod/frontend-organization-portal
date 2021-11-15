@@ -1,8 +1,8 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
-import { contactValidations } from 'frontend-contact-hub/validations/site';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
+import contactValidations from 'frontend-contact-hub/validations/contact-point';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesNewRoute extends Route {
   @service store;
