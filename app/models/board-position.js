@@ -7,3 +7,7 @@ export const BOARD_POSITION = {
 export default class BoardPositionModel extends Model {
   @attr label;
 }
+
+export function isWorshipMember(id) {
+  return id === BOARD_POSITION.WORSHIP_MEMBER;
+}
