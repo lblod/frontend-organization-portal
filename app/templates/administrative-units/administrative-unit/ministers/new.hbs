@@ -51,13 +51,18 @@
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              <Item @labelFor="minister-position-function" @required={{true}}>
+              <Item
+                @labelFor="minister-position-function"
+                @required={{true}}
+                @errorMessage={{@model.position.error.function.validation}}
+              >
                 <:label>Positie</:label>
-                <:content>
+                <:content as |errorMessage|>
                   <MinisterPositionFunctionSelect
-                    @onChange={{fn (mut this.model.position.function)}}
-                    @selected={{this.model.position.function}}
+                    @onChange={{fn (mut @model.position.function)}}
+                    @selected={{@model.position.function}}
                     @id="minister-position-function"
+                    @error={{errorMessage}}
                   />
                 </:content>
               </Item>
@@ -76,23 +81,31 @@
                 @itemComponent={{Item}}
               >
                 <:manual-address-input>
-                  <Item @labelFor="address-street-name">
+                  <Item
+                    @labelFor="address-street-name"
+                    @errorMessage={{@model.address.error.street.validation}}
+                  >
                     <:label>Straat</:label>
-                    <:content>
+                    <:content as |errorMessage|>
                       <AuInput
-                        @value={{this.model.address.street}}
+                        @value={{@model.address.street}}
                         @width="block"
                         id="address-street-name"
+                        @error={{errorMessage}}
                       />
                     </:content>
                   </Item>
-                  <Item @labelFor="address-house-number">
+                  <Item
+                    @labelFor="address-house-number"
+                    @errorMessage={{@model.address.error.number.validation}}
+                  >
                     <:label>Huisnummer</:label>
-                    <:content>
+                    <:content as |errorMessage|>
                       <AuInput
-                        @value={{this.model.address.number}}
+                        @value={{@model.address.number}}
                         @width="block"
                         id="address-house-number"
+                        @error={{errorMessage}}
                       />
                     </:content>
                   </Item>
@@ -100,39 +113,51 @@
                     <:label>Busnummer</:label>
                     <:content>
                       <AuInput
-                        @value={{this.model.address.boxNumber}}
+                        @value={{@model.address.boxNumber}}
                         @width="block"
                         id="address-box-number"
                       />
                     </:content>
                   </Item>
-                  <Item @labelFor="address-postal-code">
+                  <Item
+                    @labelFor="address-postal-code"
+                    @errorMessage={{@model.address.error.postcode.validation}}
+                  >
                     <:label>Postcode</:label>
-                    <:content>
+                    <:content as |errorMessage|>
                       <AuInput
-                        @value={{this.model.address.postcode}}
+                        @value={{@model.address.postcode}}
                         @width="block"
                         id="address-postal-code"
+                        @error={{errorMessage}}
                       />
                     </:content>
                   </Item>
-                  <Item @labelFor="address-municipality">
+                  <Item
+                    @labelFor="address-municipality"
+                    @errorMessage={{@model.address.error.municipality.validation}}
+                  >
                     <:label>Gemeente</:label>
-                    <:content>
+                    <:content as |errorMessage|>
                       <MunicipalitySelect
-                        @selected={{this.model.address.municipality}}
-                        @onChange={{fn (mut this.model.address.municipality)}}
+                        @selected={{@model.address.municipality}}
+                        @onChange={{fn (mut @model.address.municipality)}}
                         @id="address-municipality"
+                        @error={{errorMessage}}
                       />
                     </:content>
                   </Item>
-                  <Item @labelFor="address-province">
+                  <Item
+                    @labelFor="address-province"
+                    @errorMessage={{@model.address.error.province.validation}}
+                  >
                     <:label>Provincie</:label>
-                    <:content>
+                    <:content as |errorMessage|>
                       <ProvinceSelect
-                        @selected={{this.model.address.province}}
-                        @onChange={{fn (mut this.model.address.province)}}
+                        @selected={{@model.address.province}}
+                        @onChange={{fn (mut @model.address.province)}}
                         @id="address-province"
+                        @error={{errorMessage}}
                       />
                     </:content>
                   </Item>
@@ -140,75 +165,103 @@
               </AddressSearch>
             </:left>
             <:right as |Item|>
-              <Item @labelFor="contact-email">
+              <Item
+                @labelFor="contact-email"
+                @errorMessage={{@model.contact.error.email.validation}}
+              >
                 <:label>E-mail</:label>
-                <:content>
+                <:content as |errorMessage|>
                   <AuInput
-                    @value={{this.model.contact.email}}
+                    @value={{@model.contact.email}}
                     @width="block"
+                    @error={{errorMessage}}
                     id="contact-email"
-                    type="email"
                   />
                 </:content>
+                <:help-text>
+                  {{help-text "email"}}
+                </:help-text>
               </Item>
-              <Item @labelFor="contact-landline">
+              <Item
+                @labelFor="contact-landline"
+                @errorMessage={{@model.contact.error.telephone.validation}}
+              >
                 <:label>Telefoonnummer</:label>
-                <:content>
+                <:content as |errorMessage|>
                   <AuInput
-                    @value={{this.model.contact.telephone}}
+                    @value={{@model.contact.telephone}}
                     @width="block"
+                    @error={{errorMessage}}
                     id="contact-landline"
-                    type="tel"
                   />
                 </:content>
+                <:help-text>
+                  {{help-text "phone-number"}}
+                </:help-text>
               </Item>
-              <Item @labelFor="contact-mobile">
+              <Item
+                @labelFor="contact-mobile"
+                @errorMessage={{@model.secondaryContact.error.telephone.validation}}
+              >
                 <:label>GSM nummer</:label>
-                <:content>
+                <:content as |errorMessage|>
                   <AuInput
                     @width="block"
-                    @value={{this.model.contactMobile.telephone}}
+                    @value={{@model.secondaryContact.telephone}}
+                    @error={{errorMessage}}
                     id="contact-mobile"
-                    type="tel"
                   />
                 </:content>
+                <:help-text>
+                  {{help-text "phone-number"}}
+                </:help-text>
               </Item>
             </:right>
           </Card.Columns>
         </:card>
       </EditCard>
 
-      <EditCard>
+      <EditCard @containsRequiredFields={{true}}>
         <:title>Aanstelling</:title>
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              <Item @labelFor="start-date">
+              <Item
+                @labelFor="start-date"
+                @required={{true}}
+                @errorMessage={{@model.minister.error.agentStartDate.validation}}
+              >
                 <:label>Startdatum</:label>
-                <:content>
+                <:content as |errorMessage|>
                   <Datepicker
                     @id="start-date"
-                    @onChange={{fn (mut this.model.minister.agentStartDate)}}
-                    @value={{this.model.minister.agentStartDate}}
+                    @onChange={{fn (mut @model.minister.agentStartDate)}}
+                    @value={{@model.minister.agentStartDate}}
+                    @error={{errorMessage}}
                   />
                 </:content>
               </Item>
             </:left>
             <:right as |Item|>
-              <Item @labelFor="end-date">
+              <Item
+                @labelFor="end-date"
+                @required={{not @model.minister.isCurrentPosition}}
+                @errorMessage={{@model.minister.error.agentEndDate.validation}}
+              >
                 <:label>Einddatum</:label>
-                <:content>
+                <:content as |errorMessage|>
                   <Datepicker
                     @id="end-date"
-                    @onChange={{fn (mut this.model.minister.agentEndDate)}}
-                    @value={{this.model.minister.agentEndDate}}
+                    @onChange={{this.handleEndDateChange}}
+                    @value={{@model.minister.agentEndDate}}
+                    @error={{errorMessage}}
                   />
                 </:content>
               </Item>
               <Item>
                 <:content>
                   <AuControlCheckbox
-                    checked={{this.isCurrentPosition}}
+                    checked={{@model.minister.isCurrentPosition}}
                     @label="Huidige positie"
                     @identifier="current-position"
                     @onChange={{this.handleIsCurrentPositionChange}}
@@ -264,10 +317,7 @@
           @icon="add"
           @iconAlignment="left"
           @loading={{this.createMinisterPositionTask.isRunning}}
-          @disabled={{or
-            (not this.canSubmit)
-            this.createMinisterPositionTask.isRunning
-          }}
+          @disabled={{this.createMinisterPositionTask.isRunning}}
           type="submit"
         >
           Voeg toe

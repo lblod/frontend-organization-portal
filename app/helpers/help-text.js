@@ -6,6 +6,7 @@ const HELP_TEXT = {
   ['phone-number']: 'Bijvoorbeeld: +3211211430',
   ssn: 'Formaat: 00.00.00-000.00',
   url: 'Bijvoorbeeld: https://www.vlaanderen.be',
+  email: 'Bijvoorbeeld: mail@adres.com',
 };
 
 export default helper(function helpText([key]) {

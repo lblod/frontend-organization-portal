@@ -51,7 +51,7 @@
                 <Item>
                   <:label>Naam Eredienst</:label>
                   <:content>
-                    {{this.administrativeUnit.name}}
+                    {{@model.administrativeUnit.name}}
                   </:content>
                 </Item>
               </:right>
@@ -64,43 +64,49 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                {{#if
-                  this.mandatory.contacts.firstObject.contactAddress.fullAddress
-                }}
+                {{#if @model.address.fullAddress}}
                   <Item>
                     <:label>Full address</:label>
                     <:content>
-                      {{this.mandatory.contacts.firstObject.contactAddress.fullAddress}}
+                      {{@model.address.fullAddress}}
                     </:content>
                   </Item>
                 {{/if}}
                 <AddressSearch
-                  @address={{this.mandatory.contacts.firstObject.contactAddress}}
+                  @address={{@model.address}}
                   @itemComponent={{Item}}
                   @isSearchEnabledInitially={{if
-                    this.mandatory.contacts.firstObject.contactAddress.addressRegisterUri
+                    @model.address.addressRegisterUri
                     true
                     false
                   }}
                 >
                   <:manual-address-input>
-                    <Item @labelFor="contact-address-street-name">
+                    <Item
+                      @labelFor="contact-address-street-name"
+                      @errorMessage={{@model.address.error.street.validation}}
+                    >
                       <:label>Straat</:label>
-                      <:content>
+                      <:content as |errorMessage|>
                         <AuInput
-                          @value={{this.mandatory.contacts.firstObject.contactAddress.street}}
+                          @value={{@model.address.street}}
                           @width="block"
                           id="contact-address-street-name"
+                          @error={{errorMessage}}
                         />
                       </:content>
                     </Item>
-                    <Item @labelFor="contact-address-house-number">
+                    <Item
+                      @labelFor="contact-address-house-number"
+                      @errorMessage={{@model.address.error.number.validation}}
+                    >
                       <:label>Huisnummer</:label>
-                      <:content>
+                      <:content as |errorMessage|>
                         <AuInput
-                          @value={{this.mandatory.contacts.firstObject.contactAddress.number}}
+                          @value={{@model.address.number}}
                           @width="block"
                           id="contact-address-house-number"
+                          @error={{errorMessage}}
                         />
                       </:content>
                     </Item>
@@ -108,47 +114,51 @@
                       <:label>Busnummer</:label>
                       <:content>
                         <AuInput
-                          @value={{this.mandatory.contacts.firstObject.contactAddress.boxNumber}}
+                          @value={{@model.address.boxNumber}}
                           @width="block"
                           id="contact-address-bus-number"
                         />
                       </:content>
                     </Item>
-                    <Item @labelFor="contact-address-postal-code">
+                    <Item
+                      @labelFor="contact-address-postal-code"
+                      @errorMessage={{@model.address.error.postcode.validation}}
+                    >
                       <:label>Postcode</:label>
-                      <:content>
+                      <:content as |errorMessage|>
                         <AuInput
-                          @value={{this.mandatory.contacts.firstObject.contactAddress.postcode}}
+                          @value={{@model.address.postcode}}
                           @width="block"
                           id="contact-address-postal-code"
+                          @error={{errorMessage}}
                         />
                       </:content>
                     </Item>
-                    <Item @labelFor="contact-address-municipality">
+                    <Item
+                      @labelFor="contact-address-municipality"
+                      @errorMessage={{@model.address.error.municipality.validation}}
+                    >
                       <:label>Gemeente</:label>
-                      <:content>
+                      <:content as |errorMessage|>
                         <MunicipalitySelect
-                          @selected={{this.mandatory.contacts.firstObject.contactAddress.municipality}}
-                          @onChange={{fn
-                            (mut
-                              this.mandatory.contacts.firstObject.contactAddress.municipality
-                            )
-                          }}
+                          @selected={{@model.address.municipality}}
+                          @onChange={{fn (mut @model.address.municipality)}}
                           @id="contact-address-municipality"
+                          @error={{errorMessage}}
                         />
                       </:content>
                     </Item>
-                    <Item @labelFor="contact-address-province">
+                    <Item
+                      @labelFor="contact-address-province"
+                      @errorMessage={{@model.address.error.province.validation}}
+                    >
                       <:label>Provincie</:label>
-                      <:content>
+                      <:content as |errorMessage|>
                         <ProvinceSelect
-                          @selected={{this.mandatory.contacts.firstObject.contactAddress.province}}
-                          @onChange={{fn
-                            (mut
-                              this.mandatory.contacts.firstObject.contactAddress.province
-                            )
-                          }}
+                          @selected={{@model.address.province}}
+                          @onChange={{fn (mut @model.address.province)}}
                           @id="contact-address-province"
+                          @error={{errorMessage}}
                         />
                       </:content>
                     </Item>
@@ -156,55 +166,79 @@
                 </AddressSearch>
               </:left>
               <:right as |Item|>
-                <Item @labelFor="contact-email">
+                <Item
+                  @labelFor="contact-email"
+                  @errorMessage={{@model.contact.error.email.validation}}
+                >
                   <:label>E-mail</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <AuInput
                       @width="block"
-                      @value={{this.mandatory.contacts.firstObject.email}}
+                      @value={{@model.contact.email}}
+                      @error={{errorMessage}}
                       id="contact-email"
                     />
                   </:content>
+                  <:help-text>
+                    {{help-text "email"}}
+                  </:help-text>
                 </Item>
-                <Item @labelFor="contact-telephone">
+                <Item
+                  @labelFor="contact-telephone"
+                  @errorMessage={{@model.contact.error.telephone.validation}}
+                >
                   <:label>Vast telefoonnummer</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <AuInput
                       @width="block"
-                      @value={{this.mandatory.contacts.firstObject.telephone}}
+                      @value={{@model.contact.telephone}}
+                      @error={{errorMessage}}
                       id="contact-telephone"
                     />
                   </:content>
+                  <:help-text>
+                    {{help-text "phone-number"}}
+                  </:help-text>
                 </Item>
               </:right>
             </Card.Columns>
           </:card>
         </EditCard>
 
-        <EditCard>
+        <EditCard @containsRequiredFields={{true}}>
           <:title>Aanstelling</:title>
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
                 {{#if this.showHalfElectionTypeSelect}}
-                  <Item @labelFor="half-election-type">
+                  <Item
+                    @labelFor="half-election-type"
+                    @required={{true}}
+                    @errorMessage={{@model.mandatory.error.typeHalf.validation}}
+                  >
                     <:label>Verkozen</:label>
-                    <:content>
+                    <:content as |errorMessage|>
                       <HalfElectionTypeSelect
-                        @selected={{this.mandatory.typeHalf}}
-                        @onChange={{fn (mut this.mandatory.typeHalf)}}
+                        @selected={{@model.mandatory.typeHalf}}
+                        @onChange={{fn (mut @model.mandatory.typeHalf)}}
                         @id="half-election-type"
+                        @error={{errorMessage}}
                       />
                     </:content>
                   </Item>
                 {{/if}}
-                <Item @labelFor="start-date">
+                <Item
+                  @labelFor="start-date"
+                  @required={{true}}
+                  @errorMessage={{@model.mandatory.error.startDate.validation}}
+                >
                   <:label>Start mandaat</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <Datepicker
                       @id="start-date"
-                      @onChange={{fn (mut this.mandatory.startDate)}}
-                      @value={{this.mandatory.startDate}}
+                      @onChange={{fn (mut @model.mandatory.startDate)}}
+                      @value={{@model.mandatory.startDate}}
+                      @error={{errorMessage}}
                     />
                   </:content>
                 </Item>
@@ -213,8 +247,8 @@
                   <:content>
                     <Datepicker
                       @id="expected-end-date"
-                      @onChange={{fn (mut this.mandatory.expectedEndDate)}}
-                      @value={{this.mandatory.expectedEndDate}}
+                      @onChange={{fn (mut @model.mandatory.expectedEndDate)}}
+                      @value={{@model.mandatory.expectedEndDate}}
                     />
                   </:content>
                 </Item>
@@ -225,25 +259,30 @@
                   <:content>
                     <AuInput
                       @width="block"
-                      @value={{this.governingBody.period}}
+                      @value={{@model.governingBody.period}}
                       disabled={{true}}
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="end-date">
+                <Item
+                  @labelFor="end-date"
+                  @required={{not @model.mandatory.isCurrentPosition}}
+                  @errorMessage={{@model.mandatory.error.endDate.validation}}
+                >
                   <:label>Effectieve einddatum</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <Datepicker
                       @id="end-date"
-                      @onChange={{fn (mut this.mandatory.endDate)}}
-                      @value={{this.mandatory.endDate}}
+                      @onChange={{this.handleEndDateChange}}
+                      @value={{@model.mandatory.endDate}}
+                      @error={{errorMessage}}
                     />
                   </:content>
                 </Item>
                 <Item>
                   <:content>
                     <AuControlCheckbox
-                      checked={{this.isCurrentPosition}}
+                      checked={{@model.mandatory.isCurrentPosition}}
                       @label="Huidige positie"
                       @identifier="current-position"
                       @onChange={{this.handleIsCurrentPositionChange}}
@@ -254,7 +293,7 @@
                   <:label>Reden stopzetting </:label>
                   <:content>
                     <AuInput
-                      @value={{this.mandatory.reasonStopped}}
+                      @value={{@model.mandatory.reasonStopped}}
                       @width="block"
                       id="reason-stop"
                     />

@@ -3,58 +3,79 @@ import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
-import { BOARD_POSITION } from 'frontend-contact-hub/models/board-position';
+import { isWorshipMember } from 'frontend-contact-hub/models/board-position';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditController extends Controller {
   @service router;
 
-  get isCurrentPosition() {
-    return !this.mandatory.endDate;
+  get showHalfElectionTypeSelect() {
+    return isWorshipMember(this.model.mandatory.role?.id);
+  }
+
+  @action
+  handleEndDateChange(endDate) {
+    let { mandatory } = this.model;
+    mandatory.endDate = endDate;
+
+    if (!endDate) {
+      mandatory.isCurrentPosition = true;
+    } else {
+      mandatory.isCurrentPosition = false;
+    }
   }
 
   @action
   handleIsCurrentPositionChange() {
-    if (!this.isCurrentPosition) {
-      this.mandatory.endDate = undefined;
-      this.mandatory.reasonStopped = undefined;
+    let { mandatory } = this.model;
+    let isCurrentPosition = mandatory.isCurrentPosition;
+
+    if (!isCurrentPosition) {
+      mandatory.endDate = undefined;
+      mandatory.reasonStopped = undefined;
     }
-  }
 
-  get mandatory() {
-    return this.model.mandatory;
-  }
-
-  get administrativeUnit() {
-    return this.model.administrativeUnit;
-  }
-
-  get governingBody() {
-    return this.model.governingBody;
-  }
-
-  get showHalfElectionTypeSelect() {
-    return this.model.roleBoard.id === BOARD_POSITION.WORSHIP_MEMBER;
+    mandatory.isCurrentPosition = !isCurrentPosition;
   }
 
   @dropTask
   *save(event) {
     event.preventDefault();
 
-    let contacts = yield this.mandatory.contacts;
-    let address = yield contacts.firstObject.contactAddress;
+    let { mandatory, governingBody, contact, address } = this.model;
 
-    if (address.hasDirtyAttributes) {
-      address.fullAddress = combineFullAddress(address);
-      yield address.save();
+    yield Promise.all([
+      mandatory.validate(),
+      contact.validate(),
+      address.validate(),
+    ]);
+
+    if (contact.isValid && mandatory.isValid && address.isValid) {
+      if (address.isDirty) {
+        address.fullAddress = combineFullAddress(address);
+        yield address.save();
+      }
+
+      contact.contactAddress = address;
+
+      if (contact.isDirty) {
+        yield contact.save();
+      }
+
+      yield mandatory.save();
+
+      this.router.transitionTo(
+        'administrative-units.administrative-unit.governing-bodies.governing-body',
+        governingBody.id
+      );
     }
+  }
 
-    yield contacts.firstObject.save();
+  reset() {
+    this.removeUnsavedRecords();
+  }
 
-    yield this.mandatory.save();
-
-    this.router.transitionTo(
-      'administrative-units.administrative-unit.governing-bodies.governing-body',
-      this.governingBody.id
-    );
+  removeUnsavedRecords() {
+    this.model.addressRecord.rollbackAttributes();
+    this.model.contactRecord.rollbackAttributes();
   }
 }

@@ -1,5 +1,9 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
+import { getAddressValidations } from 'frontend-contact-hub/validations/address';
+import contactValidations from 'frontend-contact-hub/validations/contact-point';
+import { mandatoryWithRequiredRoleValidations } from 'frontend-contact-hub/validations/mandatory';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryNewRoute extends Route {
   @service store;
@@ -13,15 +17,32 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       transition.data.person = await this.store.findRecord('person', personId);
     }
 
+    let mandatory = this.store.createRecord('worship-mandatory');
+    mandatory.isCurrentPosition = true;
+
+    let contact = this.store.createRecord('contact-point');
+    let secondaryContact = this.store.createRecord('contact-point');
+    let address = this.store.createRecord('address');
+
     return {
       administrativeUnit: this.modelFor(
         'administrative-units.administrative-unit'
       ),
       governingBody,
-      mandatory: this.store.createRecord('worship-mandatory'),
-      contact: this.store.createRecord('contact-point'),
-      contactMobile: this.store.createRecord('contact-point'),
-      address: this.store.createRecord('address'),
+      mandatory: createValidatedChangeset(
+        mandatory,
+        mandatoryWithRequiredRoleValidations
+      ),
+      mandatoryRecord: mandatory,
+      contact: createValidatedChangeset(contact, contactValidations),
+      contactRecord: contact,
+      secondaryContact: createValidatedChangeset(
+        secondaryContact,
+        contactValidations
+      ),
+      secondaryContactRecord: secondaryContact,
+      address: createValidatedChangeset(address, getAddressValidations(false)),
+      addressRecord: address,
     };
   }
 

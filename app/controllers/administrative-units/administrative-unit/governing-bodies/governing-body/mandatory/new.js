@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
-import { BOARD_POSITION } from 'frontend-contact-hub/models/board-position';
+import { isWorshipMember } from 'frontend-contact-hub/models/board-position';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryNewController extends Controller {
   @service router;
@@ -14,88 +14,106 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
   @tracked personId;
   @tracked targetPerson = null;
-  @tracked selectedRole = null;
-
-  get isCurrentPosition() {
-    return !this.model.mandatory.endDate;
-  }
-
-  @action
-  handleIsCurrentPositionChange() {
-    if (!this.isCurrentPosition) {
-      this.model.mandatory.endDate = undefined;
-      this.model.mandatory.reasonStopped = undefined;
-    }
-  }
 
   get isSelectingTargetPerson() {
     return !this.targetPerson;
   }
 
   get showHalfElectionTypeSelect() {
-    return this.selectedRole?.id === BOARD_POSITION.WORSHIP_MEMBER;
+    return isWorshipMember(this.model.mandatory.role?.id);
   }
 
-  get canSubmit() {
-    return Boolean(this.selectedRole);
+  @action
+  handleEndDateChange(endDate) {
+    let { mandatory } = this.model;
+    mandatory.endDate = endDate;
+
+    if (!endDate) {
+      mandatory.isCurrentPosition = true;
+    } else {
+      mandatory.isCurrentPosition = false;
+    }
+  }
+
+  @action
+  handleIsCurrentPositionChange() {
+    let { mandatory } = this.model;
+    let isCurrentPosition = mandatory.isCurrentPosition;
+
+    if (!isCurrentPosition) {
+      mandatory.endDate = undefined;
+      mandatory.reasonStopped = undefined;
+    }
+
+    mandatory.isCurrentPosition = !isCurrentPosition;
   }
 
   @action
   async handleMandateRoleSelect(role) {
-    this.model.mandatory.typeHalf = undefined;
-    this.selectedRole = role;
+    let { mandatory } = this.model;
+    mandatory.role = role;
+    mandatory.typeHalf = undefined;
   }
 
   @dropTask
   *createMandatoryPositionTask(event) {
     event.preventDefault();
 
-    if (!this.canSubmit) {
-      return;
-    }
-
-    let { mandatory, governingBody, contact, contactMobile, address } =
+    let { mandatory, governingBody, contact, secondaryContact, address } =
       this.model;
 
-    address.fullAddress = combineFullAddress(address);
-    yield address.save();
+    yield Promise.all([
+      mandatory.validate(),
+      contact.validate(),
+      secondaryContact.validate(),
+      address.validate(),
+    ]);
 
-    contact.contactAddress = address;
-    yield contact.save();
-    yield contactMobile.save();
+    if (
+      mandatory.isValid &&
+      contact.isValid &&
+      secondaryContact.isValid &&
+      address.isValid
+    ) {
+      address.fullAddress = combineFullAddress(address);
+      yield address.save();
 
-    let mandates = yield governingBody.mandates;
-    let mandate = findExistingMandateByRole(mandates, this.selectedRole);
+      contact.contactAddress = address;
+      yield contact.save();
+      yield secondaryContact.save();
 
-    if (!mandate) {
-      mandate = this.store.createRecord('mandate');
-      mandate.roleBoard = this.selectedRole;
-      mandate.governingBody = governingBody;
-      yield mandate.save();
+      let mandates = yield governingBody.mandates;
+      let mandate = findExistingMandateByRole(mandates, mandatory.role);
+
+      if (!mandate) {
+        mandate = this.store.createRecord('mandate');
+        mandate.roleBoard = mandatory.role;
+        mandate.governingBody = governingBody;
+        yield mandate.save();
+      }
+
+      mandatory.governingAlias = this.targetPerson;
+      mandatory.contacts.pushObjects([contact, secondaryContact]);
+      mandatory.mandate = mandate;
+      yield mandatory.save();
+
+      this.router.transitionTo(
+        'administrative-units.administrative-unit.governing-bodies.governing-body'
+      );
     }
-
-    mandatory.governingAlias = this.targetPerson;
-    mandatory.contacts.pushObjects([contact, contactMobile]);
-    mandatory.mandate = mandate;
-    yield mandatory.save();
-
-    this.router.transitionTo(
-      'administrative-units.administrative-unit.governing-bodies.governing-body'
-    );
   }
 
   reset() {
     this.personId = null;
     this.targetPerson = null;
-    this.selectedRole = null;
     this.removeUnsavedRecords();
   }
 
   removeUnsavedRecords() {
-    this.model.mandatory.rollbackAttributes();
-    this.model.contact.rollbackAttributes();
-    this.model.contactMobile.rollbackAttributes();
-    this.model.address.rollbackAttributes();
+    this.model.addressRecord.rollbackAttributes();
+    this.model.contactRecord.rollbackAttributes();
+    this.model.secondaryContactRecord.rollbackAttributes();
+    this.model.mandatoryRecord.rollbackAttributes();
   }
 }
 

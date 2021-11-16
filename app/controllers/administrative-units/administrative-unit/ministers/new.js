@@ -24,69 +24,90 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
     return !this.targetPerson;
   }
 
-  get canSubmit() {
-    return Boolean(this.model.position.function.get('id'));
-  }
+  @action
+  handleEndDateChange(endDate) {
+    let { minister } = this.model;
+    minister.agentEndDate = endDate;
 
-  get isCurrentPosition() {
-    return !this.model.minister.agentEndDate;
+    if (!endDate) {
+      minister.isCurrentPosition = true;
+    } else {
+      minister.isCurrentPosition = false;
+    }
   }
 
   @action
   handleIsCurrentPositionChange() {
-    if (!this.isCurrentPosition) {
-      this.model.minister.agentEndDate = undefined;
+    let { minister } = this.model;
+    let isCurrentPosition = minister.isCurrentPosition;
+
+    if (!isCurrentPosition) {
+      minister.agentEndDate = undefined;
     }
+
+    minister.isCurrentPosition = !isCurrentPosition;
   }
 
   @dropTask
   *createMinisterPositionTask(event) {
     event.preventDefault();
 
-    if (!this.canSubmit) {
-      return;
-    }
-
     let {
       administrativeUnit,
       minister,
       contact,
-      contactMobile,
+      secondaryContact,
       address,
       position,
     } = this.model;
 
-    address.fullAddress = combineFullAddress(address);
-    yield address.save();
+    yield Promise.all([
+      minister.validate(),
+      position.validate(),
+      contact.validate(),
+      secondaryContact.validate(),
+      address.validate(),
+    ]);
 
-    contact.contactAddress = address;
-    yield contact.save();
-    yield contactMobile.save();
+    if (
+      minister.isValid &&
+      position.isValid &&
+      contact.isValid &&
+      secondaryContact.isValid &&
+      address.isValid
+    ) {
+      address.fullAddress = combineFullAddress(address);
+      yield address.save();
 
-    position.worshipService = administrativeUnit;
-    yield position.save();
+      contact.contactAddress = address;
+      yield contact.save();
+      yield secondaryContact.save();
 
-    let financingCodeId = this.willReceiveFinancing
-      ? FINANCING_CODE.FOD_FINANCED
-      : FINANCING_CODE.SELF_FINANCED;
+      position.worshipService = administrativeUnit;
+      yield position.save();
 
-    let financing = yield this.store.findRecord(
-      'financing-code',
-      financingCodeId,
-      {
-        backgroundReload: false,
-      }
-    );
+      let financingCodeId = this.willReceiveFinancing
+        ? FINANCING_CODE.FOD_FINANCED
+        : FINANCING_CODE.SELF_FINANCED;
 
-    minister.ministerPosition = position;
-    minister.person = this.targetPerson;
-    minister.contacts.pushObjects([contact, contactMobile]);
-    minister.financing = financing;
-    yield minister.save();
+      let financing = yield this.store.findRecord(
+        'financing-code',
+        financingCodeId,
+        {
+          backgroundReload: false,
+        }
+      );
 
-    this.router.transitionTo(
-      'administrative-units.administrative-unit.ministers'
-    );
+      minister.ministerPosition = position;
+      minister.person = this.targetPerson;
+      minister.contacts.pushObjects([contact, secondaryContact]);
+      minister.financing = financing;
+      yield minister.save();
+
+      this.router.transitionTo(
+        'administrative-units.administrative-unit.ministers'
+      );
+    }
   }
 
   reset() {
@@ -97,10 +118,10 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
   }
 
   removeUnsavedRecords() {
-    this.model.minister.rollbackAttributes();
-    this.model.contact.rollbackAttributes();
-    this.model.contactMobile.rollbackAttributes();
-    this.model.address.rollbackAttributes();
-    this.model.position.rollbackAttributes();
+    this.model.addressRecord.rollbackAttributes();
+    this.model.contactRecord.rollbackAttributes();
+    this.model.secondaryContactRecord.rollbackAttributes();
+    this.model.positionRecord.rollbackAttributes();
+    this.model.ministerRecord.rollbackAttributes();
   }
 }

@@ -1,10 +1,12 @@
-<PowerSelect
-  @loadingMessage="Aan het laden..."
-  @options={{this.loadHalfElectionTypesTask.last}}
-  @selected={{@selected}}
-  @onChange={{@onChange}}
-  @triggerId={{@id}}
-  as |type|
->
-  {{type.label}}
-</PowerSelect>
+<div class={{if @error "ember-power-select--error"}}>
+  <PowerSelect
+    @loadingMessage="Aan het laden..."
+    @options={{this.loadHalfElectionTypesTask.last}}
+    @selected={{@selected}}
+    @onChange={{@onChange}}
+    @triggerId={{@id}}
+    as |type|
+  >
+    {{type.label}}
+  </PowerSelect>
+</div>
