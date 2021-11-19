@@ -48,7 +48,7 @@ steps:
       - SHOW_APP_VERSION_HASH=true
 trigger:
   branch:
-    - master
+    - development
   event:
     exclude:
     - pull_request
