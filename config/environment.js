@@ -5,7 +5,7 @@ module.exports = function (environment) {
     modulePrefix: 'frontend-contact-hub',
     environment,
     rootURL: '/',
-    locationType: 'auto',
+    locationType: 'history',
     yasgui: {
       defaultQuery: '{{YASGUI_DEFAULT_QUERY}}',
       extraPrefixes: '{{YASGUI_EXTRA_PREFIXES}}',
