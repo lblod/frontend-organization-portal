@@ -1,4 +1,4 @@
-import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
+import Model, { attr, hasMany } from '@ember-data/model';
 
 export default class PersonModel extends Model {
   @attr givenName;
@@ -14,24 +14,4 @@ export default class PersonModel extends Model {
     inverse: 'person',
   })
   agentsInPosition;
-
-  @hasMany('nationality', {
-    inverse: null,
-  })
-  nationalities;
-
-  @belongsTo('date-of-birth', {
-    inverse: null,
-  })
-  dateOfBirth;
-
-  @belongsTo('gender-code', {
-    inverse: null,
-  })
-  gender;
-
-  @belongsTo('identifier', {
-    inverse: null,
-  })
-  registration;
 }

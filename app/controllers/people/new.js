@@ -3,9 +3,12 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
+import { REQUEST_REASON } from 'frontend-contact-hub/models/request-reason';
 
 export default class PeopleNewController extends Controller {
   @service router;
+  @service sensitivePersonalInformation;
+  @service store;
 
   queryParams = ['redirectUrl'];
 
@@ -15,29 +18,29 @@ export default class PeopleNewController extends Controller {
   *savePersonTask(event) {
     event.preventDefault();
 
-    let { dateOfBirth, identifierSSN, person, structuredIdentifierSSN } =
-      this.model;
-
+    let { person } = this.model;
     yield person.validate();
 
     if (person.isValid) {
-      yield dateOfBirth.save();
-
-      yield structuredIdentifierSSN.save();
-      identifierSSN.structuredIdentifier = structuredIdentifierSSN;
-      yield identifierSSN.save();
-
-      person.dateOfBirth = dateOfBirth;
-      person.registration = identifierSSN;
       yield person.save();
 
-      let personId = this.model.person.id;
+      let requestReason = yield this.store.findRecord(
+        'request-reason',
+        REQUEST_REASON.CREATION
+      );
 
+      yield this.sensitivePersonalInformation.updateInformation(
+        this.model.sensitiveInformation,
+        person,
+        requestReason
+      );
+
+      let newPersonId = person.id;
       if (this.redirectUrl) {
         // When passing a url the query params are ignored so we add the person id manually for now
-        this.router.transitionTo(`${this.redirectUrl}?personId=${personId}`);
+        this.router.transitionTo(`${this.redirectUrl}?personId=${newPersonId}`);
       } else {
-        this.router.transitionTo('people.person', personId);
+        this.router.transitionTo('people.person', newPersonId);
       }
     }
   }
@@ -58,8 +61,5 @@ export default class PeopleNewController extends Controller {
 
   removeUnsavedRecords() {
     this.model.person.rollbackAttributes();
-    this.model.dateOfBirth.rollbackAttributes();
-    this.model.identifierSSN.rollbackAttributes();
-    this.model.structuredIdentifierSSN.rollbackAttributes();
   }
 }
