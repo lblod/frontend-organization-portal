@@ -59,8 +59,8 @@
                 <:label>Geslacht</:label>
                 <:content>
                   <GenderSelect
-                    @selected={{@model.person.gender}}
-                    @onChange={{fn (mut @model.person.gender)}}
+                    @selected={{@model.sensitiveInformation.gender}}
+                    @onChange={{fn (mut @model.sensitiveInformation.gender)}}
                     @id="person-gender"
                   />
                 </:content>
@@ -70,8 +70,10 @@
                 <:content>
                   <Datepicker
                     @id="person-date-of-birth"
-                    @value={{@model.dateOfBirth.date}}
-                    @onChange={{fn (mut @model.dateOfBirth.date)}}
+                    @value={{@model.sensitiveInformation.dateOfBirth}}
+                    @onChange={{fn
+                      (mut @model.sensitiveInformation.dateOfBirth)
+                    }}
                   />
                 </:content>
               </Item>
@@ -79,8 +81,10 @@
                 <:label>Nationaliteit</:label>
                 <:content>
                   <NationalitySelect
-                    @selected={{@model.person.nationalities}}
-                    @onChange={{fn (mut @model.person.nationalities)}}
+                    @selected={{@model.sensitiveInformation.nationalities}}
+                    @onChange={{fn
+                      (mut @model.sensitiveInformation.nationalities)
+                    }}
                     @id="person-nationality"
                   />
                 </:content>
@@ -89,7 +93,7 @@
                 <:label>Rijksregisternummer</:label>
                 <:content>
                   <AuInput
-                    @value={{@model.structuredIdentifierSSN.localId}}
+                    @value={{@model.sensitiveInformation.ssn}}
                     @width="block"
                     id="person-ssn"
                   />
