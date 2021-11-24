@@ -1,3 +1,12 @@
+## 1.2.1 (2021-11-24)
+
+#### :bug: Bug Fix
+* [#214](https://github.com/lblod/frontend-contact-hub/pull/214) Fix a problem which prevents users from entering the core data edit page ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 1
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
 ## v1.2.0 (2021-11-18)
 
 #### :rocket: Enhancement
