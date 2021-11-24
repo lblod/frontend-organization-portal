@@ -72,9 +72,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
 
         identifier.structuredIdentifier = structuredIdentifier;
         missingIdentifiers.push(identifier);
-
-        return missingIdentifiers;
       }
+
+      return missingIdentifiers;
     }, []);
   }
 }
