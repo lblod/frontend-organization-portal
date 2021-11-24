@@ -148,11 +148,8 @@
                         />
                       </:content>
                     </Item>
-                  </:manual-address-input>
-                  <:common-input>
                     <Item
                       @labelFor="contact-address-province"
-                      @required={{true}}
                       @errorMessage={{@model.address.error.province.validation}}
                     >
                       <:label>Provincie</:label>
@@ -165,7 +162,7 @@
                         />
                       </:content>
                     </Item>
-                  </:common-input>
+                  </:manual-address-input>
                 </AddressSearch>
               </:left>
               <:right as |Item|>
