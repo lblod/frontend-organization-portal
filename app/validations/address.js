@@ -37,7 +37,7 @@ export function getAddressValidations(isAlwaysRequired = false) {
         : ['street', 'number', 'postcode', 'province'],
     }),
     province: validatePresence({
-      presence: true,
+      presence: isAlwaysRequired,
       ignoreBlank: true,
       message: REQUIRED_MESSAGE,
       on: isAlwaysRequired
