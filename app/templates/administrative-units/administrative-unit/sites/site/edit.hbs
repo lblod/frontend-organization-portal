@@ -8,7 +8,11 @@
       </:subtitle>
     </PageHeader>
 
-    <form id="edit-vestiging-form" aria-label="Edit site" {{on "submit" (perform this.save)}}>
+    <form
+      id="edit-vestiging-form"
+      aria-label="Edit site"
+      {{on "submit" (perform this.save)}}
+    >
       <div class="au-o-flow au-o-flow--large">
         <EditCard>
           <:title>Kerngegevens</:title>
@@ -18,8 +22,11 @@
                 <Item @labelFor="site-type">
                   <:label>Type vestiging</:label>
                   <:content>
-                    <SiteTypeSelect @selected={{@model.site.siteType}} @onChange={{fn (mut @model.site.siteType)}}
-                      @id="site-type" />
+                    <SiteTypeSelect
+                      @selected={{@model.site.siteType}}
+                      @onChange={{fn (mut @model.site.siteType)}}
+                      @id="site-type"
+                    />
                   </:content>
                 </Item>
               </:left>
@@ -29,14 +36,24 @@
                   <:content>
                     <ul class="au-c-list-inline">
                       <li class="au-c-list-inline__item">
-                        <AuControlRadio @label="Ja" @name="is-primary-site" @value={{this.isPrimarySite}}
-                          @identifier="primary-site-true" @onChange={{fn (mut this.isPrimarySite) true}}
-                          checked={{this.isPrimarySite}} />
+                        <AuControlRadio
+                          @label="Ja"
+                          @name="is-primary-site"
+                          @value={{this.isPrimarySite}}
+                          @identifier="primary-site-true"
+                          @onChange={{fn (mut this.isPrimarySite) true}}
+                          checked={{this.isPrimarySite}}
+                        />
                       </li>
                       <li class="au-c-list-inline__item">
-                        <AuControlRadio @label="Nee" @name="is-primary-site" @value={{this.isPrimarySite}}
-                          @identifier="primary-site-false" @onChange={{fn (mut this.isPrimarySite) false}} checked={{not
-                          this.isPrimarySite}} />
+                        <AuControlRadio
+                          @label="Nee"
+                          @name="is-primary-site"
+                          @value={{this.isPrimarySite}}
+                          @identifier="primary-site-false"
+                          @onChange={{fn (mut this.isPrimarySite) false}}
+                          checked={{not this.isPrimarySite}}
+                        />
                       </li>
                     </ul>
                   </:content>
@@ -51,77 +68,139 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <AddressSearch @address={{@model.address}} @itemComponent={{Item}} @isSearchEnabledInitially={{if
-                  @model.address.addressRegisterUri true false }} @required={{true}}
-                  @error={{@model.address.isInvalid}}>
+                <AddressSearch
+                  @address={{@model.address}}
+                  @itemComponent={{Item}}
+                  @isSearchEnabledInitially={{if
+                    @model.address.addressRegisterUri
+                    true
+                    false
+                  }}
+                  @required={{true}}
+                  @error={{@model.address.isInvalid}}
+                >
                   <:manual-address-input>
-                    <Item @labelFor="site-address-street-name" @required={{true}}
-                      @errorMessage={{@model.address.error.street.validation}}>
+                    <Item
+                      @labelFor="site-address-street-name"
+                      @required={{true}}
+                      @errorMessage={{@model.address.error.street.validation}}
+                    >
                       <:label>Straat</:label>
                       <:content as |hasError|>
-                        <AuInput @value={{@model.address.street}} @width="block" @error={{hasError}}
-                          id="site-address-street-name" />
+                        <AuInput
+                          @value={{@model.address.street}}
+                          @width="block"
+                          @error={{hasError}}
+                          id="site-address-street-name"
+                        />
                       </:content>
                     </Item>
-                    <Item @labelFor="site-address-house-number" @required={{true}}
-                      @errorMessage={{@model.address.error.number.validation}}>
+                    <Item
+                      @labelFor="site-address-house-number"
+                      @required={{true}}
+                      @errorMessage={{@model.address.error.number.validation}}
+                    >
                       <:label>Huisnummer</:label>
                       <:content as |hasError|>
-                        <AuInput @value={{@model.address.number}} @width="block" @error={{hasError}}
-                          id="site-address-house-number" />
+                        <AuInput
+                          @value={{@model.address.number}}
+                          @width="block"
+                          @error={{hasError}}
+                          id="site-address-house-number"
+                        />
                       </:content>
                     </Item>
                     <Item @labelFor="site-address-bus-number">
                       <:label>Busnummer</:label>
                       <:content>
-                        <AuInput @value={{@model.address.boxNumber}} @width="block" id="site-address-bus-number" />
+                        <AuInput
+                          @value={{@model.address.boxNumber}}
+                          @width="block"
+                          id="site-address-bus-number"
+                        />
                       </:content>
                     </Item>
-                    <Item @labelFor="site-address-postal-code" @required={{true}}
-                      @errorMessage={{@model.address.error.postcode.validation}}>
+                    <Item
+                      @labelFor="site-address-postal-code"
+                      @required={{true}}
+                      @errorMessage={{@model.address.error.postcode.validation}}
+                    >
                       <:label>Postcode</:label>
                       <:content as |hasError|>
-                        <AuInput @value={{@model.address.postcode}} @width="block" @error={{hasError}}
-                          id="site-address-postal-code" />
+                        <AuInput
+                          @value={{@model.address.postcode}}
+                          @width="block"
+                          @error={{hasError}}
+                          id="site-address-postal-code"
+                        />
                       </:content>
                     </Item>
-                    <Item @labelFor="site-address-municipality" @required={{true}}
-                      @errorMessage={{@model.address.error.municipality.validation}}>
+                    <Item
+                      @labelFor="site-address-municipality"
+                      @required={{true}}
+                      @errorMessage={{@model.address.error.municipality.validation}}
+                    >
                       <:label>Gemeente</:label>
                       <:content as |errorMessage|>
-                        <MunicipalitySelect @selected={{@model.address.municipality}} @onChange={{fn (mut
-                          @model.address.municipality)}} @id="site-address-municipality" @error={{errorMessage}} />
+                        <MunicipalitySelect
+                          @selected={{@model.address.municipality}}
+                          @onChange={{fn (mut @model.address.municipality)}}
+                          @id="site-address-municipality"
+                          @error={{errorMessage}}
+                        />
                       </:content>
                     </Item>
                   </:manual-address-input>
                   <:common-input>
-                    <Item @labelFor="site-address-province" @required={{true}}
-                      @errorMessage={{@model.address.error.province.validation}}>
+                    <Item
+                      @labelFor="site-address-province"
+                      @required={{true}}
+                      @errorMessage={{@model.address.error.province.validation}}
+                    >
                       <:label>Provincie</:label>
                       <:content as |errorMessage|>
-                        <ProvinceSelect @selected={{@model.address.province}} @onChange={{fn (mut
-                          @model.address.province)}} @id="site-address-province" @error={{errorMessage}} />
+                        <ProvinceSelect
+                          @selected={{@model.address.province}}
+                          @onChange={{fn (mut @model.address.province)}}
+                          @id="site-address-province"
+                          @error={{errorMessage}}
+                        />
                       </:content>
                     </Item>
                   </:common-input>
                 </AddressSearch>
               </:left>
               <:right as |Item|>
-                <Item @labelFor="site-contact-phone-number" @errorMessage={{@model.contact.error.telephone.validation}}>
+                <Item
+                  @labelFor="site-contact-phone-number"
+                  @errorMessage={{@model.contact.error.telephone.validation}}
+                >
                   <:label>Telefoonnummer</:label>
                   <:content as |errorMessage|>
-                    <AuInput @value={{@model.contact.telephone}} @width="block" @error={{errorMessage}} type="tel"
-                      id="site-contact-phone-number" />
+                    <AuInput
+                      @value={{@model.contact.telephone}}
+                      @width="block"
+                      @error={{errorMessage}}
+                      type="tel"
+                      id="site-contact-phone-number"
+                    />
                   </:content>
                   <:help-text>
                     {{help-text "phone-number"}}
                   </:help-text>
                 </Item>
-                <Item @labelFor="site-contact-website" @errorMessage={{@model.contact.error.website.validation}}>
+                <Item
+                  @labelFor="site-contact-website"
+                  @errorMessage={{@model.contact.error.website.validation}}
+                >
                   <:label>Website</:label>
                   <:content as |errorMessage|>
-                    <AuInput @value={{@model.contact.website}} @width="block" @error={{errorMessage}}
-                      id="site-contact-website" />
+                    <AuInput
+                      @value={{@model.contact.website}}
+                      @width="block"
+                      @error={{errorMessage}}
+                      id="site-contact-website"
+                    />
                   </:content>
                   <:help-text>
                     {{help-text "url"}}
@@ -133,11 +212,18 @@
         </EditCard>
 
         <AuButtonGroup>
-          <AuButton @loading={{this.save.isRunning}} @disabled={{this.save.isRunning}} type="submit">
+          <AuButton
+            @loading={{this.save.isRunning}}
+            @disabled={{this.save.isRunning}}
+            type="submit"
+          >
             Opslaan
           </AuButton>
 
-          <AuLink @route="administrative-units.administrative-unit.sites.site" @skin="button-secondary">
+          <AuLink
+            @route="administrative-units.administrative-unit.sites.site"
+            @skin="button-secondary"
+          >
             Annuleer
           </AuLink>
         </AuButtonGroup>
