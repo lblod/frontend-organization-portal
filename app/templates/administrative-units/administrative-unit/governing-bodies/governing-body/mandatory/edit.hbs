@@ -148,21 +148,17 @@
                         />
                       </:content>
                     </Item>
-                    <Item
-                      @labelFor="contact-address-province"
-                      @errorMessage={{@model.address.error.province.validation}}
-                    >
+                  </:manual-address-input>
+                  <:common-input>
+                    <Item @labelFor="contact-address-province" @required={{true}}
+                      @errorMessage={{@model.address.error.province.validation}}>
                       <:label>Provincie</:label>
                       <:content as |errorMessage|>
-                        <ProvinceSelect
-                          @selected={{@model.address.province}}
-                          @onChange={{fn (mut @model.address.province)}}
-                          @id="contact-address-province"
-                          @error={{errorMessage}}
-                        />
+                        <ProvinceSelect @selected={{@model.address.province}} @onChange={{fn (mut @model.address.province)}}
+                          @id="contact-address-province" @error={{errorMessage}} />
                       </:content>
                     </Item>
-                  </:manual-address-input>
+                  </:common-input>
                 </AddressSearch>
               </:left>
               <:right as |Item|>
