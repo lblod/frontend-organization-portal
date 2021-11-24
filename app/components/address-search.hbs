@@ -42,7 +42,6 @@
             "Geen busnummer beschikbaar"
           }}
         />
-
         {{#if this.selectedAddress}}
           <AuHelpText>
             Staat het correcte busnummer niet in de lijst?
@@ -51,9 +50,10 @@
         {{/if}}
       </:content>
     </Item>
+   {{yield to="common-input"}}
   {{else}}
     {{yield to="manual-address-input"}}
-
+    {{yield to="common-input"}}
     <Item>
       <:content>
         <AuButton @skin="link" {{on "click" this.toggleInputMode}}>
@@ -62,5 +62,4 @@
       </:content>
     </Item>
   {{/if}}
-  {{yield to="common-input"}}
 {{/let}}
