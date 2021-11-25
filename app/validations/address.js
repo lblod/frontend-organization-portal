@@ -2,8 +2,8 @@ import { validatePresence } from 'ember-changeset-validations/validators';
 
 export function getAddressValidations(isAlwaysRequired = false) {
   const REQUIRED_MESSAGE = 'Vul het volledige adres in';
-
-  return {
+  let isProvinceRequired = isAlwaysRequired;
+  let addressValidation = {
     street: validatePresence({
       presence: true,
       ignoreBlank: true,
@@ -36,13 +36,16 @@ export function getAddressValidations(isAlwaysRequired = false) {
         ? null
         : ['street', 'number', 'postcode', 'province'],
     }),
-    province: validatePresence({
+  };
+  if (isProvinceRequired) {
+    addressValidation.province = validatePresence({
       presence: isAlwaysRequired,
       ignoreBlank: true,
       message: REQUIRED_MESSAGE,
       on: isAlwaysRequired
         ? null
         : ['street', 'number', 'postcode', 'municipality'],
-    }),
-  };
+    });
+  }
+  return addressValidation;
 }
