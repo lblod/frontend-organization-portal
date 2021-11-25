@@ -42,18 +42,18 @@
             "Geen busnummer beschikbaar"
           }}
         />
-
         {{#if this.selectedAddress}}
           <AuHelpText>
             Staat het correcte busnummer niet in de lijst?
-            <AuLinkExternal href="mailto:{{config "contactEmail"}}">Mail ons</AuLinkExternal>
+            <AuLinkExternal href="mailto:{{config " contactEmail"}}">Mail ons</AuLinkExternal>
           </AuHelpText>
         {{/if}}
       </:content>
     </Item>
+   {{yield to="common-input"}}
   {{else}}
     {{yield to="manual-address-input"}}
-
+    {{yield to="common-input"}}
     <Item>
       <:content>
         <AuButton @skin="link" {{on "click" this.toggleInputMode}}>
