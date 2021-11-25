@@ -262,7 +262,13 @@
                         />
                       </:content>
                     </Item>
-                    <Item @labelFor="primary-site-address-province">
+                  </:manual-address-input>
+                  <:common-input>
+                    <Item
+                      @labelFor="primary-site-address-province"
+                      @required={{true}}
+                      @errorMessage={{@model.address.error.province.validation}}
+                    >
                       <:label>Provincie</:label>
                       <:content as |hasError|>
                         <ProvinceSelect
@@ -273,7 +279,7 @@
                         />
                       </:content>
                     </Item>
-                  </:manual-address-input>
+                  </:common-input>
                 </AddressSearch>
               </:left>
               <:right as |Item|>
