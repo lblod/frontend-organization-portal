@@ -1,3 +1,13 @@
+
+## 1.2.2 (2021-11-25)
+
+#### :bug: Bug Fix
+* [#221](https://github.com/lblod/frontend-contact-hub/pull/221) Province is a required field on some pages ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
+
 ## 1.2.1 (2021-11-24)
 
 #### :bug: Bug Fix
