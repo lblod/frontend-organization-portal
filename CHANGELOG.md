@@ -1,3 +1,17 @@
+
+## 1.3.0 (2021-11-26)
+
+#### :rocket: Enhancement
+* [#212](https://github.com/lblod/frontend-contact-hub/pull/212) Use the privacy service to store sensitive personal information ([@Windvis](https://github.com/Windvis))
+
+#### :bug: Bug Fix
+* [#218](https://github.com/lblod/frontend-contact-hub/pull/218) Province is a required field on some pages ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
 ## 1.2.1 (2021-11-24)
 
 #### :bug: Bug Fix
