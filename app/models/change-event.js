@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 
 export default class ChangeEventModel extends Model {
   @attr('date') date;
@@ -8,4 +8,19 @@ export default class ChangeEventModel extends Model {
     inverse: null,
   })
   type;
+
+  @hasMany('organization', {
+    inverse: 'resultedFrom',
+  })
+  resultingOrganization;
+
+  @hasMany('organization', {
+    inverse: 'changedBy',
+  })
+  originalOrganization;
+
+  @hasMany('change-event-result', {
+    inverse: 'resultFrom',
+  })
+  results;
 }

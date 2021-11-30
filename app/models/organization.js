@@ -34,6 +34,11 @@ export default class OrganizationModel extends Model {
   })
   resultedFrom;
 
+  @hasMany('change-event-result', {
+    inverse: 'resultingOrganization',
+  })
+  changeEventResults;
+
   @hasMany('post', {
     inverse: null,
   })
