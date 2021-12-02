@@ -147,6 +147,8 @@
                       />
                     </:content>
                   </Item>
+                </:manual-address-input>
+                <:common-input>
                   <Item
                     @labelFor="address-province"
                     @errorMessage={{@model.address.error.province.validation}}
@@ -161,7 +163,7 @@
                       />
                     </:content>
                   </Item>
-                </:manual-address-input>
+                </:common-input>
               </AddressSearch>
             </:left>
             <:right as |Item|>
