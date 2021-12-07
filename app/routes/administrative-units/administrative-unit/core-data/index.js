@@ -14,7 +14,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
 
   @dropTask({ cancelOn: 'deactivate' })
   *loadSubOrganizationsTask(id) {
-    yield this.store.query('organization', {
+    return yield this.store.query('organization', {
       include: 'classification',
       'filter[is-sub-organization-of][:id:]': id,
       'page[size]': 500,
