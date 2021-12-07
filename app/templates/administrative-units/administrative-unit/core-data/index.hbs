@@ -192,8 +192,11 @@
                   </:content>
                 </Item>
               {{/if}}
-              {{#if @model.subOrganizations}}
-                {{#each @model.subOrganizations as |worship|}}
+
+              {{#if @model.subOrganizations.isRunning}}
+                <AuLoader />
+              {{else if @model.subOrganizations.value}}
+                {{#each @model.subOrganizations.value as |worship|}}
                   <Item>
                     <:label>Bestuur van de eredienst</:label>
                     <:content>
