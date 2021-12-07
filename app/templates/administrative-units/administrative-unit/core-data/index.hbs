@@ -2,7 +2,7 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Kerngegevens</:title>
-      <:subtitle>{{@model.administrativeUnit.unit.name}}</:subtitle>
+      <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
       <:action>
         <AuLink
           @route="administrative-units.administrative-unit.core-data.edit"
@@ -22,43 +22,43 @@
           <:left as |Item|>
             <Item>
               <:label>Naam</:label>
-              <:content>{{@model.administrativeUnit.unit.name}}</:content>
+              <:content>{{@model.administrativeUnit.name}}</:content>
             </Item>
             <Item>
               <:label>Type bestuur</:label>
               <:content>
-                {{@model.administrativeUnit.unit.classification.label}}
+                {{@model.administrativeUnit.classification.label}}
               </:content>
             </Item>
             <Item>
               <:label>Soort eredienst</:label>
               <:content
-              >{{@model.administrativeUnit.unit.recognizedWorshipType.label}}</:content>
+              >{{@model.administrativeUnit.recognizedWorshipType.label}}</:content>
             </Item>
-            {{#if @model.administrativeUnit.unit.denomination}}
+            {{#if @model.administrativeUnit.denomination}}
               <Item>
                 <:label>Strekking</:label>
-                <:content>{{@model.administrativeUnit.unit.denomination}}</:content>
+                <:content>{{@model.administrativeUnit.denomination}}</:content>
               </Item>
             {{/if}}
             {{#if
               (eq
-                @model.administrativeUnit.unit.constructor.modelName
+                @model.administrativeUnit.constructor.modelName
                 "worship-service"
               )
             }}
               <Item>
                 <:label>Grensoverschrijdend</:label>
                 <:content>
-                  {{@model.administrativeUnit.unit.crossBorderNominal}}
+                  {{@model.administrativeUnit.crossBorderNominal}}
                 </:content>
               </Item>
             {{/if}}
             {{!-- Temporarily disabled - cf https://binnenland.atlassian.net/browse/OP-583
-            {{#if @model.administrativeUnit.unit.scope.label}}
+            {{#if @model.administrativeUnit.scope.label}}
               <Item>
                 <:label>Werkingsgebied</:label>
-                <:content>{{@model.administrativeUnit.unit.scope.label}}</:content>
+                <:content>{{@model.administrativeUnit.scope.label}}</:content>
               </Item>
             {{/if}} --}}
           </:left>
@@ -67,24 +67,24 @@
               <:label>Status</:label>
               <:content>
                 <OrganizationStatus
-                  @status={{@model.administrativeUnit.unit.organizationStatus}}
+                  @status={{@model.administrativeUnit.organizationStatus}}
                 />
               </:content>
             </Item>
             {{! TODO: Take the last date from the change events }}
-            {{#if @model.administrativeUnit.unit.resultedFrom}}
+            {{#if @model.administrativeUnit.resultedFrom}}
               <Item>
                 <:content>
                   <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
                     Gewijzigd op
                     {{date-format
-                      @model.administrativeUnit.unit.resultedFrom.firstObject.date
+                      @model.administrativeUnit.resultedFrom.firstObject.date
                     }}
                   </AuHelpText>
                 </:content>
               </Item>
             {{/if}}
-            {{#each @model.administrativeUnit.unit.identifiers as |identifier|}}
+            {{#each @model.administrativeUnit.identifiers as |identifier|}}
               {{#if identifier.structuredIdentifier.localId}}
                 <Item>
                   <:label>{{identifier.idName}}</:label>
@@ -123,40 +123,40 @@
             <Item>
               <:label>Adres</:label>
               <:content>
-                {{@model.administrativeUnit.unit.primarySite.address.fullAddress}}
+                {{@model.administrativeUnit.primarySite.address.fullAddress}}
               </:content>
             </Item>
 
             <Item>
               <:label>Provincie</:label>
               <:content>
-                {{@model.administrativeUnit.unit.primarySite.address.province}}
+                {{@model.administrativeUnit.primarySite.address.province}}
               </:content>
             </Item>
           </:left>
           <:right as |Item|>
             {{#if
-              @model.administrativeUnit.unit.primarySite.contacts.firstObject.telephone
+              @model.administrativeUnit.primarySite.contacts.firstObject.telephone
             }}
               <Item>
                 <:label>Telefoonnummer</:label>
                 <:content>
-                  {{@model.administrativeUnit.unit.primarySite.contacts.firstObject.telephone}}
+                  {{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}
                 </:content>
               </Item>
             {{/if}}
             {{#if
-              @model.administrativeUnit.unit.primarySite.contacts.firstObject.website
+              @model.administrativeUnit.primarySite.contacts.firstObject.website
             }}
               <Item>
                 <:label>Website</:label>
                 <:content>
                   <a
-                    href={{@model.administrativeUnit.unit.primarySite.contacts.firstObject.website}}
+                    href={{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
                     class="au-c-link"
                     target="_blank"
                     rel="noopener noreferrer"
-                  >{{@model.administrativeUnit.unit.primarySite.contacts.firstObject.website}}
+                  >{{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
                     (externe link)</a>
                 </:content>
               </Item>
@@ -168,8 +168,8 @@
 
     {{#if
       (or
-        @model.administrativeUnit.unit.isSubOrganizationOf.name
-        @model.administrativeUnit.unit.isAssociatedWith.name
+        @model.administrativeUnit.isSubOrganizationOf.name
+        @model.administrativeUnit.isAssociatedWith.name
       )
     }}
       <DataCard>
@@ -179,24 +179,21 @@
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              {{#if @model.administrativeUnit.unit.isSubOrganizationOf.name}}
+              {{#if @model.administrativeUnit.isSubOrganizationOf.name}}
                 <Item>
                   <:label>Centraal bestuur</:label>
                   <:content>
                     <AuLink
                       @route="administrative-units.administrative-unit"
-                      @model={{@model.administrativeUnit.unit.isSubOrganizationOf.id}}
+                      @model={{@model.administrativeUnit.isSubOrganizationOf.id}}
                     >
-                      {{@model.administrativeUnit.unit.isSubOrganizationOf.name}}
+                      {{@model.administrativeUnit.isSubOrganizationOf.name}}
                     </AuLink>
                   </:content>
                 </Item>
               {{/if}}
-              {{#if @model.administrativeUnit.subOrganizations}}
-                {{#each
-                  @model.administrativeUnit.subOrganizations
-                  as |worship|
-                }}
+              {{#if @model.subOrganizations}}
+                {{#each @model.subOrganizations as |worship|}}
                   <Item>
                     <:label>Bestuur van de eredienst</:label>
                     <:content>
@@ -210,15 +207,15 @@
                   </Item>
                 {{/each}}
               {{/if}}
-              {{#if @model.administrativeUnit.unit.isAssociatedWith.name}}
+              {{#if @model.administrativeUnit.isAssociatedWith.name}}
                 <Item>
                   <:label>Representatief orgaan</:label>
                   <:content>
                     <AuLink
                       @route="organizations.organization"
-                      @model={{@model.administrativeUnit.unit.isAssociatedWith.id}}
+                      @model={{@model.administrativeUnit.isAssociatedWith.id}}
                     >
-                      {{@model.administrativeUnit.unit.isAssociatedWith.name}}
+                      {{@model.administrativeUnit.isAssociatedWith.name}}
                     </AuLink>
                   </:content>
                 </Item>
