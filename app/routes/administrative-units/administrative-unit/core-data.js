@@ -8,7 +8,6 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataRoute extends 
     let { id: administrativeUnitId } = this.paramsFor(
       'administrative-units.administrative-unit'
     );
-
     return this.store.findRecord(
       'worship-administrative-unit',
       administrativeUnitId,
@@ -24,7 +23,6 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataRoute extends 
           'primary-site.contacts',
           'is-sub-organization-of',
           'is-associated-with',
-          'sub-organizations',
           'resulted-from',
         ].join(),
       }
