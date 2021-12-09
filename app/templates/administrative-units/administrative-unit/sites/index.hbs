@@ -2,6 +2,7 @@
   <:title>Vestigingen</:title>
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
   <:action>
+  <SecuredArea>
     <AuLink
       @route="administrative-units.administrative-unit.sites.new"
       @icon="add"
@@ -10,6 +11,7 @@
     >
       Nieuw
     </AuLink>
+    </SecuredArea>
   </:action>
 </PageHeader>
 
@@ -18,22 +20,33 @@
     <c.header>
       <th class="au-c-data-table__header-title">Locatie</th>
       <th class="au-c-data-table__header-title">Type vestiging</th>
-      <th class="au-c-data-table__header-title">Primair correspondentieadres </th>
-      <th></th>
+      <th class="au-c-data-table__header-title">Primair correspondentieadres
+      </th>
+      <SecuredArea>
+        <th></th>
+      </SecuredArea>
     </c.header>
     <c.body as |site|>
       <td>
-        <AuLink @model={{site.id}} @route="administrative-units.administrative-unit.sites.site">
+        <AuLink
+          @model={{site.id}}
+          @route="administrative-units.administrative-unit.sites.site"
+        >
           {{site.address.fullAddress}}
         </AuLink>
       </td>
       <td>{{site.siteType.label}}</td>
       <td>{{if (eq site.id this.model.primarySite.id) "Ja" "Neen"}}</td>
-      <td>
-        <AuLink @model={{site.id}} @route="administrative-units.administrative-unit.sites.site.edit">
-          Bewerk
-        </AuLink>
-      </td>
+      <SecuredArea>
+        <td>
+          <AuLink
+            @model={{site.id}}
+            @route="administrative-units.administrative-unit.sites.site.edit"
+          >
+            Bewerk
+          </AuLink>
+        </td>
+      </SecuredArea>
     </c.body>
   </t.content>
 </AuDataTable>

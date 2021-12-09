@@ -77,14 +77,16 @@
           <PageHeader class="au-o-box">
             <:title>Bestuurseenheden</:title>
             <:action>
-              <AuLink
-                @route="administrative-units.new"
-                @icon="add"
-                @iconAlignment="left"
-                @skin="button"
-              >
-                Nieuw
-              </AuLink>
+              <SecuredArea>
+                <AuLink
+                  @route="administrative-units.new"
+                  @icon="add"
+                  @iconAlignment="left"
+                  @skin="button"
+                >
+                  Nieuw
+                </AuLink>
+              </SecuredArea>
             </:action>
           </PageHeader>
         </menu.general>

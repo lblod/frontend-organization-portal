@@ -6,7 +6,14 @@ import personValidations from 'frontend-contact-hub/validations/person';
 
 export default class PeopleNewRoute extends Route {
   @service store;
+  @service currentSession;
+  @service session;
 
+  beforeModel() {
+    if (!this.currentSession.hasAllowedRole) {
+      this.session.invalidate();
+    }
+  }
   model() {
     return {
       person: createValidatedChangeset(

@@ -10,7 +10,14 @@ import worshipAdministrativeUnitValidations, {
 
 export default class AdministrativeUnitsNewRoute extends Route {
   @service store;
+  @service currentSession;
+  @service session;
 
+  beforeModel() {
+    if (!this.currentSession.hasAllowedRole) {
+      this.session.invalidate();
+    }
+  }
   model() {
     return {
       administrativeUnit: createValidatedChangeset(

@@ -2,14 +2,16 @@
   <:title>Bedienaren</:title>
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
   <:action>
-    <AuLink
-      @route="administrative-units.administrative-unit.ministers.new"
-      @icon="add"
-      @iconAlignment="left"
-      @skin="button"
-    >
-      Nieuw
-    </AuLink>
+    <SecuredArea>
+      <AuLink
+        @route="administrative-units.administrative-unit.ministers.new"
+        @icon="add"
+        @iconAlignment="left"
+        @skin="button"
+      >
+        Nieuw
+      </AuLink>
+    </SecuredArea>
   </:action>
 </PageHeader>
 
@@ -24,7 +26,9 @@
       <th class="au-c-data-table__header-title">Achternaam</th>
       <th class="au-c-data-table__header-title">Rol</th>
       <th class="au-c-data-table__header-title">Status</th>
-      <th></th>
+      <SecuredArea>
+        <th></th>
+      </SecuredArea>
     </c.header>
     <c.body as |ministerPosition|>
       {{#let ministerPosition.agentsInPosition.firstObject as |minister|}}
@@ -39,21 +43,27 @@
           </AuLink>
         </td>
         <td>
-          <AuLink @route="people.person.positions.minister" @models={{array minister.person.id minister.id}}>
+          <AuLink
+            @route="people.person.positions.minister"
+            @models={{array minister.person.id minister.id}}
+          >
             {{ministerPosition.function.label}}
           </AuLink>
         </td>
         <td>
-          <PositionStatus @endDate={{minister.agentEndDate}}/>
+          <PositionStatus @endDate={{minister.agentEndDate}} />
         </td>
-        <td>
-          <AuLink @route="people.person.positions.minister.edit"
-                  @models={{array minister.person.id minister.id}}
-                  @query={{hash redirectUrl=this.currentURL}}
-          >
-            Bewerk
-          </AuLink>
-        </td>
+        <SecuredArea>
+          <td>
+            <AuLink
+              @route="people.person.positions.minister.edit"
+              @models={{array minister.person.id minister.id}}
+              @query={{hash redirectUrl=this.currentURL}}
+            >
+              Bewerk
+            </AuLink>
+          </td>
+        </SecuredArea>
       {{/let}}
     </c.body>
   </t.content>

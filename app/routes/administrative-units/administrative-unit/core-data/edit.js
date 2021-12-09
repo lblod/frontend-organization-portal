@@ -10,6 +10,14 @@ import worshipAdministrativeUnitValidations, {
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute extends Route {
   @service store;
+  @service currentSession;
+  @service session;
+
+  beforeModel() {
+    if (!this.currentSession.hasAllowedRole) {
+      this.session.invalidate();
+    }
+  }
 
   async model() {
     let administrativeUnit = this.modelFor(

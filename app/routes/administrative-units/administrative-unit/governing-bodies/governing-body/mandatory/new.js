@@ -7,7 +7,14 @@ import { mandatoryWithRequiredRoleValidations } from 'frontend-contact-hub/valid
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryNewRoute extends Route {
   @service store;
+  @service currentSession;
+  @service session;
 
+  beforeModel() {
+    if (!this.currentSession.hasAllowedRole) {
+      this.session.invalidate();
+    }
+  }
   async model({ personId }, transition) {
     let { governingBody } = this.modelFor(
       'administrative-units.administrative-unit.governing-bodies.governing-body'

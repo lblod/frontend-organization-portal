@@ -9,7 +9,14 @@ import ministerValidations, {
 
 export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute extends Route {
   @service store;
+  @service currentSession;
+  @service session;
 
+  beforeModel() {
+    if (!this.currentSession.hasAllowedRole) {
+      this.session.invalidate();
+    }
+  }
   async model({ personId }, transition) {
     if (personId) {
       transition.data.person = await this.store.findRecord('person', personId);

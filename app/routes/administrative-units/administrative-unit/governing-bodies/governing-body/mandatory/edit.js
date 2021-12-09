@@ -8,6 +8,14 @@ import { findPrimaryContact } from 'frontend-contact-hub/utils/contact';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditRoute extends Route {
   @service store;
+  @service currentSession;
+  @service session;
+
+  beforeModel() {
+    if (!this.currentSession.hasAllowedRole) {
+      this.session.invalidate();
+    }
+  }
 
   async model({ mandatoryId }) {
     let administrativeUnit = this.modelFor(

@@ -6,7 +6,14 @@ import contactValidations from 'frontend-contact-hub/validations/contact-point';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute extends Route {
   @service store;
+  @service currentSession;
+  @service session;
 
+  beforeModel() {
+    if (!this.currentSession.hasAllowedRole) {
+      this.session.invalidate();
+    }
+  }
   async model() {
     let { site } = this.modelFor(
       'administrative-units.administrative-unit.sites.site'

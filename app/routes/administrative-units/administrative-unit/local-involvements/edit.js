@@ -5,6 +5,14 @@ import localInvolvementValidations from 'frontend-contact-hub/validations/local-
 
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditRoute extends Route {
   @service store;
+  @service currentSession;
+  @service session;
+
+  beforeModel() {
+    if (!this.currentSession.hasAllowedRole) {
+      this.session.invalidate();
+    }
+  }
 
   async model() {
     let { id: administrativeUnitId } = this.paramsFor(
