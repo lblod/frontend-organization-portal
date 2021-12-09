@@ -9,6 +9,11 @@ export default class ChangeEventModel extends Model {
   })
   type;
 
+  @belongsTo('decision', {
+    inverse: null,
+  })
+  decision;
+
   @hasMany('organization', {
     inverse: 'resultedFrom',
   })

@@ -1,0 +1,134 @@
+{{#let
+  (concat
+    @model.changeEvent.type.label " " (date-format @model.changeEvent.date)
+  )
+  as |title|
+}}
+  {{page-title title}}
+  {{breadcrumb
+    title
+    route="administrative-units.administrative-unit.change-events.details"
+    models=(array @model.administrativeUnit.id @model.changeEvent.id)
+  }}
+{{/let}}
+
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <PageHeader>
+      <:title>Veranderingsgebeurtenis:
+        {{@model.changeEvent.type.label}}</:title>
+      <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+      <:action>
+        <SecuredArea>
+          <:read-only>
+            <ReportWrongData />
+          </:read-only>
+        </SecuredArea>
+      </:action>
+    </PageHeader>
+
+    <DataCard>
+      <:title>Veranderingsgebeurtenis</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Type veranderingsgebeurtenis</:label>
+              <:content>{{@model.changeEvent.type.label}}</:content>
+            </Item>
+            <Item>
+              <:label>Beschrijving</:label>
+              <:content>
+                {{@model.changeEvent.description}}
+              </:content>
+            </Item>
+            {{#let @model.changeEvent.decision.documentLink as |documentLink|}}
+              {{#if documentLink}}
+                <Item>
+                  <:label>Link naar besluit</:label>
+                  <:content>
+                    <AuLinkExternal href={{documentLink}}>
+                      {{documentLink}}
+                    </AuLinkExternal>
+                  </:content>
+                </Item>
+              {{/if}}
+            {{/let}}
+          </:left>
+          <:right as |Item|>
+            <Item>
+              <:label>Datum veranderingsgebeurtenis</:label>
+              <:content>
+                {{date-format @model.changeEvent.date}}
+              </:content>
+            </Item>
+            {{#let
+              @model.changeEvent.decision.publicationDate
+              as |publicationDate|
+            }}
+              {{#if publicationDate}}
+                <Item>
+                  <:label>Datum publicatie</:label>
+                  <:content>
+                    {{date-format publicationDate}}
+                  </:content>
+                </Item>
+              {{/if}}
+            {{/let}}
+          </:right>
+        </Card.Columns>
+      </:card>
+    </DataCard>
+
+    {{#if @model.shouldShowExtraInformationCard}}
+      <DataCard>
+        <:title>{{@model.changeEvent.type.label}}</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              {{#each
+                @model.changeEvent.originalOrganization
+                as |organization|
+              }}
+                <Item>
+                  <:label>Betrokken organisatie</:label>
+                  <:content>
+                    <AuLink
+                      @route="administrative-units.administrative-unit"
+                      @model={{organization.id}}
+                    >
+                      {{organization.name}}
+                    </AuLink>
+                  </:content>
+                </Item>
+              {{/each}}
+            </:left>
+            <:right as |Item|>
+              {{#if @model.isMergerChangeEvent}}
+                <Item>
+                  <:label>Resulterende organisatie</:label>
+                  <:content>
+                    <AuLink
+                      @route="administrative-units.administrative-unit"
+                      @model={{@model.changeEvent.resultingOrganization.firstObject.id}}
+                    >
+                      {{@model.changeEvent.resultingOrganization.firstObject.name}}
+                    </AuLink>
+                  </:content>
+                </Item>
+                <Item>
+                  <:label>Resulterende status</:label>
+                  <:content>
+                    <OrganizationStatus
+                      @status={{@model.currentChangeEventResult.status}}
+                    />
+                  </:content>
+                </Item>
+              {{/if}}
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+    {{/if}}
+  </div>
+</div>

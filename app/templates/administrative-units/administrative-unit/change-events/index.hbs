@@ -37,8 +37,12 @@
     <c.body as |changeEventResult|>
       {{#let changeEventResult.resultFrom as |changeEvent|}}
         <td>
-          {{! TODO: Replace this with a link to the "details" route once it is created }}
-          {{changeEvent.type.label}}
+          <AuLink
+            @route="administrative-units.administrative-unit.change-events.details"
+            @model={{changeEvent.id}}
+          >
+            {{changeEvent.type.label}}
+          </AuLink>
         </td>
         <td>{{date-format changeEvent.date}}</td>
         <td>{{changeEvent.description}}</td>

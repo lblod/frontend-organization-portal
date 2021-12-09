@@ -81,7 +81,9 @@ Router.map(function () {
         this.route(
           'change-events',
           { path: '/veranderingsgebeurtenissen' },
-          function () {}
+          function () {
+            this.route('details', { path: '/:changeEventId' }, function () {});
+          }
         );
       });
       this.route('new', { path: '/nieuwe-bestuurseenheid' });
