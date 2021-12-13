@@ -2,7 +2,7 @@ import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
-const ALLOWED_ROLES = [
+const EDITOR_ROLES = [
   'ABBOrganisatiePortaalGebruiker-editeerder',
   'ABBOrganisatiePortaalGebruiker-beheerder',
 ];
@@ -33,7 +33,7 @@ export default class CurrentSessionService extends Service {
     }
   }
 
-  get hasAllowedRole() {
-    return this.roles.some((role) => ALLOWED_ROLES.includes(role));
+  get canEdit() {
+    return this.roles.some((role) => EDITOR_ROLES.includes(role));
   }
 }

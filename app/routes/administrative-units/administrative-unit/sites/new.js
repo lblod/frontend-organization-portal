@@ -8,10 +8,11 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewRoute extends 
   @service store;
   @service currentSession;
   @service session;
+  @service router;
 
   beforeModel() {
-    if (!this.currentSession.hasAllowedRole) {
-      this.session.invalidate();
+    if (!this.currentSession.canEdit) {
+      this.router.transitionTo('route-not-found', { wildcard: 'not-found' });
     }
   }
   async model() {

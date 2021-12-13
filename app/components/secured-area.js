@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 export default class SecuredAreaComponent extends Component {
   @service currentSession;
 
-  get hasAllowedRole() {
-    return this.currentSession.hasAllowedRole;
+  get canEdit() {
+    return this.currentSession.canEdit;
   }
 }
