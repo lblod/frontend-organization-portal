@@ -8,12 +8,13 @@ import { mandatoryWithRequiredRoleValidations } from 'frontend-contact-hub/valid
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryNewRoute extends Route {
   @service store;
   @service currentSession;
-  @service session;
   @service router;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
-      this.router.transitionTo('route-not-found', { wildcard: 'not-found' });
+      this.router.transitionTo('route-not-found', {
+        wildcard: 'pagina-niet-gevonden',
+      });
     }
   }
   async model({ personId }, transition) {

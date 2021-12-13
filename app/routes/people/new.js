@@ -7,12 +7,13 @@ import personValidations from 'frontend-contact-hub/validations/person';
 export default class PeopleNewRoute extends Route {
   @service store;
   @service currentSession;
-  @service session;
   @service router;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
-      this.router.transitionTo('route-not-found', { wildcard: 'not-found' });
+      this.router.transitionTo('route-not-found', {
+        wildcard: 'pagina-niet-gevonden',
+      });
     }
   }
   model() {

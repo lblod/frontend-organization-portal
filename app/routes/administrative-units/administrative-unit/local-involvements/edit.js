@@ -6,12 +6,13 @@ import localInvolvementValidations from 'frontend-contact-hub/validations/local-
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditRoute extends Route {
   @service store;
   @service currentSession;
-  @service session;
   @service router;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
-      this.router.transitionTo('route-not-found', { wildcard: 'not-found' });
+      this.router.transitionTo('route-not-found', {
+        wildcard: 'pagina-niet-gevonden',
+      });
     }
   }
 
