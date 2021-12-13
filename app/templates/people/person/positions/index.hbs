@@ -5,9 +5,17 @@
     {{@model.person.familyName}}
   </:subtitle>
   <:alert>
-    <AuAlert @alertIcon="info-circle" @alertskin="info" @alertsize="small" class="au-u-margin-bottom-small au-u-margin-top-small">
-      <p>Momenteel kan u nieuwe posities toevoegen en bestaande posities bewerken via het bestuursorgaan waar de persoon een positie heeft.</p>
-    </AuAlert>
+    <SecuredArea>
+      <AuAlert
+        @alertIcon="info-circle"
+        @alertskin="info"
+        @alertsize="small"
+        class="au-u-margin-bottom-small au-u-margin-top-small"
+      >
+        <p>Momenteel kan u nieuwe posities toevoegen en bestaande posities
+          bewerken via het bestuursorgaan waar de persoon een positie heeft.</p>
+      </AuAlert>
+    </SecuredArea>
   </:alert>
   {{!-- <:action>
     {{! TODO: Replace this with the "new" route once it is created }}
@@ -22,36 +30,49 @@
   </:action> --}}
 </PageHeader>
 
-<AuDataTable @content={{@model.positions}} @noDataMessage="Geen posities" as |t|>
+<AuDataTable
+  @content={{@model.positions}}
+  @noDataMessage="Geen posities"
+  as |t|
+>
   <t.content as |c|>
     <c.header>
       <th class="au-c-data-table__header-title">Positie</th>
       <th class="au-c-data-table__header-title">Organisatie</th>
       <th class="au-c-data-table__header-title">Status</th>
-      {{!-- <th></th> --}}
+      {{! <th></th> }}
     </c.header>
     <c.body as |mandatory|>
       <td>
-        <AuLink @route="people.person.positions.mandatory" @model={{mandatory.id}}>
+        <AuLink
+          @route="people.person.positions.mandatory"
+          @model={{mandatory.id}}
+        >
           {{mandatory.mandate.roleBoard.label}}
         </AuLink>
       </td>
       <td>
-        {{#let mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit as |administrativeUnit|}}
-        {{#if administrativeUnit}}
-        <AuLink @route="administrative-units.administrative-unit" @model={{administrativeUnit.id}}>
-          {{administrativeUnit.name}}
-        </AuLink>
-        {{/if}}
+        {{#let
+          mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit
+          as |administrativeUnit|
+        }}
+          {{#if administrativeUnit}}
+            <AuLink
+              @route="administrative-units.administrative-unit"
+              @model={{administrativeUnit.id}}
+            >
+              {{administrativeUnit.name}}
+            </AuLink>
+          {{/if}}
         {{/let}}
       </td>
       <td>
         <PositionStatus @endDate={{mandatory.endDate}} />
       </td>
-      {{!-- <td>
+      {{! <td>
         TODO Replace this with the correct route
         <AuLink @route="people.person.positions">Bewerk</AuLink>
-      </td> --}}
+      </td> }}
     </c.body>
   </t.content>
 </AuDataTable>

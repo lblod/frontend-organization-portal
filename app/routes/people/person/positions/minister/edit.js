@@ -4,8 +4,19 @@ import { getAddressValidations } from 'frontend-contact-hub/validations/address'
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
 import ministerValidations from 'frontend-contact-hub/validations/minister';
 import { findPrimaryContact } from 'frontend-contact-hub/utils/contact';
+import { inject as service } from '@ember/service';
 
 export default class PeoplePersonPositionsMinisterEditRoute extends Route {
+  @service currentSession;
+  @service router;
+
+  beforeModel() {
+    if (!this.currentSession.canEdit) {
+      this.router.transitionTo('route-not-found', {
+        wildcard: 'pagina-niet-gevonden',
+      });
+    }
+  }
   async model() {
     let { minister } = this.modelFor('people.person.positions.minister');
 

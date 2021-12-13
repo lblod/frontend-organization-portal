@@ -4,14 +4,16 @@
       <:title>Vestiging: {{@model.site.address.fullAddress}}</:title>
       <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
       <:action>
-        <AuLink
-          @route="administrative-units.administrative-unit.sites.site.edit"
-          @skin="button-secondary"
-          @icon="pencil"
-          @iconAlignment="left"
-        >
-          Bewerk
-        </AuLink>
+        <SecuredArea>
+          <AuLink
+            @route="administrative-units.administrative-unit.sites.site.edit"
+            @skin="button-secondary"
+            @icon="pencil"
+            @iconAlignment="left"
+          >
+            Bewerk
+          </AuLink>
+        </SecuredArea>
       </:action>
     </PageHeader>
 
@@ -72,7 +74,8 @@
                     class="au-c-link"
                     target="_blank"
                     rel="noopener noreferrer"
-                  >{{@model.site.contacts.firstObject.website}} (externe link)</a>
+                  >{{@model.site.contacts.firstObject.website}}
+                    (externe link)</a>
                 </:content>
               </Item>
             {{/if}}

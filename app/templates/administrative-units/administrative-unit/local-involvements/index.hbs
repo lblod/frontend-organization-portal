@@ -2,14 +2,16 @@
   <:title>Betrokken lokale besturen</:title>
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
   <:action>
-    <AuLink
-      @route="administrative-units.administrative-unit.local-involvements.edit"
-      @skin="button-secondary"
-      @icon="pencil"
-      @iconAlignment="left"
-    >
-      Bewerk
-    </AuLink>
+    <SecuredArea>
+      <AuLink
+        @route="administrative-units.administrative-unit.local-involvements.edit"
+        @skin="button-secondary"
+        @icon="pencil"
+        @iconAlignment="left"
+      >
+        Bewerk
+      </AuLink>
+    </SecuredArea>
   </:action>
 </PageHeader>
 
