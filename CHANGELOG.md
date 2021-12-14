@@ -1,4 +1,22 @@
 
+
+## 1.4.0 (2021-12-14)
+
+#### :rocket: Enhancement
+* [#229](https://github.com/lblod/frontend-contact-hub/pull/229) Allow users to easily report wrong data ([@nbittich](https://github.com/nbittich))
+* [#228](https://github.com/lblod/frontend-contact-hub/pull/228) Only show the edit buttons if the user has the required permissions ([@nbittich](https://github.com/nbittich))
+* [#223](https://github.com/lblod/frontend-contact-hub/pull/223) Also show the province field when using CRAB on the positions pages ([@nbittich](https://github.com/nbittich))
+
+#### :bug: Bug Fix
+* [#227](https://github.com/lblod/frontend-contact-hub/pull/227) Fix a problem where the position name wasn't shown on the edit page ([@Windvis](https://github.com/Windvis))
+* [#225](https://github.com/lblod/frontend-contact-hub/pull/225) Show all related organisations of a central worship service ([@nbittich](https://github.com/nbittich))
+* [#224](https://github.com/lblod/frontend-contact-hub/pull/224) Fix "Mail ons" link in the address search functionality ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
 ## 1.3.0 (2021-11-26)
 
 #### :rocket: Enhancement
