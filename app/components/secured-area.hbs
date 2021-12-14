@@ -1,3 +1,11 @@
-{{#if this.canEdit}}
-  {{yield}}
+{{#if (has-block "edit")}}
+  {{#if this.canEdit}}
+    {{yield to="edit"}}
+  {{/if}}
+{{/if}}
+
+{{#if (has-block "read-only")}}
+  {{#if this.canOnlyRead}}
+    {{yield to="read-only"}}
+  {{/if}}
 {{/if}}

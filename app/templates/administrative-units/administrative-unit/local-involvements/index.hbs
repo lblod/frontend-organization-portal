@@ -3,14 +3,19 @@
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
   <:action>
     <SecuredArea>
-      <AuLink
-        @route="administrative-units.administrative-unit.local-involvements.edit"
-        @skin="button-secondary"
-        @icon="pencil"
-        @iconAlignment="left"
-      >
-        Bewerk
-      </AuLink>
+      <:edit>
+        <AuLink
+          @route="administrative-units.administrative-unit.local-involvements.edit"
+          @skin="button-secondary"
+          @icon="pencil"
+          @iconAlignment="left"
+        >
+          Bewerk
+        </AuLink>
+      </:edit>
+      <:read-only>
+        <ReportWrongData />
+      </:read-only>
     </SecuredArea>
   </:action>
 </PageHeader>

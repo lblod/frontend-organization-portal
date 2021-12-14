@@ -7,4 +7,7 @@ export default class SecuredAreaComponent extends Component {
   get canEdit() {
     return this.currentSession.canEdit;
   }
+  get canOnlyRead() {
+    return this.currentSession.canOnlyRead;
+  }
 }

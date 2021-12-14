@@ -2,15 +2,20 @@
   <:title>Vestigingen</:title>
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
   <:action>
-  <SecuredArea>
-    <AuLink
-      @route="administrative-units.administrative-unit.sites.new"
-      @icon="add"
-      @iconAlignment="left"
-      @skin="button"
-    >
-      Nieuw
-    </AuLink>
+    <SecuredArea>
+      <:edit>
+        <AuLink
+          @route="administrative-units.administrative-unit.sites.new"
+          @icon="add"
+          @iconAlignment="left"
+          @skin="button"
+        >
+          Nieuw
+        </AuLink>
+      </:edit>
+      <:read-only>
+        <ReportWrongData />
+      </:read-only>
     </SecuredArea>
   </:action>
 </PageHeader>
@@ -23,7 +28,9 @@
       <th class="au-c-data-table__header-title">Primair correspondentieadres
       </th>
       <SecuredArea>
-        <th></th>
+        <:edit>
+          <th></th>
+        </:edit>
       </SecuredArea>
     </c.header>
     <c.body as |site|>
@@ -38,14 +45,16 @@
       <td>{{site.siteType.label}}</td>
       <td>{{if (eq site.id this.model.primarySite.id) "Ja" "Neen"}}</td>
       <SecuredArea>
-        <td>
-          <AuLink
-            @model={{site.id}}
-            @route="administrative-units.administrative-unit.sites.site.edit"
-          >
-            Bewerk
-          </AuLink>
-        </td>
+        <:edit>
+          <td>
+            <AuLink
+              @model={{site.id}}
+              @route="administrative-units.administrative-unit.sites.site.edit"
+            >
+              Bewerk
+            </AuLink>
+          </td>
+        </:edit>
       </SecuredArea>
     </c.body>
   </t.content>

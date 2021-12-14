@@ -78,14 +78,16 @@
             <:title>Bestuurseenheden</:title>
             <:action>
               <SecuredArea>
-                <AuLink
-                  @route="administrative-units.new"
-                  @icon="add"
-                  @iconAlignment="left"
-                  @skin="button"
-                >
-                  Nieuw
-                </AuLink>
+                <:edit>
+                  <AuLink
+                    @route="administrative-units.new"
+                    @icon="add"
+                    @iconAlignment="left"
+                    @skin="button"
+                  >
+                    Nieuw
+                  </AuLink>
+                </:edit>
               </SecuredArea>
             </:action>
           </PageHeader>

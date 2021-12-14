@@ -3,14 +3,19 @@
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
   <:action>
     <SecuredArea>
-      <AuLink
-        @route="administrative-units.administrative-unit.ministers.new"
-        @icon="add"
-        @iconAlignment="left"
-        @skin="button"
-      >
-        Nieuw
-      </AuLink>
+      <:edit>
+        <AuLink
+          @route="administrative-units.administrative-unit.ministers.new"
+          @icon="add"
+          @iconAlignment="left"
+          @skin="button"
+        >
+          Nieuw
+        </AuLink>
+      </:edit>
+      <:read-only>
+        <ReportWrongData />
+      </:read-only>
     </SecuredArea>
   </:action>
 </PageHeader>
@@ -27,7 +32,9 @@
       <th class="au-c-data-table__header-title">Rol</th>
       <th class="au-c-data-table__header-title">Status</th>
       <SecuredArea>
-        <th></th>
+        <:edit>
+          <th></th>
+        </:edit>
       </SecuredArea>
     </c.header>
     <c.body as |ministerPosition|>
@@ -54,15 +61,17 @@
           <PositionStatus @endDate={{minister.agentEndDate}} />
         </td>
         <SecuredArea>
-          <td>
-            <AuLink
-              @route="people.person.positions.minister.edit"
-              @models={{array minister.person.id minister.id}}
-              @query={{hash redirectUrl=this.currentURL}}
-            >
-              Bewerk
-            </AuLink>
-          </td>
+          <:edit>
+            <td>
+              <AuLink
+                @route="people.person.positions.minister.edit"
+                @models={{array minister.person.id minister.id}}
+                @query={{hash redirectUrl=this.currentURL}}
+              >
+                Bewerk
+              </AuLink>
+            </td>
+          </:edit>
         </SecuredArea>
       {{/let}}
     </c.body>
