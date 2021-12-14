@@ -4,20 +4,26 @@
     <:title>Bewerk betrokken lokale besturen</:title>
     <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
     <:action>
-      <AuButton
-        @loading={{this.save.isRunning}}
-        @disabled={{this.save.isRunning}}
-        form="local-involvements-edit-creation"
-        type="submit"
-      >
-        Opslaan
-      </AuButton>
-      <AuLink
-        @route="administrative-units.administrative-unit.local-involvements"
-        @skin="button-secondary"
-      >
-        Annuleer
-      </AuLink>
+      <div>
+        <AuButtonGroup class="au-c-button-group--align-right">
+          <AuButton
+            @loading={{this.save.isRunning}}
+            @disabled={{this.save.isRunning}}
+            form="local-involvements-edit-creation"
+            type="submit"
+          >
+            Opslaan
+          </AuButton>
+          <AuLink
+            @route="administrative-units.administrative-unit.local-involvements"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>
+        </AuButtonGroup>
+        <ReportWrongData />
+
+      </div>
     </:action>
   </PageHeader>
 

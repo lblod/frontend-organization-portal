@@ -8,6 +8,16 @@ import { findPrimaryContact } from 'frontend-contact-hub/utils/contact';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditRoute extends Route {
   @service store;
+  @service currentSession;
+  @service router;
+
+  beforeModel() {
+    if (!this.currentSession.canEdit) {
+      this.router.transitionTo('route-not-found', {
+        wildcard: 'pagina-niet-gevonden',
+      });
+    }
+  }
 
   async model({ mandatoryId }) {
     let administrativeUnit = this.modelFor(

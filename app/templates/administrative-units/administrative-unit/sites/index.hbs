@@ -2,14 +2,21 @@
   <:title>Vestigingen</:title>
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
   <:action>
-    <AuLink
-      @route="administrative-units.administrative-unit.sites.new"
-      @icon="add"
-      @iconAlignment="left"
-      @skin="button"
-    >
-      Nieuw
-    </AuLink>
+    <SecuredArea>
+      <:edit>
+        <AuLink
+          @route="administrative-units.administrative-unit.sites.new"
+          @icon="add"
+          @iconAlignment="left"
+          @skin="button"
+        >
+          Nieuw
+        </AuLink>
+      </:edit>
+      <:read-only>
+        <ReportWrongData />
+      </:read-only>
+    </SecuredArea>
   </:action>
 </PageHeader>
 
@@ -18,22 +25,37 @@
     <c.header>
       <th class="au-c-data-table__header-title">Locatie</th>
       <th class="au-c-data-table__header-title">Type vestiging</th>
-      <th class="au-c-data-table__header-title">Primair correspondentieadres </th>
-      <th></th>
+      <th class="au-c-data-table__header-title">Primair correspondentieadres
+      </th>
+      <SecuredArea>
+        <:edit>
+          <th></th>
+        </:edit>
+      </SecuredArea>
     </c.header>
     <c.body as |site|>
       <td>
-        <AuLink @model={{site.id}} @route="administrative-units.administrative-unit.sites.site">
+        <AuLink
+          @model={{site.id}}
+          @route="administrative-units.administrative-unit.sites.site"
+        >
           {{site.address.fullAddress}}
         </AuLink>
       </td>
       <td>{{site.siteType.label}}</td>
       <td>{{if (eq site.id this.model.primarySite.id) "Ja" "Neen"}}</td>
-      <td>
-        <AuLink @model={{site.id}} @route="administrative-units.administrative-unit.sites.site.edit">
-          Bewerk
-        </AuLink>
-      </td>
+      <SecuredArea>
+        <:edit>
+          <td>
+            <AuLink
+              @model={{site.id}}
+              @route="administrative-units.administrative-unit.sites.site.edit"
+            >
+              Bewerk
+            </AuLink>
+          </td>
+        </:edit>
+      </SecuredArea>
     </c.body>
   </t.content>
 </AuDataTable>

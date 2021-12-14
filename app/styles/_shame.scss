@@ -111,3 +111,10 @@ table.dataTable tbody th {
 .au-c-help-text:not(.au-c-help-text--error) {
   font-weight: 400;
 }
+
+// Allow buttons to be aligned on the right side
+.au-c-button-group--align-right {
+  @include mq($from:medium) {
+    justify-content: flex-end;
+  }
+}

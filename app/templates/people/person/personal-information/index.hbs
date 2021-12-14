@@ -7,14 +7,21 @@
         {{@model.person.familyName}}
       </:subtitle>
       <:action>
-        <AuLink
-          @route="people.person.personal-information.edit"
-          @skin="button-secondary"
-          @icon="pencil"
-          @iconAlignment="left"
-        >
-          Bewerk
-        </AuLink>
+        <SecuredArea>
+          <:edit>
+            <AuLink
+              @route="people.person.personal-information.edit"
+              @skin="button-secondary"
+              @icon="pencil"
+              @iconAlignment="left"
+            >
+              Bewerk
+            </AuLink>
+          </:edit>
+          <:read-only>
+            <ReportWrongData />
+          </:read-only>
+        </SecuredArea>
       </:action>
     </PageHeader>
 
@@ -42,7 +49,7 @@
       </:card>
     </DataCard>
 
-    {{!-- Hide contact information for now because it needs further changes. https://binnenland.atlassian.net/browse/OP-600 --}}
+    {{! Hide contact information for now because it needs further changes. https://binnenland.atlassian.net/browse/OP-600 }}
     {{!-- <DataCard>
       <:title>Contactgegevens:
         {{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.classification.label}}

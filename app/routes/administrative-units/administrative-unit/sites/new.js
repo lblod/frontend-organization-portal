@@ -6,7 +6,16 @@ import contactValidations from 'frontend-contact-hub/validations/contact-point';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesNewRoute extends Route {
   @service store;
+  @service currentSession;
+  @service router;
 
+  beforeModel() {
+    if (!this.currentSession.canEdit) {
+      this.router.transitionTo('route-not-found', {
+        wildcard: 'pagina-niet-gevonden',
+      });
+    }
+  }
   async model() {
     let administrativeUnit = this.modelFor(
       'administrative-units.administrative-unit'

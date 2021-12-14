@@ -11,7 +11,7 @@
               id="filter-given-name"
             />
           </p>
-          <p  class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
+          <p class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-family-name">Achternaam</AuLabel>
             <AuInput
               @width="block"
@@ -56,9 +56,20 @@
               Personen
             </:title>
             <:alert>
-              <AuAlert @alertIcon="info-circle" @alertTitle="Momenteel kan u nog geen nieuwe personen toevoegen." @alertskin="info" @alertsize="small" class="au-u-margin-bottom-small au-u-margin-top-small">
-                <p>De gegevens van personen die reeds een positie hebben, kan u beheren via 'Bestuursorganen' of 'Bedienaren'.</p>
-              </AuAlert>
+              <SecuredArea>
+                <:edit>
+                  <AuAlert
+                    @alertIcon="info-circle"
+                    @alertTitle="Momenteel kan u nog geen nieuwe personen toevoegen."
+                    @alertskin="info"
+                    @alertsize="small"
+                    class="au-u-margin-bottom-small au-u-margin-top-small"
+                  >
+                    <p>De gegevens van personen die reeds een positie hebben,
+                      kan u beheren via 'Bestuursorganen' of 'Bedienaren'.</p>
+                  </AuAlert>
+                </:edit>
+              </SecuredArea>
             </:alert>
           </PageHeader>
         </menu.general>
@@ -92,33 +103,33 @@
         {{else if this.hasNoResults}}
           <TableMessage>
             <p>
-              Er werden geen zoekresultaten gevonden. Kijk na op spelfouten,
-              of probeer een andere zoekopdracht. Indien een persoon
-              ontbreekt, meldt dit aan
-              <a href="mailto:{{config "contactEmail"}}"  class="au-c-link">{{config "contactEmail"}}</a>.
+              Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of
+              probeer een andere zoekopdracht. Indien een persoon ontbreekt,
+              meldt dit aan
+              <a
+                href="mailto:{{config "contactEmail"}}"
+                class="au-c-link"
+              >{{config "contactEmail"}}</a>.
             </p>
           </TableMessage>
         {{else}}
           <c.body as |person|>
             {{#let person.mandatories.firstObject as |mandatory|}}
               <td>
-                <AuLink
-                  @route="people.person"
-                  @model={{person.id}}
-                >
+                <AuLink @route="people.person" @model={{person.id}}>
                   {{person.givenName}}
                 </AuLink>
               </td>
               <td>
-                <AuLink
-                  @route="people.person"
-                  @model={{person.id}}
-                >
+                <AuLink @route="people.person" @model={{person.id}}>
                   {{person.familyName}}
                 </AuLink>
               </td>
               <td>
-                {{#let mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit as |administrativeUnit|}}
+                {{#let
+                  mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit
+                  as |administrativeUnit|
+                }}
                   {{#if administrativeUnit}}
                     <AuLink
                       @route="administrative-units.administrative-unit"

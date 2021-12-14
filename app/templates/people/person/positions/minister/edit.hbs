@@ -13,6 +13,9 @@
         {{@model.person.givenName}}
         {{@model.person.familyName}}
       </:subtitle>
+      <:action>
+        <ReportWrongData />
+      </:action>
     </PageHeader>
 
     <form
@@ -129,6 +132,8 @@
                       />
                     </:content>
                   </Item>
+                </:manual-address-input>
+                <:common-input>
                   <Item
                     @labelFor="contact-address-province"
                     @errorMessage={{@model.address.error.province.validation}}
@@ -143,7 +148,7 @@
                       />
                     </:content>
                   </Item>
-                </:manual-address-input>
+                </:common-input>
               </AddressSearch>
             </:left>
             <:right as |Item|>

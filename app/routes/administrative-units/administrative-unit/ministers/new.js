@@ -9,7 +9,16 @@ import ministerValidations, {
 
 export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute extends Route {
   @service store;
+  @service currentSession;
+  @service router;
 
+  beforeModel() {
+    if (!this.currentSession.canEdit) {
+      this.router.transitionTo('route-not-found', {
+        wildcard: 'pagina-niet-gevonden',
+      });
+    }
+  }
   async model({ personId }, transition) {
     if (personId) {
       transition.data.person = await this.store.findRecord('person', personId);

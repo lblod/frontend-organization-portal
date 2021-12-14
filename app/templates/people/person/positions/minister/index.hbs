@@ -12,14 +12,21 @@
         {{@model.person.familyName}}
       </:subtitle>
       <:action>
-        <AuLink
-          @route="people.person.positions.minister.edit"
-          @skin="button-secondary"
-          @icon="pencil"
-          @iconAlignment="left"
-        >
-          Bewerk
-        </AuLink>
+        <SecuredArea>
+          <:edit>
+            <AuLink
+              @route="people.person.positions.minister.edit"
+              @skin="button-secondary"
+              @icon="pencil"
+              @iconAlignment="left"
+            >
+              Bewerk
+            </AuLink>
+          </:edit>
+          <:read-only>
+            <ReportWrongData />
+          </:read-only>
+        </SecuredArea>
       </:action>
     </PageHeader>
 
@@ -116,14 +123,18 @@
             <:left as |Item|>
               <Item>
                 <:label>Startdatum</:label>
-                <:content>{{date-format @model.minister.agentStartDate}}</:content>
+                <:content>{{date-format
+                    @model.minister.agentStartDate
+                  }}</:content>
               </Item>
             </:left>
             <:right as |Item|>
               {{#if @model.minister.agentEndDate}}
                 <Item>
                   <:label>Einddatum</:label>
-                  <:content>{{date-format @model.minister.agentEndDate}}</:content>
+                  <:content>{{date-format
+                      @model.minister.agentEndDate
+                    }}</:content>
                 </Item>
               {{/if}}
             </:right>
@@ -140,7 +151,9 @@
             <:left as |Item|>
               <Item>
                 <:label>FOD Financiering?</:label>
-                <:content>{{receives-financing @model.minister.financing.id}}</:content>
+                <:content>{{receives-financing
+                    @model.minister.financing.id
+                  }}</:content>
               </Item>
             </:left>
           </Card.Columns>
