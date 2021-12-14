@@ -4,8 +4,8 @@
     <:title>Bewerk betrokken lokale besturen</:title>
     <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
     <:action>
-      <div class="au-o-flow au-d-component">
-        <div>
+      <div>
+        <AuButtonGroup class="au-c-button-group--align-right">
           <AuButton
             @loading={{this.save.isRunning}}
             @disabled={{this.save.isRunning}}
@@ -20,11 +20,10 @@
           >
             Annuleer
           </AuLink>
-        </div>
+        </AuButtonGroup>
         <ReportWrongData />
 
       </div>
-
     </:action>
   </PageHeader>
 
