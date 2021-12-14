@@ -4,15 +4,20 @@
     {{@model.person.familyName}}</:subtitle>
   <:alert>
     <SecuredArea>
-      <AuAlert
-        @alertIcon="info-circle"
-        @alertskin="info"
-        @alertsize="small"
-        class="au-u-margin-bottom-small au-u-margin-top-small"
-      >
-        <p>Momenteel kan u de contactgegevens enkel bewerken via het
-          bestuursorgaan waar de persoon een positie heeft.</p>
-      </AuAlert>
+      <:edit>
+        <AuAlert
+          @alertIcon="info-circle"
+          @alertskin="info"
+          @alertsize="small"
+          class="au-u-margin-bottom-small au-u-margin-top-small"
+        >
+          <p>Momenteel kan u de contactgegevens enkel bewerken via het
+            bestuursorgaan waar de persoon een positie heeft.</p>
+        </AuAlert>
+      </:edit>
+      <:read-only>
+        <ReportWrongData />
+      </:read-only>
     </SecuredArea>
   </:alert>
 </PageHeader>

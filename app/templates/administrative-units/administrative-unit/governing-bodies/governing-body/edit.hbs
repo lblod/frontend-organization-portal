@@ -6,6 +6,9 @@
         {{@model.governingBodyClassification.label}}
         {{@model.administrativeUnit.name}}
       </:subtitle>
+        <:action>
+          <ReportWrongData />
+        </:action>
     </PageHeader>
     <form
       id="edit-governing-body-form"

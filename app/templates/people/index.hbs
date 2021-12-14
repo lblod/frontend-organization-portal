@@ -57,16 +57,18 @@
             </:title>
             <:alert>
               <SecuredArea>
-                <AuAlert
-                  @alertIcon="info-circle"
-                  @alertTitle="Momenteel kan u nog geen nieuwe personen toevoegen."
-                  @alertskin="info"
-                  @alertsize="small"
-                  class="au-u-margin-bottom-small au-u-margin-top-small"
-                >
-                  <p>De gegevens van personen die reeds een positie hebben, kan
-                    u beheren via 'Bestuursorganen' of 'Bedienaren'.</p>
-                </AuAlert>
+                <:edit>
+                  <AuAlert
+                    @alertIcon="info-circle"
+                    @alertTitle="Momenteel kan u nog geen nieuwe personen toevoegen."
+                    @alertskin="info"
+                    @alertsize="small"
+                    class="au-u-margin-bottom-small au-u-margin-top-small"
+                  >
+                    <p>De gegevens van personen die reeds een positie hebben,
+                      kan u beheren via 'Bestuursorganen' of 'Bedienaren'.</p>
+                  </AuAlert>
+                </:edit>
               </SecuredArea>
             </:alert>
           </PageHeader>

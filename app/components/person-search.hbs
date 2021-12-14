@@ -3,14 +3,23 @@
   aria-label="people-search-form"
   {{on "submit" (perform this.searchPeopleTask)}}
 >
-<SecuredArea>
-  <p class="au-u-margin-bottom">
-    <b class="au-u-medium">Zoek een reeds gekende persoon in de databank op naam of op rijksregisternummer, of</b>
-    <AuLink @route="people.new" @query={{hash redirectUrl=@personCreationRedirectUrl}}>
-      voeg een nieuwe persoon toe.
-    </AuLink>
-  </p>
-</SecuredArea>
+  <SecuredArea>
+    <:edit>
+      <p class="au-u-margin-bottom">
+        <b class="au-u-medium">Zoek een reeds gekende persoon in de databank op
+          naam of op rijksregisternummer, of</b>
+        <AuLink
+          @route="people.new"
+          @query={{hash redirectUrl=@personCreationRedirectUrl}}
+        >
+          voeg een nieuwe persoon toe.
+        </AuLink>
+      </p>
+    </:edit>
+    <:read-only>
+      <ReportWrongData />
+    </:read-only>
+  </SecuredArea>
   <EditCard>
     <:title>Persoon zoeken</:title>
     <:card as |Card|>

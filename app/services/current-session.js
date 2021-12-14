@@ -7,6 +7,8 @@ const EDITOR_ROLES = [
   'ABBOrganisatiePortaalGebruiker-beheerder',
 ];
 
+const READER_ROLES = ['ABBOrganisatiePortaalGebruiker-lezer'];
+
 export default class CurrentSessionService extends Service {
   @service session;
   @service store;
@@ -35,5 +37,11 @@ export default class CurrentSessionService extends Service {
 
   get canEdit() {
     return this.roles.some((role) => EDITOR_ROLES.includes(role));
+  }
+
+  get canOnlyRead() {
+    return (
+      !this.canEdit && this.roles.some((role) => READER_ROLES.includes(role))
+    );
   }
 }

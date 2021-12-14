@@ -3,19 +3,24 @@
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
   <:alert>
     <SecuredArea>
-      <AuAlert
-        @alertIcon="info-circle"
-        @alertskin="info"
-        @alertsize="small"
-        class="au-u-margin-bottom-small au-u-margin-top-small"
-      >
-        <p>Stuur een
-          <a
-            class="au-c-link"
-            href="mailto: organisaties.abb@vlaanderen.be"
-          >mail naar de helpdesk</a>
-          om een nieuw bestuursorgaan te laten aanmaken.</p>
-      </AuAlert>
+      <:edit>
+        <AuAlert
+          @alertIcon="info-circle"
+          @alertskin="info"
+          @alertsize="small"
+          class="au-u-margin-bottom-small au-u-margin-top-small"
+        >
+          <p>Stuur een
+            <a
+              class="au-c-link"
+              href="mailto: organisaties.abb@vlaanderen.be"
+            >mail naar de helpdesk</a>
+            om een nieuw bestuursorgaan te laten aanmaken.</p>
+        </AuAlert>
+      </:edit>
+      <:read-only>
+        <ReportWrongData />
+      </:read-only>
     </SecuredArea>
   </:alert>
 </PageHeader>
@@ -31,7 +36,9 @@
       <th class="au-c-data-table__header-title">Periode</th>
       <th class="au-c-data-table__header-title">Status</th>
       <SecuredArea>
-        <th></th>
+        <:edit>
+          <th></th>
+        </:edit>
       </SecuredArea>
     </c.header>
     <c.body as |governingBody|>
@@ -46,14 +53,16 @@
       <td>{{governingBody.period}}</td>
       <td><GoverningBodyStatus @date={{governingBody.endDate}} /></td>
       <SecuredArea>
-        <td>
-          <AuLink
-            @route="administrative-units.administrative-unit.governing-bodies.governing-body.edit"
-            @model={{governingBody.id}}
-          >
-            Bewerk
-          </AuLink>
-        </td>
+        <:edit>
+          <td>
+            <AuLink
+              @route="administrative-units.administrative-unit.governing-bodies.governing-body.edit"
+              @model={{governingBody.id}}
+            >
+              Bewerk
+            </AuLink>
+          </td>
+        </:edit>
       </SecuredArea>
     </c.body>
   </t.content>

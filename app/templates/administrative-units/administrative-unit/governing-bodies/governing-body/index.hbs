@@ -8,14 +8,19 @@
       <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
       <:action>
         <SecuredArea>
-          <AuLink
-            @route="administrative-units.administrative-unit.governing-bodies.governing-body.edit"
-            @skin="button-secondary"
-            @icon="pencil"
-            @iconAlignment="left"
-          >
-            Bewerk
-          </AuLink>
+          <:edit>
+            <AuLink
+              @route="administrative-units.administrative-unit.governing-bodies.governing-body.edit"
+              @skin="button-secondary"
+              @icon="pencil"
+              @iconAlignment="left"
+            >
+              Bewerk
+            </AuLink>
+          </:edit>
+          <:read-only>
+            <ReportWrongData />
+          </:read-only>
         </SecuredArea>
       </:action>
     </PageHeader>
@@ -70,14 +75,16 @@
         </AuToolbarGroup>
         <AuToolbarGroup>
           <SecuredArea>
-            <AuLink
-              @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
-              @skin="button"
-              @icon="add"
-              @iconAlignment="left"
-            >
-              Nieuw
-            </AuLink>
+            <:edit>
+              <AuLink
+                @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
+                @skin="button"
+                @icon="add"
+                @iconAlignment="left"
+              >
+                Nieuw
+              </AuLink>
+            </:edit>
           </SecuredArea>
         </AuToolbarGroup>
       </AuToolbar>
@@ -106,7 +113,9 @@
             <th class="au-c-data-table__header-title">Start mandaat</th>
             <th class="au-c-data-table__header-title">Einde mandaat</th>
             <SecuredArea>
-              <th></th>
+              <:edit>
+                <th></th>
+              </:edit>
             </SecuredArea>
           </c.header>
           <c.body as |mandatory|>
@@ -148,18 +157,20 @@
               {{/if}}
             </td>
             <SecuredArea>
-              <td>
-                <AuLink
-                  @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
-                  @models={{array
-                    @model.administrativeUnit.id
-                    @model.governingBody.id
-                    mandatory.id
-                  }}
-                >
-                  Bewerk
-                </AuLink>
-              </td>
+              <:edit>
+                <td>
+                  <AuLink
+                    @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
+                    @models={{array
+                      @model.administrativeUnit.id
+                      @model.governingBody.id
+                      mandatory.id
+                    }}
+                  >
+                    Bewerk
+                  </AuLink>
+                </td>
+              </:edit>
             </SecuredArea>
           </c.body>
         </t.content>
@@ -173,14 +184,16 @@
         </AuToolbarGroup>
         <AuToolbarGroup>
           <SecuredArea>
-            <AuLink
-              @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
-              @skin="button"
-              @icon="add"
-              @iconAlignment="left"
-            >
-              Nieuw
-            </AuLink>
+            <:edit>
+              <AuLink
+                @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
+                @skin="button"
+                @icon="add"
+                @iconAlignment="left"
+              >
+                Nieuw
+              </AuLink>
+            </:edit>
           </SecuredArea>
         </AuToolbarGroup>
       </AuToolbar>
@@ -209,7 +222,9 @@
             <th class="au-c-data-table__header-title">Start mandaat</th>
             <th class="au-c-data-table__header-title">Einde mandaat</th>
             <SecuredArea>
-              <th></th>
+              <:edit>
+                <th></th>
+              </:edit>
             </SecuredArea>
           </c.header>
           <c.body as |mandatory|>
@@ -250,18 +265,20 @@
               {{/if}}
             </td>
             <SecuredArea>
-              <td>
-                <AuLink
-                  @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
-                  @models={{array
-                    @model.administrativeUnit.id
-                    @model.governingBody.id
-                    mandatory.id
-                  }}
-                >
-                  Bewerk
-                </AuLink>
-              </td>
+              <:edit>
+                <td>
+                  <AuLink
+                    @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
+                    @models={{array
+                      @model.administrativeUnit.id
+                      @model.governingBody.id
+                      mandatory.id
+                    }}
+                  >
+                    Bewerk
+                  </AuLink>
+                </td>
+              </:edit>
             </SecuredArea>
           </c.body>
         </t.content>

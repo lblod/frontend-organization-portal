@@ -13,14 +13,19 @@
       </:subtitle>
       <:action>
         <SecuredArea>
-          <AuLink
-            @route="people.person.positions.minister.edit"
-            @skin="button-secondary"
-            @icon="pencil"
-            @iconAlignment="left"
-          >
-            Bewerk
-          </AuLink>
+          <:edit>
+            <AuLink
+              @route="people.person.positions.minister.edit"
+              @skin="button-secondary"
+              @icon="pencil"
+              @iconAlignment="left"
+            >
+              Bewerk
+            </AuLink>
+          </:edit>
+          <:read-only>
+            <ReportWrongData />
+          </:read-only>
         </SecuredArea>
       </:action>
     </PageHeader>
