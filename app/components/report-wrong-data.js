@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 
 export default class ReportWrongDataComponent extends Component {
   get subject() {
-    return encodeURIComponent('Melden van onvolledige of foutieve data');
+    return 'Melden van onvolledige of foutieve data';
   }
 
   get body() {
