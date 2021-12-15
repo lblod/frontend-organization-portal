@@ -14,7 +14,22 @@
         {{@model.person.familyName}}
       </:subtitle>
       <:action>
-        <ReportWrongData />
+        <div>
+          {{! TODO: add "Voorwaarde" section once file uploads are supported }}
+          <AuButtonGroup class="au-c-button-group--align-right">
+            <AuButton
+              @loading={{this.save.isRunning}}
+              @disabled={{this.save.isRunning}}
+              type="submit"
+            >
+              Opslaan
+            </AuButton>
+            <AuButton @skin="secondary" {{on "click" this.cancel}}>
+              Annuleer
+            </AuButton>
+          </AuButtonGroup>
+          <ReportWrongData />
+        </div>
       </:action>
     </PageHeader>
 
@@ -280,20 +295,6 @@
         </:card>
       </EditCard>
 
-      {{! TODO: add "Voorwaarde" section once file uploads are supported }}
-
-      <AuButtonGroup>
-        <AuButton
-          @loading={{this.save.isRunning}}
-          @disabled={{this.save.isRunning}}
-          type="submit"
-        >
-          Opslaan
-        </AuButton>
-        <AuButton @skin="secondary" {{on "click" this.cancel}}>
-          Annuleer
-        </AuButton>
-      </AuButtonGroup>
     </form>
   </div>
 </div>
