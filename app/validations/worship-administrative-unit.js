@@ -32,23 +32,20 @@ export function getStructuredIdentifierKBOValidations(store) {
   };
 }
 
-function validateKBONumbers(newKboNumber) {
-  if (!newKboNumber.match(/[^$,.\d]/) && newKboNumber.length === 10) {
-    return true;
-  }
-  return {
-    message: 'Vul het (tiencijferige) KBO nummer in.',
-  };
-}
-
 function validateKBO(store) {
   return async (key, newKboNumber, currentKboNumber) => {
     if (isBlank(newKboNumber)) {
       return true;
     }
 
+    if (newKboNumber.match(/[^$,.\d]/) || newKboNumber.length !== 10) {
+      return {
+        message: 'Vul het (tiencijferige) KBO nummer in.',
+      };
+    }
+
     if (newKboNumber === currentKboNumber) {
-      return validateKBONumbers(newKboNumber);
+      return true;
     }
 
     let records = await store.query('worship-administrative-unit', {
@@ -64,7 +61,7 @@ function validateKBO(store) {
     });
 
     if (records.length === 0) {
-      return validateKBONumbers(newKboNumber);
+      return true;
     }
 
     // ember-changeset-validations doesn't support adding metadata to error messages
