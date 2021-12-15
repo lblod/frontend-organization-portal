@@ -4,6 +4,22 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <PageHeader class="au-u-margin au-u-margin-bottom-large">
     <:title>Voeg bestuurseenheid toe</:title>
+    <:action>
+      <AuButtonGroup>
+        <AuButton
+          @loading={{this.createAdministrativeUnitTask.isRunning}}
+          type="submit"
+          @icon="add"
+          @iconAlignment="left"
+        >
+          Voeg toe
+        </AuButton>
+
+        <AuLink @route="administrative-units" @skin="button-secondary">
+          Annuleer
+        </AuLink>
+      </AuButtonGroup>
+    </:action>
   </PageHeader>
 
   <form
@@ -366,20 +382,5 @@
         </Card.Columns>
       </:card>
     </EditCard>
-
-    <AuButtonGroup>
-      <AuButton
-        @loading={{this.createAdministrativeUnitTask.isRunning}}
-        type="submit"
-        @icon="add"
-        @iconAlignment="left"
-      >
-        Voeg toe
-      </AuButton>
-
-      <AuLink @route="administrative-units" @skin="button-secondary">
-        Annuleer
-      </AuLink>
-    </AuButtonGroup>
   </form>
 </div>

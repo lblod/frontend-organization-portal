@@ -6,9 +6,27 @@
         {{@model.governingBodyClassification.label}}
         {{@model.administrativeUnit.name}}
       </:subtitle>
-        <:action>
+      <:action>
+        <div>
+          <AuButtonGroup>
+            <AuButton
+              @loading={{this.save.isRunning}}
+              @disabled={{this.save.isRunning}}
+              type="submit"
+            >
+              Opslaan
+            </AuButton>
+
+            <AuLink
+              @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+              @skin="button-secondary"
+            >
+              Annuleer
+            </AuLink>
+          </AuButtonGroup>
           <ReportWrongData />
-        </:action>
+        </div>
+      </:action>
     </PageHeader>
     <form
       id="edit-governing-body-form"
@@ -67,23 +85,6 @@
             </Card.Columns>
           </:card>
         </EditCard>
-
-        <AuButtonGroup>
-          <AuButton
-            @loading={{this.save.isRunning}}
-            @disabled={{this.save.isRunning}}
-            type="submit"
-          >
-            Opslaan
-          </AuButton>
-
-          <AuLink
-            @route="administrative-units.administrative-unit.governing-bodies.governing-body"
-            @skin="button-secondary"
-          >
-            Annuleer
-          </AuLink>
-        </AuButtonGroup>
       </div>
     </form>
   </div>

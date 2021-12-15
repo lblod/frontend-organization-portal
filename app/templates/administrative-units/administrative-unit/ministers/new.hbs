@@ -5,6 +5,27 @@
   <PageHeader class="au-u-margin au-u-margin-bottom-large">
     <:title>Voeg bedienaar toe</:title>
     <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+    <:action>
+      {{! TODO: add "Voorwaarde" section once file uploads are supported }}
+
+      <AuButtonGroup>
+        <AuButton
+          @icon="add"
+          @iconAlignment="left"
+          @loading={{this.createMinisterPositionTask.isRunning}}
+          @disabled={{this.createMinisterPositionTask.isRunning}}
+          type="submit"
+        >
+          Voeg toe
+        </AuButton>
+        <AuLink
+          @route="administrative-units.administrative-unit.ministers"
+          @skin="button-secondary"
+        >
+          Annuleer
+        </AuLink>
+      </AuButtonGroup>
+    </:action>
   </PageHeader>
 
   {{#if this.isSelectingTargetPerson}}
@@ -312,25 +333,6 @@
         </:card>
       </EditCard>
 
-      {{! TODO: add "Voorwaarde" section once file uploads are supported }}
-
-      <AuButtonGroup>
-        <AuButton
-          @icon="add"
-          @iconAlignment="left"
-          @loading={{this.createMinisterPositionTask.isRunning}}
-          @disabled={{this.createMinisterPositionTask.isRunning}}
-          type="submit"
-        >
-          Voeg toe
-        </AuButton>
-        <AuLink
-          @route="administrative-units.administrative-unit.ministers"
-          @skin="button-secondary"
-        >
-          Annuleer
-        </AuLink>
-      </AuButtonGroup>
     </form>
   {{/if}}
 </div>

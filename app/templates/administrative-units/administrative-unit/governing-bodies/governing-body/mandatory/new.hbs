@@ -5,6 +5,25 @@
   <PageHeader class="au-u-margin au-u-margin-bottom-large">
     <:title>Voeg mandataris toe</:title>
     <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+    <:action>
+      <AuButtonGroup>
+        <AuButton
+          @icon="add"
+          @iconAlignment="left"
+          @loading={{this.createMandatoryPositionTask.isRunning}}
+          @disabled={{this.createMandatoryPositionTask.isRunning}}
+          type="submit"
+        >
+          Voeg toe
+        </AuButton>
+        <AuLink
+          @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+          @skin="button-secondary"
+        >
+          Annuleer
+        </AuLink>
+      </AuButtonGroup>
+    </:action>
   </PageHeader>
 
   {{#if this.isSelectingTargetPerson}}
@@ -328,24 +347,6 @@
           </Card.Columns>
         </:card>
       </EditCard>
-
-      <AuButtonGroup>
-        <AuButton
-          @icon="add"
-          @iconAlignment="left"
-          @loading={{this.createMandatoryPositionTask.isRunning}}
-          @disabled={{this.createMandatoryPositionTask.isRunning}}
-          type="submit"
-        >
-          Voeg toe
-        </AuButton>
-        <AuLink
-          @route="administrative-units.administrative-unit.governing-bodies.governing-body"
-          @skin="button-secondary"
-        >
-          Annuleer
-        </AuLink>
-      </AuButtonGroup>
     </form>
   {{/if}}
 </div>

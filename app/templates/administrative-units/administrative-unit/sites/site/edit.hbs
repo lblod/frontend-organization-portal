@@ -7,7 +7,25 @@
         {{@model.administrativeUnit.name}}
       </:subtitle>
       <:action>
-        <ReportWrongData />
+        <div>
+          <AuButtonGroup>
+            <AuButton
+              @loading={{this.save.isRunning}}
+              @disabled={{this.save.isRunning}}
+              type="submit"
+            >
+              Opslaan
+            </AuButton>
+
+            <AuLink
+              @route="administrative-units.administrative-unit.sites.site"
+              @skin="button-secondary"
+            >
+              Annuleer
+            </AuLink>
+          </AuButtonGroup>
+          <ReportWrongData />
+        </div>
       </:action>
     </PageHeader>
 
@@ -213,23 +231,6 @@
             </Card.Columns>
           </:card>
         </EditCard>
-
-        <AuButtonGroup>
-          <AuButton
-            @loading={{this.save.isRunning}}
-            @disabled={{this.save.isRunning}}
-            type="submit"
-          >
-            Opslaan
-          </AuButton>
-
-          <AuLink
-            @route="administrative-units.administrative-unit.sites.site"
-            @skin="button-secondary"
-          >
-            Annuleer
-          </AuLink>
-        </AuButtonGroup>
       </div>
     </form>
   </div>
