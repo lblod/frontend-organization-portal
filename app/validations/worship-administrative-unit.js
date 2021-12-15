@@ -28,14 +28,20 @@ export default {
 
 export function getStructuredIdentifierKBOValidations(store) {
   return {
-    localId: validateKBOUniqueness(store),
+    localId: validateKBO(store),
   };
 }
 
-function validateKBOUniqueness(store) {
+function validateKBO(store) {
   return async (key, newKboNumber, currentKboNumber) => {
     if (isBlank(newKboNumber)) {
       return true;
+    }
+
+    if (newKboNumber.match(/[^$,.\d]/) || newKboNumber.length !== 10) {
+      return {
+        message: 'Vul het (tiencijferige) KBO nummer in.',
+      };
     }
 
     if (newKboNumber === currentKboNumber) {
