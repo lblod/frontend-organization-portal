@@ -9,6 +9,7 @@
         <AuButton
           @loading={{this.createAdministrativeUnitTask.isRunning}}
           type="submit"
+          form="administrative-unit-creation-form"
           @icon="add"
           @iconAlignment="left"
         >
@@ -24,6 +25,7 @@
 
   <form
     class="au-o-box au-o-flow au-o-flow--large"
+    id="administrative-unit-creation-form"
     aria-label="administrative-unit-creation-form"
     {{on "submit" (perform this.createAdministrativeUnitTask)}}
   >
