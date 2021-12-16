@@ -7,7 +7,7 @@
     <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
 
     <:action>
-      {{#if this.isSelectingTargetPerson}}
+      {{#unless this.isSelectingTargetPerson}}
         {{! TODO: add "Voorwaarde" section once file uploads are supported }}
         <AuButtonGroup class="au-c-button-group--align-right">
           <AuButton
@@ -27,7 +27,7 @@
             Annuleer
           </AuLink>
         </AuButtonGroup>
-      {{/if}}
+      {{/unless}}
     </:action>
   </PageHeader>
 

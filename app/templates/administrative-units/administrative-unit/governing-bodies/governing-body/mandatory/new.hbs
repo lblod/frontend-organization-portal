@@ -6,7 +6,7 @@
     <:title>Voeg mandataris toe</:title>
     <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
     <:action>
-      {{#if this.isSelectingTargetPerson}}
+      {{#unless this.isSelectingTargetPerson }}
         <AuButtonGroup class="au-c-button-group--align-right">
           <AuButton
             @icon="add"
@@ -25,7 +25,7 @@
             Annuleer
           </AuLink>
         </AuButtonGroup>
-      {{/if}}
+      {{/unless}}
     </:action>
   </PageHeader>
 
