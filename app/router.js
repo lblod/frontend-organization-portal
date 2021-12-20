@@ -83,6 +83,7 @@ Router.map(function () {
           { path: '/veranderingsgebeurtenissen' },
           function () {
             this.route('details', { path: '/:changeEventId' }, function () {});
+            this.route('new', { path: '/nieuw' });
           }
         );
       });
