@@ -1,0 +1,51 @@
+<PageHeader class="au-o-box">
+  <:title>Veranderingsgebeurtenissen</:title>
+  <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+</PageHeader>
+
+<AuDataTable
+  @content={{@model.changeEventResults}}
+  @noDataMessage="Geen veranderingsgebeurtenissen"
+  @isLoading={{this.showTableLoader}}
+  @page={{this.page}}
+  @size={{this.size}}
+  as |t|
+>
+  <t.content as |c|>
+    <c.header>
+      <AuDataTableThSortable
+        @field="result-from.type.label"
+        @currentSorting={{this.sort}}
+        @label="Type veranderingsgebeurtenis"
+      />
+      <AuDataTableThSortable
+        @field="result-from.date"
+        @currentSorting={{this.sort}}
+        @label="Datum"
+      />
+      <AuDataTableThSortable
+        @field="result-from.description"
+        @currentSorting={{this.sort}}
+        @label="Beschrijving"
+      />
+      <AuDataTableThSortable
+        @field="status.label"
+        @currentSorting={{this.sort}}
+        @label="Resulterende status"
+      />
+    </c.header>
+    <c.body as |changeEventResult|>
+      {{#let changeEventResult.resultFrom as |changeEvent|}}
+        <td>
+          {{! TODO: Replace this with a link to the "details" route once it is created }}
+          {{changeEvent.type.label}}
+        </td>
+        <td>{{date-format changeEvent.date}}</td>
+        <td>{{changeEvent.description}}</td>
+        <td>
+          <OrganizationStatus @status={{changeEventResult.status}} />
+        </td>
+      {{/let}}
+    </c.body>
+  </t.content>
+</AuDataTable>
