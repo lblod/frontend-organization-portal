@@ -87,7 +87,7 @@
           <Card.Columns>
             <:left as |Item|>
               {{#each
-                @model.changeEvent.originalOrganization
+                @model.changeEvent.originalOrganizations
                 as |organization|
               }}
                 <Item>
@@ -110,9 +110,9 @@
                   <:content>
                     <AuLink
                       @route="administrative-units.administrative-unit"
-                      @model={{@model.changeEvent.resultingOrganization.firstObject.id}}
+                      @model={{@model.changeEvent.resultingOrganizations.firstObject.id}}
                     >
-                      {{@model.changeEvent.resultingOrganization.firstObject.name}}
+                      {{@model.changeEvent.resultingOrganizations.firstObject.name}}
                     </AuLink>
                   </:content>
                 </Item>

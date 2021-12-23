@@ -17,12 +17,12 @@ export default class ChangeEventModel extends Model {
   @hasMany('organization', {
     inverse: 'resultedFrom',
   })
-  resultingOrganization;
+  resultingOrganizations;
 
   @hasMany('organization', {
     inverse: 'changedBy',
   })
-  originalOrganization;
+  originalOrganizations;
 
   @hasMany('change-event-result', {
     inverse: 'resultFrom',

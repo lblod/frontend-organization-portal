@@ -21,8 +21,8 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsInd
         include: [
           'type',
           'decision',
-          'original-organization',
-          'resulting-organization',
+          'original-organizations',
+          'resulting-organizations',
           'results.resulting-organization',
           'results.status',
         ].join(),
