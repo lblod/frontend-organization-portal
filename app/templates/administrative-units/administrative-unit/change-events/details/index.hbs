@@ -36,12 +36,14 @@
               <:label>Type veranderingsgebeurtenis</:label>
               <:content>{{@model.changeEvent.type.label}}</:content>
             </Item>
-            <Item>
-              <:label>Beschrijving</:label>
-              <:content>
-                {{@model.changeEvent.description}}
-              </:content>
-            </Item>
+            {{#if @model.changeEvent.description}}
+              <Item>
+                <:label>Beschrijving</:label>
+                <:content>
+                  {{@model.changeEvent.description}}
+                </:content>
+              </Item>
+            {{/if}}
             {{#let @model.changeEvent.decision.documentLink as |documentLink|}}
               {{#if documentLink}}
                 <Item>
