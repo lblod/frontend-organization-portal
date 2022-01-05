@@ -87,12 +87,12 @@
             @label="Achternaam"
           />
           <AuDataTableThSortable
-            @field="mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.name"
+            @field="mandates.organization-name"
             @currentSorting={{this.sort}}
             @label="Organisatie"
           />
           <AuDataTableThSortable
-            @field="mandatories.mandate.role-board.label"
+            @field="mandates.position-name"
             @currentSorting={{this.sort}}
             @label="Positie"
           />
@@ -114,7 +114,6 @@
           </TableMessage>
         {{else}}
           <c.body as |person|>
-            {{#let person.mandatories.firstObject as |mandatory|}}
               <td>
                 <AuLink @route="people.person" @model={{person.id}}>
                   {{person.givenName}}
@@ -126,34 +125,28 @@
                 </AuLink>
               </td>
               <td>
-                {{#let
-                  mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit
-                  as |administrativeUnit|
-                }}
-                  {{#if administrativeUnit}}
+                  {{#if person.organizationId}}
                     <AuLink
                       @route="administrative-units.administrative-unit"
-                      @model={{administrativeUnit.id}}
+                      @model={{person.organizationId}}
                     >
-                      {{administrativeUnit.name}}
+                      {{person.organizationName}}
                     </AuLink>
                   {{/if}}
-                {{/let}}
               </td>
               <td>
                 <AuLink
                   @route="people.person.positions.mandatory"
-                  @models={{array person.id mandatory.id}}
+                  @models={{array person.id person.mandatoryId}}
                 >
-                  {{mandatory.mandate.roleBoard.label}}
+                  {{person.positionName}}
                 </AuLink>
               </td>
               <td>
-                {{#if mandatory}}
-                  <PositionStatus @endDate={{mandatory.endDate}} />
+                {{#if person.endDate}}
+                  <PositionStatus @endDate={{person.endDate}} />
                 {{/if}}
               </td>
-            {{/let}}
           </c.body>
         {{/if}}
       </t.content>

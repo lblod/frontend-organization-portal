@@ -67,14 +67,6 @@ export default class PeopleIndexRoute extends Route {
         direction = 'desc';
         sortBy = sortBy.substring(1);
       }
-      // todo quick fix
-      if (
-        sortBy ===
-        'mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.name'
-      ) {
-        sortBy = 'mandates.organization-name';
-      }
-      console.log(sortBy);
       q.push(`sort[${transformFieldForElk(sortBy)}.field]=${direction}`);
     }
     q.push(`page[number]=${params.page}`);
@@ -99,7 +91,8 @@ export default class PeopleIndexRoute extends Route {
       params.size,
       count
     );
-    const entries = A(data.map(this.mapResult));
+
+    const entries = A(data.map(this.mapResult).flat());
 
     return ArrayProxy.create({
       content: entries,
@@ -153,15 +146,46 @@ export default class PeopleIndexRoute extends Route {
     return pagination;
   }
 
+  // purpose of the poc. this is not intended to be prod ready
   mapResult(res) {
     const workaround = JSON.parse(
       JSON.stringify(res.attributes).replace(/(_\w)/g, (entry) =>
         entry[1].toUpperCase()
       )
     );
-    const entry = workaround;
-    entry.id = res.id;
-    console.log(entry);
-    return entry;
+
+    let frankensteinObj = {
+      id: res.id,
+      familyName: workaround.familyName,
+      givenName: workaround.givenName,
+      firstNameUsed: workaround.firstNameUsed,
+      uri: workaround.uri,
+    };
+    let tempMandates = workaround.mandates;
+    if (!tempMandates) {
+      tempMandates = [];
+    }
+    if (!Array.isArray(tempMandates)) {
+      tempMandates = [tempMandates];
+    }
+    const mandates = tempMandates.map((m) => {
+      let copy = { ...frankensteinObj };
+      if (m.endDate) {
+        copy.endDate = new Date(m.endDate);
+        console.log(copy.endDate);
+      }
+      copy.organizationId = m.organizationId;
+      copy.organizationMunicipality = m.organizationMunicipality;
+      copy.organizationName = m.organizationName;
+      copy.organizationProvince = m.organizationProvince;
+      copy.positionId = m.positionId;
+      copy.positionName = m.positionName;
+      copy.mandatoryId = m.uuid;
+      return copy;
+    });
+    if (!mandates.length) {
+      return [frankensteinObj];
+    }
+    return mandates;
   }
 }
