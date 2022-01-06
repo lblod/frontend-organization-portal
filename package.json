@@ -62,6 +62,7 @@
     "ember-load-initializers": "^2.1.2",
     "ember-maybe-import-regenerator": "^1.0.0",
     "ember-modifier": "^2.1.2",
+    "ember-mu-transform-helpers": "^2.1.2",
     "ember-page-title": "^6.2.2",
     "ember-power-select": "^4.1.6",
     "ember-qunit": "^5.1.5",
