@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import localInvolvementValidations from 'frontend-contact-hub/validations/local-involvement';
+import { CLASSIFICATION_CODE } from 'frontend-contact-hub/models/administrative-unit-classification-code';
 import { INVOLVEMENT_TYPE } from 'frontend-contact-hub/models/involvement-type';
 
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditController extends Controller {
@@ -13,6 +14,10 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   @tracked showTotalFinancingPercentageError = false;
 
   INVOLVEMENT_TYPE = INVOLVEMENT_TYPE;
+  classificationCodes = [
+    CLASSIFICATION_CODE.MUNICIPALITY,
+    CLASSIFICATION_CODE.PROVINCE,
+  ];
 
   get totalFinancingPercentage() {
     return this.model.involvements.reduce((percentageTotal, involvement) => {

@@ -1,4 +1,4 @@
-<div class={{if @error "ember-power-select--error"}}>
+<div class={{if @error "ember-power-select--error"}} ...attributes>
   <PowerSelect
     @allowClear={{@allowClear}}
     @searchEnabled={{true}}
@@ -7,12 +7,15 @@
     @searchMessage="Typ om te zoeken"
     @searchField="name"
     @search={{perform this.loadAdministrativeUnitsTask}}
-    @options={{this.administrativeUnits}}
     @selected={{@selected}}
     @onChange={{@onChange}}
     @triggerId={{@id}}
     as |administrativeUnit|
   >
-    {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
+    {{#if (has-block)}}
+      {{yield administrativeUnit}}
+    {{else}}
+      {{administrativeUnit.name}}
+    {{/if}}
   </PowerSelect>
 </div>

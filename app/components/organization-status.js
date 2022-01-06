@@ -1,9 +1,10 @@
 import Component from '@glimmer/component';
+import { ORGANIZATION_STATUS } from 'frontend-contact-hub/models/organization-status-code';
 
 const ORGANIZATION_STATUS_SKINS = {
-  '63cc561de9188d64ba5840a42ae8f0d6': 'success',
-  abf4fee82019f88cf122f986830621ab: 'warning',
-  d02c4e12bf88d2fdf5123b07f29c9311: 'error',
+  [ORGANIZATION_STATUS.ACTIVE]: 'success',
+  [ORGANIZATION_STATUS.IN_FORMATION]: 'warning',
+  [ORGANIZATION_STATUS.INACTIVE]: 'error',
 };
 
 export default class OrganizationStatusComponent extends Component {

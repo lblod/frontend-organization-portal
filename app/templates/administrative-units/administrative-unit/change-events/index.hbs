@@ -1,6 +1,18 @@
 <PageHeader class="au-o-box">
   <:title>Veranderingsgebeurtenissen</:title>
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+  <:action>
+    <SecuredArea>
+      <:edit>
+    <Button::New
+      @route="administrative-units.administrative-unit.change-events.new"
+    />
+      </:edit>
+      <:read-only>
+        <ReportWrongData />
+      </:read-only>
+    </SecuredArea>
+  </:action>
 </PageHeader>
 
 <AuDataTable
