@@ -4,9 +4,9 @@
   <:action>
     <SecuredArea>
       <:edit>
-    <Button::New
-      @route="administrative-units.administrative-unit.change-events.new"
-    />
+        <Button::New
+          @route="administrative-units.administrative-unit.change-events.new"
+        />
       </:edit>
       <:read-only>
         <ReportWrongData />
@@ -45,6 +45,11 @@
         @currentSorting={{this.sort}}
         @label="Resulterende status"
       />
+      <SecuredArea>
+        <:edit>
+          <th></th>
+        </:edit>
+      </SecuredArea>
     </c.header>
     <c.body as |changeEventResult|>
       {{#let changeEventResult.resultFrom as |changeEvent|}}
@@ -61,6 +66,18 @@
         <td>
           <OrganizationStatus @status={{changeEventResult.status}} />
         </td>
+        <SecuredArea>
+          <:edit>
+            <td>
+              <AuLink
+                @route="administrative-units.administrative-unit.change-events.details.edit"
+                @model={{changeEvent.id}}
+              >
+                Bewerk
+              </AuLink>
+            </td>
+          </:edit>
+        </SecuredArea>
       {{/let}}
     </c.body>
   </t.content>

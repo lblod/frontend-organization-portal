@@ -1,25 +1,18 @@
-{{#let
-  (concat
-    @model.changeEvent.type.label " " (date-format @model.changeEvent.date)
-  )
-  as |title|
-}}
-  {{page-title title}}
-  {{breadcrumb
-    title
-    route="administrative-units.administrative-unit.change-events.details"
-    models=(array @model.administrativeUnit.id @model.changeEvent.id)
-  }}
-{{/let}}
-
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
-      <:title>Veranderingsgebeurtenis:
-        {{@model.changeEvent.type.label}}</:title>
+      <:title>
+        Veranderingsgebeurtenis:
+        {{@model.changeEvent.type.label}}
+      </:title>
       <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
       <:action>
         <SecuredArea>
+          <:edit>
+            <Button::Edit
+              @route="administrative-units.administrative-unit.change-events.details.edit"
+            />
+          </:edit>
           <:read-only>
             <ReportWrongData />
           </:read-only>

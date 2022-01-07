@@ -82,7 +82,9 @@ Router.map(function () {
           'change-events',
           { path: '/veranderingsgebeurtenissen' },
           function () {
-            this.route('details', { path: '/:changeEventId' }, function () {});
+            this.route('details', { path: '/:changeEventId' }, function () {
+              this.route('edit');
+            });
             this.route('new', { path: '/nieuw' });
           }
         );
