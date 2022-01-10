@@ -38,7 +38,15 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewRoute e
       ),
       decision: createValidatedChangeset(decision, decisionValidations),
       formState: new FormState({ currentOrganization: administrativeUnit }),
+      changeEventRecord: changeEvent,
+      decisionRecord: decision,
     };
+  }
+
+  resetController(controller) {
+    super.resetController(...arguments);
+
+    controller.reset();
   }
 }
 

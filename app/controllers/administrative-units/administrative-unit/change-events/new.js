@@ -145,6 +145,15 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       );
     }
   }
+
+  reset() {
+    this.removeUnsavedRecords();
+  }
+
+  removeUnsavedRecords() {
+    this.model.changeEventRecord.rollbackAttributes();
+    this.model.decisionRecord.rollbackAttributes();
+  }
 }
 
 async function createChangeEventResult({
