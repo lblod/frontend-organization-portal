@@ -49,16 +49,27 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
     const { changeEvent, decision, formState } = this.model;
 
+    let shouldSaveDecision = formState.canAddDecisionInformation;
+
     yield formState.validate();
     yield changeEvent.validate();
-    yield decision.validate();
 
-    if (formState.isValid && decision.isValid && changeEvent.isValid) {
-      yield decision.save();
+    if (shouldSaveDecision) {
+      yield decision.validate();
+    }
+
+    if (
+      formState.isValid &&
+      (shouldSaveDecision ? decision.isValid : true) &&
+      changeEvent.isValid
+    ) {
+      if (shouldSaveDecision) {
+        yield decision.save();
+        changeEvent.decision = decision;
+      }
 
       let changeEventType = formState.changeEventType;
       changeEvent.type = changeEventType;
-      changeEvent.decision = decision;
       yield changeEvent.save();
 
       if (changesMultipleOrganizations(changeEventType)) {
@@ -133,6 +144,15 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
         changeEvent.id
       );
     }
+  }
+
+  reset() {
+    this.removeUnsavedRecords();
+  }
+
+  removeUnsavedRecords() {
+    this.model.changeEventRecord.rollbackAttributes();
+    this.model.decisionRecord.rollbackAttributes();
   }
 }
 

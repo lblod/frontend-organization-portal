@@ -26,17 +26,23 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
     );
 
     let changeEventType = await changeEvent.type;
-    let decision = await changeEvent.decision;
+    let canAddDecisionInformation =
+      changeEventType.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED;
 
-    return {
+    let model = {
       ...detailsPageModel,
       changeEvent: createValidatedChangeset(
         changeEvent,
         changeEventValidations
       ),
-      decision: createValidatedChangeset(decision, decisionValidations),
-      canAddDecisionInformation:
-        changeEventType.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED,
+      canAddDecisionInformation,
     };
+
+    if (canAddDecisionInformation) {
+      let decision = await changeEvent.decision;
+      model.decision = createValidatedChangeset(decision, decisionValidations);
+    }
+
+    return model;
   }
 }
