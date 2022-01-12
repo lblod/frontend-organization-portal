@@ -26,8 +26,8 @@
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="classification">Type bestuur</AuLabel>
             <ClassificationSelect
-              @selected={{this.classification}}
-              @onChange={{this.setClassification}}
+              @selected={{this.classificationId}}
+              @onChange={{this.setClassificationId}}
               @allowClear={{true}}
               @id="classification"
             />
@@ -35,8 +35,8 @@
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="recognized-worship-types">Soort eredienst</AuLabel>
             <RecognizedWorshipTypeSelect
-              @selected={{this.recognizedWorshipType}}
-              @onChange={{this.setRecognizedWorshipType}}
+              @selected={{this.recognizedWorshipTypeId}}
+              @onChange={{this.setRecognizedWorshipTypeId}}
               @allowClear={{true}}
               @id="recognized-worship-types"
             />
@@ -101,27 +101,27 @@
             @label="Naam"
           />
           <AuDataTableThSortable
-            @field="classification.label"
+            @field="classification_name"
             @currentSorting={{this.sort}}
             @label="Type bestuur"
           />
           <AuDataTableThSortable
-            @field="recognized-worship-type.label"
+            @field="recognized_worship_type_id"
             @currentSorting={{this.sort}}
             @label="Soort eredienst"
           />
           <AuDataTableThSortable
-            @field="primary-site.address.province"
+            @field="province"
             @currentSorting={{this.sort}}
             @label="Provincie"
           />
           <AuDataTableThSortable
-            @field="primary-site.address.municipality"
+            @field="municipality"
             @currentSorting={{this.sort}}
             @label="Gemeente"
           />
           <AuDataTableThSortable
-            @field="organizationStatus"
+            @field="status"
             @currentSorting={{this.sort}}
             @label="Status"
           />
@@ -154,13 +154,13 @@
                 {{adminUnit.name}}
               </LinkTo>
             </td>
-            <td>{{adminUnit.classification.label}}</td>
-            <td>{{adminUnit.recognizedWorshipType.label}}</td>
-            <td>{{adminUnit.primarySite.address.province}}</td>
-            <td>{{adminUnit.primarySite.address.municipality}}</td>
+            <td>{{adminUnit.classification_name}}</td>
+            <td>{{adminUnit.recognized_worship_type_name}}</td>
+            <td>{{adminUnit.province}}</td>
+            <td>{{adminUnit.municipality}}</td>
             <td>
-              {{#if adminUnit.organizationStatus}}
-                <OrganizationStatus @status={{adminUnit.organizationStatus}} />
+              {{#if adminUnit.status}}
+                <OrganizationStatus @status={{adminUnit.status_id}} @label={{adminUnit.status}} />
               {{/if}}
             </td>
           </c.body>
