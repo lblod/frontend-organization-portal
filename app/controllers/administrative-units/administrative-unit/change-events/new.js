@@ -125,7 +125,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
           }
         }
 
-        yield changeEvent.save();
+        yield changeEvent.save(); // persist the original and resulting organization information
         yield Promise.all(createChangeEventResultsPromises);
       } else {
         yield createChangeEventResult({
@@ -136,8 +136,6 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
           store: this.store,
         });
       }
-
-      yield changeEvent.save();
 
       this.router.transitionTo(
         'administrative-units.administrative-unit.change-events.details',
@@ -167,6 +165,21 @@ async function createChangeEventResult({
     resultingStatusId
   );
 
+  let mostRecentChangeEvent = await findMostRecentChangeEvent(
+    store,
+    resultingOrganization
+  );
+
+  if (
+    !mostRecentChangeEvent ||
+    mostRecentChangeEvent.date <= changeEvent.date
+  ) {
+    // This is the first change event or the new change event is newer
+    // so we should update the organization status as well
+    resultingOrganization.organizationStatus = resultingStatus;
+    await resultingOrganization.save();
+  }
+
   let changeEventResult = store.createRecord('change-event-result');
   changeEventResult.status = resultingStatus;
   changeEventResult.resultingOrganization = resultingOrganization;
@@ -179,4 +192,21 @@ function changesMultipleOrganizations(changeEventType) {
     changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
     changeEventType.id === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
   );
+}
+
+async function findMostRecentChangeEvent(store, organization) {
+  let mostRecentChangeEventResults = await store.query('change-event-result', {
+    'filter[resulting-organization][:id:]': organization.id,
+    include: ['result-from', 'resulting-organization'].join(),
+    page: {
+      size: 1,
+    },
+    sort: '-result-from.date',
+  });
+
+  if (mostRecentChangeEventResults.length > 0) {
+    return await mostRecentChangeEventResults.firstObject.resultFrom;
+  } else {
+    return null;
+  }
 }
