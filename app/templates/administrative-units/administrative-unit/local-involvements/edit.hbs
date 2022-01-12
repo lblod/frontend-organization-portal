@@ -69,7 +69,12 @@
                 @allowClear={{involvement.isNew}}
                 @ariaLabelledBy="administrative-unit"
                 @error={{errorMessage}}
-              />
+                @classificationCodes={{this.classificationCodes}}
+                as |administrativeUnit|
+              >
+                {{administrativeUnit.name}}
+                ({{administrativeUnit.classification.label}})
+              </AdministrativeUnitSelect>
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
               {{/if}}

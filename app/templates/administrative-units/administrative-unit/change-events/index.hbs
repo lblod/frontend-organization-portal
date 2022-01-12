@@ -1,0 +1,84 @@
+<PageHeader class="au-o-box">
+  <:title>Veranderingsgebeurtenissen</:title>
+  <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+  <:action>
+    <SecuredArea>
+      <:edit>
+        <Button::New
+          @route="administrative-units.administrative-unit.change-events.new"
+        />
+      </:edit>
+      <:read-only>
+        <ReportWrongData />
+      </:read-only>
+    </SecuredArea>
+  </:action>
+</PageHeader>
+
+<AuDataTable
+  @content={{@model.changeEventResults}}
+  @noDataMessage="Geen veranderingsgebeurtenissen"
+  @isLoading={{this.showTableLoader}}
+  @page={{this.page}}
+  @size={{this.size}}
+  as |t|
+>
+  <t.content as |c|>
+    <c.header>
+      <AuDataTableThSortable
+        @field="result-from.type.label"
+        @currentSorting={{this.sort}}
+        @label="Type veranderingsgebeurtenis"
+      />
+      <AuDataTableThSortable
+        @field="result-from.date"
+        @currentSorting={{this.sort}}
+        @label="Datum"
+      />
+      <AuDataTableThSortable
+        @field="result-from.description"
+        @currentSorting={{this.sort}}
+        @label="Beschrijving"
+      />
+      <AuDataTableThSortable
+        @field="status.label"
+        @currentSorting={{this.sort}}
+        @label="Resulterende status"
+      />
+      <SecuredArea>
+        <:edit>
+          <th></th>
+        </:edit>
+      </SecuredArea>
+    </c.header>
+    <c.body as |changeEventResult|>
+      {{#let changeEventResult.resultFrom as |changeEvent|}}
+        <td>
+          <AuLink
+            @route="administrative-units.administrative-unit.change-events.details"
+            @model={{changeEvent.id}}
+          >
+            {{changeEvent.type.label}}
+          </AuLink>
+        </td>
+        <td>{{date-format changeEvent.date}}</td>
+        <td>{{changeEvent.description}}</td>
+        <td>
+          <OrganizationStatus @status={{changeEventResult.status}} />
+        </td>
+        <SecuredArea>
+          <:edit>
+            <td>
+              <AuLink
+                @route="administrative-units.administrative-unit.change-events.details.edit"
+                @model={{changeEvent.id}}
+              >
+                Bewerk
+              </AuLink>
+            </td>
+          </:edit>
+        </SecuredArea>
+      {{/let}}
+    </c.body>
+  </t.content>
+</AuDataTable>

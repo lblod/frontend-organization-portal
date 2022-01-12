@@ -1,5 +1,17 @@
 import Model, { attr } from '@ember-data/model';
 
+export const CHANGE_EVENT_TYPE = {
+  NAME_CHANGE: '6651dc69b0ae8f7ff9974e8a23db1dec',
+  AREA_DESCRIPTION_CHANGE: '9f19f14910245f9b14737f1f1a2067f2',
+  RECOGNITION_NOT_GRANTED: '343a00884d012cee6915bc7559cd69ef',
+  RECOGNITION_LIFTED: '4297bc56c1a874240e4566e2c5b8816f',
+  RECOGNITION_REQUESTED: 'a61009aec1f7412685ecad01cefd7955',
+  RECOGNITION_GRANTED: '3dd7550843eaf18e1fa1ca6c6c3f2610',
+  MERGER: 'd7bbc0ea17fccf7ea35c552d757c905f',
+  SUSPENSION_OF_RECOGNITION: '24cb3991eab035c2cebd6f6334b3b67e',
+  SANCTIONED: 'f23e035f1f4b197cbf78e049195f1883',
+};
+
 export default class ChangeEventTypeModel extends Model {
   @attr label;
 }

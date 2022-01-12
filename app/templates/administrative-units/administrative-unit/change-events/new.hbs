@@ -1,0 +1,284 @@
+{{page-title "Nieuwe veranderingsgebeurtenis"}}
+{{breadcrumb
+  "Nieuwe veranderingsgebeurtenis"
+  route="administrative-units.administrative-unit.change-events.new"
+  model=(params-for "administrative-units.administrative-unit" param="id")
+}}
+
+<div class="au-c-body-container au-c-body-container--scroll">
+  <form
+    class="au-o-box au-o-flow au-o-flow--large"
+    {{on "submit" (perform this.createNewChangeEventTask)}}
+  >
+    <PageHeader>
+      <:title>Voeg veranderingsgebeurtenis toe</:title>
+      <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+      <:action>
+        <AuButtonGroup>
+          <AuButton
+            @loading={{this.createNewChangeEventTask.isRunning}}
+            @disabled={{this.createNewChangeEventTask.isRunning}}
+            type="submit"
+          >
+            Opslaan
+          </AuButton>
+          <AuLink
+            @route="administrative-units.administrative-unit.change-events"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>
+        </AuButtonGroup>
+      </:action>
+    </PageHeader>
+
+    <EditCard @containsRequiredFields={{true}}>
+      <:title>Veranderingsgebeurtenis</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item
+              @labelFor="change-event-type"
+              @required={{true}}
+              @errorMessage={{@model.formState.error.changeEventType.validation}}
+            >
+              <:label>Type veranderingsgebeurtenis</:label>
+              <:content as |hasError|>
+                <ChangeEventTypeSelect
+                  @id="change-event-type"
+                  @selected={{@model.formState.changeEventType}}
+                  @onChange={{fn (mut @model.formState.changeEventType)}}
+                  @error={{hasError}}
+                />
+              </:content>
+            </Item>
+            <Item @labelFor="change-event-description">
+              <:label>Beschrijving</:label>
+              <:content>
+                <AuTextarea
+                  @value={{@model.changeEvent.description}}
+                  @width="block"
+                  id="change-event-description"
+                />
+              </:content>
+            </Item>
+            {{#if @model.formState.canAddDecisionInformation}}
+              <Item
+                @labelFor="change-event-decision-link"
+                @errorMessage={{@model.decision.error.documentLink.validation}}
+              >
+                <:label>Link naar besluit</:label>
+                <:content as |hasError|>
+                  <AuInput
+                    @value={{@model.decision.documentLink}}
+                    @width="block"
+                    @error={{hasError}}
+                    id="change-event-decision-link"
+                  />
+                </:content>
+                <:help-text>
+                  {{help-text "url"}}
+                </:help-text>
+              </Item>
+            {{/if}}
+          </:left>
+          <:right as |Item|>
+            <Item
+              @labelFor="change-event-date"
+              @required={{true}}
+              @errorMessage={{@model.changeEvent.error.date.validation}}
+            >
+              <:label>Datum veranderingsgebeurtenis</:label>
+              <:content as |hasError|>
+                <Datepicker
+                  @id="change-event-date"
+                  @value={{@model.changeEvent.date}}
+                  @onChange={{fn (mut @model.changeEvent.date)}}
+                  @error={{hasError}}
+                />
+              </:content>
+            </Item>
+            {{#if @model.formState.canAddDecisionInformation}}
+              <Item @labelFor="change-event-decision-publication-date">
+                <:label>Datum publicatie</:label>
+                <:content>
+                  <Datepicker
+                    @id="change-event-decision-publication-date"
+                    @value={{@model.decision.publicationDate}}
+                    @onChange={{fn (mut @model.decision.publicationDate)}}
+                  />
+                </:content>
+              </Item>
+            {{/if}}
+          </:right>
+        </Card.Columns>
+      </:card>
+    </EditCard>
+
+    {{#if @model.formState.shouldShowExtraInformationCard}}
+      <EditCard>
+        <:title>{{@model.formState.changeEventType.label}}</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item>
+                <:label>Betrokken organisatie</:label>
+                <:content>
+                  {{@model.administrativeUnit.name}}
+                </:content>
+              </Item>
+              {{#each @model.formState.originalOrganizations as |organization|}}
+                <Item>
+                  <:label>Betrokken organisatie</:label>
+                  <:content>
+                    <div class="flex items-center">
+                      <AdministrativeUnitSelect
+                        @selected={{organization}}
+                        @onChange={{fn
+                          @model.formState.updateOriginalOrganization
+                          organization
+                        }}
+                        @classificationCodes={{this.classificationCodes}}
+                        @filter={{this.filterSelectedOriginalOrganizations}}
+                        class="grow"
+                      />
+                      {{#if
+                        (gt @model.formState.originalOrganizations.length 1)
+                      }}
+                        <AuButton
+                          @alert={{true}}
+                          @skin="link"
+                          @icon="bin"
+                          @hideText={{true}}
+                          @size="large"
+                          class="shrink-0"
+                          type="button"
+                          {{on
+                            "click"
+                            (fn
+                              @model.formState.removeOriginalOrganization
+                              organization
+                            )
+                          }}
+                        >
+                          Verwijder
+                        </AuButton>
+                      {{/if}}
+                    </div>
+                  </:content>
+                </Item>
+              {{/each}}
+
+              {{#if @model.formState.isAddingOriginalOrganization}}
+                <Item
+                  @required={{eq
+                    @model.formState.originalOrganizations.length
+                    0
+                  }}
+                  @errorMessage={{@model.formState.error.originalOrganizations.validation}}
+                >
+                  <:label>Betrokken organisatie</:label>
+                  <:content as |hasError|>
+                    <div class="flex items-center">
+                      <AdministrativeUnitSelect
+                        @onChange={{@model.formState.addOriginalOrganization}}
+                        @classificationCodes={{this.classificationCodes}}
+                        @filter={{this.filterSelectedOriginalOrganizations}}
+                        @error={{hasError}}
+                        class="grow"
+                      />
+                      {{#if
+                        (not-eq @model.formState.originalOrganizations.length 0)
+                      }}
+                        <AuButton
+                          @alert={{true}}
+                          @skin="link"
+                          @icon="bin"
+                          @hideText={{true}}
+                          @size="large"
+                          class="shrink-0"
+                          {{on
+                            "click"
+                            (fn
+                              (mut
+                                @model.formState.isAddingOriginalOrganization
+                              )
+                              false
+                            )
+                          }}
+                        >
+                          Verwijder
+                        </AuButton>
+                      {{/if}}
+                    </div>
+                  </:content>
+                </Item>
+              {{else}}
+                <Item>
+                  <:content>
+                    <AuButton
+                      @skin="link"
+                      {{on
+                        "click"
+                        (fn
+                          (mut @model.formState.isAddingOriginalOrganization)
+                          true
+                        )
+                      }}
+                    >
+                      Voeg bijkomende organisatie toe
+                    </AuButton>
+                  </:content>
+                </Item>
+              {{/if}}
+            </:left>
+            <:right as |Item|>
+              {{#if @model.formState.shouldSelectResultingOrganization}}
+                <Item
+                  @required={{true}}
+                  @errorMessage={{@model.formState.error.resultingOrganization.validation}}
+                >
+                  <:label>Resulterende organisatie</:label>
+                  <:content as |hasError|>
+                    {{#if @model.formState.isCentralWorshipService}}
+                      <AdministrativeUnitSelect
+                        @selected={{@model.formState.resultingOrganization}}
+                        @onChange={{fn
+                          (mut @model.formState.resultingOrganization)
+                        }}
+                        @classificationCodes={{this.classificationCodes}}
+                        @filter={{this.filterSelectedOriginalOrganizations}}
+                        @error={{hasError}}
+                      />
+                      <div class="au-u-margin-top-tiny">
+                        <AuLinkExternal
+                          href={{this.administrativeUnitCreationUrl}}
+                        >
+                          Maak resulterende organisatie aan
+                        </AuLinkExternal>
+                        indien deze nog niet bestaat.
+                      </div>
+                    {{else}}
+                      <div class={{if hasError "ember-power-select--error"}}>
+                        <PowerSelect
+                          @options={{@model.formState.allOriginalOrganizations}}
+                          @selected={{@model.formState.resultingOrganization}}
+                          @onChange={{fn
+                            (mut @model.formState.resultingOrganization)
+                          }}
+                          as |organization|
+                        >
+                          {{organization.name}}
+                        </PowerSelect>
+                      </div>
+                    {{/if}}
+                  </:content>
+                </Item>
+              {{/if}}
+            </:right>
+          </Card.Columns>
+        </:card>
+      </EditCard>
+    {{/if}}
+  </form>
+</div>
