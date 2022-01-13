@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
+import { isEmpty } from 'frontend-contact-hub/models/decision';
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEditController extends Controller {
   @service router;
@@ -9,18 +10,28 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
   *save(event) {
     event.preventDefault();
 
-    let { changeEvent, decision } = this.model;
+    let {
+      changeEvent,
+      decision,
+      canAddDecisionInformation: shouldSaveDecision,
+    } = this.model;
 
     yield changeEvent.validate();
-    yield decision.validate();
 
-    if (changeEvent.isValid && decision.isValid) {
-      if (changeEvent.isDirty) {
-        yield changeEvent.save();
+    if (shouldSaveDecision) {
+      yield decision.validate();
+    }
+
+    if (changeEvent.isValid && shouldSaveDecision ? decision.isValid : true) {
+      if (shouldSaveDecision && !isEmpty(decision) && decision.isDirty) {
+        if (decision.isNew) {
+          changeEvent.decision = decision;
+        }
+        yield decision.save();
       }
 
-      if (decision.isDirty) {
-        yield decision.save();
+      if (changeEvent.isDirty) {
+        yield changeEvent.save();
       }
 
       this.router.transitionTo(

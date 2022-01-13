@@ -40,6 +40,11 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
 
     if (canAddDecisionInformation) {
       let decision = await changeEvent.decision;
+
+      if (!decision) {
+        decision = this.store.createRecord('decision');
+      }
+
       model.decision = createValidatedChangeset(decision, decisionValidations);
     }
 

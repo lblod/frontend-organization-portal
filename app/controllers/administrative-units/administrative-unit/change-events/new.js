@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { CLASSIFICATION_CODE } from 'frontend-contact-hub/models/administrative-unit-classification-code';
 import { CHANGE_EVENT_TYPE } from 'frontend-contact-hub/models/change-event-type';
+import { isEmpty } from 'frontend-contact-hub/models/decision';
 import { ORGANIZATION_STATUS } from 'frontend-contact-hub/models/organization-status-code';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
@@ -63,7 +64,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       (shouldSaveDecision ? decision.isValid : true) &&
       changeEvent.isValid
     ) {
-      if (shouldSaveDecision) {
+      if (shouldSaveDecision && !isEmpty(decision)) {
         yield decision.save();
         changeEvent.decision = decision;
       }
