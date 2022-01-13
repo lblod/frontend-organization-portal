@@ -47,7 +47,12 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   *createNewChangeEventTask(event) {
     event.preventDefault();
 
-    const { changeEvent, decision, formState } = this.model;
+    const {
+      administrativeUnit: currentOrganization,
+      changeEvent,
+      decision,
+      formState,
+    } = this.model;
 
     let shouldSaveDecision = formState.canAddDecisionInformation;
 
@@ -70,6 +75,9 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
       let changeEventType = formState.changeEventType;
       changeEvent.type = changeEventType;
+
+      // We save the change event already so the backend assigns it an id
+      // which is needed when saving the change-event-results
       yield changeEvent.save();
 
       if (changesMultipleOrganizations(changeEventType)) {
@@ -123,19 +131,37 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
               })
             );
           }
+        } else {
+          changeEvent.resultingOrganizations.pushObjects(
+            allOriginalOrganizations
+          );
         }
 
-        yield changeEvent.save(); // persist the original and resulting organization information
         yield Promise.all(createChangeEventResultsPromises);
       } else {
+        if (changeEventType.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED) {
+          changeEvent.originalOrganizations.pushObject(currentOrganization);
+        }
+
+        if (
+          ![
+            CHANGE_EVENT_TYPE.RECOGNITION_LIFTED,
+            CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED,
+          ].includes(changeEventType.id)
+        ) {
+          changeEvent.resultingOrganizations.pushObject(currentOrganization);
+        }
+
         yield createChangeEventResult({
           resultingStatusId:
             RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.id],
-          resultingOrganization: formState.currentOrganization,
+          resultingOrganization: currentOrganization,
           changeEvent,
           store: this.store,
         });
       }
+
+      yield changeEvent.save(); // persist the original and resulting organization information
 
       this.router.transitionTo(
         'administrative-units.administrative-unit.change-events.details',
