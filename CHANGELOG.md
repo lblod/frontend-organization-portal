@@ -1,5 +1,21 @@
 
 
+
+## 1.5.0 (2022-01-13)
+
+#### :rocket: Enhancement
+* [#240](https://github.com/lblod/frontend-contact-hub/pull/240) Change events management ([@Windvis](https://github.com/Windvis))
+* [#231](https://github.com/lblod/frontend-contact-hub/pull/231) Move the form buttons to the top of the page ([@nbittich](https://github.com/nbittich))
+* [#230](https://github.com/lblod/frontend-contact-hub/pull/230) Validate that a KBO number is 10 digits long before saving ([@nbittich](https://github.com/nbittich))
+
+#### :bug: Bug Fix
+* [#236](https://github.com/lblod/frontend-contact-hub/pull/236) Ensure that timezones are ignored when saving dates selected with the datepicker ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
 ## 1.4.0 (2021-12-14)
 
 #### :rocket: Enhancement
