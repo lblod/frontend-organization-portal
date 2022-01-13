@@ -2,18 +2,8 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { restartableTask, timeout } from 'ember-concurrency';
 
-const CLASSIFICATION = {
-  MUNICIPALITY: {
-    id: '5ab0e9b8a3b2ca7c5e000001',
-  },
-  PROVINCE: {
-    id: '5ab0e9b8a3b2ca7c5e000000',
-  },
-};
-
 export default class AdministrativeUnitSelectComponent extends Component {
   @service store;
-  administrativeUnits;
 
   @restartableTask
   *loadAdministrativeUnitsTask(searchParams = '') {
@@ -21,21 +11,26 @@ export default class AdministrativeUnitSelectComponent extends Component {
 
     const query = {
       sort: 'name',
-      filter: {
-        ['classification']: {
-          [':id:']: [
-            CLASSIFICATION.MUNICIPALITY.id,
-            CLASSIFICATION.PROVINCE.id,
-          ].join(),
-        },
-      },
       include: 'classification',
     };
+
+    if (Array.isArray(this.args.classificationCodes)) {
+      query.filter = {
+        classification: {
+          ':id:': this.args.classificationCodes.join(),
+        },
+      };
+    }
 
     if (searchParams.trim() !== '') {
       query['filter[name]'] = searchParams;
     }
 
-    return yield this.store.query('administrative-unit', query);
+    let searchResults = yield this.store.query('administrative-unit', query);
+    if (typeof this.args.filter === 'function') {
+      return this.args.filter(searchResults);
+    } else {
+      return searchResults;
+    }
   }
 }

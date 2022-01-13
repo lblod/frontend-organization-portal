@@ -1,5 +1,6 @@
 <AuHelpText @error={{true}}>
   {{@error.message}}
+  {{#if @error.meta}}
   <AuLink
     @route="administrative-units.administrative-unit"
     @model={{@error.meta.administrativeUnit.id}}
@@ -7,4 +8,5 @@
   >
     {{@error.meta.administrativeUnit.name}}
   </AuLink>
+  {{/if}}
 </AuHelpText>

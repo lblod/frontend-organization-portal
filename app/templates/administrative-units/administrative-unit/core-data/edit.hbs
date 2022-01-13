@@ -4,7 +4,26 @@
       <:title>Bewerk kerngegevens</:title>
       <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
       <:action>
-        <ReportWrongData />
+        <div>
+          <AuButtonGroup class="au-c-button-group--align-right">
+            <AuButton
+              @loading={{this.save.isRunning}}
+              @disabled={{this.save.isRunning}}
+              form="edit-core-info-form"
+              type="submit"
+            >
+              Opslaan
+            </AuButton>
+
+            <AuLink
+              @route="administrative-units.administrative-unit.core-data"
+              @skin="button-secondary"
+            >
+              Annuleer
+            </AuLink>
+          </AuButtonGroup>
+          <ReportWrongData />
+        </div>
       </:action>
     </PageHeader>
 
@@ -159,6 +178,9 @@
                       id="kbo-identifier"
                     />
                   </:content>
+                  <:help-text>
+                    {{help-text "kbo"}}
+                  </:help-text>
                   <:error as |error|>
                     <Error::KboNumber @error={{error}} />
                   </:error>
@@ -386,23 +408,6 @@
             </Card.Columns>
           </:card>
         </EditCard>
-
-        <AuButtonGroup>
-          <AuButton
-            @loading={{this.save.isRunning}}
-            @disabled={{this.save.isRunning}}
-            type="submit"
-          >
-            Opslaan
-          </AuButton>
-
-          <AuLink
-            @route="administrative-units.administrative-unit.core-data"
-            @skin="button-secondary"
-          >
-            Annuleer
-          </AuLink>
-        </AuButtonGroup>
       </div>
     </form>
   </div>

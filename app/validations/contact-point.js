@@ -1,4 +1,5 @@
 import { validateFormat } from 'ember-changeset-validations/validators';
+import { validateUrl } from 'frontend-contact-hub/validators/url';
 
 export default {
   telephone: validateFormat({
@@ -6,11 +7,7 @@ export default {
     regex: /^\+?[0-9]*$/,
     message: 'Enkel een plusteken en cijfers zijn toegelaten',
   }),
-  website: validateFormat({
-    allowBlank: true,
-    regex: /^((?:https?:\/\/)[^.]+(?:\.[^.]+)+(?:\/.*)?)$/,
-    message: 'Geef een geldig internetadres in',
-  }),
+  website: validateUrl(),
   email: validateFormat({
     allowBlank: true,
     type: 'email',

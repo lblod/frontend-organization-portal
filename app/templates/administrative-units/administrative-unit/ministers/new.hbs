@@ -5,6 +5,30 @@
   <PageHeader class="au-u-margin au-u-margin-bottom-large">
     <:title>Voeg bedienaar toe</:title>
     <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+
+    <:action>
+      {{#unless this.isSelectingTargetPerson}}
+        {{! TODO: add "Voorwaarde" section once file uploads are supported }}
+        <AuButtonGroup class="au-c-button-group--align-right">
+          <AuButton
+            @icon="add"
+            @iconAlignment="left"
+            @loading={{this.createMinisterPositionTask.isRunning}}
+            @disabled={{this.createMinisterPositionTask.isRunning}}
+            type="submit"
+            form="minister-position-creation-form"
+          >
+            Voeg toe
+          </AuButton>
+          <AuLink
+            @route="administrative-units.administrative-unit.ministers"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>
+        </AuButtonGroup>
+      {{/unless}}
+    </:action>
   </PageHeader>
 
   {{#if this.isSelectingTargetPerson}}
@@ -15,6 +39,7 @@
   {{else}}
     <form
       class="au-o-box au-o-flow au-o-flow--large"
+      id="minister-position-creation-form"
       aria-label="minister-position-creation-form"
       {{on "submit" (perform this.createMinisterPositionTask)}}
     >
@@ -312,25 +337,6 @@
         </:card>
       </EditCard>
 
-      {{! TODO: add "Voorwaarde" section once file uploads are supported }}
-
-      <AuButtonGroup>
-        <AuButton
-          @icon="add"
-          @iconAlignment="left"
-          @loading={{this.createMinisterPositionTask.isRunning}}
-          @disabled={{this.createMinisterPositionTask.isRunning}}
-          type="submit"
-        >
-          Voeg toe
-        </AuButton>
-        <AuLink
-          @route="administrative-units.administrative-unit.ministers"
-          @skin="button-secondary"
-        >
-          Annuleer
-        </AuLink>
-      </AuButtonGroup>
     </form>
   {{/if}}
 </div>

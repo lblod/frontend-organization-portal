@@ -5,6 +5,7 @@ const HELP_TEXT = {
   date: 'Formaat: DD/MM/JJJJ',
   ['phone-number']: 'Bijvoorbeeld: +3211211430',
   ssn: 'Formaat: 00.00.00-000.00',
+  kbo: 'Formaat: 0123456789',
   url: 'Bijvoorbeeld: https://www.vlaanderen.be',
   email: 'Bijvoorbeeld: mail@adres.com',
 };

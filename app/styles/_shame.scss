@@ -118,3 +118,20 @@ table.dataTable tbody th {
     justify-content: flex-end;
   }
 }
+
+// Tailwind naming based utils
+.flex {
+  display: flex !important;
+}
+
+.grow {
+  flex-grow: 1 !important;
+}
+
+.shrink-0 {
+  flex-shrink: 0 !important;
+}
+
+.items-center {
+  align-items: center !important;
+}

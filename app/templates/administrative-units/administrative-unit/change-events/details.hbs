@@ -1,0 +1,15 @@
+{{#let
+  (concat
+    @model.changeEvent.type.label " " (date-format @model.changeEvent.date)
+  )
+  as |title|
+}}
+  {{page-title title}}
+  {{breadcrumb
+    title
+    route="administrative-units.administrative-unit.change-events.details"
+    models=(array @model.administrativeUnit.id @model.changeEvent.id)
+  }}
+{{/let}}
+
+{{outlet}}

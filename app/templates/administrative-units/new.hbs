@@ -4,10 +4,28 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <PageHeader class="au-u-margin au-u-margin-bottom-large">
     <:title>Voeg bestuurseenheid toe</:title>
+    <:action>
+      <AuButtonGroup class="au-c-button-group--align-right">
+        <AuButton
+          @loading={{this.createAdministrativeUnitTask.isRunning}}
+          type="submit"
+          form="administrative-unit-creation-form"
+          @icon="add"
+          @iconAlignment="left"
+        >
+          Voeg toe
+        </AuButton>
+
+        <AuLink @route="administrative-units" @skin="button-secondary">
+          Annuleer
+        </AuLink>
+      </AuButtonGroup>
+    </:action>
   </PageHeader>
 
   <form
     class="au-o-box au-o-flow au-o-flow--large"
+    id="administrative-unit-creation-form"
     aria-label="administrative-unit-creation-form"
     {{on "submit" (perform this.createAdministrativeUnitTask)}}
   >
@@ -151,6 +169,9 @@
                   id="kbo-identifier"
                 />
               </:content>
+              <:help-text>
+                {{help-text "kbo"}}
+              </:help-text>
               <:error as |error|>
                 <Error::KboNumber @error={{error}} />
               </:error>
@@ -366,20 +387,5 @@
         </Card.Columns>
       </:card>
     </EditCard>
-
-    <AuButtonGroup>
-      <AuButton
-        @loading={{this.createAdministrativeUnitTask.isRunning}}
-        type="submit"
-        @icon="add"
-        @iconAlignment="left"
-      >
-        Voeg toe
-      </AuButton>
-
-      <AuLink @route="administrative-units" @skin="button-secondary">
-        Annuleer
-      </AuLink>
-    </AuButtonGroup>
   </form>
 </div>

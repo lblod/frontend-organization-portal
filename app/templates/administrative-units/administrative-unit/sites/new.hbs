@@ -2,6 +2,27 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Voeg vestiging toe</:title>
+      <:action>
+        <AuButtonGroup class="au-c-button-group--align-right">
+          <AuButton
+            @loading={{this.createSiteTask.isRunning}}
+            @disabled={{this.createSiteTask.isRunning}}
+            @icon="add"
+            @iconAlignment="left"
+            type="submit"
+            form="new-vestiging-form"
+          >
+            Voeg toe
+          </AuButton>
+
+          <AuLink
+            @route="administrative-units.administrative-unit.sites"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>
+        </AuButtonGroup>
+      </:action>
     </PageHeader>
 
     <form id="new-vestiging-form" {{on "submit" (perform this.createSiteTask)}}>
@@ -197,25 +218,6 @@
             </Card.Columns>
           </:card>
         </EditCard>
-
-        <AuButtonGroup>
-          <AuButton
-            @loading={{this.createSiteTask.isRunning}}
-            @disabled={{this.createSiteTask.isRunning}}
-            @icon="add"
-            @iconAlignment="left"
-            type="submit"
-          >
-            Voeg toe
-          </AuButton>
-
-          <AuLink
-            @route="administrative-units.administrative-unit.sites"
-            @skin="button-secondary"
-          >
-            Annuleer
-          </AuLink>
-        </AuButtonGroup>
       </div>
     </form>
   </div>

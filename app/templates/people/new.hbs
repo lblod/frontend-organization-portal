@@ -5,6 +5,22 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Voeg een nieuwe persoon toe</:title>
+      <:action>
+        <AuButtonGroup class="au-c-button-group--align-right">
+          <AuButton
+            @loading={{this.savePersonTask.isRunning}}
+            @disabled={{this.savePersonTask.isRunning}}
+            form="person-creation"
+            type="submit"
+          >
+            Opslaan
+          </AuButton>
+
+          <AuButton @skin="secondary" {{on "click" this.cancel}}>
+            Annuleer
+          </AuButton>
+        </AuButtonGroup>
+      </:action>
     </PageHeader>
 
     <form id="person-creation" {{on "submit" (perform this.savePersonTask)}}>
@@ -104,20 +120,5 @@
         </:card>
       </EditCard>
     </form>
-
-    <AuButtonGroup>
-      <AuButton
-        @loading={{this.savePersonTask.isRunning}}
-        @disabled={{this.savePersonTask.isRunning}}
-        form="person-creation"
-        type="submit"
-      >
-        Opslaan
-      </AuButton>
-
-      <AuButton @skin="secondary" {{on "click" this.cancel}}>
-        Annuleer
-      </AuButton>
-    </AuButtonGroup>
   </div>
 </AuBodyContainer>

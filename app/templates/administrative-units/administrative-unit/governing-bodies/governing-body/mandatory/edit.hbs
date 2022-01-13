@@ -7,7 +7,26 @@
         {{@model.person.familyName}}
       </:subtitle>
       <:action>
-        <ReportWrongData />
+        <div>
+          <AuButtonGroup class="au-c-button-group--align-right">
+            <AuButton
+              @loading={{this.save.isRunning}}
+              @disabled={{this.save.isRunning}}
+              type="submit"
+              form="edit-mandatory-form"
+            >
+              Opslaan
+            </AuButton>
+
+            <AuLink
+              @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+              @skin="button-secondary"
+            >
+              Annuleer
+            </AuLink>
+          </AuButtonGroup>
+          <ReportWrongData />
+        </div>
       </:action>
     </PageHeader>
 
@@ -310,23 +329,6 @@
             </Card.Columns>
           </:card>
         </EditCard>
-
-        <AuButtonGroup>
-          <AuButton
-            @loading={{this.save.isRunning}}
-            @disabled={{this.save.isRunning}}
-            type="submit"
-          >
-            Opslaan
-          </AuButton>
-
-          <AuLink
-            @route="administrative-units.administrative-unit.governing-bodies.governing-body"
-            @skin="button-secondary"
-          >
-            Annuleer
-          </AuLink>
-        </AuButtonGroup>
       </div>
     </form>
   </div>
