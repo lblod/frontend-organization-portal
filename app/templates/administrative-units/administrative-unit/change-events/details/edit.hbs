@@ -76,19 +76,10 @@
             {{/if}}
           </:left>
           <:right as |Item|>
-            <Item
-              @labelFor="change-event-date"
-              @required={{true}}
-              @errorMessage={{@model.changeEvent.error.date.validation}}
-            >
+            <Item>
               <:label>Datum veranderingsgebeurtenis</:label>
-              <:content as |hasError|>
-                <Datepicker
-                  @id="change-event-date"
-                  @value={{@model.changeEvent.date}}
-                  @onChange={{fn (mut @model.changeEvent.date)}}
-                  @error={{hasError}}
-                />
+              <:content>
+                {{date-format @model.changeEvent.date}}
               </:content>
             </Item>
             {{#if @model.canAddDecisionInformation}}
