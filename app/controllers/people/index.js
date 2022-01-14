@@ -34,7 +34,8 @@ export default class PeopleIndexController extends Controller {
 
   get hasNoResults() {
     return (
-      this.model.loadPeopleTaskInstance.isFinished && this.people.length === 0
+      this.model?.loadPeopleTaskInstance?.isFinished &&
+      this?.people?.length === 0
     );
   }
 
