@@ -105,5 +105,9 @@
     "*.js": "eslint --cache --fix",
     "*.hbs": "ember-template-lint --fix"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "volta": {
+    "node": "16.13.2",
+    "npm": "8.3.1"
+  }
 }
