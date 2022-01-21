@@ -143,7 +143,7 @@
                         class="grow"
                       />
                       {{#if
-                        (gt @model.formState.originalOrganizations.length 1)
+                        @model.formState.canRemoveSelectedOriginalOrganization
                       }}
                         <AuButton
                           @alert={{true}}
@@ -171,9 +171,9 @@
 
               {{#if @model.formState.isAddingOriginalOrganization}}
                 <Item
-                  @required={{eq
-                    @model.formState.originalOrganizations.length
-                    0
+                  @required={{and
+                    @model.formState.shouldSelectMultipleOriginalOrganizations
+                    (eq @model.formState.originalOrganizations.length 0)
                   }}
                   @errorMessage={{@model.formState.error.originalOrganizations.validation}}
                 >
@@ -188,7 +188,7 @@
                         class="grow"
                       />
                       {{#if
-                        (not-eq @model.formState.originalOrganizations.length 0)
+                        @model.formState.canCancelSelectingOriginalOrganization
                       }}
                         <AuButton
                           @alert={{true}}
