@@ -80,8 +80,23 @@ class FormState {
   set changeEventType(value) {
     this._changeEventType = value;
 
+    if (
+      this.shouldSelectMultipleOriginalOrganizations &&
+      !this.isAddingOriginalOrganization &&
+      this.originalOrganizations.length === 0
+    ) {
+      this.isAddingOriginalOrganization = true;
+    }
+
     if (this.error?.changeEventType) {
       delete this.error.changeEventType;
+      this.error = {
+        ...this.error,
+      };
+    }
+
+    if (this.error?.originalOrganizations) {
+      delete this.error.originalOrganizations;
       this.error = {
         ...this.error,
       };
@@ -118,6 +133,24 @@ class FormState {
     return (
       changeEventTypeId === CHANGE_EVENT_TYPE.MERGER ||
       changeEventTypeId === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
+    );
+  }
+
+  get shouldSelectMultipleOriginalOrganizations() {
+    return this.changeEventType.id === CHANGE_EVENT_TYPE.MERGER;
+  }
+
+  get canCancelSelectingOriginalOrganization() {
+    return (
+      !this.shouldSelectMultipleOriginalOrganizations ||
+      this.originalOrganizations.length > 0
+    );
+  }
+
+  get canRemoveSelectedOriginalOrganization() {
+    return (
+      !this.shouldSelectMultipleOriginalOrganizations ||
+      this.originalOrganizations.length > 1
     );
   }
 
@@ -199,7 +232,7 @@ class FormState {
     }
 
     if (
-      this.shouldShowExtraInformationCard &&
+      this.shouldSelectMultipleOriginalOrganizations &&
       this.originalOrganizations.length === 0
     ) {
       error.originalOrganizations = {
