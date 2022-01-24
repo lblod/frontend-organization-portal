@@ -81,7 +81,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       // which is needed when saving the change-event-results
       yield changeEvent.save();
 
-      if (changesMultipleOrganizations(changeEventType)) {
+      if (canChangeMultipleOrganizations(changeEventType)) {
         let allOriginalOrganizations = formState.allOriginalOrganizations;
         changeEvent.originalOrganizations.pushObjects(allOriginalOrganizations);
 
@@ -214,7 +214,7 @@ async function createChangeEventResult({
   await changeEventResult.save();
 }
 
-function changesMultipleOrganizations(changeEventType) {
+function canChangeMultipleOrganizations(changeEventType) {
   return (
     changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
     changeEventType.id === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
