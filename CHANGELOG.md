@@ -1,6 +1,24 @@
 
 
 
+
+## 1.5.1 (2022-01-24)
+
+#### :rocket: Enhancement
+* [#248](https://github.com/lblod/frontend-contact-hub/pull/248) Improve the original organizations selection logic on the change events creation page ([@Windvis](https://github.com/Windvis))
+
+#### :bug: Bug Fix
+* [#247](https://github.com/lblod/frontend-contact-hub/pull/247) Fix sub organizations select ([@nbittich](https://github.com/nbittich))
+* [#246](https://github.com/lblod/frontend-contact-hub/pull/246) Use the proper casing for "OrganisatiePortaal" ([@Windvis](https://github.com/Windvis))
+
+#### :house: Internal
+* [#244](https://github.com/lblod/frontend-contact-hub/pull/244) Update to the latest madnificent/ember image ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
 ## 1.5.0 (2022-01-13)
 
 #### :rocket: Enhancement
