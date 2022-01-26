@@ -1,0 +1,11 @@
+{
+  "commands": {
+    "s": {
+      "command": "ember",
+      "args": [
+        "serve",
+        "--proxy=http://localhost:80"
+      ]
+    }
+  }
+}

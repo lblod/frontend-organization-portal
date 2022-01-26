@@ -12,6 +12,7 @@ export default class PeopleIndexRoute extends Route {
   queryParams = {
     page: { refreshModel: true },
     sort: { refreshModel: true },
+    status: { refreshModel: true },
     givenName: { replace: true },
     familyName: { replace: true },
     organization: { replace: true },
@@ -44,13 +45,19 @@ export default class PeopleIndexRoute extends Route {
     if (params.givenName) {
       q.push(`filter[given_name]=${params.givenName}`);
     }
+    if (params.status) {
+      let date = new Date().toISOString().slice(0, -5);
+      q.push(
+        `filter[:query:end_date]= (NOT (_exists_:end_date))  OR (end_date:[${date} TO *] ) `
+      );
+    }
 
     if (params.familyName) {
       q.push(`filter[family_name]=${params.familyName}`);
     }
 
     if (params.organization) {
-      q.push(`filter[mandates.organization_name]=${params.organization}`);
+      q.push(`filter[organization_name]=${params.organization}`);
     }
 
     const response = yield fetch(`/search/people/search?${q.join('&')}`);
@@ -115,44 +122,13 @@ export default class PeopleIndexRoute extends Route {
 
   // purpose of the poc. this is not intended to be prod ready
   mapResult(res) {
-    const workaround = JSON.parse(
+    let d = JSON.parse(
       JSON.stringify(res.attributes).replace(/(_\w)/g, (entry) =>
         entry[1].toUpperCase()
       )
     );
-
-    let frankensteinObj = {
-      id: res.id,
-      familyName: workaround.familyName,
-      givenName: workaround.givenName,
-      firstNameUsed: workaround.firstNameUsed,
-      uri: workaround.uri,
-    };
-    let tempMandates = workaround.mandates;
-    if (!tempMandates) {
-      tempMandates = [];
-    }
-    if (!Array.isArray(tempMandates)) {
-      tempMandates = [tempMandates];
-    }
-    const mandates = tempMandates.map((m) => {
-      let copy = { ...frankensteinObj };
-      if (m.endDate) {
-        copy.endDate = new Date(m.endDate);
-        console.log(copy.endDate);
-      }
-      copy.organizationId = m.organizationId;
-      copy.organizationMunicipality = m.organizationMunicipality;
-      copy.organizationName = m.organizationName;
-      copy.organizationProvince = m.organizationProvince;
-      copy.positionId = m.positionId;
-      copy.positionName = m.positionName;
-      copy.mandatoryId = m.uuid;
-      return copy;
-    });
-    if (!mandates.length) {
-      return [frankensteinObj];
-    }
-    return mandates;
+    let x = { ...d };
+    x.endDate = d.endDate ? new Date(d.endDate) : null;
+    return x;
   }
 }

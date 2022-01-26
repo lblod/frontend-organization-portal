@@ -31,4 +31,10 @@
       {{yield to="subtitle"}}
     </AuHeading>
   {{/if}}
+
+  {{#if (has-block "toggle")}}
+   <div class="au-o-row">
+      {{yield to="toggle"}}
+   </div>
+  {{/if}}
 </header>

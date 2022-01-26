@@ -56,6 +56,7 @@
               Personen
             </:title>
             <:alert>
+            
               <SecuredArea>
                 <:edit>
                   <AuAlert
@@ -70,7 +71,10 @@
                   </AuAlert>
                 </:edit>
               </SecuredArea>
-            </:alert>
+              </:alert>
+              <:toggle>
+              <AuToggleSwitch @label="Verberg niet actieve posities" @checked={{this.status}}></AuToggleSwitch>
+              </:toggle>
           </PageHeader>
         </menu.general>
       </t.menu>
@@ -87,12 +91,12 @@
             @label="Achternaam"
           />
           <AuDataTableThSortable
-             @field="mandates.organization-name"
+             @field="organization-name"
             @currentSorting={{this.sort}}
             @label="Organisatie"
           />
           <AuDataTableThSortable
-            @field="mandates.position-name"
+            @field="position-name"
             @currentSorting={{this.sort}}
             @label="Positie"
           />
@@ -137,7 +141,7 @@
               <td>
                 <AuLink
                   @route="people.person.positions.mandatory"
-                   @models={{array person.id person.mandatoryId}}
+                   @models={{array person.id person.uuid}}
                 >
                    {{person.positionName}}
                 </AuLink>
