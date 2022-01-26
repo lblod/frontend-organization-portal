@@ -12,8 +12,8 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   @service router;
   @service store;
   @tracked showTotalFinancingPercentageError = false;
+  isFinancialInvolvementType = isFinancialInvolvementType;
 
-  INVOLVEMENT_TYPE = INVOLVEMENT_TYPE;
   classificationCodes = [
     CLASSIFICATION_CODE.MUNICIPALITY,
     CLASSIFICATION_CODE.PROVINCE,
@@ -34,7 +34,15 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   }
 
   get isValidTotalFinancingPercentage() {
-    return this.totalFinancingPercentage === 100;
+    let hasFinancialLocalInvolvements = this.model.involvements.some(
+      (involvement) => isFinancialInvolvementType(involvement)
+    );
+
+    if (hasFinancialLocalInvolvements) {
+      return this.totalFinancingPercentage === 100;
+    } else {
+      return true;
+    }
   }
 
   setup() {
@@ -132,4 +140,8 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
       );
     }
   }
+}
+
+function isFinancialInvolvementType(involvement) {
+  return involvement.involvementType?.id === INVOLVEMENT_TYPE.FINANCIAL;
 }
