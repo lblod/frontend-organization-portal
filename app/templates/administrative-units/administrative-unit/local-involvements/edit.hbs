@@ -116,35 +116,28 @@
           </td>
           <td>
             {{#let
-              (eq
-                involvement.involvementType.id this.INVOLVEMENT_TYPE.FINANCIAL
-              )
-              as |isFinancialInvolvementType|
-            }}
-              {{#let
-                (or
-                  involvement.error.percentage.validation
-                  (if
-                    (and
-                      isFinancialInvolvementType
-                      this.showTotalFinancingPercentageError
-                    )
-                    "Het totaal van alle percentages moet gelijk zijn aan 100"
+              (or
+                involvement.error.percentage.validation
+                (if
+                  (and
+                    (this.isFinancialInvolvementType involvement)
+                    this.showTotalFinancingPercentageError
                   )
+                  "Het totaal van alle percentages moet gelijk zijn aan 100"
                 )
-                as |errorMessage|
-              }}
-                <AuInput
-                  @disabled={{not isFinancialInvolvementType}}
-                  @error={{errorMessage}}
-                  aria-labelledby="financial-percentage"
-                  value={{involvement.percentage}}
-                  {{on "input" (fn this.handlePercentageChange involvement)}}
-                />
-                {{#if errorMessage}}
-                  <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
-                {{/if}}
-              {{/let}}
+              )
+              as |errorMessage|
+            }}
+              <AuInput
+                @disabled={{not (this.isFinancialInvolvementType involvement)}}
+                @error={{errorMessage}}
+                aria-labelledby="financial-percentage"
+                value={{involvement.percentage}}
+                {{on "input" (fn this.handlePercentageChange involvement)}}
+              />
+              {{#if errorMessage}}
+                <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+              {{/if}}
             {{/let}}
           </td>
           <td class="align-middle">
