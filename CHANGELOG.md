@@ -2,6 +2,16 @@
 
 
 
+
+## 1.5.2 (2022-01-26)
+
+#### :bug: Bug Fix
+* [#249](https://github.com/lblod/frontend-contact-hub/pull/249) Fix a problem were saving didn't work in some cases on the local involvements page ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 1
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
 ## 1.5.1 (2022-01-24)
 
 #### :rocket: Enhancement
