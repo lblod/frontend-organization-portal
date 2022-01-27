@@ -11,9 +11,9 @@
             <AuLabel for="filter-organization">Organisatie</AuLabel>
             <AuInput @width="block" @value={{this.organization}} id="filter-organization" />
           </p>
-          <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
+          <div class="au-o-grid__item">
             <PositionSelect @selected={{this.positie}} @onChange={{this.setPosition}}
-              @allowClear={{true}} @id="positions" />
+              @id="pozitions" />
           </div>
           <div class="au-o-grid__item">
             <AuButton @loading={{this.isLoading}} @disabled={{this.isLoading}} @width="block" type="submit">

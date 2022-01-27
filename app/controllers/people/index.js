@@ -57,7 +57,7 @@ export default class PeopleIndexController extends Controller {
   }
   @action
   setPosition(event) {
-    this.positie = event.id;
+    this.positie = event?.id;
   }
 
   resetPagination() {
