@@ -13,8 +13,8 @@ export default class PeopleIndexRoute extends Route {
     page: { refreshModel: true },
     sort: { refreshModel: true },
     status: { refreshModel: true },
-    givenName: { replace: true },
-    familyName: { replace: true },
+    positie: { refreshModel: true },
+    name: { replace: true },
     organization: { replace: true },
   };
 
@@ -42,8 +42,8 @@ export default class PeopleIndexRoute extends Route {
     q.push(`page[number]=${params.page}`);
     q.push(`page[size]=${params.size}`);
 
-    if (params.givenName) {
-      q.push(`filter[given_name]=${params.givenName}`);
+    if (params.name) {
+      q.push(`filter[given_name,family_name]=${params.name}`);
     }
     if (params.status) {
       let date = new Date().toISOString().slice(0, -5);
@@ -52,14 +52,13 @@ export default class PeopleIndexRoute extends Route {
       );
     }
 
-    if (params.familyName) {
-      q.push(`filter[family_name]=${params.familyName}`);
+    if (params.positie) {
+      q.push(`filter[position_id]=${params.positie}`);
     }
 
     if (params.organization) {
       q.push(`filter[organization_name]=${params.organization}`);
     }
-
     const response = yield fetch(`/search/people/search?${q.join('&')}`);
     const { count, data } = yield response.json();
     const pagination = this.getPaginationMetadata(

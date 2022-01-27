@@ -5,21 +5,15 @@ import { tracked } from '@glimmer/tracking';
 
 export default class PeopleIndexController extends Controller {
   @service router;
-  queryParams = [
-    'page',
-    'size',
-    'givenName',
-    'familyName',
-    'organization',
-    'status',
-  ];
+
+  queryParams = ['page', 'size', 'name', 'organization', 'status', 'positie'];
   @tracked status = true;
+  @tracked positie;
 
   @tracked page = 0;
   size = 25;
   @tracked sort = 'family-name';
-  @tracked givenName = '';
-  @tracked familyName = '';
+  @tracked name = '';
   @tracked organization = '';
 
   get people() {
@@ -60,6 +54,10 @@ export default class PeopleIndexController extends Controller {
     } else {
       this.router.refresh();
     }
+  }
+  @action
+  setPosition(event) {
+    this.positie = event.id;
   }
 
   resetPagination() {

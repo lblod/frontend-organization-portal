@@ -4,7 +4,6 @@ import Component from '@glimmer/component';
 export default class PositionStatusComponent extends Component {
   get isActivePosition() {
     let endDate = this.args.endDate;
-
     if (!endDate) {
       // No end date set, so the position is still active
       return true;

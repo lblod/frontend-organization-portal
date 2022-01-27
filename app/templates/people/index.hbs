@@ -4,36 +4,19 @@
       <div class="au-c-sidebar__content au-o-box">
         <form {{on "submit" this.search}} class="au-o-grid au-o-grid--small">
           <p class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
-            <AuLabel for="filter-given-name">Voornaam</AuLabel>
-            <AuInput
-              @width="block"
-              @value={{this.givenName}}
-              id="filter-given-name"
-            />
-          </p>
-          <p class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
-            <AuLabel for="filter-family-name">Achternaam</AuLabel>
-            <AuInput
-              @width="block"
-              @value={{this.familyName}}
-              id="filter-family-name"
-            />
+            <AuLabel for="filter-given-name">Naam</AuLabel>
+            <AuInput @width="block" @value={{this.name}} id="filter-given-name" />
           </p>
           <p class="au-o-grid__item">
             <AuLabel for="filter-organization">Organisatie</AuLabel>
-            <AuInput
-              @width="block"
-              @value={{this.organization}}
-              id="filter-organization"
-            />
+            <AuInput @width="block" @value={{this.organization}} id="filter-organization" />
           </p>
+          <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
+            <PositionSelect @selected={{this.positie}} @onChange={{this.setPosition}}
+              @allowClear={{true}} @id="positions" />
+          </div>
           <div class="au-o-grid__item">
-            <AuButton
-              @loading={{this.isLoading}}
-              @disabled={{this.isLoading}}
-              @width="block"
-              type="submit"
-            >
+            <AuButton @loading={{this.isLoading}} @disabled={{this.isLoading}} @width="block" type="submit">
               Zoeken
             </AuButton>
           </div>
@@ -42,13 +25,8 @@
     </div>
   </:sidebar>
   <:content>
-    <AuDataTable
-      @content={{this.people}}
-      @isLoading={{this.showTableLoader}}
-      @page={{this.page}}
-      @size={{this.size}}
-      as |t|
-    >
+    <AuDataTable @content={{this.people}} @isLoading={{this.showTableLoader}} @page={{this.page}} @size={{this.size}} as
+      |t|>
       <t.menu as |menu|>
         <menu.general>
           <PageHeader class="au-o-box">
@@ -56,102 +34,70 @@
               Personen
             </:title>
             <:alert>
-            
+
               <SecuredArea>
                 <:edit>
-                  <AuAlert
-                    @alertIcon="info-circle"
-                    @alertTitle="Momenteel kan u nog geen nieuwe personen toevoegen."
-                    @alertskin="info"
-                    @alertsize="small"
-                    class="au-u-margin-bottom-small au-u-margin-top-small"
-                  >
+                  <AuAlert @alertIcon="info-circle" @alertTitle="Momenteel kan u nog geen nieuwe personen toevoegen."
+                    @alertskin="info" @alertsize="small" class="au-u-margin-bottom-small au-u-margin-top-small">
                     <p>De gegevens van personen die reeds een positie hebben,
                       kan u beheren via 'Bestuursorganen' of 'Bedienaren'.</p>
                   </AuAlert>
                 </:edit>
               </SecuredArea>
-              </:alert>
-              <:toggle>
+            </:alert>
+            <:toggle>
               <AuToggleSwitch @label="Verberg niet actieve posities" @checked={{this.status}}></AuToggleSwitch>
-              </:toggle>
+            </:toggle>
           </PageHeader>
         </menu.general>
       </t.menu>
       <t.content class="au-c-data-table__table--small" as |c|>
         <c.header>
-          <AuDataTableThSortable
-            @field="givenName"
-            @currentSorting={{this.sort}}
-            @label="Voornaam"
-          />
-          <AuDataTableThSortable
-            @field="familyName"
-            @currentSorting={{this.sort}}
-            @label="Achternaam"
-          />
-          <AuDataTableThSortable
-             @field="organization-name"
-            @currentSorting={{this.sort}}
-            @label="Organisatie"
-          />
-          <AuDataTableThSortable
-            @field="position-name"
-            @currentSorting={{this.sort}}
-            @label="Positie"
-          />
+          <AuDataTableThSortable @field="givenName" @currentSorting={{this.sort}} @label="Voornaam" />
+          <AuDataTableThSortable @field="familyName" @currentSorting={{this.sort}} @label="Achternaam" />
+          <AuDataTableThSortable @field="organization-name" @currentSorting={{this.sort}} @label="Organisatie" />
+          <AuDataTableThSortable @field="position-name" @currentSorting={{this.sort}} @label="Positie" />
           <th>Status</th>
         </c.header>
         {{#if this.hasErrored}}
-          <TableMessage::Error />
+        <TableMessage::Error />
         {{else if this.hasNoResults}}
-          <TableMessage>
-            <p>
-              Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of
-              probeer een andere zoekopdracht. Indien een persoon ontbreekt,
-              meldt dit aan
-              <a
-                href="mailto:{{config "contactEmail"}}"
-                class="au-c-link"
-              >{{config "contactEmail"}}</a>.
-            </p>
-          </TableMessage>
+        <TableMessage>
+          <p>
+            Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of
+            probeer een andere zoekopdracht. Indien een persoon ontbreekt,
+            meldt dit aan
+            <a href="mailto:{{config " contactEmail"}}" class="au-c-link">{{config "contactEmail"}}</a>.
+          </p>
+        </TableMessage>
         {{else}}
-          <c.body as |person|>
-              <td>
-                <AuLink @route="people.person" @model={{person.id}}>
-                  {{person.givenName}}
-                </AuLink>
-              </td>
-              <td>
-                <AuLink @route="people.person" @model={{person.id}}>
-                  {{person.familyName}}
-                </AuLink>
-              </td>
-              <td>
-                 {{#if person.organizationId}}
-                    <AuLink
-                      @route="administrative-units.administrative-unit"
-                       @model={{person.organizationId}}
-                    >
-                       {{person.organizationName}}
-                    </AuLink>
-                  {{/if}}
-              </td>
-              <td>
-                <AuLink
-                  @route="people.person.positions.mandatory"
-                   @models={{array person.id person.uuid}}
-                >
-                   {{person.positionName}}
-                </AuLink>
-              </td>
-              <td>
-                 {{#if person.endDate}}
-                  <PositionStatus @endDate={{person.endDate}} />
-                {{/if}}
-              </td>
-          </c.body>
+        <c.body as |person|>
+          <td>
+            <AuLink @route="people.person" @model={{person.id}}>
+              {{person.givenName}}
+            </AuLink>
+          </td>
+          <td>
+            <AuLink @route="people.person" @model={{person.id}}>
+              {{person.familyName}}
+            </AuLink>
+          </td>
+          <td>
+            {{#if person.organizationId}}
+            <AuLink @route="administrative-units.administrative-unit" @model={{person.organizationId}}>
+              {{person.organizationName}}
+            </AuLink>
+            {{/if}}
+          </td>
+          <td>
+            <AuLink @route="people.person.positions.mandatory" @models={{array person.id person.uuid}}>
+              {{person.positionName}}
+            </AuLink>
+          </td>
+          <td>
+            <PositionStatus @endDate={{person.endDate}} />
+          </td>
+        </c.body>
         {{/if}}
       </t.content>
     </AuDataTable>

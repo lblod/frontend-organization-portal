@@ -1,0 +1,13 @@
+<div class={{if @error "ember-power-select--error"}}>
+  <PowerSelect
+    @allowClear={{@allowClear}}
+    @loadingMessage="Aan het laden..."
+    @options={{this.loadPositionTask.last}}
+    @selected={{this.selectedPosition}}
+    @onChange={{@onChange}}
+    @triggerId={{@id}}
+    as |position|
+  >
+    {{position.label}}
+  </PowerSelect>
+</div>
