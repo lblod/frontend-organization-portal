@@ -14,6 +14,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       administrativeUnit,
       address,
       contact,
+      secondaryContact,
       identifierKBO,
       identifierSharepoint,
       structuredIdentifierKBO,
@@ -24,6 +25,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       administrativeUnit.validate(),
       address.validate(),
       contact.validate(),
+      secondaryContact.validate(),
       structuredIdentifierKBO.validate(),
     ]);
 
@@ -31,6 +33,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       administrativeUnit.isValid &&
       address.isValid &&
       contact.isValid &&
+      secondaryContact.isValid &&
       structuredIdentifierKBO.isValid
     ) {
       let primarySite = yield administrativeUnit.primarySite;
@@ -40,11 +43,24 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         yield address.save();
       }
 
+      let siteContacts = yield primarySite.contacts;
+
       if (contact.isDirty) {
         let isNewContact = contact.isNew;
         yield contact.save();
 
         if (isNewContact) {
+          siteContacts.pushObject(contact);
+          yield primarySite.save();
+        }
+      }
+
+      if (secondaryContact.isDirty) {
+        let isNewContact = secondaryContact.isNew;
+        yield secondaryContact.save();
+
+        if (isNewContact) {
+          siteContacts.pushObject(secondaryContact);
           yield primarySite.save();
         }
       }

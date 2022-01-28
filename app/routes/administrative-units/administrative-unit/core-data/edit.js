@@ -1,5 +1,11 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import {
+  createPrimaryContact,
+  createSecondaryContact,
+  findPrimaryContact,
+  findSecondaryContact,
+} from 'frontend-contact-hub/models/contact-point';
 import { ID_NAME } from 'frontend-contact-hub/models/identifier';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
@@ -29,8 +35,15 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     let primarySite = await administrativeUnit.primarySite;
     let address = await primarySite.address;
     let contacts = await primarySite.contacts;
-    if (contacts.length === 0) {
-      contacts.pushObject(this.store.createRecord('contact-point'));
+
+    let primaryContact = findPrimaryContact(contacts);
+    if (!primaryContact) {
+      primaryContact = createPrimaryContact(this.store);
+    }
+
+    let secondaryContact = findSecondaryContact(contacts);
+    if (!secondaryContact) {
+      secondaryContact = createSecondaryContact(this.store);
     }
 
     let identifiers = await administrativeUnit.identifiers;
@@ -50,8 +63,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
         worshipAdministrativeUnitValidations
       ),
       address: createValidatedChangeset(address, getAddressValidations(true)),
-      contact: createValidatedChangeset(
-        contacts.firstObject,
+      contact: createValidatedChangeset(primaryContact, contactValidations),
+      secondaryContact: createValidatedChangeset(
+        secondaryContact,
         contactValidations
       ),
       identifierKBO,
