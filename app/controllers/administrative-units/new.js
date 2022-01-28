@@ -69,6 +69,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       primarySite,
       address,
       contact,
+      secondaryContact,
       identifierSharepoint,
       identifierKBO,
       structuredIdentifierSharepoint,
@@ -83,6 +84,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       administrativeUnit.validate(),
       address.validate(),
       contact.validate(),
+      secondaryContact.validate(),
       structuredIdentifierKBO.validate(),
     ]);
 
@@ -90,6 +92,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       administrativeUnit.isValid &&
       address.isValid &&
       contact.isValid &&
+      secondaryContact.isValid &&
       structuredIdentifierKBO.isValid
     ) {
       copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
@@ -105,12 +108,13 @@ export default class AdministrativeUnitsNewController extends Controller {
       yield identifierKBO.save();
 
       yield contact.save();
+      yield secondaryContact.save();
 
       address.fullAddress = combineFullAddress(address);
       yield address.save();
 
       primarySite.address = address;
-      primarySite.contacts.pushObject(contact);
+      primarySite.contacts.pushObjects([contact, secondaryContact]);
       yield primarySite.save();
 
       newAdministrativeUnit.identifiers.pushObjects([
@@ -165,6 +169,10 @@ export default class AdministrativeUnitsNewController extends Controller {
 
     if (this.model.contact.isNew) {
       this.model.contact.destroyRecord();
+    }
+
+    if (this.model.secondaryContact.isNew) {
+      this.model.secondaryContact.destroyRecord();
     }
 
     if (this.model.structuredIdentifierKBO.isNew) {
