@@ -13,19 +13,22 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
   *createSiteTask(event) {
     event.preventDefault();
 
-    let { address, administrativeUnit, contact, site } = this.model;
+    let { address, administrativeUnit, contact, secondaryContact, site } =
+      this.model;
 
     yield address.validate();
     yield contact.validate();
+    yield secondaryContact.validate();
 
-    if (address.isValid && contact.isValid) {
+    if (address.isValid && contact.isValid && secondaryContact.isValid) {
       yield contact.save();
+      yield secondaryContact.save();
 
       address.fullAddress = combineFullAddress(address);
       yield address.save();
 
       site.address = address;
-      site.contacts.pushObject(contact);
+      site.contacts.pushObjects([contact, secondaryContact]);
       yield site.save();
 
       let nonPrimarySites = yield administrativeUnit.sites;
@@ -57,7 +60,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
   }
 
   removeUnsavedRecords() {
-    let { site, address, contact } = this.model;
+    let { site, address, contact, secondaryContact } = this.model;
 
     if (site.isNew) {
       site.destroyRecord();
@@ -68,6 +71,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
     }
 
     if (contact.isNew) {
+      contact.destroyRecord();
+    }
+
+    if (secondaryContact.isNew) {
       contact.destroyRecord();
     }
   }
