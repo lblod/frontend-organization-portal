@@ -1,5 +1,10 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import {
+  findPrimaryContact,
+  findSecondaryContact,
+} from 'frontend-contact-hub/models/contact-point';
+
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteRoute extends Route {
   @service store;
 
@@ -13,8 +18,12 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteRoute extends
       include: ['address', 'contacts', 'site-type'].join(),
     });
 
+    let contacts = await site.contacts;
+
     return {
-      site: site,
+      site,
+      primaryContact: findPrimaryContact(contacts),
+      secondaryContact: findSecondaryContact(contacts),
       administrativeUnit: administrativeUnit,
     };
   }
