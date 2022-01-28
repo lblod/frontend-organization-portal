@@ -120,58 +120,15 @@
       </:card>
     </DataCard>
 
-    <DataCard>
+    <Site::ContactDataCard
+      @address={{@model.administrativeUnit.primarySite.address}}
+      @primaryContact={{@model.primaryContact}}
+      @secondaryContact={{@model.secondaryContact}}
+    >
       <:title>
         Primaire contactgegevens
       </:title>
-      <:card as |Card|>
-        <Card.Columns>
-          <:left as |Item|>
-            <Item>
-              <:label>Adres</:label>
-              <:content>
-                {{@model.administrativeUnit.primarySite.address.fullAddress}}
-              </:content>
-            </Item>
-
-            <Item>
-              <:label>Provincie</:label>
-              <:content>
-                {{@model.administrativeUnit.primarySite.address.province}}
-              </:content>
-            </Item>
-          </:left>
-          <:right as |Item|>
-            {{#if
-              @model.administrativeUnit.primarySite.contacts.firstObject.telephone
-            }}
-              <Item>
-                <:label>Telefoonnummer</:label>
-                <:content>
-                  {{@model.administrativeUnit.primarySite.contacts.firstObject.telephone}}
-                </:content>
-              </Item>
-            {{/if}}
-            {{#if
-              @model.administrativeUnit.primarySite.contacts.firstObject.website
-            }}
-              <Item>
-                <:label>Website</:label>
-                <:content>
-                  <a
-                    href={{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
-                    class="au-c-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >{{@model.administrativeUnit.primarySite.contacts.firstObject.website}}
-                    (externe link)</a>
-                </:content>
-              </Item>
-            {{/if}}
-          </:right>
-        </Card.Columns>
-      </:card>
-    </DataCard>
+    </Site::ContactDataCard>
 
     {{#if
       (or
