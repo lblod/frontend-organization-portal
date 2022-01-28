@@ -1,7 +1,7 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
-      <:title>Persoonlijke gegevens</:title>
+      <:title>Contactgegevens</:title>
       <:subtitle>
         {{@model.person.givenName}}
         {{@model.person.familyName}}
@@ -50,9 +50,10 @@
     </DataCard>
 
     {{! Hide contact information for now because it needs further changes. https://binnenland.atlassian.net/browse/OP-600 }}
-    {{!-- <DataCard>
+    {{#each @model.mandatories as |mandatory|}}
+    <DataCard>
       <:title>Contactgegevens:
-        {{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.classification.label}}
+        {{mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.classification.label}}
       </:title>
       <:card as |Card|>
         <Card.Columns>
@@ -61,52 +62,60 @@
               <:label>Organisatie</:label>
               <:content>
                 <AuLink
-                  @model={{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.id}}
+                  @model={{mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.id}}
                   @route="administrative-units.administrative-unit"
                 >
-                  {{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}
+                  {{mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}
+                </AuLink>
+              </:content>
+            </Item>
+            <Item>
+              <:label>Positie</:label>
+              <:content>
+                <AuLink
+                  @model={{mandatory.id}}
+                  @route="people.person.positions.mandatory"
+                >
+                  {{mandatory.mandate.roleBoard.label}}
                 </AuLink>
               </:content>
             </Item>
             {{#if
-              @model.person.mandatories.firstObject.contacts.firstObject.email
+              mandatory.contacts.firstObject.email
             }}
               <Item>
                 <:label>E-mail</:label>
                 <:content>
-                  {{@model.person.mandatories.firstObject.contacts.firstObject.email}}
+                  {{mandatory.contacts.firstObject.email}}
                 </:content>
               </Item>
             {{/if}}
             {{#if
-              @model.person.mandatories.firstObject.contacts.firstObject.contactAddress.fullAddress
+              mandatory.contacts.firstObject.contactAddress.fullAddress
             }}
               <Item>
                 <:label>Adres</:label>
                 <:content>
-                  {{@model.person.mandatories.firstObject.contacts.firstObject.contactAddress.fullAddress}}
+                  {{mandatory.contacts.firstObject.contactAddress.fullAddress}}
                 </:content>
               </Item>
             {{/if}}
           </:left>
           <:right as |Item|>
             {{#if
-              @model.person.mandatories.firstObject.contacts.firstObject.telephone
+              mandatory.contacts.firstObject.telephone
             }}
               <Item>
                 <:label>Telefoonnummer</:label>
                 <:content>
-                  {{@model.person.mandatories.firstObject.contacts.firstObject.telephone}}
+                  {{mandatory.contacts.firstObject.telephone}}
                 </:content>
               </Item>
             {{/if}}
-            <Item>
-              <:label>GSM nummer</:label>
-              <:content />
-            </Item>
           </:right>
         </Card.Columns>
       </:card>
-    </DataCard> --}}
+    </DataCard> 
+    {{/each}}
   </div>
 </div>
