@@ -14,7 +14,8 @@ export default class PeopleIndexController extends Controller {
   size = 25;
   @tracked sort = 'family-name';
   @tracked name = '';
-  @tracked organization = '';
+  @tracked organization;
+  @tracked org;
 
   get people() {
     return this.model.loadPeopleTaskInstance.isFinished
@@ -60,6 +61,11 @@ export default class PeopleIndexController extends Controller {
     this.positie = event?.id;
   }
 
+  @action
+  setOrganization(event) {
+    this.organization = event?.id;
+    this.org = event;
+  }
   resetPagination() {
     this.page = 0;
   }

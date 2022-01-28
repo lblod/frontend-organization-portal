@@ -9,7 +9,12 @@
           </p>
           <p class="au-o-grid__item">
             <AuLabel for="filter-organization">Organisatie</AuLabel>
-            <AuInput @width="block" @value={{this.organization}} id="filter-organization" />
+                 <AdministrativeUnitSelect
+                        @allowClear={{true}}
+                        @selected={{this.org}}
+                        @onChange={{this.setOrganization}}
+                        class="grow"
+                      />
           </p>
           <div class="au-o-grid__item">
             <PositionSelect @selected={{this.positie}} @onChange={{this.setPosition}}

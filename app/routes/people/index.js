@@ -57,7 +57,7 @@ export default class PeopleIndexRoute extends Route {
     }
 
     if (params.organization) {
-      q.push(`filter[organization_name]=${params.organization}`);
+      q.push(`filter[organization_id]=${params.organization}`);
     }
     const response = yield fetch(`/search/people/search?${q.join('&')}`);
     const { count, data } = yield response.json();
