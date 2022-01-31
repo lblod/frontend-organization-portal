@@ -1,10 +1,15 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import {
+  createPrimaryContact,
+  createSecondaryContact,
+  findPrimaryContact,
+  findSecondaryContact,
+} from 'frontend-contact-hub/models/contact-point';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
 import mandatoryValidations from 'frontend-contact-hub/validations/mandatory';
-import { findPrimaryContact } from 'frontend-contact-hub/utils/contact';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditRoute extends Route {
   @service store;
@@ -34,18 +39,20 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
     let contacts = await mandatory.contacts;
 
-    let primaryContact = await findPrimaryContact(contacts.toArray());
-
+    let primaryContact = findPrimaryContact(contacts);
     if (!primaryContact) {
-      primaryContact = this.store.createRecord('contact-point');
-      contacts.pushObject(primaryContact);
+      primaryContact = createPrimaryContact(this.store);
+    }
+
+    let secondaryContact = findSecondaryContact(contacts);
+    if (!secondaryContact) {
+      secondaryContact = createSecondaryContact(this.store);
     }
 
     let address = await primaryContact.contactAddress;
 
     if (!address) {
       address = this.store.createRecord('address');
-      primaryContact.contactAddress = address;
     }
 
     let mandate = await mandatory.mandate;
@@ -64,6 +71,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       mandatory: mandatoryChangeset,
       contact: createValidatedChangeset(primaryContact, contactValidations),
       contactRecord: primaryContact,
+      secondaryContact: createValidatedChangeset(
+        secondaryContact,
+        contactValidations
+      ),
+      secondaryContactRecord: secondaryContact,
       address: createValidatedChangeset(address, getAddressValidations(false)),
       addressRecord: address,
       person: await mandatory.governingAlias,

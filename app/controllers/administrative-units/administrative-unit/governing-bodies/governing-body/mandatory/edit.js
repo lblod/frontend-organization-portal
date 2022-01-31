@@ -41,24 +41,46 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   *save(event) {
     event.preventDefault();
 
-    let { mandatory, governingBody, contact, address } = this.model;
+    let { mandatory, governingBody, contact, secondaryContact, address } =
+      this.model;
 
     yield Promise.all([
       mandatory.validate(),
       contact.validate(),
+      secondaryContact.validate(),
       address.validate(),
     ]);
 
-    if (contact.isValid && mandatory.isValid && address.isValid) {
+    if (
+      contact.isValid &&
+      secondaryContact.isValid &&
+      mandatory.isValid &&
+      address.isValid
+    ) {
       if (address.isDirty) {
         address.fullAddress = combineFullAddress(address);
+
+        if (address.isNew) {
+          contact.contactAddress = address;
+        }
+
         yield address.save();
       }
 
-      contact.contactAddress = address;
-
+      let contacts = yield mandatory.contacts;
       if (contact.isDirty) {
+        if (contact.isNew) {
+          contacts.pushObject(contact);
+        }
+
         yield contact.save();
+      }
+
+      if (secondaryContact.isDirty) {
+        if (secondaryContact.isNew) {
+          contacts.pushObject(secondaryContact);
+        }
+        yield secondaryContact.save();
       }
 
       yield mandatory.save();
@@ -77,5 +99,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   removeUnsavedRecords() {
     this.model.addressRecord.rollbackAttributes();
     this.model.contactRecord.rollbackAttributes();
+    this.model.secondaryContactRecord.rollbackAttributes();
   }
 }
