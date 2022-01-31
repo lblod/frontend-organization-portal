@@ -19,14 +19,14 @@
       </:subtitle>
       <:action>
         {{! TODO: Replace this with the "edit" route once it is created }}
-        {{!-- <AuLink
+        {{! <AuLink
           @route="people.person.positions.mandatory"
           @skin="button-secondary"
           @icon="pencil"
           @iconAlignment="left"
         >
           Bewerk
-        </AuLink> --}}
+        </AuLink> }}
       </:action>
     </PageHeader>
 
@@ -66,45 +66,11 @@
       </:card>
     </DataCard>
 
-    {{#if @model.mandatory.contacts}}
-      <DataCard>
-        <:title>Primaire contactgegevens</:title>
-        <:card as |Card|>
-          <Card.Columns>
-            <:left as |Item|>
-              {{#if @model.mandatory.contacts.firstObject.email}}
-                <Item>
-                  <:label>E-mail</:label>
-                  <:content>
-                    {{@model.mandatory.contacts.firstObject.email}}
-                  </:content>
-                </Item>
-              {{/if}}
-              {{#if
-                @model.mandatory.contacts.firstObject.contactAddress.fullAddress
-              }}
-                <Item>
-                  <:label>Adres</:label>
-                  <:content>
-                    {{@model.mandatory.contacts.firstObject.contactAddress.fullAddress}}
-                  </:content>
-                </Item>
-              {{/if}}
-            </:left>
-            <:right as |Item|>
-              {{#if @model.mandatory.contacts.firstObject.telephone}}
-                <Item>
-                  <:label>Vast telefoonnummer</:label>
-                  <:content>
-                    {{@model.mandatory.contacts.firstObject.telephone}}
-                  </:content>
-                </Item>
-              {{/if}}
-            </:right>
-          </Card.Columns>
-        </:card>
-      </DataCard>
-    {{/if}}
+    <Position::ContactDataCard
+      @address={{@model.address}}
+      @primaryContact={{@model.contact}}
+      @secondaryContact={{@model.secondaryContact}}
+    />
 
     <DataCard>
       <:title>Aanstelling</:title>
