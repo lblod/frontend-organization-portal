@@ -1,7 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import muSearch from '../../utils/search';
 
 const CLASSIFICATION = {
   CENTRAL_WORSHIP_SERVICE: {
@@ -16,6 +15,7 @@ const CLASSIFICATION = {
 
 export default class AdministrativeUnitsIndexRoute extends Route {
   @service store;
+  @service muSearch;
 
   queryParams = {
     page: { refreshModel: true },
@@ -68,7 +68,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     if (params.organizationStatus) {
       filter['status_id'] = params.organizationStatus;
     }
-    return yield muSearch(
+    return yield this.muSearch.search(
       'units',
       params.page,
       params.size,

@@ -17,6 +17,8 @@
                       />
           </p>
           <div class="au-o-grid__item">
+            <AuLabel for="pozitions">Positie</AuLabel>
+
             <PositionSelect @selected={{this.positie}} @onChange={{this.setPosition}}
               @id="pozitions" />
           </div>
@@ -58,10 +60,10 @@
       </t.menu>
       <t.content class="au-c-data-table__table--small" as |c|>
         <c.header>
-          <AuDataTableThSortable @field="givenName" @currentSorting={{this.sort}} @label="Voornaam" />
-          <AuDataTableThSortable @field="familyName" @currentSorting={{this.sort}} @label="Achternaam" />
-          <AuDataTableThSortable @field="organization-name" @currentSorting={{this.sort}} @label="Organisatie" />
-          <AuDataTableThSortable @field="position-name" @currentSorting={{this.sort}} @label="Positie" />
+          <AuDataTableThSortable @field="given_name" @currentSorting={{this.sort}} @label="Voornaam" />
+          <AuDataTableThSortable @field="family_name" @currentSorting={{this.sort}} @label="Achternaam" />
+          <AuDataTableThSortable @field="organization_name" @currentSorting={{this.sort}} @label="Organisatie" />
+          <AuDataTableThSortable @field="position_name" @currentSorting={{this.sort}} @label="Positie" />
           <th>Status</th>
         </c.header>
         {{#if this.hasErrored}}
@@ -79,28 +81,28 @@
         <c.body as |person|>
           <td>
             <AuLink @route="people.person" @model={{person.id}}>
-              {{person.givenName}}
+              {{person.given_name}}
             </AuLink>
           </td>
           <td>
             <AuLink @route="people.person" @model={{person.id}}>
-              {{person.familyName}}
+              {{person.family_name}}
             </AuLink>
           </td>
           <td>
-            {{#if person.organizationId}}
-            <AuLink @route="administrative-units.administrative-unit" @model={{person.organizationId}}>
-              {{person.organizationName}}
+            {{#if person.organization_id}}
+            <AuLink @route="administrative-units.administrative-unit" @model={{person.organization_id}}>
+              {{person.organization_name}}
             </AuLink>
             {{/if}}
           </td>
           <td>
             <AuLink @route="people.person.positions.mandatory" @models={{array person.id person.uuid}}>
-              {{person.positionName}}
+              {{person.position_name}}
             </AuLink>
           </td>
           <td>
-            <PositionStatus @endDate={{person.endDate}} />
+            <PositionStatus @endDate={{person.end_date}} />
           </td>
         </c.body>
         {{/if}}

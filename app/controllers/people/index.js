@@ -12,7 +12,7 @@ export default class PeopleIndexController extends Controller {
 
   @tracked page = 0;
   size = 25;
-  @tracked sort = 'family-name';
+  @tracked sort = 'family_name';
   @tracked name = '';
   @tracked organization;
   @tracked org;
