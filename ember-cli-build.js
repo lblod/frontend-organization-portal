@@ -20,6 +20,10 @@ module.exports = function (defaults) {
     babel: {
       plugins: [require.resolve('ember-auto-import/babel-plugin')],
     },
+    // Disable chunk css fingerprinting until the config is included in ember-auto-import: https://github.com/ef4/ember-auto-import/pull/496
+    fingerprint: {
+      exclude: ['assets/chunk.*.css'],
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated
