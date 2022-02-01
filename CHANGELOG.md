@@ -3,6 +3,16 @@
 
 
 
+
+## 1.5.3 (2022-02-01)
+
+#### :bug: Bug Fix
+* [#251](https://github.com/lblod/frontend-contact-hub/pull/251) Fix the SPARQL page ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 1
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
 ## 1.5.2 (2022-01-26)
 
 #### :bug: Bug Fix
