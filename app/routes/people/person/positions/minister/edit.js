@@ -1,10 +1,15 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
+import {
+  createPrimaryContact,
+  createSecondaryContact,
+  findPrimaryContact,
+  findSecondaryContact,
+} from 'frontend-contact-hub/models/contact-point';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
 import ministerValidations from 'frontend-contact-hub/validations/minister';
-import { findPrimaryContact } from 'frontend-contact-hub/utils/contact';
-import { inject as service } from '@ember/service';
 
 export default class PeoplePersonPositionsMinisterEditRoute extends Route {
   @service currentSession;
@@ -21,18 +26,21 @@ export default class PeoplePersonPositionsMinisterEditRoute extends Route {
     let { minister } = this.modelFor('people.person.positions.minister');
 
     let contacts = await minister.contacts;
-    let primaryContact = await findPrimaryContact(contacts.toArray());
+    let primaryContact = findPrimaryContact(contacts);
 
     if (!primaryContact) {
-      primaryContact = this.store.createRecord('contact-point');
-      contacts.pushObject(primaryContact);
+      primaryContact = createPrimaryContact(this.store);
+    }
+
+    let secondaryContact = findSecondaryContact(contacts);
+    if (!secondaryContact) {
+      secondaryContact = createSecondaryContact(this.store);
     }
 
     let address = await primaryContact.contactAddress;
 
     if (!address) {
       address = this.store.createRecord('address');
-      primaryContact.contactAddress = address;
     }
 
     let ministerChangeset = createValidatedChangeset(
@@ -45,6 +53,11 @@ export default class PeoplePersonPositionsMinisterEditRoute extends Route {
       minister: ministerChangeset,
       contact: createValidatedChangeset(primaryContact, contactValidations),
       contactRecord: primaryContact,
+      secondaryContact: createValidatedChangeset(
+        secondaryContact,
+        contactValidations
+      ),
+      secondaryContactRecord: secondaryContact,
       address: createValidatedChangeset(address, getAddressValidations(false)),
       addressRecord: address,
     };

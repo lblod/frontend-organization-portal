@@ -24,19 +24,33 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
   *save(event) {
     event.preventDefault();
 
-    let { address, administrativeUnit, contact, site } = this.model;
+    let { address, administrativeUnit, contact, secondaryContact, site } =
+      this.model;
 
     yield address.validate();
     yield contact.validate();
+    yield secondaryContact.validate();
 
-    if (address.isValid && contact.isValid) {
+    if (address.isValid && contact.isValid && secondaryContact.isValid) {
       if (address.isDirty) {
         address.fullAddress = combineFullAddress(address);
         yield address.save();
       }
 
       if (contact.isDirty) {
+        if (contact.isNew) {
+          site.contacts.pushObject(contact);
+        }
+
         yield contact.save();
+      }
+
+      if (secondaryContact.isDirty) {
+        if (secondaryContact.isNew) {
+          site.contacts.pushObject(secondaryContact);
+        }
+
+        yield secondaryContact.save();
       }
 
       yield site.save();
@@ -69,8 +83,13 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
   }
 
   removeUnsavedRecords() {
-    if (this.model.contact.isNew) {
-      this.model.contact.destroyRecord();
+    let { contact, secondaryContact } = this.model;
+    if (contact.isNew) {
+      contact.destroyRecord();
+    }
+
+    if (secondaryContact.isNew) {
+      secondaryContact.destroyRecord();
     }
   }
 }

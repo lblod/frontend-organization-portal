@@ -48,45 +48,12 @@
       </:card>
     </DataCard>
 
-    <DataCard>
+    <Site::ContactDataCard
+      @address={{@model.site.address}}
+      @primaryContact={{@model.primaryContact}}
+      @secondaryContact={{@model.secondaryContact}}
+    >
       <:title>Contactgegevens</:title>
-      <:card as |Card|>
-        <Card.Columns>
-          <:left as |Item|>
-            <Item>
-              <:label>Adres</:label>
-              <:content>{{@model.site.address.fullAddress}}</:content>
-            </Item>
-            <Item>
-              <:label>Provincie</:label>
-              <:content>{{@model.site.address.province}}</:content>
-            </Item>
-          </:left>
-          <:right as |Item|>
-            {{#if @model.site.contacts.firstObject.telephone}}
-              <Item>
-                <:label>Telefoonnummer</:label>
-                <:content
-                >{{@model.site.contacts.firstObject.telephone}}</:content>
-              </Item>
-            {{/if}}
-            {{#if @model.site.contacts.firstObject.website}}
-              <Item>
-                <:label>Website</:label>
-                <:content>
-                  <a
-                    href={{@model.site.contacts.firstObject.website}}
-                    class="au-c-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >{{@model.site.contacts.firstObject.website}}
-                    (externe link)</a>
-                </:content>
-              </Item>
-            {{/if}}
-          </:right>
-        </Card.Columns>
-      </:card>
-    </DataCard>
+    </Site::ContactDataCard>
   </div>
 </div>
