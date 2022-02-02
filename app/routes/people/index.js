@@ -51,10 +51,7 @@ export default class PeopleIndexRoute extends Route {
       filter,
       (data) => {
         const entry = data.attributes;
-        entry.id = data.id;
         entry.end_date = entry.end_date ? new Date(entry.end_date) : null;
-        console.log(entry.end_date);
-
         return entry;
       }
     );
