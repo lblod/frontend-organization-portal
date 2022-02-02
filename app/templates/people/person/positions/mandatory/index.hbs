@@ -1,161 +1,125 @@
-<div class="au-c-body-container au-c-body-container--scroll">
-  <div class="au-o-box au-o-flow au-o-flow--large">
-    <PageHeader>
-      <:title>
-        {{#let
-          @model.mandatory.mandate.governingBody.isTimeSpecializationOf
-          as |governingBody|
-        }}
+{{#let
+  @model.mandatory.mandate.governingBody.isTimeSpecializationOf
+  @model.mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit
+  as |governingBody administrativeUnit|
+}}
+  <div class="au-c-body-container au-c-body-container--scroll">
+    <div class="au-o-box au-o-flow au-o-flow--large">
+      <PageHeader>
+        <:title>
           Positie:
           {{@model.mandatory.mandate.roleBoard.label}},
           <br />
           {{governingBody.classification.label}}
           {{governingBody.administrativeUnit.name}}
-        {{/let}}
-      </:title>
-      <:subtitle>
-        {{@model.person.givenName}}
-        {{@model.person.familyName}}
-      </:subtitle>
-      <:action>
-        {{! TODO: Replace this with the "edit" route once it is created }}
-        {{!-- <AuLink
-          @route="people.person.positions.mandatory"
-          @skin="button-secondary"
-          @icon="pencil"
-          @iconAlignment="left"
-        >
-          Bewerk
-        </AuLink> --}}
-      </:action>
-    </PageHeader>
+        </:title>
+        <:subtitle>
+          {{@model.person.givenName}}
+          {{@model.person.familyName}}
+        </:subtitle>
+        <:action>
+          <Button::Edit
+            @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
+            @models={{array
+              administrativeUnit.id
+              governingBody.id
+              @model.mandatory.id
+            }}
+          />
+        </:action>
+      </PageHeader>
 
-    <DataCard>
-      <:title>Positie</:title>
-      <:card as |Card|>
-        <Card.Columns>
-          <:left as |Item|>
-            <Item>
-              <:label>Type</:label>
-              <:content>Mandaat</:content>
-            </Item>
-            <Item>
-              <:label>Bestuursfunctie</:label>
-              <:content>{{@model.mandatory.mandate.roleBoard.label}}</:content>
-            </Item>
-          </:left>
-          <:right as |Item|>
-            <Item>
-              <:label>Naam eredienst</:label>
-              <:content>
-                {{#let
-                  @model.mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit
-                  as |administrativeUnit|
-                }}
+      <DataCard>
+        <:title>Positie</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item>
+                <:label>Type</:label>
+                <:content>Mandaat</:content>
+              </Item>
+              <Item>
+                <:label>Bestuursfunctie</:label>
+                <:content
+                >{{@model.mandatory.mandate.roleBoard.label}}</:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item>
+                <:label>Naam eredienst</:label>
+                <:content>
                   <AuLink
                     @route="administrative-units.administrative-unit"
                     @model={{administrativeUnit.id}}
                   >
                     {{administrativeUnit.name}}
                   </AuLink>
-                {{/let}}
-              </:content>
-            </Item>
-          </:right>
-        </Card.Columns>
-      </:card>
-    </DataCard>
+                </:content>
+              </Item>
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
 
-    {{#if @model.mandatory.contacts}}
+      <Position::ContactDataCard
+        @address={{@model.address}}
+        @primaryContact={{@model.contact}}
+        @secondaryContact={{@model.secondaryContact}}
+      />
+
       <DataCard>
-        <:title>Primaire contactgegevens</:title>
+        <:title>Aanstelling</:title>
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              {{#if @model.mandatory.contacts.firstObject.email}}
+              {{#if @model.mandatory.startDate}}
                 <Item>
-                  <:label>E-mail</:label>
+                  <:label>Start mandaat</:label>
                   <:content>
-                    {{@model.mandatory.contacts.firstObject.email}}
+                    {{date-format @model.mandatory.startDate}}
                   </:content>
                 </Item>
               {{/if}}
-              {{#if
-                @model.mandatory.contacts.firstObject.contactAddress.fullAddress
-              }}
+              {{#if @model.mandatory.expectedEndDate}}
                 <Item>
-                  <:label>Adres</:label>
+                  <:label>Geplande einddatum</:label>
                   <:content>
-                    {{@model.mandatory.contacts.firstObject.contactAddress.fullAddress}}
+                    {{date-format @model.mandatory.expectedEndDate}}
                   </:content>
                 </Item>
               {{/if}}
             </:left>
             <:right as |Item|>
-              {{#if @model.mandatory.contacts.firstObject.telephone}}
+              {{#if @model.mandatory.mandate.governingBody.period}}
                 <Item>
-                  <:label>Vast telefoonnummer</:label>
+                  <:label>Bestuursperiode</:label>
                   <:content>
-                    {{@model.mandatory.contacts.firstObject.telephone}}
+                    {{@model.mandatory.mandate.governingBody.period}}
                   </:content>
+                </Item>
+              {{/if}}
+              {{#if @model.mandatory.typeHalf.label}}
+                <Item>
+                  <:label>Verkozen</:label>
+                  <:content>{{@model.mandatory.typeHalf.label}}</:content>
+                </Item>
+              {{/if}}
+              {{#if @model.mandatory.endDate}}
+                <Item>
+                  <:label>Einddatum</:label>
+                  <:content>{{date-format @model.mandatory.endDate}}</:content>
+                </Item>
+              {{/if}}
+              {{#if @model.mandatory.reasonStopped}}
+                <Item>
+                  <:label>Stopzetting</:label>
+                  <:content>{{@model.mandatory.reasonStopped}}</:content>
                 </Item>
               {{/if}}
             </:right>
           </Card.Columns>
         </:card>
       </DataCard>
-    {{/if}}
-
-    <DataCard>
-      <:title>Aanstelling</:title>
-      <:card as |Card|>
-        <Card.Columns>
-          <:left as |Item|>
-            {{#if @model.mandatory.startDate}}
-              <Item>
-                <:label>Start mandaat</:label>
-                <:content>{{date-format @model.mandatory.startDate}}</:content>
-              </Item>
-            {{/if}}
-            {{#if @model.mandatory.expectedEndDate}}
-              <Item>
-                <:label>Geplande einddatum</:label>
-                <:content>
-                  {{date-format @model.mandatory.expectedEndDate}}
-                </:content>
-              </Item>
-            {{/if}}
-          </:left>
-          <:right as |Item|>
-            {{#if @model.mandatory.mandate.governingBody.period}}
-              <Item>
-                <:label>Bestuursperiode</:label>
-                <:content>
-                  {{@model.mandatory.mandate.governingBody.period}}
-                </:content>
-              </Item>
-            {{/if}}
-            {{#if @model.mandatory.typeHalf.label}}
-              <Item>
-                <:label>Verkozen</:label>
-                <:content>{{@model.mandatory.typeHalf.label}}</:content>
-              </Item>
-            {{/if}}
-            {{#if @model.mandatory.endDate}}
-              <Item>
-                <:label>Einddatum</:label>
-                <:content>{{date-format @model.mandatory.endDate}}</:content>
-              </Item>
-            {{/if}}
-            {{#if @model.mandatory.reasonStopped}}
-              <Item>
-                <:label>Stopzetting</:label>
-                <:content>{{@model.mandatory.reasonStopped}}</:content>
-              </Item>
-            {{/if}}
-          </:right>
-        </Card.Columns>
-      </:card>
-    </DataCard>
+    </div>
   </div>
-</div>
+{{/let}}

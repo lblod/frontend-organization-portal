@@ -1,5 +1,11 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import {
+  createPrimaryContact,
+  createSecondaryContact,
+  findPrimaryContact,
+  findSecondaryContact,
+} from 'frontend-contact-hub/models/contact-point';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
@@ -16,16 +22,23 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute ext
       });
     }
   }
+
   async model() {
     let { site } = this.modelFor(
       'administrative-units.administrative-unit.sites.site'
     );
 
     let contacts = await site.contacts;
-    if (contacts.length === 0) {
-      contacts.pushObject(this.store.createRecord('contact-point'));
+
+    let contact = findPrimaryContact(contacts);
+    if (!contact) {
+      contact = createPrimaryContact(this.store);
     }
-    let contact = contacts.firstObject;
+
+    let secondaryContact = findSecondaryContact(contacts);
+    if (!secondaryContact) {
+      secondaryContact = createSecondaryContact(this.store);
+    }
 
     let administrativeUnit = this.modelFor(
       'administrative-units.administrative-unit'
@@ -37,6 +50,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute ext
       site,
       address: createValidatedChangeset(address, getAddressValidations(true)),
       contact: createValidatedChangeset(contact, contactValidations),
+      secondaryContact: createValidatedChangeset(
+        secondaryContact,
+        contactValidations
+      ),
       administrativeUnit,
       currentPrimarySite: await administrativeUnit.primarySite,
     };

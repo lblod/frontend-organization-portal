@@ -50,24 +50,41 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
   *save(event) {
     event.preventDefault();
 
-    let { minister, contact, address } = this.model;
+    let { minister, contact, secondaryContact, address } = this.model;
 
     yield Promise.all([
       contact.validate(),
+      secondaryContact.validate(),
       minister.validate(),
       address.validate(),
     ]);
 
-    if (minister.isValid && contact.isValid && address.isValid) {
+    if (
+      minister.isValid &&
+      contact.isValid &&
+      secondaryContact.isValid &&
+      address.isValid
+    ) {
       if (address.isDirty) {
         address.fullAddress = combineFullAddress(address);
         yield address.save();
       }
 
       contact.contactAddress = address;
+      let contacts = yield minister.contacts;
 
       if (contact.isDirty) {
+        if (contact.isNew) {
+          contacts.pushObject(contact);
+        }
         yield contact.save();
+      }
+
+      if (secondaryContact.isDirty) {
+        if (secondaryContact.isNew) {
+          contacts.pushObject(secondaryContact);
+        }
+        yield secondaryContact.save();
       }
 
       let financingCodeId = this.willReceiveFinancing
@@ -102,6 +119,7 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
   removeUnsavedRecords() {
     this.model.addressRecord.rollbackAttributes();
     this.model.contactRecord.rollbackAttributes();
+    this.model.secondaryContactRecord.rollbackAttributes();
   }
 
   handleTransitionTo() {

@@ -1,13 +1,24 @@
 import Route from '@ember/routing/route';
 import { dropTask } from 'ember-concurrency';
+import {
+  findPrimaryContact,
+  findSecondaryContact,
+} from 'frontend-contact-hub/models/contact-point';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute extends Route {
-  model() {
+  async model() {
     const { id } = this.paramsFor('administrative-units.administrative-unit');
+    let administrativeUnit = this.modelFor(
+      'administrative-units.administrative-unit.core-data'
+    );
+
+    let primarySite = await administrativeUnit.primarySite;
+    let contacts = await primarySite.contacts;
+
     return {
-      administrativeUnit: this.modelFor(
-        'administrative-units.administrative-unit.core-data'
-      ),
+      administrativeUnit,
+      primaryContact: findPrimaryContact(contacts),
+      secondaryContact: findSecondaryContact(contacts),
       subOrganizations: this.loadSubOrganizationsTask.perform(id),
     };
   }

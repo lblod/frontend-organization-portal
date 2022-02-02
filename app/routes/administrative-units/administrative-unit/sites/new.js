@@ -1,5 +1,9 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import {
+  createPrimaryContact,
+  createSecondaryContact,
+} from 'frontend-contact-hub/models/contact-point';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
@@ -29,7 +33,11 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewRoute extends 
         getAddressValidations(true)
       ),
       contact: createValidatedChangeset(
-        this.store.createRecord('contact-point'),
+        createPrimaryContact(this.store),
+        contactValidations
+      ),
+      secondaryContact: createValidatedChangeset(
+        createSecondaryContact(this.store),
         contactValidations
       ),
     };

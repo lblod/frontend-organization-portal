@@ -1,5 +1,9 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import {
+  createPrimaryContact,
+  createSecondaryContact,
+} from 'frontend-contact-hub/models/contact-point';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
@@ -26,8 +30,8 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute exte
 
     let minister = this.store.createRecord('minister');
     minister.isCurrentPosition = true;
-    let contact = this.store.createRecord('contact-point');
-    let secondaryContact = this.store.createRecord('contact-point');
+    let contact = createPrimaryContact(this.store);
+    let secondaryContact = createSecondaryContact(this.store);
     let address = this.store.createRecord('address');
     let position = this.store.createRecord('minister-position');
 

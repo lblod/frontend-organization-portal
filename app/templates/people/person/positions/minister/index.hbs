@@ -67,53 +67,11 @@
       </:card>
     </DataCard>
 
-    {{#if @model.minister.contacts}}
-      <DataCard>
-        <:title>Primaire contactgegevens</:title>
-        <:card as |Card|>
-          <Card.Columns>
-            <:left as |Item|>
-              {{#if @model.minister.contacts.firstObject.email}}
-                <Item>
-                  <:label>E-mail</:label>
-                  <:content>
-                    {{@model.minister.contacts.firstObject.email}}
-                  </:content>
-                </Item>
-              {{/if}}
-              {{#if
-                @model.minister.contacts.firstObject.contactAddress.fullAddress
-              }}
-                <Item>
-                  <:label>Adres</:label>
-                  <:content>
-                    {{@model.minister.contacts.firstObject.contactAddress.fullAddress}}
-                  </:content>
-                </Item>
-              {{/if}}
-            </:left>
-            <:right as |Item|>
-              {{#if @model.minister.contacts.firstObject.telephone}}
-                <Item>
-                  <:label>Vast telefoonnummer</:label>
-                  <:content>
-                    {{@model.minister.contacts.firstObject.telephone}}
-                  </:content>
-                </Item>
-              {{/if}}
-              {{#if (get (object-at 1 @model.minister.contacts) "telephone")}}
-                <Item>
-                  <:label>GSM nummer</:label>
-                  <:content>
-                    {{get (object-at 1 @model.minister.contacts) "telephone"}}
-                  </:content>
-                </Item>
-              {{/if}}
-            </:right>
-          </Card.Columns>
-        </:card>
-      </DataCard>
-    {{/if}}
+    <Position::ContactDataCard
+      @address={{@model.address}}
+      @primaryContact={{@model.contact}}
+      @secondaryContact={{@model.secondaryContact}}
+    />
 
     {{#if (or @model.minister.agentStartDate @model.minister.agentEndDate)}}
       <DataCard>
