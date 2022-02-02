@@ -18,14 +18,21 @@
           {{@model.person.familyName}}
         </:subtitle>
         <:action>
-          <Button::Edit
-            @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
-            @models={{array
-              administrativeUnit.id
-              governingBody.id
-              @model.mandatory.id
-            }}
-          />
+          <SecuredArea>
+            <:edit>
+              <Button::Edit
+                @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
+                @models={{array
+                  administrativeUnit.id
+                  governingBody.id
+                  @model.mandatory.id
+                }}
+              />
+            </:edit>
+            <:read-only>
+              <ReportWrongData />
+            </:read-only>
+          </SecuredArea>
         </:action>
       </PageHeader>
 
