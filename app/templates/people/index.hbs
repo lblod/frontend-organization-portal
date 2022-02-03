@@ -3,7 +3,7 @@
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content au-o-box">
         <form {{on "submit" this.search}} class="au-o-grid au-o-grid--small">
-          <p class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
+          <p class="au-o-grid__item">
             <AuLabel for="filter-given-name">Naam</AuLabel>
             <AuInput
               @width="block"
@@ -72,13 +72,14 @@
                 </:edit>
               </SecuredArea>
             </:alert>
-            <:toggle>
-              <AuToggleSwitch
+     
+          </PageHeader>
+          <div class="au-o-box">
+                         <AuToggleSwitch
                 @label="Verberg niet actieve posities"
                 @checked={{this.status}}
               />
-            </:toggle>
-          </PageHeader>
+          </div>
         </menu.general>
       </t.menu>
       <t.content class="au-c-data-table__table--small" as |c|>

@@ -59,13 +59,14 @@ export default class MuSearchService extends Service {
     return pagination;
   }
 
-  async search(index, page, size, sort, filter, dataMapping) {
+  async search(request) {
+    let { index, page, size, sort, filters, dataMapping } = request;
     const params = [];
     params.push(`page[size]=${size}`);
     params.push(`page[number]=${page}`);
 
-    for (const field in filter) {
-      let q = filter[field];
+    for (const field in filters) {
+      let q = filters[field];
       let f = field;
       params.push(`filter[${f}]=${q}`);
     }

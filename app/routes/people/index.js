@@ -25,7 +25,9 @@ export default class PeopleIndexRoute extends Route {
   *loadPeopleTask(params) {
     const filter = {};
     if (params.name) {
-      filter['given_name,family_name'] = params.name;
+      filter[
+        ':query:given_name'
+      ] = `(given_name:${params.name}~)  OR (family_name:${params.name}~ ) `;
     }
     if (params.status) {
       let date = new Date().toISOString().slice(0, -5);
@@ -40,17 +42,17 @@ export default class PeopleIndexRoute extends Route {
       filter['organization_id'] = params.organization;
     }
 
-    return yield this.muSearch.search(
-      'people',
-      params.page,
-      params.size,
-      params.sort,
-      filter,
-      (data) => {
+    return yield this.muSearch.search({
+      index: 'people',
+      page: params.page,
+      size: params.size,
+      sort: params.sort,
+      filters: filter,
+      dataMapping: (data) => {
         const entry = data.attributes;
         entry.end_date = entry.end_date ? new Date(entry.end_date) : null;
         return entry;
-      }
-    );
+      },
+    });
   }
 }

@@ -36,8 +36,7 @@ export default class PeopleIndexController extends Controller {
 
   get hasNoResults() {
     return (
-      this.model?.loadPeopleTaskInstance?.isFinished &&
-      this?.people?.length === 0
+      this.model.loadPeopleTaskInstance.isFinished && this.people.length === 0
     );
   }
 
@@ -46,14 +45,14 @@ export default class PeopleIndexController extends Controller {
   }
 
   @action
-  setPosition(event) {
-    this.position = event?.id;
+  setPosition(position) {
+    this.position = position?.id;
   }
 
   @action
-  setOrganization(event) {
-    this.organization = event?.id;
-    this.org = event;
+  setOrganization(organization) {
+    this.organization = organization?.id;
+    this.org = organization;
   }
 
   @action
