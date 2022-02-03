@@ -5,14 +5,16 @@ import { tracked } from '@glimmer/tracking';
 
 export default class PeopleIndexController extends Controller {
   @service router;
-  queryParams = ['page', 'size', 'givenName', 'familyName', 'organization'];
+  queryParams = ['page', 'size', 'name', 'organization', 'status', 'position'];
+  @tracked status = true;
+  @tracked position;
 
   @tracked page = 0;
   size = 25;
-  @tracked sort = 'family-name';
-  @tracked givenName = '';
-  @tracked familyName = '';
-  @tracked organization = '';
+  @tracked sort = 'family_name';
+  @tracked name = '';
+  @tracked organization;
+  @tracked org;
 
   get people() {
     return this.model.loadPeopleTaskInstance.isFinished
@@ -34,12 +36,24 @@ export default class PeopleIndexController extends Controller {
 
   get hasNoResults() {
     return (
-      this.model.loadPeopleTaskInstance.isFinished && this.people.length === 0
+      this.model?.loadPeopleTaskInstance?.isFinished &&
+      this?.people?.length === 0
     );
   }
 
   get hasErrored() {
     return this.model.loadPeopleTaskInstance.isError;
+  }
+
+  @action
+  setPosition(event) {
+    this.position = event?.id;
+  }
+
+  @action
+  setOrganization(event) {
+    this.organization = event?.id;
+    this.org = event;
   }
 
   @action
