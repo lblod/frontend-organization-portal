@@ -4,29 +4,30 @@
       <div class="au-c-sidebar__content au-o-box">
         <form {{on "submit" this.search}} class="au-o-grid au-o-grid--small">
           <p class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
-            <AuLabel for="filter-given-name">Voornaam</AuLabel>
+            <AuLabel for="filter-given-name">Naam</AuLabel>
             <AuInput
               @width="block"
-              @value={{this.givenName}}
+              @value={{this.name}}
               id="filter-given-name"
-            />
-          </p>
-          <p class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
-            <AuLabel for="filter-family-name">Achternaam</AuLabel>
-            <AuInput
-              @width="block"
-              @value={{this.familyName}}
-              id="filter-family-name"
             />
           </p>
           <p class="au-o-grid__item">
             <AuLabel for="filter-organization">Organisatie</AuLabel>
-            <AuInput
-              @width="block"
-              @value={{this.organization}}
-              id="filter-organization"
+            <AdministrativeUnitSelect
+              @allowClear={{true}}
+              @selected={{this.org}}
+              @onChange={{this.setOrganization}}
+              class="grow"
             />
           </p>
+          <div class="au-o-grid__item">
+            <AuLabel for="positions">Positie</AuLabel>
+            <PositionSelect
+              @selected={{this.position}}
+              @onChange={{this.setPosition}}
+              @id="positions"
+            />
+          </div>
           <div class="au-o-grid__item">
             <AuButton
               @loading={{this.isLoading}}
@@ -71,28 +72,34 @@
                 </:edit>
               </SecuredArea>
             </:alert>
+            <:toggle>
+              <AuToggleSwitch
+                @label="Verberg niet actieve posities"
+                @checked={{this.status}}
+              />
+            </:toggle>
           </PageHeader>
         </menu.general>
       </t.menu>
       <t.content class="au-c-data-table__table--small" as |c|>
         <c.header>
           <AuDataTableThSortable
-            @field="givenName"
+            @field="given_name"
             @currentSorting={{this.sort}}
             @label="Voornaam"
           />
           <AuDataTableThSortable
-            @field="familyName"
+            @field="family_name"
             @currentSorting={{this.sort}}
             @label="Achternaam"
           />
           <AuDataTableThSortable
-            @field="mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.name"
+            @field="organization_name"
             @currentSorting={{this.sort}}
             @label="Organisatie"
           />
           <AuDataTableThSortable
-            @field="mandatories.mandate.role-board.label"
+            @field="position_name"
             @currentSorting={{this.sort}}
             @label="Positie"
           />
@@ -113,48 +120,33 @@
             </p>
           </TableMessage>
         {{else}}
-          <c.body as |person|>
-            {{#let person.mandatories.firstObject as |mandatory|}}
-              <td>
-                <AuLink @route="people.person" @model={{person.id}}>
-                  {{person.givenName}}
-                </AuLink>
-              </td>
-              <td>
-                <AuLink @route="people.person" @model={{person.id}}>
-                  {{person.familyName}}
-                </AuLink>
-              </td>
-              <td>
-                {{#let
-                  mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit
-                  as |administrativeUnit|
-                }}
-                  {{#if administrativeUnit}}
-                    <AuLink
-                      @route="administrative-units.administrative-unit"
-                      @model={{administrativeUnit.id}}
-                    >
-                      {{administrativeUnit.name}}
-                    </AuLink>
-                  {{/if}}
-                {{/let}}
-              </td>
-              <td>
-                <AuLink
-                  @route="people.person.positions.mandatory"
-                  @models={{array person.id mandatory.id}}
-                >
-                  {{mandatory.mandate.roleBoard.label}}
-                </AuLink>
-              </td>
-              <td>
-                {{#if mandatory}}
-                  <PositionStatus @endDate={{mandatory.endDate}} />
-                {{/if}}
-              </td>
-            {{/let}}
-          </c.body>
+        <c.body as |person|>
+          <td>
+            <AuLink @route="people.person" @model={{person.id}}>
+              {{person.given_name}}
+            </AuLink>
+          </td>
+          <td>
+            <AuLink @route="people.person" @model={{person.id}}>
+              {{person.family_name}}
+            </AuLink>
+          </td>
+          <td>
+            {{#if person.organization_id}}
+            <AuLink @route="administrative-units.administrative-unit" @model={{person.organization_id}}>
+              {{person.organization_name}}
+            </AuLink>
+            {{/if}}
+          </td>
+          <td>
+            <AuLink @route="people.person.positions.mandatory" @models={{array person.id person.uuid}}>
+              {{person.position_name}}
+            </AuLink>
+          </td>
+          <td>
+            <PositionStatus @endDate={{person.end_date}} />
+          </td>
+        </c.body>
         {{/if}}
       </t.content>
     </AuDataTable>
