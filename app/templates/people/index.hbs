@@ -15,7 +15,7 @@
             <AuLabel for="filter-organization">Organisatie</AuLabel>
             <AdministrativeUnitSelect
               @allowClear={{true}}
-              @loadSelected={{this.organization}}
+              @selected={{or this.selectedOrganization this.organization}}
               @onChange={{this.setOrganization}}
               class="grow"
             />

@@ -14,6 +14,7 @@ export default class PeopleIndexController extends Controller {
   @tracked sort = 'family_name';
   @tracked name = '';
   @tracked organization;
+  @tracked selectedOrganization;
 
   get people() {
     return this.model.loadPeopleTaskInstance.isFinished
@@ -51,6 +52,7 @@ export default class PeopleIndexController extends Controller {
   @action
   setOrganization(organization) {
     this.organization = organization?.id;
+    this.selectedOrganization = organization;
   }
 
   @action

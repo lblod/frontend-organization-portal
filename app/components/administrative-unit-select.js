@@ -1,19 +1,14 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { restartableTask, timeout } from 'ember-concurrency';
+import { restartableTask, timeout, task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
 
 export default class AdministrativeUnitSelectComponent extends Component {
   @service store;
-  @tracked selected;
-
+  @tracked loadedRecord;
   constructor() {
     super(...arguments);
-    const hack = this.args.loadSelected;
-    if (hack) {
-      this.loadStartup(hack);
-    }
+    this.loadRecord.perform();
   }
   @restartableTask
   *loadAdministrativeUnitsTask(searchParams = '') {
@@ -43,17 +38,23 @@ export default class AdministrativeUnitSelectComponent extends Component {
       return searchResults;
     }
   }
-  async loadStartup(organizationId) {
-    let result = await this.store.findRecord(
-      'administrative-unit',
-      organizationId
-    );
-    this.selected = result;
+
+  get selectedAdministrativeUnit() {
+    if (typeof this.args.selected === 'string') {
+      return this.loadedRecord;
+    }
+
+    return this.args.selected;
   }
 
-  @action
-  onChange(unit) {
-    this.selected = unit;
-    this.args.onChange(unit);
+  @task
+  *loadRecord() {
+    let selectedOrganization = this.args.selected;
+    if (typeof selectedOrganization === 'string') {
+      this.loadedRecord = yield this.store.findRecord(
+        'administrative-unit',
+        selectedOrganization
+      );
+    }
   }
 }
