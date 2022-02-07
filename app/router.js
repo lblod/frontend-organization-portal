@@ -14,7 +14,7 @@ Router.map(function () {
     this.route('person', { path: '/:id/' }, function () {
       this.route(
         'personal-information',
-        { path: '/contact-gegevens' },
+        { path: '/contactgegevens' },
         function () {
           this.route('edit');
         }
