@@ -1,7 +1,7 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
-      <:title>Persoonlijke gegevens</:title>
+      <:title>Contactgegevens</:title>
       <:subtitle>
         {{@model.person.givenName}}
         {{@model.person.familyName}}
@@ -48,65 +48,107 @@
         </Card.Columns>
       </:card>
     </DataCard>
+    {{#each @model.positions as |position|}}
+      <DataCard>
+        <:title>Contactgegevens:
+          {{position.title}}
+        </:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item>
+                <:label>Organisatie</:label>
+                <:content>
+                  <AuLink
+                    @model={{position.administrativeUnit.id}}
+                    @route="administrative-units.administrative-unit"
+                  >
+                    {{position.administrativeUnit.name}}
+                  </AuLink>
+                </:content>
+              </Item>
+              {{#if position.primaryContact.email}}
+                <Item>
+                  <:label>E-mail</:label>
+                  <:content>
+                    {{position.primaryContact.email}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if position.primaryContact.contactAddress.fullAddress}}
+                <Item>
+                  <:label>Adres</:label>
+                  <:content>
+                    {{position.primaryContact.contactAddress.fullAddress}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if position.primaryContact.contactAddress.province}}
+                <Item>
+                  <:label>Province</:label>
+                  <:content>
+                    {{position.primaryContact.contactAddress.province}}
+                  </:content>
+                </Item>
+              {{/if}}
+            </:left>
+            <:right as |Item|>
+              {{#if position.role}}
+                <Item>
+                  <:label>Positie</:label>
+                  <:content>
+                    {{#if (eq position.type "minister")}}
+                      <AuLink
+                        @route="people.person.positions.minister"
+                        @models={{array @model.person.id position.id}}
+                      >
+                        {{position.role}}
+                      </AuLink>
 
-    {{! Hide contact information for now because it needs further changes. https://binnenland.atlassian.net/browse/OP-600 }}
-    {{!-- <DataCard>
-      <:title>Contactgegevens:
-        {{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.classification.label}}
-      </:title>
-      <:card as |Card|>
-        <Card.Columns>
-          <:left as |Item|>
-            <Item>
-              <:label>Organisatie</:label>
-              <:content>
-                <AuLink
-                  @model={{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.id}}
-                  @route="administrative-units.administrative-unit"
-                >
-                  {{@model.person.mandatories.firstObject.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.name}}
-                </AuLink>
-              </:content>
-            </Item>
-            {{#if
-              @model.person.mandatories.firstObject.contacts.firstObject.email
-            }}
-              <Item>
-                <:label>E-mail</:label>
-                <:content>
-                  {{@model.person.mandatories.firstObject.contacts.firstObject.email}}
-                </:content>
-              </Item>
-            {{/if}}
-            {{#if
-              @model.person.mandatories.firstObject.contacts.firstObject.contactAddress.fullAddress
-            }}
-              <Item>
-                <:label>Adres</:label>
-                <:content>
-                  {{@model.person.mandatories.firstObject.contacts.firstObject.contactAddress.fullAddress}}
-                </:content>
-              </Item>
-            {{/if}}
-          </:left>
-          <:right as |Item|>
-            {{#if
-              @model.person.mandatories.firstObject.contacts.firstObject.telephone
-            }}
-              <Item>
-                <:label>Telefoonnummer</:label>
-                <:content>
-                  {{@model.person.mandatories.firstObject.contacts.firstObject.telephone}}
-                </:content>
-              </Item>
-            {{/if}}
-            <Item>
-              <:label>GSM nummer</:label>
-              <:content />
-            </Item>
-          </:right>
-        </Card.Columns>
-      </:card>
-    </DataCard> --}}
+                    {{else}}
+
+                      <AuLink
+                        @route="people.person.positions.mandatory"
+                        @models={{array @model.person.id position.id}}
+                      >
+                        {{position.role}}
+                      </AuLink>
+                    {{/if}}
+                  </:content>
+                </Item>
+              {{/if}}
+
+              {{#if position.primaryContact.telephone}}
+                <Item>
+                  <:label>Primair telefoonnummer</:label>
+                  <:content>
+                    {{position.primaryContact.telephone}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if position.secondaryContact.telephone}}
+                <Item>
+                  <:label>Secundair telefoonnummer</:label>
+                  <:content>
+                    {{position.secondaryContact.telephone}}
+                  </:content>
+                </Item>
+              {{/if}}
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+    {{/each}}
+    {{!-- todo when posities list pages is finished, uncomment this}}
+      <AuHelpText @skin="tertiary">
+        {{@model.person.givenName}}
+        {{@model.person.familyName}}
+        heeft geen andere posities. Om alle posities (ook niet active) te
+        bekijken, ga naar&nbsp;
+        <AuLink @model={{@model.person}} @route="people.person.positions">
+          Posities
+        </AuLink>
+      </AuHelpText>
+    {{--}}
   </div>
 </div>
