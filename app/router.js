@@ -33,7 +33,6 @@ Router.map(function () {
           }
         );
       });
-      // this.route('contacts', function () {});
     });
     this.route('new', { path: '/nieuw' });
   });

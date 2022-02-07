@@ -60,10 +60,10 @@
                 <:label>Organisatie</:label>
                 <:content>
                   <AuLink
-                    @model={{contact.unitId}}
+                    @model={{contact.administrativeUnit.id}}
                     @route="administrative-units.administrative-unit"
                   >
-                    {{contact.unitName}}
+                    {{contact.administrativeUnit.name}}
                   </AuLink>
                 </:content>
               </Item>
@@ -80,6 +80,14 @@
                   <:label>Adres</:label>
                   <:content>
                     {{contact.primaryContact.contactAddress.fullAddress}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if contact.primaryContact.contactAddress.province}}
+                <Item>
+                  <:label>Province</:label>
+                  <:content>
+                    {{contact.primaryContact.contactAddress.province}}
                   </:content>
                 </Item>
               {{/if}}
@@ -101,10 +109,7 @@
 
                       <AuLink
                         @route="people.person.positions.mandatory"
-                        @models={{ array
-                         @model.person.id
-                          contact.id
-                        }}
+                        @models={{array @model.person.id contact.id}}
                       >
                         {{contact.role}}
                       </AuLink>
@@ -134,6 +139,17 @@
         </:card>
       </DataCard>
     {{/each}}
-
+    {{!-- todo when posities list pages is finished, uncomment this}}
+      <div class="flex items-start">
+        <span class="au-u-muted au-u-italic">
+          {{@model.person.givenName}}
+          {{@model.person.familyName}}
+          heeft geen andere posities. Om alle posities (ook niet active) te
+          bekijken, ga naar&nbsp;</span>
+        <AuLink @model={{@model.person}} @route="people.person.positions">
+          Posities
+        </AuLink>
+      </div>
+    {{--}}
   </div>
 </div>

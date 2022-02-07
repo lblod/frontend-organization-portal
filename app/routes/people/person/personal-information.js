@@ -4,7 +4,7 @@ import { assert } from '@ember/debug';
 import {
   findPrimaryContact,
   findSecondaryContact,
-} from '../../../models/contact-point';
+} from 'frontend-contact-hub/models/contact-point';
 
 export default class PeoplePersonPersonalInformationRoute extends Route {
   @service store;
@@ -21,15 +21,9 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
       ].join(),
     });
     const contacts = [];
-    const m = await person.mandatories;
-    console.log(m);
-    const mandatories = person.mandatories.filter(
-      (m) => m != null // hack because otherwise mandatories is not an array
-    );
+    const mandatories = person.mandatories.toArray();
 
-    const ministers = person.agentsInPosition.filter(
-      (m) => m != null // same
-    );
+    const ministers = person.agentsInPosition.toArray();
 
     for (let mandatory of mandatories) {
       const mandate = await mandatory.mandate;
@@ -51,8 +45,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         id: mandatory.id,
         startDate: mandate.startDate,
         endDate: mandate.endDate,
-        unitId: administrativeUnit.id,
-        unitName: administrativeUnit.name,
+        administrativeUnit,
         primaryContact: await this.mapContact(primaryContact),
         secondaryContact: await this.mapContact(secondaryContact),
       });
@@ -75,16 +68,16 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         id: minister.id,
         startDate: minister.agentStartDate,
         endDate: minister.agentEndDate,
-        unitId: administrativeUnit.id,
-        unitName: administrativeUnit.name,
+        administrativeUnit,
         primaryContact: await this.mapContact(primaryContact),
         secondaryContact: await this.mapContact(secondaryContact),
       });
     }
+    console.log(contacts);
     return {
       person,
       contacts: contacts.sort((a, b) => {
-        return new Date(b.startDate) - new Date(a.startDate);
+        return b.startDate - a.startDate;
       }),
     };
   }
