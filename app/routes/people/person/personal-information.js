@@ -69,8 +69,8 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         startDate: minister.agentStartDate,
         endDate: minister.agentEndDate,
         administrativeUnit,
-        primaryContact: await this.mapContact(primaryContact),
-        secondaryContact: await this.mapContact(secondaryContact),
+        primaryContact: primaryContact,
+        secondaryContact: secondaryContact,
       });
     }
     return {
@@ -80,16 +80,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
       }),
     };
   }
-  async mapContact(contact) {
-    if (!contact) return null;
-    return {
-      email: contact.email,
-      telephone: contact.telephone,
-      fax: contact.fax,
-      website: contact.website,
-      contactAddress: await contact.contactAddress,
-    };
-  }
+
   isActivePosition(endDate) {
     if (!endDate) {
       // No end date set, so the position is still active
