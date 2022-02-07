@@ -36,7 +36,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
 
     for (let mandatory of mandatories) {
       const mandate = await mandatory.mandate;
-      if (!isActivePosition(mandate.endDate)) {
+      if (!isActivePosition(mandatory.endDate)) {
         break;
       }
       const role = await mandate.roleBoard;
@@ -52,8 +52,8 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         role: role.label,
         type: 'mandatory',
         id: mandatory.id,
-        startDate: mandate.startDate,
-        endDate: mandate.endDate,
+        startDate: mandatory.startDate,
+        endDate: mandatory.endDate,
         administrativeUnit,
         primaryContact: primaryContact,
         secondaryContact: secondaryContact,
