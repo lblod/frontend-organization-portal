@@ -47,32 +47,36 @@
       <th class="au-c-data-table__header-title">Status</th>
       {{! <th></th> }}
     </c.header>
-    <c.body as |mandatory|>
+    <c.body as |position|>
       <td>
-        <AuLink
-          @route="people.person.positions.mandatory"
-          @model={{mandatory.id}}
-        >
-          {{mandatory.mandate.roleBoard.label}}
-        </AuLink>
+        {{#if (eq position.type "minister")}}
+          <AuLink
+            @route="people.person.positions.minister"
+            @models={{array @model.person.id position.id}}
+          >
+            {{position.role}}
+          </AuLink>
+        {{else}}
+          <AuLink
+            @route="people.person.positions.mandatory"
+            @models={{array @model.person.id position.id}}
+          >
+            {{position.role}}
+          </AuLink>
+        {{/if}}
       </td>
       <td>
-        {{#let
-          mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit
-          as |administrativeUnit|
-        }}
-          {{#if administrativeUnit}}
+          {{#if position.administrativeUnit}}
             <AuLink
               @route="administrative-units.administrative-unit"
-              @model={{administrativeUnit.id}}
+              @model={{position.administrativeUnit.id}}
             >
-              {{administrativeUnit.name}}
+              {{position.administrativeUnit.name}}
             </AuLink>
           {{/if}}
-        {{/let}}
       </td>
       <td>
-        <PositionStatus @endDate={{mandatory.endDate}} />
+        <PositionStatus @endDate={{position.endDate}} />
       </td>
       {{! <td>
         TODO Replace this with the correct route
