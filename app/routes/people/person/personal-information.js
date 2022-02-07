@@ -18,7 +18,15 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
       include: [
         'mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.classification',
         'mandatories.contacts',
+        'mandatories.contacts.contact-address',
+        'mandatories.mandate.role-board',
+
         'agents-in-position',
+        'agents-in-position.contacts',
+        'agents-in-position.contacts.contact-address',
+
+        'agents-in-position.position.function',
+        'agents-in-position.position.worship-service',
       ].join(),
     });
     const positions = [];
