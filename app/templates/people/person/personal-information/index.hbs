@@ -48,10 +48,10 @@
         </Card.Columns>
       </:card>
     </DataCard>
-    {{#each @model.contacts as |contact|}}
+    {{#each @model.positions as |position|}}
       <DataCard>
         <:title>Contactgegevens:
-          {{contact.title}}
+          {{position.title}}
         </:title>
         <:card as |Card|>
           <Card.Columns>
@@ -60,77 +60,77 @@
                 <:label>Organisatie</:label>
                 <:content>
                   <AuLink
-                    @model={{contact.administrativeUnit.id}}
+                    @model={{position.administrativeUnit.id}}
                     @route="administrative-units.administrative-unit"
                   >
-                    {{contact.administrativeUnit.name}}
+                    {{position.administrativeUnit.name}}
                   </AuLink>
                 </:content>
               </Item>
-              {{#if contact.primaryContact.email}}
+              {{#if position.primaryContact.email}}
                 <Item>
                   <:label>E-mail</:label>
                   <:content>
-                    {{contact.primaryContact.email}}
+                    {{position.primaryContact.email}}
                   </:content>
                 </Item>
               {{/if}}
-              {{#if contact.primaryContact.contactAddress.fullAddress}}
+              {{#if position.primaryContact.contactAddress.fullAddress}}
                 <Item>
                   <:label>Adres</:label>
                   <:content>
-                    {{contact.primaryContact.contactAddress.fullAddress}}
+                    {{position.primaryContact.contactAddress.fullAddress}}
                   </:content>
                 </Item>
               {{/if}}
-              {{#if contact.primaryContact.contactAddress.province}}
+              {{#if position.primaryContact.contactAddress.province}}
                 <Item>
                   <:label>Province</:label>
                   <:content>
-                    {{contact.primaryContact.contactAddress.province}}
+                    {{position.primaryContact.contactAddress.province}}
                   </:content>
                 </Item>
               {{/if}}
             </:left>
             <:right as |Item|>
-              {{#if contact.role}}
+              {{#if position.role}}
                 <Item>
                   <:label>Positie</:label>
                   <:content>
-                    {{#if (eq contact.type "minister")}}
+                    {{#if (eq position.type "minister")}}
                       <AuLink
                         @route="people.person.positions.minister"
-                        @models={{array @model.person.id contact.id}}
+                        @models={{array @model.person.id position.id}}
                       >
-                        {{contact.role}}
+                        {{position.role}}
                       </AuLink>
 
                     {{else}}
 
                       <AuLink
                         @route="people.person.positions.mandatory"
-                        @models={{array @model.person.id contact.id}}
+                        @models={{array @model.person.id position.id}}
                       >
-                        {{contact.role}}
+                        {{position.role}}
                       </AuLink>
                     {{/if}}
                   </:content>
                 </Item>
               {{/if}}
 
-              {{#if contact.primaryContact.telephone}}
+              {{#if position.primaryContact.telephone}}
                 <Item>
                   <:label>Primair telefoonnummer</:label>
                   <:content>
-                    {{contact.primaryContact.telephone}}
+                    {{position.primaryContact.telephone}}
                   </:content>
                 </Item>
               {{/if}}
-              {{#if contact.secondaryContact.telephone}}
+              {{#if position.secondaryContact.telephone}}
                 <Item>
                   <:label>Secundair telefoonnummer</:label>
                   <:content>
-                    {{contact.secondaryContact.telephone}}
+                    {{position.secondaryContact.telephone}}
                   </:content>
                 </Item>
               {{/if}}

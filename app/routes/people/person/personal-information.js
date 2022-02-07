@@ -20,7 +20,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         'agents-in-position',
       ].join(),
     });
-    const contacts = [];
+    const positions = [];
     const mandatories = person.mandatories.toArray();
 
     const ministers = person.agentsInPosition.toArray();
@@ -38,7 +38,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
       const mContacts = await mandatory.contacts;
       const primaryContact = findPrimaryContact(mContacts);
       const secondaryContact = findSecondaryContact(mContacts);
-      contacts.push({
+      positions.push({
         title: `${role.label}, ${administrativeUnit.name}`,
         role: role.label,
         type: 'mandatory',
@@ -61,7 +61,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
       const mContacts = await minister.contacts;
       const primaryContact = findPrimaryContact(mContacts);
       const secondaryContact = findSecondaryContact(mContacts);
-      contacts.push({
+      positions.push({
         title: `${role.label}, ${administrativeUnit.name}`,
         role: role.label,
         type: 'minister',
@@ -73,10 +73,9 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         secondaryContact: await this.mapContact(secondaryContact),
       });
     }
-    console.log(contacts);
     return {
       person,
-      contacts: contacts.sort((a, b) => {
+      positions: positions.sort((a, b) => {
         return b.startDate - a.startDate;
       }),
     };
