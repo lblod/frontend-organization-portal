@@ -21,33 +21,26 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
       ].join(),
     });
     const contacts = [];
-    const mandatories = person.mandatories.filter((m) =>
-      this.isActivePosition(m.endDate)
+    const m = await person.mandatories;
+    console.log(m);
+    const mandatories = person.mandatories.filter(
+      (m) => m != null // hack because otherwise mandatories is not an array
     );
 
-    /* .map(m => {
-        const ma
-        const classification = m.mandate.governingBody.isTimeSpecializationOf.administrativeUnit.classification.label
-      })
-      .sort((a, b) => {
-        return new Date(b.startDate) - new Date(a.startDate);
-      });*/
-    const ministers = person.agentsInPosition.filter((m) =>
-      this.isActivePosition(m.agentEndDate)
+    const ministers = person.agentsInPosition.filter(
+      (m) => m != null // same
     );
-    /* .sort((a, b) => {
-        return new Date(b.agentStartDate) - new Date(a.agentStartDate);
-      });*/
 
     for (let mandatory of mandatories) {
       const mandate = await mandatory.mandate;
-      const governingAlias = await mandatory.governingAlias;
+      if (!this.isActivePosition(mandate.endDate)) {
+        break;
+      }
       const role = await mandate.roleBoard;
       const governingBody = await mandate.governingBody;
       const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
       const administrativeUnit =
         await isTimeSpecializationOf.administrativeUnit;
-      //const classification =  await administrativeUnit.classification;
       const mContacts = await mandatory.contacts;
       const primaryContact = findPrimaryContact(mContacts);
       const secondaryContact = findSecondaryContact(mContacts);
@@ -56,22 +49,22 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         role: role.label,
         type: 'mandatory',
         id: mandatory.id,
-        governingAliasId: governingAlias.id,
         startDate: mandate.startDate,
         endDate: mandate.endDate,
         unitId: administrativeUnit.id,
         unitName: administrativeUnit.name,
-        // classification: classification,
         primaryContact: await this.mapContact(primaryContact),
         secondaryContact: await this.mapContact(secondaryContact),
       });
     }
 
     for (let minister of ministers) {
+      if (!this.isActivePosition(minister.agentEndDate)) {
+        break;
+      }
       const position = await minister.position;
       const role = await position.function;
       const administrativeUnit = await position.worshipService;
-      //const classification =  administrativeUnit.classification;
       const mContacts = await minister.contacts;
       const primaryContact = findPrimaryContact(mContacts);
       const secondaryContact = findSecondaryContact(mContacts);
@@ -80,18 +73,19 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         role: role.label,
         type: 'minister',
         id: minister.id,
-        startDate: minister.agentStartDate, // todo maybe wrong
-        endDate: minister.agentEndDate, // todo maybe wrong
+        startDate: minister.agentStartDate,
+        endDate: minister.agentEndDate,
         unitId: administrativeUnit.id,
         unitName: administrativeUnit.name,
-        // classification: classification,
         primaryContact: await this.mapContact(primaryContact),
         secondaryContact: await this.mapContact(secondaryContact),
       });
     }
     return {
       person,
-      contacts,
+      contacts: contacts.sort((a, b) => {
+        return new Date(b.startDate) - new Date(a.startDate);
+      }),
     };
   }
   async mapContact(contact) {
