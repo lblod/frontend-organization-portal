@@ -48,83 +48,92 @@
         </Card.Columns>
       </:card>
     </DataCard>
- {{#each @model.contacts as |contact|}}
-     <DataCard>
-      <:title>Contactgegevens:
-        {{contact.title}}
-      </:title>
-      <:card as |Card|>
-        <Card.Columns>
-          <:left as |Item|>
-            <Item>
-              <:label>Organisatie</:label>
-              <:content>
-                <AuLink
-                  @model={{contact.unitId}}
-                  @route="administrative-units.administrative-unit"
-                >
-                  {{contact.unitName}}
-                </AuLink>
-              </:content>
-            </Item>
-            {{#if
-              contact.primaryContact.email
-            }}
+    {{#each @model.contacts as |contact|}}
+      <DataCard>
+        <:title>Contactgegevens:
+          {{contact.title}}
+        </:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
               <Item>
-                <:label>E-mail</:label>
+                <:label>Organisatie</:label>
                 <:content>
-                  {{contact.primaryContact.email}}
+                  <AuLink
+                    @model={{contact.unitId}}
+                    @route="administrative-units.administrative-unit"
+                  >
+                    {{contact.unitName}}
+                  </AuLink>
                 </:content>
               </Item>
-            {{/if}}
-            {{#if
-              contact.primaryContact.contactAddress.fullAddress
-            }}
-              <Item>
-                <:label>Adres</:label>
-                <:content>
-                  {{contact.primaryContact.contactAddress.fullAddress}}
-                </:content>
-              </Item>
-            {{/if}}
-          </:left>
-          <:right as |Item|>
-            {{#if
-              contact.role
-            }}
-              <Item>
-                <:label>Positie</:label>
-                <:content>
-                  {{contact.role}}
-                </:content>
-              </Item>
-            {{/if}}
-            
-            {{#if
-              contact.primaryContact.telephone
-            }}
-              <Item>
-                <:label>Primair telefoonnummer</:label>
-                <:content>
-                  {{contact.primaryContact.telephone}}
-                </:content>
-              </Item>
-            {{/if}}
-            {{#if
-              contact.secondaryContact.telephone
-            }}
-              <Item>
-                <:label>Secundair telefoonnummer</:label>
-                <:content>
-                  {{contact.secondaryContact.telephone}}
-                </:content>
-              </Item>
-            {{/if}}
-          </:right>
-        </Card.Columns>
-      </:card>
-    </DataCard> 
-     {{/each}}
+              {{#if contact.primaryContact.email}}
+                <Item>
+                  <:label>E-mail</:label>
+                  <:content>
+                    {{contact.primaryContact.email}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if contact.primaryContact.contactAddress.fullAddress}}
+                <Item>
+                  <:label>Adres</:label>
+                  <:content>
+                    {{contact.primaryContact.contactAddress.fullAddress}}
+                  </:content>
+                </Item>
+              {{/if}}
+            </:left>
+            <:right as |Item|>
+              {{#if contact.role}}
+                <Item>
+                  <:label>Positie</:label>
+                  <:content>
+                    {{#if (eq contact.type "minister")}}
+                      <AuLink
+                        @route="people.person.positions.minister"
+                        @models={{array @model.person.id contact.id}}
+                      >
+                        {{contact.role}}
+                      </AuLink>
+
+                    {{else}}
+
+                      <AuLink
+                        @route="people.person.positions.mandatory"
+                        @models={{ array
+                          contact.governingAliasId
+                          contact.id
+                        }}
+                      >
+                        {{contact.role}}
+                      </AuLink>
+                    {{/if}}
+                  </:content>
+                </Item>
+              {{/if}}
+
+              {{#if contact.primaryContact.telephone}}
+                <Item>
+                  <:label>Primair telefoonnummer</:label>
+                  <:content>
+                    {{contact.primaryContact.telephone}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if contact.secondaryContact.telephone}}
+                <Item>
+                  <:label>Secundair telefoonnummer</:label>
+                  <:content>
+                    {{contact.secondaryContact.telephone}}
+                  </:content>
+                </Item>
+              {{/if}}
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+    {{/each}}
 
   </div>
 </div>

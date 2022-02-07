@@ -41,6 +41,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
 
     for (let mandatory of mandatories) {
       const mandate = await mandatory.mandate;
+      const governingAlias = await mandatory.governingAlias;
       const role = await mandate.roleBoard;
       const governingBody = await mandate.governingBody;
       const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
@@ -53,6 +54,9 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
       contacts.push({
         title: `${role.label}, ${administrativeUnit.name}`,
         role: role.label,
+        type: 'mandatory',
+        id: mandatory.id,
+        governingAliasId: governingAlias.id,
         startDate: mandate.startDate,
         endDate: mandate.endDate,
         unitId: administrativeUnit.id,
@@ -74,6 +78,8 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
       contacts.push({
         title: `${role.label}, ${administrativeUnit.name}`,
         role: role.label,
+        type: 'minister',
+        id: minister.id,
         startDate: minister.agentStartDate, // todo maybe wrong
         endDate: minister.agentEndDate, // todo maybe wrong
         unitId: administrativeUnit.id,
@@ -83,7 +89,6 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         secondaryContact: await this.mapContact(secondaryContact),
       });
     }
-    console.log(contacts);
     return {
       person,
       contacts,
