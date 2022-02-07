@@ -14,7 +14,7 @@ Router.map(function () {
     this.route('person', { path: '/:id/' }, function () {
       this.route(
         'personal-information',
-        { path: '/persoonlijke-gegevens' },
+        { path: '/contact-gegevens' },
         function () {
           this.route('edit');
         }
@@ -33,7 +33,7 @@ Router.map(function () {
           }
         );
       });
-      this.route('contacts', function () {});
+      // this.route('contacts', function () {});
     });
     this.route('new', { path: '/nieuw' });
   });
