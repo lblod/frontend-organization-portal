@@ -46,8 +46,8 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         startDate: mandate.startDate,
         endDate: mandate.endDate,
         administrativeUnit,
-        primaryContact: await this.mapContact(primaryContact),
-        secondaryContact: await this.mapContact(secondaryContact),
+        primaryContact: primaryContact,
+        secondaryContact: secondaryContact,
       });
     }
 
