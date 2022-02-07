@@ -1,6 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { assert } from '@ember/debug';
+import { isActivePosition } from 'frontend-contact-hub/utils/position';
+
 import {
   findPrimaryContact,
   findSecondaryContact,
@@ -27,7 +28,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
 
     for (let mandatory of mandatories) {
       const mandate = await mandatory.mandate;
-      if (!this.isActivePosition(mandate.endDate)) {
+      if (!isActivePosition(mandate.endDate)) {
         break;
       }
       const role = await mandate.roleBoard;
@@ -52,7 +53,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
     }
 
     for (let minister of ministers) {
-      if (!this.isActivePosition(minister.agentEndDate)) {
+      if (!isActivePosition(minister.agentEndDate)) {
         break;
       }
       const position = await minister.position;
@@ -80,19 +81,4 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
       }),
     };
   }
-
-  isActivePosition(endDate) {
-    if (!endDate) {
-      // No end date set, so the position is still active
-      return true;
-    } else {
-      return isDateInTheFuture(endDate);
-    }
-  }
-}
-function isDateInTheFuture(date) {
-  assert('endDate should be a Date instance', date instanceof Date);
-  let today = new Date();
-
-  return date - today >= 0;
 }
