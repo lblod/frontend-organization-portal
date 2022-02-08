@@ -32,9 +32,12 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
     const positions = [];
     const mandatories = person.mandatories.toArray();
 
+    let worshipMandatories = await this.store.query('worship-mandatory', {
+      ['filter[governing-alias][:id:]']: personId,
+    });
     const ministers = person.agentsInPosition.toArray();
 
-    for (let mandatory of mandatories) {
+    for (let mandatory of [...mandatories, ...worshipMandatories.toArray()]) {
       const mandate = await mandatory.mandate;
       if (!isActivePosition(mandatory.endDate)) {
         break;
