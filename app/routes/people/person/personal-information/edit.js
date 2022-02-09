@@ -24,7 +24,7 @@ export default class PeoplePersonPersonalInformationEditRoute extends Route {
     for (let position of positions) {
       let address = await position.primaryContact.contactAddress;
       let contact = {
-        title: 'Contactgegevens: ' + position.title,
+        title: position.title,
         primaryContact: createValidatedChangeset(
           position.primaryContact,
           contactValidations

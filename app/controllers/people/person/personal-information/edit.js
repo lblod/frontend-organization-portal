@@ -19,10 +19,18 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
       yield secondaryContact.validate();
       yield address.validate();
       if (
-        primaryContact.isValid &&
-        secondaryContact.isValid &&
-        address.isValid
+        !primaryContact.isValid ||
+        !secondaryContact.isValid ||
+        !address.isValid
       ) {
+        validContacts = false;
+        break;
+      }
+    }
+
+    if (validContacts && person.isValid) {
+      for (let contact of contacts) {
+        let { primaryContact, secondaryContact, address } = contact;
         if (address.isDirty) {
           address.fullAddress = combineFullAddress(address);
           yield address.save();
@@ -34,13 +42,7 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
         if (secondaryContact.isDirty) {
           yield secondaryContact.save();
         }
-      } else {
-        validContacts = false;
-        break;
       }
-    }
-
-    if (validContacts && person.isValid) {
       yield person.save();
 
       this.router.transitionTo('people.person.personal-information', person.id);
