@@ -2,6 +2,8 @@ import Route from '@ember/routing/route';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import personValidations from 'frontend-contact-hub/validations/person';
 import { inject as service } from '@ember/service';
+import contactValidations from 'frontend-contact-hub/validations/contact-point';
+import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 
 export default class PeoplePersonPersonalInformationEditRoute extends Route {
   @service currentSession;
@@ -14,11 +16,33 @@ export default class PeoplePersonPersonalInformationEditRoute extends Route {
       });
     }
   }
-  model() {
-    let { person } = this.modelFor('people.person.personal-information');
+  async model() {
+    let { person, positions } = this.modelFor(
+      'people.person.personal-information'
+    );
+    const contacts = [];
+    for (let position of positions) {
+      let contact = {
+        title: 'Contactgegevens: ' + position.title,
+        primaryContact: createValidatedChangeset(
+          position.primaryContact,
+          contactValidations
+        ),
+        address: createValidatedChangeset(
+          position.primaryContact.contactAddress,
+          getAddressValidations
+        ),
+        secondaryContact: createValidatedChangeset(
+          position.secondaryContact,
+          contactValidations
+        ),
+      };
+      contacts.push(contact);
+    }
 
     return {
       person: createValidatedChangeset(person, personValidations),
+      contacts,
     };
   }
 }

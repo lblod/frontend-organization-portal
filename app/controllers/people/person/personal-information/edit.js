@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
+import { combineFullAddress } from 'frontend-contact-hub/models/address';
 
 export default class PeoplePersonPersonalInformationEditController extends Controller {
   @service router;
@@ -8,16 +9,37 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
   @dropTask
   *save(event) {
     event.preventDefault();
+    let { person, contacts } = this.model;
+    yield person.validate();
 
-    yield this.model.person.validate();
+    for (let contact of contacts) {
+      let { primaryContact, secondaryContact, address } = contact;
+      yield primaryContact.validate();
+      yield secondaryContact.validate();
+      yield address.validate();
+      if (
+        primaryContact.isValid &&
+        secondaryContact.isValid &&
+        address.isValid
+      ) {
+        if (address.isDirty) {
+          address.fullAddress = combineFullAddress(address);
+          yield address.save();
+        }
+        primaryContact.contactAddress = address;
+        if (primaryContact.isDirty) {
+          yield primaryContact.save();
+        }
+        if (secondaryContact.isDirty) {
+          yield secondaryContact.save();
+        }
+      }
+    }
 
-    if (this.model.person.isValid) {
-      yield this.model.person.save();
+    if (person.isValid) {
+      yield person.save();
 
-      this.router.transitionTo(
-        'people.person.personal-information',
-        this.model.person.id
-      );
+      this.router.transitionTo('people.person.personal-information', person.id);
     }
   }
 }
