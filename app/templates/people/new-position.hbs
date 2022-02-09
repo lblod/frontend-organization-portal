@@ -8,7 +8,6 @@
       <:action>
         <AuButtonGroup class="au-c-button-group--align-right">
           <AuButton
-            {{on "click" this.redirect}}
             form="person-creation"
             type="submit"
           >
@@ -22,7 +21,7 @@
       </:action>
     </PageHeader>
 
-    <form id="person-creation" {{on "submit" (perform this.savePersonTask)}}>
+    <form id="person-creation" {{on "submit" this.redirect}}>
       <EditCard @containsRequiredFields={{true}}>
         <:title>Selecteer option</:title>
         <:card as |Card|>
