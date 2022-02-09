@@ -29,7 +29,7 @@ export default class PeoplePersonPersonalInformationEditRoute extends Route {
           position.primaryContact,
           contactValidations
         ),
-        address: createValidatedChangeset(address, getAddressValidations),
+        address: createValidatedChangeset(address, getAddressValidations()),
         secondaryContact: createValidatedChangeset(
           position.secondaryContact,
           contactValidations
