@@ -11,6 +11,7 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
     event.preventDefault();
     let { person, contacts } = this.model;
     yield person.validate();
+    let validContacts = true;
 
     for (let contact of contacts) {
       let { primaryContact, secondaryContact, address } = contact;
@@ -33,10 +34,13 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
         if (secondaryContact.isDirty) {
           yield secondaryContact.save();
         }
+      } else {
+        validContacts = false;
+        break;
       }
     }
 
-    if (person.isValid) {
+    if (validContacts && person.isValid) {
       yield person.save();
 
       this.router.transitionTo('people.person.personal-information', person.id);

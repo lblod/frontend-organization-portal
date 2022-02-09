@@ -22,16 +22,14 @@ export default class PeoplePersonPersonalInformationEditRoute extends Route {
     );
     const contacts = [];
     for (let position of positions) {
+      let address = await position.primaryContact.contactAddress;
       let contact = {
         title: 'Contactgegevens: ' + position.title,
         primaryContact: createValidatedChangeset(
           position.primaryContact,
           contactValidations
         ),
-        address: createValidatedChangeset(
-          position.primaryContact.contactAddress,
-          getAddressValidations
-        ),
+        address: createValidatedChangeset(address, getAddressValidations),
         secondaryContact: createValidatedChangeset(
           position.secondaryContact,
           contactValidations
