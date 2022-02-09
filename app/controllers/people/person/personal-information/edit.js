@@ -11,7 +11,7 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
     event.preventDefault();
     let { person, contacts } = this.model;
     yield person.validate();
-    let validContacts = true;
+    let valid = person.isValid;
 
     for (let contact of contacts) {
       let { primaryContact, secondaryContact, address } = contact;
@@ -23,12 +23,11 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
         !secondaryContact.isValid ||
         !address.isValid
       ) {
-        validContacts = false;
-        break;
+        valid = false;
       }
     }
 
-    if (validContacts && person.isValid) {
+    if (valid) {
       for (let contact of contacts) {
         let { primaryContact, secondaryContact, address } = contact;
         if (address.isDirty) {
