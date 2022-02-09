@@ -94,6 +94,20 @@
             </Card.Columns>
           </:card>
         </EditCard>
+        {{#each @model.contacts as |contact|}}
+          <Position::ContactEditCard
+            @address={{contact.address}}
+            @primaryContact={{contact.primaryContact}}
+            @secondaryContact={{contact.secondaryContact}}
+            @isAddressSearchEnabledInitially={{if
+              contact.address.addressRegisterUri
+              true
+              false
+            }}
+          >
+          <:title>Contactgegevens: {{contact.title}}</:title>
+          </Position::ContactEditCard>
+        {{/each}}
       </div>
     </form>
   </div>
