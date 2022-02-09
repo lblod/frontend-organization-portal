@@ -10,10 +10,6 @@ export default class PeopleNewPositionController extends Controller {
   @service router;
   @service store;
 
-  queryParams = ['redirectUrl'];
-
-  @tracked redirectUrl;
-
   @tracked selectedOrganization;
 
   @tracked governingBodies;
@@ -32,7 +28,7 @@ export default class PeopleNewPositionController extends Controller {
 
   @action
   setGoverningBody(governingBody) {
-    this.governingBody = governingBody;
+    this.selectedGoverningBody = governingBody;
   }
 
   @action
@@ -42,31 +38,31 @@ export default class PeopleNewPositionController extends Controller {
 
   @action
   cancel() {
-    if (this.redirectUrl) {
-      this.router.transitionTo(this.redirectUrl);
-    } else {
-      this.router.transitionTo('people');
-    }
+    this.router.transitionTo('people');
   }
 
   @action
-  redirect() {
+  redirect(event) {
+    event.preventDefault();
     if (!this.selectedOrganization || !this.positionType) {
       return;
     }
     if (MANDATORY === this.positionType) {
-      console.log('smth00');
+      if (!this.selectedGoverningBody) {
+        return;
+      }
+      this.router.transitionTo(
+        'administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new',
+        this.selectedOrganization.id,
+        this.selectedGoverningBody.id
+      );
     } else {
-      console.log('smth00 lese');
+      this.router.transitionTo(
+        'administrative-units.administrative-unit.ministers.new',
+        this.selectedOrganization.id
+      );
     }
   }
 
-  reset() {
-    this.redirectUrl = null;
-    //this.removeUnsavedRecords();
-  }
-
-  removeUnsavedRecords() {
-    //this.model.person.rollbackAttributes();
-  }
+  reset() {}
 }
