@@ -4,6 +4,16 @@
 
 
 
+
+## 1.5.4 (2022-02-10)
+
+#### :rocket: Enhancement
+* [#250](https://github.com/lblod/frontend-contact-hub/pull/250) Add support for primary and secondary contact information ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
 ## 1.5.3 (2022-02-01)
 
 #### :bug: Bug Fix
