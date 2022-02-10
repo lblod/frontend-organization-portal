@@ -64,7 +64,7 @@
         <td>{{date-format changeEvent.date}}</td>
         <td>{{changeEvent.description}}</td>
         <td>
-          <OrganizationStatus @status={{changeEventResult.status}} />
+          <OrganizationStatus @id={{changeEventResult.status.id}} @label={{changeEventResult.status.label}}/>
         </td>
         <SecuredArea>
           <:edit>

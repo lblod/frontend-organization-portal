@@ -12,8 +12,8 @@ export default class AdministrativeUnitsIndexController extends Controller {
     'name',
     'municipality',
     'province',
-    'classification',
-    'recognizedWorshipType',
+    'classificationId',
+    'recognizedWorshipTypeId',
     'organizationStatus',
   ];
 
@@ -23,8 +23,8 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked name = '';
   @tracked municipality = '';
   @tracked province = '';
-  @tracked classification = '';
-  @tracked recognizedWorshipType = '';
+  @tracked classificationId = '';
+  @tracked recognizedWorshipTypeId = '';
   @tracked organizationStatus = '';
 
   get administrativeUnits() {
@@ -72,21 +72,13 @@ export default class AdministrativeUnitsIndexController extends Controller {
   }
 
   @action
-  setClassification(selection) {
-    if (selection !== null) {
-      this.classification = selection.id;
-    } else {
-      this.classification = '';
-    }
+  setClassificationId(selection) {
+    this.classificationId = selection?.id;
   }
 
   @action
-  setRecognizedWorshipType(selection) {
-    if (selection !== null) {
-      this.recognizedWorshipType = selection.id;
-    } else {
-      this.recognizedWorshipType = '';
-    }
+  setRecognizedWorshipTypeId(selection) {
+    this.recognizedWorshipTypeId = selection?.id;
   }
 
   @action
