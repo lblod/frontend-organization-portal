@@ -14,7 +14,6 @@ const CLASSIFICATION = {
 };
 
 export default class AdministrativeUnitsIndexRoute extends Route {
-  @service store;
   @service muSearch;
 
   queryParams = {
