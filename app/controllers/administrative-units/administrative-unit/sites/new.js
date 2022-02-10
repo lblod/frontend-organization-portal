@@ -75,7 +75,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
     }
 
     if (secondaryContact.isNew) {
-      contact.destroyRecord();
+      secondaryContact.destroyRecord();
     }
   }
 }
