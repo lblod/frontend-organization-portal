@@ -5,6 +5,12 @@
 
 
 
+## 1.6.0 (2022-02-10)
+
+#### :bug: Bug Fix
+*  Cancel flow on creating new 'Vestiging' gives error 
+
+
 ## 1.5.4 (2022-02-10)
 
 #### :rocket: Enhancement
