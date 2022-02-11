@@ -1,5 +1,5 @@
-{{page-title "Nieuwe persoon"}}
-{{breadcrumb "Nieuwe persoon" route="people.new"}}
+{{page-title "Nieuwe positie"}}
+{{breadcrumb "Nieuwe positie" route="people.new"}}
 
 <AuBodyContainer @scroll={{true}}>
   <div class="au-o-box au-o-flow au-o-flow--large">
@@ -11,7 +11,7 @@
             form="person-creation"
             type="submit"
           >
-            Opslaan
+            Volgende
           </AuButton>
 
           <AuButton @skin="secondary" {{on "click" this.cancel}}>
@@ -23,7 +23,7 @@
 
     <form id="person-creation" {{on "submit" this.redirect}}>
       <EditCard @containsRequiredFields={{true}}>
-        <:title>Selecteer option</:title>
+        <:title>Selecteer</:title>
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
@@ -31,7 +31,7 @@
                 @labelFor="organization"
                 @required={{true}}
               >
-                <:label>Organisatie</:label>
+                <:label>Bestuurseenheid</:label>
                 <:content>
                   <AdministrativeUnitSelect
                     id="organization"
@@ -48,7 +48,7 @@
           <Card.Columns>
             <:left as |Item|>
               <Item @labelFor="position-type" @alignTop={{true}}>
-                <:label>Type positie</:label>
+                <:label>Voor</:label>
                 <:content>
                     <PowerSelect
                       @options={{this.positionTypes}}
@@ -67,7 +67,7 @@
           <Card.Columns>
             <:left as |Item|>
               <Item @labelFor="governing-body" @alignTop={{true}}>
-                <:label>Governing body</:label>
+                <:label>Bestuursorgaan</:label>
                 <:content>
                     <PowerSelect
                       @options={{this.governingBodies}}
