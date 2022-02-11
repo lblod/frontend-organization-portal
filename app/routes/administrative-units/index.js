@@ -41,7 +41,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     const filter = {};
 
     if (params.name) {
-      filter[':fuzzy:name'] = params.name;
+      filter[':prefix:name'] = params.name.toLowerCase();
     }
 
     if (params.classificationId) {
