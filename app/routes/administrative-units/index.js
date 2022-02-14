@@ -14,7 +14,7 @@ const CLASSIFICATION = {
 };
 
 export default class AdministrativeUnitsIndexRoute extends Route {
-  @service store;
+  @service muSearch;
 
   queryParams = {
     page: { refreshModel: true },
@@ -22,8 +22,8 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     name: { replace: true },
     municipality: { replace: true },
     province: { replace: true },
-    classification: { replace: true },
-    recognizedWorshipType: { replace: true },
+    classificationId: { replace: true },
+    recognizedWorshipTypeId: { replace: true },
     organizationStatus: { replace: true },
   };
 
@@ -38,52 +38,47 @@ export default class AdministrativeUnitsIndexRoute extends Route {
 
   @dropTask({ cancelOn: 'deactivate' })
   *loadAdministrativeUnitsTask(params) {
-    let query = {
-      include: [
-        'classification',
-        'recognized-worship-type',
-        'organization-status',
-        'primary-site.address',
-      ].join(),
-      page: {
-        number: params.page,
-        size: params.size,
-      },
-      sort: params.sort,
-    };
+    const filter = {};
 
     if (params.name) {
-      query['filter[name]'] = params.name;
+      filter[':prefix:name'] = params.name.toLowerCase();
     }
 
-    if (params.classification) {
-      query['filter[classification][:id:]'] = params.classification;
+    if (params.classificationId) {
+      filter['classification_id'] = params.classificationId;
     } else {
       // Only show worship related administrative units for now
-      query['filter[classification][:id:]'] = [
-        CLASSIFICATION.WORSHIP_SERVICE.id,
-        CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
-      ].join();
+      filter[
+        'classification_id'
+      ] = `${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},${CLASSIFICATION.WORSHIP_SERVICE.id}`;
     }
 
     if (params.municipality) {
-      query['filter[primary-site][address][:exact:municipality]'] =
-        params.municipality;
+      filter['municipality'] = params.municipality;
     }
 
     if (params.province) {
-      query['filter[primary-site][address][province]'] = params.province;
+      filter['province'] = params.province;
     }
 
-    if (params.recognizedWorshipType) {
-      query['filter[recognized-worship-type][:id:]'] =
-        params.recognizedWorshipType;
+    if (params.recognizedWorshipTypeId) {
+      filter['recognized_worship_type_id'] = params.recognizedWorshipTypeId;
     }
 
     if (params.organizationStatus) {
-      query['filter[organization-status][:id:]'] = params.organizationStatus;
+      filter['status_id'] = params.organizationStatus;
     }
-
-    return yield this.store.query('worship-administrative-unit', query);
+    return yield this.muSearch.search({
+      index: 'units',
+      page: params.page,
+      size: params.size,
+      sort: params.sort,
+      filters: filter,
+      dataMapping: (data) => {
+        const entry = data.attributes;
+        entry.id = data.id;
+        return entry;
+      },
+    });
   }
 }

@@ -9,6 +9,6 @@ const ORGANIZATION_STATUS_SKINS = {
 
 export default class OrganizationStatusComponent extends Component {
   get statusSkin() {
-    return ORGANIZATION_STATUS_SKINS[this.args.status.get('id')];
+    return ORGANIZATION_STATUS_SKINS[this.args.id];
   }
 }
