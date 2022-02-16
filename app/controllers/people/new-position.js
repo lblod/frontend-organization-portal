@@ -55,7 +55,6 @@ export default class PeopleNewPositionController extends Controller {
         const classification = await governingBody.classification;
         if (classification.id === this.selectedClassification.id) {
           const specializations = await governingBody?.hasTimeSpecializations;
-          console.log(specializations);
           filteredGoverningBodies.push(...specializations.toArray());
         }
       }
@@ -88,7 +87,11 @@ export default class PeopleNewPositionController extends Controller {
   @action
   redirect(event) {
     event.preventDefault();
-    if (!this.selectedOrganization || !this.positionType) {
+    if (
+      !this.selectedOrganization ||
+      !this.positionType ||
+      !this.selectedRole
+    ) {
       return;
     }
     if (MANDATORY === this.positionType) {
@@ -98,12 +101,14 @@ export default class PeopleNewPositionController extends Controller {
       this.router.transitionTo(
         'administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new',
         this.selectedOrganization.id,
-        this.selectedGoverningBody.id
+        this.selectedGoverningBody.id,
+        { queryParams: { positionId: this.selectedRole.id } }
       );
     } else {
       this.router.transitionTo(
         'administrative-units.administrative-unit.ministers.new',
-        this.selectedOrganization.id
+        this.selectedOrganization.id,
+        { queryParams: { positionId: this.selectedRole.id } }
       );
     }
   }

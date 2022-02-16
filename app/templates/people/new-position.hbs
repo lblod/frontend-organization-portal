@@ -72,6 +72,21 @@
                   </:content>
                 </Item>
               {{/if}}
+              {{#if (eq this.positionType "Bedienaar")}}
+               <Item
+                @labelFor="minister-position-function"
+                @required={{true}}
+              >
+                <:label>Rol</:label>
+                <:content>
+                  <MinisterPositionFunctionSelect
+                    @onChange={{fn (mut this.selectedRole)}}
+                    @selected={{this.selectedRole}}
+                    @id="minister-position-function"
+                  />
+                </:content>
+              </Item>
+              {{/if}}
             </:left>
             <:right as |Item|>
               {{#if

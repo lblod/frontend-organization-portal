@@ -85,7 +85,7 @@
                 <:content as |errorMessage|>
                   <MinisterPositionFunctionSelect
                     @onChange={{fn (mut @model.position.function)}}
-                    @selected={{@model.position.function}}
+                    @selected={{or this.positionId @model.position.function}}
                     @id="minister-position-function"
                     @error={{errorMessage}}
                   />
