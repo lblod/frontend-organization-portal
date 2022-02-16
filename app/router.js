@@ -11,6 +11,7 @@ Router.map(function () {
   this.route('mock-login');
   this.route('index', { path: '' });
   this.route('people', { path: '/personen' }, function () {
+    this.route('new-position', { path: '/nieuw-positie' });
     this.route('person', { path: '/:id/' }, function () {
       this.route(
         'personal-information',
