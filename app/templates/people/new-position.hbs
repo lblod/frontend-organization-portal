@@ -22,22 +22,27 @@
       <EditCard @containsRequiredFields={{true}}>
         <:title>Selecteer</:title>
         <:card as |Card|>
-        <Card.Columns>
-          <:left as |Item|>
-              <Item @labelFor="organization" @required={{true}}>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item
+                @labelFor="organization"
+                @required={{true}}
+              >
                 <:label>Naam eredienst</:label>
-                <:content>
+                <:content as |errorMessage|>
                   <AdministrativeUnitSelect
                     id="organization"
                     @allowClear={{true}}
+                    @error={{errorMessage}}
                     @selected={{this.selectedOrganization}}
                     @onChange={{this.setOrganization}}
                     class="grow"
                   />
+                
                 </:content>
               </Item>
-          </:left>
-        </Card.Columns>
+            </:left>
+          </Card.Columns>
           <Card.Columns>
             <:left as |Item|>
               <Item @labelFor="position-type" @alignTop={{true}}>
@@ -73,19 +78,16 @@
                 </Item>
               {{/if}}
               {{#if (eq this.positionType "Bedienaar")}}
-               <Item
-                @labelFor="minister-position-function"
-                @required={{true}}
-              >
-                <:label>Rol</:label>
-                <:content>
-                  <MinisterPositionFunctionSelect
-                    @onChange={{fn (mut this.selectedRole)}}
-                    @selected={{this.selectedRole}}
-                    @id="minister-position-function"
-                  />
-                </:content>
-              </Item>
+                <Item @labelFor="minister-position-function" @required={{true}}>
+                  <:label>Rol</:label>
+                  <:content>
+                    <MinisterPositionFunctionSelect
+                      @onChange={{fn (mut this.selectedRole)}}
+                      @selected={{this.selectedRole}}
+                      @id="minister-position-function"
+                    />
+                  </:content>
+                </Item>
               {{/if}}
             </:left>
             <:right as |Item|>
@@ -93,6 +95,7 @@
                 (and
                   (eq this.positionType "Mandaat")
                   this.governingBodyClassifications
+                  this.selectedRole
                 )
               }}
                 <Item

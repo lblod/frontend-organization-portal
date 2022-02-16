@@ -24,12 +24,10 @@ export default class PeopleNewPositionController extends Controller {
 
   @action
   async setOrganization(organization) {
+    this.reset();
     this.selectedOrganization = organization;
     this.governingBodyClassifications =
       await this.setGoverningBodyClassifications();
-    this.selectedGoverningBody = null;
-    this.positionType = null;
-    this.selectedRole = null;
   }
 
   async setGoverningBodyClassifications() {
@@ -55,7 +53,10 @@ export default class PeopleNewPositionController extends Controller {
         const classification = await governingBody.classification;
         if (classification.id === this.selectedClassification.id) {
           const specializations = await governingBody?.hasTimeSpecializations;
-          filteredGoverningBodies.push(...specializations.toArray());
+          const governingBodiesWithOnlyValidPeriod = specializations
+            .toArray()
+            .filter((s) => s?.period > 1);
+          filteredGoverningBodies.push(...governingBodiesWithOnlyValidPeriod);
         }
       }
       return filteredGoverningBodies;
@@ -76,6 +77,10 @@ export default class PeopleNewPositionController extends Controller {
 
   @action
   setPositionType(positionType) {
+    this.governingBodies = null;
+    this.selectedGoverningBody = null;
+    this.selectedRole = null;
+    this.selectedClassification = null;
     this.positionType = positionType;
   }
 
@@ -119,12 +124,12 @@ export default class PeopleNewPositionController extends Controller {
   }
 
   reset() {
-    this.selectedRole = null;
     this.selectedOrganization = null;
     this.governingBodyClassifications = null;
+    this.governingBodies = null;
     this.selectedGoverningBody = null;
+    this.selectedRole = null;
     this.selectedClassification = null;
     this.positionType = null;
-    this.governingBodies = null;
   }
 }
