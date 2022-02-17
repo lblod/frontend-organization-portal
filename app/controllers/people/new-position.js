@@ -13,6 +13,7 @@ export default class PeopleNewPositionController extends Controller {
 
   @tracked selectedOrganization;
   @tracked selectedRole;
+  @tracked valid;
 
   @tracked governingBodyClassifications;
   @tracked governingBodies;
@@ -25,7 +26,6 @@ export default class PeopleNewPositionController extends Controller {
 
   @action
   async setOrganization(organization) {
-    this.selectedOrganization = null;
     this.governingBodyClassifications = null;
     this.governingBodies = null;
     this.selectedGoverningBody = null;
@@ -71,12 +71,16 @@ export default class PeopleNewPositionController extends Controller {
   }
 
   get classificationCodes() {
-    return [CLASSIFICATION_CODE.WORSHIP_SERVICE];
+    return [
+      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+      CLASSIFICATION_CODE.WORSHIP_SERVICE,
+    ];
   }
 
   @action
   setGoverningBody(governingBody) {
     this.selectedGoverningBody = governingBody;
+    this.updateIsValid();
   }
 
   @action
@@ -99,20 +103,27 @@ export default class PeopleNewPositionController extends Controller {
     this.router.transitionTo('people');
   }
 
-  @action
-  redirect(event) {
-    event.preventDefault();
+  updateIsValid() {
     if (
       !this.selectedOrganization ||
       !this.positionType ||
       !this.selectedRole
     ) {
-      return;
-    }
-    if (MANDATE === this.positionType) {
-      if (!this.selectedGoverningBody) {
-        return;
+      this.valid = false;
+    } else {
+      if (MANDATE === this.positionType) {
+        this.valid = !!this.selectedGoverningBody;
+      } else {
+        this.valid = true;
       }
+    }
+  }
+
+  @action
+  redirect(event) {
+    event.preventDefault();
+
+    if (MANDATE === this.positionType) {
       this.router.transitionTo(
         'administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new',
         this.selectedOrganization.id,
@@ -129,8 +140,9 @@ export default class PeopleNewPositionController extends Controller {
   }
 
   @action
-  async handleMandateRoleSelect(role) {
+  async setRole(role) {
     this.selectedRole = role;
+    this.updateIsValid();
   }
 
   reset() {

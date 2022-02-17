@@ -7,7 +7,7 @@
       <:title>Nieuwe positie</:title>
       <:action>
         <AuButtonGroup class="au-c-button-group--align-right">
-          <AuButton form="person-creation" type="submit">
+          <AuButton form="person-creation" type="submit" @disabled={{not this.valid}}>
             Volgende
           </AuButton>
 
@@ -24,15 +24,23 @@
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              <Item @labelFor="organization" @required={{true}}>
+              <Item
+                @labelFor="organization"
+                @required={{true}}
+                @errorMessage={{if @error "Selecteer een eredienst"}}
+              >
                 <:label>Naam eredienst</:label>
-                <:content>
+                <:content as |errorMessage|>
                   <AdministrativeUnitSelect
                     @classificationCodes={{this.classificationCodes}}
                     @selected={{this.selectedOrganization}}
                     @onChange={{this.setOrganization}}
                     id="organization"
+                    @error={{errorMessage}}
                   />
+                  {{#if errorMessage}}
+                    <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+                  {{/if}}
                 </:content>
               </Item>
             </:left>
@@ -64,7 +72,7 @@
                   <:content as |errorMessage|>
                     <MandateRoleSelect
                       @selected={{this.selectedRole}}
-                      @onChange={{this.handleMandateRoleSelect}}
+                      @onChange={{this.setRole}}
                       @id="board-position"
                       @error={{errorMessage}}
                     />
@@ -76,7 +84,7 @@
                   <:label>Rol</:label>
                   <:content>
                     <MinisterPositionFunctionSelect
-                      @onChange={{fn (mut this.selectedRole)}}
+                      @onChange={{this.setRole}}
                       @selected={{this.selectedRole}}
                       @id="minister-position-function"
                     />
