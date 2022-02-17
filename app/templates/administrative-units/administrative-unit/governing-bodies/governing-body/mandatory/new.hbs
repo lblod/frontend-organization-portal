@@ -88,7 +88,7 @@
                 <:label>Bestuursfunctie</:label>
                 <:content as |errorMessage|>
                   <MandateRoleSelect
-                    @selected={{or @model.mandatory.role this.positionId}}
+                    @selected={{@model.mandatory.role}}
                     @onChange={{this.handleMandateRoleSelect}}
                     @id="board-position"
                     @error={{errorMessage}}
