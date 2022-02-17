@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { CLASSIFICATION_CODE } from 'frontend-contact-hub/models/administrative-unit-classification-code';
 
 const MANDATE = 'Mandaat';
 const MINISTER = 'Bedienaar';
@@ -24,7 +25,12 @@ export default class PeopleNewPositionController extends Controller {
 
   @action
   async setOrganization(organization) {
-    this.reset();
+    this.selectedOrganization = null;
+    this.governingBodyClassifications = null;
+    this.governingBodies = null;
+    this.selectedGoverningBody = null;
+    this.selectedRole = null;
+    this.selectedClassification = null;
     this.selectedOrganization = organization;
     this.governingBodyClassifications =
       await this.setGoverningBodyClassifications();
@@ -62,6 +68,10 @@ export default class PeopleNewPositionController extends Controller {
       return filteredGoverningBodies;
     }
     return null;
+  }
+
+  get classificationCodes() {
+    return [CLASSIFICATION_CODE.WORSHIP_SERVICE];
   }
 
   @action

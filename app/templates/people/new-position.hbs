@@ -27,7 +27,8 @@
               <Item @labelFor="organization" @required={{true}}>
                 <:label>Naam eredienst</:label>
                 <:content>
-                  <CentralWorshipSelect
+                  <AdministrativeUnitSelect
+                    @classificationCodes={{this.classificationCodes}}
                     @selected={{this.selectedOrganization}}
                     @onChange={{this.setOrganization}}
                     id="organization"
