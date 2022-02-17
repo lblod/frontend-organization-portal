@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
-const MANDATORY = 'Mandaat';
+const MANDATE = 'Mandaat';
 const MINISTER = 'Bedienaar';
 
 export default class PeopleNewPositionController extends Controller {
@@ -20,7 +20,7 @@ export default class PeopleNewPositionController extends Controller {
 
   @tracked positionType;
 
-  @tracked positionTypes = [MANDATORY, MINISTER];
+  @tracked positionTypes = [MANDATE, MINISTER];
 
   @action
   async setOrganization(organization) {
@@ -99,7 +99,7 @@ export default class PeopleNewPositionController extends Controller {
     ) {
       return;
     }
-    if (MANDATORY === this.positionType) {
+    if (MANDATE === this.positionType) {
       if (!this.selectedGoverningBody) {
         return;
       }

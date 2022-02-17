@@ -24,21 +24,14 @@
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              <Item
-                @labelFor="organization"
-                @required={{true}}
-              >
+              <Item @labelFor="organization" @required={{true}}>
                 <:label>Naam eredienst</:label>
-                <:content as |errorMessage|>
-                  <AdministrativeUnitSelect
-                    id="organization"
-                    @allowClear={{true}}
-                    @error={{errorMessage}}
+                <:content>
+                  <CentralWorshipSelect
                     @selected={{this.selectedOrganization}}
                     @onChange={{this.setOrganization}}
-                    class="grow"
+                    id="organization"
                   />
-                
                 </:content>
               </Item>
             </:left>
