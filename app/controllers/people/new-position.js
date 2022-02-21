@@ -13,7 +13,7 @@ export default class PeopleNewPositionController extends Controller {
 
   @tracked selectedOrganization;
   @tracked selectedRole;
-  @tracked valid;
+  @tracked valid = false;
 
   @tracked governingBodyClassifications;
   @tracked governingBodies;
@@ -59,10 +59,8 @@ export default class PeopleNewPositionController extends Controller {
         const classification = await governingBody.classification;
         if (classification.id === this.selectedClassification.id) {
           const specializations = await governingBody?.hasTimeSpecializations;
-          const governingBodiesWithOnlyValidPeriod = specializations
-            .toArray()
-            .filter((s) => s?.period > 1);
-          filteredGoverningBodies.push(...governingBodiesWithOnlyValidPeriod);
+          let bodies = specializations.toArray();
+          filteredGoverningBodies.push(...bodies);
         }
       }
       return filteredGoverningBodies;

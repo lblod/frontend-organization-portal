@@ -27,20 +27,15 @@
               <Item
                 @labelFor="organization"
                 @required={{true}}
-                @errorMessage={{if @error "Selecteer een eredienst"}}
               >
                 <:label>Naam eredienst</:label>
-                <:content as |errorMessage|>
+                <:content>
                   <AdministrativeUnitSelect
                     @classificationCodes={{this.classificationCodes}}
                     @selected={{this.selectedOrganization}}
                     @onChange={{this.setOrganization}}
                     id="organization"
-                    @error={{errorMessage}}
                   />
-                  {{#if errorMessage}}
-                    <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
-                  {{/if}}
                 </:content>
               </Item>
             </:left>
@@ -69,12 +64,11 @@
               }}
                 <Item @labelFor="board-position" @required={{true}}>
                   <:label>Mandaat</:label>
-                  <:content as |errorMessage|>
+                  <:content>
                     <MandateRoleSelect
                       @selected={{this.selectedRole}}
                       @onChange={{this.setRole}}
                       @id="board-position"
-                      @error={{errorMessage}}
                     />
                   </:content>
                 </Item>
@@ -128,7 +122,8 @@
                         @triggerId="governing-body"
                         as |governingBody|
                       >
-                        {{governingBody.period}}
+
+                        {{if governingBody.period governingBody.period "-"}}
                       </PowerSelect>
                     </:content>
                   </Item>
