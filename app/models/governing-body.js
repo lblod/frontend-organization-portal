@@ -30,14 +30,14 @@ export default class GoverningBodyModel extends Model {
   mandates;
 
   get period() {
-    let period = '';
+    let period = '-';
     if (this.startDate && this.endDate) {
       period =
         this.startDate.getFullYear() + ' - ' + this.endDate.getFullYear();
     } else if (this.startDate) {
-      period = this.startDate.getFullYear();
+      period = this.startDate.getFullYear() + ' -';
     } else if (this.endDate) {
-      period = this.endDate.getFullYear();
+      period = '- ' + this.endDate.getFullYear();
     }
     return period;
   }
