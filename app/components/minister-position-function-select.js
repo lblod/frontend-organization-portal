@@ -7,7 +7,6 @@ export default class MinisterPositionFunctionSelectComponent extends Component {
 
   constructor() {
     super(...arguments);
-
     this.fetchMinisterPositionFunctionsTask.perform();
   }
 

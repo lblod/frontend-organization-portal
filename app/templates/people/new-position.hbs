@@ -1,0 +1,140 @@
+{{page-title "Nieuwe positie"}}
+{{breadcrumb "Nieuwe positie" route="people.new"}}
+
+<AuBodyContainer @scroll={{true}}>
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <PageHeader>
+      <:title>Nieuwe positie</:title>
+      <:action>
+        <AuButtonGroup class="au-c-button-group--align-right">
+          <AuButton form="person-creation" type="submit" @disabled={{not this.valid}}>
+            Volgende
+          </AuButton>
+
+          <AuButton @skin="secondary" {{on "click" this.cancel}}>
+            Annuleer
+          </AuButton>
+        </AuButtonGroup>
+      </:action>
+    </PageHeader>
+
+    <form id="person-creation" {{on "submit" this.redirect}}>
+      <EditCard @containsRequiredFields={{true}}>
+        <:title>Selecteer</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item
+                @labelFor="organization"
+                @required={{true}}
+              >
+                <:label>Naam eredienst</:label>
+                <:content>
+                  <AdministrativeUnitSelect
+                    @classificationCodes={{this.classificationCodes}}
+                    @selected={{this.selectedOrganization}}
+                    @onChange={{this.setOrganization}}
+                    id="organization"
+                  />
+                </:content>
+              </Item>
+            </:left>
+          </Card.Columns>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item @labelFor="position-type" @alignTop={{true}}>
+                <:label>Type</:label>
+                <:content>
+                  <PowerSelect
+                    @options={{this.positionTypes}}
+                    @selected={{this.positionType}}
+                    @onChange={{this.setPositionType}}
+                    @triggerId="position-type"
+                    as |positionType|
+                  >
+                    {{positionType}}
+                  </PowerSelect>
+                </:content>
+              </Item>
+              {{#if
+                (and
+                  (eq this.positionType "Mandaat")
+                  this.governingBodyClassifications
+                )
+              }}
+                <Item @labelFor="board-position" @required={{true}}>
+                  <:label>Mandaat</:label>
+                  <:content>
+                    <MandateRoleSelect
+                      @selected={{this.selectedRole}}
+                      @onChange={{this.setRole}}
+                      @id="board-position"
+                    />
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if (eq this.positionType "Bedienaar")}}
+                <Item @labelFor="minister-position-function" @required={{true}}>
+                  <:label>Rol</:label>
+                  <:content>
+                    <MinisterPositionFunctionSelect
+                      @onChange={{this.setRole}}
+                      @selected={{this.selectedRole}}
+                      @id="minister-position-function"
+                    />
+                  </:content>
+                </Item>
+              {{/if}}
+            </:left>
+            <:right as |Item|>
+              {{#if
+                (and
+                  (eq this.positionType "Mandaat")
+                  this.governingBodyClassifications
+                  this.selectedRole
+                )
+              }}
+                <Item
+                  @labelFor="governing-body-classification"
+                  @alignTop={{true}}
+                >
+                  <:label>Bestuursorgaan</:label>
+                  <:content>
+                    <PowerSelect
+                      @options={{this.governingBodyClassifications}}
+                      @selected={{this.selectedClassification}}
+                      @onChange={{this.setClassification}}
+                      @triggerId="governing-body-classification"
+                      as |classification|
+                    >
+                      {{classification.label}}
+                    </PowerSelect>
+                  </:content>
+                </Item>
+                {{#if this.governingBodies}}
+                  <Item @labelFor="governing-body" @alignTop={{true}}>
+                    <:label>Bestuursperiode</:label>
+                    <:content>
+                      <PowerSelect
+                        @options={{this.governingBodies}}
+                        @selected={{this.selectedGoverningBody}}
+                        @onChange={{this.setGoverningBody}}
+                        @triggerId="governing-body"
+                        as |governingBody|
+                      >
+
+                        {{governingBody.period}}
+                      </PowerSelect>
+                    </:content>
+                  </Item>
+                {{/if}}
+              {{/if}}
+            </:right>
+
+          </Card.Columns>
+
+        </:card>
+      </EditCard>
+    </form>
+  </div>
+</AuBodyContainer>

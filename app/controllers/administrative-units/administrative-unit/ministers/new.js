@@ -14,9 +14,10 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
   @service router;
   @service store;
 
-  queryParams = ['personId'];
+  queryParams = ['personId', 'positionId'];
 
   @tracked personId;
+  @tracked positionId;
   @tracked targetPerson = null;
   @tracked willReceiveFinancing = true;
 
@@ -112,6 +113,7 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
 
   reset() {
     this.personId = null;
+    this.positionId = null;
     this.targetPerson = null;
     this.willReceiveFunding = true;
     this.removeUnsavedRecords();

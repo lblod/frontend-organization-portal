@@ -59,26 +59,17 @@
             <:alert>
               <SecuredArea>
                 <:edit>
-                  <AuAlert
-                    @alertIcon="info-circle"
-                    @alertTitle="Momenteel kan u nog geen nieuwe personen toevoegen."
-                    @alertskin="info"
-                    @alertsize="small"
-                    class="au-u-margin-bottom-small au-u-margin-top-small"
-                  >
-                    <p>De gegevens van personen die reeds een positie hebben,
-                      kan u beheren via 'Bestuursorganen' of 'Bedienaren'.</p>
-                  </AuAlert>
+                  <Button::New @route="people.new-position" />
                 </:edit>
               </SecuredArea>
             </:alert>
-     
+
           </PageHeader>
           <div class="au-o-box">
-                         <AuToggleSwitch
-                @label="Verberg niet actieve posities"
-                @checked={{this.status}}
-              />
+            <AuToggleSwitch
+              @label="Verberg niet actieve posities"
+              @checked={{this.status}}
+            />
           </div>
         </menu.general>
       </t.menu>
@@ -121,33 +112,39 @@
             </p>
           </TableMessage>
         {{else}}
-        <c.body as |person|>
-          <td>
-            <AuLink @route="people.person" @model={{person.id}}>
-              {{person.given_name}}
-            </AuLink>
-          </td>
-          <td>
-            <AuLink @route="people.person" @model={{person.id}}>
-              {{person.family_name}}
-            </AuLink>
-          </td>
-          <td>
-            {{#if person.organization_id}}
-            <AuLink @route="administrative-units.administrative-unit" @model={{person.organization_id}}>
-              {{person.organization_name}}
-            </AuLink>
-            {{/if}}
-          </td>
-          <td>
-            <AuLink @route="people.person.positions.mandatory" @models={{array person.id person.uuid}}>
-              {{person.position_name}}
-            </AuLink>
-          </td>
-          <td>
-            <PositionStatus @endDate={{person.end_date}} />
-          </td>
-        </c.body>
+          <c.body as |person|>
+            <td>
+              <AuLink @route="people.person" @model={{person.id}}>
+                {{person.given_name}}
+              </AuLink>
+            </td>
+            <td>
+              <AuLink @route="people.person" @model={{person.id}}>
+                {{person.family_name}}
+              </AuLink>
+            </td>
+            <td>
+              {{#if person.organization_id}}
+                <AuLink
+                  @route="administrative-units.administrative-unit"
+                  @model={{person.organization_id}}
+                >
+                  {{person.organization_name}}
+                </AuLink>
+              {{/if}}
+            </td>
+            <td>
+              <AuLink
+                @route="people.person.positions.mandatory"
+                @models={{array person.id person.uuid}}
+              >
+                {{person.position_name}}
+              </AuLink>
+            </td>
+            <td>
+              <PositionStatus @endDate={{person.end_date}} />
+            </td>
+          </c.body>
         {{/if}}
       </t.content>
     </AuDataTable>

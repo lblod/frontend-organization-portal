@@ -7,7 +7,6 @@ export default class MandateRoleSelectComponent extends Component {
 
   constructor() {
     super(...arguments);
-
     this.loadMandateRolesTask.perform();
   }
 
