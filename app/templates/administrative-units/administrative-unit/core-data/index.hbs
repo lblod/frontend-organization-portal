@@ -74,7 +74,8 @@
               <:label>Status</:label>
               <:content>
                 <OrganizationStatus
-                  @status={{@model.administrativeUnit.organizationStatus}}
+                  @id={{@model.administrativeUnit.organizationStatus.id}}
+                  @label={{@model.administrativeUnit.organizationStatus.label}}
                 />
               </:content>
             </Item>
