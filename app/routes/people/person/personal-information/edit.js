@@ -25,16 +25,15 @@ export default class PeoplePersonPersonalInformationEditRoute extends Route {
     );
     const contacts = [];
     for (let position of positions) {
-      let { primaryContact, secondaryContact, _ember_data } = position;
-      let mContacts = await _ember_data.contacts;
+      let { primaryContact, secondaryContact, _position } = position;
       if (!primaryContact) {
         primaryContact = createPrimaryContact(this.store);
         primaryContact.contactAddress = this.store.createRecord('address');
-        mContacts.toArray().push(primaryContact);
+        _position.contacts.pushObject(primaryContact);
       }
       if (!secondaryContact) {
         secondaryContact = createSecondaryContact(this.store);
-        mContacts.toArray().push(secondaryContact);
+        _position.contacts.pushObject(secondaryContact);
       }
       let address = await primaryContact.contactAddress;
       if (!address) {
@@ -42,7 +41,7 @@ export default class PeoplePersonPersonalInformationEditRoute extends Route {
         primaryContact.contactAddress = address;
       }
       let contact = {
-        _ember_data,
+        _position,
         title: position.title,
         primaryContact: createValidatedChangeset(
           primaryContact,

@@ -48,7 +48,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
       const primaryContact = findPrimaryContact(mContacts);
       const secondaryContact = findSecondaryContact(mContacts);
       positions.push({
-        _ember_data: mandatory,
+        _position: mandatory,
         title: `${role.label}, ${administrativeUnit.name}`,
         role: role.label,
         type: 'mandatory',
@@ -72,7 +72,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
       const primaryContact = findPrimaryContact(mContacts);
       const secondaryContact = findSecondaryContact(mContacts);
       positions.push({
-        _ember_data: minister,
+        _position: minister,
         title: `${role.label}, ${administrativeUnit.name}`,
         role: role.label,
         type: 'minister',
