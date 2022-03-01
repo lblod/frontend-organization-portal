@@ -29,7 +29,7 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
 
     if (valid) {
       for (let contact of contacts) {
-        let { primaryContact, secondaryContact, address, _position } = contact;
+        let { primaryContact, secondaryContact, address, position } = contact;
         if (address.isDirty) {
           address.fullAddress = combineFullAddress(address);
           yield address.save();
@@ -41,7 +41,7 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
         if (secondaryContact.isDirty) {
           yield secondaryContact.save();
         }
-        yield _position.save();
+        yield position.save();
       }
       yield person.save();
       this.router.refresh();
