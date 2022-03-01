@@ -4,7 +4,10 @@ import personValidations from 'frontend-contact-hub/validations/person';
 import { inject as service } from '@ember/service';
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
-
+import {
+  createPrimaryContact,
+  createSecondaryContact,
+} from 'frontend-contact-hub/models/contact-point';
 export default class PeoplePersonPersonalInformationEditRoute extends Route {
   @service currentSession;
   @service router;
@@ -21,17 +24,31 @@ export default class PeoplePersonPersonalInformationEditRoute extends Route {
       'people.person.personal-information'
     );
     const contacts = [];
-    for (let position of positions) {
-      let address = await position.primaryContact.contactAddress;
+    for (let computedPosition of positions) {
+      let { primaryContact, secondaryContact, position } = computedPosition;
+      if (!primaryContact) {
+        primaryContact = createPrimaryContact(this.store);
+        position.contacts.pushObject(primaryContact);
+      }
+      if (!secondaryContact) {
+        secondaryContact = createSecondaryContact(this.store);
+        position.contacts.pushObject(secondaryContact);
+      }
+      let address = await primaryContact.contactAddress;
+      if (!address) {
+        address = this.store.createRecord('address');
+        primaryContact.contactAddress = address;
+      }
       let contact = {
+        position,
         title: position.title,
         primaryContact: createValidatedChangeset(
-          position.primaryContact,
+          primaryContact,
           contactValidations
         ),
         address: createValidatedChangeset(address, getAddressValidations()),
         secondaryContact: createValidatedChangeset(
-          position.secondaryContact,
+          secondaryContact,
           contactValidations
         ),
       };
