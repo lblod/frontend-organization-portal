@@ -5,6 +5,22 @@
 
 
 
+
+## 1.6.1 (2022-03-02)
+
+#### :rocket: Enhancement
+* [#261](https://github.com/lblod/frontend-contact-hub/pull/261) perf bestuur ([@nbittich](https://github.com/nbittich))
+* [#259](https://github.com/lblod/frontend-contact-hub/pull/259) Allow users to edit contact information on the person edit page ([@nbittich](https://github.com/nbittich))
+* [#258](https://github.com/lblod/frontend-contact-hub/pull/258) Update to the newest appuniversum styles ([@nbittich](https://github.com/nbittich))
+* [#256](https://github.com/lblod/frontend-contact-hub/pull/256) Show minister position information on the positions page of a person ([@nbittich](https://github.com/nbittich))
+* [#255](https://github.com/lblod/frontend-contact-hub/pull/255) Move the position contact information to the person details page ([@nbittich](https://github.com/nbittich))
+* [#254](https://github.com/lblod/frontend-contact-hub/pull/254) People search page improvements ([@nbittich](https://github.com/nbittich))
+* [#250](https://github.com/lblod/frontend-contact-hub/pull/250) Add support for primary and secondary contact information ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
 ## 1.6.0 (2022-02-10)
 
 #### :bug: Bug Fix
