@@ -23,7 +23,7 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute exte
       });
     }
   }
-  async model({ personId }, transition) {
+  async model({ personId, positionId }, transition) {
     if (personId) {
       transition.data.person = await this.store.findRecord('person', personId);
     }
@@ -34,7 +34,13 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute exte
     let secondaryContact = createSecondaryContact(this.store);
     let address = this.store.createRecord('address');
     let position = this.store.createRecord('minister-position');
-
+    if (positionId) {
+      let role = await this.store.findRecord(
+        'minister-position-function',
+        positionId
+      );
+      position.function = role;
+    }
     return {
       administrativeUnit: this.modelFor(
         'administrative-units.administrative-unit'

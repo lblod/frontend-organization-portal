@@ -7,8 +7,8 @@
   <EnvironmentLabel />
   {{#if this.session.isAuthenticated}}
     <AuDropdown
-      @dropdownTitle={{this.currentSession.user.firstName}}
-      @dropdownButtonLabel="Account settings"
+      @title={{this.currentSession.user.firstName}}
+      @buttonLabel="Account settings"
       @alignment="right"
     >
       <AuButton

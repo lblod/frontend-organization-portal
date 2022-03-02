@@ -1,5 +1,11 @@
 <EditCard>
-  <:title>Contactgegevens</:title>
+  <:title>
+    {{#if (has-block "title")}}
+      {{yield to="title"}}
+    {{else}}
+      Contactgegevens
+    {{/if}}
+  </:title>
   <:card as |Card|>
     <Card.Columns>
       <:left as |Item|>

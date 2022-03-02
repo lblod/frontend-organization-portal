@@ -10,9 +10,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @service router;
   @service store;
 
-  queryParams = ['personId'];
+  queryParams = ['personId', 'positionId'];
 
   @tracked personId;
+  @tracked positionId;
+
   @tracked targetPerson = null;
 
   get isSelectingTargetPerson() {
@@ -105,6 +107,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
   reset() {
     this.personId = null;
+    this.positionId = null;
     this.targetPerson = null;
     this.removeUnsavedRecords();
   }

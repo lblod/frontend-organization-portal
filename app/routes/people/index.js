@@ -4,13 +4,14 @@ import { dropTask } from 'ember-concurrency';
 
 export default class PeopleIndexRoute extends Route {
   @service store;
-
+  @service muSearch;
   queryParams = {
     page: { refreshModel: true },
     sort: { refreshModel: true },
-    givenName: { replace: true },
-    familyName: { replace: true },
     organization: { replace: true },
+    status: { refreshModel: true },
+    position: { refreshModel: true },
+    name: { replace: true },
   };
 
   model(params) {
@@ -22,34 +23,36 @@ export default class PeopleIndexRoute extends Route {
 
   @dropTask({ cancelOn: 'deactivate' })
   *loadPeopleTask(params) {
-    let query = {
-      // Includes slow down the API response so we disable them for now.
-      // include: [
-      //   'mandatories.status',
-      //   'mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit',
-      //   'mandatories.mandate.role-board',
-      // ].join(),
-      page: {
-        number: params.page,
-        size: params.size,
-      },
-      sort: params.sort,
-    };
-
-    if (params.givenName) {
-      query['filter[given-name]'] = params.givenName;
+    const filter = {};
+    if (params.name) {
+      filter[
+        ':query:given_name'
+      ] = `(given_name:${params.name}~)  OR (family_name:${params.name}~ ) `;
     }
-
-    if (params.familyName) {
-      query['filter[family-name]'] = params.familyName;
+    if (params.status) {
+      let date = new Date().toISOString().slice(0, -5);
+      filter[
+        ':query:end_date'
+      ] = `(NOT (_exists_:end_date))  OR (end_date:[${date} TO *] ) `;
     }
-
+    if (params.position) {
+      filter['position_id'] = params.position;
+    }
     if (params.organization) {
-      query[
-        'filter[mandatories][mandate][governing-body][is-time-specialization-of][administrative-unit][name]'
-      ] = params.organization;
+      filter['organization_id'] = params.organization;
     }
 
-    return yield this.store.query('person', query);
+    return yield this.muSearch.search({
+      index: 'people',
+      page: params.page,
+      size: params.size,
+      sort: params.sort,
+      filters: filter,
+      dataMapping: (data) => {
+        const entry = data.attributes;
+        entry.end_date = entry.end_date ? new Date(entry.end_date) : null;
+        return entry;
+      },
+    });
   }
 }

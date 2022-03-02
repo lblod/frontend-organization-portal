@@ -21,7 +21,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       });
     }
   }
-  async model({ personId }, transition) {
+  async model({ personId, positionId }, transition) {
     let { governingBody } = this.modelFor(
       'administrative-units.administrative-unit.governing-bodies.governing-body'
     );
@@ -32,6 +32,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
     let mandatory = this.store.createRecord('worship-mandatory');
     mandatory.isCurrentPosition = true;
+    if (positionId) {
+      let role = await this.store.findRecord('board-position', positionId);
+      mandatory.role = role;
+      mandatory.typeHalf = undefined;
+    }
 
     let contact = createPrimaryContact(this.store);
     let secondaryContact = createSecondaryContact(this.store);

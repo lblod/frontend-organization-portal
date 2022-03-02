@@ -1,7 +1,7 @@
+
 /* ==================================
    #APPUNIVERSUM
    ================================== */
-
 /**
  * A design universe for Flanders GOV applications
  */
@@ -20,10 +20,11 @@
 
 
 // VARIABLES
+
 @import "appuniversum/s-colors.scss";
 @import "appuniversum/s-global";
 @import "appuniversum/s-utilities";
-
+@import "appuniversum/s-root";
 
 // MIXINS
 @import "appuniversum/t-font-size";
