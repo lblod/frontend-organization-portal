@@ -76,9 +76,6 @@ steps:
 trigger:
   event:
     - tag
-<<<<<<< HEAD
----
-=======
 ---
 kind: secret
 name: docker_username
@@ -92,4 +89,3 @@ kind: signature
 hmac: df682e70d90effc28549857db639b6fe295b6f0d995480c15bc61c41d076f329
 
 ...
->>>>>>> development
