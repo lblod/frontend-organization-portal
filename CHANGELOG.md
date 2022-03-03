@@ -6,6 +6,10 @@
 
 
 
+## 1.6.2 (2022-03-03)
+# Fix drone build
+
+
 ## 1.6.1 (2022-03-02)
 
 #### :rocket: Enhancement
