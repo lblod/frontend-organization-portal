@@ -8,6 +8,8 @@ import { GOVERNING_BODY_CLASSIFICATION } from 'frontend-contact-hub/models/gover
 const CLASSIFICATION = {
   CENTRAL_WORSHIP_SERVICE: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
   WORSHIP_SERVICE: '66ec74fd-8cfc-4e16-99c6-350b35012e86',
+  MUNICIPALITY: '5ab0e9b8a3b2ca7c5e000001',
+  PROVINCE: '5ab0e9b8a3b2ca7c5e000000',
 };
 
 const GOVERNING_BODY_CLASSIFICATION_MAP = {
@@ -58,12 +60,24 @@ export default class AdministrativeUnitsNewController extends Controller {
     );
   }
 
+  get isNewWorshipAdministrativeUnit() {
+    return this.isNewWorshipService || this.isNewCentralWorshipService;
+  }
+
+  get isNewMunicipality() {
+    return (
+      this.model.administrativeUnit.classification?.id ===
+      CLASSIFICATION.MUNICIPALITY
+    );
+  }
+
   @dropTask
   *createAdministrativeUnitTask(event) {
     event.preventDefault();
 
     let {
       administrativeUnit,
+      worshipAdministrativeUnit,
       centralWorshipService,
       worshipService,
       primarySite,
@@ -76,12 +90,18 @@ export default class AdministrativeUnitsNewController extends Controller {
       structuredIdentifierKBO,
     } = this.model;
 
-    let newAdministrativeUnit = this.isNewCentralWorshipService
-      ? centralWorshipService
-      : worshipService;
+    let newAdministrativeUnit;
+    if (this.isNewCentralWorshipService) {
+      newAdministrativeUnit = centralWorshipService;
+    } else if (this.isNewWorshipService) {
+      newAdministrativeUnit = worshipService;
+    } else {
+      newAdministrativeUnit = administrativeUnit;
+    }
 
     yield Promise.all([
       administrativeUnit.validate(),
+      worshipAdministrativeUnit.validate(),
       address.validate(),
       contact.validate(),
       secondaryContact.validate(),
@@ -89,13 +109,22 @@ export default class AdministrativeUnitsNewController extends Controller {
     ]);
 
     if (
-      administrativeUnit.isValid &&
+      ((this.isNewWorshipAdministrativeUnit &&
+        worshipAdministrativeUnit.isValid) ||
+        administrativeUnit.isValid) &&
       address.isValid &&
       contact.isValid &&
       secondaryContact.isValid &&
       structuredIdentifierKBO.isValid
     ) {
-      copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
+      if (this.isNewWorshipAdministrativeUnit) {
+        copyAdministrativeUnitData(
+          newAdministrativeUnit,
+          worshipAdministrativeUnit
+        );
+      } else {
+        copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
+      }
 
       yield structuredIdentifierSharepoint.save();
       yield structuredIdentifierKBO.save();
@@ -125,17 +154,18 @@ export default class AdministrativeUnitsNewController extends Controller {
 
       yield newAdministrativeUnit.save();
 
-      let governingBody = this.store.createRecord('governing-body');
-      governingBody.administrativeUnit = newAdministrativeUnit;
-      governingBody.classification = yield this.getGoverningBodyClassification(
-        administrativeUnit
-      );
-      yield governingBody.save();
+      if (this.isNewWorshipAdministrativeUnit) {
+        let governingBody = this.store.createRecord('governing-body');
+        governingBody.administrativeUnit = newAdministrativeUnit;
+        governingBody.classification =
+          yield this.getGoverningBodyClassification(administrativeUnit);
+        yield governingBody.save();
 
-      let governingBodyTimeSpecialization =
-        this.store.createRecord('governing-body');
-      governingBodyTimeSpecialization.isTimeSpecializationOf = governingBody;
-      yield governingBodyTimeSpecialization.save();
+        let governingBodyTimeSpecialization =
+          this.store.createRecord('governing-body');
+        governingBodyTimeSpecialization.isTimeSpecializationOf = governingBody;
+        yield governingBodyTimeSpecialization.save();
+      }
 
       this.router.replaceWith(
         'administrative-units.administrative-unit',
@@ -180,10 +210,10 @@ export default class AdministrativeUnitsNewController extends Controller {
     }
   }
 
-  async getGoverningBodyClassification(worshipAdministrativeUnit) {
+  async getGoverningBodyClassification(administrativeUnit) {
     let administrativeUnitClassification =
-      await worshipAdministrativeUnit.classification;
-    let worshipType = await worshipAdministrativeUnit.recognizedWorshipType;
+      await administrativeUnit.classification;
+    let worshipType = await administrativeUnit.recognizedWorshipType;
 
     let governingBodyClassificationId =
       GOVERNING_BODY_CLASSIFICATION_MAP[administrativeUnitClassification.id][

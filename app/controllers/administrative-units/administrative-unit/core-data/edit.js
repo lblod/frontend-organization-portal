@@ -2,14 +2,19 @@ import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
+import WorshipServiceModel from 'frontend-contact-hub/models/worship-service';
+import { A } from '@ember/array';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
 
+  get isWorshipService() {
+    return this.model.administrativeUnit instanceof WorshipServiceModel;
+  }
+
   @dropTask
   *save(event) {
     event.preventDefault();
-
     let {
       administrativeUnit,
       address,
@@ -37,6 +42,14 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       structuredIdentifierKBO.isValid
     ) {
       let primarySite = yield administrativeUnit.primarySite;
+
+      // TODO : "if" not needed when the data of all administrative units will be correct
+      // they should all have a primary site on creation
+      if (!primarySite) {
+        primarySite = primarySite = this.store.createRecord('site');
+        primarySite.address = address;
+        administrativeUnit.primarySite = primarySite;
+      }
 
       if (address.isDirty) {
         address.fullAddress = combineFullAddress(address);

@@ -8,24 +8,20 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataRoute extends 
     let { id: administrativeUnitId } = this.paramsFor(
       'administrative-units.administrative-unit'
     );
-    return this.store.findRecord(
-      'worship-administrative-unit',
-      administrativeUnitId,
-      {
-        reload: true,
-        include: [
-          'classification',
-          'organization-status',
-          'recognized-worship-type',
-          'scope',
-          'identifiers.structured-identifier',
-          'primary-site.address',
-          'primary-site.contacts',
-          'is-sub-organization-of',
-          'is-associated-with',
-          'resulted-from',
-        ].join(),
-      }
-    );
+    return this.store.findRecord('administrative-unit', administrativeUnitId, {
+      reload: true,
+      include: [
+        'classification',
+        'organization-status',
+        //'recognized-worship-type',
+        'scope',
+        'identifiers.structured-identifier',
+        'primary-site.address',
+        'primary-site.contacts',
+        'is-sub-organization-of',
+        'is-associated-with',
+        'resulted-from',
+      ].join(),
+    });
   }
 }

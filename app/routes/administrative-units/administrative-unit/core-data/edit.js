@@ -6,13 +6,17 @@ import {
   findPrimaryContact,
   findSecondaryContact,
 } from 'frontend-contact-hub/models/contact-point';
+import { createAddress } from 'frontend-contact-hub/models/address';
 import { ID_NAME } from 'frontend-contact-hub/models/identifier';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
-import worshipAdministrativeUnitValidations, {
+import worshipAdministrativeUnitValidations from 'frontend-contact-hub/validations/worship-administrative-unit';
+import administrativeUnitValidations, {
   getStructuredIdentifierKBOValidations,
-} from 'frontend-contact-hub/validations/worship-administrative-unit';
+} from 'frontend-contact-hub/validations/administrative-unit';
+import { A } from '@ember/array';
+import WorshipServiceModel from 'frontend-contact-hub/models/worship-service';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute extends Route {
   @service store;
@@ -33,8 +37,18 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     );
 
     let primarySite = await administrativeUnit.primarySite;
-    let address = await primarySite.address;
-    let contacts = await primarySite.contacts;
+
+    // TODO : "if" not needed when the data of all administrative units will be correct
+    // they should all have a primary site on creation
+    let address;
+    let contacts;
+    if (primarySite) {
+      address = await primarySite.address;
+      contacts = await primarySite.contacts;
+    } else {
+      address = createAddress(this.store);
+      contacts = A();
+    }
 
     let primaryContact = findPrimaryContact(contacts);
     if (!primaryContact) {
@@ -60,8 +74,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     return {
       administrativeUnit: createValidatedChangeset(
         administrativeUnit,
-        worshipAdministrativeUnitValidations
-      ),
+        administrativeUnit instanceof WorshipServiceModel
+          ? worshipAdministrativeUnitValidations
+          : administrativeUnitValidations      ),
       address: createValidatedChangeset(address, getAddressValidations(true)),
       contact: createValidatedChangeset(primaryContact, contactValidations),
       secondaryContact: createValidatedChangeset(

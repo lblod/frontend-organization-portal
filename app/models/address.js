@@ -34,3 +34,8 @@ export function combineFullAddress(address) {
     return muncipalityInformation;
   }
 }
+
+export function createAddress(store) {
+  let record = store.createRecord('address');
+  return record;
+}

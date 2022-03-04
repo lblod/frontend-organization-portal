@@ -8,9 +8,10 @@ import { ID_NAME } from 'frontend-contact-hub/models/identifier';
 import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
 import { getAddressValidations } from 'frontend-contact-hub/validations/address';
 import contactValidations from 'frontend-contact-hub/validations/contact-point';
-import worshipAdministrativeUnitValidations, {
+import worshipAdministrativeUnitValidations from 'frontend-contact-hub/validations/worship-administrative-unit';
+import administrativeUnitValidations, {
   getStructuredIdentifierKBOValidations,
-} from 'frontend-contact-hub/validations/worship-administrative-unit';
+} from 'frontend-contact-hub/validations/administrative-unit';
 
 export default class AdministrativeUnitsNewRoute extends Route {
   @service store;
@@ -27,6 +28,10 @@ export default class AdministrativeUnitsNewRoute extends Route {
   model() {
     return {
       administrativeUnit: createValidatedChangeset(
+        this.store.createRecord('administrative-unit'),
+        administrativeUnitValidations
+      ),
+      worshipAdministrativeUnit: createValidatedChangeset(
         this.store.createRecord('worship-administrative-unit'),
         worshipAdministrativeUnitValidations
       ),

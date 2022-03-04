@@ -37,11 +37,13 @@
                 {{@model.administrativeUnit.classification.label}}
               </:content>
             </Item>
-            <Item>
-              <:label>Soort eredienst</:label>
-              <:content
-              >{{@model.administrativeUnit.recognizedWorshipType.label}}</:content>
-            </Item>
+            {{#if isWorshipService}}
+              <Item>
+                <:label>Soort eredienst</:label>
+                <:content
+                >{{@model.administrativeUnit.recognizedWorshipType.label}}</:content>
+              </Item>
+            {{/if}}
             {{#if @model.administrativeUnit.denomination}}
               <Item>
                 <:label>Strekking</:label>
@@ -146,7 +148,7 @@
             <:left as |Item|>
               {{#if @model.administrativeUnit.isSubOrganizationOf.name}}
                 <Item>
-                  <:label>Centraal bestuur</:label>
+                  <:label>{{if isWorshipService 'Centraal bestuur' 'Provincie'}}</:label>
                   <:content>
                     <AuLink
                       @route="administrative-units.administrative-unit"

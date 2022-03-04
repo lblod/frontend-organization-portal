@@ -11,6 +11,10 @@ const CLASSIFICATION = {
     id: '66ec74fd-8cfc-4e16-99c6-350b35012e86',
     label: 'Bestuur van de eredienst',
   },
+  MUNICIPALITY: {
+    id: '5ab0e9b8a3b2ca7c5e000001',
+    label: 'Gemeente',
+  },
 };
 
 export default class AdministrativeUnitsIndexRoute extends Route {
@@ -47,10 +51,12 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     if (params.classificationId) {
       filter['classification_id'] = params.classificationId;
     } else {
-      // Only show worship related administrative units for now
-      filter[
-        'classification_id'
-      ] = `${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},${CLASSIFICATION.WORSHIP_SERVICE.id}`;
+      // Only show worship related administrative units & municipalities for now
+      filter['classification_id'] = `
+        ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
+        ${CLASSIFICATION.WORSHIP_SERVICE.id},
+        ${CLASSIFICATION.MUNICIPALITY.id}
+      `;
     }
 
     if (params.municipality) {
