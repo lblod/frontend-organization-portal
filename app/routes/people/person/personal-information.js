@@ -37,7 +37,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
     for (let mandatory of mandatories) {
       const mandate = await mandatory.mandate;
       if (!isActivePosition(mandatory.endDate)) {
-        break;
+        continue;
       }
       const role = await mandate.roleBoard;
       const governingBody = await mandate.governingBody;
@@ -47,6 +47,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
       const mContacts = await mandatory.contacts;
       const primaryContact = findPrimaryContact(mContacts);
       const secondaryContact = findSecondaryContact(mContacts);
+
       positions.push({
         position: mandatory,
         title: `${role.label}, ${administrativeUnit.name}`,
@@ -63,7 +64,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
 
     for (let minister of ministers) {
       if (!isActivePosition(minister.agentEndDate)) {
-        break;
+        continue;
       }
       const position = await minister.position;
       const role = await position.function;
@@ -84,6 +85,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         secondaryContact: secondaryContact,
       });
     }
+
     return {
       person,
       positions: positions.sort((a, b) => {
