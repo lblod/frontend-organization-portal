@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
+import { CLASSIFICATION_CODE } from 'frontend-contact-hub/models/administrative-unit-classification-code';
 
 export default class ProvinceSelectComponent extends Component {
   @service store;
@@ -16,13 +17,15 @@ export default class ProvinceSelectComponent extends Component {
   *loadProvincesTask() {
     const query = {
       filter: {
-        level: 'Provincie',
+        classification: {
+          id: CLASSIFICATION_CODE.PROVINCE,
+        },
       },
-      sort: 'label',
+      sort: 'name',
     };
 
-    const provinces = yield this.store.query('location', query);
+    const provinces = yield this.store.query('administrative-unit', query);
 
-    return provinces.mapBy('label');
+    return provinces.mapBy('name');
   }
 }

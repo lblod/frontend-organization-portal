@@ -136,15 +136,6 @@
                     </:content>
                   </Item>
                 {{/if}}
-
-                {{!-- Temporarily disabled - cf https://binnenland.atlassian.net/browse/OP-583
-                <Item @labelFor="administrative-unit-scope">
-                  <:label>Werkingsgebied</:label>
-                  <:content>
-                    <ScopeSelect @selected={{@model.administrativeUnit.scope}} @onChange={{fn (mut
-                      @model.administrativeUnit.scope)}} />
-                  </:content>
-                </Item> --}}
               </:left>
               <:right as |Item|>
                 <Item @labelFor="status-select">

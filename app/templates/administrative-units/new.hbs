@@ -128,15 +128,6 @@
                 </:content>
               </Item>
             {{/if}}
-            {{! hide for now, until we know how we are going to implement this correctly }}
-            {{!-- <Item @labelFor="administrative-unit-scope">
-              <:label>Werkingsgebied</:label>
-              <:content>
-                {{! TODO: Enable multiple selections and concat the selections in one label }}
-                <ScopeSelect @selected={{@model.administrativeUnit.scope}} @onChange={{fn (mut
-                  @model.administrativeUnit.scope)}} />
-              </:content>
-            </Item> --}}
           </:left>
           <:right as |Item|>
             <Item
