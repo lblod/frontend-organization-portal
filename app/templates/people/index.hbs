@@ -4,11 +4,19 @@
       <div class="au-c-sidebar__content au-o-box">
         <form {{on "submit" this.search}} class="au-o-grid au-o-grid--small">
           <p class="au-o-grid__item">
-            <AuLabel for="filter-given-name">Naam</AuLabel>
+            <AuLabel for="filter-given-name">Voornaam</AuLabel>
             <AuInput
               @width="block"
-              @value={{this.name}}
+              @value={{this.given_name}}
               id="filter-given-name"
+            />
+          </p>
+          <p class="au-o-grid__item">
+            <AuLabel for="filter-family-name">Achternaam</AuLabel>
+            <AuInput
+              @width="block"
+              @value={{this.family_name}}
+              id="filter-family-name"
             />
           </p>
           <p class="au-o-grid__item">

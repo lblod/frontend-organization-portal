@@ -11,7 +11,8 @@ export default class PeopleIndexRoute extends Route {
     organization: { replace: true },
     status: { refreshModel: true },
     position: { refreshModel: true },
-    name: { replace: true },
+    given_name: { replace: true },
+    family_name: { replace: true },
   };
 
   model(params) {
@@ -24,10 +25,11 @@ export default class PeopleIndexRoute extends Route {
   @dropTask({ cancelOn: 'deactivate' })
   *loadPeopleTask(params) {
     const filter = {};
-    if (params.name) {
-      filter[
-        ':query:given_name'
-      ] = `(given_name:${params.name}~)  OR (family_name:${params.name}~ ) `;
+    if (params.given_name) {
+      filter[':prefix:given_name'] = `${params.given_name.toLowerCase()}`;
+    }
+    if (params.family_name) {
+      filter[':prefix:family_name'] = `${params.family_name.toLowerCase()}`;
     }
     if (params.status) {
       let date = new Date().toISOString().slice(0, -5);
