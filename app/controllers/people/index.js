@@ -5,14 +5,23 @@ import { tracked } from '@glimmer/tracking';
 
 export default class PeopleIndexController extends Controller {
   @service router;
-  queryParams = ['page', 'size', 'name', 'organization', 'status', 'position'];
+  queryParams = [
+    'page',
+    'size',
+    'given_name',
+    'family_name',
+    'organization',
+    'status',
+    'position',
+  ];
   @tracked status = true;
   @tracked position;
 
   @tracked page = 0;
   size = 25;
   @tracked sort = 'family_name';
-  @tracked name = '';
+  @tracked given_name = '';
+  @tracked family_name = '';
   @tracked organization;
   @tracked selectedOrganization;
 
