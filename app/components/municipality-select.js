@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
+import { CLASSIFICATION_CODE } from 'frontend-contact-hub/models/administrative-unit-classification-code';
 
 export default class MunicipalitySelectComponent extends Component {
   @service store;
@@ -16,16 +17,18 @@ export default class MunicipalitySelectComponent extends Component {
   *loadMunicipalitiesTask() {
     const query = {
       filter: {
-        level: 'Gemeente',
+        classification: {
+          id: CLASSIFICATION_CODE.MUNICIPALITY,
+        },
       },
+      sort: 'name',
       page: {
         size: 400,
       },
-      sort: 'label',
     };
 
-    const municipalities = yield this.store.query('location', query);
+    const municipalities = yield this.store.query('administrative-unit', query);
 
-    return municipalities.mapBy('label');
+    return municipalities.mapBy('name');
   }
 }
