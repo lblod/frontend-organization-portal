@@ -1,0 +1,151 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box">
+    <PageHeader class="au-u-margin-bottom-large">
+      <:title>Bewerk gerelateerde organisaties</:title>
+      <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+      <:action>
+        <div>
+          <AuButtonGroup class="au-c-button-group--align-right">
+            <AuButton
+              @loading={{this.save.isRunning}}
+              @disabled={{this.save.isRunning}}
+              form="edit-core-info-form"
+              type="submit"
+            >
+              Opslaan
+            </AuButton>
+            <AuLink
+              @route="administrative-units.administrative-unit.related-organizations"
+              @skin="button-secondary"
+            >
+              Annuleer
+            </AuLink>
+          </AuButtonGroup>
+          <ReportWrongData />
+        </div>
+      </:action>
+    </PageHeader>
+
+    <form
+      id="edit-core-info-form"
+      aria-label="edit-core-info-form"
+      {{on "submit" (perform this.save)}}
+    >
+      <div class="au-o-flow au-o-flow--large">
+        <EditCard @containsRequiredFields={{true}}>
+          <:title>Gerelateerde organisaties</:title>
+          <:card as |Card|>
+            <Card.Columns>
+              <:left as |Item|>
+                <Item
+                  @labelFor="related-representative-body"
+                  @required={{true}}
+                  @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
+                >
+                  <:label>Representatief orgaan</:label>
+                  <:content as |hasError|>
+                    <RepresentativeBodySelect
+                      @selected={{@model.administrativeUnit.isAssociatedWith}}
+                      @onChange={{fn
+                        (mut @model.administrativeUnit.isAssociatedWith)
+                      }}
+                      @error={{hasError}}
+                      @id="related-representative-body"
+                    />
+                  </:content>
+                </Item>
+                {{#if
+                  (eq @model.worshipAdministrativeUnitType "worship-service")
+                }}
+                  <Item @labelFor="related-central-worship-service">
+                    <:label>Centraal bestuur</:label>
+                    <:content>
+                      <CentralWorshipSelect
+                        @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                        @onChange={{fn
+                          (mut @model.administrativeUnit.isSubOrganizationOf)
+                        }}
+                        @id="related-central-worship-service"
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
+              </:left>
+            </Card.Columns>
+          </:card>
+        </EditCard>
+
+        {{#if
+          (eq
+            @model.worshipAdministrativeUnitType
+            "central-worship-service"
+          )
+        }}
+          Besturen van eredienst
+          <AuDataTable
+            id="subOrganizations"
+            @content={{this.model.administrativeUnit.subOrganizations}}
+            @noDataMessage="Geen bestuur van de eredienst"
+            as |t|
+          >
+            <t.content as |c|>
+              <c.header>
+                <AuDataTableThSortable
+                  @field="name"
+                  @currentSorting={{this.sort}}
+                  @label="Organizatie"
+                />
+                <AuDataTableThSortable
+                  @field="organizationStatus.label"
+                  @currentSorting={{this.sort}}
+                  @label="Status"
+                />
+              </c.header>
+              <c.body as |subOrganization|>
+                <td>
+                  <WorshipServiceSelect
+                    @selected={{subOrganization}}
+                    @onChange={{fn this.updateSubOrganization subOrganization}}
+                    @id="related-worship-service"
+                  />
+                </td>
+                <td>
+                  <OrganizationStatus
+                    @id={{subOrganization.organizationStatus.id}}
+                    @label={{subOrganization.organizationStatus.label}}
+                  />
+                </td>
+                <td>
+                  <AuButton
+                    @alert={{true}}
+                    @icon="bin"
+                    @iconAlignment="left"
+                    @skin="link"
+                    {{on
+                      "click"
+                      (fn this.removeSubOrganization subOrganization)
+                    }}
+                  >
+                    Verwijder
+                  </AuButton>
+                </td>
+              </c.body>
+            </t.content>
+          </AuDataTable>
+
+          <div class="au-o-box au-o-box--small">
+            <AuButton
+              @skin="secondary"
+              @width="block"
+              @icon="add"
+              @iconAlignment="left"
+              {{on "click" this.addNewSubOrganization}}
+            >
+              Voeg nieuw bestuur van eredienst toe
+            </AuButton>
+          </div>
+        {{/if}}
+      </div>
+    </form>
+  </div>
+</div>

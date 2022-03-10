@@ -1,5 +1,4 @@
 import Route from '@ember/routing/route';
-import { dropTask } from 'ember-concurrency';
 import {
   findPrimaryContact,
   findSecondaryContact,
@@ -7,7 +6,6 @@ import {
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute extends Route {
   async model() {
-    const { id } = this.paramsFor('administrative-units.administrative-unit');
     let administrativeUnit = this.modelFor(
       'administrative-units.administrative-unit.core-data'
     );
@@ -19,16 +17,6 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       administrativeUnit,
       primaryContact: findPrimaryContact(contacts),
       secondaryContact: findSecondaryContact(contacts),
-      subOrganizations: this.loadSubOrganizationsTask.perform(id),
     };
-  }
-
-  @dropTask({ cancelOn: 'deactivate' })
-  *loadSubOrganizationsTask(id) {
-    return yield this.store.query('organization', {
-      include: 'classification',
-      'filter[is-sub-organization-of][:id:]': id,
-      'page[size]': 500,
-    });
   }
 }

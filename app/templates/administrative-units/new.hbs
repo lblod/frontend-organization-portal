@@ -199,7 +199,7 @@
               <Item @labelFor="related-worship-service">
                 <:label>Bestuur van de eredienst</:label>
                 <:content>
-                  <WorshipServiceSelect
+                  <WorshipServiceMultipleSelect
                     @selected={{@model.administrativeUnit.subOrganizations}}
                     @onChange={{fn
                       (mut @model.administrativeUnit.subOrganizations)

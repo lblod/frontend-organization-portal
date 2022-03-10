@@ -88,6 +88,13 @@ Router.map(function () {
             this.route('new', { path: '/nieuw' });
           }
         );
+        this.route(
+          'related-organizations',
+          { path: '/gerelateerde-organisaties' },
+          function () {
+            this.route('edit');
+          }
+        );
       });
       this.route('new', { path: '/nieuwe-bestuurseenheid' });
     }
