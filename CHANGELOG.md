@@ -6,6 +6,14 @@
 
 
 
+## 1.6.4-0 (2022-03-10)
+#### :bug: Bug Fix
+* split first name / last name in filter search person (#270) 
+* Remove additional scope parameters
+* Remove werkingsgebieden from the app
+* fix position details not shown (#268) 
+
+
 ## 1.6.3 (2022-03-03)
 # Drone file fix
 
