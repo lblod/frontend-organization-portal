@@ -37,7 +37,7 @@
                 {{@model.administrativeUnit.classification.label}}
               </:content>
             </Item>
-            {{#if isWorshipService}}
+            {{#if this.isWorshipService}}
               <Item>
                 <:label>Soort eredienst</:label>
                 <:content
@@ -63,13 +63,6 @@
                 </:content>
               </Item>
             {{/if}}
-            {{!-- Temporarily disabled - cf https://binnenland.atlassian.net/browse/OP-583
-            {{#if @model.administrativeUnit.scope.label}}
-              <Item>
-                <:label>Werkingsgebied</:label>
-                <:content>{{@model.administrativeUnit.scope.label}}</:content>
-              </Item>
-            {{/if}} --}}
           </:left>
           <:right as |Item|>
             <Item>
@@ -148,7 +141,7 @@
             <:left as |Item|>
               {{#if @model.administrativeUnit.isSubOrganizationOf.name}}
                 <Item>
-                  <:label>{{if isWorshipService 'Centraal bestuur' 'Provincie'}}</:label>
+                  <:label>{{if this.isWorshipService 'Centraal bestuur' 'Provincie'}}</:label>
                   <:content>
                     <AuLink
                       @route="administrative-units.administrative-unit"

@@ -1,3 +1,129 @@
+
+
+
+
+
+
+
+
+## 1.6.3 (2022-03-03)
+# Drone file fix
+
+
+## 1.6.2 (2022-03-03)
+# Fix drone build
+
+
+## 1.6.1 (2022-03-02)
+
+#### :rocket: Enhancement
+* [#261](https://github.com/lblod/frontend-contact-hub/pull/261) perf bestuur ([@nbittich](https://github.com/nbittich))
+* [#259](https://github.com/lblod/frontend-contact-hub/pull/259) Allow users to edit contact information on the person edit page ([@nbittich](https://github.com/nbittich))
+* [#258](https://github.com/lblod/frontend-contact-hub/pull/258) Update to the newest appuniversum styles ([@nbittich](https://github.com/nbittich))
+* [#256](https://github.com/lblod/frontend-contact-hub/pull/256) Show minister position information on the positions page of a person ([@nbittich](https://github.com/nbittich))
+* [#255](https://github.com/lblod/frontend-contact-hub/pull/255) Move the position contact information to the person details page ([@nbittich](https://github.com/nbittich))
+* [#254](https://github.com/lblod/frontend-contact-hub/pull/254) People search page improvements ([@nbittich](https://github.com/nbittich))
+* [#250](https://github.com/lblod/frontend-contact-hub/pull/250) Add support for primary and secondary contact information ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+## 1.6.0 (2022-02-10)
+
+#### :bug: Bug Fix
+*  Cancel flow on creating new 'Vestiging' gives error 
+
+
+## 1.5.4 (2022-02-10)
+
+#### :rocket: Enhancement
+* [#250](https://github.com/lblod/frontend-contact-hub/pull/250) Add support for primary and secondary contact information ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+## 1.5.3 (2022-02-01)
+
+#### :bug: Bug Fix
+* [#251](https://github.com/lblod/frontend-contact-hub/pull/251) Fix the SPARQL page ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 1
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
+## 1.5.2 (2022-01-26)
+
+#### :bug: Bug Fix
+* [#249](https://github.com/lblod/frontend-contact-hub/pull/249) Fix a problem were saving didn't work in some cases on the local involvements page ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 1
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
+## 1.5.1 (2022-01-24)
+
+#### :rocket: Enhancement
+* [#248](https://github.com/lblod/frontend-contact-hub/pull/248) Improve the original organizations selection logic on the change events creation page ([@Windvis](https://github.com/Windvis))
+
+#### :bug: Bug Fix
+* [#247](https://github.com/lblod/frontend-contact-hub/pull/247) Fix sub organizations select ([@nbittich](https://github.com/nbittich))
+* [#246](https://github.com/lblod/frontend-contact-hub/pull/246) Use the proper casing for "OrganisatiePortaal" ([@Windvis](https://github.com/Windvis))
+
+#### :house: Internal
+* [#244](https://github.com/lblod/frontend-contact-hub/pull/244) Update to the latest madnificent/ember image ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
+## 1.5.0 (2022-01-13)
+
+#### :rocket: Enhancement
+* [#240](https://github.com/lblod/frontend-contact-hub/pull/240) Change events management ([@Windvis](https://github.com/Windvis))
+* [#231](https://github.com/lblod/frontend-contact-hub/pull/231) Move the form buttons to the top of the page ([@nbittich](https://github.com/nbittich))
+* [#230](https://github.com/lblod/frontend-contact-hub/pull/230) Validate that a KBO number is 10 digits long before saving ([@nbittich](https://github.com/nbittich))
+
+#### :bug: Bug Fix
+* [#236](https://github.com/lblod/frontend-contact-hub/pull/236) Ensure that timezones are ignored when saving dates selected with the datepicker ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
+## 1.4.0 (2021-12-14)
+
+#### :rocket: Enhancement
+* [#229](https://github.com/lblod/frontend-contact-hub/pull/229) Allow users to easily report wrong data ([@nbittich](https://github.com/nbittich))
+* [#228](https://github.com/lblod/frontend-contact-hub/pull/228) Only show the edit buttons if the user has the required permissions ([@nbittich](https://github.com/nbittich))
+* [#223](https://github.com/lblod/frontend-contact-hub/pull/223) Also show the province field when using CRAB on the positions pages ([@nbittich](https://github.com/nbittich))
+
+#### :bug: Bug Fix
+* [#227](https://github.com/lblod/frontend-contact-hub/pull/227) Fix a problem where the position name wasn't shown on the edit page ([@Windvis](https://github.com/Windvis))
+* [#225](https://github.com/lblod/frontend-contact-hub/pull/225) Show all related organisations of a central worship service ([@nbittich](https://github.com/nbittich))
+* [#224](https://github.com/lblod/frontend-contact-hub/pull/224) Fix "Mail ons" link in the address search functionality ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
+## 1.3.0 (2021-11-26)
+
+#### :rocket: Enhancement
+* [#212](https://github.com/lblod/frontend-contact-hub/pull/212) Use the privacy service to store sensitive personal information ([@Windvis](https://github.com/Windvis))
+
+#### :bug: Bug Fix
+* [#218](https://github.com/lblod/frontend-contact-hub/pull/218) Province is a required field on some pages ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
 ## 1.2.1 (2021-11-24)
 
 #### :bug: Bug Fix

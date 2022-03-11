@@ -7,11 +7,6 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   })
   classification;
 
-  @belongsTo('location', {
-    inverse: 'administrativeUnit',
-  })
-  scope;
-
   @hasMany('governing-body', {
     inverse: 'administrativeUnit',
   })
