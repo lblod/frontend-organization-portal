@@ -6,6 +6,12 @@
 
 
 
+## 1.6.4-1 (2022-03-14)
+
+#### :bug: Bug Fix
+* Fix contact gegevens title not shown (#271) 
+
+
 ## 1.6.4-0 (2022-03-10)
 #### :bug: Bug Fix
 * split first name / last name in filter search person (#270) 
