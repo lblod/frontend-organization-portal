@@ -52,6 +52,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       administrativeUnit: currentOrganization,
       changeEvent,
       decision,
+      decisionActivity,
       formState,
     } = this.model;
 
@@ -69,9 +70,15 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       (shouldSaveDecision ? decision.isValid : true) &&
       changeEvent.isValid
     ) {
-      if (shouldSaveDecision && !isEmpty(decision)) {
-        yield decision.save();
-        changeEvent.decision = decision;
+      if (shouldSaveDecision) {
+        if (!isEmpty(decision) || decisionActivity.endDate) {
+          if (decisionActivity.endDate) {
+            yield decisionActivity.save();
+            decision.hasDecisionActivity = decisionActivity;
+          }
+          yield decision.save();
+          changeEvent.decision = decision;
+        }
       }
 
       let changeEventType = formState.changeEventType;

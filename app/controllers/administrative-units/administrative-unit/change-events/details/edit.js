@@ -13,6 +13,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
     let {
       changeEvent,
       decision,
+      decisionActivity,
       canAddDecisionInformation: shouldSaveDecision,
     } = this.model;
 
@@ -23,11 +24,22 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
     }
 
     if (changeEvent.isValid && shouldSaveDecision ? decision.isValid : true) {
-      if (shouldSaveDecision && !isEmpty(decision) && decision.isDirty) {
-        if (decision.isNew) {
-          changeEvent.decision = decision;
+      if (shouldSaveDecision) {
+        if (
+          decisionActivity.changedAttributes().endDate ||
+          (!isEmpty(decision) && decision.isDirty)
+        ) {
+          if (decisionActivity.changedAttributes().endDate) {
+            if (decisionActivity.isNew) {
+              decision.hasDecisionActivity = decisionActivity;
+            }
+            yield decisionActivity.save();
+          }
+          if (decision.isNew) {
+            changeEvent.decision = decision;
+          }
+          yield decision.save();
         }
-        yield decision.save();
       }
 
       if (changeEvent.isDirty) {
