@@ -83,6 +83,28 @@
             {{/if}}
           </:left>
           <:right as |Item|>
+            {{#if @model.formState.canAddDecisionInformation}}
+              <Item @labelFor="change-event-decision-activity-date">
+                <:label>Datum ministerieel besluit</:label>
+                <:content>
+                  <Datepicker
+                    @id="change-event-decision-activity-date"
+                    @value={{@model.decisionActivity.endDate}}
+                    @onChange={{fn (mut @model.decisionActivity.endDate)}}
+                  />
+                </:content>
+              </Item>
+              <Item @labelFor="change-event-decision-publication-date">
+                <:label>Datum publicatie BS</:label>
+                <:content>
+                  <Datepicker
+                    @id="change-event-decision-publication-date"
+                    @value={{@model.decision.publicationDate}}
+                    @onChange={{fn (mut @model.decision.publicationDate)}}
+                  />
+                </:content>
+              </Item>
+            {{/if}}
             <Item
               @labelFor="change-event-date"
               @required={{true}}
@@ -98,18 +120,6 @@
                 />
               </:content>
             </Item>
-            {{#if @model.formState.canAddDecisionInformation}}
-              <Item @labelFor="change-event-decision-publication-date">
-                <:label>Datum publicatie</:label>
-                <:content>
-                  <Datepicker
-                    @id="change-event-decision-publication-date"
-                    @value={{@model.decision.publicationDate}}
-                    @onChange={{fn (mut @model.decision.publicationDate)}}
-                  />
-                </:content>
-              </Item>
-            {{/if}}
           </:right>
         </Card.Columns>
       </:card>
