@@ -29,6 +29,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewRoute e
     );
     let changeEvent = this.store.createRecord('change-event');
     let decision = this.store.createRecord('decision');
+    let decisionActivity = this.store.createRecord('decisionActivity');
 
     return {
       administrativeUnit,
@@ -37,6 +38,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewRoute e
         changeEventValidations
       ),
       decision: createValidatedChangeset(decision, decisionValidations),
+      decisionActivity,
       formState: new FormState({ currentOrganization: administrativeUnit }),
       changeEventRecord: changeEvent,
       decisionRecord: decision,
