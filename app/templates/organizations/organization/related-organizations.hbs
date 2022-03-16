@@ -13,7 +13,6 @@
   </PageHeader>
 
   {{#if @model.subOrganizations.length}}
-    <div>
       <AuDataTable id="subOrganizations"
         @content={{this.model.subOrganizations}}
         @sort={{this.sort}}
@@ -42,6 +41,5 @@
           </c.body>
         </t.content>
       </AuDataTable>
-    </div>
   {{/if}}
 </div>

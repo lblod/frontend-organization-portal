@@ -6,5 +6,5 @@ export default class OrganizationsOrganizationRelatedOrganizationsController ext
 
   @tracked sort = 'name';
   @tracked page = 0;
-  @tracked size = 10;
+  @tracked size = 25;
 }

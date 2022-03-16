@@ -29,7 +29,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
       'filter[is-associated-with][:id:]': id,
       include: 'classification',
       sort: params.sort,
-      page: { size: 10, number: params.page },
+      page: { size: 25, number: params.page },
     });
   }
 }
