@@ -9,10 +9,18 @@ import {
 
 export default class PeoplePersonPersonalInformationRoute extends Route {
   @service store;
+  @service router;
+  @service sensitivePersonalInformation;
+  queryParams = {
+    reasonCode: { refreshModel: true },
+  };
 
-  async model() {
+  resetController(controller) {
+    controller.set('reasonCode', null);
+  }
+
+  async model(params) {
     let { id: personId } = this.paramsFor('people.person');
-
     let person = await this.store.findRecord('person', personId, {
       reload: true,
       include: [
@@ -84,8 +92,24 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         secondaryContact: secondaryContact,
       });
     }
+    let askSensitiveInformation = null;
+    let requestSensitiveInformation = null;
+    if (params.reasonCode) {
+      const reason = await this.store.findRecord(
+        'request-reason',
+        params.reasonCode
+      );
+
+      requestSensitiveInformation =
+        await this.sensitivePersonalInformation.getInformation(person, reason);
+    } else {
+      askSensitiveInformation =
+        await this.sensitivePersonalInformation.askInformation(person);
+    }
     return {
       person,
+      askSensitiveInformation,
+      requestSensitiveInformation,
       positions: positions.sort((a, b) => {
         return b.startDate - a.startDate;
       }),

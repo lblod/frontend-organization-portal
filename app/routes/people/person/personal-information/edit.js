@@ -8,6 +8,7 @@ import {
   createPrimaryContact,
   createSecondaryContact,
 } from 'frontend-contact-hub/models/contact-point';
+import { SensitivePersonalInformation } from '../../../../services/sensitive-personal-information';
 export default class PeoplePersonPersonalInformationEditRoute extends Route {
   @service currentSession;
   @service router;
@@ -20,9 +21,12 @@ export default class PeoplePersonPersonalInformationEditRoute extends Route {
     }
   }
   async model() {
-    let { person, positions } = this.modelFor(
-      'people.person.personal-information'
-    );
+    let {
+      person,
+      positions,
+      requestSensitiveInformation,
+      askSensitiveInformation,
+    } = this.modelFor('people.person.personal-information');
     const contacts = [];
     for (let computedPosition of positions) {
       let { primaryContact, secondaryContact, position } = computedPosition;
@@ -54,10 +58,19 @@ export default class PeoplePersonPersonalInformationEditRoute extends Route {
       };
       contacts.push(contact);
     }
-
+    let sensitiveInformation = requestSensitiveInformation;
+    if (askSensitiveInformation?.isEmpty()) {
+      sensitiveInformation = new SensitivePersonalInformation();
+    }
     return {
       person: createValidatedChangeset(person, personValidations),
       contacts,
+      sensitiveInformation: sensitiveInformation,
+      askSensitiveInformation,
     };
+  }
+
+  resetController(controller) {
+    controller.reset();
   }
 }

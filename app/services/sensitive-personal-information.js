@@ -5,10 +5,38 @@ import fetch from 'fetch';
 const PRIVACY_CENTRIC_SERVICE_ENDPOINT = {
   REQUEST: '/person-information-requests',
   UPDATE: '/person-information-updates',
+  ASK: '/person-information-ask',
+  VALIDATE_SSN: '/person-information-validate-ssn',
 };
 
 export default class SensitivePersonalInformationService extends Service {
   @service store;
+
+  /**
+   * Check what sensitive data are present for a person
+   * @param {PersonModel} person
+   */
+  async askInformation(person) {
+    const askEndpoint = `${PRIVACY_CENTRIC_SERVICE_ENDPOINT.ASK}/${person.id}`;
+    let response = await this._request(askEndpoint, {});
+    let data = await response.json();
+    return await this.mapSensitivePersonalInformation(data?.data, true);
+  }
+
+  /**
+   * Check if ssn belongs to person
+   * @param {PersonModel} person
+   * @param {String} ssn
+   */
+  async validateSsn(person, ssn) {
+    if (!ssn?.length) {
+      return true;
+    }
+    const validateSsnEndpoint = `${PRIVACY_CENTRIC_SERVICE_ENDPOINT.VALIDATE_SSN}/${person.id}?ssn=${ssn}`;
+    let response = await this._request(validateSsnEndpoint, {});
+    let data = await response.json();
+    return data?.data?.attributes['is-valid'];
+  }
 
   /**
    * Request sensitive information from a specific person
@@ -43,36 +71,46 @@ export default class SensitivePersonalInformationService extends Service {
       body
     );
     let data = (await response.json()).data;
+    return await this.mapSensitivePersonalInformation(data);
+  }
 
+  async mapSensitivePersonalInformation(data, obfuscated = false) {
     let sensitiveInformation = {};
-    if (data?.attributes?.['date-of-birth']) {
-      sensitiveInformation.dateOfBirth = new Date(
-        data.attributes['date-of-birth']
-      );
+    let dateOfBirth = data?.attributes?.['date-of-birth'];
+    let registration = data?.attributes?.registration;
+    let nationalities = data?.relationships?.nationalities?.data;
+    let genderData = data?.relationships?.gender?.data;
+    if (dateOfBirth) {
+      sensitiveInformation.dateOfBirth = obfuscated
+        ? dateOfBirth
+        : new Date(dateOfBirth);
     }
 
-    if (data?.attributes?.registration) {
-      sensitiveInformation.ssn = data.attributes.registration;
+    if (registration) {
+      sensitiveInformation.ssn = registration;
     }
 
-    if (data?.relationships?.nationalities?.data?.length > 0) {
-      let idList = data.relationships.nationalities.data
-        .map((nationaly) => nationaly.id)
-        .join();
-      let nationalities = await this.store.query('nationality', {
-        filter: {
-          ':id:': idList,
-        },
-      });
-      sensitiveInformation.nationalities = nationalities.toArray();
+    if (nationalities?.length > 0) {
+      let idList = nationalities.map((nationaly) => nationaly.id).join();
+      if (obfuscated) {
+        sensitiveInformation.nationalities = idList;
+      } else {
+        let nationalities = await this.store.query('nationality', {
+          filter: {
+            ':id:': idList,
+          },
+        });
+        sensitiveInformation.nationalities = nationalities.toArray();
+      }
     }
 
-    if (data?.relationships?.gender?.data?.id) {
-      let gender = await this.store.findRecord(
-        'gender-code',
-        data.relationships.gender.data.id
-      );
-      sensitiveInformation.gender = gender;
+    if (genderData?.id) {
+      if (obfuscated) {
+        sensitiveInformation.gender = genderData;
+      } else {
+        let gender = await this.store.findRecord('gender-code', genderData.id);
+        sensitiveInformation.gender = gender;
+      }
     }
 
     return new SensitivePersonalInformation(sensitiveInformation);
@@ -120,6 +158,14 @@ export class SensitivePersonalInformation {
     this.ssn = ssn;
     this.gender = gender;
     this.nationalities = nationalities;
+  }
+  isEmpty() {
+    return (
+      !this?.gender &&
+      !this?.dateOfBirth &&
+      !this?.nationalities?.length &&
+      !this?.ssn
+    );
   }
 }
 

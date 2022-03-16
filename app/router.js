@@ -18,6 +18,7 @@ Router.map(function () {
         { path: '/contactgegevens' },
         function () {
           this.route('edit');
+          this.route('request-sensitive-data');
         }
       );
       this.route('positions', { path: '/posities' }, function () {
