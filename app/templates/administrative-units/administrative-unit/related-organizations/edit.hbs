@@ -33,7 +33,7 @@
     >
       <div class="au-o-flow au-o-flow--large">
         <EditCard @containsRequiredFields={{true}}>
-          <:title>Gerelateerde organisaties</:title>
+          <:title>Behoort tot</:title>
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
@@ -81,7 +81,9 @@
             "central-worship-service"
           )
         }}
-          Besturen van eredienst
+          <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
+            Heeft relatie met
+          </AuHeading>
           <AuDataTable
             id="subOrganizations"
             @content={{this.model.administrativeUnit.subOrganizations}}
@@ -91,17 +93,26 @@
             <t.content as |c|>
               <c.header>
                 <AuDataTableThSortable
+                  @field="classification.label"
+                  @currentSorting={{this.sort}}
+                  @label="Type organisatie"
+                />
+                <AuDataTableThSortable
                   @field="name"
                   @currentSorting={{this.sort}}
-                  @label="Organizatie"
+                  @label="Organisatie"
                 />
                 <AuDataTableThSortable
                   @field="organizationStatus.label"
                   @currentSorting={{this.sort}}
                   @label="Status"
                 />
+                <th></th>
               </c.header>
               <c.body as |subOrganization|>
+                <td>
+                  {{subOrganization.classification.label}}
+                </td>
                 <td>
                   <WorshipServiceSelect
                     @selected={{subOrganization}}
@@ -141,7 +152,7 @@
               @iconAlignment="left"
               {{on "click" this.addNewSubOrganization}}
             >
-              Voeg nieuw bestuur van eredienst toe
+              Voeg nieuwe gerelateerde organisatie toe
             </AuButton>
           </div>
         {{/if}}

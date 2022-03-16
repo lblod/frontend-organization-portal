@@ -1,3 +1,5 @@
+{{page-title "Kerngegevens"}}
+
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
@@ -101,37 +103,5 @@
         </Card.Columns>
       </:card>
     </DataCard>
-
-    {{#if @model.associatedOrganizationsTaskInstance.isRunning}}
-      <AuLoader />
-    {{else if @model.associatedOrganizationsTaskInstance.value}}
-      <DataCard>
-        <:title>
-          Gerelateerde organisaties
-        </:title>
-        <:card as |Card|>
-          <Card.Columns>
-            <:left as |Item|>
-              {{#each
-                @model.associatedOrganizationsTaskInstance.value
-                as |organization|
-              }}
-                <Item>
-                  <:label>{{organization.classification.label}}</:label>
-                  <:content>
-                    <AuLink
-                      @route="administrative-units.administrative-unit"
-                      @model={{organization.id}}
-                    >
-                      {{organization.name}}
-                    </AuLink>
-                  </:content>
-                </Item>
-              {{/each}}
-            </:left>
-          </Card.Columns>
-        </:card>
-      </DataCard>
-    {{/if}}
   </div>
 </div>

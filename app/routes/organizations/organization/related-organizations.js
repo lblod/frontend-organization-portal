@@ -2,29 +2,23 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 
-export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIndexRoute extends Route {
+export default class OrganizationsOrganizationRelatedOrganizationsRoute extends Route {
   @service store;
 
   queryParams = {
     sort: { refreshModel: true },
+    page: { refreshModel: true },
   };
 
   async model(params) {
-    const administrativeUnit = this.modelFor(
-      'administrative-units.administrative-unit'
-    );
+    const organization = this.modelFor('organizations.organization');
 
-    const isAssociatedWith = await administrativeUnit.isAssociatedWith;
-    const isSubOrganizationOf = await administrativeUnit.isSubOrganizationOf;
     const subOrganizations = await this.loadSubOrganizationsTask.perform(
-      administrativeUnit.id,
+      organization.id,
       params
     );
-
     return {
-      administrativeUnit,
-      isAssociatedWith,
-      isSubOrganizationOf,
+      organization,
       subOrganizations,
     };
   }
@@ -32,10 +26,10 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
   @dropTask({ cancelOn: 'deactivate' })
   *loadSubOrganizationsTask(id, params) {
     return yield this.store.query('administrative-unit', {
-      'filter[is-sub-organization-of][:id:]': id,
-      'page[size]': 500,
+      'filter[is-associated-with][:id:]': id,
       include: 'classification',
       sort: params.sort,
+      page: { size: 10, number: params.page },
     });
   }
 }
