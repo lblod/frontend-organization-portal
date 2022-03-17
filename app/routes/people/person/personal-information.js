@@ -16,7 +16,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
   };
 
   resetController(controller) {
-    controller.set('reasonCode', null);
+    controller.reset();
   }
 
   async model(params) {
