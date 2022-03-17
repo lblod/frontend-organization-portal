@@ -42,7 +42,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
 
     if (params.name) {
       let filterType = 'phrase';
-      let name = params.name.trim();
+      let name = params.name.trim().toLowerCase();
       if (name.split(' ').length === 1) {
         filterType = 'prefix';
       }
