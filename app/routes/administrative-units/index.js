@@ -41,7 +41,12 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     const filter = {};
 
     if (params.name) {
-      filter[':prefix:name'] = params.name.toLowerCase();
+      let filterType = 'phrase';
+      let name = params.name.trim().toLowerCase();
+      if (name.split(' ').length === 1) {
+        filterType = 'prefix';
+      }
+      filter[`:${filterType}:name`] = name;
     }
 
     if (params.classificationId) {
