@@ -14,14 +14,29 @@ export default class PeopleNewController extends Controller {
 
   @tracked redirectUrl;
 
+  @tracked
+  sensitiveInformationError;
+
+  @action
+  setSsn(value) {
+    this.model.sensitiveInformation.ssn = value;
+  }
+
   @dropTask
   *savePersonTask(event) {
     event.preventDefault();
 
-    let { person } = this.model;
+    let { person, sensitiveInformation } = this.model;
     yield person.validate();
 
-    if (person.isValid) {
+    let { validSsn, sensitiveInformationError } =
+      yield this.sensitivePersonalInformation.validateSsn(
+        person,
+        sensitiveInformation.ssn
+      );
+    this.sensitiveInformationError = sensitiveInformationError;
+
+    if (person.isValid && validSsn) {
       yield person.save();
 
       let requestReason = yield this.store.findRecord(
@@ -30,7 +45,7 @@ export default class PeopleNewController extends Controller {
       );
 
       yield this.sensitivePersonalInformation.updateInformation(
-        this.model.sensitiveInformation,
+        sensitiveInformation,
         person,
         requestReason
       );
@@ -56,6 +71,7 @@ export default class PeopleNewController extends Controller {
 
   reset() {
     this.redirectUrl = null;
+    this.sensitiveInformationError = null;
     this.removeUnsavedRecords();
   }
 

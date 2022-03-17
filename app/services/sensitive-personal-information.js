@@ -24,18 +24,29 @@ export default class SensitivePersonalInformationService extends Service {
   }
 
   /**
-   * Check if ssn belongs to person
+   * Check if ssn is valid
    * @param {PersonModel} person
    * @param {String} ssn
    */
   async validateSsn(person, ssn) {
-    if (!ssn?.length) {
-      return true;
+    let validSsn = false;
+    let sensitiveInformationError = null;
+    if (!ssn || ssn?.length === 0) {
+      validSsn = true;
+    } else if (!/^[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{3}[0-9]{2}$/.test(ssn)) {
+      sensitiveInformationError =
+        'Vul het (elfcijferige) Rijksregisternummer in.';
+    } else {
+      const validateSsnEndpoint = `${PRIVACY_CENTRIC_SERVICE_ENDPOINT.VALIDATE_SSN}/${person.id}?ssn=${ssn}`;
+      let response = await this._request(validateSsnEndpoint, {});
+      let data = await response.json();
+      validSsn = data?.data?.attributes['is-valid'];
+      if (!validSsn) {
+        sensitiveInformationError =
+          'Dit rijksregisternummer al tot een persoon. Als je denkt dat er een fout is, meld het ons.';
+      }
     }
-    const validateSsnEndpoint = `${PRIVACY_CENTRIC_SERVICE_ENDPOINT.VALIDATE_SSN}/${person.id}?ssn=${ssn}`;
-    let response = await this._request(validateSsnEndpoint, {});
-    let data = await response.json();
-    return data?.data?.attributes['is-valid'];
+    return { validSsn, sensitiveInformationError };
   }
 
   /**

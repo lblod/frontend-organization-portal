@@ -105,11 +105,16 @@
                   />
                 </:content>
               </Item>
-              <Item @labelFor="person-ssn">
+              <Item @labelFor="person-ssn"
+                  @errorMessage={{this.sensitiveInformationError}}
+              >
                 <:label>Rijksregisternummer</:label>
-                <:content>
+                <:content  as |hasError|>
                   <AuInput
+                    @maskPlaceholder="######-###.##"
                     @mask="######-###.##"
+                    @onChange={{this.setSsn}}
+                    @error={{hasError}}
                     @value={{@model.sensitiveInformation.ssn}}
                     @width="block"
                     id="person-ssn"

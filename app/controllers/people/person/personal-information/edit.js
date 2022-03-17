@@ -11,8 +11,6 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
 
   @tracked
   sensitiveInformationError;
-  @tracked
-  validSsn;
 
   @action
   setSsn(value) {
@@ -20,9 +18,9 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
   }
 
   reset() {
-    this.validSsn = false;
     this.sensitiveInformationError = null;
   }
+
   @action
   cancel() {
     let { person } = this.model;
@@ -49,28 +47,13 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
         valid = false;
       }
     }
-    if (sensitiveInformation.ssn?.length === 0) {
-      this.validSsn = true;
-    } else if (
-      !/^[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{3}[0-9]{2}$/.test(
-        sensitiveInformation.ssn
-      )
-    ) {
-      this.sensitiveInformationError =
-        'Vul het (elfcijferige) Rijksregisternummer in.';
-      this.validSsn = false;
-    } else {
-      this.validSsn = yield this.sensitivePersonalInformation.validateSsn(
+    let { validSsn, sensitiveInformationError } =
+      yield this.sensitivePersonalInformation.validateSsn(
         person,
         sensitiveInformation.ssn
       );
-      if (!this.validSsn) {
-        this.sensitiveInformationError =
-          'Dit rijksregisternummer al tot een persoon. Als je denkt dat er een fout is, meld het ons.';
-      }
-    }
-
-    if (valid && this.validSsn) {
+    this.sensitiveInformationError = sensitiveInformationError;
+    if (valid && validSsn) {
       for (let contact of contacts) {
         let { primaryContact, secondaryContact, address, position } = contact;
         if (address.isDirty) {
