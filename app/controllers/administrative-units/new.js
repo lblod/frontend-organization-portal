@@ -4,6 +4,7 @@ import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
 import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-contact-hub/models/recognized-worship-type';
 import { GOVERNING_BODY_CLASSIFICATION } from 'frontend-contact-hub/models/governing-body-classification-code';
+import { action } from '@ember/object';
 
 const CLASSIFICATION = {
   CENTRAL_WORSHIP_SERVICE: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
@@ -56,6 +57,11 @@ export default class AdministrativeUnitsNewController extends Controller {
       this.model.administrativeUnit.classification?.id ===
       CLASSIFICATION.CENTRAL_WORSHIP_SERVICE
     );
+  }
+
+  @action
+  setKbo(value) {
+    this.model.structuredIdentifierKBO.localId = value;
   }
 
   @dropTask
