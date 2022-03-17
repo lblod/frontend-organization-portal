@@ -88,12 +88,24 @@ Router.map(function () {
             this.route('new', { path: '/nieuw' });
           }
         );
+        this.route(
+          'related-organizations',
+          { path: '/gerelateerde-organisaties' },
+          function () {
+            this.route('edit');
+          }
+        );
       });
       this.route('new', { path: '/nieuwe-bestuurseenheid' });
     }
   );
   this.route('organizations', { path: '/organisaties' }, function () {
-    this.route('organization', { path: '/:id/' }, function () {});
+    this.route('organization', { path: '/:id/' }, function () {
+      this.route('core-data', { path: '/kerngegevens' });
+      this.route('related-organizations', {
+        path: '/gerelateerde-organisaties',
+      });
+    });
   });
   this.route('contact');
   this.route('legal', { path: '/legaal' }, function () {
