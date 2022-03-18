@@ -19,7 +19,7 @@
             </AuButton>
 
             <AuLink
-              @route="people.person.personal-information"
+               {{on "click" this.cancel}}
               @skin="button-secondary"
             >
               Annuleer
@@ -82,15 +82,109 @@
                   </:content>
                 </Item>
               </:left>
-              {{! TODO: enable this once Date of Birth data is available }}
-              {{! <:right as |Item|>
-                <Item @labelFor="person-date-of-birth">
-                  <:label>Geboorte datum</:label>
-                  <:content>
-                    <AuDatePicker @id="person-date-of-birth" />
-                  </:content>
-                </Item>
-              </:right> }}
+              <:right as |Item|>
+                {{#unless @model.sensitiveInformation}}
+                  <Item>
+                    <:label>Geboortedatum</:label>
+                    <:content>
+                      <AuLink
+                        @route="people.person.personal-information.request-sensitive-data"
+                        @query={{hash redirectUrl=this.currentURL}}
+
+                      >
+                        Consulteer
+                      </AuLink></:content>
+                  </Item>
+                  <Item>
+                    <:label>Nationaliteit</:label>
+                    <:content>
+                      <AuLink
+                        @route="people.person.personal-information.request-sensitive-data"
+                        @query={{hash redirectUrl=this.currentURL}}
+
+                      >
+                        Consulteer
+                      </AuLink></:content>
+                  </Item>
+                  <Item>
+                    <:label>Geslacht</:label>
+                    <:content>
+                      <AuLink
+                        @route="people.person.personal-information.request-sensitive-data"
+                        @query={{hash redirectUrl=this.currentURL}}
+
+                      >
+                        Consulteer
+                      </AuLink></:content>
+                  </Item>
+                  <Item>
+                    <:label>Rijksregisternummer</:label>
+                    <:content>
+                      <AuLink
+                        @route="people.person.personal-information.request-sensitive-data"
+                        @query={{hash redirectUrl=this.currentURL}}
+
+                      >
+                        Consulteer
+                      </AuLink></:content>
+                  </Item>
+                {{/unless}}
+                {{#if @model.sensitiveInformation}}
+                  <Item @labelFor="person-gender" @alignTop={{true}}>
+                    <:label>Geslacht</:label>
+                    <:content>
+                      <GenderSelect
+                        @selected={{@model.sensitiveInformation.gender}}
+                        @onChange={{fn
+                          (mut @model.sensitiveInformation.gender)
+                        }}
+                        @id="person-gender"
+                      />
+                    </:content>
+                  </Item>
+                  <Item @labelFor="person-date-of-birth">
+                    <:label>Geboortedatum</:label>
+                    <:content>
+                      <Datepicker
+                        @id="person-date-of-birth"
+                        @value={{@model.sensitiveInformation.dateOfBirth}}
+                        @onChange={{fn
+                          (mut @model.sensitiveInformation.dateOfBirth)
+                        }}
+                      />
+                    </:content>
+                  </Item>
+                  <Item @labelFor="person-nationality">
+                    <:label>Nationaliteit</:label>
+                    <:content>
+                      <NationalitySelect
+                        @selected={{@model.sensitiveInformation.nationalities}}
+                        @onChange={{fn
+                          (mut @model.sensitiveInformation.nationalities)
+                        }}
+                        @id="person-nationality"
+                      />
+                    </:content>
+                  </Item>
+                  <Item @labelFor="person-ssn"
+                  @errorMessage={{this.sensitiveInformationError}}
+                  
+                  >
+                    <:label>Rijksregisternummer</:label>
+                    <:content  as |hasError|>
+                      <AuInput
+                        @maskPlaceholder="00.00.00-000.00"
+                        @mask="##.##.##-###.##"
+                        @onChange={{this.setSsn}}
+                        @value={{@model.sensitiveInformation.ssn}}
+                        @error={{hasError}}
+                        @width="block"
+                        id="person-ssn"
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
+              </:right>
             </Card.Columns>
           </:card>
         </EditCard>
@@ -105,7 +199,7 @@
               false
             }}
           >
-          <:title>Contactgegevens: {{contact.title}}</:title>
+            <:title>Contactgegevens: {{contact.title}}</:title>
           </Position::ContactEditCard>
         {{/each}}
       </div>

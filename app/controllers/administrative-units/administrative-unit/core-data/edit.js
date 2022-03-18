@@ -2,9 +2,15 @@ import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { combineFullAddress } from 'frontend-contact-hub/models/address';
+import { action } from '@ember/object';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
+
+  @action
+  setKbo(value) {
+    this.model.structuredIdentifierKBO.localId = value;
+  }
 
   @dropTask
   *save(event) {

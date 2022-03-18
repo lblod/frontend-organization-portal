@@ -1,3 +1,5 @@
 import Controller from '@ember/controller';
 
-export default class PeoplePersonPersonalInformationController extends Controller {}
+export default class PeoplePersonPersonalInformationController extends Controller {
+  reset() {}
+}

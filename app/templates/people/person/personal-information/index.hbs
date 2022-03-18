@@ -45,6 +45,96 @@
               </Item>
             {{/if}}
           </:left>
+          <:right as |Item|>
+            {{#if
+              (or
+                @model.requestSensitiveInformation
+                @model.askSensitiveInformation
+              )
+            }}
+              {{#if @model.askSensitiveInformation.dateOfBirth}}
+                <Item>
+                  <:label>Geboortedatum</:label>
+                  <:content>
+                    <AuLink
+                      @route="people.person.personal-information.request-sensitive-data"
+                      @query={{hash redirectUrl=this.currentURL}}
+
+                    >
+                      Consulteer
+                    </AuLink>
+                  </:content>
+                </Item>
+              {{else if @model.requestSensitiveInformation.dateOfBirth}}
+                <Item>
+                  <:label>Geboortedatum</:label>
+                  <:content
+                  >{{date-format @model.requestSensitiveInformation.dateOfBirth}}</:content>
+                </Item>
+              {{/if}}
+              {{#if @model.askSensitiveInformation.nationalities}}
+                <Item>
+                  <:label>Nationaliteit</:label>
+                  <:content>
+                    <AuLink
+                      @route="people.person.personal-information.request-sensitive-data"
+                      @query={{hash redirectUrl=this.currentURL}}
+                    >
+                      Consulteer
+                    </AuLink>
+                  </:content>
+                </Item>
+              {{else if @model.requestSensitiveInformation.nationalities}}
+                <Item>
+                  <:label>Nationaliteit</:label>
+                  <:content
+                  >{{this.nationalities}}</:content>
+                </Item>
+              {{/if}}
+              {{#if @model.askSensitiveInformation.gender}}
+                <Item>
+                  <:label>Geslacht</:label>
+                  <:content>
+                    <AuLink
+                      @route="people.person.personal-information.request-sensitive-data"
+                      @query={{hash redirectUrl=this.currentURL}}
+
+                    >
+                      Consulteer
+                    </AuLink>
+                  </:content>
+                </Item>
+
+              {{else if @model.requestSensitiveInformation.gender}}
+
+                <Item>
+                  <:label>Geslacht</:label>
+                  <:content
+                  >{{@model.requestSensitiveInformation.gender.label}}</:content>
+                </Item>
+              {{/if}}
+              {{#if @model.askSensitiveInformation.ssn}}
+                <Item>
+                  <:label>Rijksregisternummer</:label>
+                  <:content>
+                    <AuLink
+                      @route="people.person.personal-information.request-sensitive-data"
+                      @query={{hash redirectUrl=this.currentURL}}
+
+                    >
+                      Consulteer
+                    </AuLink>
+                  </:content>
+                </Item>
+              {{else if @model.requestSensitiveInformation.ssn}}
+                <Item>
+                  <:label>Geslacht</:label>
+                  <:content
+                  >{{@model.requestSensitiveInformation.ssn}}</:content>
+                </Item>
+              {{/if}}
+            {{/if}}
+          </:right>
         </Card.Columns>
       </:card>
     </DataCard>
@@ -139,14 +229,14 @@
         </:card>
       </DataCard>
     {{/each}}
-      <AuHelpText @skin="tertiary">
-        {{@model.person.givenName}}
-        {{@model.person.familyName}}
-        heeft geen andere posities. Om alle posities (ook niet active) te
-        bekijken, ga naar&nbsp;
-        <AuLink @model={{@model.person}} @route="people.person.positions">
-          Posities
-        </AuLink>
-      </AuHelpText>
+    <AuHelpText @skin="tertiary">
+      {{@model.person.givenName}}
+      {{@model.person.familyName}}
+      heeft geen andere posities. Om alle posities (ook niet active) te
+      bekijken, ga naar&nbsp;
+      <AuLink @model={{@model.person}} @route="people.person.positions">
+        Posities
+      </AuLink>
+    </AuHelpText>
   </div>
 </div>
