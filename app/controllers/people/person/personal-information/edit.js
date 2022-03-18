@@ -11,6 +11,8 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
 
   @tracked
   sensitiveInformationError;
+  @tracked
+  validSsn = true;
 
   @action
   setSsn(value) {
@@ -23,6 +25,7 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
 
   reset() {
     this.sensitiveInformationError = null;
+    this.validSsn = true;
   }
 
   @action
@@ -51,13 +54,16 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
         valid = false;
       }
     }
-    let { validSsn, sensitiveInformationError } =
-      yield this.sensitivePersonalInformation.validateSsn(
-        person,
-        sensitiveInformation.ssn
-      );
-    this.sensitiveInformationError = sensitiveInformationError;
-    if (valid && validSsn) {
+    if (sensitiveInformation) {
+      let { validSsn, sensitiveInformationError } =
+        yield this.sensitivePersonalInformation.validateSsn(
+          person,
+          sensitiveInformation.ssn
+        );
+      this.validSsn = validSsn;
+      this.sensitiveInformationError = sensitiveInformationError;
+    }
+    if (valid && this.validSsn) {
       for (let contact of contacts) {
         let { primaryContact, secondaryContact, address, position } = contact;
         if (address.isDirty) {
@@ -78,11 +84,14 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
         'request-reason',
         REQUEST_REASON.EDITION
       );
-      yield this.sensitivePersonalInformation.updateInformation(
-        this.model.sensitiveInformation,
-        person,
-        requestReason
-      );
+
+      if (sensitiveInformation) {
+        yield this.sensitivePersonalInformation.updateInformation(
+          sensitiveInformation,
+          person,
+          requestReason
+        );
+      }
       this.router.refresh();
       this.router.transitionTo('people.person.personal-information', person.id);
     }

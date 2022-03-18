@@ -82,15 +82,6 @@
                   </:content>
                 </Item>
               </:left>
-              {{! TODO: enable this once Date of Birth data is available }}
-              {{! <:right as |Item|>
-                <Item @labelFor="person-date-of-birth">
-                  <:label>Geboorte datum</:label>
-                  <:content>
-                    <AuDatePicker @id="person-date-of-birth" />
-                  </:content>
-                </Item>
-              </:right> }}
               <:right as |Item|>
                 {{#unless @model.sensitiveInformation}}
                   <Item>
