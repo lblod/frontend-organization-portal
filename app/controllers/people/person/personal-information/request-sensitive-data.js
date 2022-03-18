@@ -9,20 +9,29 @@ export default class PeoplePersonPersonalInformationRequestSensitiveDataControll
   @service store;
   @tracked reasonCode;
 
+  queryParams = ['redirectUrl'];
+  @tracked redirectUrl;
+
   constructor() {
     super(...arguments);
     this.loadReasonCodes.perform();
   }
+
   @action
   async submit(event) {
     event.preventDefault();
-    this.router.transitionTo('people.person.personal-information', {
-      queryParams: { reasonCode: this.reasonCode.id },
-    });
+    this.router.transitionTo(
+      `${this.redirectUrl}?reasonCode=${this.reasonCode.id}`
+    );
   }
 
   @task *loadReasonCodes() {
     return yield this.store.findAll('request-reason');
+  }
+
+  reset() {
+    this.reasonCode = null;
+    this.redirectUrl = null;
   }
 
   @action

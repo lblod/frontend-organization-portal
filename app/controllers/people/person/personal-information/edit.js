@@ -17,6 +17,10 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
     this.model.sensitiveInformation.ssn = value;
   }
 
+  get currentURL() {
+    return this.router.currentURL;
+  }
+
   reset() {
     this.sensitiveInformationError = null;
   }
