@@ -7,6 +7,7 @@ import { action } from '@ember/object';
 export default class PeoplePersonPersonalInformationRequestSensitiveDataController extends Controller {
   @service router;
   @service store;
+  @service sensitivePersonalInformation;
   @tracked reasonCode;
 
   queryParams = ['redirectUrl'];
@@ -20,9 +21,13 @@ export default class PeoplePersonPersonalInformationRequestSensitiveDataControll
   @action
   async submit(event) {
     event.preventDefault();
-    this.router.transitionTo(
-      `${this.redirectUrl}?reasonCode=${this.reasonCode.id}`
+    let { person } = this.model;
+    await this.sensitivePersonalInformation.getInformation(
+      person,
+      this.reasonCode
     );
+    this.router.refresh();
+    this.router.transitionTo(`${this.redirectUrl}`);
   }
 
   @task *loadReasonCodes() {

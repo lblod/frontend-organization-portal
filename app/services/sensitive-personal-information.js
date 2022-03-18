@@ -9,8 +9,18 @@ const PRIVACY_CENTRIC_SERVICE_ENDPOINT = {
   VALIDATE_SSN: '/person-information-validate-ssn',
 };
 
+const STORAGE = new Map();
+
 export default class SensitivePersonalInformationService extends Service {
   @service store;
+
+  hasStoredSensitiveInformation(person) {
+    return STORAGE.has(person.id);
+  }
+
+  getStoredSensitiveInformation(person) {
+    return STORAGE.get(person.id);
+  }
 
   /**
    * Check what sensitive data are present for a person
@@ -82,7 +92,9 @@ export default class SensitivePersonalInformationService extends Service {
       body
     );
     let data = (await response.json()).data;
-    return await this.mapSensitivePersonalInformation(data);
+    let sensitiveInfo = await this.mapSensitivePersonalInformation(data);
+    STORAGE.set(person.id, sensitiveInfo);
+    return sensitiveInfo;
   }
 
   async mapSensitivePersonalInformation(data, obfuscated = false) {
@@ -139,6 +151,7 @@ export default class SensitivePersonalInformationService extends Service {
       PRIVACY_CENTRIC_SERVICE_ENDPOINT.UPDATE,
       generateUpdateRequestBody(sensitiveInformation, person, updateReason)
     );
+    STORAGE.set(person.id, sensitiveInformation);
   }
 
   async _request(endpoint, body) {

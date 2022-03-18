@@ -11,15 +11,12 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
   @service store;
   @service router;
   @service sensitivePersonalInformation;
-  queryParams = {
-    reasonCode: { refreshModel: true },
-  };
 
   resetController(controller) {
     controller.reset();
   }
 
-  async model(params) {
+  async model() {
     let { id: personId } = this.paramsFor('people.person');
     let person = await this.store.findRecord('person', personId, {
       reload: true,
@@ -92,20 +89,20 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         secondaryContact: secondaryContact,
       });
     }
+
     let askSensitiveInformation = null;
     let requestSensitiveInformation = null;
-    if (params.reasonCode) {
-      const reason = await this.store.findRecord(
-        'request-reason',
-        params.reasonCode
-      );
 
+    if (
+      this.sensitivePersonalInformation.hasStoredSensitiveInformation(person)
+    ) {
       requestSensitiveInformation =
-        await this.sensitivePersonalInformation.getInformation(person, reason);
+        this.sensitivePersonalInformation.getStoredSensitiveInformation(person);
     } else {
       askSensitiveInformation =
         await this.sensitivePersonalInformation.askInformation(person);
     }
+
     return {
       person,
       askSensitiveInformation,
