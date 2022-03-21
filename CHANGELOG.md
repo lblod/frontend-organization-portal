@@ -6,6 +6,12 @@
 
 
 
+## 1.6.4-3 (2022-03-21)
+
+#### :bug: Bug Fix
+*  Handle special characters in search (#279)  
+
+
 ## 1.6.4-1 (2022-03-14)
 
 #### :bug: Bug Fix
