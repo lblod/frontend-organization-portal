@@ -2,10 +2,10 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import { CLASSIFICATION_CODE } from 'frontend-contact-hub/models/administrative-unit-classification-code';
-import { CHANGE_EVENT_TYPE } from 'frontend-contact-hub/models/change-event-type';
-import { isEmpty } from 'frontend-contact-hub/models/decision';
-import { ORGANIZATION_STATUS } from 'frontend-contact-hub/models/organization-status-code';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
+import { isEmpty } from 'frontend-organization-portal/models/decision';
+import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.NAME_CHANGE]: ORGANIZATION_STATUS.ACTIVE,

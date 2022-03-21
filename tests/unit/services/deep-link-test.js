@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import RedirectHandler from 'frontend-contact-hub/redirect-handlers/redirect-handler';
+import RedirectHandler from 'frontend-organization-portal/redirect-handlers/redirect-handler';
 import Service from '@ember/service';
 
 module('Unit | Service | deep-link', function (hooks) {

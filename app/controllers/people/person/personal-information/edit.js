@@ -1,10 +1,11 @@
 import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
-import { combineFullAddress } from 'frontend-contact-hub/models/address';
-import { REQUEST_REASON } from 'frontend-contact-hub/models/request-reason';
+import { combineFullAddress } from 'frontend-organization-portal/models/address';
+import { REQUEST_REASON } from 'frontend-organization-portal/models/request-reason';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+
 export default class PeoplePersonPersonalInformationEditController extends Controller {
   @service router;
   @service sensitivePersonalInformation;

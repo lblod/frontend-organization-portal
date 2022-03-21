@@ -1,14 +1,15 @@
 import Route from '@ember/routing/route';
-import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
-import personValidations from 'frontend-contact-hub/validations/person';
+import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
+import personValidations from 'frontend-organization-portal/validations/person';
 import { inject as service } from '@ember/service';
-import contactValidations from 'frontend-contact-hub/validations/contact-point';
-import { getAddressValidations } from 'frontend-contact-hub/validations/address';
+import contactValidations from 'frontend-organization-portal/validations/contact-point';
+import { getAddressValidations } from 'frontend-organization-portal/validations/address';
 import {
   createPrimaryContact,
   createSecondaryContact,
-} from 'frontend-contact-hub/models/contact-point';
+} from 'frontend-organization-portal/models/contact-point';
 import { SensitivePersonalInformation } from '../../../../services/sensitive-personal-information';
+
 export default class PeoplePersonPersonalInformationEditRoute extends Route {
   @service currentSession;
   @service router;

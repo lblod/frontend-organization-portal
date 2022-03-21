@@ -1,6 +1,6 @@
 import { inject as service } from '@ember/service';
 import BaseSessionService from 'ember-simple-auth/services/session';
-import config from 'frontend-contact-hub/config/environment';
+import config from 'frontend-organization-portal/config/environment';
 
 export default class SessionService extends BaseSessionService {
   @service currentSession;

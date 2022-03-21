@@ -3,10 +3,10 @@ import { inject as service } from '@ember/service';
 import {
   createPrimaryContact,
   createSecondaryContact,
-} from 'frontend-contact-hub/models/contact-point';
-import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
-import { getAddressValidations } from 'frontend-contact-hub/validations/address';
-import contactValidations from 'frontend-contact-hub/validations/contact-point';
+} from 'frontend-organization-portal/models/contact-point';
+import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
+import { getAddressValidations } from 'frontend-organization-portal/validations/address';
+import contactValidations from 'frontend-organization-portal/validations/contact-point';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesNewRoute extends Route {
   @service store;

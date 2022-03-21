@@ -2,8 +2,8 @@ import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import { combineFullAddress } from 'frontend-contact-hub/models/address';
-import { isWorshipMember } from 'frontend-contact-hub/models/board-position';
+import { combineFullAddress } from 'frontend-organization-portal/models/address';
+import { isWorshipMember } from 'frontend-organization-portal/models/board-position';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditController extends Controller {
   @service router;

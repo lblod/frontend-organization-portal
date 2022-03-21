@@ -3,10 +3,10 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
-import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
-import localInvolvementValidations from 'frontend-contact-hub/validations/local-involvement';
-import { CLASSIFICATION_CODE } from 'frontend-contact-hub/models/administrative-unit-classification-code';
-import { INVOLVEMENT_TYPE } from 'frontend-contact-hub/models/involvement-type';
+import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
+import localInvolvementValidations from 'frontend-organization-portal/validations/local-involvement';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditController extends Controller {
   @service router;

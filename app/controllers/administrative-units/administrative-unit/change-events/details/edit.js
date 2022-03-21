@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import { isEmpty } from 'frontend-contact-hub/models/decision';
+import { isEmpty } from 'frontend-organization-portal/models/decision';
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEditController extends Controller {
   @service router;
