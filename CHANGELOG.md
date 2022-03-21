@@ -4,13 +4,20 @@
 
 
 
+## 1.6.4-4 (2022-03-21)
 
+#### :rocket: Enhancement
+* [#272](https://github.com/lblod/frontend-organization-portal/pull/272) Add new field for change events ([@claire-lovisa](https://github.com/claire-lovisa))
 
 ## 1.6.4-3 (2022-03-21)
 
 #### :bug: Bug Fix
 *  Handle special characters in search (#279)  
 
+## 1.6.4-2 (2022-03-21)
+
+#### :rocket: Enhancement
+* Rename the project from frontend-contact-hub to frontend-organization-portal
 
 ## 1.6.4-1 (2022-03-14)
 
