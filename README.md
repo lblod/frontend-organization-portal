@@ -1,4 +1,4 @@
-# frontend-contact-hub
+# frontend-organization-portal
 
 This ember application provides endpoints to visualize linked data exposed by the Contact Hub Backend.
 
@@ -14,7 +14,7 @@ You will need the following things properly installed on your computer.
 ## Installation
 
 * `git clone <repository-url>` this repository
-* `cd frontend-contact-hub`
+* `cd frontend-organization-portal`
 * `npm install`
 
 ## Running / Development
@@ -56,4 +56,4 @@ Specify what it takes to deploy your app.
 
 ## Docker
 
-Build the image: docker build -t lblod/frontend-contact-hub -f Dockerfile.fastboot .
+Build the image: docker build -t lblod/frontend-organization-portal -f Dockerfile.fastboot .

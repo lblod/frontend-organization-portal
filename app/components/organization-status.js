@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { ORGANIZATION_STATUS } from 'frontend-contact-hub/models/organization-status-code';
+import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 
 const ORGANIZATION_STATUS_SKINS = {
   [ORGANIZATION_STATUS.ACTIVE]: 'success',

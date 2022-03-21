@@ -3,8 +3,8 @@ import {
   validateNumber,
   validatePresence,
 } from 'ember-changeset-validations/validators';
-import { validateConditionally } from 'frontend-contact-hub/validators/validate-conditionally';
-import { INVOLVEMENT_TYPE } from 'frontend-contact-hub/models/involvement-type';
+import { validateConditionally } from 'frontend-organization-portal/validators/validate-conditionally';
+import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 
 const PERCENTAGE_ERROR_MESSAGE = {
   ['notANumber']: 'Vul het percentage in',

@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
-import { REQUEST_REASON } from 'frontend-contact-hub/models/request-reason';
+import { REQUEST_REASON } from 'frontend-organization-portal/models/request-reason';
 
 export default class PeopleNewController extends Controller {
   @service router;

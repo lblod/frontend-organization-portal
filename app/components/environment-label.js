@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import config from 'frontend-contact-hub/config/environment';
+import config from 'frontend-organization-portal/config/environment';
 
 const ENVIRONMENT_NAME = {
   LOCAL: 'LOCAL',

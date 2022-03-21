@@ -24,7 +24,7 @@ steps:
 - name: build-dry-run
   image: plugins/docker
   settings:
-    repo: lblod/frontend-contact-hub
+    repo: lblod/frontend-organization-portal
     dry_run: true
     purge: true
 trigger:
@@ -38,7 +38,7 @@ steps:
 - name: push-latest-build
   image: plugins/docker
   settings:
-    repo: lblod/frontend-contact-hub
+    repo: lblod/frontend-organization-portal
     username:
       from_secret: docker_username
     password:
@@ -60,13 +60,13 @@ steps:
 - name: build-dry-run
   image: plugins/docker
   settings:
-    repo: lblod/frontend-contact-hub
+    repo: lblod/frontend-organization-portal
     dry_run: true
     purge: true
 - name: push-tagged-build
   image: plugins/docker
   settings:
-    repo: lblod/frontend-contact-hub
+    repo: lblod/frontend-organization-portal
     tags: ${DRONE_TAG##v}
     username:
       from_secret: docker_username

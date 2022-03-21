@@ -1,9 +1,9 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import { combineFullAddress } from 'frontend-contact-hub/models/address';
-import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-contact-hub/models/recognized-worship-type';
-import { GOVERNING_BODY_CLASSIFICATION } from 'frontend-contact-hub/models/governing-body-classification-code';
+import { combineFullAddress } from 'frontend-organization-portal/models/address';
+import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
+import { GOVERNING_BODY_CLASSIFICATION } from 'frontend-organization-portal/models/governing-body-classification-code';
 
 const CLASSIFICATION = {
   CENTRAL_WORSHIP_SERVICE: 'f9cac08a-13c1-49da-9bcb-f650b0604054',

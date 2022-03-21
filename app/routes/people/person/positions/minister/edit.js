@@ -5,11 +5,11 @@ import {
   createSecondaryContact,
   findPrimaryContact,
   findSecondaryContact,
-} from 'frontend-contact-hub/models/contact-point';
-import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
-import { getAddressValidations } from 'frontend-contact-hub/validations/address';
-import contactValidations from 'frontend-contact-hub/validations/contact-point';
-import ministerValidations from 'frontend-contact-hub/validations/minister';
+} from 'frontend-organization-portal/models/contact-point';
+import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
+import { getAddressValidations } from 'frontend-organization-portal/validations/address';
+import contactValidations from 'frontend-organization-portal/validations/contact-point';
+import ministerValidations from 'frontend-organization-portal/validations/minister';
 
 export default class PeoplePersonPositionsMinisterEditRoute extends Route {
   @service currentSession;

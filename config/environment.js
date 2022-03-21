@@ -2,7 +2,7 @@
 
 module.exports = function (environment) {
   let ENV = {
-    modulePrefix: 'frontend-contact-hub',
+    modulePrefix: 'frontend-organization-portal',
     environment,
     rootURL: '/',
     locationType: 'history',

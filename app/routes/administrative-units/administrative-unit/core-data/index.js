@@ -3,7 +3,7 @@ import { dropTask } from 'ember-concurrency';
 import {
   findPrimaryContact,
   findSecondaryContact,
-} from 'frontend-contact-hub/models/contact-point';
+} from 'frontend-organization-portal/models/contact-point';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute extends Route {
   async model() {
