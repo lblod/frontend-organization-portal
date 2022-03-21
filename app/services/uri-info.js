@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import fetch from 'fetch';
-import config from 'frontend-contact-hub/config/environment';
+import config from 'frontend-organization-portal/config/environment';
 import { assert } from '@ember/debug';
 
 /**

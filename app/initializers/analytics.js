@@ -1,4 +1,4 @@
-import ENV from 'frontend-contact-hub/config/environment';
+import ENV from 'frontend-organization-portal/config/environment';
 export function initialize(/* application */) {
   if (
     ENV.APP.analytics.appDomain !== '{{ANALYTICS_APP_DOMAIN}}' &&

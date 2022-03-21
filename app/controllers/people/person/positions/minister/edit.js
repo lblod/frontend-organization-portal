@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { dropTask } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-import { combineFullAddress } from 'frontend-contact-hub/models/address';
+import { combineFullAddress } from 'frontend-organization-portal/models/address';
 
 const FINANCING_CODE = {
   SELF_FINANCED: '997073905f839ac6bafe92b76050ab0b',

@@ -1,5 +1,5 @@
-import Application from 'frontend-contact-hub/app';
-import config from 'frontend-contact-hub/config/environment';
+import Application from 'frontend-organization-portal/app';
+import config from 'frontend-organization-portal/config/environment';
 import * as QUnit from 'qunit';
 import { setApplication } from '@ember/test-helpers';
 import { setup } from 'qunit-dom';

@@ -1,6 +1,6 @@
 import { isBlank } from '@ember/utils';
 import { validatePresence } from 'ember-changeset-validations/validators';
-import { ID_NAME } from 'frontend-contact-hub/models/identifier';
+import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 
 export default {
   name: validatePresence({ presence: true, ignoreBlank: true }),

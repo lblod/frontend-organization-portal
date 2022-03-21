@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
-import { combineFullAddress } from 'frontend-contact-hub/models/address';
+import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { action } from '@ember/object';
 
 const FINANCING_CODE = {

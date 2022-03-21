@@ -1,11 +1,11 @@
 {
-  "name": "frontend-contact-hub",
+  "name": "frontend-organization-portal",
   "version": "1.6.4-1",
   "private": true,
   "description": "Frontend for Contact Hub",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lblod/frontend-contact-hub.git"
+    "url": "git+https://github.com/lblod/frontend-organization-portal.git"
   },
   "license": "MIT",
   "author": "redpencil.io",

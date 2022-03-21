@@ -1,11 +1,11 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { isActivePosition } from 'frontend-contact-hub/utils/position';
+import { isActivePosition } from 'frontend-organization-portal/utils/position';
 
 import {
   findPrimaryContact,
   findSecondaryContact,
-} from 'frontend-contact-hub/models/contact-point';
+} from 'frontend-organization-portal/models/contact-point';
 
 export default class PeoplePersonPersonalInformationRoute extends Route {
   @service store;

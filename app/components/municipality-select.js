@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
-import { CLASSIFICATION_CODE } from 'frontend-contact-hub/models/administrative-unit-classification-code';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class MunicipalitySelectComponent extends Component {
   @service store;

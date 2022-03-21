@@ -1,5 +1,5 @@
 import { modifier } from 'ember-modifier';
-import config from 'frontend-contact-hub/config/environment';
+import config from 'frontend-organization-portal/config/environment';
 
 const defaultQuery =
   config.yasgui.defaultQuery !== '{{YASGUI_DEFAULT_QUERY}}'
