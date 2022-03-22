@@ -17,6 +17,22 @@
         </SecuredArea>
       </:action>
     </PageHeader>
+
+    {{#if
+      (eq @model.administrativeUnit.constructor.modelName "worship-service")
+    }}
+      <div class="au-u-max-width-large">
+        Om de gerelateerde gemeenten te zien, ga naar
+        <LinkTo
+          class="au-c-link"
+          @model={{@model.administrativeUnit.id}}
+          @route="administrative-units.administrative-unit.local-involvements.index"
+        >
+          Betrokken lokale besturen
+        </LinkTo>
+      </div>
+    {{/if}}
+
     <DataCard>
       <:title>Behoort tot</:title>
       <:card as |Card|>
