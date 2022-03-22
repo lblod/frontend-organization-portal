@@ -130,7 +130,7 @@
                 <Item>
                   <:label>Rijksregisternummer</:label>
                   <:content
-                  >{{@model.requestSensitiveInformation.ssn}}</:content>
+                  >{{rrn-format @model.requestSensitiveInformation.ssn}}</:content>
                 </Item>
               {{/if}}
             {{/if}}
