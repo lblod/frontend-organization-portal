@@ -85,7 +85,7 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if this.kboIdentifier}}
+            {{#if this.kboIdentifier.structuredIdentifier.localId}}
                 <Item>
                   <:label>{{this.kboIdentifier.idName}}</:label>
                   <:content>
@@ -93,7 +93,7 @@
                   </:content>
                 </Item>
             {{/if}}
-            {{#if this.sharepointIdentifier}}
+            {{#if this.sharepointIdentifier.structuredIdentifier.localId}}
               <Item>
                 <:label>{{this.sharepointIdentifier.idName}}</:label>
                 <:content>
