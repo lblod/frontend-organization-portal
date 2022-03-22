@@ -45,7 +45,13 @@
             {{#each @model.representativeBody.identifiers as |identifier|}}
               <Item>
                 <:label>{{identifier.idName}}</:label>
-                <:content>{{identifier.structuredIdentifier.localId}}</:content>
+                <:content>
+                  {{#if (this.isKboIdentifier identifier)}}
+                    {{kbo-format identifier.structuredIdentifier.localId}}
+                  {{else}}
+                    {{identifier.structuredIdentifier.localId}}
+                  {{/if}}
+                </:content>
               </Item>
             {{/each}}
           </:right>

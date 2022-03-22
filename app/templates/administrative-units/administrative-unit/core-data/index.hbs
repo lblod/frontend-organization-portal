@@ -86,12 +86,12 @@
               </Item>
             {{/if}}
             {{#if this.kboIdentifier.structuredIdentifier.localId}}
-                <Item>
-                  <:label>{{this.kboIdentifier.idName}}</:label>
-                  <:content>
-                    {{this.kboIdentifier.structuredIdentifier.localId}}
-                  </:content>
-                </Item>
+              <Item>
+                <:label>{{this.kboIdentifier.idName}}</:label>
+                <:content>
+                  {{kbo-format this.kboIdentifier.structuredIdentifier.localId}}
+                </:content>
+              </Item>
             {{/if}}
             {{#if this.sharepointIdentifier.structuredIdentifier.localId}}
               <Item>
