@@ -7,7 +7,7 @@ export default class MinisterPositionModel extends PostModel {
   })
   function;
 
-  @belongsTo('worship-service', {
+  @belongsTo('worship-administrative-unit', {
     inverse: 'ministerPositions',
   })
   worshipService;

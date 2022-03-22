@@ -5,11 +5,6 @@ export default class WorshipServiceModel extends WorshipAdministrativeUnitModel 
   @attr denomination;
   @attr crossBorder;
 
-  @hasMany('minister-position', {
-    inverse: 'worshipService',
-  })
-  ministerPositions;
-
   @hasMany('local-involvement', {
     inverse: 'worshipService',
   })
