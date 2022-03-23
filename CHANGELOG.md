@@ -4,6 +4,15 @@
 
 
 
+
+## 1.6.4-5 (2022-03-23)
+
+#### :bug: Bug Fix
+* [#287](https://github.com/lblod/frontend-organization-portal/pull/287) change the filter search for name field ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.6.4-4 (2022-03-21)
 
 #### :rocket: Enhancement
