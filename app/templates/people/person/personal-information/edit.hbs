@@ -130,18 +130,6 @@
                   </Item>
                 {{/unless}}
                 {{#if @model.sensitiveInformation}}
-                  <Item @labelFor="person-gender" @alignTop={{true}}>
-                    <:label>Geslacht</:label>
-                    <:content>
-                      <GenderSelect
-                        @selected={{@model.sensitiveInformation.gender}}
-                        @onChange={{fn
-                          (mut @model.sensitiveInformation.gender)
-                        }}
-                        @id="person-gender"
-                      />
-                    </:content>
-                  </Item>
                   <Item @labelFor="person-date-of-birth">
                     <:label>Geboortedatum</:label>
                     <:content>
@@ -163,6 +151,19 @@
                           (mut @model.sensitiveInformation.nationalities)
                         }}
                         @id="person-nationality"
+                      />
+                    </:content>
+                  </Item>
+
+                  <Item @labelFor="person-gender" @alignTop={{true}}>
+                    <:label>Geslacht</:label>
+                    <:content>
+                      <GenderSelect
+                        @selected={{@model.sensitiveInformation.gender}}
+                        @onChange={{fn
+                          (mut @model.sensitiveInformation.gender)
+                        }}
+                        @id="person-gender"
                       />
                     </:content>
                   </Item>
