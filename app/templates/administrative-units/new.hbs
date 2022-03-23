@@ -154,18 +154,16 @@
               <:label>{{@model.identifierKBO.idName}}</:label>
               <:content as |hasError|>
                 <AuInput
-                  @maskPlaceholder="0000.000.000"
+                  @maskPlaceholder="_"
                   @mask="####.###.###"
                   @onChange={{this.setKbo}}
                   @width="block"
                   @value={{@model.structuredIdentifierKBO.localId}}
                   @error={{hasError}}
                   id="kbo-identifier"
+                  placeholder="____.___.___"
                 />
               </:content>
-              <:help-text>
-                {{help-text "kbo"}}
-              </:help-text>
               <:error as |error|>
                 <Error::KboNumber @error={{error}} />
               </:error>
