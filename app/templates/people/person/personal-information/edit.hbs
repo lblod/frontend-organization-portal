@@ -173,14 +173,14 @@
                     <:label>Rijksregisternummer</:label>
                     <:content  as |hasError|>
                       <AuInput
-                        @maskPlaceholder="0"
+                        @maskPlaceholder="_"
                         @mask="##.##.##-###.##"
                         @onChange={{this.setSsn}}
                         @value={{@model.sensitiveInformation.ssn}}
                         @error={{hasError}}
                         @width="block"
                         id="person-ssn"
-                        placeholder="00.00.00-000.00"
+                        placeholder="__.__.__-___.__"
                       />
                     </:content>
                   </Item>
