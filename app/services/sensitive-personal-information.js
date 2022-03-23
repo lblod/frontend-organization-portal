@@ -19,7 +19,11 @@ export default class SensitivePersonalInformationService extends Service {
   }
 
   getStoredSensitiveInformation(person) {
-    return STORAGE.get(person.id);
+    const sensitiveInfo = STORAGE.get(person.id);
+    if (sensitiveInfo) {
+      return new SensitivePersonalInformation(sensitiveInfo);
+    }
+    return null;
   }
 
   /**
