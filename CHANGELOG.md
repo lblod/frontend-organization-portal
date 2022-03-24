@@ -5,6 +5,37 @@
 
 
 
+## 1.6.4 (2022-03-24)
+
+
+#### :rocket: Enhancement
+* [#272](https://github.com/lblod/frontend-organization-portal/pull/272) Add new field for change events ([@claire-lovisa](https://github.com/claire-lovisa))
+* Rename the project from frontend-contact-hub to frontend-organization-portal
+* [#261](https://github.com/lblod/frontend-organization-portal/pull/261) perf bestuur ([@nbittich](https://github.com/nbittich))
+* [#259](https://github.com/lblod/frontend-organization-portal/pull/259) Allow users to edit contact information on the person edit page ([@nbittich](https://github.com/nbittich))
+* [#258](https://github.com/lblod/frontend-organization-portal/pull/258) Update to the newest appuniversum styles ([@nbittich](https://github.com/nbittich))
+* [#256](https://github.com/lblod/frontend-organization-portal/pull/256) Show minister position information on the positions page of a person ([@nbittich](https://github.com/nbittich))
+* [#255](https://github.com/lblod/frontend-organization-portal/pull/255) Move the position contact information to the person details page ([@nbittich](https://github.com/nbittich))
+* [#254](https://github.com/lblod/frontend-organization-portal/pull/254) People search page improvements ([@nbittich](https://github.com/nbittich))
+* [#250](https://github.com/lblod/frontend-organization-portal/pull/250) Add support for primary and secondary contact information ([@Windvis](https://github.com/Windvis))
+
+
+#### :bug: Bug Fix
+*  Handle special characters in search (#279)
+* Fix contact gegevens title not shown (#271)
+* split first name / last name in filter search person (#270) 
+* Remove additional scope parameters
+* Remove werkingsgebieden from the app
+* fix position details not shown (#268) 
+
+
+#### Committers: 3
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
+
 ## 1.6.4-5 (2022-03-23)
 
 #### :bug: Bug Fix
