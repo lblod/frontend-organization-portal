@@ -38,7 +38,6 @@ export default class AdministrativeUnitSelectByNameComponent extends Component {
       filters: filter,
       dataMapping: (data) => {
         const entry = data.attributes;
-        console.log(entry);
         return entry.name;
       },
     });
