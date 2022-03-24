@@ -175,6 +175,7 @@
                     <:content  as |hasError|>
                       <AuInput
                         @maskPlaceholder="_"
+                        autocomplete="off"
                         @mask="##.##.##-###.##"
                         @onChange={{this.setSsn}}
                         @value={{@model.sensitiveInformation.ssn}}

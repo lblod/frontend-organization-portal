@@ -112,6 +112,7 @@
                 <:content  as |hasError|>
                   <AuInput
                     @maskPlaceholder="_"
+                    autocomplete="off"
                     @mask="##.##.##-###.##"
                     @onChange={{this.setSsn}}
                     @error={{hasError}}
