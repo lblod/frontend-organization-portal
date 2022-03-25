@@ -10,6 +10,6 @@ export default class PeoplePersonPersonalInformationIndexController extends Cont
   get nationalities() {
     return this.model.requestSensitiveInformation.nationalities
       .map((n) => n.nationalityLabel)
-      .join(',');
+      .join(', ');
   }
 }

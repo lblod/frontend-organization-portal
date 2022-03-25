@@ -57,7 +57,7 @@ export default class SensitivePersonalInformationService extends Service {
       validSsn = data?.data?.attributes['is-valid'];
       if (!validSsn) {
         sensitiveInformationError =
-          'Dit rijksregisternummer al tot een persoon. Als je denkt dat er een fout is, meld het ons.';
+          'Dit rijksregisternummer behoort al tot een persoon. Als je denkt dat er een fout is, meld het ons.';
       }
     }
     return { validSsn, sensitiveInformationError };
