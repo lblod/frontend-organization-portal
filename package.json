@@ -1,6 +1,6 @@
 {
   "name": "frontend-organization-portal",
-  "version": "1.6.4",
+  "version": "1.7.0-0",
   "private": true,
   "description": "Frontend for Contact Hub",
   "repository": {
@@ -26,7 +26,7 @@
     "test": "npm-run-all lint test:*",
     "test:ember": "ember test"
   },
-  "devDependencies": {  
+  "devDependencies": {
     "@appuniversum/ember-appuniversum": "^1.0.2",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.5.0",
