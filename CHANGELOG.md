@@ -6,6 +6,15 @@
 
 
 
+
+## 1.7.0-1 (2022-03-25)
+
+#### :bug: Bug Fix
+* [#295](https://github.com/lblod/frontend-organization-portal/pull/295) typo fixes for sensitive info ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.7.0-0 (2022-03-25)
 
 #### :rocket: Enhancement
