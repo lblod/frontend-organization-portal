@@ -69,6 +69,9 @@ export default class PeopleNewPositionController extends Controller {
   }
 
   get classificationCodes() {
+    if (this.positionType === MINISTER) {
+      return [CLASSIFICATION_CODE.WORSHIP_SERVICE];
+    }
     return [
       CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
       CLASSIFICATION_CODE.WORSHIP_SERVICE,
@@ -93,6 +96,7 @@ export default class PeopleNewPositionController extends Controller {
     this.selectedGoverningBody = null;
     this.selectedRole = null;
     this.selectedClassification = null;
+    this.selectedOrganization = null;
     this.positionType = positionType;
   }
 
