@@ -30,7 +30,7 @@ export default class AdministrativeUnitSelectByNameComponent extends Component {
       filter[`:phrase_prefix:name`] = searchParams;
     }
 
-    return yield this.muSearch.search({
+    const result = yield this.muSearch.search({
       index: 'units',
       sort: 'name',
       page: '0',
@@ -41,5 +41,9 @@ export default class AdministrativeUnitSelectByNameComponent extends Component {
         return entry.name;
       },
     });
+    if (searchParams.trim() !== '' && result) {
+      return [...[searchParams], ...result.toArray()];
+    }
+    return result;
   }
 }
