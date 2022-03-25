@@ -69,7 +69,7 @@ export default class PeopleNewPositionController extends Controller {
   }
 
   get classificationCodes() {
-    if (this.positionType === 'Bedienaar') {
+    if (this.positionType === MINISTER) {
       return [CLASSIFICATION_CODE.WORSHIP_SERVICE];
     }
     return [
