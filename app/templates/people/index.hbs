@@ -23,6 +23,7 @@
             <AuLabel for="filter-organization">Organisatie</AuLabel>
             <AdministrativeUnitSelect
               @allowClear={{true}}
+              @classificationCodes={{this.classificationCodes}}
               @selected={{or this.selectedOrganization this.organization}}
               @onChange={{this.setOrganization}}
               class="grow"
