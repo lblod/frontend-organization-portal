@@ -19,12 +19,12 @@ export default class AdministrativeUnitsIndexRoute extends Route {
   queryParams = {
     page: { refreshModel: true },
     sort: { refreshModel: true },
-    name: { replace: true },
-    municipality: { replace: true },
-    province: { replace: true },
-    classificationId: { replace: true },
-    recognizedWorshipTypeId: { replace: true },
-    organizationStatus: { replace: true },
+    name: { refreshModel: true, replace: true },
+    municipality: { refreshModel: true, replace: true },
+    province: { refreshModel: true, replace: true },
+    classificationId: { refreshModel: true, replace: true },
+    recognizedWorshipTypeId: { refreshModel: true, replace: true },
+    organizationStatus: { refreshModel: true, replace: true },
   };
 
   async model(params) {
