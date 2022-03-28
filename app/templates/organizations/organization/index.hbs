@@ -25,7 +25,9 @@
               <:label>Status</:label>
               <:content>
                 <OrganizationStatus
-                  @status={{@model.representativeBody.organizationStatus}}
+
+                  @id={{@model.representativeBody.organizationStatus.id}}
+                  @label={{@model.representativeBody.organizationStatus.label}}
                 />
               </:content>
             </Item>

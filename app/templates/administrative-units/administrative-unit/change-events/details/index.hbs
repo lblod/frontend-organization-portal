@@ -128,7 +128,8 @@
                   <:label>Resulterende status</:label>
                   <:content>
                     <OrganizationStatus
-                      @status={{@model.currentChangeEventResult.status}}
+                      @id={{@model.currentChangeEventResult.status.id}}
+                      @label={{@model.currentChangeEventResult.status.label}}
                     />
                   </:content>
                 </Item>
