@@ -9,6 +9,7 @@ export default class PeopleIndexController extends Controller {
   queryParams = [
     'page',
     'size',
+    'sort',
     'given_name',
     'family_name',
     'organization',
@@ -27,9 +28,10 @@ export default class PeopleIndexController extends Controller {
   @tracked selectedOrganization;
 
   get people() {
-    return this.model.loadPeopleTaskInstance.isFinished
+    const people = this.model.loadPeopleTaskInstance.isFinished
       ? this.model.loadPeopleTaskInstance.value
       : this.model.loadedPeople;
+    return people;
   }
 
   get isLoading() {
@@ -66,14 +68,15 @@ export default class PeopleIndexController extends Controller {
   }
 
   @action
-  search(event) {
-    event.preventDefault();
-
-    if (this.page > 0) {
-      this.resetPagination(); // updating `page` will refresh the model
-    } else {
-      this.router.refresh();
-    }
+  resetFilters() {
+    this.given_name = '';
+    this.family_name = '';
+    this.organization = null;
+    this.selectedOrganization = null;
+    this.status = true;
+    this.position = null;
+    this.page = 0;
+    this.sort = 'family_name';
   }
 
   resetPagination() {

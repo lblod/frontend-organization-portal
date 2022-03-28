@@ -60,18 +60,6 @@ export default class AdministrativeUnitsIndexController extends Controller {
   }
 
   @action
-  search(event) {
-    event.preventDefault();
-
-    if (this.page > 0) {
-      // resetting the pagination will refresh the model
-      this.resetPagination();
-    } else {
-      this.router.refresh();
-    }
-  }
-
-  @action
   setClassificationId(selection) {
     this.classificationId = selection?.id;
   }
@@ -106,6 +94,18 @@ export default class AdministrativeUnitsIndexController extends Controller {
     } else {
       this.province = '';
     }
+  }
+
+  @action
+  resetFilters() {
+    this.name = '';
+    this.municipality = '';
+    this.province = '';
+    this.classificationId = '';
+    this.recognizedWorshipTypeId = '';
+    this.organizationStatus = '';
+    this.page = 0;
+    this.sort = 'name';
   }
 
   resetPagination() {
