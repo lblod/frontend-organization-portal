@@ -7,6 +7,19 @@
 
 
 
+
+## 1.7.0-2 (2022-03-29)
+
+#### :rocket: Enhancement
+* [#298](https://github.com/lblod/frontend-organization-portal/pull/298)  Add reset button and remove research button ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### :bug: Bug Fix
+* [#296](https://github.com/lblod/frontend-organization-portal/pull/296) fix status ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- [@claire-lovisa](https://github.com/claire-lovisa)
+
 ## 1.7.0-1 (2022-03-25)
 
 #### :bug: Bug Fix
