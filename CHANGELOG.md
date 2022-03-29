@@ -8,6 +8,15 @@
 
 
 
+
+## 1.7.0-3 (2022-03-29)
+
+#### :bug: Bug Fix
+* [#299](https://github.com/lblod/frontend-organization-portal/pull/299) show all position filter ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.7.0-2 (2022-03-29)
 
 #### :rocket: Enhancement
