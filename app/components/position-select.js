@@ -29,6 +29,10 @@ export default class PositionSelectComponent extends Component {
   }
 
   @task *loadPositionTask() {
-    return yield this.store.findAll('board-position');
+    const ministerPositions = yield this.store.findAll(
+      'minister-position-function'
+    );
+    const mandatePositions = yield this.store.findAll('board-position');
+    return [...ministerPositions.toArray(), ...mandatePositions.toArray()];
   }
 }
