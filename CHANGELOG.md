@@ -9,6 +9,15 @@
 
 
 
+
+## 1.7.0-4 (2022-03-30)
+
+#### :bug: Bug Fix
+* [#300](https://github.com/lblod/frontend-organization-portal/pull/300) fix feature municipality ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.7.0-3 (2022-03-29)
 
 #### :bug: Bug Fix
