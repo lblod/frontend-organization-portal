@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { keepLatestTask } from 'ember-concurrency';
+import { dropTask } from 'ember-concurrency';
 
 export default class PeopleIndexRoute extends Route {
   @service store;
@@ -8,11 +8,11 @@ export default class PeopleIndexRoute extends Route {
   queryParams = {
     page: { refreshModel: true },
     sort: { refreshModel: true },
-    status: { refreshModel: true, replace: true },
-    position: { refreshModel: true, replace: true },
-    organization: { refreshModel: true, replace: true },
-    given_name: { refreshModel: true, replace: true },
-    family_name: { refreshModel: true, replace: true },
+    organization: { replace: true },
+    status: { refreshModel: true },
+    position: { refreshModel: true },
+    given_name: { replace: true },
+    family_name: { replace: true },
   };
 
   model(params) {
@@ -22,7 +22,7 @@ export default class PeopleIndexRoute extends Route {
     };
   }
 
-  @keepLatestTask
+  @dropTask({ cancelOn: 'deactivate' })
   *loadPeopleTask(params) {
     const filter = {};
     if (params.given_name) {
