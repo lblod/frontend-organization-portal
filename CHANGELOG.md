@@ -10,6 +10,37 @@
 
 
 
+## 1.7.0 (2022-03-31)
+
+#### :bug: Bug Fix
+* [#300](https://github.com/lblod/frontend-organization-portal/pull/300) fix feature municipality ([@nbittich](https://github.com/nbittich))
+* [#299](https://github.com/lblod/frontend-organization-portal/pull/299) show all position filter ([@nbittich](https://github.com/nbittich))
+* [#296](https://github.com/lblod/frontend-organization-portal/pull/296) fix status ([@nbittich](https://github.com/nbittich))
+* [#295](https://github.com/lblod/frontend-organization-portal/pull/295) typo fixes for sensitive info ([@nbittich](https://github.com/nbittich))
+* [#293](https://github.com/lblod/frontend-organization-portal/pull/293) Able to create minister position for central worship services ([@nbittich](https://github.com/nbittich))
+* [#292](https://github.com/lblod/frontend-organization-portal/pull/292) Filter 'Organisatie' shows options with no results ([@nbittich](https://github.com/nbittich))
+* [#291](https://github.com/lblod/frontend-organization-portal/pull/291) Filter Province 'single select' shows both 'Oost-Vlaanderen' and 'West-Vlaanderen' ([@nbittich](https://github.com/nbittich))
+* [#290](https://github.com/lblod/frontend-organization-portal/pull/290) autocomplete off for input with mask ([@nbittich](https://github.com/nbittich))
+* [#288](https://github.com/lblod/frontend-organization-portal/pull/288) Fix order fields & copy sensitive info object ([@nbittich](https://github.com/nbittich))
+* [#287](https://github.com/lblod/frontend-organization-portal/pull/287) change the filter search for name field ([@nbittich](https://github.com/nbittich))
+* [#285](https://github.com/lblod/frontend-organization-portal/pull/285) bug fix for relation worship admin unit ([@nbittich](https://github.com/nbittich))
+* [#283](https://github.com/lblod/frontend-organization-portal/pull/283) Hide identifiers in view mode when not filled ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#282](https://github.com/lblod/frontend-organization-portal/pull/282)  the label for 'Rijksregisternummer' shows as 'Geslacht' ([@nbittich](https://github.com/nbittich))
+* [#281](https://github.com/lblod/frontend-organization-portal/pull/281) Define a specific order for identifiers in core data ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### :rocket: Enhancement
+* [#294](https://github.com/lblod/frontend-organization-portal/pull/294) type a part of a word and not preselect an option ([@nbittich](https://github.com/nbittich))
+* [#289](https://github.com/lblod/frontend-organization-portal/pull/289) autocomplete bestuur name with mu search ([@nbittich](https://github.com/nbittich))
+* [#286](https://github.com/lblod/frontend-organization-portal/pull/286) KBO & RRN interface improvements ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#284](https://github.com/lblod/frontend-organization-portal/pull/284) Add subtitle to besturen van eredienst ([@claire-lovisa](https://github.com/claire-lovisa))
+
+
+
+#### Committers: 2
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- [@claire-lovisa](https://github.com/claire-lovisa)
+
+
 ## 1.7.0-4 (2022-03-30)
 
 #### :bug: Bug Fix
