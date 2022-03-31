@@ -6,6 +6,7 @@ export default class ApplicationRoute extends Route {
   @service session;
 
   async beforeModel() {
+    await this.session.setup();
     try {
       await this.currentSession.load();
     } catch {
