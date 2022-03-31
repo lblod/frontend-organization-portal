@@ -2,7 +2,7 @@
   <:sidebar>
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content au-o-box">
-        <div class="au-o-grid au-o-grid--small">
+        <form {{on "submit" this.search}} class="au-o-grid au-o-grid--small">
           <p class="au-o-grid__item">
             <AuLabel for="filter-given-name">Voornaam</AuLabel>
             <AuInput
@@ -38,11 +38,16 @@
             />
           </div>
           <div class="au-o-grid__item">
-            <AuButton {{on "click" this.resetFilters}} @skin="tertiary" type="reset">
-              <AuIcon @icon="cross" @alignment="left" /> Herstel alle filters
+            <AuButton
+              @loading={{this.isLoading}}
+              @disabled={{this.isLoading}}
+              @width="block"
+              type="submit"
+            >
+              Zoeken
             </AuButton>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </:sidebar>
