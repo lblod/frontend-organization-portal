@@ -10,7 +10,7 @@
           @required={{true}}
           @error={{@address.isInvalid}}
         >
-          <:manual-address-input>
+          <:manualAddressInput>
             <Item
               @labelFor="site-address-street-name"
               @required={{true}}
@@ -81,8 +81,8 @@
                 />
               </:content>
             </Item>
-          </:manual-address-input>
-          <:common-input>
+          </:manualAddressInput>
+          <:commonInput>
             <Item
               @labelFor="site-address-province"
               @required={{true}}
@@ -98,7 +98,7 @@
                 />
               </:content>
             </Item>
-          </:common-input>
+          </:commonInput>
         </AddressSearch>
       </:left>
       <:right as |Item|>
@@ -116,9 +116,9 @@
               type="tel"
             />
           </:content>
-          <:help-text>
+          <:helpText>
             {{help-text "phone-number"}}
-          </:help-text>
+          </:helpText>
         </Item>
 
         <Item
@@ -135,9 +135,9 @@
               type="tel"
             />
           </:content>
-          <:help-text>
+          <:helpText>
             {{help-text "phone-number"}}
-          </:help-text>
+          </:helpText>
         </Item>
 
         <Item
@@ -153,9 +153,9 @@
               id="site-contact-website"
             />
           </:content>
-          <:help-text>
+          <:helpText>
             {{help-text "url"}}
-          </:help-text>
+          </:helpText>
         </Item>
       </:right>
     </Card.Columns>

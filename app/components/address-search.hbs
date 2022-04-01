@@ -50,10 +50,10 @@
         {{/if}}
       </:content>
     </Item>
-   {{yield to="common-input"}}
+    {{yield to="commonInput"}}
   {{else}}
-    {{yield to="manual-address-input"}}
-    {{yield to="common-input"}}
+    {{yield to="manualAddressInput"}}
+    {{yield to="commonInput"}}
     <Item>
       <:content>
         <AuButton @skin="link" {{on "click" this.toggleInputMode}}>
