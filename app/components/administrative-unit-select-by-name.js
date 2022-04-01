@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { restartableTask, timeout } from 'ember-concurrency';
+import { restartableTask } from 'ember-concurrency';
 const CLASSIFICATION = {
   CENTRAL_WORSHIP_SERVICE: {
     id: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
@@ -17,8 +17,6 @@ export default class AdministrativeUnitSelectByNameComponent extends Component {
 
   @restartableTask
   *loadAdministrativeUnitsTask(searchParams = '') {
-    yield timeout(500);
-
     const filter = {};
 
     // Only show worship related administrative units for now
