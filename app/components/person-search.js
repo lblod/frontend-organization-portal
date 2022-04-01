@@ -50,17 +50,13 @@ class SeachParams {
     if (p?.given_name && p?.family_name) {
       this.givenName = p.given_name;
       this.familyName = p.family_name;
-    } else if (p?.given_name) {
-      this.givenName = p.given_name;
-    } else if (p?.family_name) {
-      this.familyName = p.family_name;
     } else {
       switch (fieldName) {
         case 'family_name':
-          this.familyName = '';
+          this.familyName = p?.family_name || '';
           break;
         case 'given_name':
-          this.givenName = '';
+          this.givenName = p?.given_name || '';
           break;
       }
     }
