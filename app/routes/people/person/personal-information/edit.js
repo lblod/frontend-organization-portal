@@ -13,6 +13,7 @@ import { SensitivePersonalInformation } from '../../../../services/sensitive-per
 export default class PeoplePersonPersonalInformationEditRoute extends Route {
   @service currentSession;
   @service router;
+  @service store;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {

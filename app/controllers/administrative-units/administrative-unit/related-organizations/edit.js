@@ -5,6 +5,7 @@ import { action } from '@ember/object';
 
 export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEditController extends Controller {
   @service router;
+  @service store;
 
   @action
   addNewSubOrganization() {
