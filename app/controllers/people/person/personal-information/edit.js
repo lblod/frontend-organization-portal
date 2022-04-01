@@ -9,6 +9,7 @@ import { action } from '@ember/object';
 export default class PeoplePersonPersonalInformationEditController extends Controller {
   @service router;
   @service sensitivePersonalInformation;
+  @service store;
 
   @tracked
   sensitiveInformationError;

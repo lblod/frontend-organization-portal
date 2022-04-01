@@ -14,6 +14,7 @@ import ministerValidations from 'frontend-organization-portal/validations/minist
 export default class PeoplePersonPositionsMinisterEditRoute extends Route {
   @service currentSession;
   @service router;
+  @service store;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
