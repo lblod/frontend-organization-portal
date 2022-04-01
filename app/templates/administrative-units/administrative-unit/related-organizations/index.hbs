@@ -1,6 +1,6 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box au-o-flow au-o-flow--large">
-    <PageHeader class="au-o-box">
+    <PageHeader>
       <:title>Gerelateerde organisaties</:title>
       <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
       <:action>
@@ -21,7 +21,7 @@
     {{#if
       (eq @model.administrativeUnit.constructor.modelName "worship-service")
     }}
-      <div class="au-u-max-width-large">
+      <div>
         Om de gerelateerde gemeenten te zien, ga naar
         <LinkTo
           class="au-c-link"
@@ -52,9 +52,9 @@
               <Item>
                 <:label>Centraal bestuur</:label>
                 <:content>
-                <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
-                  {{@model.isSubOrganizationOf.name}}
-                </AuLink>
+                  <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
+                    {{@model.isSubOrganizationOf.name}}
+                  </AuLink>
                 </:content>
               </Item>
             {{/if}}
@@ -68,12 +68,12 @@
         <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
           Heeft relatie met
         </AuHeading>
-        <AuDataTable id="subOrganizations"
-          @content={{this.model.subOrganizations}}
+        <AuDataTable id="subOrganizations" @content={{this.model.subOrganizations}}
           @noDataMessage="Geen bestuur van de eredienst" as |t|>
           <t.content as |c|>
             <c.header>
-              <AuDataTableThSortable @field="classification.label" @currentSorting={{this.sort}} @label="Type organisatie" />
+              <AuDataTableThSortable @field="classification.label" @currentSorting={{this.sort}}
+                @label="Type organisatie" />
               <AuDataTableThSortable @field="name" @currentSorting={{this.sort}} @label="Organisatie" />
               <AuDataTableThSortable @field="organizationStatus.label" @currentSorting={{this.sort}} @label="Status" />
             </c.header>
