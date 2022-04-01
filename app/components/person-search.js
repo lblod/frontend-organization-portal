@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
+import { action } from '@ember/object';
 
 export default class PersonSearchComponent extends Component {
   @service store;
@@ -42,7 +43,28 @@ export default class PersonSearchComponent extends Component {
 class SeachParams {
   @tracked givenName;
   @tracked familyName;
+  @tracked selectedPerson;
 
+  @action
+  selectPerson(p, fieldName) {
+    if (p?.given_name && p?.family_name) {
+      this.givenName = p.given_name;
+      this.familyName = p.family_name;
+    } else {
+      switch (fieldName) {
+        case 'family_name':
+          this.familyName = p?.family_name || '';
+          break;
+        case 'given_name':
+          this.givenName = p?.given_name || '';
+          break;
+      }
+    }
+    this.selectedPerson = {
+      given_name: this.givenName,
+      family_name: this.familyName,
+    };
+  }
   constructor() {
     this.reset();
   }

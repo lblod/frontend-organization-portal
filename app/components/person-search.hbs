@@ -28,11 +28,13 @@
           <Item @labelFor="person-given-name">
             <:label>Voornaam</:label>
             <:content>
-              <AuInput
-                @value={{this.searchParams.givenName}}
-                @width="block"
-                id="person-given-name"
-              />
+                <PersonSearchByName
+                        @id="person-given-name"
+                        @fieldName="given_name"
+                        @selected={{this.searchParams.selectedPerson}}
+                        @onChange={{this.searchParams.selectPerson}}
+                        class="block"
+                />
             </:content>
           </Item>
         </:left>
@@ -40,11 +42,13 @@
           <Item @labelFor="person-family-name">
             <:label>Achternaam</:label>
             <:content>
-              <AuInput
-                @value={{this.searchParams.familyName}}
-                @width="block"
-                id="person-family-name"
-              />
+                <PersonSearchByName
+                        @id="person-family-name"
+                        @fieldName="family_name"
+                        @selected={{this.searchParams.selectedPerson}}
+                        @onChange={{this.searchParams.selectPerson}}
+                        class="block"
+                />
             </:content>
           </Item>
         </:right>
