@@ -12,6 +12,8 @@ const FINANCING_CODE = {
 
 export default class PeoplePersonPositionsMinisterEditController extends Controller {
   @service router;
+  @service store;
+
   @tracked willReceiveFinancing;
   @tracked redirectUrl;
 
