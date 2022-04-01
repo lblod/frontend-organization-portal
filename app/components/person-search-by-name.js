@@ -4,12 +4,6 @@ import { restartableTask } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
-function getUniqueListBy(arr, key1, key2) {
-  return [
-    ...new Map(arr.map((item) => [item[key1] + item[key2], item])).values(),
-  ];
-}
-
 export default class PersonSearchByNameComponent extends Component {
   @service muSearch;
   @tracked searching;
@@ -30,13 +24,15 @@ export default class PersonSearchByNameComponent extends Component {
       size: '100',
       filters: filter,
       dataMapping: (data) => {
-        let entry = data.attributes;
-        entry.id = data.id;
-        return entry;
+        const entry = data.attributes;
+        return {
+          given_name: entry.given_name,
+          family_name: entry.family_name,
+        };
       },
     });
 
-    result = getUniqueListBy(result.toArray(), 'given_name', 'family_name');
+    result = new Set(result.toArray());
     if (searchParams.trim() !== '' && result) {
       let param_object = {
         family_name: '',
@@ -50,7 +46,7 @@ export default class PersonSearchByNameComponent extends Component {
   @action
   changed(p) {
     this.searching = false;
-    this.args.onChange(p);
+    this.args.onChange(p, this.args.fieldName);
   }
   @action
   getLabel(person) {

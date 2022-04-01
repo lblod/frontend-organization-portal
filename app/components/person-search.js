@@ -46,13 +46,28 @@ class SeachParams {
   @tracked selectedPerson;
 
   @action
-  selectPerson(p) {
-    this.reset();
-    if (p) {
+  selectPerson(p, fieldName) {
+    if (p?.given_name && p?.family_name) {
       this.givenName = p.given_name;
       this.familyName = p.family_name;
+    } else if (p?.given_name) {
+      this.givenName = p.given_name;
+    } else if (p?.family_name) {
+      this.familyName = p.family_name;
+    } else {
+      switch (fieldName) {
+        case 'family_name':
+          this.familyName = '';
+          break;
+        case 'given_name':
+          this.givenName = '';
+          break;
+      }
     }
-    this.selectedPerson = p;
+    this.selectedPerson = {
+      given_name: this.givenName,
+      family_name: this.familyName,
+    };
   }
   constructor() {
     this.reset();
