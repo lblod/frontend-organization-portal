@@ -18,9 +18,26 @@
         </AuContent>
       </div>
       <div
+        role="menu"
         class="au-o-grid__item au-u-1-4@small au-u-1-2@medium au-u-text-right@medium"
       >
-        <Acmidm::Login />
+        <Acmidm::Login role="menuitem" @styles="au-c-button" as |acmidm|>
+          <AuButton
+            loading={{acmidm.isAuthenticating}}
+            disabled={{acmidm.isAuthenticating}}
+            {{on "click" acmidm.login}}
+          >
+            {{#if acmidm.isAuthenticating}}
+              Aan het aanmelden...
+            {{else}}
+              Meld je aan
+            {{/if}}
+          </AuButton>
+
+          {{#if acmidm.errorMessage}}
+            <p>{{acmidm.errorMessage}}</p>
+          {{/if}}
+        </Acmidm::Login>
       </div>
     </div>
   </section>
