@@ -6,6 +6,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsIndex
 
   queryParams = {
     sort: { refreshModel: true },
+    page: { refreshModel: true },
   };
 
   async model(params) {
@@ -21,6 +22,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsIndex
         },
       },
       sort: params.sort,
+      page: { size: params.size, number: params.page },
     };
 
     let involvements = await this.store.query('local-involvement', query);
