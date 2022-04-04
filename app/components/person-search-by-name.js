@@ -26,20 +26,24 @@ export default class PersonSearchByNameComponent extends Component {
       dataMapping: (data) => {
         const entry = data.attributes;
         return {
-          given_name: entry.given_name,
-          family_name: entry.family_name,
+          given_name: entry.given_name.toLowerCase(),
+          family_name: entry.family_name.toLowerCase(),
         };
       },
     });
 
-    result = new Set(result.toArray());
     if (searchParams.trim() !== '' && result) {
       let param_object = {
         family_name: '',
         given_name: '',
       };
       param_object[fieldName] = searchParams.trim();
-      return [...[param_object], ...result];
+      return [...[param_object], ...result.toArray()].filter(
+        (v, i, a) =>
+          a.findIndex((v2) =>
+            ['family_name', 'given_name'].every((k) => v2[k] === v[k])
+          ) === i
+      );
     }
     return result;
   }
