@@ -4,6 +4,17 @@ import { restartableTask } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
+/**
+ * Remove duplicates from an array
+ * @param {the array} arr
+ * @param {the fields that will be used to find duplicates} fields
+ * @returns
+ */
+function removeDuplicates(arr, fields) {
+  return arr.filter(
+    (v, i, a) => a.findIndex((v2) => fields.every((k) => v2[k] === v[k])) === i
+  );
+}
 export default class PersonSearchByNameComponent extends Component {
   @service muSearch;
   @tracked searching;
@@ -26,20 +37,20 @@ export default class PersonSearchByNameComponent extends Component {
       dataMapping: (data) => {
         const entry = data.attributes;
         return {
-          given_name: entry.given_name,
-          family_name: entry.family_name,
+          given_name: entry.given_name.trim().toLowerCase(),
+          family_name: entry.family_name.trim().toLowerCase(),
         };
       },
     });
-
-    result = new Set(result.toArray());
+    result = removeDuplicates(result.toArray(), ['family_name', 'given_name']);
     if (searchParams.trim() !== '' && result) {
       let param_object = {
         family_name: '',
         given_name: '',
       };
       param_object[fieldName] = searchParams.trim();
-      return [...[param_object], ...result];
+      const arr = [...[param_object], ...result];
+      return arr;
     }
     return result;
   }
