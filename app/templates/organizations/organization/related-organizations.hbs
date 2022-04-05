@@ -12,9 +12,10 @@
     <:subtitle>{{@model.organization.name}}</:subtitle>
   </PageHeader>
 
-  {{#if @model.subOrganizations.length}}
+  {{#if this.subOrganizations.length}}
       <AuDataTable id="subOrganizations"
-        @content={{this.model.subOrganizations}}
+        @content={{this.subOrganizations}}
+        @isLoading={{this.isLoading}}
         @sort={{this.sort}}
         @page={{this.page}}
         @size={{this.size}}

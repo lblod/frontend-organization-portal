@@ -12,14 +12,13 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
 
   async model(params) {
     const organization = this.modelFor('organizations.organization');
-
-    const subOrganizations = await this.loadSubOrganizationsTask.perform(
-      organization.id,
-      params
-    );
     return {
+      loadSubOrganizationsTaskInstance: this.loadSubOrganizationsTask.perform(
+        organization.id,
+        params
+      ),
       organization,
-      subOrganizations,
+      subOrganizations: this.loadSubOrganizationsTask.lastSuccessful?.value,
     };
   }
 

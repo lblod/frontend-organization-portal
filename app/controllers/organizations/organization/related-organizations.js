@@ -7,4 +7,14 @@ export default class OrganizationsOrganizationRelatedOrganizationsController ext
   @tracked sort = 'name';
   @tracked page = 0;
   @tracked size = 25;
+
+  get subOrganizations() {
+    return this.model.loadSubOrganizationsTaskInstance.isFinished
+      ? this.model.loadSubOrganizationsTaskInstance.value
+      : this.model.subOrganizations;
+  }
+
+  get isLoading() {
+    return this.model.loadSubOrganizationsTaskInstance.isRunning;
+  }
 }
