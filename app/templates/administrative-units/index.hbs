@@ -17,6 +17,7 @@
             <MunicipalitySelect
               @selected={{this.municipality}}
               @onChange={{this.setMunicipality}}
+              @selectedProvince={{this.province}}
               @id="filter-municipality"
             />
           </div>
@@ -25,6 +26,7 @@
             <ProvinceSelect
               @selected={{this.province}}
               @onChange={{this.setProvince}}
+              @selectedMunicipality={{this.municipality}}
               @id="filter-province"
             />
           </div>
