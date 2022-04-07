@@ -2,13 +2,8 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { useTask } from 'ember-resources';
-
-const CENTRAL_WORSHIP_SERVICE_ID = 'f9cac08a-13c1-49da-9bcb-f650b0604054';
-const CENTRAL_WORSHIP_SERVICE_BLACKLIST = [
-  '1a1abeafc973d27cebcb2d7a15b2d823', // Israëlitisch
-  '99536dd6eb0d2ef38a89efafb17e7389', // Anglicaans
-  'e8cba1540b35a32e9cb45126c38c03c6', // Protestants
-];
+import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class RecognizedWorshipTypeSelect extends Component {
   @service store;
@@ -48,7 +43,10 @@ export default class RecognizedWorshipTypeSelect extends Component {
       { sort: 'label' }
     );
 
-    if (this.args.selectedClassificationId == CENTRAL_WORSHIP_SERVICE_ID) {
+    if (
+      this.args.selectedClassificationId ==
+      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+    ) {
       // Filter out blacklisted types for central worship services
       recognizedWorshipTypes = recognizedWorshipTypes.filter(
         (t) => !this.isIdInBlacklist(t.id)
