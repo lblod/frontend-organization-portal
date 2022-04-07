@@ -11,12 +11,6 @@ export default class ProvinceSelectComponent extends Component {
     this.args.selectedMunicipality,
   ]);
 
-  constructor(...args) {
-    super(...args);
-
-    this.loadProvincesTask.perform();
-  }
-
   @task
   *loadProvincesTask() {
     // Trick used to avoid infinite loop
