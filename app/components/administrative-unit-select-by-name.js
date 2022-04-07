@@ -1,16 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
-const CLASSIFICATION = {
-  CENTRAL_WORSHIP_SERVICE: {
-    id: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
-    label: 'Centraal bestuur van de eredienst',
-  },
-  WORSHIP_SERVICE: {
-    id: '66ec74fd-8cfc-4e16-99c6-350b35012e86',
-    label: 'Bestuur van de eredienst',
-  },
-};
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitSelectByNameComponent extends Component {
   @service muSearch;

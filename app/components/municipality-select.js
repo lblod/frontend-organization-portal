@@ -25,6 +25,7 @@ export default class MunicipalitySelectComponent extends Component {
             ':exact:name': this.args.selectedProvince,
           },
         },
+        sort: 'name',
       });
 
       return municipalities.mapBy('name');

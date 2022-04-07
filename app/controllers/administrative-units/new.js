@@ -3,16 +3,12 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { GOVERNING_BODY_CLASSIFICATION } from 'frontend-organization-portal/models/governing-body-classification-code';
 import { action } from '@ember/object';
 
-const CLASSIFICATION = {
-  CENTRAL_WORSHIP_SERVICE: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
-  WORSHIP_SERVICE: '66ec74fd-8cfc-4e16-99c6-350b35012e86',
-};
-
 const GOVERNING_BODY_CLASSIFICATION_MAP = {
-  [CLASSIFICATION.WORSHIP_SERVICE]: {
+  [CLASSIFICATION_CODE.WORSHIP_SERVICE]: {
     [RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC]:
       GOVERNING_BODY_CLASSIFICATION.CHURCH_COUNCIL,
     [RECOGNIZED_WORSHIP_TYPE.ANGLICAN]:
@@ -25,7 +21,7 @@ const GOVERNING_BODY_CLASSIFICATION_MAP = {
     [RECOGNIZED_WORSHIP_TYPE.PROTESTANT]:
       GOVERNING_BODY_CLASSIFICATION.BOARD_OF_DIRECTORS,
   },
-  [CLASSIFICATION.CENTRAL_WORSHIP_SERVICE]: {
+  [CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE]: {
     [RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC]:
       GOVERNING_BODY_CLASSIFICATION.CENTRAL_CHURCH_BOARD,
     [RECOGNIZED_WORSHIP_TYPE.ANGLICAN]:
@@ -48,14 +44,14 @@ export default class AdministrativeUnitsNewController extends Controller {
   get isNewWorshipService() {
     return (
       this.model.administrativeUnit.classification?.id ===
-      CLASSIFICATION.WORSHIP_SERVICE
+      CLASSIFICATION_CODE.WORSHIP_SERVICE
     );
   }
 
   get isNewCentralWorshipService() {
     return (
       this.model.administrativeUnit.classification?.id ===
-      CLASSIFICATION.CENTRAL_WORSHIP_SERVICE
+      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
     );
   }
 

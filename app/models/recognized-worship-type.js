@@ -9,6 +9,12 @@ export const RECOGNIZED_WORSHIP_TYPE = {
   PROTESTANT: 'e8cba1540b35a32e9cb45126c38c03c6',
 };
 
+export const CENTRAL_WORSHIP_SERVICE_BLACKLIST = [
+  '1a1abeafc973d27cebcb2d7a15b2d823', // Israëlitisch
+  '99536dd6eb0d2ef38a89efafb17e7389', // Anglicaans
+  'e8cba1540b35a32e9cb45126c38c03c6', // Protestants
+];
+
 export default class RecognizedWorshipTypeModel extends Model {
   @attr label;
 }
