@@ -86,6 +86,7 @@ export default class AdministrativeUnitSelectComponent extends Component {
     }
 
     let searchResults = yield this.store.query('administrative-unit', query);
+
     if (typeof this.args.filter === 'function') {
       return this.args.filter(searchResults);
     } else {

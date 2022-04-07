@@ -43,8 +43,9 @@ export default class RecognizedWorshipTypeSelect extends Component {
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
     yield Promise.resolve();
 
-    let recognizedWorshipTypes = yield this.store.findAll(
-      'recognized-worship-type'
+    let recognizedWorshipTypes = yield this.store.query(
+      'recognized-worship-type',
+      { sort: 'label' }
     );
 
     if (this.args.selectedClassificationId == CENTRAL_WORSHIP_SERVICE_ID) {

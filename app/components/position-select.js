@@ -84,7 +84,9 @@ export default class PositionSelectComponent extends Component {
     let positions = [
       ...ministerPositions.toArray(),
       ...mandatePositions.toArray(),
-    ];
+    ].sort(function (a, b) {
+      return a.label.localeCompare(b.label);
+    });
 
     // Filter out blacklisted data if an administrative unit is selected
     if (
@@ -98,6 +100,7 @@ export default class PositionSelectComponent extends Component {
         {
           'filter[:id:]': selectedAdministrativeUnitId,
           include: 'classification',
+          sort: 'label',
         }
       )).firstObject;
 
