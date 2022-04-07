@@ -13,9 +13,19 @@ export default class ContactPointModel extends Model {
   @attr type;
 
   @belongsTo('address', {
-    inverse: null,
+    inverse: 'belongsToContact',
   })
   contactAddress;
+
+  @belongsTo('agent-in-position', {
+    inverse: 'contacts',
+  })
+  belongsToAgentInPosition;
+
+  @belongsTo('mandatory', {
+    inverse: 'contacts',
+  })
+  belongsToMandatory;
 }
 
 export function createPrimaryContact(store) {

@@ -15,7 +15,7 @@ export default class AgentInPositionModel extends Model {
   person;
 
   @hasMany('contact-point', {
-    inverse: null,
+    inverse: 'belongsToAgentInPosition',
   })
   contacts;
 }

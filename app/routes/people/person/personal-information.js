@@ -34,6 +34,30 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
         'agents-in-position.position.worship-service',
       ].join(),
     });
+
+    // This is an experiment to see how we can fetch addresses from
+    // different paths using the :or: feature of mu-cl-resources
+    const addresses = await this.store.query('address', {
+      filter: {
+        ':or:': {
+          'belongs-to-contact': {
+            'belongs-to-agent-in-position': {
+              person: {
+                ':id:': person.id,
+              },
+            },
+            'belongs-to-mandatory': {
+              'governing-alias': {
+                ':id:': person.id,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    console.log(addresses);
+
     const positions = [];
     const mandatories = person.mandatories.toArray();
 

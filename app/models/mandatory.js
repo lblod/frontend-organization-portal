@@ -27,7 +27,7 @@ export default class MandatoryModel extends AgentInPositionModel {
   mandate;
 
   @hasMany('contact-point', {
-    inverse: null,
+    inverse: 'belongsToMandatory',
   })
   contacts;
 }

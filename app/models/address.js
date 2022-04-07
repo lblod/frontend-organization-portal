@@ -15,6 +15,11 @@ export default class AddressModel extends Model {
     inverse: null,
   })
   source;
+
+  @belongsTo('contact-point', {
+    inverse: 'contactAddress',
+  })
+  belongsToContact;
 }
 
 export function combineFullAddress(address) {
