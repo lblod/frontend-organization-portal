@@ -8,6 +8,7 @@ import {
   WORSHIP_SERVICE_POSITIONS_BOARD_BLACKLIST,
 } from 'frontend-organization-portal/models/board-position';
 import { CENTRAL_WORSHIP_SERVICE_MINISTER_POSITIONS_BLACKLIST } from 'frontend-organization-portal/models/minister-position';
+import { A } from '@ember/array';
 
 export default class AdministrativeUnitSelectComponent extends Component {
   @service store;
@@ -76,55 +77,32 @@ export default class AdministrativeUnitSelectComponent extends Component {
   }
 
   filterOutBlacklistedClassificationCodes(position, classificationCodes) {
-    const selectedPosition = position;
     let allowedClassificationCodes = classificationCodes;
 
-    allowedClassificationCodes = this.getAllowedClassificationCodes(
-      selectedPosition,
-      allowedClassificationCodes,
-      CENTRAL_WORSHIP_SERVICE_BOARD_POSITIONS_BLACKLIST,
-      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
-    );
-
-    allowedClassificationCodes = this.getAllowedClassificationCodes(
-      selectedPosition,
-      allowedClassificationCodes,
-      CENTRAL_WORSHIP_SERVICE_MINISTER_POSITIONS_BLACKLIST,
-      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
-    );
-
-    allowedClassificationCodes = this.getAllowedClassificationCodes(
-      selectedPosition,
-      allowedClassificationCodes,
-      WORSHIP_SERVICE_POSITIONS_BOARD_BLACKLIST,
-      CLASSIFICATION_CODE.WORSHIP_SERVICE
-    );
+    if (
+      this.isPositionInBlacklist(position, [
+        ...CENTRAL_WORSHIP_SERVICE_BOARD_POSITIONS_BLACKLIST,
+        ...CENTRAL_WORSHIP_SERVICE_MINISTER_POSITIONS_BLACKLIST,
+      ])
+    ) {
+      A(allowedClassificationCodes).removeObject(
+        CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+      );
+    } else if (
+      this.isPositionInBlacklist(
+        position,
+        WORSHIP_SERVICE_POSITIONS_BOARD_BLACKLIST
+      )
+    ) {
+      A(allowedClassificationCodes).removeObject(
+        CLASSIFICATION_CODE.WORSHIP_SERVICE
+      );
+    }
 
     return allowedClassificationCodes;
   }
 
-  getAllowedClassificationCodes(
-    position,
-    allowedClassificationCodes,
-    blacklist,
-    classificationId
-  ) {
-    let classificationCodes = allowedClassificationCodes;
-
-    const isBlacklistedInCentralWorshipServices = this.isIdInBlacklist(
-      position,
-      blacklist
-    );
-    if (isBlacklistedInCentralWorshipServices) {
-      classificationCodes = classificationCodes.filter(
-        (code) => code != classificationId
-      );
-    }
-
-    return classificationCodes;
-  }
-
-  isIdInBlacklist(id, blacklist) {
-    return blacklist.find((element) => element == id);
+  isPositionInBlacklist(position, blacklist) {
+    return blacklist.find((element) => element == position);
   }
 }
