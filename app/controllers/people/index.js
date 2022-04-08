@@ -80,6 +80,21 @@ export default class PeopleIndexController extends Controller {
     this.page = 0;
   }
 
+  @action
+  resetFilters() {
+    this.given_name = '';
+    this.family_name = '';
+    this.organization = null;
+    this.selectedOrganization = null;
+    this.status = true;
+    this.position = null;
+    this.page = 0;
+    this.sort = 'family_name';
+
+    // Triggers a refresh of the model
+    this.page = null;
+  }
+
   get classificationCodes() {
     return [
       CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
