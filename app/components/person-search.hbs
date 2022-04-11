@@ -20,49 +20,39 @@
       <ReportWrongData />
     </:readOnly>
   </SecuredArea>
-  <EditCard>
-    <:title>Persoon zoeken</:title>
-    <:card as |Card|>
-      <Card.Columns>
-        <:left as |Item|>
-          <Item @labelFor="person-given-name">
-            <:label>Voornaam</:label>
-            <:content>
-                <PersonSearchByName
-                        @id="person-given-name"
-                        @fieldName="given_name"
-                        @selected={{this.searchParams.selectedPerson}}
-                        @onChange={{this.searchParams.selectPerson}}
-                        class="block"
-                />
-            </:content>
-          </Item>
-        </:left>
-        <:right as |Item|>
-          <Item @labelFor="person-family-name">
-            <:label>Achternaam</:label>
-            <:content>
-                <PersonSearchByName
-                        @id="person-family-name"
-                        @fieldName="family_name"
-                        @selected={{this.searchParams.selectedPerson}}
-                        @onChange={{this.searchParams.selectPerson}}
-                        class="block"
-                />
-            </:content>
-          </Item>
-        </:right>
-      </Card.Columns>
-      <div class="au-u-padding-tiny au-u-text-right">
-        <AuButton
-          @disabled={{not this.canSearch}}
-          @loading={{this.searchPeopleTask.isRunning}}
-          class="au-u-padding-left au-u-padding-right"
-          type="submit"
-        >Zoek</AuButton>
-      </div>
-    </:card>
-  </EditCard>
+
+  <div class="au-o-grid">
+    <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
+      <AuLabel for="person-given-name">Voornaam</AuLabel>
+      <PersonSearchByName
+              @id="person-given-name"
+              @fieldName="given_name"
+              @selected={{this.searchParams.selectedPerson}}
+              @onChange={{this.searchParams.selectPerson}}
+              class="block"
+      />
+    </p>
+    <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
+      <AuLabel for="person-family-name">Achternaam</AuLabel>
+      <PersonSearchByName
+              @id="person-family-name"
+              @fieldName="family_name"
+              @selected={{this.searchParams.selectedPerson}}
+              @onChange={{this.searchParams.selectPerson}}
+              class="block"
+      />
+    </p>
+    <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small au-u-margin-top">
+      <AuButton
+        @disabled={{not this.canSearch}}
+        @loading={{this.searchPeopleTask.isRunning}}
+        class="au-u-padding-left au-u-padding-right"
+        type="submit"
+      >
+        Zoek
+      </AuButton>
+    </p>
+  </div>
 </form>
 
 {{#if this.searchPeopleTask.last}}
