@@ -111,4 +111,19 @@ export default class AdministrativeUnitsIndexController extends Controller {
   resetPagination() {
     this.page = 0;
   }
+
+  @action
+  resetFilters() {
+    this.name = '';
+    this.municipality = '';
+    this.province = '';
+    this.classificationId = '';
+    this.recognizedWorshipTypeId = '';
+    this.organizationStatus = '';
+    this.page = 0;
+    this.sort = 'name';
+
+    // Triggers a refresh of the model
+    this.page = null;
+  }
 }
