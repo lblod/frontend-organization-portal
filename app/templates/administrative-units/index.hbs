@@ -17,6 +17,7 @@
             <MunicipalitySelect
               @selected={{this.municipality}}
               @onChange={{this.setMunicipality}}
+              @selectedProvince={{this.province}}
               @id="filter-municipality"
             />
           </div>
@@ -25,6 +26,7 @@
             <ProvinceSelect
               @selected={{this.province}}
               @onChange={{this.setProvince}}
+              @selectedMunicipality={{this.municipality}}
               @id="filter-province"
             />
           </div>
@@ -34,6 +36,7 @@
               @selected={{this.classificationId}}
               @onChange={{this.setClassificationId}}
               @allowClear={{true}}
+              @selectedRecognizedWorshipTypeId={{this.recognizedWorshipTypeId}}
               @id="classification"
             />
           </div>
@@ -43,6 +46,7 @@
               @selected={{this.recognizedWorshipTypeId}}
               @onChange={{this.setRecognizedWorshipTypeId}}
               @allowClear={{true}}
+              @selectedClassificationId={{this.classificationId}}
               @id="recognized-worship-types"
             />
           </div>
