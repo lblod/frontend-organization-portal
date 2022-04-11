@@ -21,7 +21,7 @@
     </:readOnly>
   </SecuredArea>
 
-  <div class="au-o-grid">
+  <div class="au-o-grid au-o-grid--bottom">
     <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
       <AuLabel for="person-given-name">Voornaam</AuLabel>
       <PersonSearchByName
@@ -42,7 +42,7 @@
               class="block"
       />
     </p>
-    <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small au-u-margin-top">
+    <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
       <AuButton
         @disabled={{not this.canSearch}}
         @loading={{this.searchPeopleTask.isRunning}}
