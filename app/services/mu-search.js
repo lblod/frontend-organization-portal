@@ -72,9 +72,14 @@ export default class MuSearchService extends Service {
     }
 
     if (sort) {
-      params.push(
-        `sort[${this.stripSort(sort)}.field]=${this.sortOrder(sort)}`
-      );
+      const sortParams = sort.split(',');
+      sortParams.forEach((sortParam) => {
+        params.push(
+          `sort[${this.stripSort(sortParam)}.field]=${this.sortOrder(
+            sortParam
+          )}`
+        );
+      });
     }
 
     const endpoint = `/search/${index}/search?${params.join('&')}`;

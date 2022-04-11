@@ -20,7 +20,7 @@ export default class PeopleIndexController extends Controller {
 
   @tracked page = 0;
   size = 25;
-  @tracked sort = 'family_name';
+  @tracked sort = 'given_name';
   @tracked given_name = '';
   @tracked family_name = '';
   @tracked organization;
@@ -52,6 +52,17 @@ export default class PeopleIndexController extends Controller {
 
   get hasErrored() {
     return this.model.loadPeopleTaskInstance.isError;
+  }
+
+  @action
+  setSorting() {
+    if (this.given_name && this.family_name) {
+      this.sort = 'given_name,family_name';
+    } else if (this.given_name) {
+      this.sort = 'given_name';
+    } else if (this.family_name) {
+      this.sort = `family_name`;
+    }
   }
 
   @action
@@ -89,7 +100,7 @@ export default class PeopleIndexController extends Controller {
     this.status = true;
     this.position = null;
     this.page = 0;
-    this.sort = 'family_name';
+    this.sort = 'given_name';
 
     // Triggers a refresh of the model
     this.page = null;
