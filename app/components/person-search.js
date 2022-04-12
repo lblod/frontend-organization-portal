@@ -34,7 +34,6 @@ export default class PersonSearchComponent extends Component {
       // More information: https://github.com/mu-semtech/ember-data-table/issues/27
       // We temporarily increase the number of results to increase the chances that everything fits on one page
       query['page[size]'] = 100;
-      //query['sort'] = 'given-name,family-name';
 
       let result = yield this.store.query('person', query);
       return this.caseInsensitiveSort(result);
