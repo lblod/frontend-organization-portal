@@ -34,10 +34,31 @@ export default class PersonSearchComponent extends Component {
       // More information: https://github.com/mu-semtech/ember-data-table/issues/27
       // We temporarily increase the number of results to increase the chances that everything fits on one page
       query['page[size]'] = 100;
-      query['sort'] = 'given-name,family-name';
+      //query['sort'] = 'given-name,family-name';
 
-      return yield this.store.query('person', query);
+      let result = yield this.store.query('person', query);
+      return this.caseInsensitiveSort(result);
     }
+  }
+
+  caseInsensitiveSort(data) {
+    const fields = data.map((res) => {
+      return {
+        familyName: res.familyName,
+        givenName: res.givenName,
+      };
+    });
+
+    const sortedFields = fields.sort(
+      (a, b) =>
+        a.givenName.trim().localeCompare(b.givenName.trim(), undefined, {
+          sensitivity: 'base',
+        }) ||
+        a.familyName.trim().localeCompare(b.familyName.trim(), undefined, {
+          sensitivity: 'base',
+        })
+    );
+    return sortedFields;
   }
 }
 
