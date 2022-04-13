@@ -69,14 +69,14 @@
           </Card.Columns>
         </:card>
       </DataCard>
-{{#if this.allContacts}}
-      <ContactDetails
+      <AuContent>
+        <ContactDetails
           @title="Contactgegevens"
           @contact={{this.contact}}
           @onUpdate={{this.updateContact}}
           @positions={{this.allContacts}}
         />
-        {{/if}}
+      </AuContent>
       <EditCard @containsRequiredFields={{true}}>
         <:title>Mandaat</:title>
         <:card as |Card|>

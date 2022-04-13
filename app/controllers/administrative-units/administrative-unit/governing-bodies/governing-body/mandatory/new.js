@@ -79,7 +79,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     let { mandatory, governingBody } = this.model;
 
     yield mandatory.validate();
-    console.log(mandatory.isValid);
     if (mandatory.isValid) {
       let mandates = yield governingBody.mandates;
       let mandate = findExistingMandateByRole(mandates, mandatory.role);

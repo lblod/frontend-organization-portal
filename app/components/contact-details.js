@@ -26,15 +26,26 @@ export default class ContactDetailsComponent extends Component {
   }
 
   reloadPositions() {
-    return this.args.positions.filter((cp) => {
-      let res =
-        cp.position.id === this.selectedContact.position.id ||
-        (cp.position.id !== this.selectedContact.position.id &&
-          cp.primaryContact?.id !== this.selectedContact.primaryContact?.id) ||
-        cp.secondaryContact?.id !== this.selectedContact.secondaryContact?.id ||
-        cp.address?.id !== this.selectedContact.address?.id;
-      return res;
-    });
+    const positions = [];
+    for (const cp of this.args.positions) {
+      if (cp.primaryContact) {
+        if (
+          !positions.some((p) => p.primaryContact?.id === cp.primaryContact?.id)
+        ) {
+          positions.push(cp);
+        }
+      }
+    }
+    return positions;
+    // return this.args.positions.filter((cp) => {
+    //   let res =
+    //     cp.position.id === this.selectedContact.position.id ||
+    //     (cp.position.id !== this.selectedContact.position.id &&
+    //       cp.primaryContact?.id !== this.selectedContact.primaryContact?.id) ||
+    //     cp.secondaryContact?.id !== this.selectedContact.secondaryContact?.id ||
+    //     cp.address?.id !== this.selectedContact.address?.id;
+    //   return res;
+    // });
   }
 
   @action
@@ -142,7 +153,7 @@ export default class ContactDetailsComponent extends Component {
 
       yield this.args.onUpdate(this.editingContact);
       this.positions = [
-        ...this.reloadPositions(),
+        ...this.reloadPositions().filter((p) => p.position.id !== position.id),
         {
           primaryContact,
           secondaryContact,
