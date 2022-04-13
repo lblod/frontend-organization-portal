@@ -21,7 +21,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     );
 
     if (personId) {
-      transition.data.person = await this.store.findRecord('person', personId); // TODO check this
+      transition.data.person = await this.store.findRecord('person', personId);
     }
 
     let mandatory = this.store.createRecord('worship-mandatory');
