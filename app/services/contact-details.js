@@ -98,19 +98,9 @@ export default class ContactDetailsService extends Service {
     const contacts = [];
     for (let computedPosition of positions) {
       let { primaryContact, secondaryContact, position } = computedPosition;
-      // if (!primaryContact) {
-      //   primaryContact = createPrimaryContact(this.store);
-      //   position.contacts.pushObject(primaryContact);
-      // }
-      // if (!secondaryContact) {
-      //   secondaryContact = createSecondaryContact(this.store);
-      //   position.contacts.pushObject(secondaryContact);
-      // }
+
       let address = await primaryContact?.contactAddress;
-      // if (!address) {
-      //   address = this.store.createRecord('address');
-      //   primaryContact.contactAddress = address;
-      // }
+
       let contact = {
         position,
         title: computedPosition.title,

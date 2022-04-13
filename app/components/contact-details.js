@@ -37,15 +37,6 @@ export default class ContactDetailsComponent extends Component {
       }
     }
     return positions;
-    // return this.args.positions.filter((cp) => {
-    //   let res =
-    //     cp.position.id === this.selectedContact.position.id ||
-    //     (cp.position.id !== this.selectedContact.position.id &&
-    //       cp.primaryContact?.id !== this.selectedContact.primaryContact?.id) ||
-    //     cp.secondaryContact?.id !== this.selectedContact.secondaryContact?.id ||
-    //     cp.address?.id !== this.selectedContact.address?.id;
-    //   return res;
-    // });
   }
 
   @action
@@ -123,7 +114,6 @@ export default class ContactDetailsComponent extends Component {
       if (secondaryContact) {
         position.contacts.pushObject(secondaryContact);
       }
-      //yield position.save();
       this.selectedContact = {
         position,
         title,
@@ -131,7 +121,6 @@ export default class ContactDetailsComponent extends Component {
         secondaryContact,
         address,
       };
-      //yield this.args?.onCopy(this.selectedContact);
     }
   }
 
