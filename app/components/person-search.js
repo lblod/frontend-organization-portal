@@ -41,14 +41,7 @@ export default class PersonSearchComponent extends Component {
   }
 
   caseInsensitiveSort(data) {
-    const fields = data.map((res) => {
-      return {
-        familyName: res.familyName,
-        givenName: res.givenName,
-      };
-    });
-
-    const sortedFields = fields.sort(
+    const sortedFields = data.toArray().sort(
       (a, b) =>
         a.givenName.trim().localeCompare(b.givenName.trim(), undefined, {
           sensitivity: 'base',
