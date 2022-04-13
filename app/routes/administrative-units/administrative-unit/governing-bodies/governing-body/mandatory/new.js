@@ -6,7 +6,6 @@ import { mandatoryWithRequiredRoleValidations } from 'frontend-organization-port
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryNewRoute extends Route {
   @service store;
   @service currentSession;
-  @service contactDetails;
   @service router;
 
   beforeModel() {
@@ -22,13 +21,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     );
 
     if (personId) {
-      const { person, positions } =
-        await this.contactDetails.getPersonAndAllPositions(personId);
-      const allContacts = await this.contactDetails.positionsToEditableContacts(
-        positions
-      );
-      transition.data.person = person;
-      transition.data.allContacts = allContacts;
+      transition.data.person = await this.store.findRecord('person', personId); // TODO check this
     }
 
     let mandatory = this.store.createRecord('worship-mandatory');
@@ -57,10 +50,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
     if (transition.data.person) {
       controller.targetPerson = transition.data.person;
-      // controller.contact = transition.data.allContacts.find(
-      //   (c) => c.position.id === mandatory.id
-      // );
-      controller.allContacts = transition.data.allContacts;
     }
   }
 

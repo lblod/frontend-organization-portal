@@ -8,6 +8,7 @@ import { isWorshipMember } from 'frontend-organization-portal/models/board-posit
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryNewController extends Controller {
   @service router;
   @service store;
+  @service contactDetails;
 
   queryParams = ['personId', 'positionId'];
 
@@ -41,6 +42,17 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   }
 
   @action
+  async selectTargetPerson(p) {
+    const { person, positions } =
+      await this.contactDetails.getPersonAndAllPositions(p.id);
+    this.allContacts = await this.contactDetails.positionsToEditableContacts(
+      positions
+    );
+    this.contact = { position: this.model.mandatory };
+    this.targetPerson = person;
+  }
+
+  @action
   handleIsCurrentPositionChange() {
     let { mandatory } = this.model;
     let isCurrentPosition = mandatory.isCurrentPosition;
@@ -67,6 +79,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     let { mandatory, governingBody } = this.model;
 
     yield mandatory.validate();
+    console.log(mandatory.isValid);
     if (mandatory.isValid) {
       let mandates = yield governingBody.mandates;
       let mandate = findExistingMandateByRole(mandates, mandatory.role);

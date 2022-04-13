@@ -31,7 +31,7 @@
 
   {{#if this.isSelectingTargetPerson}}
     <PersonSearch
-      @onSelect={{fn (mut this.targetPerson)}}
+      @onSelect={{this.selectTargetPerson}}
       @personCreationRedirectUrl={{this.router.currentURL}}
     />
   {{else}}
@@ -69,14 +69,12 @@
         </:card>
       </DataCard>
 
-{{#if this.allContacts}}
       <ContactDetails
           @title="Contactgegevens"
           @contact={{this.contact}}
           @onUpdate={{this.updateContact}}
           @positions={{this.allContacts}}
         />
-{{/if}}
       <EditCard @containsRequiredFields={{true}}>
         <:title>Mandaat</:title>
         <:card as |Card|>
