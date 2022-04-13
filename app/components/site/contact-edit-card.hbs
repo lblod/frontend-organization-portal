@@ -92,6 +92,7 @@
               <:content as |hasError|>
                 <ProvinceSelect
                   @selected={{@address.province}}
+
                   @onChange={{fn (mut @address.province)}}
                   @id="site-address-province"
                   @error={{hasError}}

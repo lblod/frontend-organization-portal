@@ -18,10 +18,7 @@
               Opslaan
             </AuButton>
 
-            <AuLink
-               {{on "click" this.cancel}}
-              @skin="button-secondary"
-            >
+            <AuLink {{on "click" this.cancel}} @skin="button-secondary">
               Annuleer
             </AuLink>
           </AuButtonGroup>
@@ -90,7 +87,6 @@
                       <AuLink
                         @route="people.person.personal-information.request-sensitive-data"
                         @query={{hash redirectUrl=this.currentURL}}
-
                       >
                         Consulteer
                       </AuLink></:content>
@@ -101,7 +97,6 @@
                       <AuLink
                         @route="people.person.personal-information.request-sensitive-data"
                         @query={{hash redirectUrl=this.currentURL}}
-
                       >
                         Consulteer
                       </AuLink></:content>
@@ -112,7 +107,6 @@
                       <AuLink
                         @route="people.person.personal-information.request-sensitive-data"
                         @query={{hash redirectUrl=this.currentURL}}
-
                       >
                         Consulteer
                       </AuLink></:content>
@@ -123,7 +117,6 @@
                       <AuLink
                         @route="people.person.personal-information.request-sensitive-data"
                         @query={{hash redirectUrl=this.currentURL}}
-
                       >
                         Consulteer
                       </AuLink></:content>
@@ -167,12 +160,12 @@
                       />
                     </:content>
                   </Item>
-                  <Item @labelFor="person-ssn"
-                  @errorMessage={{this.sensitiveInformationError}}
-                  
+                  <Item
+                    @labelFor="person-ssn"
+                    @errorMessage={{this.sensitiveInformationError}}
                   >
                     <:label>Rijksregisternummer</:label>
-                    <:content  as |hasError|>
+                    <:content as |hasError|>
                       <AuInput
                         @maskPlaceholder="_"
                         autocomplete="off"
@@ -191,20 +184,7 @@
             </Card.Columns>
           </:card>
         </EditCard>
-        {{#each @model.contacts as |contact|}}
-          <Position::ContactEditCard
-            @address={{contact.address}}
-            @primaryContact={{contact.primaryContact}}
-            @secondaryContact={{contact.secondaryContact}}
-            @isAddressSearchEnabledInitially={{if
-              contact.address.addressRegisterUri
-              true
-              false
-            }}
-          >
-            <:title>Contactgegevens: {{contact.title}}</:title>
-          </Position::ContactEditCard>
-        {{/each}}
+   
       </div>
     </form>
   </div>

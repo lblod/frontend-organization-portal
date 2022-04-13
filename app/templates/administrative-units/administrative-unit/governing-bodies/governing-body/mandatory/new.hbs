@@ -69,12 +69,14 @@
         </:card>
       </DataCard>
 
-      <Position::ContactEditCard
-        @address={{@model.address}}
-        @primaryContact={{@model.contact}}
-        @secondaryContact={{@model.secondaryContact}}
-      />
-
+{{#if this.allContacts}}
+      <ContactDetails
+          @title="Contactgegevens"
+          @contact={{this.contact}}
+          @onUpdate={{this.updateContact}}
+          @positions={{this.allContacts}}
+        />
+{{/if}}
       <EditCard @containsRequiredFields={{true}}>
         <:title>Mandaat</:title>
         <:card as |Card|>

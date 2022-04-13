@@ -1,17 +1,12 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import {
-  createPrimaryContact,
-  createSecondaryContact,
-} from 'frontend-organization-portal/models/contact-point';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
-import { getAddressValidations } from 'frontend-organization-portal/validations/address';
-import contactValidations from 'frontend-organization-portal/validations/contact-point';
 import { mandatoryWithRequiredRoleValidations } from 'frontend-organization-portal/validations/mandatory';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryNewRoute extends Route {
   @service store;
   @service currentSession;
+  @service contactDetails;
   @service router;
 
   beforeModel() {
@@ -27,7 +22,13 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     );
 
     if (personId) {
-      transition.data.person = await this.store.findRecord('person', personId);
+      const { person, positions } =
+        await this.contactDetails.getPersonAndAllPositions(personId);
+      const allContacts = await this.contactDetails.positionsToEditableContacts(
+        positions
+      );
+      transition.data.person = person;
+      transition.data.allContacts = allContacts;
     }
 
     let mandatory = this.store.createRecord('worship-mandatory');
@@ -37,10 +38,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       mandatory.role = role;
       mandatory.typeHalf = undefined;
     }
-
-    let contact = createPrimaryContact(this.store);
-    let secondaryContact = createSecondaryContact(this.store);
-    let address = this.store.createRecord('address');
 
     return {
       administrativeUnit: this.modelFor(
@@ -52,15 +49,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         mandatoryWithRequiredRoleValidations
       ),
       mandatoryRecord: mandatory,
-      contact: createValidatedChangeset(contact, contactValidations),
-      contactRecord: contact,
-      secondaryContact: createValidatedChangeset(
-        secondaryContact,
-        contactValidations
-      ),
-      secondaryContactRecord: secondaryContact,
-      address: createValidatedChangeset(address, getAddressValidations(false)),
-      addressRecord: address,
     };
   }
 
@@ -69,6 +57,10 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
     if (transition.data.person) {
       controller.targetPerson = transition.data.person;
+      // controller.contact = transition.data.allContacts.find(
+      //   (c) => c.position.id === mandatory.id
+      // );
+      controller.allContacts = transition.data.allContacts;
     }
   }
 
