@@ -41,11 +41,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     }
   }
 
-  @action
-  async selectTargetPerson(p) {
+  @dropTask
+  *selectTargetPerson(p) {
     const { person, positions } =
-      await this.contactDetails.getPersonAndAllPositions(p.id);
-    this.allContacts = await this.contactDetails.positionsToEditableContacts(
+      yield this.contactDetails.getPersonAndAllPositions(p.id);
+    this.allContacts = yield this.contactDetails.positionsToEditableContacts(
       positions
     );
     this.contact = { position: this.model.mandatory };
