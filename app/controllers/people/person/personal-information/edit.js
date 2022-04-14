@@ -36,6 +36,18 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
     this.router.transitionTo('people.person.personal-information', person.id);
   }
 
+  get minDate() {
+    let minDate = new Date();
+    minDate.setFullYear(1900);
+    minDate.setMonth(0);
+    minDate.setDate(1);
+    return minDate;
+  }
+
+  get maxDate() {
+    return new Date();
+  }
+
   @dropTask
   *save(event) {
     event.preventDefault();
