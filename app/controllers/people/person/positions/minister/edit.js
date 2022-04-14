@@ -3,7 +3,6 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { dropTask } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-import { combineFullAddress } from 'frontend-organization-portal/models/address';
 
 const FINANCING_CODE = {
   SELF_FINANCED: '997073905f839ac6bafe92b76050ab0b',
@@ -13,7 +12,7 @@ const FINANCING_CODE = {
 export default class PeoplePersonPositionsMinisterEditController extends Controller {
   @service router;
   @service store;
-
+  @tracked computedContactDetails;
   @tracked willReceiveFinancing;
   @tracked redirectUrl;
 
@@ -52,41 +51,24 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
   *save(event) {
     event.preventDefault();
 
-    let { minister, contact, secondaryContact, address } = this.model;
+    let { minister } = this.model;
 
-    yield Promise.all([
-      contact.validate(),
-      secondaryContact.validate(),
-      minister.validate(),
-      address.validate(),
-    ]);
+    yield minister.validate();
 
-    if (
-      minister.isValid &&
-      contact.isValid &&
-      secondaryContact.isValid &&
-      address.isValid
-    ) {
-      if (address.isDirty) {
-        address.fullAddress = combineFullAddress(address);
-        yield address.save();
-      }
-
-      contact.contactAddress = address;
-      let contacts = yield minister.contacts;
-
-      if (contact.isDirty) {
-        if (contact.isNew) {
-          contacts.pushObject(contact);
+    if (minister.isValid) {
+      if (this.computedContactDetails) {
+        let { primaryContact, secondaryContact, address } =
+          this.computedContactDetails;
+        if (address.isDirty) {
+          yield address.save();
         }
-        yield contact.save();
-      }
 
-      if (secondaryContact.isDirty) {
-        if (secondaryContact.isNew) {
-          contacts.pushObject(secondaryContact);
+        if (primaryContact.isDirty) {
+          yield primaryContact.save();
         }
-        yield secondaryContact.save();
+        if (secondaryContact.isDirty) {
+          yield secondaryContact.save();
+        }
       }
 
       let financingCodeId = this.willReceiveFinancing
@@ -108,6 +90,11 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
     }
   }
 
+  @action
+  updateContact(editingContact) {
+    this.computedContactDetails = editingContact;
+  }
+
   setup() {
     this.willReceiveFinancing =
       this.model.minister.financing.get('id') === FINANCING_CODE.FOD_FINANCED;
@@ -119,9 +106,7 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
   }
 
   removeUnsavedRecords() {
-    this.model.addressRecord.rollbackAttributes();
-    this.model.contactRecord.rollbackAttributes();
-    this.model.secondaryContactRecord.rollbackAttributes();
+    this.model.minister.rollbackAttributes();
   }
 
   handleTransitionTo() {

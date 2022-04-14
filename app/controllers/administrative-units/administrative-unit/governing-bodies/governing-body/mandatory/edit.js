@@ -2,12 +2,13 @@ import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { isWorshipMember } from 'frontend-organization-portal/models/board-position';
+import { tracked } from '@glimmer/tracking';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditController extends Controller {
-  @service router;
+  @tracked computedContactDetails;
 
+  @service router;
   get showHalfElectionTypeSelect() {
     return isWorshipMember(this.model.mandatory.role?.id);
   }
@@ -41,48 +42,24 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   *save(event) {
     event.preventDefault();
 
-    let { mandatory, governingBody, contact, secondaryContact, address } =
-      this.model;
+    let { mandatory, governingBody } = this.model;
+    yield mandatory.validate();
 
-    yield Promise.all([
-      mandatory.validate(),
-      contact.validate(),
-      secondaryContact.validate(),
-      address.validate(),
-    ]);
-
-    if (
-      contact.isValid &&
-      secondaryContact.isValid &&
-      mandatory.isValid &&
-      address.isValid
-    ) {
+    if (this.computedContactDetails) {
+      let { primaryContact, secondaryContact, address } =
+        this.computedContactDetails;
       if (address.isDirty) {
-        address.fullAddress = combineFullAddress(address);
-
-        if (address.isNew) {
-          contact.contactAddress = address;
-        }
-
         yield address.save();
       }
 
-      let contacts = yield mandatory.contacts;
-      if (contact.isDirty) {
-        if (contact.isNew) {
-          contacts.pushObject(contact);
-        }
-
-        yield contact.save();
+      if (primaryContact.isDirty) {
+        yield primaryContact.save();
       }
-
       if (secondaryContact.isDirty) {
-        if (secondaryContact.isNew) {
-          contacts.pushObject(secondaryContact);
-        }
         yield secondaryContact.save();
       }
-
+    }
+    if (mandatory.isValid) {
       yield mandatory.save();
 
       this.router.transitionTo(
@@ -92,13 +69,15 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     }
   }
 
+  @action
+  updateContact(editingContact) {
+    this.computedContactDetails = editingContact;
+  }
   reset() {
     this.removeUnsavedRecords();
   }
 
   removeUnsavedRecords() {
-    this.model.addressRecord.rollbackAttributes();
-    this.model.contactRecord.rollbackAttributes();
-    this.model.secondaryContactRecord.rollbackAttributes();
+    this.model.mandatory.rollbackAttributes();
   }
 }

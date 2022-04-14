@@ -2,7 +2,6 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
-import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { action } from '@ember/object';
 
 const FINANCING_CODE = {
@@ -13,13 +12,17 @@ const FINANCING_CODE = {
 export default class AdministrativeUnitsAdministrativeUnitMinistersNewController extends Controller {
   @service router;
   @service store;
+  @service contactDetails;
 
   queryParams = ['personId', 'positionId'];
 
+  @tracked computedContactDetails;
   @tracked personId;
   @tracked positionId;
   @tracked targetPerson = null;
   @tracked willReceiveFinancing = true;
+  @tracked contact = null;
+  @tracked allContacts = null;
 
   get isSelectingTargetPerson() {
     return !this.targetPerson;
@@ -50,40 +53,25 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
   }
 
   @dropTask
+  *selectTargetPerson(p) {
+    const { person, positions } =
+      yield this.contactDetails.getPersonAndAllPositions(p.id);
+    this.allContacts = yield this.contactDetails.positionsToEditableContacts(
+      positions
+    );
+    this.contact = { position: this.model.minister };
+    this.targetPerson = person;
+  }
+
+  @dropTask
   *createMinisterPositionTask(event) {
     event.preventDefault();
 
-    let {
-      administrativeUnit,
-      minister,
-      contact,
-      secondaryContact,
-      address,
-      position,
-    } = this.model;
+    let { administrativeUnit, minister, position } = this.model;
 
-    yield Promise.all([
-      minister.validate(),
-      position.validate(),
-      contact.validate(),
-      secondaryContact.validate(),
-      address.validate(),
-    ]);
+    yield Promise.all([minister.validate(), position.validate()]);
 
-    if (
-      minister.isValid &&
-      position.isValid &&
-      contact.isValid &&
-      secondaryContact.isValid &&
-      address.isValid
-    ) {
-      address.fullAddress = combineFullAddress(address);
-      yield address.save();
-
-      contact.contactAddress = address;
-      yield contact.save();
-      yield secondaryContact.save();
-
+    if (minister.isValid && position.isValid) {
       position.worshipService = administrativeUnit;
       yield position.save();
 
@@ -98,10 +86,23 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
           backgroundReload: false,
         }
       );
+      if (this.computedContactDetails) {
+        let { primaryContact, secondaryContact, address } =
+          this.computedContactDetails;
+        if (address.isDirty) {
+          yield address.save();
+        }
 
+        if (primaryContact.isDirty) {
+          yield primaryContact.save();
+        }
+        if (secondaryContact.isDirty) {
+          yield secondaryContact.save();
+        }
+        minister.contacts.pushObjects([primaryContact, secondaryContact]);
+      }
       minister.ministerPosition = position;
       minister.person = this.targetPerson;
-      minister.contacts.pushObjects([contact, secondaryContact]);
       minister.financing = financing;
       yield minister.save();
 
@@ -118,11 +119,11 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
     this.willReceiveFunding = true;
     this.removeUnsavedRecords();
   }
-
+  @action
+  updateContact(editingContact) {
+    this.computedContactDetails = editingContact;
+  }
   removeUnsavedRecords() {
-    this.model.addressRecord.rollbackAttributes();
-    this.model.contactRecord.rollbackAttributes();
-    this.model.secondaryContactRecord.rollbackAttributes();
     this.model.positionRecord.rollbackAttributes();
     this.model.ministerRecord.rollbackAttributes();
   }

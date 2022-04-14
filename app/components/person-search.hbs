@@ -97,7 +97,7 @@
               {{person.familyName}}
             </td>
             <td>
-              <AuButton @skin="tertiary" {{on "click" (fn @onSelect person)}}>
+              <AuButton @skin="tertiary" {{on "click" (fn @onSelect person)}} @loading={{@loading}}>
                 Selecteer
               </AuButton>
             </td>

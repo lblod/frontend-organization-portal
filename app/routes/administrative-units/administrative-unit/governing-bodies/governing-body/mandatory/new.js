@@ -1,12 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import {
-  createPrimaryContact,
-  createSecondaryContact,
-} from 'frontend-organization-portal/models/contact-point';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
-import { getAddressValidations } from 'frontend-organization-portal/validations/address';
-import contactValidations from 'frontend-organization-portal/validations/contact-point';
 import { mandatoryWithRequiredRoleValidations } from 'frontend-organization-portal/validations/mandatory';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryNewRoute extends Route {
@@ -38,10 +32,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       mandatory.typeHalf = undefined;
     }
 
-    let contact = createPrimaryContact(this.store);
-    let secondaryContact = createSecondaryContact(this.store);
-    let address = this.store.createRecord('address');
-
     return {
       administrativeUnit: this.modelFor(
         'administrative-units.administrative-unit'
@@ -52,15 +42,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         mandatoryWithRequiredRoleValidations
       ),
       mandatoryRecord: mandatory,
-      contact: createValidatedChangeset(contact, contactValidations),
-      contactRecord: contact,
-      secondaryContact: createValidatedChangeset(
-        secondaryContact,
-        contactValidations
-      ),
-      secondaryContactRecord: secondaryContact,
-      address: createValidatedChangeset(address, getAddressValidations(false)),
-      addressRecord: address,
     };
   }
 

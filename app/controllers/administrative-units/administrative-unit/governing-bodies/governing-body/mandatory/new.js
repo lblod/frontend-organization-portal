@@ -3,19 +3,23 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
-import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { isWorshipMember } from 'frontend-organization-portal/models/board-position';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryNewController extends Controller {
   @service router;
   @service store;
+  @service contactDetails;
 
   queryParams = ['personId', 'positionId'];
+
+  @tracked computedContactDetails;
 
   @tracked personId;
   @tracked positionId;
 
   @tracked targetPerson = null;
+  @tracked contact = null;
+  @tracked allContacts = null;
 
   get isSelectingTargetPerson() {
     return !this.targetPerson;
@@ -35,6 +39,17 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     } else {
       mandatory.isCurrentPosition = false;
     }
+  }
+
+  @dropTask
+  *selectTargetPerson(p) {
+    const { person, positions } =
+      yield this.contactDetails.getPersonAndAllPositions(p.id);
+    this.allContacts = yield this.contactDetails.positionsToEditableContacts(
+      positions
+    );
+    this.contact = { position: this.model.mandatory };
+    this.targetPerson = person;
   }
 
   @action
@@ -61,29 +76,10 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   *createMandatoryPositionTask(event) {
     event.preventDefault();
 
-    let { mandatory, governingBody, contact, secondaryContact, address } =
-      this.model;
+    let { mandatory, governingBody } = this.model;
 
-    yield Promise.all([
-      mandatory.validate(),
-      contact.validate(),
-      secondaryContact.validate(),
-      address.validate(),
-    ]);
-
-    if (
-      mandatory.isValid &&
-      contact.isValid &&
-      secondaryContact.isValid &&
-      address.isValid
-    ) {
-      address.fullAddress = combineFullAddress(address);
-      yield address.save();
-
-      contact.contactAddress = address;
-      yield contact.save();
-      yield secondaryContact.save();
-
+    yield mandatory.validate();
+    if (mandatory.isValid) {
       let mandates = yield governingBody.mandates;
       let mandate = findExistingMandateByRole(mandates, mandatory.role);
 
@@ -93,9 +89,22 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         mandate.governingBody = governingBody;
         yield mandate.save();
       }
+      if (this.computedContactDetails) {
+        let { primaryContact, secondaryContact, address } =
+          this.computedContactDetails;
+        if (address.isDirty) {
+          yield address.save();
+        }
 
+        if (primaryContact.isDirty) {
+          yield primaryContact.save();
+        }
+        if (secondaryContact.isDirty) {
+          yield secondaryContact.save();
+        }
+        mandatory.contacts.pushObjects([primaryContact, secondaryContact]);
+      }
       mandatory.governingAlias = this.targetPerson;
-      mandatory.contacts.pushObjects([contact, secondaryContact]);
       mandatory.mandate = mandate;
       yield mandatory.save();
 
@@ -109,13 +118,15 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     this.personId = null;
     this.positionId = null;
     this.targetPerson = null;
+    this.allContacts = null;
+    this.contact = null;
     this.removeUnsavedRecords();
   }
-
+  @action
+  updateContact(editingContact) {
+    this.computedContactDetails = editingContact;
+  }
   removeUnsavedRecords() {
-    this.model.addressRecord.rollbackAttributes();
-    this.model.contactRecord.rollbackAttributes();
-    this.model.secondaryContactRecord.rollbackAttributes();
     this.model.mandatoryRecord.rollbackAttributes();
   }
 }

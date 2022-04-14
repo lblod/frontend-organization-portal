@@ -31,7 +31,8 @@
 
   {{#if this.isSelectingTargetPerson}}
     <PersonSearch
-      @onSelect={{fn (mut this.targetPerson)}}
+      @onSelect={{(perform this.selectTargetPerson)}}
+      @loading={{this.selectTargetPerson.isRunning}}
       @personCreationRedirectUrl={{this.router.currentURL}}
     />
   {{else}}
@@ -68,13 +69,14 @@
           </Card.Columns>
         </:card>
       </DataCard>
-
-      <Position::ContactEditCard
-        @address={{@model.address}}
-        @primaryContact={{@model.contact}}
-        @secondaryContact={{@model.secondaryContact}}
-      />
-
+      <AuContent>
+        <ContactDetails
+          @title="Contactgegevens"
+          @contact={{this.contact}}
+          @onUpdate={{this.updateContact}}
+          @positions={{this.allContacts}}
+        />
+      </AuContent>
       <EditCard @containsRequiredFields={{true}}>
         <:title>Mandaat</:title>
         <:card as |Card|>

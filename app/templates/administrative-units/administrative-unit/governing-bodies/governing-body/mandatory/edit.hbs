@@ -82,15 +82,12 @@
           </:card>
         </DataCard>
 
-        <Position::ContactEditCard
-          @address={{@model.address}}
-          @primaryContact={{@model.contact}}
-          @secondaryContact={{@model.secondaryContact}}
-          @isAddressSearchEnabledInitially={{if
-            @model.address.addressRegisterUri
-            true
-            false
-          }}
+
+        <ContactDetails
+          @title="Contactgegevens"
+          @contact={{@model.contact}}
+          @onUpdate={{this.updateContact}}
+          @positions={{@model.allContacts}}
         />
 
         <EditCard @containsRequiredFields={{true}}>
