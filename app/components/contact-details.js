@@ -70,7 +70,6 @@ export default class ContactDetailsComponent extends Component {
         address = createValidatedChangeset(addr, getAddressValidations());
       }
 
-      console.log(secondaryContact.email);
       this.editingContact = {
         primaryContact,
         secondaryContact,
