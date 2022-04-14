@@ -25,7 +25,9 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
     // TODO: at the moment new administrative units don't have a governingBody set so this route breaks without this workaround
     // Remove this once we have a proper plan for newly created administrative units
     let governingBodies = governingBody
-      ? await governingBody.hasTimeSpecializations
+      ? (await governingBody.hasTimeSpecializations).toArray().sort((a, b) => {
+          return b.endDate - a.endDate;
+        })
       : [];
 
     return {
