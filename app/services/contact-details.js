@@ -4,6 +4,8 @@ import { inject as service } from '@ember/service';
 import { isActivePosition } from 'frontend-organization-portal/utils/position';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import contactValidations from 'frontend-organization-portal/validations/contact-point';
+import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
+
 import { getAddressValidations } from 'frontend-organization-portal/validations/address';
 import {
   findPrimaryContact,
@@ -112,7 +114,10 @@ export default class ContactDetailsService extends Service {
           : createValidatedChangeset(address, getAddressValidations()),
         secondaryContact: !secondaryContact
           ? null
-          : createValidatedChangeset(secondaryContact, contactValidations),
+          : createValidatedChangeset(
+              secondaryContact,
+              secondaryContactValidations
+            ),
       };
       contacts.push(contact);
     }
