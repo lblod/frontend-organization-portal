@@ -26,6 +26,9 @@ export default class MunicipalitySelectComponent extends Component {
           },
         },
         sort: 'name',
+        page: {
+          size: 400,
+        },
       });
 
       return municipalities.mapBy('name');
