@@ -10,6 +10,8 @@ import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import { getAddressValidations } from 'frontend-organization-portal/validations/address';
 import contactValidations from 'frontend-organization-portal/validations/contact-point';
+import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
+
 import worshipAdministrativeUnitValidations, {
   getStructuredIdentifierKBOValidations,
 } from 'frontend-organization-portal/validations/worship-administrative-unit';
@@ -66,7 +68,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
       contact: createValidatedChangeset(primaryContact, contactValidations),
       secondaryContact: createValidatedChangeset(
         secondaryContact,
-        contactValidations
+        secondaryContactValidations
       ),
       identifierKBO,
       structuredIdentifierKBO: createValidatedChangeset(

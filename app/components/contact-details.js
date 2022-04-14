@@ -5,6 +5,7 @@ import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import contactValidations from 'frontend-organization-portal/validations/contact-point';
+import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { getAddressValidations } from 'frontend-organization-portal/validations/address';
 import {
@@ -58,13 +59,17 @@ export default class ContactDetailsComponent extends Component {
       if (!secondaryContact) {
         const sc = createSecondaryContact(this.store);
         position.contacts.pushObject(sc);
-        secondaryContact = createValidatedChangeset(sc, contactValidations);
+        secondaryContact = createValidatedChangeset(
+          sc,
+          secondaryContactValidations
+        );
       }
       if (!address) {
         const addr = this.store.createRecord('address');
         primaryContact.contactAddress = addr;
         address = createValidatedChangeset(addr, getAddressValidations());
       }
+
       this.editingContact = {
         primaryContact,
         secondaryContact,
@@ -94,7 +99,7 @@ export default class ContactDetailsComponent extends Component {
       ),
       secondaryContact: createValidatedChangeset(
         secondaryContact,
-        contactValidations
+        secondaryContactValidations
       ),
       address: createValidatedChangeset(address, getAddressValidations()),
     };
