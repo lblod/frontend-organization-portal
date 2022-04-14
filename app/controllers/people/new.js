@@ -75,6 +75,18 @@ export default class PeopleNewController extends Controller {
     this.removeUnsavedRecords();
   }
 
+  get minDate() {
+    let minDate = new Date();
+    minDate.setFullYear(1900);
+    minDate.setMonth(0);
+    minDate.setDate(1);
+    return minDate;
+  }
+
+  get maxDate() {
+    return new Date();
+  }
+
   removeUnsavedRecords() {
     this.model.person.rollbackAttributes();
   }

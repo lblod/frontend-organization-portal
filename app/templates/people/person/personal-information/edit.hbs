@@ -128,6 +128,8 @@
                     <:content>
                       <Datepicker
                         @id="person-date-of-birth"
+                        @min={{this.minDate}}
+                        @max={{this.maxDate}}
                         @value={{@model.sensitiveInformation.dateOfBirth}}
                         @onChange={{fn
                           (mut @model.sensitiveInformation.dateOfBirth)
