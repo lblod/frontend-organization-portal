@@ -42,14 +42,11 @@ export default class ContactDetailsComponent extends Component {
     const positions = [];
     if (this.args.positions) {
       for (const cp of this.args.positions) {
-        if (cp.primaryContact) {
-          if (
-            !positions.some(
-              (p) => p.primaryContact?.id === cp.primaryContact?.id
-            )
-          ) {
-            positions.push(cp);
-          }
+        if (
+          cp.primaryContact &&
+          !positions.some((p) => p.primaryContact?.id === cp.primaryContact.id)
+        ) {
+          positions.push(cp);
         }
       }
     }
@@ -59,7 +56,6 @@ export default class ContactDetailsComponent extends Component {
   @action
   cancel() {
     this.rollback(this.editingContact);
-    //this.editingContact.position.rollbackAttributes();
     this.editingContact = null;
   }
 
