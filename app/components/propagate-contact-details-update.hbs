@@ -11,7 +11,7 @@
           <AuButtonGroup class="au-c-button-group--align-right">
             <AuButton
               @loading={{this.save.isRunning}}
-              @disabled={{this.save.isRunning}}
+              @disabled={{( and (not this.selectedPositions.length) this.save.isRunning)}}
               {{on "click" (perform this.save)}}
             >
               Opslaan
