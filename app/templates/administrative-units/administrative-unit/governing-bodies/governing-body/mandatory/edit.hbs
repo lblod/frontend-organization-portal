@@ -1,194 +1,206 @@
-<div class="au-c-body-container au-c-body-container--scroll">
-  <div class="au-o-box au-o-flow au-o-flow--large">
-    <PageHeader>
-      <:title>Bewerk mandataris</:title>
-      <:subtitle>
-        {{@model.person.givenName}}
-        {{@model.person.familyName}}
-      </:subtitle>
-      <:action>
-        <div>
-          <AuButtonGroup class="au-c-button-group--align-right">
-            <AuButton
-              @loading={{this.save.isRunning}}
-              @disabled={{this.save.isRunning}}
-              type="submit"
-              form="edit-mandatory-form"
-            >
-              Opslaan
-            </AuButton>
+{{#unless this.positionsWithSameOldAddress}}
+  <div class="au-c-body-container au-c-body-container--scroll">
+    <div class="au-o-box au-o-flow au-o-flow--large">
+      <PageHeader>
+        <:title>Bewerk mandataris</:title>
+        <:subtitle>
+          {{@model.person.givenName}}
+          {{@model.person.familyName}}
+        </:subtitle>
+        <:action>
+          <div>
+            <AuButtonGroup class="au-c-button-group--align-right">
+              <AuButton
+                @loading={{this.save.isRunning}}
+                @disabled={{this.save.isRunning}}
+                type="submit"
+                form="edit-mandatory-form"
+              >
+                Opslaan
+              </AuButton>
 
-            <AuLink
-              @route="administrative-units.administrative-unit.governing-bodies.governing-body"
-              @skin="button-secondary"
-            >
-              Annuleer
-            </AuLink>
-          </AuButtonGroup>
-          <ReportWrongData />
-        </div>
-      </:action>
-    </PageHeader>
+              <AuLink
+                @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+                @skin="button-secondary"
+              >
+                Annuleer
+              </AuLink>
+            </AuButtonGroup>
+            <ReportWrongData />
+          </div>
+        </:action>
+      </PageHeader>
 
-    <DataCard>
-      <:title>Persoonlijke gegevens</:title>
-      <:card as |Card|>
-        <Card.Columns>
-          <:left as |Item|>
-            <Item>
-              <:label>Naam</:label>
-              <:content>
-                {{@model.person.givenName}}
-                {{@model.person.familyName}}
-              </:content>
-            </Item>
-          </:left>
+      <DataCard>
+        <:title>Persoonlijke gegevens</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item>
+                <:label>Naam</:label>
+                <:content>
+                  {{@model.person.givenName}}
+                  {{@model.person.familyName}}
+                </:content>
+              </Item>
+            </:left>
 
-        </Card.Columns>
-      </:card>
-    </DataCard>
+          </Card.Columns>
+        </:card>
+      </DataCard>
 
-    <form
-      id="edit-mandatory-form"
-      aria-label="edit-mandatory-form"
-      {{on "submit" (perform this.save)}}
-    >
-      <div class="au-o-flow au-o-flow--large">
-        <DataCard>
-          <:title>Positie</:title>
-          <:card as |Card|>
-            <Card.Columns>
-              <:left as |Item|>
-                <Item>
-                  <:label>Type</:label>
-                  <:content>Mandaat</:content>
-                </Item>
-                <Item>
-                  <:label>Bestuursfunctie</:label>
-                  <:content>
-                    {{@model.mandatory.mandate.roleBoard.label}}
-                  </:content>
-                </Item>
-              </:left>
-              <:right as |Item|>
-                <Item>
-                  <:label>Naam Eredienst</:label>
-                  <:content>
-                    {{@model.administrativeUnit.name}}
-                  </:content>
-                </Item>
-              </:right>
-            </Card.Columns>
-          </:card>
-        </DataCard>
+      <form
+        id="edit-mandatory-form"
+        aria-label="edit-mandatory-form"
+        {{on "submit" (perform this.save)}}
+      >
+        <div class="au-o-flow au-o-flow--large">
+          <DataCard>
+            <:title>Positie</:title>
+            <:card as |Card|>
+              <Card.Columns>
+                <:left as |Item|>
+                  <Item>
+                    <:label>Type</:label>
+                    <:content>Mandaat</:content>
+                  </Item>
+                  <Item>
+                    <:label>Bestuursfunctie</:label>
+                    <:content>
+                      {{@model.mandatory.mandate.roleBoard.label}}
+                    </:content>
+                  </Item>
+                </:left>
+                <:right as |Item|>
+                  <Item>
+                    <:label>Naam Eredienst</:label>
+                    <:content>
+                      {{@model.administrativeUnit.name}}
+                    </:content>
+                  </Item>
+                </:right>
+              </Card.Columns>
+            </:card>
+          </DataCard>
 
+          <ContactDetails
+            @title="Contactgegevens"
+            @contact={{@model.contact}}
+            @onUpdate={{this.updateContact}}
+            @positions={{@model.allContacts}}
+          />
 
-        <ContactDetails
-          @title="Contactgegevens"
-          @contact={{@model.contact}}
-          @onUpdate={{this.updateContact}}
-          @positions={{@model.allContacts}}
-        />
-
-        <EditCard @containsRequiredFields={{true}}>
-          <:title>Aanstelling</:title>
-          <:card as |Card|>
-            <Card.Columns>
-              <:left as |Item|>
-                {{#if this.showHalfElectionTypeSelect}}
+          <EditCard @containsRequiredFields={{true}}>
+            <:title>Aanstelling</:title>
+            <:card as |Card|>
+              <Card.Columns>
+                <:left as |Item|>
+                  {{#if this.showHalfElectionTypeSelect}}
+                    <Item
+                      @labelFor="half-election-type"
+                      @required={{true}}
+                      @errorMessage={{@model.mandatory.error.typeHalf.validation}}
+                    >
+                      <:label>Verkozen</:label>
+                      <:content as |errorMessage|>
+                        <HalfElectionTypeSelect
+                          @selected={{@model.mandatory.typeHalf}}
+                          @onChange={{fn (mut @model.mandatory.typeHalf)}}
+                          @id="half-election-type"
+                          @error={{errorMessage}}
+                        />
+                      </:content>
+                    </Item>
+                  {{/if}}
                   <Item
-                    @labelFor="half-election-type"
+                    @labelFor="start-date"
                     @required={{true}}
-                    @errorMessage={{@model.mandatory.error.typeHalf.validation}}
+                    @errorMessage={{@model.mandatory.error.startDate.validation}}
                   >
-                    <:label>Verkozen</:label>
+                    <:label>Start mandaat</:label>
                     <:content as |errorMessage|>
-                      <HalfElectionTypeSelect
-                        @selected={{@model.mandatory.typeHalf}}
-                        @onChange={{fn (mut @model.mandatory.typeHalf)}}
-                        @id="half-election-type"
+                      <Datepicker
+                        @id="start-date"
+                        @onChange={{fn (mut @model.mandatory.startDate)}}
+                        @value={{@model.mandatory.startDate}}
                         @error={{errorMessage}}
                       />
                     </:content>
                   </Item>
-                {{/if}}
-                <Item
-                  @labelFor="start-date"
-                  @required={{true}}
-                  @errorMessage={{@model.mandatory.error.startDate.validation}}
-                >
-                  <:label>Start mandaat</:label>
-                  <:content as |errorMessage|>
-                    <Datepicker
-                      @id="start-date"
-                      @onChange={{fn (mut @model.mandatory.startDate)}}
-                      @value={{@model.mandatory.startDate}}
-                      @error={{errorMessage}}
-                    />
-                  </:content>
-                </Item>
-                <Item @labelFor="expected-end-date">
-                  <:label>Geplande einddatum</:label>
-                  <:content>
-                    <Datepicker
-                      @id="expected-end-date"
-                      @onChange={{fn (mut @model.mandatory.expectedEndDate)}}
-                      @value={{@model.mandatory.expectedEndDate}}
-                    />
-                  </:content>
-                </Item>
-              </:left>
-              <:right as |Item|>
-                <Item>
-                  <:label>Bestuursperiode</:label>
-                  <:content>
-                    <AuInput
-                      @width="block"
-                      @value={{@model.governingBody.period}}
-                      disabled={{true}}
-                    />
-                  </:content>
-                </Item>
-                <Item
-                  @labelFor="end-date"
-                  @required={{not @model.mandatory.isCurrentPosition}}
-                  @errorMessage={{@model.mandatory.error.endDate.validation}}
-                >
-                  <:label>Effectieve einddatum</:label>
-                  <:content as |errorMessage|>
-                    <Datepicker
-                      @id="end-date"
-                      @onChange={{this.handleEndDateChange}}
-                      @value={{@model.mandatory.endDate}}
-                      @error={{errorMessage}}
-                    />
-                  </:content>
-                </Item>
-                <Item>
-                  <:content>
-                    <AuControlCheckbox
-                      checked={{@model.mandatory.isCurrentPosition}}
-                      @label="Huidige positie"
-                      @identifier="current-position"
-                      @onChange={{this.handleIsCurrentPositionChange}}
-                    />
-                  </:content>
-                </Item>
-                <Item @labelFor="reason-stop">
-                  <:label>Reden stopzetting </:label>
-                  <:content>
-                    <AuInput
-                      @value={{@model.mandatory.reasonStopped}}
-                      @width="block"
-                      id="reason-stop"
-                    />
-                  </:content>
-                </Item>
-              </:right>
-            </Card.Columns>
-          </:card>
-        </EditCard>
-      </div>
-    </form>
+                  <Item @labelFor="expected-end-date">
+                    <:label>Geplande einddatum</:label>
+                    <:content>
+                      <Datepicker
+                        @id="expected-end-date"
+                        @onChange={{fn (mut @model.mandatory.expectedEndDate)}}
+                        @value={{@model.mandatory.expectedEndDate}}
+                      />
+                    </:content>
+                  </Item>
+                </:left>
+                <:right as |Item|>
+                  <Item>
+                    <:label>Bestuursperiode</:label>
+                    <:content>
+                      <AuInput
+                        @width="block"
+                        @value={{@model.governingBody.period}}
+                        disabled={{true}}
+                      />
+                    </:content>
+                  </Item>
+                  <Item
+                    @labelFor="end-date"
+                    @required={{not @model.mandatory.isCurrentPosition}}
+                    @errorMessage={{@model.mandatory.error.endDate.validation}}
+                  >
+                    <:label>Effectieve einddatum</:label>
+                    <:content as |errorMessage|>
+                      <Datepicker
+                        @id="end-date"
+                        @onChange={{this.handleEndDateChange}}
+                        @value={{@model.mandatory.endDate}}
+                        @error={{errorMessage}}
+                      />
+                    </:content>
+                  </Item>
+                  <Item>
+                    <:content>
+                      <AuControlCheckbox
+                        checked={{@model.mandatory.isCurrentPosition}}
+                        @label="Huidige positie"
+                        @identifier="current-position"
+                        @onChange={{this.handleIsCurrentPositionChange}}
+                      />
+                    </:content>
+                  </Item>
+                  <Item @labelFor="reason-stop">
+                    <:label>Reden stopzetting </:label>
+                    <:content>
+                      <AuInput
+                        @value={{@model.mandatory.reasonStopped}}
+                        @width="block"
+                        id="reason-stop"
+                      />
+                    </:content>
+                  </Item>
+                </:right>
+              </Card.Columns>
+            </:card>
+          </EditCard>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
+{{/unless}}
+
+{{#if this.positionsWithSameOldAddress}}
+  <PropagateContactDetailsUpdate
+    @positions={{this.positionsWithSameOldAddress}}
+    @person={{@model.person}}
+    @newContactDetails={{this.computedContactDetails}}
+    @onCancel={{this.onTransition}}
+    @onSave={{this.onTransition}}
+    @contact={{@model.contact}}
+  />
+{{/if}}

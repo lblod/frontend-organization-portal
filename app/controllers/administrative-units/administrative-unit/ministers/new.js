@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { action } from '@ember/object';
+import { combineFullAddress } from 'frontend-organization-portal/models/address';
 
 const FINANCING_CODE = {
   SELF_FINANCED: '997073905f839ac6bafe92b76050ab0b',
@@ -72,43 +73,62 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
     yield Promise.all([minister.validate(), position.validate()]);
 
     if (minister.isValid && position.isValid) {
-      position.worshipService = administrativeUnit;
-      yield position.save();
+      let contactValid = true;
 
-      let financingCodeId = this.willReceiveFinancing
-        ? FINANCING_CODE.FOD_FINANCED
-        : FINANCING_CODE.SELF_FINANCED;
-
-      let financing = yield this.store.findRecord(
-        'financing-code',
-        financingCodeId,
-        {
-          backgroundReload: false,
-        }
-      );
       if (this.computedContactDetails) {
         let { primaryContact, secondaryContact, address } =
           this.computedContactDetails;
-        if (address.isDirty) {
-          yield address.save();
-        }
 
-        if (primaryContact.isDirty) {
-          yield primaryContact.save();
+        yield primaryContact.validate();
+        yield secondaryContact.validate();
+        yield address.validate();
+        contactValid =
+          primaryContact.isValid && secondaryContact.isValid && address.isValid;
+        if (contactValid) {
+          if (address.isDirty) {
+            address.fullAddress = combineFullAddress(address);
+          }
+          primaryContact.contactAddress = address;
+
+          if (address.isDirty) {
+            yield address.save();
+          }
+
+          if (primaryContact.isDirty) {
+            yield primaryContact.save();
+          }
+          if (secondaryContact.isDirty) {
+            yield secondaryContact.save();
+          }
+          minister.contacts.clear();
+          minister.contacts.pushObjects([primaryContact, secondaryContact]);
         }
-        if (secondaryContact.isDirty) {
-          yield secondaryContact.save();
-        }
-        minister.contacts.pushObjects([primaryContact, secondaryContact]);
       }
-      minister.ministerPosition = position;
-      minister.person = this.targetPerson;
-      minister.financing = financing;
-      yield minister.save();
+      if (contactValid) {
+        position.worshipService = administrativeUnit;
+        yield position.save();
 
-      this.router.transitionTo(
-        'administrative-units.administrative-unit.ministers'
-      );
+        let financingCodeId = this.willReceiveFinancing
+          ? FINANCING_CODE.FOD_FINANCED
+          : FINANCING_CODE.SELF_FINANCED;
+
+        let financing = yield this.store.findRecord(
+          'financing-code',
+          financingCodeId,
+          {
+            backgroundReload: false,
+          }
+        );
+
+        minister.ministerPosition = position;
+        minister.person = this.targetPerson;
+        minister.financing = financing;
+        yield minister.save();
+
+        this.router.transitionTo(
+          'administrative-units.administrative-unit.ministers'
+        );
+      }
     }
   }
 
@@ -117,6 +137,9 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
     this.positionId = null;
     this.targetPerson = null;
     this.willReceiveFunding = true;
+    this.computedContactDetails = null;
+    this.contact = null;
+    this.allContacts = null;
     this.removeUnsavedRecords();
   }
   @action

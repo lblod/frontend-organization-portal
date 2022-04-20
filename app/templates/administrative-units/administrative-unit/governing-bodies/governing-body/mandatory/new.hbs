@@ -70,12 +70,14 @@
         </:card>
       </DataCard>
       <AuContent>
-        <ContactDetails
-          @title="Contactgegevens"
-          @contact={{this.contact}}
-          @onUpdate={{this.updateContact}}
-          @positions={{this.allContacts}}
-        />
+        {{#if this.contact}}
+          <ContactDetails
+            @title="Contactgegevens"
+            @contact={{this.contact}}
+            @onUpdate={{this.updateContact}}
+            @positions={{this.allContacts}}
+          />
+        {{/if}}
       </AuContent>
       <EditCard @containsRequiredFields={{true}}>
         <:title>Mandaat</:title>

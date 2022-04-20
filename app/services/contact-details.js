@@ -105,6 +105,9 @@ export default class ContactDetailsService extends Service {
 
       let contact = {
         position,
+        role: computedPosition.role,
+        administrativeUnit: computedPosition.administrativeUnit,
+
         title: computedPosition.title,
         primaryContact: !primaryContact
           ? null
