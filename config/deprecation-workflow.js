@@ -2,10 +2,8 @@
 self.deprecationWorkflow = self.deprecationWorkflow || {};
 self.deprecationWorkflow.config = {
   workflow: [
-    { handler: 'silence', matchId: 'this-property-fallback' }, // AuDataTable triggers this
     { handler: 'silence', matchId: 'ember.built-in-components.import' }, // Ember inspector triggers this
     { handler: 'silence', matchId: 'ember-global' }, // Ember-acmidm-login triggers this
-    { handler: 'silence', matchId: 'ember-modifier.function-based-options' }, // AuDropdown triggers it
     { handler: 'silence', matchId: 'ember-modifier.use-destroyables' }, // PowerSelect triggers it
     { handler: 'silence', matchId: 'ember-modifier.use-modify' }, // PowerSelect triggers it
     {
