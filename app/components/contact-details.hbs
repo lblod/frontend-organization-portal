@@ -17,8 +17,7 @@
       <:title>Contactgegevens</:title>
     </Position::ContactEditCard>
   </form>
-{{/if}}
-{{#unless this.singlePosition}}
+{{else}}
   <AuCard as |c|>
     <c.header>
       <AuToolbar>
@@ -162,4 +161,4 @@
       </AuButton>
     </:footer>
   </AuModal>
-{{/unless}}
+{{/if}}

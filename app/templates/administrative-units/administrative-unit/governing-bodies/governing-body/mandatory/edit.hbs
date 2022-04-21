@@ -1,4 +1,13 @@
-{{#unless this.positionsWithSameOldAddress}}
+{{#if this.positionsWithSameOldAddress}}
+  <PropagateContactDetailsUpdate
+    @positions={{this.positionsWithSameOldAddress}}
+    @person={{@model.person}}
+    @newContactDetails={{this.computedContactDetails}}
+    @onCancel={{this.onTransition}}
+    @onSave={{this.onTransition}}
+    @contact={{@model.contact}}
+  />
+{{else}}
   <div class="au-c-body-container au-c-body-container--scroll">
     <div class="au-o-box au-o-flow au-o-flow--large">
       <PageHeader>
@@ -192,15 +201,4 @@
       </form>
     </div>
   </div>
-{{/unless}}
-
-{{#if this.positionsWithSameOldAddress}}
-  <PropagateContactDetailsUpdate
-    @positions={{this.positionsWithSameOldAddress}}
-    @person={{@model.person}}
-    @newContactDetails={{this.computedContactDetails}}
-    @onCancel={{this.onTransition}}
-    @onSave={{this.onTransition}}
-    @contact={{@model.contact}}
-  />
 {{/if}}

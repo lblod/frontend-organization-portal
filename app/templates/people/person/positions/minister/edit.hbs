@@ -1,4 +1,13 @@
-{{#unless this.positionsWithSameOldAddress}}
+{{#if this.positionsWithSameOldAddress}}
+  <PropagateContactDetailsUpdate
+    @positions={{this.positionsWithSameOldAddress}}
+    @person={{@model.person}}
+    @newContactDetails={{this.computedContactDetails}}
+    @onCancel={{this.handleTransitionTo}}
+    @onSave={{this.handleTransitionTo}}
+    @contact={{@model.contact}}
+  />
+{{else}}
   {{page-title "Bewerk"}}
 
   <div class="au-c-body-container au-c-body-container--scroll">
@@ -169,14 +178,4 @@
     </div>
   </div>
 
-{{/unless}}
-{{#if this.positionsWithSameOldAddress}}
-  <PropagateContactDetailsUpdate
-    @positions={{this.positionsWithSameOldAddress}}
-    @person={{@model.person}}
-    @newContactDetails={{this.computedContactDetails}}
-    @onCancel={{this.handleTransitionTo}}
-    @onSave={{this.handleTransitionTo}}
-    @contact={{@model.contact}}
-  />
 {{/if}}
