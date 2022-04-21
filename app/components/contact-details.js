@@ -185,7 +185,7 @@ export default class ContactDetailsComponent extends Component {
 
       this.positions = [
         ...this.reloadPositions().filter(
-          (p) => p.primaryContact?.id !== this.args.contact?.primaryContact.id
+          (p) => p.primaryContact?.id !== this.args.contact?.primaryContact?.id
         ),
         {
           primaryContact,
