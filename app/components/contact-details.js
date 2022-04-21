@@ -119,9 +119,6 @@ export default class ContactDetailsComponent extends Component {
     let secondaryContact = createSecondaryContact(this.store);
     let address = this.store.createRecord('address');
     primaryContact.contactAddress = address;
-    position.contacts.clear();
-    position.contacts.pushObject(primaryContact);
-    position.contacts.pushObject(secondaryContact);
     const editing = {
       position,
       title,
