@@ -7,6 +7,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @service store;
   @service currentSession;
   @service router;
+  @service contactDetails;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
@@ -20,16 +21,20 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       'administrative-units.administrative-unit.governing-bodies.governing-body'
     );
 
-    if (personId) {
-      transition.data.person = await this.store.findRecord('person', personId);
-    }
-
     let mandatory = this.store.createRecord('worship-mandatory');
     mandatory.isCurrentPosition = true;
     if (positionId) {
       let role = await this.store.findRecord('board-position', positionId);
       mandatory.role = role;
       mandatory.typeHalf = undefined;
+    }
+    if (personId) {
+      const { person, positions } =
+        await this.contactDetails.getPersonAndAllPositions(personId);
+      transition.data.allContacts =
+        await this.contactDetails.positionsToEditableContacts(positions);
+      transition.data.person = person;
+      transition.data.contact = { position: mandatory };
     }
 
     return {
@@ -50,6 +55,8 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
     if (transition.data.person) {
       controller.targetPerson = transition.data.person;
+      controller.contact = transition.data.contact;
+      controller.allContacts = transition.data.allContacts;
     }
   }
 

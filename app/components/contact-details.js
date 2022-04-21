@@ -14,24 +14,37 @@ import {
 } from 'frontend-organization-portal/models/contact-point';
 export default class ContactDetailsComponent extends Component {
   @tracked editingContact;
-  @tracked test = false;
   @tracked positions;
+  @tracked singlePosition = false;
   @tracked selectedContact;
+  @tracked oldContactId;
+  @tracked isNew;
   @service store;
   @service router;
 
   constructor() {
     super(...arguments);
-    this.selectedContact = this.args.contact;
+    if (this.args.contact?.primaryContact?.id) {
+      this.selectedContact = this.args.contact;
+      this.oldContactId = this.args.contact.primaryContact.id; // keep track of old primary contact
+    }
     this.positions = this.reloadPositions();
+    if (!this.positions?.length) {
+      this.newContact();
+      this.args.onUpdate(this.editingContact);
+      this.singlePosition = true;
+    } else {
+      this.singlePosition = false;
+    }
   }
 
   reloadPositions() {
     const positions = [];
-    for (const cp of this.args.positions) {
-      if (cp.primaryContact) {
+    if (this.args.positions) {
+      for (const cp of this.args.positions) {
         if (
-          !positions.some((p) => p.primaryContact?.id === cp.primaryContact?.id)
+          cp.primaryContact &&
+          !positions.some((p) => p.primaryContact?.id === cp.primaryContact.id)
         ) {
           positions.push(cp);
         }
@@ -41,55 +54,71 @@ export default class ContactDetailsComponent extends Component {
   }
 
   @action
-  async editContact(contact) {
-    if (!contact) {
-      this.editingContact.primaryContact?.rollback();
-      this.editingContact.secondaryContact?.rollback();
-      this.editingContact.address?.rollback();
-      this.editingContact.position.rollbackAttributes();
-      this.editingContact = null;
-    } else {
-      let { primaryContact, secondaryContact, address, position, title } =
-        contact;
-      if (!primaryContact) {
-        const pc = createPrimaryContact(this.store);
-        position.contacts.pushObject(pc);
-        primaryContact = createValidatedChangeset(pc, contactValidations);
-      }
-      if (!secondaryContact) {
-        const sc = createSecondaryContact(this.store);
-        position.contacts.pushObject(sc);
-        secondaryContact = createValidatedChangeset(
-          sc,
-          secondaryContactValidations
-        );
-      }
-      if (!address) {
-        const addr = this.store.createRecord('address');
-        primaryContact.contactAddress = addr;
-        address = createValidatedChangeset(addr, getAddressValidations());
-      }
+  cancel() {
+    this.rollback(this.editingContact);
+    this.editingContact = null;
+  }
 
-      this.editingContact = {
-        primaryContact,
-        secondaryContact,
-        address,
-        position,
-        title,
-      };
+  rollback(contact) {
+    if (contact) {
+      const { primaryContact, secondaryContact, address } = contact;
+      if (primaryContact) {
+        primaryContact.rollback();
+      }
+      if (address) {
+        address.rollback();
+      }
+      if (secondaryContact) {
+        secondaryContact.rollback();
+      }
     }
   }
 
   @action
-  async newContact(computedPosition) {
-    let { position, title } = computedPosition;
+  fixErrorAndSelect(contact) {
+    this.isNew = false;
+    if (this.selectedContact?.position.id !== contact.position.id) {
+      this.rollback(this.selectedContact); // rollback the previous selected contact
+    }
+
+    let { primaryContact, secondaryContact, address, position, title } =
+      contact;
+    if (!primaryContact) {
+      const pc = createPrimaryContact(this.store);
+      position.contacts.pushObject(pc);
+      primaryContact = createValidatedChangeset(pc, contactValidations);
+    }
+    if (!secondaryContact) {
+      const sc = createSecondaryContact(this.store);
+      position.contacts.pushObject(sc);
+      secondaryContact = createValidatedChangeset(
+        sc,
+        secondaryContactValidations
+      );
+    }
+    if (!address) {
+      const addr = this.store.createRecord('address');
+      primaryContact.contactAddress = addr;
+      address = createValidatedChangeset(addr, getAddressValidations());
+    }
+
+    this.editingContact = {
+      primaryContact,
+      secondaryContact,
+      address,
+      position,
+      title,
+    };
+  }
+
+  @action
+  async newContact() {
+    this.isNew = true;
+    let { position, title } = this.args.contact;
     let primaryContact = createPrimaryContact(this.store);
     let secondaryContact = createSecondaryContact(this.store);
     let address = this.store.createRecord('address');
     primaryContact.contactAddress = address;
-    position.contacts.clear();
-    position.contacts.pushObject(primaryContact);
-    position.contacts.pushObject(secondaryContact);
     const editing = {
       position,
       title,
@@ -103,30 +132,33 @@ export default class ContactDetailsComponent extends Component {
       ),
       address: createValidatedChangeset(address, getAddressValidations()),
     };
-    this.selectedContact = { ...editing };
     this.editingContact = editing;
   }
 
   @action
   copy(computedPosition) {
-    if (computedPosition === this.selectedContact) {
-      // do nothing
-    } else {
-      let { primaryContact, secondaryContact, address } = computedPosition;
-      let { position, title } = this.selectedContact;
-      position.contacts.clear();
-      position.contacts.pushObject(primaryContact);
-      if (secondaryContact) {
-        position.contacts.pushObject(secondaryContact);
-      }
-      this.selectedContact = {
-        position,
-        title,
-        primaryContact,
-        secondaryContact,
-        address,
-      };
+    let { primaryContact, secondaryContact, address } = computedPosition;
+    let { position, title } = this.args.contact;
+    position.contacts.clear();
+    position.contacts.pushObject(primaryContact);
+    if (!secondaryContact) {
+      const sc = createSecondaryContact(this.store);
+      position.contacts.pushObject(sc);
+      secondaryContact = createValidatedChangeset(
+        sc,
+        secondaryContactValidations
+      );
     }
+    position.contacts.pushObject(secondaryContact);
+
+    this.selectedContact = {
+      position,
+      title,
+      primaryContact,
+      secondaryContact,
+      address,
+    };
+    this.args.onUpdate(this.selectedContact);
   }
 
   @dropTask
@@ -146,8 +178,12 @@ export default class ContactDetailsComponent extends Component {
       primaryContact.contactAddress = address;
 
       yield this.args.onUpdate(this.editingContact);
+      this.selectedContact = this.editingContact;
+
       this.positions = [
-        ...this.reloadPositions().filter((p) => p.position.id !== position.id),
+        ...this.reloadPositions().filter(
+          (p) => p.primaryContact?.id !== this.args.contact?.primaryContact?.id
+        ),
         {
           primaryContact,
           secondaryContact,

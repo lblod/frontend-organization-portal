@@ -135,3 +135,10 @@ table.dataTable tbody th {
 .items-center {
   align-items: center !important;
 }
+.au-c-modal--large {
+  max-width: calc(100% - 9.6rem);
+  max-height: calc(100% - 9.6rem);
+  width: calc(65% - 9.6rem);
+  height: calc(85% - 9.6rem);
+  left: 1.2rem;
+}

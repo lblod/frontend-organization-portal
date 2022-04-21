@@ -196,7 +196,7 @@
         <Site::ContactEditCard
           @address={{@model.address}}
           @isAddressSearchEnabledInitially={{if
-            @model.address.addressRegisterUri
+            (or (not @model.address.id) @model.address.addressRegisterUri)
             true
             false
           }}

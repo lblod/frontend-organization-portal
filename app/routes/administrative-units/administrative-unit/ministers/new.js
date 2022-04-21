@@ -9,6 +9,7 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute exte
   @service store;
   @service currentSession;
   @service router;
+  @service contactDetails;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
@@ -18,10 +19,6 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute exte
     }
   }
   async model({ personId, positionId }, transition) {
-    if (personId) {
-      transition.data.person = await this.store.findRecord('person', personId);
-    }
-
     let minister = this.store.createRecord('minister');
     minister.isCurrentPosition = true;
     let position = this.store.createRecord('minister-position');
@@ -31,6 +28,14 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute exte
         positionId
       );
       position.function = role;
+    }
+    if (personId) {
+      const { person, positions } =
+        await this.contactDetails.getPersonAndAllPositions(personId);
+      transition.data.allContacts =
+        await this.contactDetails.positionsToEditableContacts(positions);
+      transition.data.person = person;
+      transition.data.contact = { position: minister };
     }
     return {
       administrativeUnit: this.modelFor(
@@ -45,9 +50,10 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute exte
 
   setupController(controller, model, transition) {
     super.setupController(...arguments);
-
     if (transition.data.person) {
       controller.targetPerson = transition.data.person;
+      controller.contact = transition.data.contact;
+      controller.allContacts = transition.data.allContacts;
     }
   }
 
