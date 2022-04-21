@@ -9,7 +9,7 @@
       @primaryContact={{this.editingContact.primaryContact}}
       @secondaryContact={{this.editingContact.secondaryContact}}
       @isAddressSearchEnabledInitially={{if
-        this.editingContact.address.addressRegisterUri
+        (or (not this.editingContact.address.id) this.editingContact.address.addressRegisterUri)
         true
         false
       }}
@@ -125,7 +125,7 @@
             @primaryContact={{this.editingContact.primaryContact}}
             @secondaryContact={{this.editingContact.secondaryContact}}
             @isAddressSearchEnabledInitially={{if
-              this.editingContact.address.addressRegisterUri
+                (or (not this.editingContact.address.id) this.editingContact.address.addressRegisterUri)
               true
               false
             }}

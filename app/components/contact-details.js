@@ -184,7 +184,9 @@ export default class ContactDetailsComponent extends Component {
       this.selectedContact = this.editingContact;
 
       this.positions = [
-        ...this.reloadPositions().filter((p) => p.position.id !== position.id),
+        ...this.reloadPositions().filter(
+          (p) => p.primaryContact?.id !== this.args.contact?.primaryContact.id
+        ),
         {
           primaryContact,
           secondaryContact,
