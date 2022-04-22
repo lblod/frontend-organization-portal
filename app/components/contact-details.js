@@ -177,22 +177,23 @@ export default class ContactDetailsComponent extends Component {
       }
       primaryContact.contactAddress = address;
 
-      yield this.args.onUpdate(this.editingContact);
-      this.selectedContact = this.editingContact;
+      this.selectedContact = {
+        primaryContact,
+        secondaryContact,
+        address,
+        position,
+        title,
+      };
 
       this.positions = [
         ...this.reloadPositions().filter(
-          (p) => p.primaryContact?.id !== this.args.contact?.primaryContact?.id
+          (p) =>
+            p.primaryContact?.id !== this.selectedContact?.primaryContact?.id
         ),
-        {
-          primaryContact,
-          secondaryContact,
-          address,
-          position,
-          title,
-        },
+        this.selectedContact,
       ];
       this.editingContact = null;
+      yield this.args.onUpdate(this.selectedContact);
     }
   }
 }
