@@ -28,7 +28,7 @@
           @itemComponent={{Item}}
           @isSearchEnabledInitially={{@isAddressSearchEnabledInitially}}
         >
-          <:manualAddressInput>
+          <:manualAddressInputBeforeButton>
             <Item
               @labelFor="contact-address-street-name"
               @errorMessage={{@address.error.street.validation}}
@@ -43,6 +43,8 @@
                 />
               </:content>
             </Item>
+          </:manualAddressInputBeforeButton>
+          <:manualAddressInput>
             <Item
               @labelFor="contact-address-house-number"
               @errorMessage={{@address.error.number.validation}}
