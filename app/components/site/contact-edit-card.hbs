@@ -10,7 +10,7 @@
           @required={{true}}
           @error={{@address.isInvalid}}
         >
-          <:manualAddressInput>
+          <:manualAddressInputBeforeButton>
             <Item
               @labelFor="site-address-street-name"
               @required={{true}}
@@ -26,6 +26,8 @@
                 />
               </:content>
             </Item>
+          </:manualAddressInputBeforeButton>
+          <:manualAddressInput>
             <Item
               @labelFor="site-address-house-number"
               @required={{true}}

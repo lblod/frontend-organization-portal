@@ -52,8 +52,7 @@
     </Item>
     {{yield to="commonInput"}}
   {{else}}
-    {{yield to="manualAddressInput"}}
-    {{yield to="commonInput"}}
+    {{yield to="manualAddressInputBeforeButton"}}
     <Item>
       <:content>
         <AuButton @skin="link" {{on "click" this.toggleInputMode}}>
@@ -61,5 +60,7 @@
         </AuButton>
       </:content>
     </Item>
+    {{yield to="manualAddressInput"}}
+    {{yield to="commonInput"}}
   {{/if}}
 {{/let}}
