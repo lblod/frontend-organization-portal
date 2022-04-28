@@ -61,7 +61,7 @@ export default class AddressSearchComponent extends Component {
         this.addressesWithBusNumbers = addresses;
         this.handleBusNumberChange(firstAddress);
       } else {
-        this.updateAddressAttributes(firstAddress.adresProperties, source);
+        this.updateAddressAttributes(firstAddress, source);
       }
     }
   }
@@ -69,7 +69,7 @@ export default class AddressSearchComponent extends Component {
   @action
   handleBusNumberChange(address) {
     this.addressWithBusNumber = address;
-    this.updateAddressAttributes(address?.adresProperties);
+    this.updateAddressAttributes(address);
   }
 
   detectInitialInputMode() {
@@ -82,14 +82,14 @@ export default class AddressSearchComponent extends Component {
 
   updateAddressAttributes(address, source) {
     this.args.address.setProperties({
-      street: address.straatnaam,
-      number: address.huisnummer,
-      boxNumber: address.busnummer,
-      postcode: address.postcode,
+      street: address.street,
+      number: address.housenumber,
+      boxNumber: address.busNumber,
+      postcode: address.zipCode,
       source,
-      municipality: address.gemeentenaam,
+      municipality: address.municipality,
       province: null,
-      addressRegisterUri: address.addressRegisterUri,
+      addressRegisterUri: address.uri,
     });
   }
 

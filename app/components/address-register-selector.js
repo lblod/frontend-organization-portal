@@ -14,12 +14,12 @@ export default class AddressRegisterSelectorComponent extends Component {
   constructor() {
     super(...arguments);
 
-    if (this.args.address) {
-      let addressSuggestion = this.addressRegister.toAddressSuggestion(
-        this.args.address
-      );
+    this.addressRegister.setup({ endpoint: '/adresses-register' });
 
-      if (!addressSuggestion.isEmpty()) {
+    if (this.args.address) {
+      let addressSuggestion = this.args.address;
+
+      if (!this.addressRegister.isEmpty(addressSuggestion)) {
         this.addressSuggestion = addressSuggestion;
       }
     }
