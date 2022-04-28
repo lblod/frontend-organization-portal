@@ -36,12 +36,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
     const { id } = await mandatory.governingAlias;
 
-    const { person, positions } =
-      await this.contactDetails.getPersonAndAllPositions(id);
-    const allContacts = await this.contactDetails.positionsToEditableContacts(
-      positions
-    );
-
     let mandate = await mandatory.mandate;
     let roleBoard = await mandate.roleBoard;
 
@@ -52,8 +46,20 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     mandatoryChangeset.isCurrentPosition = !mandatoryChangeset.endDate;
     mandatoryChangeset.role = roleBoard;
 
+    let { person, positions } =
+      await this.contactDetails.getPersonAndAllPositions(id);
+    const allContacts = await this.contactDetails.positionsToEditableContacts(
+      positions
+    );
+    const currentContact = await this.contactDetails.mandatoryToPosition(
+      mandatory,
+      false
+    );
+    const currentContactChangeset =
+      await this.contactDetails.positionToEditableContact(currentContact);
+
     return {
-      contact: allContacts.find((c) => c.position.id === mandatory.id),
+      contact: currentContactChangeset,
       administrativeUnit,
       governingBody,
       mandatory: mandatoryChangeset,
