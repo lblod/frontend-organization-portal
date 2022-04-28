@@ -20,11 +20,6 @@ export default class PeoplePersonPositionsMinisterEditRoute extends Route {
     let { minister } = this.modelFor('people.person.positions.minister');
 
     let { id } = await minister.person;
-    const { person, positions } =
-      await this.contactDetails.getPersonAndAllPositions(id);
-    const allContacts = await this.contactDetails.positionsToEditableContacts(
-      positions
-    );
 
     let ministerChangeset = createValidatedChangeset(
       minister,
@@ -32,9 +27,20 @@ export default class PeoplePersonPositionsMinisterEditRoute extends Route {
     );
     ministerChangeset.isCurrentPosition = !minister.agentEndDate;
 
+    const { person, positions } =
+      await this.contactDetails.getPersonAndAllPositions(id);
+    const allContacts = await this.contactDetails.positionsToEditableContacts(
+      positions
+    );
+    const currentContact = await this.contactDetails.ministerToPosition(
+      minister,
+      false
+    );
+    const currentContactChangeset =
+      await this.contactDetails.positionToEditableContact(currentContact);
     return {
       minister: ministerChangeset,
-      contact: allContacts.find((c) => c.position.id === minister.id),
+      contact: currentContactChangeset,
       allContacts,
       person,
     };
