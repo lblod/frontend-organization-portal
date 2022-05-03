@@ -16,7 +16,10 @@ const mandatoryValidations = {
     }
   ),
   expectedEndDate: (key, newValue, oldValue, changes, content) => {
-    if (!newValue) {
+    // The messages should also appear when the content of one of the fields is deleted.
+    const expectedEndDateValue = newValue || oldValue;
+
+    if (!expectedEndDateValue) {
       return true; // not mandatory
     }
     return validateEndDateAfterStartDate(
@@ -90,6 +93,7 @@ function validateStartDateBeforeEndDate(
   const effectiveEndDateValue = changes?.endDate || content.endDate;
   const expectedEndDateValue =
     changes?.expectedEndDate || content.expectedEndDate;
+
   const newStartDate = new Date(newValue);
 
   if (effectiveEndDateValue) {
