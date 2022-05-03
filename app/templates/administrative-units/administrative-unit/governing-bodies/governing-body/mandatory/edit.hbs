@@ -130,13 +130,14 @@
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="expected-end-date">
+                <Item @labelFor="expected-end-date" @errorMessage={{@model.mandatory.error.expectedEndDate.validation}}>
                   <:label>Geplande einddatum</:label>
-                  <:content>
+                  <:content as |errorMessage|>
                     <Datepicker
                       @id="expected-end-date"
                       @onChange={{fn (mut @model.mandatory.expectedEndDate)}}
                       @value={{@model.mandatory.expectedEndDate}}
+                      @error={{errorMessage}}
                     />
                   </:content>
                 </Item>
