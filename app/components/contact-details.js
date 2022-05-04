@@ -135,30 +135,57 @@ export default class ContactDetailsComponent extends Component {
     this.editingContact = editing;
   }
 
-  @action
-  copy(computedPosition) {
+  @dropTask
+  *copy(computedPosition) {
     let { primaryContact, secondaryContact, address } = computedPosition;
     let { position, title } = this.args.contact;
     position.contacts.clear();
-    position.contacts.pushObject(primaryContact);
+    if (!primaryContact) {
+      const pc = createPrimaryContact(this.store);
+      primaryContact = createValidatedChangeset(pc, contactValidations);
+    }
+    if (!address) {
+      const addr = this.store.createRecord('address');
+      primaryContact.contactAddress = addr;
+      address = createValidatedChangeset(addr, getAddressValidations());
+    }
     if (!secondaryContact) {
       const sc = createSecondaryContact(this.store);
-      position.contacts.pushObject(sc);
       secondaryContact = createValidatedChangeset(
         sc,
         secondaryContactValidations
       );
     }
-    position.contacts.pushObject(secondaryContact);
+    yield secondaryContact.validate();
+    yield primaryContact.validate();
+    yield address.validate();
 
-    this.selectedContact = {
+    position.contacts.pushObject(primaryContact);
+    position.contacts.pushObject(secondaryContact);
+    const copied = {
       position,
       title,
       primaryContact,
       secondaryContact,
       address,
     };
-    this.args.onUpdate(this.selectedContact);
+
+    yield Promise.all([
+      address.validate(),
+      secondaryContact.validate(),
+      primaryContact.validate(),
+    ]);
+
+    if (
+      !primaryContact.isValid ||
+      !secondaryContact.isValid ||
+      !address.isValid
+    ) {
+      this.fixErrorAndSelect(copied);
+    } else {
+      this.selectedContact = copied;
+      this.args.onUpdate(this.selectedContact);
+    }
   }
 
   @dropTask
