@@ -16,6 +16,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @tracked positionId;
 
   @tracked targetPerson = null;
+  @tracked targetPersonError = false;
 
   get isSelectingTargetPerson() {
     return !this.targetPerson;
@@ -71,7 +72,21 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       address.validate(),
     ]);
 
-    if (
+    if (!this.targetPerson) {
+      this.targetPersonError = true;
+
+      const now = new Date().toISOString();
+      const error = this.store.createRecord('job-error', {
+        subject: 'Frontend - Unexpected error',
+        message:
+          'Unexpected error when trying to save a position : no target person linked',
+        detail: `Error when trying to save position belonging to governing body ${governingBody.id} for role ${mandatory.role.id}`,
+        created: now,
+        creator: 'http://lblod.data.gift/services/organization-portal-frontend',
+      });
+
+      error.save();
+    } else if (
       mandatory.isValid &&
       contact.isValid &&
       secondaryContact.isValid &&
