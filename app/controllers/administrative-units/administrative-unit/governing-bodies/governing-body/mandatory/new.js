@@ -16,6 +16,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @tracked positionId;
 
   @tracked targetPerson = null;
+  @tracked targetPersonError = false;
 
   get isSelectingTargetPerson() {
     return !this.targetPerson;
@@ -71,7 +72,9 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       address.validate(),
     ]);
 
-    if (
+    if (this.targetPerson) {
+      this.targetPersonError = true;
+    } else if (
       mandatory.isValid &&
       contact.isValid &&
       secondaryContact.isValid &&
