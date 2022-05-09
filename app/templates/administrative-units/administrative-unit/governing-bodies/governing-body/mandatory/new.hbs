@@ -190,7 +190,7 @@
               <Item>
                 <:content>
                   <AuControlCheckbox
-                    checked={{@model.mandatory.isCurrentPosition}}
+                    @checked={{@model.mandatory.isCurrentPosition}}
                     @label="Huidige positie"
                     @identifier="current-position"
                     @onChange={{this.handleIsCurrentPositionChange}}
