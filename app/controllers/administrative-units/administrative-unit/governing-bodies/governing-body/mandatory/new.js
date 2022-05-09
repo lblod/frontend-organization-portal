@@ -72,7 +72,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       address.validate(),
     ]);
 
-    if (this.targetPerson) {
+    if (!this.targetPerson) {
       this.targetPersonError = true;
     } else if (
       mandatory.isValid &&
