@@ -10,27 +10,29 @@ export default {
     }),
     validateStartDateBeforeEndDate,
   ],
-  agentEndDate: validateConditionally(
-    [
-      validatePresence({
-        presence: true,
-        ignoreBlank: true,
-        message: 'Vul de einddatum in',
-      }),
-      validateEndDateAfterStartDate,
-    ],
-    function (changes, content) {
-      let requiresAgentEndDate;
-      let isCurrentPosition = changes.isCurrentPosition;
+  agentEndDate: [
+    validateConditionally(
+      [
+        validatePresence({
+          presence: true,
+          ignoreBlank: true,
+          message: 'Vul de einddatum in',
+        }),
+      ],
+      function (changes, content) {
+        let requiresAgentEndDate;
+        let isCurrentPosition = changes.isCurrentPosition;
 
-      if (typeof isCurrentPosition !== 'boolean') {
-        isCurrentPosition = content.isCurrentPosition;
+        if (typeof isCurrentPosition !== 'boolean') {
+          isCurrentPosition = content.isCurrentPosition;
+        }
+
+        requiresAgentEndDate = !isCurrentPosition;
+        return requiresAgentEndDate;
       }
-
-      requiresAgentEndDate = !isCurrentPosition;
-      return requiresAgentEndDate;
-    }
-  ),
+    ),
+    validateEndDateAfterStartDate,
+  ],
 };
 
 function validateStartDateBeforeEndDate(
@@ -47,7 +49,7 @@ function validateStartDateBeforeEndDate(
   if (agentEndDateValue) {
     const agentEndDate = new Date(agentEndDateValue);
     if (newStartDate.getTime() > agentEndDate.getTime()) {
-      return 'Kies een startdatum die na de begindatum plaatsvindt';
+      return 'Kies een startdatum die vóór de einddatum plaatsvindt';
     }
   }
   return true;
@@ -67,7 +69,7 @@ function validateEndDateAfterStartDate(
   if (newStartDateValue) {
     const newStartDate = new Date(newStartDateValue);
     if (newStartDate.getTime() > endDate.getTime()) {
-      return 'Kies een einddatum die na de begindatum plaatsvindt';
+      return 'Kies een einddatum die na de startdatum plaatsvindt';
     }
   }
   return true;
