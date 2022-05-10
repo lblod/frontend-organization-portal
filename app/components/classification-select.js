@@ -1,21 +1,16 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
-
-const CLASSIFICATION = {
-  CENTRAL_WORSHIP_SERVICE: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
-  WORSHIP_SERVICE: '66ec74fd-8cfc-4e16-99c6-350b35012e86',
-  MUNICIPALITY: '5ab0e9b8a3b2ca7c5e000001',
-};
+import { useTask } from 'ember-resources';
+import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class ClassificationSelectComponent extends Component {
   @service store;
 
-  constructor() {
-    super(...arguments);
-
-    this.loadClassificationsTask.perform();
-  }
+  classifications = useTask(this, this.loadClassificationsTask, () => [
+    this.args.selectedRecognizedWorshipTypeId,
+  ]);
 
   get selectedClassification() {
     if (typeof this.args.selected === 'string') {
@@ -26,21 +21,43 @@ export default class ClassificationSelectComponent extends Component {
   }
 
   findClassificationById(id) {
-    if (this.loadClassificationsTask.isRunning) {
+    if (this.classifications.isRunning) {
       return null;
     }
 
-    let classifications = this.loadClassificationsTask.last.value;
+    let classifications = this.classifications.value;
     return classifications.find((status) => status.id === id);
   }
 
   @task *loadClassificationsTask() {
+    // Trick used to avoid infinite loop
+    // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
+    yield Promise.resolve();
+
+    let allowedIds;
+    let selectedRecognizedWorshipTypeId =
+      this.args.selectedRecognizedWorshipTypeId;
+
+    if (
+      selectedRecognizedWorshipTypeId &&
+      this.isIdInBlacklist(selectedRecognizedWorshipTypeId)
+    ) {
+      allowedIds = [CLASSIFICATION_CODE.WORSHIP_SERVICE];
+    } else {
+      allowedIds = [
+        CLASSIFICATION_CODE.WORSHIP_SERVICE,
+        CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+        CLASSIFICATION_CODE.MUNICIPALITY,
+      ];
+    }
+
     return yield this.store.query('administrative-unit-classification-code', {
-      'filter[:id:]': [
-        CLASSIFICATION.WORSHIP_SERVICE,
-        CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
-        CLASSIFICATION.MUNICIPALITY,
-      ].join(),
+      'filter[:id:]': allowedIds.join(),
+      sort: 'label',
     });
+  }
+
+  isIdInBlacklist(id) {
+    return CENTRAL_WORSHIP_SERVICE_BLACKLIST.find((element) => element == id);
   }
 }

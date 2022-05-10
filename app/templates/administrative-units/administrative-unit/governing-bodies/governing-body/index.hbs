@@ -18,9 +18,9 @@
               Bewerk
             </AuLink>
           </:edit>
-          <:read-only>
+          <:readOnly>
             <ReportWrongData />
-          </:read-only>
+          </:readOnly>
         </SecuredArea>
       </:action>
     </PageHeader>
@@ -49,7 +49,7 @@
           <:right as |Item|>
             {{#if @model.governingBody.startDate}}
               <Item>
-                <:label>Start datum</:label>
+                <:label>Startdatum</:label>
                 <:content>
                   {{date-format @model.governingBody.startDate}}
                 </:content>
@@ -77,7 +77,7 @@
           <SecuredArea>
             <:edit>
               <AuLink
-                @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
+                @route="administrative-units.administrative-unit.governing-bodies.governing-body.board-member.new"
                 @skin="button"
                 @icon="add"
                 @iconAlignment="left"
@@ -160,7 +160,7 @@
               <:edit>
                 <td>
                   <AuLink
-                    @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
+                    @route="administrative-units.administrative-unit.governing-bodies.governing-body.board-member.edit"
                     @models={{array
                       @model.administrativeUnit.id
                       @model.governingBody.id

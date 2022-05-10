@@ -1,0 +1,44 @@
+{{page-title "Gerelateerde organisaties"}}
+
+{{breadcrumb
+  "Gerelateerde organisaties"
+  route="organizations.organization.related-organizations"
+  model=(params-for "organizations.organization" param="id")
+}}
+
+<div class="au-c-body-container au-c-body-container--scroll">
+  <PageHeader class="au-o-box">
+    <:title>Gerelateerde organisaties</:title>
+    <:subtitle>{{@model.organization.name}}</:subtitle>
+  </PageHeader>
+
+  <AuDataTable id="subOrganizations"
+    @content={{this.subOrganizations}}
+    @isLoading={{this.isLoading}}
+    @sort={{this.sort}}
+    @page={{this.page}}
+    @size={{this.size}}
+    @noDataMessage="Geen bestuur van de eredienst" as |t|>
+    <t.content as |c|>
+      <c.header>
+        <AuDataTableThSortable @field="classification.label" @currentSorting={{this.sort}} @label="Type organisatie" />
+        <AuDataTableThSortable @field="name" @currentSorting={{this.sort}} @label="Organisatie" />
+        <AuDataTableThSortable @field="organizationStatus.label" @currentSorting={{this.sort}} @label="Status" />
+      </c.header>
+      <c.body as |subOrganization|>
+        <td>
+          {{subOrganization.classification.label}}
+        </td>
+        <td>
+          <AuLink @route="administrative-units.administrative-unit" @model={{subOrganization.id}}>
+            {{subOrganization.name}}
+          </AuLink>
+        </td>
+        <td>
+          <OrganizationStatus @id={{subOrganization.organizationStatus.id}}
+            @label={{subOrganization.organizationStatus.label}} />
+        </td>
+      </c.body>
+    </t.content>
+  </AuDataTable>
+</div>

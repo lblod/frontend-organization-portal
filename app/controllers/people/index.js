@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class PeopleIndexController extends Controller {
   @service router;
@@ -19,7 +20,7 @@ export default class PeopleIndexController extends Controller {
 
   @tracked page = 0;
   size = 25;
-  @tracked sort = 'family_name';
+  @tracked sort = 'given_name,family_name';
   @tracked given_name = '';
   @tracked family_name = '';
   @tracked organization;
@@ -77,5 +78,27 @@ export default class PeopleIndexController extends Controller {
 
   resetPagination() {
     this.page = 0;
+  }
+
+  @action
+  resetFilters() {
+    this.given_name = '';
+    this.family_name = '';
+    this.organization = null;
+    this.selectedOrganization = null;
+    this.status = true;
+    this.position = null;
+    this.page = 0;
+    this.sort = 'given_name,family_name';
+
+    // Triggers a refresh of the model
+    this.page = null;
+  }
+
+  get classificationCodes() {
+    return [
+      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+      CLASSIFICATION_CODE.WORSHIP_SERVICE,
+    ];
   }
 }

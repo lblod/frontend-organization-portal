@@ -1,0 +1,99 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <PageHeader>
+      <:title>Gerelateerde organisaties</:title>
+      <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+      <:action>
+        <SecuredArea>
+          <:edit>
+            <AuLink @route="administrative-units.administrative-unit.related-organizations.edit"
+              @skin="button-secondary" @icon="pencil" @iconAlignment="left">
+              Bewerk
+            </AuLink>
+          </:edit>
+          <:readOnly>
+            <ReportWrongData />
+          </:readOnly>
+        </SecuredArea>
+      </:action>
+    </PageHeader>
+
+    {{#if
+      (eq @model.administrativeUnit.constructor.modelName "worship-service")
+    }}
+      <div>
+        Om de gerelateerde gemeenten te zien, ga naar
+        <LinkTo
+          class="au-c-link"
+          @model={{@model.administrativeUnit.id}}
+          @route="administrative-units.administrative-unit.local-involvements.index"
+        >
+          Betrokken lokale besturen
+        </LinkTo>
+      </div>
+    {{/if}}
+
+    <DataCard>
+      <:title>Behoort tot</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            {{#if @model.isAssociatedWith.name}}
+              <Item>
+                <:label>Representatief orgaan</:label>
+                <:content>
+                  <AuLink @route="organizations.organization.core-data" @model={{@model.isAssociatedWith.id}}>
+                    {{@model.isAssociatedWith.name}}
+                  </AuLink>
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if @model.isSubOrganizationOf.name}}
+              <Item>
+                <:label>Centraal bestuur</:label>
+                <:content>
+                  <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
+                    {{@model.isSubOrganizationOf.name}}
+                  </AuLink>
+                </:content>
+              </Item>
+            {{/if}}
+          </:left>
+        </Card.Columns>
+      </:card>
+    </DataCard>
+
+    {{#if @model.subOrganizations.length}}
+      <div>
+        <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
+          Heeft relatie met
+        </AuHeading>
+        <AuDataTable id="subOrganizations" @content={{this.model.subOrganizations}}
+          @noDataMessage="Geen bestuur van de eredienst" as |t|>
+          <t.content as |c|>
+            <c.header>
+              <AuDataTableThSortable @field="classification.label" @currentSorting={{this.sort}}
+                @label="Type organisatie" />
+              <AuDataTableThSortable @field="name" @currentSorting={{this.sort}} @label="Organisatie" />
+              <AuDataTableThSortable @field="organizationStatus.label" @currentSorting={{this.sort}} @label="Status" />
+            </c.header>
+            <c.body as |subOrganization|>
+              <td>
+                {{subOrganization.classification.label}}
+              </td>
+              <td>
+                <AuLink @route="administrative-units.administrative-unit" @model={{subOrganization.id}}>
+                  {{subOrganization.name}}
+                </AuLink>
+              </td>
+              <td>
+                <OrganizationStatus @id={{subOrganization.organizationStatus.id}}
+                  @label={{subOrganization.organizationStatus.label}} />
+              </td>
+            </c.body>
+          </t.content>
+        </AuDataTable>
+      </div>
+    {{/if}}
+  </div>
+</div>

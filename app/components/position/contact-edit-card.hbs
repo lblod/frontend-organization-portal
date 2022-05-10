@@ -17,7 +17,7 @@
             It probably would be better to only show this if the other data fields are actually empty.
           }}
           <Item>
-            <:label>Full address</:label>
+            <:label>Volledig adres</:label>
             <:content>
               {{@address.fullAddress}}
             </:content>
@@ -28,7 +28,7 @@
           @itemComponent={{Item}}
           @isSearchEnabledInitially={{@isAddressSearchEnabledInitially}}
         >
-          <:manual-address-input>
+          <:manualAddressInputBeforeButton>
             <Item
               @labelFor="contact-address-street-name"
               @errorMessage={{@address.error.street.validation}}
@@ -43,6 +43,8 @@
                 />
               </:content>
             </Item>
+          </:manualAddressInputBeforeButton>
+          <:manualAddressInput>
             <Item
               @labelFor="contact-address-house-number"
               @errorMessage={{@address.error.number.validation}}
@@ -95,9 +97,9 @@
                 />
               </:content>
             </Item>
-          </:manual-address-input>
+          </:manualAddressInput>
 
-          <:common-input>
+          <:commonInput>
             <Item
               @labelFor="contact-address-province"
               @errorMessage={{@address.error.province.validation}}
@@ -112,7 +114,7 @@
                 />
               </:content>
             </Item>
-          </:common-input>
+          </:commonInput>
         </AddressSearch>
       </:left>
       <:right as |Item|>
@@ -129,9 +131,9 @@
               id="contact-email"
             />
           </:content>
-          <:help-text>
+          <:helpText>
             {{help-text "email"}}
-          </:help-text>
+          </:helpText>
         </Item>
         <Item
           @labelFor="contact-telephone"
@@ -146,9 +148,9 @@
               id="contact-telephone"
             />
           </:content>
-          <:help-text>
+          <:helpText>
             {{help-text "phone-number"}}
-          </:help-text>
+          </:helpText>
         </Item>
         <Item
           @labelFor="secondary-contact-telephone"
@@ -163,9 +165,9 @@
               id="secondary-contact-telephone"
             />
           </:content>
-          <:help-text>
+          <:helpText>
             {{help-text "phone-number"}}
-          </:help-text>
+          </:helpText>
         </Item>
       </:right>
     </Card.Columns>

@@ -1,11 +1,11 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { CHANGE_EVENT_TYPE } from 'frontend-contact-hub/models/change-event-type';
-import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
+import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
+import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import {
   changeEventValidations,
   decisionValidations,
-} from 'frontend-contact-hub/validations/change-event';
+} from 'frontend-organization-portal/validations/change-event';
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEditRoute extends Route {
   @service currentSession;
@@ -40,12 +40,21 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
 
     if (canAddDecisionInformation) {
       let decision = await changeEvent.decision;
+      let decisionActivity = null;
+      if (decision) {
+        decisionActivity = await decision.hasDecisionActivity;
+      }
 
       if (!decision) {
         decision = this.store.createRecord('decision');
       }
 
+      if (!decisionActivity) {
+        decisionActivity = this.store.createRecord('decisionActivity');
+      }
+
       model.decision = createValidatedChangeset(decision, decisionValidations);
+      model.decisionActivity = decisionActivity;
     }
 
     return model;

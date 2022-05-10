@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
-import localInvolvementValidations from 'frontend-contact-hub/validations/local-involvement';
+import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
+import localInvolvementValidations from 'frontend-organization-portal/validations/local-involvement';
 
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditRoute extends Route {
   @service store;

@@ -1,21 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-
-const CLASSIFICATION = {
-  CENTRAL_WORSHIP_SERVICE: {
-    id: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
-    label: 'Centraal bestuur van de eredienst',
-  },
-  WORSHIP_SERVICE: {
-    id: '66ec74fd-8cfc-4e16-99c6-350b35012e86',
-    label: 'Bestuur van de eredienst',
-  },
-  MUNICIPALITY: {
-    id: '5ab0e9b8a3b2ca7c5e000001',
-    label: 'Gemeente',
-  },
-};
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsIndexRoute extends Route {
   @service muSearch;
@@ -45,7 +31,10 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     const filter = {};
 
     if (params.name) {
-      filter[':prefix:name'] = params.name.toLowerCase();
+      let filterType = 'phrase_prefix';
+      let name = params.name.trim();
+
+      filter[`:${filterType}:name`] = name;
     }
 
     if (params.classificationId) {
@@ -60,11 +49,11 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     }
 
     if (params.municipality) {
-      filter['municipality'] = params.municipality;
+      filter[':phrase:municipality'] = params.municipality;
     }
 
     if (params.province) {
-      filter['province'] = params.province;
+      filter[':phrase:province'] = params.province;
     }
 
     if (params.recognizedWorshipTypeId) {

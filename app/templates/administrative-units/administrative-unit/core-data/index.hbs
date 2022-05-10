@@ -15,9 +15,9 @@
               Bewerk
             </AuLink>
           </:edit>
-          <:read-only>
+          <:readOnly>
             <ReportWrongData />
-          </:read-only>
+          </:readOnly>
         </SecuredArea>
       </:action>
     </PageHeader>
@@ -87,30 +87,27 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#each @model.administrativeUnit.identifiers as |identifier|}}
-              {{#if identifier.structuredIdentifier.localId}}
-                <Item>
-                  <:label>{{identifier.idName}}</:label>
-                  <:content>
-                    {{#let
-                      identifier.structuredIdentifier.localId
-                      as |localId|
-                    }}
-                      {{#if (this.isSharePointIdentifier identifier)}}
-                        <AuLinkExternal
-                          href="{{this.sharePointLinkBase}}{{localId}}"
-                        >
-                          {{localId}}
-                          (externe link)
-                        </AuLinkExternal>
-                      {{else}}
-                        {{localId}}
-                      {{/if}}
-                    {{/let}}
-                  </:content>
-                </Item>
-              {{/if}}
-            {{/each}}
+            {{#if this.kboIdentifier.structuredIdentifier.localId}}
+              <Item>
+                <:label>{{this.kboIdentifier.idName}}</:label>
+                <:content>
+                  {{kbo-format this.kboIdentifier.structuredIdentifier.localId}}
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if this.sharepointIdentifier.structuredIdentifier.localId}}
+              <Item>
+                <:label>{{this.sharepointIdentifier.idName}}</:label>
+                <:content>
+                  <AuLinkExternal
+                    href="{{this.sharePointLinkBase}}{{this.sharepointIdentifier.structuredIdentifier.localId}}"
+                  >
+                    {{this.sharepointIdentifier.structuredIdentifier.localId}}
+                    (externe link)
+                  </AuLinkExternal>
+                </:content>
+              </Item>
+            {{/if}}
           </:right>
         </Card.Columns>
       </:card>

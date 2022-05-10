@@ -33,7 +33,8 @@
 
   {{#if this.isSelectingTargetPerson}}
     <PersonSearch
-      @onSelect={{fn (mut this.targetPerson)}}
+        @onSelect={{(perform this.selectTargetPerson)}}
+      @loading={{this.selectTargetPerson.isRunning}}
       @personCreationRedirectUrl={{this.router.currentURL}}
     />
   {{else}}
@@ -43,6 +44,13 @@
       aria-label="minister-position-creation-form"
       {{on "submit" (perform this.createMinisterPositionTask)}}
     >
+
+    {{#if this.targetPersonError}}
+      <AuAlert @alertIcon="alert-triangle" @alertTitle="Er is een onverwachte fout opgetreden." @alertSkin="error">
+        <p>Probeer de persoon opnieuw aan de positie toe te voegen. Als het niet lukt, neem dan contact met ons op.</p>
+      </AuAlert>
+    {{/if}}
+
       <DataCard>
         <:title>Persoonlijke gegevens</:title>
         <:card as |Card|>
@@ -96,12 +104,14 @@
         </:card>
       </EditCard>
 
-      <Position::ContactEditCard
-        @address={{@model.address}}
-        @primaryContact={{@model.contact}}
-        @secondaryContact={{@model.secondaryContact}}
-      />
-
+      <AuContent>
+        <ContactDetails
+          @title="Contactgegevens"
+          @contact={{this.contact}}
+          @onUpdate={{this.updateContact}}
+          @positions={{this.allContacts}}
+        />
+      </AuContent>
       <EditCard @containsRequiredFields={{true}}>
         <:title>Aanstelling</:title>
         <:card as |Card|>
@@ -142,7 +152,7 @@
               <Item>
                 <:content>
                   <AuControlCheckbox
-                    checked={{@model.minister.isCurrentPosition}}
+                    @checked={{@model.minister.isCurrentPosition}}
                     @label="Huidige positie"
                     @identifier="current-position"
                     @onChange={{this.handleIsCurrentPositionChange}}
@@ -160,7 +170,7 @@
           <Card.Columns>
             <:left as |Item|>
               <Item @alignTop={{true}}>
-                <:label>FOD financiering</:label>
+                <:label>FOD Justitie</:label>
                 <:content>
                   <ul class="au-c-list-inline">
                     <li class="au-c-list-inline__item">

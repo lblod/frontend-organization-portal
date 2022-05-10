@@ -1,18 +1,13 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import {
-  createPrimaryContact,
-  createSecondaryContact,
-} from 'frontend-contact-hub/models/contact-point';
-import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
-import { getAddressValidations } from 'frontend-contact-hub/validations/address';
-import contactValidations from 'frontend-contact-hub/validations/contact-point';
-import { mandatoryWithRequiredRoleValidations } from 'frontend-contact-hub/validations/mandatory';
+import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
+import { mandatoryWithRequiredRoleValidations } from 'frontend-organization-portal/validations/mandatory';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryNewRoute extends Route {
   @service store;
   @service currentSession;
   @service router;
+  @service contactDetails;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
@@ -26,10 +21,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       'administrative-units.administrative-unit.governing-bodies.governing-body'
     );
 
-    if (personId) {
-      transition.data.person = await this.store.findRecord('person', personId);
-    }
-
     let mandatory = this.store.createRecord('worship-mandatory');
     mandatory.isCurrentPosition = true;
     if (positionId) {
@@ -37,10 +28,14 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       mandatory.role = role;
       mandatory.typeHalf = undefined;
     }
-
-    let contact = createPrimaryContact(this.store);
-    let secondaryContact = createSecondaryContact(this.store);
-    let address = this.store.createRecord('address');
+    if (personId) {
+      const { person, positions } =
+        await this.contactDetails.getPersonAndAllPositions(personId);
+      transition.data.allContacts =
+        await this.contactDetails.positionsToEditableContacts(positions);
+      transition.data.person = person;
+      transition.data.contact = { position: mandatory };
+    }
 
     return {
       administrativeUnit: this.modelFor(
@@ -52,15 +47,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         mandatoryWithRequiredRoleValidations
       ),
       mandatoryRecord: mandatory,
-      contact: createValidatedChangeset(contact, contactValidations),
-      contactRecord: contact,
-      secondaryContact: createValidatedChangeset(
-        secondaryContact,
-        contactValidations
-      ),
-      secondaryContactRecord: secondaryContact,
-      address: createValidatedChangeset(address, getAddressValidations(false)),
-      addressRecord: address,
     };
   }
 
@@ -69,6 +55,8 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
     if (transition.data.person) {
       controller.targetPerson = transition.data.person;
+      controller.contact = transition.data.contact;
+      controller.allContacts = transition.data.allContacts;
     }
   }
 

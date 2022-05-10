@@ -1,31 +1,50 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { restartableTask } from 'ember-concurrency';
-import { CLASSIFICATION_CODE } from 'frontend-contact-hub/models/administrative-unit-classification-code';
+import { task } from 'ember-concurrency';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { useTask } from 'ember-resources';
 
 export default class ProvinceSelectComponent extends Component {
   @service store;
-  provinces;
 
-  constructor(...args) {
-    super(...args);
+  provinces = useTask(this, this.loadProvincesTask, () => [
+    this.args.selectedMunicipality,
+  ]);
 
-    this.provinces = this.loadProvincesTask.perform();
-  }
-
-  @restartableTask
+  @task
   *loadProvincesTask() {
-    const query = {
-      filter: {
-        classification: {
-          id: CLASSIFICATION_CODE.PROVINCE,
+    // Trick used to avoid infinite loop
+    // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
+    yield Promise.resolve();
+
+    if (
+      this.args.selectedMunicipality &&
+      this.args.selectedMunicipality.length
+    ) {
+      // If a municipality is selected, load the province it belongs to
+      let provinces = yield this.store.query('administrative-unit', {
+        filter: {
+          'sub-organizations': {
+            ':exact:name': this.args.selectedMunicipality,
+          },
         },
-      },
-      sort: 'name',
-    };
+      });
 
-    const provinces = yield this.store.query('administrative-unit', query);
+      return provinces.mapBy('name');
+    } else {
+      // Else load all the provinces
+      const query = {
+        filter: {
+          classification: {
+            id: CLASSIFICATION_CODE.PROVINCE,
+          },
+        },
+        sort: 'name',
+      };
 
-    return provinces.mapBy('name');
+      const provinces = yield this.store.query('administrative-unit', query);
+
+      return provinces.mapBy('name');
+    }
   }
 }

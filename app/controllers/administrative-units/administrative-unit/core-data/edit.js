@@ -1,15 +1,20 @@
 import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
-import { combineFullAddress } from 'frontend-contact-hub/models/address';
-import WorshipServiceModel from 'frontend-contact-hub/models/worship-service';
-import { A } from '@ember/array';
+import WorshipServiceModel from 'frontend-organization-portal/models/worship-service';
+import { combineFullAddress } from 'frontend-organization-portal/models/address';
+import { action } from '@ember/object';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
 
   get isWorshipService() {
     return this.model.administrativeUnit instanceof WorshipServiceModel;
+  }
+
+  @action
+  setKbo(value) {
+    this.model.structuredIdentifierKBO.localId = value;
   }
 
   @dropTask

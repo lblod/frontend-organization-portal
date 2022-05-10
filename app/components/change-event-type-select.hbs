@@ -1,6 +1,7 @@
 <div class={{if @error "ember-power-select--error"}}>
   <PowerSelect
     @loadingMessage="Aan het laden..."
+    @searchField='label'
     @options={{this.loadChangeEventTypesTask.last}}
     @selected={{@selected}}
     @onChange={{@onChange}}

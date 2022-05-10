@@ -1,8 +1,8 @@
-{{page-title this.model.representativeBody.name}}
+{{page-title this.model.name}}
 {{breadcrumb
-  this.model.representativeBody.name
+  this.model.name
   route="organizations.organization"
-  model=this.model.representativeBody.id
+  model=this.model.id
 }}
 
 <SidebarContainer>
@@ -10,8 +10,13 @@
     <div class="au-c-sidebar">
       <ul class="au-c-list-navigation">
         <li class="au-c-list-navigation__item">
-          <AuNavigationLink @route="organizations.organization">
+          <AuNavigationLink @route="organizations.organization.core-data">
             Kerngegevens
+          </AuNavigationLink>
+        </li>
+        <li class="au-c-list-navigation__item">
+          <AuNavigationLink @route="organizations.organization.related-organizations">
+            Gerelateerde organisaties
           </AuNavigationLink>
         </li>
       </ul>

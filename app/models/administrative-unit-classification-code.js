@@ -7,6 +7,21 @@ export const CLASSIFICATION_CODE = {
   CENTRAL_WORSHIP_SERVICE: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
 };
 
+export const CLASSIFICATION = {
+  MUNICIPALITY: {
+    id: '5ab0e9b8a3b2ca7c5e000001',
+    label: 'Gemeente',
+  },
+  WORSHIP_SERVICE: {
+    id: '66ec74fd-8cfc-4e16-99c6-350b35012e86',
+    label: 'Bestuur van de eredienst',
+  },
+  CENTRAL_WORSHIP_SERVICE: {
+    id: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
+    label: 'Centraal bestuur van de eredienst',
+  },
+};
+
 export default class AdministrativeUnitClassificationCodeModel extends Model {
   @attr label;
 }

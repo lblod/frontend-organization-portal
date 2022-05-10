@@ -3,15 +3,16 @@ import { inject as service } from '@ember/service';
 import {
   createPrimaryContact,
   createSecondaryContact,
-} from 'frontend-contact-hub/models/contact-point';
-import { ID_NAME } from 'frontend-contact-hub/models/identifier';
-import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
-import { getAddressValidations } from 'frontend-contact-hub/validations/address';
-import contactValidations from 'frontend-contact-hub/validations/contact-point';
-import worshipAdministrativeUnitValidations from 'frontend-contact-hub/validations/worship-administrative-unit';
+} from 'frontend-organization-portal/models/contact-point';
+import { ID_NAME } from 'frontend-organization-portal/models/identifier';
+import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
+import { getAddressValidations } from 'frontend-organization-portal/validations/address';
+import contactValidations from 'frontend-organization-portal/validations/contact-point';
+import worshipAdministrativeUnitValidations from 'frontend-organization-portal/validations/worship-administrative-unit';
 import administrativeUnitValidations, {
   getStructuredIdentifierKBOValidations,
-} from 'frontend-contact-hub/validations/administrative-unit';
+} from 'frontend-organization-portal/validations/administrative-unit';
+import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
 
 export default class AdministrativeUnitsNewRoute extends Route {
   @service store;
@@ -50,7 +51,7 @@ export default class AdministrativeUnitsNewRoute extends Route {
       ),
       secondaryContact: createValidatedChangeset(
         createSecondaryContact(this.store),
-        contactValidations
+        secondaryContactValidations
       ),
       identifierKBO: this.store.createRecord('identifier', {
         idName: ID_NAME.KBO,

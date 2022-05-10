@@ -19,7 +19,7 @@
             </AuButton>
 
             <AuLink
-              @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+              {{on "click" this.reset}}
               @skin="button-secondary"
             >
               Annuleer
@@ -63,7 +63,7 @@
               </:left>
               <:right as |Item|>
                 <Item @labelFor="governing-body-start-date">
-                  <:label>Start datum</:label>
+                  <:label>Startdatum</:label>
                   <:content>
                     <Datepicker
                       @id="governing-body-start-date"

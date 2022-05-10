@@ -31,7 +31,8 @@
 
   {{#if this.isSelectingTargetPerson}}
     <PersonSearch
-      @onSelect={{fn (mut this.targetPerson)}}
+      @onSelect={{(perform this.selectTargetPerson)}}
+      @loading={{this.selectTargetPerson.isRunning}}
       @personCreationRedirectUrl={{this.router.currentURL}}
     />
   {{else}}
@@ -41,6 +42,13 @@
       aria-label="minister-position-creation-form"
       {{on "submit" (perform this.createMandatoryPositionTask)}}
     >
+
+    {{#if this.targetPersonError}}
+      <AuAlert @alertIcon="alert-triangle" @alertTitle="Er is een onverwachte fout opgetreden." @alertSkin="error">
+        <p>Probeer de persoon opnieuw aan de positie toe te voegen. Als het niet lukt, neem dan contact met ons op.</p>
+      </AuAlert>
+    {{/if}}
+
       <DataCard>
         <:title>Persoonlijke gegevens</:title>
         <:card as |Card|>
@@ -68,13 +76,16 @@
           </Card.Columns>
         </:card>
       </DataCard>
-
-      <Position::ContactEditCard
-        @address={{@model.address}}
-        @primaryContact={{@model.contact}}
-        @secondaryContact={{@model.secondaryContact}}
-      />
-
+      <AuContent>
+        {{#if this.contact}}
+          <ContactDetails
+            @title="Contactgegevens"
+            @contact={{this.contact}}
+            @onUpdate={{this.updateContact}}
+            @positions={{this.allContacts}}
+          />
+        {{/if}}
+      </AuContent>
       <EditCard @containsRequiredFields={{true}}>
         <:title>Mandaat</:title>
         <:card as |Card|>
@@ -144,13 +155,15 @@
                 </:content>
               </Item>
               {{! TODO: Hide this if the when "lid van rechtswege" is selected }}
-              <Item @labelFor="expected-end-date">
+              <Item @labelFor="expected-end-date" @errorMessage={{@model.mandatory.error.expectedEndDate.validation}}>
                 <:label>Geplande einddatum</:label>
-                <:content>
+                <:content as |errorMessage|>
                   <Datepicker
                     @id="expected-end-date"
                     @onChange={{fn (mut @model.mandatory.expectedEndDate)}}
                     @value={{@model.mandatory.expectedEndDate}}
+                    @error={{errorMessage}}
+
                   />
                 </:content>
               </Item>
@@ -184,7 +197,7 @@
               <Item>
                 <:content>
                   <AuControlCheckbox
-                    checked={{@model.mandatory.isCurrentPosition}}
+                    @checked={{@model.mandatory.isCurrentPosition}}
                     @label="Huidige positie"
                     @identifier="current-position"
                     @onChange={{this.handleIsCurrentPositionChange}}

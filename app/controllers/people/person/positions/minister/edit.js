@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { dropTask } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-import { combineFullAddress } from 'frontend-contact-hub/models/address';
+import { combineFullAddress } from 'frontend-organization-portal/models/address';
 
 const FINANCING_CODE = {
   SELF_FINANCED: '997073905f839ac6bafe92b76050ab0b',
@@ -12,8 +12,11 @@ const FINANCING_CODE = {
 
 export default class PeoplePersonPositionsMinisterEditController extends Controller {
   @service router;
+  @service store;
+  @tracked computedContactDetails;
   @tracked willReceiveFinancing;
   @tracked redirectUrl;
+  @tracked positionsWithSameOldAddress;
 
   queryParams = ['redirectUrl'];
 
@@ -50,60 +53,84 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
   *save(event) {
     event.preventDefault();
 
-    let { minister, contact, secondaryContact, address } = this.model;
+    let { minister } = this.model;
 
-    yield Promise.all([
-      contact.validate(),
-      secondaryContact.validate(),
-      minister.validate(),
-      address.validate(),
-    ]);
+    yield minister.validate();
 
-    if (
-      minister.isValid &&
-      contact.isValid &&
-      secondaryContact.isValid &&
-      address.isValid
-    ) {
-      if (address.isDirty) {
-        address.fullAddress = combineFullAddress(address);
-        yield address.save();
+    if (minister.isValid) {
+      let contactValid = true;
+      let primaryContactId = null;
+
+      if (this.computedContactDetails) {
+        let { primaryContact, secondaryContact, address } =
+          this.computedContactDetails;
+
+        yield primaryContact.validate();
+        yield secondaryContact.validate();
+        yield address.validate();
+        contactValid =
+          primaryContact.isValid && secondaryContact.isValid && address.isValid;
+        if (contactValid) {
+          if (address.isDirty) {
+            address.fullAddress = combineFullAddress(address);
+          }
+          primaryContact.contactAddress = address;
+
+          if (address.isDirty) {
+            yield address.save();
+          }
+
+          if (primaryContact.isDirty) {
+            yield primaryContact.save();
+          }
+          if (secondaryContact.isDirty) {
+            yield secondaryContact.save();
+          }
+          minister.contacts.clear();
+          minister.contacts.pushObjects([primaryContact, secondaryContact]);
+          primaryContactId = primaryContact.id;
+        }
       }
 
-      contact.contactAddress = address;
-      let contacts = yield minister.contacts;
+      if (contactValid) {
+        let financingCodeId = this.willReceiveFinancing
+          ? FINANCING_CODE.FOD_FINANCED
+          : FINANCING_CODE.SELF_FINANCED;
 
-      if (contact.isDirty) {
-        if (contact.isNew) {
-          contacts.pushObject(contact);
+        let financing = yield this.store.findRecord(
+          'financing-code',
+          financingCodeId,
+          {
+            backgroundReload: false,
+          }
+        );
+
+        minister.financing = financing;
+        yield minister.save();
+
+        const oldPrimaryContactId = this.model.contact?.primaryContact?.id;
+
+        if (primaryContactId && primaryContactId !== oldPrimaryContactId) {
+          const positionsWithSameOldAddress = this.model.allContacts?.filter(
+            (c) =>
+              c?.primaryContact?.id === oldPrimaryContactId &&
+              c.position?.id !== minister.id
+          );
+          if (positionsWithSameOldAddress?.length) {
+            this.positionsWithSameOldAddress = positionsWithSameOldAddress;
+          } else {
+            this.handleTransitionTo();
+          }
+        } else {
+          this.handleTransitionTo();
         }
-        yield contact.save();
       }
-
-      if (secondaryContact.isDirty) {
-        if (secondaryContact.isNew) {
-          contacts.pushObject(secondaryContact);
-        }
-        yield secondaryContact.save();
-      }
-
-      let financingCodeId = this.willReceiveFinancing
-        ? FINANCING_CODE.FOD_FINANCED
-        : FINANCING_CODE.SELF_FINANCED;
-
-      let financing = yield this.store.findRecord(
-        'financing-code',
-        financingCodeId,
-        {
-          backgroundReload: false,
-        }
-      );
-
-      minister.financing = financing;
-      yield minister.save();
-
-      this.handleTransitionTo();
     }
+  }
+
+  @action
+  updateContact(editingContact) {
+    this.computedContactDetails = editingContact;
   }
 
   setup() {
@@ -114,14 +141,14 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
   reset() {
     this.redirectUrl = null;
     this.removeUnsavedRecords();
+    this.computedContactDetails = null;
+    this.positionsWithSameOldAddress = null;
   }
 
   removeUnsavedRecords() {
-    this.model.addressRecord.rollbackAttributes();
-    this.model.contactRecord.rollbackAttributes();
-    this.model.secondaryContactRecord.rollbackAttributes();
+    this.model.minister.rollbackAttributes();
   }
-
+  @action
   handleTransitionTo() {
     if (this.redirectUrl) {
       this.router.transitionTo(this.redirectUrl);

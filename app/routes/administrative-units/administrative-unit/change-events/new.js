@@ -1,13 +1,13 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { CHANGE_EVENT_TYPE } from 'frontend-contact-hub/models/change-event-type';
-import CentralWorshipServiceModel from 'frontend-contact-hub/models/central-worship-service';
-import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
+import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
+import CentralWorshipServiceModel from 'frontend-organization-portal/models/central-worship-service';
+import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import {
   changeEventValidations,
   decisionValidations,
-} from 'frontend-contact-hub/validations/change-event';
+} from 'frontend-organization-portal/validations/change-event';
 import { action } from '@ember/object';
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewRoute extends Route {
@@ -29,6 +29,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewRoute e
     );
     let changeEvent = this.store.createRecord('change-event');
     let decision = this.store.createRecord('decision');
+    let decisionActivity = this.store.createRecord('decisionActivity');
 
     return {
       administrativeUnit,
@@ -37,6 +38,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewRoute e
         changeEventValidations
       ),
       decision: createValidatedChangeset(decision, decisionValidations),
+      decisionActivity,
       formState: new FormState({ currentOrganization: administrativeUnit }),
       changeEventRecord: changeEvent,
       decisionRecord: decision,

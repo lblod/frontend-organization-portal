@@ -23,9 +23,9 @@
               Bewerk
             </AuLink>
           </:edit>
-          <:read-only>
+          <:readOnly>
             <ReportWrongData />
-          </:read-only>
+          </:readOnly>
         </SecuredArea>
       </:action>
     </PageHeader>
@@ -108,7 +108,7 @@
           <Card.Columns>
             <:left as |Item|>
               <Item>
-                <:label>FOD Financiering?</:label>
+                <:label>FOD Justitie</:label>
                 <:content>{{receives-financing
                     @model.minister.financing.id
                   }}</:content>

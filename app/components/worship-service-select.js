@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { restartableTask, timeout } from 'ember-concurrency';
 
-export default class WorshipServiceSelectComponent extends Component {
+export default class WorshipServiceMultipleSelectComponent extends Component {
   @service store;
 
   @restartableTask

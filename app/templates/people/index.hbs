@@ -2,7 +2,7 @@
   <:sidebar>
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content au-o-box">
-        <form {{on "submit" this.search}} class="au-o-grid au-o-grid--small">
+        <form {{on "submit" this.search}} {{on "reset" this.resetFilters}} class="au-o-grid au-o-grid--small">
           <p class="au-o-grid__item">
             <AuLabel for="filter-given-name">Voornaam</AuLabel>
             <AuInput
@@ -23,8 +23,10 @@
             <AuLabel for="filter-organization">Organisatie</AuLabel>
             <AdministrativeUnitSelect
               @allowClear={{true}}
+              @classificationCodes={{this.classificationCodes}}
               @selected={{or this.selectedOrganization this.organization}}
               @onChange={{this.setOrganization}}
+              @selectedPosition={{this.position}}
               class="grow"
             />
           </p>
@@ -33,6 +35,7 @@
             <PositionSelect
               @selected={{this.position}}
               @onChange={{this.setPosition}}
+              @selectedAdministrativeUnit={{this.organization}}
               @id="positions"
             />
           </div>
@@ -44,6 +47,12 @@
               type="submit"
             >
               Zoeken
+            </AuButton>
+            <AuButton
+              @skin="tertiary"
+              type="reset"
+            >
+              <AuIcon @icon="cross" @alignment="left" /> Herstel alle filters
             </AuButton>
           </div>
         </form>

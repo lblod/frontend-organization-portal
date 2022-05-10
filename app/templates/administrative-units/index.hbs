@@ -2,16 +2,22 @@
   <:sidebar>
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content au-o-box">
-        <form class="au-o-grid au-o-grid--small" {{on "submit" this.search}}>
+        <form {{on "submit" this.search}} {{on "reset" this.resetFilters}} class="au-o-grid au-o-grid--small">
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-name">Naam</AuLabel>
-            <AuInput id="filter-name" @width="block" @value={{this.name}} />
+              <AdministrativeUnitSelectByName
+                @id="filter-name"
+                @selected={{this.name}}
+                @onChange={{fn (mut this.name)}}
+                class="grow"
+              />
           </div>
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-municipality">Gemeente</AuLabel>
             <MunicipalitySelect
               @selected={{this.municipality}}
               @onChange={{this.setMunicipality}}
+              @selectedProvince={{this.province}}
               @id="filter-municipality"
             />
           </div>
@@ -20,6 +26,7 @@
             <ProvinceSelect
               @selected={{this.province}}
               @onChange={{this.setProvince}}
+              @selectedMunicipality={{this.municipality}}
               @id="filter-province"
             />
           </div>
@@ -29,6 +36,7 @@
               @selected={{this.classificationId}}
               @onChange={{this.setClassificationId}}
               @allowClear={{true}}
+              @selectedRecognizedWorshipTypeId={{this.recognizedWorshipTypeId}}
               @id="classification"
             />
           </div>
@@ -38,6 +46,7 @@
               @selected={{this.recognizedWorshipTypeId}}
               @onChange={{this.setRecognizedWorshipTypeId}}
               @allowClear={{true}}
+              @selectedClassificationId={{this.classificationId}}
               @id="recognized-worship-types"
             />
           </div>
@@ -58,6 +67,12 @@
               type="submit"
             >
               Zoeken
+            </AuButton>
+            <AuButton
+              @skin="tertiary"
+              type="reset"
+            >
+              <AuIcon @icon="cross" @alignment="left" /> Herstel alle filters
             </AuButton>
           </div>
         </form>

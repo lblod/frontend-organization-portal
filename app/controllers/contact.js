@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
-import config from 'frontend-contact-hub/config/environment';
+import config from 'frontend-organization-portal/config/environment';
 
 const CONTACT_EMAIL = config.contactEmail;
 

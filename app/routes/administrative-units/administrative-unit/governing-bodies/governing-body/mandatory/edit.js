@@ -1,19 +1,12 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import {
-  createPrimaryContact,
-  createSecondaryContact,
-  findPrimaryContact,
-  findSecondaryContact,
-} from 'frontend-contact-hub/models/contact-point';
-import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
-import { getAddressValidations } from 'frontend-contact-hub/validations/address';
-import contactValidations from 'frontend-contact-hub/validations/contact-point';
-import mandatoryValidations from 'frontend-contact-hub/validations/mandatory';
+import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
+import mandatoryValidations from 'frontend-organization-portal/validations/mandatory';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditRoute extends Route {
   @service store;
   @service currentSession;
+  @service contactDetails;
   @service router;
 
   beforeModel() {
@@ -34,26 +27,14 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     );
 
     let mandatory = await this.store.findRecord('mandatory', mandatoryId, {
-      include: 'mandate.role-board,contacts.contact-address,type-half',
+      include: [
+        'mandate.role-board',
+        'contacts.contact-address',
+        'type-half',
+      ].join(),
     });
 
-    let contacts = await mandatory.contacts;
-
-    let primaryContact = findPrimaryContact(contacts);
-    if (!primaryContact) {
-      primaryContact = createPrimaryContact(this.store);
-    }
-
-    let secondaryContact = findSecondaryContact(contacts);
-    if (!secondaryContact) {
-      secondaryContact = createSecondaryContact(this.store);
-    }
-
-    let address = await primaryContact.contactAddress;
-
-    if (!address) {
-      address = this.store.createRecord('address');
-    }
+    const { id } = await mandatory.governingAlias;
 
     let mandate = await mandatory.mandate;
     let roleBoard = await mandate.roleBoard;
@@ -65,20 +46,25 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     mandatoryChangeset.isCurrentPosition = !mandatoryChangeset.endDate;
     mandatoryChangeset.role = roleBoard;
 
+    let { person, positions } =
+      await this.contactDetails.getPersonAndAllPositions(id);
+    const allContacts = await this.contactDetails.positionsToEditableContacts(
+      positions
+    );
+    const currentContact = await this.contactDetails.mandatoryToPosition(
+      mandatory,
+      false
+    );
+    const currentContactChangeset =
+      await this.contactDetails.positionToEditableContact(currentContact);
+
     return {
+      contact: currentContactChangeset,
       administrativeUnit,
       governingBody,
       mandatory: mandatoryChangeset,
-      contact: createValidatedChangeset(primaryContact, contactValidations),
-      contactRecord: primaryContact,
-      secondaryContact: createValidatedChangeset(
-        secondaryContact,
-        contactValidations
-      ),
-      secondaryContactRecord: secondaryContact,
-      address: createValidatedChangeset(address, getAddressValidations(false)),
-      addressRecord: address,
-      person: await mandatory.governingAlias,
+      allContacts,
+      person,
     };
   }
 

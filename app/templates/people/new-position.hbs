@@ -24,24 +24,6 @@
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              <Item
-                @labelFor="organization"
-                @required={{true}}
-              >
-                <:label>Naam eredienst</:label>
-                <:content>
-                  <AdministrativeUnitSelect
-                    @classificationCodes={{this.classificationCodes}}
-                    @selected={{this.selectedOrganization}}
-                    @onChange={{this.setOrganization}}
-                    id="organization"
-                  />
-                </:content>
-              </Item>
-            </:left>
-          </Card.Columns>
-          <Card.Columns>
-            <:left as |Item|>
               <Item @labelFor="position-type" @alignTop={{true}}>
                 <:label>Type</:label>
                 <:content>
@@ -56,6 +38,27 @@
                   </PowerSelect>
                 </:content>
               </Item>
+            </:left>
+          </Card.Columns>
+          <Card.Columns>
+            <:left as |Item|>
+              {{#if this.positionType}}
+            <Item
+                @labelFor="organization"
+                @required={{true}}
+              >
+                <:label>Naam eredienst</:label>
+                <:content>
+                  <AdministrativeUnitSelect
+                    @classificationCodes={{this.classificationCodes}}
+                    @selected={{this.selectedOrganization}}
+                    @onChange={{this.setOrganization}}
+                    id="organization"
+                  />
+                </:content>
+              </Item>
+              {{/if}}
+
               {{#if
                 (and
                   (eq this.positionType "Mandaat")

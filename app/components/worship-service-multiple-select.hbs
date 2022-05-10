@@ -1,0 +1,16 @@
+<PowerSelectMultiple
+  @allowClear={{true}}
+  @searchEnabled={{true}}
+  @loadingMessage="Aan het laden..."
+  @noMatchesMessage="Geen resultaten"
+  @searchMessage="Typ om te zoeken"
+  @searchField="name"
+  @search={{perform this.loadWorshipServicesTask}}
+  @selected={{@selected}}
+  @onChange={{@onChange}}
+  @triggerId={{@id}}
+  ...attributes
+  as |worshipService|
+>
+  {{worshipService.name}}
+</PowerSelectMultiple>

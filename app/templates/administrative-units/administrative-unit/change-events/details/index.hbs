@@ -13,9 +13,9 @@
               @route="administrative-units.administrative-unit.change-events.details.edit"
             />
           </:edit>
-          <:read-only>
+          <:readOnly>
             <ReportWrongData />
-          </:read-only>
+          </:readOnly>
         </SecuredArea>
       </:action>
     </PageHeader>
@@ -51,25 +51,38 @@
             {{/let}}
           </:left>
           <:right as |Item|>
-            <Item>
-              <:label>Datum veranderingsgebeurtenis</:label>
-              <:content>
-                {{date-format @model.changeEvent.date}}
-              </:content>
-            </Item>
+            {{#let
+              @model.changeEvent.decision.hasDecisionActivity.endDate
+              as |endDate|
+            }}
+              {{#if endDate}}
+                <Item>
+                  <:label>Datum ministerieel besluit</:label>
+                  <:content>
+                    {{date-format endDate}}
+                  </:content>
+                </Item>
+              {{/if}}
+            {{/let}}
             {{#let
               @model.changeEvent.decision.publicationDate
               as |publicationDate|
             }}
               {{#if publicationDate}}
                 <Item>
-                  <:label>Datum publicatie</:label>
+                  <:label>Datum publicatie BS</:label>
                   <:content>
                     {{date-format publicationDate}}
                   </:content>
                 </Item>
               {{/if}}
             {{/let}}
+            <Item>
+              <:label>Datum veranderingsgebeurtenis</:label>
+              <:content>
+                {{date-format @model.changeEvent.date}}
+              </:content>
+            </Item>
           </:right>
         </Card.Columns>
       </:card>
@@ -115,7 +128,8 @@
                   <:label>Resulterende status</:label>
                   <:content>
                     <OrganizationStatus
-                      @status={{@model.currentChangeEventResult.status}}
+                      @id={{@model.currentChangeEventResult.status.id}}
+                      @label={{@model.currentChangeEventResult.status.label}}
                     />
                   </:content>
                 </Item>

@@ -165,15 +165,17 @@
                   <:label>{{@model.identifierKBO.idName}}</:label>
                   <:content as |hasError|>
                     <AuInput
+                      @maskPlaceholder="_"
+                      autocomplete="off"
+                      @mask="####.###.###"
+                      @onChange={{this.setKbo}}
                       @width="block"
                       @value={{@model.structuredIdentifierKBO.localId}}
                       @error={{hasError}}
                       id="kbo-identifier"
+                      placeholder="____.___.___"
                     />
                   </:content>
-                  <:help-text>
-                    {{help-text "kbo"}}
-                  </:help-text>
                   <:error as |error|>
                     <Error::KboNumber @error={{error}} />
                   </:error>
@@ -196,7 +198,7 @@
         <Site::ContactEditCard
           @address={{@model.address}}
           @isAddressSearchEnabledInitially={{if
-            @model.address.addressRegisterUri
+            (or (not @model.address.id) @model.address.addressRegisterUri)
             true
             false
           }}

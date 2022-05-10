@@ -10,7 +10,7 @@
           @required={{true}}
           @error={{@address.isInvalid}}
         >
-          <:manual-address-input>
+          <:manualAddressInputBeforeButton>
             <Item
               @labelFor="site-address-street-name"
               @required={{true}}
@@ -26,6 +26,8 @@
                 />
               </:content>
             </Item>
+          </:manualAddressInputBeforeButton>
+          <:manualAddressInput>
             <Item
               @labelFor="site-address-house-number"
               @required={{true}}
@@ -81,8 +83,8 @@
                 />
               </:content>
             </Item>
-          </:manual-address-input>
-          <:common-input>
+          </:manualAddressInput>
+          <:commonInput>
             <Item
               @labelFor="site-address-province"
               @required={{true}}
@@ -92,13 +94,14 @@
               <:content as |hasError|>
                 <ProvinceSelect
                   @selected={{@address.province}}
+
                   @onChange={{fn (mut @address.province)}}
                   @id="site-address-province"
                   @error={{hasError}}
                 />
               </:content>
             </Item>
-          </:common-input>
+          </:commonInput>
         </AddressSearch>
       </:left>
       <:right as |Item|>
@@ -116,9 +119,9 @@
               type="tel"
             />
           </:content>
-          <:help-text>
+          <:helpText>
             {{help-text "phone-number"}}
-          </:help-text>
+          </:helpText>
         </Item>
 
         <Item
@@ -135,9 +138,9 @@
               type="tel"
             />
           </:content>
-          <:help-text>
+          <:helpText>
             {{help-text "phone-number"}}
-          </:help-text>
+          </:helpText>
         </Item>
 
         <Item
@@ -153,9 +156,9 @@
               id="site-contact-website"
             />
           </:content>
-          <:help-text>
+          <:helpText>
             {{help-text "url"}}
-          </:help-text>
+          </:helpText>
         </Item>
       </:right>
     </Card.Columns>

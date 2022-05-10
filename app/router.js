@@ -1,5 +1,5 @@
 import EmberRouter from '@ember/routing/router';
-import config from 'frontend-contact-hub/config/environment';
+import config from 'frontend-organization-portal/config/environment';
 
 export default class Router extends EmberRouter {
   location = config.locationType;
@@ -18,6 +18,7 @@ Router.map(function () {
         { path: '/contactgegevens' },
         function () {
           this.route('edit');
+          this.route('request-sensitive-data');
         }
       );
       this.route('positions', { path: '/posities' }, function () {
@@ -59,6 +60,14 @@ Router.map(function () {
               'governing-body',
               { path: '/:governingBodyId/' },
               function () {
+                this.route(
+                  'board-member',
+                  { path: '/bestuurslid' },
+                  function () {
+                    this.route('edit', { path: '/:mandatoryId/' });
+                    this.route('new', { path: '/nieuw' });
+                  }
+                );
                 this.route('mandatory', { path: '/mandataris' }, function () {
                   this.route('edit', { path: '/:mandatoryId/' });
                   this.route('new', { path: '/nieuw' });
@@ -88,12 +97,24 @@ Router.map(function () {
             this.route('new', { path: '/nieuw' });
           }
         );
+        this.route(
+          'related-organizations',
+          { path: '/gerelateerde-organisaties' },
+          function () {
+            this.route('edit');
+          }
+        );
       });
       this.route('new', { path: '/nieuwe-bestuurseenheid' });
     }
   );
   this.route('organizations', { path: '/organisaties' }, function () {
-    this.route('organization', { path: '/:id/' }, function () {});
+    this.route('organization', { path: '/:id/' }, function () {
+      this.route('core-data', { path: '/kerngegevens' });
+      this.route('related-organizations', {
+        path: '/gerelateerde-organisaties',
+      });
+    });
   });
   this.route('contact');
   this.route('legal', { path: '/legaal' }, function () {

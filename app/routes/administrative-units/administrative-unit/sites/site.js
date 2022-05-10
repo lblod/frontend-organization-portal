@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import {
   findPrimaryContact,
   findSecondaryContact,
-} from 'frontend-contact-hub/models/contact-point';
+} from 'frontend-organization-portal/models/contact-point';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteRoute extends Route {
   @service store;

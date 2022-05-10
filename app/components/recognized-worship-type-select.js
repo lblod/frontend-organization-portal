@@ -1,15 +1,18 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
+import { useTask } from 'ember-resources';
+import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class RecognizedWorshipTypeSelect extends Component {
   @service store;
 
-  constructor(...args) {
-    super(...args);
-
-    this.loadRecognizedWorshipTypesTask.perform();
-  }
+  recognizedWorshipTypes = useTask(
+    this,
+    this.loadRecognizedWorshipTypesTask,
+    () => [this.args.selectedClassificationId]
+  );
 
   get selectedRecognizedWorshipType() {
     if (typeof this.args.selected === 'string') {
@@ -20,16 +23,40 @@ export default class RecognizedWorshipTypeSelect extends Component {
   }
 
   getRecognizedWorshipTypeById(id) {
-    if (this.loadRecognizedWorshipTypesTask.isRunning) {
+    if (this.recognizedWorshipTypes.isRunning) {
       return null;
     }
 
-    let recognizedWorshipTypes = this.loadRecognizedWorshipTypesTask.last.value;
-    return recognizedWorshipTypes.find((worshipType) => worshipType.id === id);
+    return this.recognizedWorshipTypes.value.find(
+      (worshipType) => worshipType.id === id
+    );
   }
 
   @task
   *loadRecognizedWorshipTypesTask() {
-    return yield this.store.findAll('recognized-worship-type');
+    // Trick used to avoid infinite loop
+    // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
+    yield Promise.resolve();
+
+    let recognizedWorshipTypes = yield this.store.query(
+      'recognized-worship-type',
+      { sort: 'label' }
+    );
+
+    if (
+      this.args.selectedClassificationId ==
+      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+    ) {
+      // Filter out blacklisted types for central worship services
+      recognizedWorshipTypes = recognizedWorshipTypes.filter(
+        (t) => !this.isIdInBlacklist(t.id)
+      );
+    }
+
+    return recognizedWorshipTypes;
+  }
+
+  isIdInBlacklist(id) {
+    return CENTRAL_WORSHIP_SERVICE_BLACKLIST.find((element) => element == id);
   }
 }

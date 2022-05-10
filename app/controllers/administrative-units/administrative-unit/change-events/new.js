@@ -2,10 +2,10 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import { CLASSIFICATION_CODE } from 'frontend-contact-hub/models/administrative-unit-classification-code';
-import { CHANGE_EVENT_TYPE } from 'frontend-contact-hub/models/change-event-type';
-import { isEmpty } from 'frontend-contact-hub/models/decision';
-import { ORGANIZATION_STATUS } from 'frontend-contact-hub/models/organization-status-code';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
+import { isEmpty } from 'frontend-organization-portal/models/decision';
+import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.NAME_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
@@ -52,6 +52,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       administrativeUnit: currentOrganization,
       changeEvent,
       decision,
+      decisionActivity,
       formState,
     } = this.model;
 
@@ -69,9 +70,15 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       (shouldSaveDecision ? decision.isValid : true) &&
       changeEvent.isValid
     ) {
-      if (shouldSaveDecision && !isEmpty(decision)) {
-        yield decision.save();
-        changeEvent.decision = decision;
+      if (shouldSaveDecision) {
+        if (!isEmpty(decision) || decisionActivity.endDate) {
+          if (decisionActivity.endDate) {
+            yield decisionActivity.save();
+            decision.hasDecisionActivity = decisionActivity;
+          }
+          yield decision.save();
+          changeEvent.decision = decision;
+        }
       }
 
       let changeEventType = formState.changeEventType;

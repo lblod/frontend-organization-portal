@@ -1,6 +1,6 @@
 import Application from '@ember/application';
 
-import { initialize } from 'frontend-contact-hub/initializers/analytics';
+import { initialize } from 'frontend-organization-portal/initializers/analytics';
 import { module, test } from 'qunit';
 import Resolver from 'ember-resolver';
 import { run } from '@ember/runloop';

@@ -5,18 +5,19 @@ import {
   createSecondaryContact,
   findPrimaryContact,
   findSecondaryContact,
-} from 'frontend-contact-hub/models/contact-point';
-import { createAddress } from 'frontend-contact-hub/models/address';
-import { ID_NAME } from 'frontend-contact-hub/models/identifier';
-import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
-import { getAddressValidations } from 'frontend-contact-hub/validations/address';
-import contactValidations from 'frontend-contact-hub/validations/contact-point';
-import worshipAdministrativeUnitValidations from 'frontend-contact-hub/validations/worship-administrative-unit';
+} from 'frontend-organization-portal/models/contact-point';
+import { createAddress } from 'frontend-organization-portal/models/address';
+import { ID_NAME } from 'frontend-organization-portal/models/identifier';
+import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
+import { getAddressValidations } from 'frontend-organization-portal/validations/address';
+import contactValidations from 'frontend-organization-portal/validations/contact-point';
+import worshipAdministrativeUnitValidations from 'frontend-organization-portal/validations/worship-administrative-unit';
 import administrativeUnitValidations, {
   getStructuredIdentifierKBOValidations,
-} from 'frontend-contact-hub/validations/administrative-unit';
+} from 'frontend-organization-portal/validations/administrative-unit';
 import { A } from '@ember/array';
-import WorshipServiceModel from 'frontend-contact-hub/models/worship-service';
+import WorshipServiceModel from 'frontend-organization-portal/models/worship-service';
+import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute extends Route {
   @service store;
@@ -76,12 +77,13 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
         administrativeUnit,
         administrativeUnit instanceof WorshipServiceModel
           ? worshipAdministrativeUnitValidations
-          : administrativeUnitValidations      ),
+          : administrativeUnitValidations
+      ),
       address: createValidatedChangeset(address, getAddressValidations(true)),
       contact: createValidatedChangeset(primaryContact, contactValidations),
       secondaryContact: createValidatedChangeset(
         secondaryContact,
-        contactValidations
+        secondaryContactValidations
       ),
       identifierKBO,
       structuredIdentifierKBO: createValidatedChangeset(

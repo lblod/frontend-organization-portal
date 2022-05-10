@@ -1,20 +1,15 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import {
-  createPrimaryContact,
-  createSecondaryContact,
-} from 'frontend-contact-hub/models/contact-point';
-import { createValidatedChangeset } from 'frontend-contact-hub/utils/changeset';
-import { getAddressValidations } from 'frontend-contact-hub/validations/address';
-import contactValidations from 'frontend-contact-hub/validations/contact-point';
+import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import ministerValidations, {
   positionValidations,
-} from 'frontend-contact-hub/validations/minister';
+} from 'frontend-organization-portal/validations/minister';
 
 export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute extends Route {
   @service store;
   @service currentSession;
   @service router;
+  @service contactDetails;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
@@ -24,15 +19,8 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute exte
     }
   }
   async model({ personId, positionId }, transition) {
-    if (personId) {
-      transition.data.person = await this.store.findRecord('person', personId);
-    }
-
     let minister = this.store.createRecord('minister');
     minister.isCurrentPosition = true;
-    let contact = createPrimaryContact(this.store);
-    let secondaryContact = createSecondaryContact(this.store);
-    let address = this.store.createRecord('address');
     let position = this.store.createRecord('minister-position');
     if (positionId) {
       let role = await this.store.findRecord(
@@ -41,21 +29,20 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute exte
       );
       position.function = role;
     }
+    if (personId) {
+      const { person, positions } =
+        await this.contactDetails.getPersonAndAllPositions(personId);
+      transition.data.allContacts =
+        await this.contactDetails.positionsToEditableContacts(positions);
+      transition.data.person = person;
+      transition.data.contact = { position: minister };
+    }
     return {
       administrativeUnit: this.modelFor(
         'administrative-units.administrative-unit'
       ),
       minister: createValidatedChangeset(minister, ministerValidations),
       ministerRecord: minister,
-      contact: createValidatedChangeset(contact, contactValidations),
-      contactRecord: contact,
-      secondaryContact: createValidatedChangeset(
-        secondaryContact,
-        contactValidations
-      ),
-      secondaryContactRecord: secondaryContact,
-      address: createValidatedChangeset(address, getAddressValidations(false)),
-      addressRecord: address,
       position: createValidatedChangeset(position, positionValidations),
       positionRecord: position,
     };
@@ -63,9 +50,10 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewRoute exte
 
   setupController(controller, model, transition) {
     super.setupController(...arguments);
-
     if (transition.data.person) {
       controller.targetPerson = transition.data.person;
+      controller.contact = transition.data.contact;
+      controller.allContacts = transition.data.allContacts;
     }
   }
 

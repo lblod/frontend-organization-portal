@@ -90,7 +90,7 @@
           @primaryContact={{@model.primaryContact}}
           @secondaryContact={{@model.secondaryContact}}
           @isAddressSearchEnabledInitially={{if
-            @model.address.addressRegisterUri
+              (or (not @model.address.id) @model.address.addressRegisterUri)
             true
             false
           }}

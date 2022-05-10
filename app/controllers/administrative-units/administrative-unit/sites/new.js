@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import { combineFullAddress } from 'frontend-contact-hub/models/address';
+import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { tracked } from '@glimmer/tracking';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesNewController extends Controller {

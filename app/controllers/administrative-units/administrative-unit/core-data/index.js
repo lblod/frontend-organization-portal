@@ -1,7 +1,6 @@
-import { helper } from '@ember/component/helper';
 import Controller from '@ember/controller';
-import { ID_NAME } from 'frontend-contact-hub/models/identifier';
-import WorshipServiceModel from 'frontend-contact-hub/models/worship-service';
+import { ID_NAME } from 'frontend-organization-portal/models/identifier';
+import WorshipServiceModel from 'frontend-organization-portal/models/worship-service';
 
 const SHAREPOINT_LINK_BASE = {
   WORSHIP_SERVICE:
@@ -11,11 +10,25 @@ const SHAREPOINT_LINK_BASE = {
 };
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexController extends Controller {
-  isSharePointIdentifier = helper(function isSharePointIdentifier([
-    identifier,
-  ]) {
+  isSharePointIdentifier(identifier) {
     return identifier?.idName === ID_NAME.SHAREPOINT;
-  });
+  }
+
+  isKboIdentifier(identifier) {
+    return identifier?.idName === ID_NAME.KBO;
+  }
+
+  get sharepointIdentifier() {
+    return this.model.administrativeUnit.identifiers.find((id) =>
+      this.isSharePointIdentifier(id)
+    );
+  }
+
+  get kboIdentifier() {
+    return this.model.administrativeUnit.identifiers.find((id) =>
+      this.isKboIdentifier(id)
+    );
+  }
 
   get isWorshipService() {
     return this.model.administrativeUnit instanceof WorshipServiceModel;
