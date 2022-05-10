@@ -21,6 +21,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @tracked targetPerson = null;
   @tracked contact = null;
   @tracked allContacts = null;
+  @tracked targetPersonError = false;
 
   get isSelectingTargetPerson() {
     return !this.targetPerson;
@@ -81,7 +82,9 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
     yield mandatory.validate();
 
-    if (mandatory.isValid) {
+    if (!this.targetPerson) {
+      this.targetPersonError = true;
+    } else if (mandatory.isValid) {
       let contactValid = true;
 
       if (this.computedContactDetails) {

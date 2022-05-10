@@ -24,6 +24,7 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
   @tracked willReceiveFinancing = true;
   @tracked contact = null;
   @tracked allContacts = null;
+  @tracked targetPersonError = false;
 
   get isSelectingTargetPerson() {
     return !this.targetPerson;
@@ -72,7 +73,9 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
 
     yield Promise.all([minister.validate(), position.validate()]);
 
-    if (minister.isValid && position.isValid) {
+    if (!this.targetPerson) {
+      this.targetPersonError = true;
+    } else if (minister.isValid && position.isValid) {
       let contactValid = true;
 
       if (this.computedContactDetails) {

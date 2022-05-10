@@ -42,6 +42,13 @@
       aria-label="minister-position-creation-form"
       {{on "submit" (perform this.createMandatoryPositionTask)}}
     >
+
+    {{#if this.targetPersonError}}
+      <AuAlert @alertIcon="alert-triangle" @alertTitle="Er is een onverwachte fout opgetreden." @alertSkin="error">
+        <p>Probeer de persoon opnieuw aan de positie toe te voegen. Als het niet lukt, neem dan contact met ons op.</p>
+      </AuAlert>
+    {{/if}}
+
       <DataCard>
         <:title>Persoonlijke gegevens</:title>
         <:card as |Card|>
