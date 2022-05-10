@@ -125,7 +125,7 @@
                 <Item @labelFor="end-date">
                   <:content>
                     <AuControlCheckbox
-                      checked={{@model.minister.isCurrentPosition}}
+                      @checked={{@model.minister.isCurrentPosition}}
                       @label="Huidige positie"
                       @identifier="current-position"
                       @onChange={{this.handleIsCurrentPositionChange}}
