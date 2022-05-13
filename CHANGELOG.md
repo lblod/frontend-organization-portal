@@ -1,36 +1,41 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## 1.8.0-0 (2022-05-13)
 
 #### :rocket: Enhancement
 * [#332](https://github.com/lblod/frontend-organization-portal/pull/332) Feat/validate date future ([@nbittich](https://github.com/nbittich))
 * [#321](https://github.com/lblod/frontend-organization-portal/pull/321) sort governing bodies by period ([@nbittich](https://github.com/nbittich))
+* [#328](https://github.com/lblod/frontend-organization-portal/pull/328) Use ember-address-search addon ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#327](https://github.com/lblod/frontend-organization-portal/pull/327) Move button to find address in list   ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#316](https://github.com/lblod/frontend-organization-portal/pull/316) Sort persons in new position ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#315](https://github.com/lblod/frontend-organization-portal/pull/315) Sort persons in table of new position flow  ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#314](https://github.com/lblod/frontend-organization-portal/pull/314)
+Update styling of search person fields ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#313](https://github.com/lblod/frontend-organization-portal/pull/313)
+Sort names depending on insert ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#312](https://github.com/lblod/frontend-organization-portal/pull/312) Show table loading results instead of hiding it ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#311](https://github.com/lblod/frontend-organization-portal/pull/311) Add button to reset filters ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#310](https://github.com/lblod/frontend-organization-portal/pull/310) Contextual dropdowns for filters ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#308](https://github.com/lblod/frontend-organization-portal/pull/308) Show a message when data is loading in related orgs tab ([@claire-lovisa](https://github.com/claire-lovisa))
 * [#305](https://github.com/lblod/frontend-organization-portal/pull/305) autosuggestion person ([@nbittich](https://github.com/nbittich))
+* [#304](https://github.com/lblod/frontend-organization-portal/pull/304) Remove warning on position page ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#302](https://github.com/lblod/frontend-organization-portal/pull/302) Ember 3.28 LTS update ([@claire-lovisa](https://github.com/claire-lovisa))
 
 #### :bug: Bug Fix
 * [#334](https://github.com/lblod/frontend-organization-portal/pull/334) Fix typo in page header title ([@madnificent](https://github.com/madnificent))
 * [#330](https://github.com/lblod/frontend-organization-portal/pull/330) fix typo ([@nbittich](https://github.com/nbittich))
+* [#309](https://github.com/lblod/frontend-organization-portal/pull/309) Redirect org index to core data ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#307](https://github.com/lblod/frontend-organization-portal/pull/307) Fix table navigation for betrokken locale besturen ([@claire-lovisa](https://github.com/claire-lovisa))
 * [#306](https://github.com/lblod/frontend-organization-portal/pull/306) Remove duplicates in person search result ([@nbittich](https://github.com/nbittich))
+* [#303](https://github.com/lblod/frontend-organization-portal/pull/303) Fix appearance of related organizations page ([@claire-lovisa](https://github.com/claire-lovisa))
 
-#### Committers: 2
+#### Committers: 3
 - Aad Versteden ([@madnificent](https://github.com/madnificent))
 - Nordine Bittich ([@nbittich](https://github.com/nbittich))
-
+- Claire Lovisa [@claire-lovisa](https://github.com/claire-lovisa)
 
 ## 1.7.0 (2022-03-31)
 
 #### :bug: Bug Fix
+* [#301](https://github.com/lblod/frontend-organization-portal/pull/301) Revert " Add reset button and remove research button" ([@claire-lovisa](https://github.com/claire-lovisa))
 * [#300](https://github.com/lblod/frontend-organization-portal/pull/300) fix feature municipality ([@nbittich](https://github.com/nbittich))
 * [#299](https://github.com/lblod/frontend-organization-portal/pull/299) show all position filter ([@nbittich](https://github.com/nbittich))
 * [#296](https://github.com/lblod/frontend-organization-portal/pull/296) fix status ([@nbittich](https://github.com/nbittich))
@@ -56,7 +61,7 @@
 
 #### Committers: 2
 - Nordine Bittich ([@nbittich](https://github.com/nbittich))
-- [@claire-lovisa](https://github.com/claire-lovisa)
+- Claire Lovisa [@claire-lovisa](https://github.com/claire-lovisa)
 
 
 ## 1.7.0-4 (2022-03-30)
