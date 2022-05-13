@@ -27,7 +27,7 @@
           </AuHeading>
         </AuToolbarGroup>
         <AuToolbarGroup>
-          <AuButton {{on "click" this.newContact}}>
+          <AuButton @disabled={{this.isSelectedContactNewContact}} {{on "click" this.newContact}}>
             Nieuw
           </AuButton>
         </AuToolbarGroup>

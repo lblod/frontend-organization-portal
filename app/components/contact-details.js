@@ -234,4 +234,8 @@ export default class ContactDetailsComponent extends Component {
       yield this.args.onUpdate(this.selectedContact);
     }
   }
+
+  get isSelectedContactNewContact() {
+    return this.selectedContact && !this.selectedContact.primaryContact?.id;
+  }
 }
