@@ -149,7 +149,7 @@
 
       <AuButton
         @loading={{this.saveContact.isRunning}}
-        @disabled={{this.saveContact.isRunning}}
+        @disabled={{(or this.isAllFieldsEmpty this.saveContact.isRunning)}}
         type="submit"
         form="edit-contact-form"
       >

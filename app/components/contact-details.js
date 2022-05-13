@@ -188,6 +188,17 @@ export default class ContactDetailsComponent extends Component {
     }
   }
 
+  get isAllFieldsEmpty() {
+    let { primaryContact, secondaryContact, address } = this.editingContact;
+    return (
+      !address?.street?.length &&
+      !address?.province?.length &&
+      !primaryContact?.email?.length &&
+      !primaryContact?.telephone?.length &&
+      !secondaryContact?.telephone?.length
+    );
+  }
+
   @dropTask
   *saveContact(event) {
     event.preventDefault();
