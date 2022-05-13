@@ -192,6 +192,7 @@ export default class ContactDetailsComponent extends Component {
     let { primaryContact, secondaryContact, address } = this.editingContact;
     return (
       !address?.street?.length &&
+      !address?.province?.length &&
       !primaryContact?.email?.length &&
       !primaryContact?.telephone?.length &&
       !secondaryContact?.telephone?.length
