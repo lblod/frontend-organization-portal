@@ -46,6 +46,7 @@ const mandatoryValidations = {
           ignoreBlank: true,
           message: 'Vul de effectieve einddatum in',
         }),
+        validateEndDateAfterStartDate,
       ],
       function (changes, content) {
         let requiresEndDate;
@@ -59,7 +60,6 @@ const mandatoryValidations = {
         return requiresEndDate;
       }
     ),
-    validateEndDateAfterStartDate,
   ],
 };
 

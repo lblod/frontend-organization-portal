@@ -18,6 +18,7 @@ export default {
           ignoreBlank: true,
           message: 'Vul de einddatum in',
         }),
+        validateEndDateAfterStartDate,
       ],
       function (changes, content) {
         let requiresAgentEndDate;
@@ -31,7 +32,6 @@ export default {
         return requiresAgentEndDate;
       }
     ),
-    validateEndDateAfterStartDate,
   ],
 };
 
