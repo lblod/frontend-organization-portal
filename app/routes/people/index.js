@@ -26,10 +26,10 @@ export default class PeopleIndexRoute extends Route {
   *loadPeopleTask(params) {
     const filter = {};
     if (params.given_name) {
-      filter[':prefix:given_name'] = `${params.given_name.toLowerCase()}`;
+      filter[':phrase_prefix:given_name'] = `${params.given_name.trim()}`;
     }
     if (params.family_name) {
-      filter[':prefix:family_name'] = `${params.family_name.toLowerCase()}`;
+      filter[':phrase_prefix:family_name'] = `${params.family_name.trim()}`;
     }
     if (params.status) {
       let date = new Date().toISOString().slice(0, -5);
