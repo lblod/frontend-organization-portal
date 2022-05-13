@@ -236,6 +236,6 @@ export default class ContactDetailsComponent extends Component {
   }
 
   get isSelectedContactNewContact() {
-    return this.selectedContact && !this.selectedContact.primaryContact?.id;
+    return this.positions.some((pos) => !pos.primaryContact?.id);
   }
 }
