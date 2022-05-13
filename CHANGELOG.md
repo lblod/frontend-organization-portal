@@ -10,6 +10,24 @@
 
 
 
+
+## 1.8.0-0 (2022-05-13)
+
+#### :rocket: Enhancement
+* [#332](https://github.com/lblod/frontend-organization-portal/pull/332) Feat/validate date future ([@nbittich](https://github.com/nbittich))
+* [#321](https://github.com/lblod/frontend-organization-portal/pull/321) sort governing bodies by period ([@nbittich](https://github.com/nbittich))
+* [#305](https://github.com/lblod/frontend-organization-portal/pull/305) autosuggestion person ([@nbittich](https://github.com/nbittich))
+
+#### :bug: Bug Fix
+* [#334](https://github.com/lblod/frontend-organization-portal/pull/334) Fix typo in page header title ([@madnificent](https://github.com/madnificent))
+* [#330](https://github.com/lblod/frontend-organization-portal/pull/330) fix typo ([@nbittich](https://github.com/nbittich))
+* [#306](https://github.com/lblod/frontend-organization-portal/pull/306) Remove duplicates in person search result ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 2
+- Aad Versteden ([@madnificent](https://github.com/madnificent))
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
+
 ## 1.7.0 (2022-03-31)
 
 #### :bug: Bug Fix
