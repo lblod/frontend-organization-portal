@@ -22,18 +22,16 @@
   </form>
 {{else}}
   <div class="au-u-max-width-large">
-
-    <AuHeading
-      @level={{or @headingLevel "3"}}
-      @skin={{or @headingSkin "5"}}
-      class="au-u-margin-bottom-tiny"
-    >
-      {{@title}}
-    </AuHeading>
-
-    <div class="au-o-box au-o-box--small au-c-card au-c-card--fill">
-      <AuButtonGroup class="au-c-button-group--align-right">
-
+    <AuToolbar>
+      <AuToolbarGroup>
+        <AuHeading
+          @skin={{or @headingSkin "5"}}
+          class="au-u-margin-bottom-tiny"
+        >
+          {{@title}}
+        </AuHeading>
+      </AuToolbarGroup>
+      <AuToolbarGroup>
         <AuButton
           @disabled={{this.isSelectedContactNewContact}}
           {{on "click" this.newContact}}
@@ -41,96 +39,69 @@
         >
           Nieuw
         </AuButton>
+      </AuToolbarGroup>
+    </AuToolbar>
 
-      </AuButtonGroup>
+    <AuDataTable
+      id="contactDetails"
+      @content={{this.positions}}
+      @noDataMessage="Geen contactpunten"
+      as |t|
+    >
+      <t.content as |c|>
+        <c.header>
+          <th>Adres</th>
+          <th>Provincie</th>
+          <th>E-mail</th>
+          <th>Primair telefoonummer</th>
+          <th>Secundair telefoonummer</th>
+          <th>Selecteer</th>
+          <th></th>
+        </c.header>
+        <c.body as |contact|>
+          <td>
+            {{contact.primaryContact.contactAddress.fullAddress}}
 
-      <div class="au-c-card__content">
+          </td>
+          <td>
+            {{contact.primaryContact.contactAddress.province}}
+          </td>
+          <td>
+            {{contact.primaryContact.email}}
+          </td>
+          <td>
+            {{contact.primaryContact.telephone}}
+          </td>
+          <td>
+            {{contact.secondaryContact.telephone}}
+          </td>
 
-        <AuDataTable
-          id="contactDetails"
-          @content={{this.positions}}
-          @noDataMessage="Geen contactpunten"
-          as |t|
-        >
-          <t.content as |c|>
-            <c.header>
-              <th>Adres</th>
-              <th>Provincie</th>
-              <th>E-mail</th>
-              <th>Primair telefoonummer</th>
-              <th>Secundair telefoonummer</th>
-              <th>Selecteer</th>
-              <th></th>
-            </c.header>
-            <c.body as |contact|>
-              <td>
-                {{contact.primaryContact.contactAddress.fullAddress}}
+          <td>
 
-              </td>
-              <td>
-                {{contact.primaryContact.contactAddress.province}}
-              </td>
-              <td>
-                {{contact.primaryContact.email}}
-              </td>
-              <td>
-                {{contact.primaryContact.telephone}}
-              </td>
-              <td>
-                {{contact.secondaryContact.telephone}}
-              </td>
+            <AuButton @skin="link" {{on "click" (perform this.copy contact)}}>
+              <AuControlCheckbox
+                @label=""
+                @checked={{(eq
+                  this.selectedContact.primaryContact.id
+                  contact.primaryContact.id
+                )}}
+              />
+            </AuButton>
+          </td>
+          <td>
+            <AuButton
+              @skin="link"
+              {{on "click" (fn this.fixErrorAndSelect contact)}}
+            >
+              Corrigeer fout
+            </AuButton>
+          </td>
+        </c.body>
+      </t.content>
 
-              <td>
+    </AuDataTable>
 
-                <AuButton
-                  @skin="link"
-                  {{on "click" (perform this.copy contact)}}
-                >
-                  <AuControlCheckbox
-                    @label=""
-                    @checked={{(eq
-                      this.selectedContact.primaryContact.id
-                      contact.primaryContact.id
-                    )}}
-                  />
-                </AuButton>
-              </td>
-              <td>
-                <AuButton
-                  @skin="link"
-                  {{on "click" (fn this.fixErrorAndSelect contact)}}
-                >
-                  Corrigeer fout
-                </AuButton>
-              </td>
-            </c.body>
-          </t.content>
-
-        </AuDataTable>
-      </div>
-    </div>
   </div>
-  <AuCard as |c|>
-    <c.header>
-      <AuToolbar>
-        <AuToolbarGroup>
-          <AuHeading @skin="4">
-            {{@title}}
-          </AuHeading>
-        </AuToolbarGroup>
-        <AuToolbarGroup>
-          <AuButton
-            @disabled={{this.isSelectedContactNewContact}}
-            {{on "click" this.newContact}}
-          >
-            Nieuw
-          </AuButton>
-        </AuToolbarGroup>
-      </AuToolbar>
-
-    </c.header>
-    <c.content />
-  </AuCard>
 
   <AuModal
     @modalOpen={{this.editingContact}}
