@@ -1,4 +1,60 @@
 
+
+## 1.9.0-0 (2022-05-20)
+
+#### :rocket: Enhancement
+* [#348](https://github.com/lblod/frontend-organization-portal/pull/348) Update text shown when adding person ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#345](https://github.com/lblod/frontend-organization-portal/pull/345) missing loading for governing body ([@nbittich](https://github.com/nbittich))
+* [#344](https://github.com/lblod/frontend-organization-portal/pull/344) Cosmetic change front-end copy mechanism ([@nbittich](https://github.com/nbittich))
+* [#342](https://github.com/lblod/frontend-organization-portal/pull/342) Prevent users from trying to create contact info consecutively ([@nbittich](https://github.com/nbittich))
+* [#341](https://github.com/lblod/frontend-organization-portal/pull/341) Feat/only save if not empty ([@nbittich](https://github.com/nbittich))
+* [#339](https://github.com/lblod/frontend-organization-portal/pull/339) show full address in address column ([@nbittich](https://github.com/nbittich))
+* [#332](https://github.com/lblod/frontend-organization-portal/pull/332) Feat/validate date future ([@nbittich](https://github.com/nbittich))
+* [#331](https://github.com/lblod/frontend-organization-portal/pull/331) Create new routes for board member positions ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#328](https://github.com/lblod/frontend-organization-portal/pull/328) Use ember-address-search addon ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#327](https://github.com/lblod/frontend-organization-portal/pull/327) Move button to find address in list ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#323](https://github.com/lblod/frontend-organization-portal/pull/323) Refinement poc copy mechanism ([@nbittich](https://github.com/nbittich))
+* [#324](https://github.com/lblod/frontend-organization-portal/pull/324) Change wording FOD finances ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#325](https://github.com/lblod/frontend-organization-portal/pull/325) Bump packages and remove some deprecations ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#322](https://github.com/lblod/frontend-organization-portal/pull/322) adjusted date picker for birthdate ([@nbittich](https://github.com/nbittich))
+* [#321](https://github.com/lblod/frontend-organization-portal/pull/321) sort governing bodies by period ([@nbittich](https://github.com/nbittich))
+* [#317](https://github.com/lblod/frontend-organization-portal/pull/317) copy mechanism poc ([@nbittich](https://github.com/nbittich))
+* [#316](https://github.com/lblod/frontend-organization-portal/pull/316) Sort persons in new position ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#315](https://github.com/lblod/frontend-organization-portal/pull/315) Sort persons in table of new position flow ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#314](https://github.com/lblod/frontend-organization-portal/pull/314) Update styling of search person fields ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#313](https://github.com/lblod/frontend-organization-portal/pull/313) Sort names depending on insert ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#310](https://github.com/lblod/frontend-organization-portal/pull/310) Contextual dropdowns for filters ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#311](https://github.com/lblod/frontend-organization-portal/pull/311) Add button to reset filters ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#312](https://github.com/lblod/frontend-organization-portal/pull/312) Show table loading results instead of hiding it ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#308](https://github.com/lblod/frontend-organization-portal/pull/308) Show a message when data is loading in related orgs tab ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#305](https://github.com/lblod/frontend-organization-portal/pull/305) autosuggestion person ([@nbittich](https://github.com/nbittich))
+* [#304](https://github.com/lblod/frontend-organization-portal/pull/304) Remove warning on position page ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#302](https://github.com/lblod/frontend-organization-portal/pull/302) Ember 3.28 LTS update ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### :bug: Bug Fix
+* [#349](https://github.com/lblod/frontend-organization-portal/pull/349) link to position bugfix ([@nbittich](https://github.com/nbittich))
+* [#347](https://github.com/lblod/frontend-organization-portal/pull/347) Enable search fields for accessibility ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#343](https://github.com/lblod/frontend-organization-portal/pull/343) Person Search query : names with more than one word give no results ([@nbittich](https://github.com/nbittich))
+* [#338](https://github.com/lblod/frontend-organization-portal/pull/338) validation start date & end date ([@nbittich](https://github.com/nbittich))
+* [#337](https://github.com/lblod/frontend-organization-portal/pull/337) Fix state not passed to the checkboxes ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#334](https://github.com/lblod/frontend-organization-portal/pull/334) Fix typo in page header title ([@madnificent](https://github.com/madnificent))
+* [#333](https://github.com/lblod/frontend-organization-portal/pull/333) fix contact details copy with invalid existing data ([@nbittich](https://github.com/nbittich))
+* [#330](https://github.com/lblod/frontend-organization-portal/pull/330) fix typo ([@nbittich](https://github.com/nbittich))
+* [#329](https://github.com/lblod/frontend-organization-portal/pull/329) bugfix cancel button & inactive position ([@nbittich](https://github.com/nbittich))
+* [#326](https://github.com/lblod/frontend-organization-portal/pull/326) Copy then edit selects it twice ([@nbittich](https://github.com/nbittich))
+* [#320](https://github.com/lblod/frontend-organization-portal/pull/320) We shouldn't validate emails & website for secondary contact ([@nbittich](https://github.com/nbittich))
+* [#319](https://github.com/lblod/frontend-organization-portal/pull/319) Increase size page when filtering municipalities ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#318](https://github.com/lblod/frontend-organization-portal/pull/318) Fix positions not saved ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#309](https://github.com/lblod/frontend-organization-portal/pull/309) Redirect org index to core data ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#307](https://github.com/lblod/frontend-organization-portal/pull/307) Fix table navigation for betrokken locale besturen ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#306](https://github.com/lblod/frontend-organization-portal/pull/306) Remove duplicates in person search result ([@nbittich](https://github.com/nbittich))
+* [#303](https://github.com/lblod/frontend-organization-portal/pull/303) Fix appearance of related organizations page ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### Committers: 3
+- Aad Versteden ([@madnificent](https://github.com/madnificent))
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.8.0 (2022-05-20)
 
 #### :rocket: Enhancement
