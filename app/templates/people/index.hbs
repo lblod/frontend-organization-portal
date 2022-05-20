@@ -152,8 +152,7 @@
             </td>
             <td>
               <AuLink
-                @route="people.person.positions.mandatory"
-                @models={{array person.id person.uuid}}
+                {{on 'click' (fn this.navigateToPosition person)}}
               >
                 {{person.position_name}}
               </AuLink>
