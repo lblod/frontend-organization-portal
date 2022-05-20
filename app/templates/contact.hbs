@@ -3,7 +3,7 @@
 <StaticPage>
   <div class="au-o-region-large au-o-layout">
     <AuHeading class="au-u-margin-bottom">Contact</AuHeading>
-    <p class="au-u-margin-bottom">
+    {{!-- <p class="au-u-margin-bottom">
       FAQ en andere informatie over de werking van het OrganisatiePortaal kan je
       terugvinden in onze
       <a
@@ -12,11 +12,44 @@
         target="_blank"
         rel="noopener noreferrer"
       >handleiding (externe link)</a>.
-    </p>
+    </p> --}}
 
+    <p class="au-u-medium">Hulp nodig bij de werking van het OrganisatiePortaal?</p>
+    <ul class="list-circle au-u-margin-bottom au-u-margin-left">
+      <li>
+        <a
+          class="au-c-link"
+          target="_blank"
+          href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/" rel="noopener noreferrer"
+        >Bekijk onze handleiding</a>
+      </li>
+      <li>
+        <a
+          class="au-c-link"
+          target="_blank"
+          href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/ondersteuning/veelgestelde-vragen-faq" rel="noopener noreferrer"
+        >Bekijk onze FAQ</a>
+      </li>
+      <li>
+        <a
+          class="au-c-link"
+          target="_blank"
+          href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/ondersteuning/vocabularium" rel="noopener noreferrer"
+        >Bekijk ons vocabularium</a>
+      </li>
+    </ul>
+
+    <p class="au-u-margin-bottom">Indien geen van bovenstaande items je kan
+      helpen,
+      <a
+        class="au-c-link"
+        href="mailto:organisaties.abb@vlaanderen.be"
+      >contacteer onze helpdesk</a>.</p>
     <form class="au-c-form">
       <fieldset>
-        <legend class="au-c-label">Waar gaat uw bericht over?</legend>
+        <legend class="au-c-label">Naast vragen over de werking, kan je onze
+          helpdesk contacteren m.b.t. volgende onderwerpen:
+        </legend>
         <ul>
           {{#each this.subjectOptions as |subject|}}
             <li>
@@ -39,11 +72,49 @@
       {{/if}}
     </form>
 
-    <p class="au-u-margin-top">
+    <p class="au-u-margin-top au-u-medium">
+      Werking van onze helpdesk
+    </p>
+
+    <ol class="list-decimal au-u-margin-left">
+      <li>Je klikt op “Contacteer onze helpdesk” of je stuurt een mail naar
+        <a
+          class="au-c-link"
+          href="mailto:organisaties.abb@vlaanderen.be"
+        >organisaties.abb@vlaanderen.be</a>.</li>
+      <li>
+        Een nieuw e-mailbericht wordt automatisch opgestart in Outlook.
+        <ol class="list-disc au-u-margin-left">
+          <li>
+            Je vult het onderwerp in (bv. Melding van foutieve data)
+          </li>
+          <li>
+            In het bericht geef je een omschrijving van je melding met bij
+            voorkeur
+            <ol class="list-circle au-u-margin-left">
+              <li>Met welk gebruikersrecht (welke rol) ben je ingelogd? (rol
+                automatisch weergeven op de landingspagina naast je naam “naam -
+                rol gebruiker” (lezer, editeerder of beheerder)</li>
+              <li>
+                Wat is de URL van de pagina van de melding (enkel indien van
+                toepassing) (bv.
+                https://organisaties.abb.vlaanderen.be/bestuurseenheden/a7164f51e0e68820b9d2d4d53aaf48f9/kerngegevens)
+              </li>
+              <li>Wat wens je ons te melden:</li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>Jouw bericht wordt automatisch omgezet in een ticket.</li>
+      <li>Eén van onze helpdeskmedewerkers gaat hiermee aan de slag.</li>
+      <li>Je wordt op de hoogte gehouden van de status van het ticket.</li>
+    </ol>
+
+    {{!-- <p class="au-u-margin-top">
       Of neem rechtstreeks contact op via mail
       <a href="mailto:{{config "contactEmail"}}" class="au-c-link">{{config
           "contactEmail"
         }}</a>.
-    </p>
+    </p> --}}
   </div>
 </StaticPage>
