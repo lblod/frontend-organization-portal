@@ -18,12 +18,12 @@
               Opslaan
             </AuButton>
 
-            <AuLink
-              {{on "click" this.reset}}
-              @skin="button-secondary"
+            <AuButton
+              {{on "click" this.cancel}}
+              @skin="secondary"
             >
               Annuleer
-            </AuLink>
+            </AuButton>
           </AuButtonGroup>
           <ReportWrongData />
         </div>

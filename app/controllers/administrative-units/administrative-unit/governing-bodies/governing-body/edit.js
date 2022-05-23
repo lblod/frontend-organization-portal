@@ -7,7 +7,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @service router;
 
   @action
-  reset() {
+  cancel() {
     this.model.governingBody.rollbackAttributes();
     this.router.transitionTo(
       'administrative-units.administrative-unit.governing-bodies.governing-body'
