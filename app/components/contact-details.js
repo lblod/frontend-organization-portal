@@ -54,8 +54,7 @@ export default class ContactDetailsComponent extends Component {
   }
 
   @action
-  cancel(event) {
-    console.log(event);
+  cancel() {
     this.rollback(this.editingContact);
     this.editingContact = null;
   }
