@@ -142,3 +142,17 @@ table.dataTable tbody th {
   height: calc(85% - 9.6rem);
   left: 1.2rem;
 }
+
+.list-decimal {
+  list-style: decimal;
+}
+
+.list-circle {
+  list-style: circle;
+}
+.list-disc {
+  list-style: disc;
+}
+.list-alpha {
+  list-style: lower-alpha;
+}
