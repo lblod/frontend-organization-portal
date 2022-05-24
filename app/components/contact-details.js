@@ -30,8 +30,13 @@ export default class ContactDetailsComponent extends Component {
     }
     this.positions = this.reloadPositions();
     if (!this.positions?.length) {
-      this.newContact();
+      if (this.selectedContact) {
+        this.fixErrorAndSelect(this.selectedContact);
+      } else {
+        this.newContact();
+      }
       this.args.onUpdate(this.editingContact);
+
       this.singlePosition = true;
     } else {
       this.singlePosition = false;
