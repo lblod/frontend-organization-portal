@@ -29,7 +29,7 @@ export default class ContactDetailsComponent extends Component {
       this.oldContactId = this.args.contact.primaryContact.id; // keep track of old primary contact
     }
     this.positions = this.reloadPositions();
-    if (!this.positions?.length || this.positions?.length == 1) {
+    if (!this.positions?.length) {
       if (this.selectedContact) {
         this.fixErrorAndSelect(this.selectedContact);
       } else {
