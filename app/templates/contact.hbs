@@ -20,31 +20,47 @@
         <a
           class="au-c-link"
           target="_blank"
-          href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/" rel="noopener noreferrer"
+          href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/"
+          rel="noopener noreferrer"
         >Bekijk onze handleiding</a>
       </li>
       <li>
         <a
           class="au-c-link"
           target="_blank"
-          href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/ondersteuning/veelgestelde-vragen-faq" rel="noopener noreferrer"
+          href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/ondersteuning/veelgestelde-vragen-faq"
+          rel="noopener noreferrer"
         >Bekijk onze FAQ</a>
       </li>
       <li>
         <a
           class="au-c-link"
           target="_blank"
-          href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/ondersteuning/vocabularium" rel="noopener noreferrer"
+          href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/ondersteuning/vocabularium"
+          rel="noopener noreferrer"
         >Bekijk ons vocabularium</a>
       </li>
     </ul>
 
-    <p class="au-u-margin-bottom">Indien geen van bovenstaande items je kan
-      helpen,
-      <a
-        class="au-c-link"
-        href="mailto:organisaties.abb@vlaanderen.be"
-      >contacteer onze helpdesk</a>.</p>
+    <div class="au-u-margin-bottom-small au-u-background-gray-200 au-u-padding-small">
+      <AuHelpText>
+        <p class="au-u-para">
+          <AuIcon
+            @icon="circle-info"
+            @alignement="left"
+            @ariaHidden={{false}}
+          />
+          Vind je geen antwoord op je vraag in deze handleiding of wens je een
+          andere melding te doen, contacteer dan onze helpdesk via
+          <a
+            class="au-c-link"
+            href="mailto:{{config "contactEmail"}}"
+          >{{config "contactEmail"}}</a>.
+        </p>
+
+      </AuHelpText>
+    </div>
+
     <form class="au-c-form">
       <fieldset>
         <legend class="au-c-label">Naast vragen over de werking, kan je onze
@@ -77,11 +93,11 @@
     </p>
 
     <ol class="list-decimal au-u-margin-left">
-      <li>Je klikt op “Contacteer onze helpdesk” of je stuurt een mail naar
+      <li>Je klikt op “Contacteer onze helpdesk” of je stuurt een e-mail naar
         <a
           class="au-c-link"
-          href="mailto:organisaties.abb@vlaanderen.be"
-        >organisaties.abb@vlaanderen.be</a>.</li>
+          href="mailto:{{config "contactEmail"}}"
+        >{{config "contactEmail"}}</a>.</li>
       <li>
         Een nieuw e-mailbericht wordt automatisch opgestart in Outlook.
         <ol class="list-disc au-u-margin-left">
@@ -98,9 +114,9 @@
               <li>
                 Wat is de URL van de pagina van de melding (enkel indien van
                 toepassing) (bv.
-                https://organisaties.abb.vlaanderen.be/bestuurseenheden/a7164f51e0e68820b9d2d4d53aaf48f9/kerngegevens)
+                <a class="au-c-link" href="https://organisaties.abb.vlaanderen.be/bestuurseenheden/a7164f51e0e68820b9d2d4d53aaf48f9/kerngegevens">https://organisaties.abb.vlaanderen.be/bestuurseenheden/a7164f51e0e68820b9d2d4d53aaf48f9/kerngegevens</a>)
               </li>
-              <li>Wat wens je ons te melden:</li>
+              <li>Wat wens je ons te melden</li>
             </ol>
           </li>
         </ol>
