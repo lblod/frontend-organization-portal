@@ -1,5 +1,14 @@
 
 
+
+## 1.9.0-1 (2022-05-24)
+
+#### :bug: Bug Fix
+* [#350](https://github.com/lblod/frontend-organization-portal/pull/350) fix weird behavior with aulink ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.9.0-0 (2022-05-20)
 
 #### :rocket: Enhancement
