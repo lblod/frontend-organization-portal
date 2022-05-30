@@ -1,6 +1,15 @@
 
 
 
+
+## 1.9.0-2 (2022-05-30)
+
+#### :bug: Bug Fix
+* [#352](https://github.com/lblod/frontend-organization-portal/pull/352) fix address on edit ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.9.0-1 (2022-05-24)
 
 #### :bug: Bug Fix
