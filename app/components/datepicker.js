@@ -4,60 +4,82 @@ import { tracked } from '@glimmer/tracking';
 
 export default class DatepickerComponent extends Component {
   @tracked
-  hasError;
+  _error;
 
   constructor() {
     super(...arguments);
-    this.hasError = this.args.error;
   }
 
   @action
-  onChange(date) {
-    if (date?.length != 8) {
-      this.hasError = true;
-    } else {
-      date = new Date(
-        `${date.substring(4, 8)}-${date.substring(2, 4)}-${date.substring(
-          0,
-          2
-        )}`
-      );
-      this.hasError = !this.isValidDate(date);
-    }
-    if (!this.hasError) {
+  onChange(dt) {
+    let { date, validation } = this.validate(dt);
+    this._error = validation;
+
+    if (this._error.valid) {
       this.args.onChange?.(date);
     }
   }
 
   get value() {
-    if (this.isValidDate(this.args.value)) {
+    const { date, validation } = this.validate(this.args.value);
+
+    if (validation.valid && date) {
       return new Intl.DateTimeFormat('nl-BE', {
         month: '2-digit',
         day: '2-digit',
         year: 'numeric',
-      }).format(this.args.value);
+      }).format(date);
     }
     return this.args.value;
   }
-  isValidDate(date) {
-    let isDate =
-      date instanceof Date && date !== 'Invalid Date' && !isNaN(date);
 
-    if (!isDate) {
-      return false;
+  validate(dt) {
+    let date;
+    if (!dt) {
+      return { date: null, validation: { valid: true, error: null } };
+    }
+    if (dt instanceof Date) {
+      date = dt;
+      let valid = date !== 'Invalid Date' && !isNaN(date);
+      if (!valid) {
+        return { date, validation: { valid, error: INVALID_DATE } };
+      }
+    } else {
+      if (dt.length === 0) {
+        return { date: null, validation: { valid: true, error: null } };
+      }
+
+      if (dt.length != 8) {
+        return { date: dt, validation: { valid: false, error: INVALID_DATE } };
+      }
+      date = new Date(
+        `${dt.substring(4, 8)}-${dt.substring(2, 4)}-${dt.substring(0, 2)}`
+      );
     }
 
     const min = this.args.min;
     const max = this.args.max;
 
     if (min && date.getTime() < min.getTime()) {
-      return false;
+      return { date, validation: { valid: false, error: MIN_DATE } };
     }
 
     if (max && date.getTime() > max.getTime()) {
-      return false;
+      return { date, validation: { valid: false, error: MAX_DATE } };
     }
 
-    return isDate;
+    return { date, validation: { valid: true, error: null } };
+  }
+
+  get error() {
+    if (this.args.error) {
+      return true;
+    }
+    return !(!this._error || this._error.valid);
   }
 }
+
+export const EMPTY_DATE = 'EMPTY_DATE';
+export const INVALID_DATE = 'INVALID_DATE';
+export const MIN_DATE = 'MIN_DATE';
+export const MAX_DATE = 'MAX_DATE';
