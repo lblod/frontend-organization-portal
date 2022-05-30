@@ -4,6 +4,12 @@ import { inject as service } from '@ember/service';
 import { REQUEST_REASON } from 'frontend-organization-portal/models/request-reason';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import {
+  EMPTY_DATE,
+  INVALID_DATE,
+  MIN_DATE,
+  MAX_DATE,
+} from 'frontend-organization-portal/components/datepicker';
 
 export default class PeoplePersonPersonalInformationEditController extends Controller {
   @service router;
@@ -15,6 +21,43 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
   @tracked
   validSsn = true;
 
+  @tracked
+  birthDateValidation = { valid: true };
+
+  @action
+  validateBirthDate(validation) {
+    if (!validation.valid) {
+      switch (validation.error) {
+        case INVALID_DATE: {
+          this.birthDateValidation = {
+            valid: false,
+            errorMessage: 'Invalid date',
+          };
+          break;
+        }
+        case MIN_DATE: {
+          this.birthDateValidation = {
+            valid: false,
+            errorMessage: 'min date invalid',
+          };
+          break;
+        }
+        case MAX_DATE: {
+          this.birthDateValidation = {
+            valid: false,
+            errorMessage: 'max date invalid',
+          };
+          break;
+        }
+        case EMPTY_DATE: {
+          this.birthDateValidation = { valid: true };
+          break;
+        }
+      }
+    } else {
+      this.birthDateValidation = { valid: true };
+    }
+  }
   @action
   setSsn(value) {
     this.model.sensitiveInformation.ssn = value;
@@ -64,7 +107,7 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
       this.validSsn = validSsn;
       this.sensitiveInformationError = sensitiveInformationError;
     }
-    if (valid && this.validSsn) {
+    if (valid && this.validSsn && this.birthDateValidation.valid) {
       yield person.save();
       let requestReason = yield this.store.findRecord(
         'request-reason',

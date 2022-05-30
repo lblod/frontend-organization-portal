@@ -1,11 +1,7 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
 
 export default class DatepickerComponent extends Component {
-  @tracked
-  _error;
-
   constructor() {
     super(...arguments);
   }
@@ -13,40 +9,33 @@ export default class DatepickerComponent extends Component {
   @action
   onChange(dt) {
     let { date, validation } = this.validate(dt);
-    this._error = validation;
 
-    if (this._error.valid) {
-      this.args.onChange?.(date);
-    }
+    this.args.onChange?.(date);
+    this.args.onValidate?.(validation);
   }
 
   get value() {
-    const { date, validation } = this.validate(this.args.value);
-
-    if (validation.valid && date) {
+    const { date } = this.validate(this.args.value);
+    if (date instanceof Date) {
       return new Intl.DateTimeFormat('nl-BE', {
         month: '2-digit',
         day: '2-digit',
         year: 'numeric',
       }).format(date);
     }
-    return this.args.value;
+    return date;
   }
 
   validate(dt) {
     let date;
     if (!dt) {
-      return { date: null, validation: { valid: true, error: null } };
+      return { date: null, validation: { valid: false, error: EMPTY_DATE } };
     }
     if (dt instanceof Date) {
       date = dt;
-      let valid = date !== 'Invalid Date' && !isNaN(date);
-      if (!valid) {
-        return { date, validation: { valid, error: INVALID_DATE } };
-      }
     } else {
       if (dt.length === 0) {
-        return { date: null, validation: { valid: true, error: null } };
+        return { date: null, validation: { valid: false, error: EMPTY_DATE } };
       }
 
       if (dt.length != 8) {
@@ -56,7 +45,10 @@ export default class DatepickerComponent extends Component {
         `${dt.substring(4, 8)}-${dt.substring(2, 4)}-${dt.substring(0, 2)}`
       );
     }
-
+    let valid = date !== 'Invalid Date' && !isNaN(date);
+    if (!valid) {
+      return { date: dt, validation: { valid, error: INVALID_DATE } };
+    }
     const min = this.args.min;
     const max = this.args.max;
 
@@ -69,13 +61,6 @@ export default class DatepickerComponent extends Component {
     }
 
     return { date, validation: { valid: true, error: null } };
-  }
-
-  get error() {
-    if (this.args.error) {
-      return true;
-    }
-    return !(!this._error || this._error.valid);
   }
 }
 
