@@ -1,47 +1,63 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 export default class DatepickerComponent extends Component {
-  get datePickerLocalization() {
-    return {
-      buttonLabel: 'Kies een datum',
-      selectedDateMessage: 'De geselecteerde datum is',
-      prevMonthLabel: 'Vorige maand',
-      nextMonthLabel: 'Volgende maand',
-      monthSelectLabel: 'Maand',
-      yearSelectLabel: 'Jaar',
-      closeLabel: 'Sluit venster',
-      keyboardInstruction: 'Gebruik de pijltjestoetsen om te navigeren',
-      calendarHeading: 'Kies een datum',
-      dayNames: getLocalizedDays(),
-      monthNames: getLocalizedMonths(),
-      monthNamesShort: getLocalizedMonths('short'),
-    };
+  @tracked
+  hasError;
+
+  constructor() {
+    super(...arguments);
+    this.hasError = this.args.error;
   }
 
   @action
-  onChange(isoDate, date) {
-    this.args.onChange?.(date);
+  onChange(date) {
+    if (date?.length != 8) {
+      this.hasError = true;
+    } else {
+      date = new Date(
+        `${date.substring(4, 8)}-${date.substring(2, 4)}-${date.substring(
+          0,
+          2
+        )}`
+      );
+      this.hasError = !this.isValidDate(date);
+    }
+    if (!this.hasError) {
+      this.args.onChange?.(date);
+    }
   }
-}
 
-function getLocalizedMonths(monthFormat = 'long') {
-  let someYear = 2021;
-  return [...Array(12).keys()].map((monthIndex) => {
-    let date = new Date(someYear, monthIndex);
-    return intl({ month: monthFormat }).format(date);
-  });
-}
+  get value() {
+    if (this.isValidDate(this.args.value)) {
+      return new Intl.DateTimeFormat('nl-BE', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+      }).format(this.args.value);
+    }
+    return this.args.value;
+  }
+  isValidDate(date) {
+    let isDate =
+      date instanceof Date && date !== 'Invalid Date' && !isNaN(date);
 
-function getLocalizedDays(weekdayFormat = 'long') {
-  let someSunday = new Date('2021-01-03');
-  return [...Array(7).keys()].map((index) => {
-    let weekday = new Date(someSunday.getTime());
-    weekday.setDate(someSunday.getDate() + index);
-    return intl({ weekday: weekdayFormat }).format(weekday);
-  });
-}
+    if (!isDate) {
+      return false;
+    }
 
-function intl(options) {
-  return new Intl.DateTimeFormat('nl-BE', options);
+    const min = this.args.min;
+    const max = this.args.max;
+
+    if (min && date.getTime() < min.getTime()) {
+      return false;
+    }
+
+    if (max && date.getTime() > max.getTime()) {
+      return false;
+    }
+
+    return isDate;
+  }
 }
