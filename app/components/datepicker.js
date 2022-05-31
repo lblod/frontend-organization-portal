@@ -16,8 +16,9 @@ export default class DatepickerComponent extends Component {
   @action
   onChange(dt) {
     let { date, validation } = this.validate(dt);
-
-    this.args.onChange?.(date);
+    if (validation.valid || validation.error === EMPTY_DATE) {
+      this.args.onChange?.(date);
+    }
     this.args.onValidate?.(validation);
   }
 
@@ -68,5 +69,9 @@ export default class DatepickerComponent extends Component {
     }
 
     return { date, validation: { valid: true, error: null } };
+  }
+
+  get width() {
+    return this.args.width || 'block';
   }
 }

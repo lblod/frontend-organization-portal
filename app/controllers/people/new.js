@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { REQUEST_REASON } from 'frontend-organization-portal/models/request-reason';
+import { validate as validateBirthDate } from 'frontend-organization-portal/utils/datepicker-validation';
 
 export default class PeopleNewController extends Controller {
   @service router;
@@ -16,6 +17,14 @@ export default class PeopleNewController extends Controller {
 
   @tracked
   sensitiveInformationError;
+
+  @tracked
+  birthDateValidation = { valid: true };
+
+  @action
+  validateBirthDate(validation) {
+    this.birthDateValidation = validateBirthDate(validation);
+  }
 
   @action
   setSsn(value) {
@@ -36,7 +45,7 @@ export default class PeopleNewController extends Controller {
       );
     this.sensitiveInformationError = sensitiveInformationError;
 
-    if (person.isValid && validSsn) {
+    if (person.isValid && validSsn && this.birthDateValidation.valid) {
       yield person.save();
 
       let requestReason = yield this.store.findRecord(

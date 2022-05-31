@@ -88,7 +88,8 @@
                     @id="person-date-of-birth"
                     @min={{this.minDate}}
                     @max={{this.maxDate}}
-                    @value={{@model.sensitiveInformation.dateOfBirth}} 
+                    @onValidate={{this.validateBirthDate}}
+                    @value={{@model.sensitiveInformation.dateOfBirth}}
                     @onChange={{fn
                       (mut @model.sensitiveInformation.dateOfBirth)
                     }}
@@ -107,11 +108,12 @@
                   />
                 </:content>
               </Item>
-              <Item @labelFor="person-ssn"
-                  @errorMessage={{this.sensitiveInformationError}}
+              <Item
+                @labelFor="person-ssn"
+                @errorMessage={{this.sensitiveInformationError}}
               >
                 <:label>Rijksregisternummer</:label>
-                <:content  as |hasError|>
+                <:content as |hasError|>
                   <AuInput
                     @maskPlaceholder="_"
                     autocomplete="off"
