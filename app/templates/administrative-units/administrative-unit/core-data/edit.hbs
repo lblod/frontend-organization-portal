@@ -78,6 +78,7 @@
                   <:content as |hasError|>
                     <RecognizedWorshipTypeSelect
                       @selected={{@model.administrativeUnit.recognizedWorshipType}}
+                      @selectedClassificationId={{@model.administrativeUnit.classification.id}}
                       @onChange={{fn
                         (mut @model.administrativeUnit.recognizedWorshipType)
                       }}
