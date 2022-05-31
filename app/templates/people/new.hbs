@@ -81,13 +81,16 @@
                   />
                 </:content>
               </Item>
-              <Item @labelFor="person-date-of-birth">
+              <Item @labelFor="person-date-of-birth"
+               @errorMessage={{this.birthDateValidation.errorMessage}}
+              >
                 <:label>Geboortedatum</:label>
-                <:content>
+                <:content   as |hasError|>
                   <Datepicker
                     @id="person-date-of-birth"
                     @min={{this.minDate}}
                     @max={{this.maxDate}}
+                    @error={{hasError}}
                     @onValidate={{this.validateBirthDate}}
                     @value={{@model.sensitiveInformation.dateOfBirth}}
                     @onChange={{fn

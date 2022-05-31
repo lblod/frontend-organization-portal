@@ -79,6 +79,7 @@ export default class PeopleNewController extends Controller {
   }
 
   reset() {
+    this.birthDateValidation = { valid: true };
     this.redirectUrl = null;
     this.sensitiveInformationError = null;
     this.removeUnsavedRecords();
