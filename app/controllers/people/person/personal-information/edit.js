@@ -4,13 +4,7 @@ import { inject as service } from '@ember/service';
 import { REQUEST_REASON } from 'frontend-organization-portal/models/request-reason';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import {
-  EMPTY_DATE,
-  INVALID_DATE,
-  MIN_DATE,
-  MAX_DATE,
-} from 'frontend-organization-portal/components/datepicker';
-
+import { validate as validateBirthDate } from 'frontend-organization-portal/utils/datepicker-validation';
 export default class PeoplePersonPersonalInformationEditController extends Controller {
   @service router;
   @service sensitivePersonalInformation;
@@ -26,38 +20,9 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
 
   @action
   validateBirthDate(validation) {
-    if (!validation.valid) {
-      switch (validation.error) {
-        case INVALID_DATE: {
-          this.birthDateValidation = {
-            valid: false,
-            errorMessage: 'Invalid date',
-          };
-          break;
-        }
-        case MIN_DATE: {
-          this.birthDateValidation = {
-            valid: false,
-            errorMessage: 'min date invalid',
-          };
-          break;
-        }
-        case MAX_DATE: {
-          this.birthDateValidation = {
-            valid: false,
-            errorMessage: 'max date invalid',
-          };
-          break;
-        }
-        case EMPTY_DATE: {
-          this.birthDateValidation = { valid: true };
-          break;
-        }
-      }
-    } else {
-      this.birthDateValidation = { valid: true };
-    }
+    this.birthDateValidation = validateBirthDate(validation);
   }
+
   @action
   setSsn(value) {
     this.model.sensitiveInformation.ssn = value;

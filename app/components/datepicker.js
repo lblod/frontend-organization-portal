@@ -1,6 +1,13 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 
+import {
+  EMPTY_DATE,
+  INVALID_DATE,
+  MIN_DATE,
+  MAX_DATE,
+} from 'frontend-organization-portal/utils/datepicker-validation';
+
 export default class DatepickerComponent extends Component {
   constructor() {
     super(...arguments);
@@ -63,8 +70,3 @@ export default class DatepickerComponent extends Component {
     return { date, validation: { valid: true, error: null } };
   }
 }
-
-export const EMPTY_DATE = 'EMPTY_DATE';
-export const INVALID_DATE = 'INVALID_DATE';
-export const MIN_DATE = 'MIN_DATE';
-export const MAX_DATE = 'MAX_DATE';
