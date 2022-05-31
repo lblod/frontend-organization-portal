@@ -2,6 +2,15 @@
 
 
 
+
+## 1.9.0-3 (2022-05-31)
+
+#### :rocket: Enhancement
+* [#356](https://github.com/lblod/frontend-organization-portal/pull/356) Enable auto search ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### Committers: 1
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+
 ## 1.9.0-2 (2022-05-30)
 
 #### :bug: Bug Fix
