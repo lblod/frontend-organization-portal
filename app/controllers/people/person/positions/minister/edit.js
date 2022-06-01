@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 import { dropTask } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
+import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker-validation';
 
 const FINANCING_CODE = {
   SELF_FINANCED: '997073905f839ac6bafe92b76050ab0b',
@@ -20,6 +21,11 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
 
   queryParams = ['redirectUrl'];
 
+  @tracked
+  endDateValidation = { valid: true };
+  @tracked
+  startDateValidation = { valid: true };
+
   @action
   handleEndDateChange(endDate) {
     let { minister } = this.model;
@@ -30,6 +36,16 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
     } else {
       minister.isCurrentPosition = false;
     }
+  }
+
+  @action
+  validateEndDate(validation) {
+    this.endDateValidation = validateDate(validation);
+  }
+
+  @action
+  validateStartDate(validation) {
+    this.startDateValidation = validateDate(validation);
   }
 
   @action
@@ -57,7 +73,11 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
 
     yield minister.validate();
 
-    if (minister.isValid) {
+    if (
+      this.startDateValidation.valid &&
+      this.endDateValidation.valid &&
+      minister.isValid
+    ) {
       let contactValid = true;
       let primaryContactId = null;
 
@@ -128,6 +148,19 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
     }
   }
 
+  get endDateErrorMessage() {
+    return (
+      this.model.minister?.error?.agentEndDate?.validation ||
+      this.endDateValidation?.errorMessage
+    );
+  }
+  get startDateErrorMessage() {
+    return (
+      this.model.minister?.error?.agentStartDate?.validation ||
+      this.startDateValidation?.errorMessage
+    );
+  }
+
   @action
   updateContact(editingContact) {
     this.computedContactDetails = editingContact;
@@ -139,6 +172,8 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
   }
 
   reset() {
+    this.endDateValidation = { valid: true };
+    this.startDateValidation = { valid: true };
     this.redirectUrl = null;
     this.removeUnsavedRecords();
     this.computedContactDetails = null;
