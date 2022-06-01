@@ -77,23 +77,31 @@
           </:left>
           <:right as |Item|>
             {{#if @model.canAddDecisionInformation}}
-              <Item @labelFor="change-event-decision-activity-date">
+              <Item @labelFor="change-event-decision-activity-date"
+                @errorMessage={{this.endDateValidation.errorMessage}}
+              >
                 <:label>Datum ministerieel besluit</:label>
-                <:content>
+                <:content as |hasError|>
                   <Datepicker
                     @id="change-event-decision-activity-date"
                     @value={{@model.decisionActivity.endDate}}
                     @onChange={{fn (mut @model.decisionActivity.endDate)}}
+                    @onValidate={{this.validateEndDate}}
+                    @error={{hasError}}
                   />
                 </:content>
               </Item>
-              <Item @labelFor="change-event-decision-publication-date">
+              <Item @labelFor="change-event-decision-publication-date"
+                @errorMessage={{this.publicationDateValidation.errorMessage}}
+              >
                 <:label>Datum publicatie BS</:label>
-                <:content>
+                <:content as |hasError|>
                   <Datepicker
                     @id="change-event-decision-publication-date"
                     @value={{@model.decision.publicationDate}}
                     @onChange={{fn (mut @model.decision.publicationDate)}}
+                    @onValidate={{this.validatePublicationDate}}
+                    @error={{hasError}}
                   />
                 </:content>
               </Item>

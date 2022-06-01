@@ -4,7 +4,7 @@ import { inject as service } from '@ember/service';
 import { REQUEST_REASON } from 'frontend-organization-portal/models/request-reason';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-
+import { validate as validateBirthDate } from 'frontend-organization-portal/utils/datepicker-validation';
 export default class PeoplePersonPersonalInformationEditController extends Controller {
   @service router;
   @service sensitivePersonalInformation;
@@ -14,6 +14,14 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
   sensitiveInformationError;
   @tracked
   validSsn = true;
+
+  @tracked
+  birthDateValidation = { valid: true };
+
+  @action
+  validateBirthDate(validation) {
+    this.birthDateValidation = validateBirthDate(validation);
+  }
 
   @action
   setSsn(value) {
@@ -64,7 +72,7 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
       this.validSsn = validSsn;
       this.sensitiveInformationError = sensitiveInformationError;
     }
-    if (valid && this.validSsn) {
+    if (valid && this.validSsn && this.birthDateValidation.valid) {
       yield person.save();
       let requestReason = yield this.store.findRecord(
         'request-reason',
