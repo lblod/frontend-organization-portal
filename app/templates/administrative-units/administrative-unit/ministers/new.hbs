@@ -94,6 +94,7 @@
                   <MinisterPositionFunctionSelect
                     @onChange={{fn (mut @model.position.function)}}
                     @selected={{@model.position.function}}
+                    @selectedAdministrativeUnit={{@model.administrativeUnit}}
                     @id="minister-position-function"
                     @error={{errorMessage}}
                   />
