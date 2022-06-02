@@ -1,13 +1,13 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import { useTask } from 'ember-resources';
+import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { MAPPING_POSITION_RELIGION } from 'frontend-organization-portal/models/minister-position';
 
 export default class MinisterPositionFunctionSelectComponent extends Component {
   @service store;
 
-  positionFunctions = useTask(this, this.loadPositionFunctionsTask, () => [
+  positionFunctions = trackedTask(this, this.loadPositionFunctionsTask, () => [
     this.args.selectedAdministrativeUnit,
   ]);
 

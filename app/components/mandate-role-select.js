@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import { useTask } from 'ember-resources';
+import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import {
   CENTRAL_WORSHIP_SERVICE_BOARD_POSITIONS_BLACKLIST,
@@ -13,7 +13,7 @@ import {
 export default class MandateRoleSelectComponent extends Component {
   @service store;
 
-  mandateRoles = useTask(this, this.loadMandateRolesTask, () => [
+  mandateRoles = trackedTask(this, this.loadMandateRolesTask, () => [
     this.args.selectedAdministrativeUnit,
   ]);
 

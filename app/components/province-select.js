@@ -2,12 +2,12 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import { useTask } from 'ember-resources';
+import { trackedTask } from 'ember-resources/util/ember-concurrency';
 
 export default class ProvinceSelectComponent extends Component {
   @service store;
 
-  provinces = useTask(this, this.loadProvincesTask, () => [
+  provinces = trackedTask(this, this.loadProvincesTask, () => [
     this.args.selectedMunicipality,
   ]);
 
