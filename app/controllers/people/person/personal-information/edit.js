@@ -73,6 +73,9 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
       this.sensitiveInformationError = sensitiveInformationError;
     }
     if (valid && this.validSsn && this.birthDateValidation.valid) {
+      if (person.firstNameUsed === '') {
+        person.firstNameUsed = null;
+      }
       yield person.save();
       let requestReason = yield this.store.findRecord(
         'request-reason',

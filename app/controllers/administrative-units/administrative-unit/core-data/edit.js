@@ -84,9 +84,15 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         }
       }
 
+      if (structuredIdentifierKBO.localId === '') {
+        structuredIdentifierKBO.localId = null;
+      }
       yield structuredIdentifierKBO.save();
       yield identifierKBO.save();
 
+      if (structuredIdentifierSharepoint.localId === '') {
+        structuredIdentifierSharepoint.localId = null;
+      }
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
 

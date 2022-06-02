@@ -46,6 +46,9 @@ export default class PeopleNewController extends Controller {
     this.sensitiveInformationError = sensitiveInformationError;
 
     if (person.isValid && validSsn && this.birthDateValidation.valid) {
+      if (person.firstNameUsed === '') {
+        person.firstNameUsed = null;
+      }
       yield person.save();
 
       let requestReason = yield this.store.findRecord(

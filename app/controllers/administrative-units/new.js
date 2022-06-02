@@ -114,15 +114,20 @@ export default class AdministrativeUnitsNewController extends Controller {
     ) {
       copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
-      yield structuredIdentifierSharepoint.save();
+      if (structuredIdentifierKBO.localId === '') {
+        structuredIdentifierKBO.localId = null;
+      }
+      identifierKBO.structuredIdentifier = structuredIdentifierKBO;
       yield structuredIdentifierKBO.save();
+      yield identifierKBO.save();
 
+      if (structuredIdentifierSharepoint.localId === '') {
+        structuredIdentifierSharepoint.localId = null;
+      }
       identifierSharepoint.structuredIdentifier =
         structuredIdentifierSharepoint;
+      yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
-
-      identifierKBO.structuredIdentifier = structuredIdentifierKBO;
-      yield identifierKBO.save();
 
       if (contact.telephone === '') {
         contact.telephone = null;

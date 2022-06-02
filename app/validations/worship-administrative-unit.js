@@ -35,7 +35,7 @@ export default {
     }),
     function (changes, content) {
       let unit = null;
-      if (changes.classification.id && changes.recognizedWorshipType.id) {
+      if (changes.classification?.id && changes.recognizedWorshipType?.id) {
         unit = changes;
       } else {
         unit = content;
