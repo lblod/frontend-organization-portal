@@ -11,6 +11,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @service router;
   @service store;
   @service contactDetails;
+  @service errorReport;
 
   queryParams = ['personId', 'positionId'];
 
@@ -106,6 +107,10 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     yield mandatory.validate();
 
     if (!this.targetPerson) {
+      yield this.errorReport.reportError(
+        'Unexpected error while adding a mandatory',
+        `Target person was empty. Url: '${window.location.href}'`
+      );
       this.targetPersonError = true;
     } else if (
       this.startDateValidation.valid &&

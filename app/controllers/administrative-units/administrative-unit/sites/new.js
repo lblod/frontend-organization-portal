@@ -35,6 +35,9 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
       yield secondaryContact.save();
 
       address.fullAddress = combineFullAddress(address);
+      if (address.boxNumber === '') {
+        address.boxNumber = null;
+      }
       yield address.save();
 
       site.address = address;

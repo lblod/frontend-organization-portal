@@ -15,6 +15,7 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
   @service router;
   @service store;
   @service contactDetails;
+  @service errorReport;
 
   queryParams = ['personId', 'positionId'];
 
@@ -90,6 +91,10 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
     yield Promise.all([minister.validate(), position.validate()]);
 
     if (!this.targetPerson) {
+      yield this.errorReport.reportError(
+        'Unexpected error while adding a minister',
+        `Target person was empty. Url: '${window.location.href}'`
+      );
       this.targetPersonError = true;
     } else if (
       this.startDateValidation.valid &&

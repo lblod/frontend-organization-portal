@@ -55,6 +55,21 @@ export default class AdministrativeUnitsNewController extends Controller {
     );
   }
 
+  get hasCentralWorshipService() {
+    const typesThatHaveACentralWorshipService = [
+      RECOGNIZED_WORSHIP_TYPE.ISLAMIC,
+      RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC,
+      RECOGNIZED_WORSHIP_TYPE.ORTHODOX,
+    ];
+
+    return (
+      this.isNewWorshipService &&
+      typesThatHaveACentralWorshipService.find(
+        (id) => id == this.model.administrativeUnit.recognizedWorshipType?.id
+      )
+    );
+  }
+
   @action
   setKbo(value) {
     this.model.structuredIdentifierKBO.localId = value;

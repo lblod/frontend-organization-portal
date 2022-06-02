@@ -34,6 +34,9 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     if (address.isValid && contact.isValid && secondaryContact.isValid) {
       if (address.isDirty) {
         address.fullAddress = combineFullAddress(address);
+        if (address.boxNumber === '') {
+          address.boxNumber = null;
+        }
         yield address.save();
       }
 
