@@ -125,6 +125,9 @@ export default class AdministrativeUnitsNewController extends Controller {
       ]);
       newAdministrativeUnit.primarySite = primarySite;
 
+      if (newAdministrativeUnit.denomination === '') {
+        newAdministrativeUnit.denomination = null;
+      }
       yield newAdministrativeUnit.save();
 
       let governingBody = this.store.createRecord('governing-body');

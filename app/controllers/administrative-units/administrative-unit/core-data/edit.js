@@ -53,6 +53,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
       if (contact.isDirty) {
         let isNewContact = contact.isNew;
+
         yield contact.save();
 
         if (isNewContact) {
@@ -77,6 +78,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
 
+      if (administrativeUnit.denomination === '') {
+        administrativeUnit.denomination = null;
+      }
       yield administrativeUnit.save();
 
       this.router.transitionTo(

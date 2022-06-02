@@ -220,6 +220,10 @@ export default class ContactDetailsComponent extends Component {
       }
       primaryContact.contactAddress = address;
 
+      if (primaryContact.email === '') {
+        primaryContact.email = null;
+      }
+
       this.selectedContact = {
         primaryContact,
         secondaryContact,

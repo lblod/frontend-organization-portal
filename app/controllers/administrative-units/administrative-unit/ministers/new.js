@@ -119,6 +119,9 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
           }
 
           if (primaryContact.isDirty) {
+            if (primaryContact.email === '') {
+              primaryContact.email = null;
+            }
             yield primaryContact.save();
           }
           if (secondaryContact.isDirty) {

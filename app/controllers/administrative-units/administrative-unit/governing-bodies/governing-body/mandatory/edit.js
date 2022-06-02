@@ -98,6 +98,9 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
           }
 
           if (primaryContact.isDirty) {
+            if (primaryContact.email === '') {
+              primaryContact.email = null;
+            }
             yield primaryContact.save();
           }
           if (secondaryContact.isDirty) {
@@ -110,6 +113,9 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       }
 
       if (contactValid) {
+        if (mandatory.reasonStopped === '') {
+          mandatory.reasonStopped = null;
+        }
         yield mandatory.save();
         const oldPrimaryContactId = this.model.contact?.primaryContact?.id;
 

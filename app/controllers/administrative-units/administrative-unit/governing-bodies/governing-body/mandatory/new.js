@@ -135,6 +135,9 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
           }
 
           if (primaryContact.isDirty) {
+            if (primaryContact.email === '') {
+              primaryContact.email = null;
+            }
             yield primaryContact.save();
           }
           if (secondaryContact.isDirty) {
@@ -157,6 +160,10 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         }
         mandatory.governingAlias = this.targetPerson;
         mandatory.mandate = mandate;
+
+        if (mandatory.reasonStopped === '') {
+          mandatory.reasonStopped = null;
+        }
         yield mandatory.save();
 
         this.router.transitionTo(

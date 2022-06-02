@@ -101,6 +101,9 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
           }
 
           if (primaryContact.isDirty) {
+            if (primaryContact.email === '') {
+              primaryContact.email = null;
+            }
             yield primaryContact.save();
           }
           if (secondaryContact.isDirty) {
