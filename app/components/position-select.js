@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import { useTask } from 'ember-resources';
+import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import {
   CENTRAL_WORSHIP_SERVICE_BOARD_POSITIONS_BLACKLIST,
@@ -12,7 +12,7 @@ import { CENTRAL_WORSHIP_SERVICE_MINISTER_POSITIONS_BLACKLIST } from 'frontend-o
 export default class PositionSelectComponent extends Component {
   @service store;
 
-  positions = useTask(this, this.loadPositionTask, () => [
+  positions = trackedTask(this, this.loadPositionTask, () => [
     this.args.selectedAdministrativeUnit,
   ]);
 

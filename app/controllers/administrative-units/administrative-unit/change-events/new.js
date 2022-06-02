@@ -27,14 +27,17 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
   @tracked
   endDateValidation = { valid: true };
-
   @tracked
   publicationEndDateValidation = { valid: true };
   @tracked
   dateValidation = { valid: true };
 
+  get isCentralWorshipService() {
+    return this.model.formState.isCentralWorshipService;
+  }
+
   get classificationCodes() {
-    return this.model.formState.isCentralWorshipService
+    return this.isCentralWorshipService
       ? [CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE]
       : [CLASSIFICATION_CODE.WORSHIP_SERVICE];
   }

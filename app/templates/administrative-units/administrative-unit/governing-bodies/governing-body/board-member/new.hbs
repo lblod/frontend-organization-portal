@@ -100,6 +100,8 @@
                 <:content as |errorMessage|>
                   <MandateRoleSelect
                     @selected={{@model.mandatory.role}}
+                    @selectedAdministrativeUnit={{@model.administrativeUnit}}
+                    @isInBestuursledenContext={{true}}
                     @onChange={{this.handleMandateRoleSelect}}
                     @id="board-position"
                     @error={{errorMessage}}

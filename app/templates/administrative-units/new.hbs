@@ -50,23 +50,6 @@
               </:content>
             </Item>
             <Item
-              @labelFor="recognized-worship-type-select"
-              @required={{true}}
-              @errorMessage={{@model.administrativeUnit.error.recognizedWorshipType.validation}}
-            >
-              <:label>Soort eredienst</:label>
-              <:content as |hasError|>
-                <RecognizedWorshipTypeSelect
-                  @selected={{@model.administrativeUnit.recognizedWorshipType}}
-                  @onChange={{fn
-                    (mut @model.administrativeUnit.recognizedWorshipType)
-                  }}
-                  @error={{hasError}}
-                  @id="recognized-worship-type-select"
-                />
-              </:content>
-            </Item>
-            <Item
               @labelFor="classification-select"
               @required={{true}}
               @errorMessage={{@model.administrativeUnit.error.classification.validation}}
@@ -75,11 +58,30 @@
               <:content as |hasError|>
                 <ClassificationSelect
                   @selected={{@model.administrativeUnit.classification}}
+                  @selectedRecognizedWorshipTypeId={{@model.administrativeUnit.recognizedWorshipType.id}}
                   @onChange={{fn
                     (mut @model.administrativeUnit.classification)
                   }}
                   @error={{hasError}}
                   @id="classification-select"
+                />
+              </:content>
+            </Item>
+            <Item
+              @labelFor="recognized-worship-type-select"
+              @required={{true}}
+              @errorMessage={{@model.administrativeUnit.error.recognizedWorshipType.validation}}
+            >
+              <:label>Soort eredienst</:label>
+              <:content as |hasError|>
+                <RecognizedWorshipTypeSelect
+                  @selected={{@model.administrativeUnit.recognizedWorshipType}}
+                  @selectedClassificationId={{@model.administrativeUnit.classification.id}}
+                  @onChange={{fn
+                    (mut @model.administrativeUnit.recognizedWorshipType)
+                  }}
+                  @error={{hasError}}
+                  @id="recognized-worship-type-select"
                 />
               </:content>
             </Item>
@@ -210,15 +212,20 @@
                   />
                 </:content>
               </Item>
-            {{else}}
-              <Item @labelFor="related-central-worship-service">
+            {{else if this.hasCentralWorshipService}}
+              <Item
+                @labelFor="related-central-worship-service"
+                @required={{true}}
+                @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+              >
                 <:label>Centraal bestuur</:label>
-                <:content>
+                <:content as |hasError|>
                   <CentralWorshipSelect
                     @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                     @onChange={{fn
                       (mut @model.administrativeUnit.isSubOrganizationOf)
                     }}
+                    @error={{hasError}}
                     @id="related-central-worship-service"
                   />
                 </:content>

@@ -1,16 +1,18 @@
-<PowerSelect
-  @allowClear={{true}}
-  @searchEnabled={{true}}
-  @loadingMessage="Aan het laden..."
-  @noMatchesMessage="Geen resultaten"
-  @searchMessage="Typ om te zoeken"
-  @searchField="name"
-  @search={{perform this.loadCentralWorshipServicesTask}}
-  @options={{this.centralWorshipServices}}
-  @selected={{@selected}}
-  @onChange={{@onChange}}
-  @triggerId={{@id}}
-  as |centralWorshipService|
->
-  {{centralWorshipService.name}}
-</PowerSelect>
+<div class={{if @error "ember-power-select--error"}}>
+  <PowerSelect
+    @allowClear={{true}}
+    @searchEnabled={{true}}
+    @loadingMessage="Aan het laden..."
+    @noMatchesMessage="Geen resultaten"
+    @searchMessage="Typ om te zoeken"
+    @searchField="name"
+    @search={{perform this.loadCentralWorshipServicesTask}}
+    @options={{this.centralWorshipServices}}
+    @selected={{@selected}}
+    @onChange={{@onChange}}
+    @triggerId={{@id}}
+    as |centralWorshipService|
+  >
+    {{centralWorshipService.name}}
+  </PowerSelect>
+</div>

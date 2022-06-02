@@ -1,14 +1,14 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import { useTask } from 'ember-resources';
+import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class RecognizedWorshipTypeSelect extends Component {
   @service store;
 
-  recognizedWorshipTypes = useTask(
+  recognizedWorshipTypes = trackedTask(
     this,
     this.loadRecognizedWorshipTypesTask,
     () => [this.args.selectedClassificationId]

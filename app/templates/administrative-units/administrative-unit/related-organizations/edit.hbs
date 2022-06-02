@@ -55,16 +55,24 @@
                   </:content>
                 </Item>
                 {{#if
-                  (eq @model.worshipAdministrativeUnitType "worship-service")
+                  (and 
+                    (eq @model.worshipAdministrativeUnitType "worship-service")
+                    this.hasCentralWorshipService
+                  )
                 }}
-                  <Item @labelFor="related-central-worship-service">
+                  <Item
+                    @labelFor="related-central-worship-service"
+                    @required={{true}}
+                    @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                  >
                     <:label>Centraal bestuur</:label>
-                    <:content>
+                    <:content as |hasError|>
                       <CentralWorshipSelect
                         @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                         @onChange={{fn
                           (mut @model.administrativeUnit.isSubOrganizationOf)
                         }}
+                        @error={{hasError}}
                         @id="related-central-worship-service"
                       />
                     </:content>
