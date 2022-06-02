@@ -123,14 +123,19 @@
                   </Item>
                 {{/unless}}
                 {{#if @model.sensitiveInformation}}
-                  <Item @labelFor="person-date-of-birth">
+                  <Item @labelFor="person-date-of-birth"
+                    @errorMessage={{this.birthDateValidation.errorMessage}}
+                  >
                     <:label>Geboortedatum</:label>
-                    <:content>
+                    <:content  as |hasError|>
                       <Datepicker
                         @id="person-date-of-birth"
                         @min={{this.minDate}}
                         @max={{this.maxDate}}
+                        @error={{hasError}}
                         @value={{@model.sensitiveInformation.dateOfBirth}}
+                        @onValidate={{this.validateBirthDate
+                        }}
                         @onChange={{fn
                           (mut @model.sensitiveInformation.dateOfBirth)
                         }}
@@ -186,7 +191,7 @@
             </Card.Columns>
           </:card>
         </EditCard>
-   
+
       </div>
     </form>
   </div>

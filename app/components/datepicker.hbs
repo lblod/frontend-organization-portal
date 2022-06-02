@@ -1,11 +1,13 @@
-<AuDatePicker
-  @error={{@error}}
-  @id={{@id}}
-  @localization={{this.datePickerLocalization}}
-  @min={{@min}}
-  @max={{@max}}
+<AuInput
   @disabled={{@disabled}}
+  @error={{@error}}
+  @maskPlaceholder="_"
+  autocomplete="off"
+  @mask="99-99-9999"
   @onChange={{this.onChange}}
-  @value={{@value}}
+  @width={{this.width}}
+  @id={{@id}}
+  placeholder="DD-MM-YYYY"
+  @value={{this.value}}
   ...attributes
 />

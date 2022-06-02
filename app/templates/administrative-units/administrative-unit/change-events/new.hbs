@@ -85,23 +85,32 @@
           </:left>
           <:right as |Item|>
             {{#if @model.formState.canAddDecisionInformation}}
-              <Item @labelFor="change-event-decision-activity-date">
+              <Item @labelFor="change-event-decision-activity-date"
+                @errorMessage={{this.endDateValidation.errorMessage}}
+              >
                 <:label>Datum ministerieel besluit</:label>
-                <:content>
+                <:content as |hasError|>
                   <Datepicker
+                    @error={{hasError}}
                     @id="change-event-decision-activity-date"
                     @value={{@model.decisionActivity.endDate}}
                     @onChange={{fn (mut @model.decisionActivity.endDate)}}
+                    @onValidate={{this.validateEndDate}}
                   />
                 </:content>
               </Item>
-              <Item @labelFor="change-event-decision-publication-date">
+              <Item @labelFor="change-event-decision-publication-date"
+                @errorMessage={{this.publicationEndDateValidation.errorMessage}}
+              >
                 <:label>Datum publicatie BS</:label>
-                <:content>
+                <:content as |hasError|>
                   <Datepicker
+                    @error={{hasError}}
                     @id="change-event-decision-publication-date"
                     @value={{@model.decision.publicationDate}}
                     @onChange={{fn (mut @model.decision.publicationDate)}}
+                    @onValidate={{this.validatePublicationEndDate}}
+
                   />
                 </:content>
               </Item>
@@ -109,7 +118,8 @@
             <Item
               @labelFor="change-event-date"
               @required={{true}}
-              @errorMessage={{@model.changeEvent.error.date.validation}}
+              @errorMessage={{this.dateErrorMessage}}
+
             >
               <:label>Datum veranderingsgebeurtenis</:label>
               <:content as |hasError|>
@@ -118,6 +128,8 @@
                   @value={{@model.changeEvent.date}}
                   @onChange={{fn (mut @model.changeEvent.date)}}
                   @error={{hasError}}
+                  @onValidate={{this.validateDate}}
+
                 />
               </:content>
             </Item>

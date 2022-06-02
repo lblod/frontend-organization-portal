@@ -144,7 +144,7 @@
               <Item
                 @labelFor="start-date"
                 @required={{true}}
-                @errorMessage={{@model.mandatory.error.startDate.validation}}
+                @errorMessage={{this.startDateErrorMessage}}
               >
                 <:label>Start mandaat</:label>
                 <:content as |errorMessage|>
@@ -152,18 +152,20 @@
                     @id="start-date"
                     @onChange={{fn (mut @model.mandatory.startDate)}}
                     @value={{@model.mandatory.startDate}}
+                    @onValidate={{this.validateStartDate}}
                     @error={{errorMessage}}
                   />
                 </:content>
               </Item>
               {{! TODO: Hide this if the when "lid van rechtswege" is selected }}
-              <Item @labelFor="expected-end-date" @errorMessage={{@model.mandatory.error.expectedEndDate.validation}}>
+              <Item @labelFor="expected-end-date" @errorMessage={{this.expectedEndDateErrorMessage}}>
                 <:label>Geplande einddatum</:label>
                 <:content as |errorMessage|>
                   <Datepicker
                     @id="expected-end-date"
                     @onChange={{fn (mut @model.mandatory.expectedEndDate)}}
                     @value={{@model.mandatory.expectedEndDate}}
+                    @onValidate={{this.validateExpectedEndDate}}
                     @error={{errorMessage}}
 
                   />
@@ -184,13 +186,14 @@
               <Item
                 @labelFor="end-date"
                 @required={{not @model.mandatory.isCurrentPosition}}
-                @errorMessage={{@model.mandatory.error.endDate.validation}}
+                @errorMessage={{this.endDateErrorMessage}}
               >
                 <:label>Effectieve einddatum</:label>
                 <:content as |errorMessage|>
                   <Datepicker
                     @id="end-date"
                     @onChange={{this.handleEndDateChange}}
+                    @onValidate={{this.validateEndDate}}
                     @value={{@model.mandatory.endDate}}
                     @error={{errorMessage}}
                   />
