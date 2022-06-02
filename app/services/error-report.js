@@ -1,18 +1,22 @@
 import Service, { inject as service } from '@ember/service';
 import fetch from 'fetch';
 
+const SUBJECT = 'organization-portal-frontend';
+const CREATOR =
+  'http://lblod.data.gift/services/organization-portal-error-service';
 export default class ErrorReportService extends Service {
   @service store;
 
-  async reportError() {
+  async reportError(message, detail, references = null) {
     let body = {
       data: {
         type: 'error-reports',
         attributes: {
-          subject: 'organization-portal-frontend',
-          message: 'some error occured',
-          detail: 'some error occured because of smth',
-          references: 'http://xxx.com/person/1234/bestuur',
+          subject: SUBJECT,
+          message: message,
+          detail: detail,
+          references: references,
+          creator: CREATOR,
         },
         relationships: {},
       },
