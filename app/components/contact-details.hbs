@@ -97,7 +97,8 @@
       </t.content>
     </AuDataTable>
   </div>
-  <AuModal
+
+  <CustomModal
     @modalOpen={{this.editingContact}}
     @closeModal={{this.cancel}}
     @size="large"
@@ -154,5 +155,5 @@
         Annuleer
       </AuButton>
     </:footer>
-  </AuModal>
+  </CustomModal>
 {{/if}}
