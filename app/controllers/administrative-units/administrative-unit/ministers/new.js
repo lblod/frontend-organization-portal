@@ -15,7 +15,6 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
   @service router;
   @service store;
   @service contactDetails;
-  @service contactDetails;
   @service errorReport;
 
   queryParams = ['personId', 'positionId'];
