@@ -46,6 +46,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
       if (address.isDirty) {
         address.fullAddress = combineFullAddress(address);
+        if (address.boxNumber === '') {
+          address.boxNumber = null;
+        }
         yield address.save();
       }
 
@@ -54,6 +57,12 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       if (contact.isDirty) {
         let isNewContact = contact.isNew;
 
+        if (contact.telephone === '') {
+          contact.telephone = null;
+        }
+        if (contact.website === '') {
+          contact.website = null;
+        }
         yield contact.save();
 
         if (isNewContact) {
@@ -64,6 +73,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
       if (secondaryContact.isDirty) {
         let isNewContact = secondaryContact.isNew;
+        if (secondaryContact.telephone === '') {
+          secondaryContact.telephone = null;
+        }
         yield secondaryContact.save();
 
         if (isNewContact) {

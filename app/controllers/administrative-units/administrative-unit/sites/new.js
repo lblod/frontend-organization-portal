@@ -21,7 +21,17 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
     yield secondaryContact.validate();
 
     if (address.isValid && contact.isValid && secondaryContact.isValid) {
+      if (contact.telephone === '') {
+        contact.telephone = null;
+      }
+      if (contact.website === '') {
+        contact.website = null;
+      }
       yield contact.save();
+
+      if (secondaryContact.telephone === '') {
+        secondaryContact.telephone = null;
+      }
       yield secondaryContact.save();
 
       address.fullAddress = combineFullAddress(address);

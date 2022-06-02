@@ -91,12 +91,30 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         if (contactValid) {
           if (address.isDirty) {
             address.fullAddress = combineFullAddress(address);
-          }
-          primaryContact.contactAddress = address;
 
-          if (address.isDirty) {
+            if (address.street === '') {
+              address.street = null;
+            }
+            if (address.number === '') {
+              address.number = null;
+            }
+            if (address.boxNumber === '') {
+              address.boxNumber = null;
+            }
+            if (address.postcode === '') {
+              address.postcode = null;
+            }
+            if (address.municipality === '') {
+              address.municipality = null;
+            }
+            if (address.provincie === '') {
+              address.provincie = null;
+            }
+
             yield address.save();
           }
+
+          primaryContact.contactAddress = address;
 
           if (primaryContact.isDirty) {
             if (primaryContact.email === '') {
@@ -105,6 +123,9 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
             yield primaryContact.save();
           }
           if (secondaryContact.isDirty) {
+            if (secondaryContact.telephone === '') {
+              secondaryContact.telephone = null;
+            }
             yield secondaryContact.save();
           }
           mandatory.contacts.clear();

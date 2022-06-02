@@ -42,6 +42,12 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
           site.contacts.pushObject(contact);
         }
 
+        if (contact.telephone === '') {
+          contact.telephone = null;
+        }
+        if (contact.website === '') {
+          contact.website = null;
+        }
         yield contact.save();
       }
 
@@ -49,7 +55,9 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
         if (secondaryContact.isNew) {
           site.contacts.pushObject(secondaryContact);
         }
-
+        if (secondaryContact.telephone === '') {
+          secondaryContact.telephone = null;
+        }
         yield secondaryContact.save();
       }
 

@@ -109,10 +109,23 @@ export default class AdministrativeUnitsNewController extends Controller {
       identifierKBO.structuredIdentifier = structuredIdentifierKBO;
       yield identifierKBO.save();
 
+      if (contact.telephone === '') {
+        contact.telephone = null;
+      }
+      if (contact.website === '') {
+        contact.website = null;
+      }
       yield contact.save();
+
+      if (secondaryContact.telephone === '') {
+        secondaryContact.telephone = null;
+      }
       yield secondaryContact.save();
 
       address.fullAddress = combineFullAddress(address);
+      if (address.boxNumber === '') {
+        address.boxNumber = null;
+      }
       yield address.save();
 
       primarySite.address = address;

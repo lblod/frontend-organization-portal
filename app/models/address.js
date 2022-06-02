@@ -30,7 +30,9 @@ export function combineFullAddress(address) {
     return `${fullStreet}, ${muncipalityInformation}`;
   } else if (fullStreet) {
     return fullStreet;
-  } else {
+  } else if (muncipalityInformation) {
     return muncipalityInformation;
+  } else {
+    return null;
   }
 }
