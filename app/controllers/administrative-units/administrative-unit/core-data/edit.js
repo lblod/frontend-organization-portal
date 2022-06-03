@@ -3,6 +3,7 @@ import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { action } from '@ember/object';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
@@ -46,9 +47,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
       if (address.isDirty) {
         address.fullAddress = combineFullAddress(address);
-        if (address.boxNumber === '') {
-          address.boxNumber = null;
-        }
+        address = setEmptyStringsToNull(address);
         yield address.save();
       }
 
@@ -57,12 +56,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       if (contact.isDirty) {
         let isNewContact = contact.isNew;
 
-        if (contact.telephone === '') {
-          contact.telephone = null;
-        }
-        if (contact.website === '') {
-          contact.website = null;
-        }
+        contact = setEmptyStringsToNull(contact);
         yield contact.save();
 
         if (isNewContact) {
@@ -73,9 +67,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
       if (secondaryContact.isDirty) {
         let isNewContact = secondaryContact.isNew;
-        if (secondaryContact.telephone === '') {
-          secondaryContact.telephone = null;
-        }
+
+        secondaryContact = setEmptyStringsToNull(secondaryContact);
         yield secondaryContact.save();
 
         if (isNewContact) {
@@ -84,21 +77,18 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         }
       }
 
-      if (structuredIdentifierKBO.localId === '') {
-        structuredIdentifierKBO.localId = null;
-      }
+      structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
       yield structuredIdentifierKBO.save();
       yield identifierKBO.save();
 
-      if (structuredIdentifierSharepoint.localId === '') {
-        structuredIdentifierSharepoint.localId = null;
-      }
+      structuredIdentifierSharepoint = setEmptyStringsToNull(
+        structuredIdentifierSharepoint
+      );
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
 
-      if (administrativeUnit.denomination === '') {
-        administrativeUnit.denomination = null;
-      }
+      administrativeUnit = setEmptyStringsToNull(administrativeUnit);
+
       yield administrativeUnit.save();
 
       this.router.transitionTo(

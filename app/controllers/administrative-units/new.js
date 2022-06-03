@@ -6,6 +6,7 @@ import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/rec
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { GOVERNING_BODY_CLASSIFICATION } from 'frontend-organization-portal/models/governing-body-classification-code';
 import { action } from '@ember/object';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
 const GOVERNING_BODY_CLASSIFICATION_MAP = {
   [CLASSIFICATION_CODE.WORSHIP_SERVICE]: {
@@ -114,38 +115,27 @@ export default class AdministrativeUnitsNewController extends Controller {
     ) {
       copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
-      if (structuredIdentifierKBO.localId === '') {
-        structuredIdentifierKBO.localId = null;
-      }
+      structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
       identifierKBO.structuredIdentifier = structuredIdentifierKBO;
       yield structuredIdentifierKBO.save();
       yield identifierKBO.save();
 
-      if (structuredIdentifierSharepoint.localId === '') {
-        structuredIdentifierSharepoint.localId = null;
-      }
+      structuredIdentifierSharepoint = setEmptyStringsToNull(
+        structuredIdentifierSharepoint
+      );
       identifierSharepoint.structuredIdentifier =
         structuredIdentifierSharepoint;
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
 
-      if (contact.telephone === '') {
-        contact.telephone = null;
-      }
-      if (contact.website === '') {
-        contact.website = null;
-      }
+      contact = setEmptyStringsToNull(contact);
       yield contact.save();
 
-      if (secondaryContact.telephone === '') {
-        secondaryContact.telephone = null;
-      }
+      secondaryContact = setEmptyStringsToNull(secondaryContact);
       yield secondaryContact.save();
 
       address.fullAddress = combineFullAddress(address);
-      if (address.boxNumber === '') {
-        address.boxNumber = null;
-      }
+      address = setEmptyStringsToNull(address);
       yield address.save();
 
       primarySite.address = address;
@@ -158,9 +148,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       ]);
       newAdministrativeUnit.primarySite = primarySite;
 
-      if (newAdministrativeUnit.denomination === '') {
-        newAdministrativeUnit.denomination = null;
-      }
+      newAdministrativeUnit = setEmptyStringsToNull(newAdministrativeUnit);
       yield newAdministrativeUnit.save();
 
       let governingBody = this.store.createRecord('governing-body');

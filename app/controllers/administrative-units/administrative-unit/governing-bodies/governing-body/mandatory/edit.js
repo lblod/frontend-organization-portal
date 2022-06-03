@@ -6,6 +6,7 @@ import { isWorshipMember } from 'frontend-organization-portal/models/board-posit
 import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker-validation';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditController extends Controller {
   @tracked computedContactDetails;
@@ -90,44 +91,18 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         if (contactValid) {
           if (address.isDirty) {
             address.fullAddress = combineFullAddress(address);
-
-            if (address.street === '') {
-              address.street = null;
-            }
-            if (address.number === '') {
-              address.number = null;
-            }
-            if (address.boxNumber === '') {
-              address.boxNumber = null;
-            }
-            if (address.postcode === '') {
-              address.postcode = null;
-            }
-            if (address.municipality === '') {
-              address.municipality = null;
-            }
-            if (address.provincie === '') {
-              address.provincie = null;
-            }
-
+            address = setEmptyStringsToNull(address);
             yield address.save();
           }
 
           primaryContact.contactAddress = address;
 
           if (primaryContact.isDirty) {
-            if (primaryContact.email === '') {
-              primaryContact.email = null;
-            }
-            if (primaryContact.telephone === '') {
-              primaryContact.telephone = null;
-            }
+            primaryContact = setEmptyStringsToNull(primaryContact);
             yield primaryContact.save();
           }
           if (secondaryContact.isDirty) {
-            if (secondaryContact.telephone === '') {
-              secondaryContact.telephone = null;
-            }
+            secondaryContact = setEmptyStringsToNull(secondaryContact);
             yield secondaryContact.save();
           }
           mandatory.contacts.clear();
@@ -137,9 +112,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       }
 
       if (contactValid) {
-        if (mandatory.reasonStopped === '') {
-          mandatory.reasonStopped = null;
-        }
+        mandatory = setEmptyStringsToNull(mandatory);
         yield mandatory.save();
         const oldPrimaryContactId = this.model.contact?.primaryContact?.id;
 

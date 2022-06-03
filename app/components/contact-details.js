@@ -12,6 +12,8 @@ import {
   createPrimaryContact,
   createSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+
 export default class ContactDetailsComponent extends Component {
   @tracked editingContact;
   @tracked positions;
@@ -217,12 +219,12 @@ export default class ContactDetailsComponent extends Component {
     if (valid) {
       if (address.isDirty) {
         address.fullAddress = combineFullAddress(address);
+        address = setEmptyStringsToNull(address);
       }
       primaryContact.contactAddress = address;
 
-      if (primaryContact.email === '') {
-        primaryContact.email = null;
-      }
+      primaryContact = setEmptyStringsToNull(primaryContact);
+      secondaryContact = setEmptyStringsToNull(secondaryContact);
 
       this.selectedContact = {
         primaryContact,
