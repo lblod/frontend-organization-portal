@@ -6,7 +6,7 @@ import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/adminis
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import { isEmpty } from 'frontend-organization-portal/models/decision';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
-import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker-validation';
+import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
 import { tracked } from '@glimmer/tracking';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
