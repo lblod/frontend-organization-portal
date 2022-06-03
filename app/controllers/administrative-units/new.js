@@ -6,6 +6,7 @@ import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/rec
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { GOVERNING_BODY_CLASSIFICATION } from 'frontend-organization-portal/models/governing-body-classification-code';
 import { action } from '@ember/object';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
 const GOVERNING_BODY_CLASSIFICATION_MAP = {
   [CLASSIFICATION_CODE.WORSHIP_SERVICE]: {
@@ -114,20 +115,27 @@ export default class AdministrativeUnitsNewController extends Controller {
     ) {
       copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
-      yield structuredIdentifierSharepoint.save();
-      yield structuredIdentifierKBO.save();
-
-      identifierSharepoint.structuredIdentifier =
-        structuredIdentifierSharepoint;
-      yield identifierSharepoint.save();
-
+      structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
       identifierKBO.structuredIdentifier = structuredIdentifierKBO;
+      yield structuredIdentifierKBO.save();
       yield identifierKBO.save();
 
+      structuredIdentifierSharepoint = setEmptyStringsToNull(
+        structuredIdentifierSharepoint
+      );
+      identifierSharepoint.structuredIdentifier =
+        structuredIdentifierSharepoint;
+      yield structuredIdentifierSharepoint.save();
+      yield identifierSharepoint.save();
+
+      contact = setEmptyStringsToNull(contact);
       yield contact.save();
+
+      secondaryContact = setEmptyStringsToNull(secondaryContact);
       yield secondaryContact.save();
 
       address.fullAddress = combineFullAddress(address);
+      address = setEmptyStringsToNull(address);
       yield address.save();
 
       primarySite.address = address;
@@ -140,6 +148,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       ]);
       newAdministrativeUnit.primarySite = primarySite;
 
+      newAdministrativeUnit = setEmptyStringsToNull(newAdministrativeUnit);
       yield newAdministrativeUnit.save();
 
       let governingBody = this.store.createRecord('governing-body');

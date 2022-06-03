@@ -5,6 +5,7 @@ import { dropTask } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker-validation';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
 const FINANCING_CODE = {
   SELF_FINANCED: '997073905f839ac6bafe92b76050ab0b',
@@ -93,17 +94,18 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
         if (contactValid) {
           if (address.isDirty) {
             address.fullAddress = combineFullAddress(address);
-          }
-          primaryContact.contactAddress = address;
-
-          if (address.isDirty) {
+            address = setEmptyStringsToNull(address);
             yield address.save();
           }
 
+          primaryContact.contactAddress = address;
+
           if (primaryContact.isDirty) {
+            primaryContact = setEmptyStringsToNull(primaryContact);
             yield primaryContact.save();
           }
           if (secondaryContact.isDirty) {
+            secondaryContact = setEmptyStringsToNull(secondaryContact);
             yield secondaryContact.save();
           }
           minister.contacts.clear();

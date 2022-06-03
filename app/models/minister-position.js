@@ -20,7 +20,7 @@ export const CENTRAL_WORSHIP_SERVICE_MINISTER_POSITIONS_BLACKLIST = [
   '85543bba7601ca598212f0feb9bdb4c2', // Predikant bij het voorzitterschap van de Synode
   '5c7fefe1b921dfd4c550924bb7a9331d', // Pastoor
   '97083de35cd36b36a72185807e941c8a', // Tweede predikant bij het voorzitterschap van de Synode
-  'fa4191f9d7050fe62ec3fc0e16541711', // Kapelaan van de kerken te Antwerpen en te Elsene (Geünifieerde anglikaanse kerk)
+  'fa4191f9d7050fe62ec3fc0e16541711', // Kapelaan van de kerken te Antwerpen en te Elsene (Geünifieerde anglicaanse kerk)
   '84b3a2321d1b69b6de782bb04e1a6862', // Parochieassistent
 ];
 
@@ -36,7 +36,7 @@ export const MAPPING_POSITION_RELIGION = {
   // ANGLICAN
   '99536dd6eb0d2ef38a89efafb17e7389': [
     '67548f1fe5bf52e5a7ad33dcce47472d', // Kapelaan van de andere kerken
-    'fa4191f9d7050fe62ec3fc0e16541711', // Kapelaan van de kerken te Antwerpen en te Elsene (Geünifieerde anglikaanse kerk)
+    'fa4191f9d7050fe62ec3fc0e16541711', // Kapelaan van de kerken te Antwerpen en te Elsene (Geünifieerde anglicaanse kerk)
   ],
   // ISLAMIC
   '9d8bd472a00bf0a5c7b7186606365a52': [

@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { REQUEST_REASON } from 'frontend-organization-portal/models/request-reason';
 import { validate as validateBirthDate } from 'frontend-organization-portal/utils/datepicker-validation';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
 export default class PeopleNewController extends Controller {
   @service router;
@@ -46,6 +47,7 @@ export default class PeopleNewController extends Controller {
     this.sensitiveInformationError = sensitiveInformationError;
 
     if (person.isValid && validSsn && this.birthDateValidation.valid) {
+      person = setEmptyStringsToNull(person);
       yield person.save();
 
       let requestReason = yield this.store.findRecord(

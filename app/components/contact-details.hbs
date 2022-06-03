@@ -61,7 +61,6 @@
         <c.body as |contact|>
           <td>
             {{contact.primaryContact.contactAddress.fullAddress}}
-
           </td>
           <td>
             {{contact.primaryContact.contactAddress.province}}
@@ -75,9 +74,7 @@
           <td>
             {{contact.secondaryContact.telephone}}
           </td>
-
           <td>
-
             <AuButton @skin="link" {{on "click" (perform this.copy contact)}}>
               <AuControlCheckbox
                 @label=""
@@ -98,9 +95,7 @@
           </td>
         </c.body>
       </t.content>
-
     </AuDataTable>
-
   </div>
 
   <CustomModal
@@ -114,7 +109,6 @@
     <:body>
       <div class="au-o-box">
         <div id="ember-appuniversum-wormhole"></div>
-
         <form
           id="edit-contact-form"
           aria-label="edit-contact-form"
@@ -137,7 +131,6 @@
           </Position::ContactEditCard>
         </form>
       </div>
-
     </:body>
     <:footer>
       {{#unless this.isNew}}
@@ -150,7 +143,6 @@
             plaatsen waar deze set contactgegevens gebruikt wordt.</AuHelpText>
         </div>
       {{/unless}}
-
       <AuButton
         @loading={{this.saveContact.isRunning}}
         @disabled={{(or this.isAllFieldsEmpty this.saveContact.isRunning)}}
@@ -159,7 +151,6 @@
       >
         Selecteren
       </AuButton>
-
       <AuButton @skin="secondary" {{on "click" this.cancel}}>
         Annuleer
       </AuButton>

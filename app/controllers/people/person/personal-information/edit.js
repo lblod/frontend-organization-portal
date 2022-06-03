@@ -5,6 +5,8 @@ import { REQUEST_REASON } from 'frontend-organization-portal/models/request-reas
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { validate as validateBirthDate } from 'frontend-organization-portal/utils/datepicker-validation';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+
 export default class PeoplePersonPersonalInformationEditController extends Controller {
   @service router;
   @service sensitivePersonalInformation;
@@ -73,6 +75,7 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
       this.sensitiveInformationError = sensitiveInformationError;
     }
     if (valid && this.validSsn && this.birthDateValidation.valid) {
+      person = setEmptyStringsToNull(person);
       yield person.save();
       let requestReason = yield this.store.findRecord(
         'request-reason',

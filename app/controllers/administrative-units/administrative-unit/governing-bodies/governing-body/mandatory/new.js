@@ -6,6 +6,7 @@ import { dropTask } from 'ember-concurrency';
 import { isWorshipMember } from 'frontend-organization-portal/models/board-position';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker-validation';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryNewController extends Controller {
   @service router;
@@ -132,17 +133,18 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         if (contactValid) {
           if (address.isDirty) {
             address.fullAddress = combineFullAddress(address);
-          }
-          primaryContact.contactAddress = address;
-
-          if (address.isDirty) {
+            address = setEmptyStringsToNull(address);
             yield address.save();
           }
 
+          primaryContact.contactAddress = address;
+
           if (primaryContact.isDirty) {
+            primaryContact = setEmptyStringsToNull(primaryContact);
             yield primaryContact.save();
           }
           if (secondaryContact.isDirty) {
+            secondaryContact = setEmptyStringsToNull(secondaryContact);
             yield secondaryContact.save();
           }
           mandatory.contacts.clear();
@@ -162,6 +164,8 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         }
         mandatory.governingAlias = this.targetPerson;
         mandatory.mandate = mandate;
+        mandatory = setEmptyStringsToNull(mandatory);
+
         yield mandatory.save();
 
         this.router.transitionTo(

@@ -6,6 +6,7 @@ import { isWorshipMember } from 'frontend-organization-portal/models/board-posit
 import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker-validation';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditController extends Controller {
   @tracked computedContactDetails;
@@ -90,17 +91,18 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         if (contactValid) {
           if (address.isDirty) {
             address.fullAddress = combineFullAddress(address);
-          }
-          primaryContact.contactAddress = address;
-
-          if (address.isDirty) {
+            address = setEmptyStringsToNull(address);
             yield address.save();
           }
 
+          primaryContact.contactAddress = address;
+
           if (primaryContact.isDirty) {
+            primaryContact = setEmptyStringsToNull(primaryContact);
             yield primaryContact.save();
           }
           if (secondaryContact.isDirty) {
+            secondaryContact = setEmptyStringsToNull(secondaryContact);
             yield secondaryContact.save();
           }
           mandatory.contacts.clear();
@@ -110,6 +112,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       }
 
       if (contactValid) {
+        mandatory = setEmptyStringsToNull(mandatory);
         yield mandatory.save();
         const oldPrimaryContactId = this.model.contact?.primaryContact?.id;
 
