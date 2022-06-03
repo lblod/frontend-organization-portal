@@ -6,7 +6,8 @@ import {
   INVALID_DATE,
   MIN_DATE,
   MAX_DATE,
-} from 'frontend-organization-portal/utils/datepicker-validation';
+  formatNl,
+} from 'frontend-organization-portal/utils/datepicker';
 
 export default class DatepickerComponent extends Component {
   constructor() {
@@ -25,11 +26,7 @@ export default class DatepickerComponent extends Component {
   get value() {
     const { date } = this.validate(this.args.value);
     if (date instanceof Date) {
-      return new Intl.DateTimeFormat('nl-BE', {
-        month: '2-digit',
-        day: '2-digit',
-        year: 'numeric',
-      }).format(date);
+      return formatNl(date);
     }
     return date;
   }

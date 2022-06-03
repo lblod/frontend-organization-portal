@@ -4,8 +4,8 @@ import { action } from '@ember/object';
 import { dropTask } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
-import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker-validation';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
 
 const FINANCING_CODE = {
   SELF_FINANCED: '997073905f839ac6bafe92b76050ab0b',

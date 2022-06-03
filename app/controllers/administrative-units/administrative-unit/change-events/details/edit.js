@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { isEmpty } from 'frontend-organization-portal/models/decision';
-import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker-validation';
+import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 

@@ -5,8 +5,8 @@ import { action } from '@ember/object';
 import { isWorshipMember } from 'frontend-organization-portal/models/board-position';
 import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
-import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker-validation';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditController extends Controller {
   @service router;
