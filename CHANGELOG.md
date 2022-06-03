@@ -3,6 +3,15 @@
 
 
 
+
+## 1.9.0-4 (2022-06-03)
+
+#### :bug: Bug Fix
+* [#358](https://github.com/lblod/frontend-organization-portal/pull/358) fix bug chrome & aumodal ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.9.0-3 (2022-05-31)
 
 #### :rocket: Enhancement
