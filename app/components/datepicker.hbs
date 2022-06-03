@@ -1,15 +1,13 @@
 <AuInput
   @disabled={{@disabled}}
   @error={{@error}}
-  @maskPlaceholder="_"
+  @maskPlaceholder="DD-MM-YYYY"
   autocomplete="off"
   @mask="99-99-9999"
   @onChange={{this.onChange}}
-
   {{on 'focusout' this.focusOut}}
   @width={{this.width}}
   @id={{@id}}
-  placeholder="DD-MM-YYYY"
   @value={{this.value}}
   ...attributes
 />
