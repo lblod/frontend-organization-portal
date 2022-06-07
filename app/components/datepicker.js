@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 import {
   EMPTY_DATE,
@@ -10,6 +11,9 @@ import {
 } from 'frontend-organization-portal/utils/datepicker';
 
 export default class DatepickerComponent extends Component {
+  @tracked
+  validation = { valid: true };
+
   constructor() {
     super(...arguments);
   }
@@ -19,8 +23,14 @@ export default class DatepickerComponent extends Component {
     let { date, validation } = this.validate(dt);
     if (validation.valid || validation.error === EMPTY_DATE) {
       this.args.onChange?.(date);
+      this.args.onValidate?.(validation);
     }
-    this.args.onValidate?.(validation);
+    this.validation = validation;
+  }
+
+  @action
+  focusOut() {
+    this.args.onValidate?.(this.validation);
   }
 
   get value() {
