@@ -37,43 +37,58 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <Item
-                  @labelFor="related-representative-body"
-                  @required={{true}}
-                  @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
-                >
-                  <:label>Representatief orgaan</:label>
-                  <:content as |hasError|>
-                    <RepresentativeBodySelect
-                      @selected={{@model.administrativeUnit.isAssociatedWith}}
-                      @onChange={{fn
-                        (mut @model.administrativeUnit.isAssociatedWith)
-                      }}
-                      @error={{hasError}}
-                      @id="related-representative-body"
-                    />
-                  </:content>
-                </Item>
-                {{#if
-                  (and 
-                    (eq @model.worshipAdministrativeUnitType "worship-service")
-                    this.hasCentralWorshipService
-                  )
-                }}
+                {{#if this.isWorshipAdministrativeUnit}}
                   <Item
-                    @labelFor="related-central-worship-service"
+                    @labelFor="related-representative-body"
+                    @required={{true}}
+                    @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
+                  >
+                    <:label>Representatief orgaan</:label>
+                    <:content as |hasError|>
+                      <RepresentativeBodySelect
+                        @selected={{@model.administrativeUnit.isAssociatedWith}}
+                        @onChange={{fn
+                          (mut @model.administrativeUnit.isAssociatedWith)
+                        }}
+                        @error={{hasError}}
+                        @id="related-representative-body"
+                      />
+                    </:content>
+                  </Item>
+                  {{#if (and this.isWorshipService this.hasCentralWorshipService)}}
+                    <Item
+                      @labelFor="related-central-worship-service"
+                      @required={{true}}
+                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                    >
+                      <:label>Centraal bestuur</:label>
+                      <:content as |hasError|>
+                        <CentralWorshipSelect
+                          @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                          @onChange={{fn
+                            (mut @model.administrativeUnit.isSubOrganizationOf)
+                          }}
+                          @error={{hasError}}
+                          @id="related-central-worship-service"
+                        />
+                      </:content>
+                    </Item>
+                  {{/if}}
+                {{else}}
+                  <Item
+                    @labelFor="related-provincie"
                     @required={{true}}
                     @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
                   >
-                    <:label>Centraal bestuur</:label>
+                    <:label>Provincie</:label>
                     <:content as |hasError|>
-                      <CentralWorshipSelect
+                      <ProvinceOrganizationSelect
                         @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                         @onChange={{fn
                           (mut @model.administrativeUnit.isSubOrganizationOf)
                         }}
                         @error={{hasError}}
-                        @id="related-central-worship-service"
+                        @id="related-provincie"
                       />
                     </:content>
                   </Item>
@@ -83,12 +98,7 @@
           </:card>
         </EditCard>
 
-        {{#if
-          (eq
-            @model.worshipAdministrativeUnitType
-            "central-worship-service"
-          )
-        }}
+        {{#if this.isCentralWorshipService}}
           <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
             Heeft relatie met
           </AuHeading>

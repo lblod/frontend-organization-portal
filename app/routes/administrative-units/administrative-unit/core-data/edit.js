@@ -92,7 +92,6 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
       ),
       identifierSharepoint,
       structuredIdentifierSharepoint,
-      worshipAdministrativeUnitType: administrativeUnit.constructor.modelName,
     };
   }
 

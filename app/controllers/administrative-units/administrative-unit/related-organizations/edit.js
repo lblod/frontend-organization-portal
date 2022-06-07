@@ -9,10 +9,21 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   @service router;
   @service store;
 
+  get isWorshipAdministrativeUnit() {
+    return this.isWorshipService || this.isCentralWorshipService;
+  }
+
   get isWorshipService() {
     return (
-      this.model.administrativeUnit.classification?.id ===
+      this.model.administrativeUnit.classification?.get('id') ===
       CLASSIFICATION_CODE.WORSHIP_SERVICE
+    );
+  }
+
+  get isCentralWorshipService() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
     );
   }
 

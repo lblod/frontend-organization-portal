@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
@@ -13,12 +14,16 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   }
 
   get isWorshipService() {
-    return this.model.worshipAdministrativeUnitType === 'worship-service';
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.WORSHIP_SERVICE
+    );
   }
 
   get isCentralWorshipService() {
     return (
-      this.model.worshipAdministrativeUnitType === 'central-worship-service'
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
     );
   }
 

@@ -18,9 +18,7 @@
       </:action>
     </PageHeader>
 
-    {{#if
-      (eq @model.administrativeUnit.constructor.modelName "worship-service")
-    }}
+    {{#if this.isWorshipService}}
       <div>
         Om de gerelateerde gemeenten te zien, ga naar
         <LinkTo
@@ -50,7 +48,13 @@
             {{/if}}
             {{#if @model.isSubOrganizationOf.name}}
               <Item>
-                <:label>Centraal bestuur</:label>
+                <:label>
+                  {{#if this.isWorshipAdministrativeUnit}}
+                    Centraal bestuur
+                  {{else}}
+                    Provincie
+                  {{/if}}
+                </:label>
                 <:content>
                   <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
                     {{@model.isSubOrganizationOf.name}}
