@@ -2,9 +2,28 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { isEmpty } from 'frontend-organization-portal/models/decision';
+import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
+import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEditController extends Controller {
   @service router;
+
+  @tracked
+  endDateValidation = { valid: true };
+
+  @tracked
+  publicationDateValidation = { valid: true };
+
+  @action
+  validateEndDate(validation) {
+    this.endDateValidation = validateDate(validation);
+  }
+
+  @action
+  validatePublicationDate(validation) {
+    this.publicationDateValidation = validateDate(validation);
+  }
 
   @dropTask
   *save(event) {
@@ -23,7 +42,14 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
       yield decision.validate();
     }
 
-    if (changeEvent.isValid && shouldSaveDecision ? decision.isValid : true) {
+    if (
+      this.endDateValidation.valid &&
+      this.publicationDateValidation.valid &&
+      changeEvent.isValid &&
+      shouldSaveDecision
+        ? decision.isValid
+        : true
+    ) {
       if (shouldSaveDecision) {
         if (
           decisionActivity.changedAttributes().endDate ||

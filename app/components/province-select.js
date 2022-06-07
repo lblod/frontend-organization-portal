@@ -2,12 +2,12 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import { useTask } from 'ember-resources';
+import { trackedTask } from 'ember-resources/util/ember-concurrency';
 
 export default class ProvinceSelectComponent extends Component {
   @service store;
 
-  provinces = useTask(this, this.loadProvincesTask, () => [
+  provinces = trackedTask(this, this.loadProvincesTask, () => [
     this.args.selectedMunicipality,
   ]);
 
@@ -17,20 +17,19 @@ export default class ProvinceSelectComponent extends Component {
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
     yield Promise.resolve();
 
+    let provinces = [];
     if (
       this.args.selectedMunicipality &&
       this.args.selectedMunicipality.length
     ) {
       // If a municipality is selected, load the province it belongs to
-      let provinces = yield this.store.query('administrative-unit', {
+      provinces = yield this.store.query('administrative-unit', {
         filter: {
           'sub-organizations': {
             ':exact:name': this.args.selectedMunicipality,
           },
         },
       });
-
-      return provinces.mapBy('name');
     } else {
       // Else load all the provinces
       const query = {
@@ -41,10 +40,9 @@ export default class ProvinceSelectComponent extends Component {
         },
         sort: 'name',
       };
-
-      const provinces = yield this.store.query('administrative-unit', query);
-
-      return provinces.mapBy('name');
+      provinces = yield this.store.query('administrative-unit', query);
     }
+
+    return provinces.mapBy('name');
   }
 }

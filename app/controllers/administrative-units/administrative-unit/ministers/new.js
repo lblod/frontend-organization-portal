@@ -4,6 +4,8 @@ import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { action } from '@ember/object';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
 
 const FINANCING_CODE = {
   SELF_FINANCED: '997073905f839ac6bafe92b76050ab0b',
@@ -14,6 +16,7 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
   @service router;
   @service store;
   @service contactDetails;
+  @service errorReport;
 
   queryParams = ['personId', 'positionId'];
 
@@ -25,6 +28,21 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
   @tracked contact = null;
   @tracked allContacts = null;
   @tracked targetPersonError = false;
+
+  @tracked
+  endDateValidation = { valid: true };
+  @tracked
+  startDateValidation = { valid: true };
+
+  @action
+  validateEndDate(validation) {
+    this.endDateValidation = validateDate(validation);
+  }
+
+  @action
+  validateStartDate(validation) {
+    this.startDateValidation = validateDate(validation);
+  }
 
   get isSelectingTargetPerson() {
     return !this.targetPerson;
@@ -74,8 +92,17 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
     yield Promise.all([minister.validate(), position.validate()]);
 
     if (!this.targetPerson) {
+      yield this.errorReport.reportError(
+        'Unexpected error while adding a minister',
+        `Target person was empty. Url: '${window.location.href}'`
+      );
       this.targetPersonError = true;
-    } else if (minister.isValid && position.isValid) {
+    } else if (
+      this.startDateValidation.valid &&
+      this.endDateValidation.valid &&
+      minister.isValid &&
+      position.isValid
+    ) {
       let contactValid = true;
 
       if (this.computedContactDetails) {
@@ -90,17 +117,18 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
         if (contactValid) {
           if (address.isDirty) {
             address.fullAddress = combineFullAddress(address);
-          }
-          primaryContact.contactAddress = address;
-
-          if (address.isDirty) {
+            address = setEmptyStringsToNull(address);
             yield address.save();
           }
 
+          primaryContact.contactAddress = address;
+
           if (primaryContact.isDirty) {
+            primaryContact = setEmptyStringsToNull(primaryContact);
             yield primaryContact.save();
           }
           if (secondaryContact.isDirty) {
+            secondaryContact = setEmptyStringsToNull(secondaryContact);
             yield secondaryContact.save();
           }
           minister.contacts.clear();
@@ -135,7 +163,21 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
     }
   }
 
+  get endDateErrorMessage() {
+    return (
+      this.model.minister?.error?.agentEndDate?.validation ||
+      this.endDateValidation?.errorMessage
+    );
+  }
+  get startDateErrorMessage() {
+    return (
+      this.model.minister?.error?.agentStartDate?.validation ||
+      this.startDateValidation?.errorMessage
+    );
+  }
   reset() {
+    this.endDateValidation = { valid: true };
+    this.startDateValidation = { valid: true };
     this.personId = null;
     this.positionId = null;
     this.targetPerson = null;

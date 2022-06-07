@@ -24,7 +24,11 @@
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              <Item @labelFor="position-type" @alignTop={{true}}>
+              <Item
+                @labelFor="position-type"
+                @alignTop={{true}}
+                @required={{true}}
+              >
                 <:label>Type</:label>
                 <:content>
                   <PowerSelect
@@ -70,19 +74,21 @@
                   <:content>
                     <MandateRoleSelect
                       @selected={{this.selectedRole}}
+                      @selectedAdministrativeUnit={{this.selectedOrganization}}
                       @onChange={{this.setRole}}
                       @id="board-position"
                     />
                   </:content>
                 </Item>
               {{/if}}
-              {{#if (eq this.positionType "Bedienaar")}}
+              {{#if (and this.selectedOrganization (eq this.positionType "Bedienaar"))}}
                 <Item @labelFor="minister-position-function" @required={{true}}>
                   <:label>Rol</:label>
                   <:content>
                     <MinisterPositionFunctionSelect
                       @onChange={{this.setRole}}
                       @selected={{this.selectedRole}}
+                      @selectedAdministrativeUnit={{this.selectedOrganization}}
                       @id="minister-position-function"
                     />
                   </:content>

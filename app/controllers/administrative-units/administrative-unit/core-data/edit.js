@@ -1,15 +1,25 @@
 import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
-import WorshipServiceModel from 'frontend-organization-portal/models/worship-service';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { action } from '@ember/object';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
 
+  get isWorshipAdministrativeUnit() {
+    return this.isWorshipService || this.isCentralWorshipService;
+  }
+
   get isWorshipService() {
-    return this.model.administrativeUnit instanceof WorshipServiceModel;
+    return this.model.worshipAdministrativeUnitType === 'worship-service';
+  }
+
+  get isCentralWorshipService() {
+    return (
+      this.model.worshipAdministrativeUnitType === 'central-worship-service'
+    );
   }
 
   @action
@@ -58,6 +68,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
       if (address.isDirty) {
         address.fullAddress = combineFullAddress(address);
+        address = setEmptyStringsToNull(address);
         yield address.save();
       }
 
@@ -65,6 +76,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
       if (contact.isDirty) {
         let isNewContact = contact.isNew;
+
+        contact = setEmptyStringsToNull(contact);
         yield contact.save();
 
         if (isNewContact) {
@@ -75,6 +88,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
       if (secondaryContact.isDirty) {
         let isNewContact = secondaryContact.isNew;
+
+        secondaryContact = setEmptyStringsToNull(secondaryContact);
         yield secondaryContact.save();
 
         if (isNewContact) {
@@ -83,11 +98,17 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         }
       }
 
+      structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
       yield structuredIdentifierKBO.save();
       yield identifierKBO.save();
 
+      structuredIdentifierSharepoint = setEmptyStringsToNull(
+        structuredIdentifierSharepoint
+      );
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
+
+      administrativeUnit = setEmptyStringsToNull(administrativeUnit);
 
       yield administrativeUnit.save();
 

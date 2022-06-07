@@ -94,6 +94,7 @@
                   <MinisterPositionFunctionSelect
                     @onChange={{fn (mut @model.position.function)}}
                     @selected={{@model.position.function}}
+                    @selectedAdministrativeUnit={{@model.administrativeUnit}}
                     @id="minister-position-function"
                     @error={{errorMessage}}
                   />
@@ -120,7 +121,7 @@
               <Item
                 @labelFor="start-date"
                 @required={{true}}
-                @errorMessage={{@model.minister.error.agentStartDate.validation}}
+                @errorMessage={{this.startDateErrorMessage}}
               >
                 <:label>Startdatum</:label>
                 <:content as |errorMessage|>
@@ -129,6 +130,7 @@
                     @onChange={{fn (mut @model.minister.agentStartDate)}}
                     @value={{@model.minister.agentStartDate}}
                     @error={{errorMessage}}
+                    @onValidate={{this.validateStartDate}}
                   />
                 </:content>
               </Item>
@@ -137,7 +139,7 @@
               <Item
                 @labelFor="end-date"
                 @required={{not @model.minister.isCurrentPosition}}
-                @errorMessage={{@model.minister.error.agentEndDate.validation}}
+                @errorMessage={{this.endDateErrorMessage}}
               >
                 <:label>Einddatum</:label>
                 <:content as |errorMessage|>
@@ -145,6 +147,7 @@
                     @id="end-date"
                     @onChange={{this.handleEndDateChange}}
                     @value={{@model.minister.agentEndDate}}
+                    @onValidate={{this.validateEndDate}}
                     @error={{errorMessage}}
                   />
                 </:content>

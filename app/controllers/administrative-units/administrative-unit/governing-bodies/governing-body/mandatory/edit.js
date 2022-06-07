@@ -5,14 +5,38 @@ import { action } from '@ember/object';
 import { isWorshipMember } from 'frontend-organization-portal/models/board-position';
 import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditController extends Controller {
   @tracked computedContactDetails;
   @tracked positionsWithSameOldAddress;
 
+  @tracked
+  endDateValidation = { valid: true };
+  @tracked
+  expectedEndDateValidation = { valid: true };
+  @tracked
+  startDateValidation = { valid: true };
+
   @service router;
   get showHalfElectionTypeSelect() {
     return isWorshipMember(this.model.mandatory.role?.id);
+  }
+
+  @action
+  validateEndDate(validation) {
+    this.endDateValidation = validateDate(validation);
+  }
+
+  @action
+  validateStartDate(validation) {
+    this.startDateValidation = validateDate(validation);
+  }
+
+  @action
+  validateExpectedEndDate(validation) {
+    this.expectedEndDateValidation = validateDate(validation);
   }
 
   @action
@@ -47,7 +71,12 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     let { mandatory } = this.model;
     yield mandatory.validate();
 
-    if (mandatory.isValid) {
+    if (
+      this.startDateValidation.valid &&
+      this.endDateValidation.valid &&
+      this.expectedEndDateValidation.valid &&
+      mandatory.isValid
+    ) {
       let contactValid = true;
       let primaryContactId = null;
       if (this.computedContactDetails) {
@@ -62,17 +91,18 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         if (contactValid) {
           if (address.isDirty) {
             address.fullAddress = combineFullAddress(address);
-          }
-          primaryContact.contactAddress = address;
-
-          if (address.isDirty) {
+            address = setEmptyStringsToNull(address);
             yield address.save();
           }
 
+          primaryContact.contactAddress = address;
+
           if (primaryContact.isDirty) {
+            primaryContact = setEmptyStringsToNull(primaryContact);
             yield primaryContact.save();
           }
           if (secondaryContact.isDirty) {
+            secondaryContact = setEmptyStringsToNull(secondaryContact);
             yield secondaryContact.save();
           }
           mandatory.contacts.clear();
@@ -82,6 +112,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       }
 
       if (contactValid) {
+        mandatory = setEmptyStringsToNull(mandatory);
         yield mandatory.save();
         const oldPrimaryContactId = this.model.contact?.primaryContact?.id;
 
@@ -112,11 +143,34 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     );
   }
 
+  get endDateErrorMessage() {
+    return (
+      this.model.mandatory?.error?.endDate?.validation ||
+      this.endDateValidation?.errorMessage
+    );
+  }
+  get expectedEndDateErrorMessage() {
+    return (
+      this.model.mandatory?.error?.expectedEndDate?.validation ||
+      this.expectedEndDateValidation?.errorMessage
+    );
+  }
+  get startDateErrorMessage() {
+    return (
+      this.model.mandatory?.error?.startDate?.validation ||
+      this.startDateValidation?.errorMessage
+    );
+  }
+
   @action
   updateContact(editingContact) {
     this.computedContactDetails = editingContact;
   }
+
   reset() {
+    this.endDateValidation = { valid: true };
+    this.startDateValidation = { valid: true };
+    this.expectedEndDateValidation = { valid: true };
     this.removeUnsavedRecords();
     this.positionsWithSameOldAddress = null;
     this.computedContactDetails = null;

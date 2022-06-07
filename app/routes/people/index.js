@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { dropTask } from 'ember-concurrency';
+import { keepLatestTask } from 'ember-concurrency';
 
 export default class PeopleIndexRoute extends Route {
   @service store;
@@ -8,11 +8,11 @@ export default class PeopleIndexRoute extends Route {
   queryParams = {
     page: { refreshModel: true },
     sort: { refreshModel: true },
-    organization: { replace: true },
-    status: { refreshModel: true },
-    position: { refreshModel: true },
-    given_name: { replace: true },
-    family_name: { replace: true },
+    status: { refreshModel: true, replace: true },
+    position: { refreshModel: true, replace: true },
+    organization: { refreshModel: true, replace: true },
+    given_name: { refreshModel: true, replace: true },
+    family_name: { refreshModel: true, replace: true },
   };
 
   model(params) {
@@ -22,14 +22,14 @@ export default class PeopleIndexRoute extends Route {
     };
   }
 
-  @dropTask({ cancelOn: 'deactivate' })
+  @keepLatestTask({ cancelOn: 'deactivate' })
   *loadPeopleTask(params) {
     const filter = {};
     if (params.given_name) {
-      filter[':prefix:given_name'] = `${params.given_name.toLowerCase()}`;
+      filter[':phrase_prefix:given_name'] = `${params.given_name.trim()}`;
     }
     if (params.family_name) {
-      filter[':prefix:family_name'] = `${params.family_name.toLowerCase()}`;
+      filter[':phrase_prefix:family_name'] = `${params.family_name.trim()}`;
     }
     if (params.status) {
       let date = new Date().toISOString().slice(0, -5);

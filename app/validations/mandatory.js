@@ -38,27 +38,29 @@ const mandatoryValidations = {
     }),
     validateStartDateBeforeEndDate,
   ],
-  endDate: validateConditionally(
-    [
-      validatePresence({
-        presence: true,
-        ignoreBlank: true,
-        message: 'Vul de effectieve einddatum in',
-      }),
-      validateEndDateAfterStartDate,
-    ],
-    function (changes, content) {
-      let requiresEndDate;
-      let isCurrentPosition = changes.isCurrentPosition;
+  endDate: [
+    validateConditionally(
+      [
+        validatePresence({
+          presence: true,
+          ignoreBlank: true,
+          message: 'Vul de effectieve einddatum in',
+        }),
+        validateEndDateAfterStartDate,
+      ],
+      function (changes, content) {
+        let requiresEndDate;
+        let isCurrentPosition = changes.isCurrentPosition;
 
-      if (typeof isCurrentPosition !== 'boolean') {
-        isCurrentPosition = content.isCurrentPosition;
+        if (typeof isCurrentPosition !== 'boolean') {
+          isCurrentPosition = content.isCurrentPosition;
+        }
+
+        requiresEndDate = !isCurrentPosition;
+        return requiresEndDate;
       }
-
-      requiresEndDate = !isCurrentPosition;
-      return requiresEndDate;
-    }
-  ),
+    ),
+  ],
 };
 
 export default mandatoryValidations;
@@ -77,7 +79,7 @@ function validateEndDateAfterStartDate(
   if (newStartDateValue) {
     const newStartDate = new Date(newStartDateValue);
     if (newStartDate.getTime() > endDate.getTime()) {
-      return 'Kies een einddatum die na de begindatum plaatsvindt';
+      return 'Kies een einddatum die na de startdatum plaatsvindt';
     }
   }
   return true;
@@ -99,13 +101,13 @@ function validateStartDateBeforeEndDate(
   if (effectiveEndDateValue) {
     const effectiveEndDate = new Date(effectiveEndDateValue);
     if (newStartDate.getTime() > effectiveEndDate.getTime()) {
-      return 'Kies een startdatum die na de begindatum plaatsvindt';
+      return 'Kies een startdatum die vóór de einddatum plaatsvindt';
     }
   }
   if (expectedEndDateValue) {
     const expectedEndDate = new Date(expectedEndDateValue);
     if (newStartDate.getTime() > expectedEndDate.getTime()) {
-      return 'Kies een startdatum die na de begindatum plaatsvindt';
+      return 'Kies een startdatum die vóór de einddatum plaatsvindt';
     }
   }
   return true;

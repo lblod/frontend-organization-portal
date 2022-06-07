@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { dropTask } from 'ember-concurrency';
+import { keepLatestTask } from 'ember-concurrency';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsIndexRoute extends Route {
@@ -9,12 +9,12 @@ export default class AdministrativeUnitsIndexRoute extends Route {
   queryParams = {
     page: { refreshModel: true },
     sort: { refreshModel: true },
-    name: { replace: true },
-    municipality: { replace: true },
-    province: { replace: true },
-    classificationId: { replace: true },
-    recognizedWorshipTypeId: { replace: true },
-    organizationStatus: { replace: true },
+    name: { refreshModel: true, replace: true },
+    municipality: { refreshModel: true, replace: true },
+    province: { refreshModel: true, replace: true },
+    classificationId: { refreshModel: true, replace: true },
+    recognizedWorshipTypeId: { refreshModel: true, replace: true },
+    organizationStatus: { refreshModel: true, replace: true },
   };
 
   async model(params) {
@@ -26,7 +26,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     };
   }
 
-  @dropTask({ cancelOn: 'deactivate' })
+  @keepLatestTask({ cancelOn: 'deactivate' })
   *loadAdministrativeUnitsTask(params) {
     const filter = {};
 

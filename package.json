@@ -1,6 +1,6 @@
 {
   "name": "frontend-organization-portal",
-  "version": "1.7.2",
+  "version": "1.9.0-4",
   "private": true,
   "description": "Frontend for Contact Hub",
   "repository": {
@@ -27,7 +27,7 @@
     "test:ember": "ember test"
   },
   "devDependencies": {
-    "@appuniversum/ember-appuniversum": "^1.0.6",
+    "@appuniversum/ember-appuniversum": "^1.0.17",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.6.0",
     "@glimmer/component": "^1.0.4",
@@ -70,7 +70,7 @@
     "ember-power-select": "^5.0.4",
     "ember-qunit": "^5.1.5",
     "ember-resolver": "^8.0.3",
-    "ember-resources": "^4.4.0",
+    "ember-resources": "^4.8.2",
     "ember-router-service-refresh-polyfill": "^1.0.0",
     "ember-simple-auth": "^4.2.1",
     "ember-source": "~3.28.8",

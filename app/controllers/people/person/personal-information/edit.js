@@ -4,7 +4,12 @@ import { inject as service } from '@ember/service';
 import { REQUEST_REASON } from 'frontend-organization-portal/models/request-reason';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
+import {
+  validate as validateBirthDate,
+  formatNl,
+} from 'frontend-organization-portal/utils/datepicker';
 export default class PeoplePersonPersonalInformationEditController extends Controller {
   @service router;
   @service sensitivePersonalInformation;
@@ -14,6 +19,22 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
   sensitiveInformationError;
   @tracked
   validSsn = true;
+
+  @tracked
+  birthDateValidation = { valid: true };
+
+  @action
+  validateBirthDate(validation) {
+    let errorMessages = {
+      minDate: `Kies een datum die na ${formatNl(this.minDate)} plaatsvindt.`,
+      maxDate: `Kies een datum die vóór ${formatNl(this.maxDate)} plaatsvindt.`,
+    };
+    this.birthDateValidation = validateBirthDate(
+      validation,
+      true,
+      errorMessages
+    );
+  }
 
   @action
   setSsn(value) {
@@ -64,7 +85,8 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
       this.validSsn = validSsn;
       this.sensitiveInformationError = sensitiveInformationError;
     }
-    if (valid && this.validSsn) {
+    if (valid && this.validSsn && this.birthDateValidation.valid) {
+      person = setEmptyStringsToNull(person);
       yield person.save();
       let requestReason = yield this.store.findRecord(
         'request-reason',

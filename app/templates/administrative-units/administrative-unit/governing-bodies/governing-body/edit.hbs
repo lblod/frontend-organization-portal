@@ -18,12 +18,9 @@
               Opslaan
             </AuButton>
 
-            <AuLink
-              {{on "click" this.reset}}
-              @skin="button-secondary"
-            >
+            <AuButton {{on "click" this.cancel}} @skin="secondary">
               Annuleer
-            </AuLink>
+            </AuButton>
           </AuButtonGroup>
           <ReportWrongData />
         </div>
@@ -62,23 +59,33 @@
                 </Item>
               </:left>
               <:right as |Item|>
-                <Item @labelFor="governing-body-start-date">
+                <Item
+                  @labelFor="governing-body-start-date"
+                  @errorMessage={{this.startDateValidation.errorMessage}}
+                >
                   <:label>Startdatum</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <Datepicker
+                      @error={{hasError}}
                       @id="governing-body-start-date"
                       @onChange={{fn (mut @model.governingBody.startDate)}}
                       @value={{@model.governingBody.startDate}}
+                      @onValidate={{this.validateStartDate}}
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="governing-body-end-date">
+                <Item
+                  @labelFor="governing-body-end-date"
+                  @errorMessage={{this.endDateValidation.errorMessage}}
+                >
                   <:label>Einddatum</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <Datepicker
+                      @error={{hasError}}
                       @id="governing-body-end-date"
                       @onChange={{fn (mut @model.governingBody.endDate)}}
                       @value={{@model.governingBody.endDate}}
+                      @onValidate={{this.validateEndDate}}
                     />
                   </:content>
                 </Item>

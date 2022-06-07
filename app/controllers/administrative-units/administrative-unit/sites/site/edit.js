@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditController extends Controller {
   @service router;
@@ -34,6 +35,8 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     if (address.isValid && contact.isValid && secondaryContact.isValid) {
       if (address.isDirty) {
         address.fullAddress = combineFullAddress(address);
+        address = setEmptyStringsToNull(address);
+
         yield address.save();
       }
 
@@ -41,6 +44,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
         if (contact.isNew) {
           site.contacts.pushObject(contact);
         }
+        contact = setEmptyStringsToNull(contact);
 
         yield contact.save();
       }
@@ -49,6 +53,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
         if (secondaryContact.isNew) {
           site.contacts.pushObject(secondaryContact);
         }
+        secondaryContact = setEmptyStringsToNull(secondaryContact);
 
         yield secondaryContact.save();
       }

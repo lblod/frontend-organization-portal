@@ -4,6 +4,11 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { REQUEST_REASON } from 'frontend-organization-portal/models/request-reason';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+import {
+  validate as validateBirthDate,
+  formatNl,
+} from 'frontend-organization-portal/utils/datepicker';
 
 export default class PeopleNewController extends Controller {
   @service router;
@@ -16,6 +21,22 @@ export default class PeopleNewController extends Controller {
 
   @tracked
   sensitiveInformationError;
+
+  @tracked
+  birthDateValidation = { valid: true };
+
+  @action
+  validateBirthDate(validation) {
+    let errorMessages = {
+      minDate: `Kies een datum die na ${formatNl(this.minDate)} plaatsvindt.`,
+      maxDate: `Kies een datum die vóór ${formatNl(this.maxDate)} plaatsvindt.`,
+    };
+    this.birthDateValidation = validateBirthDate(
+      validation,
+      true,
+      errorMessages
+    );
+  }
 
   @action
   setSsn(value) {
@@ -36,7 +57,8 @@ export default class PeopleNewController extends Controller {
       );
     this.sensitiveInformationError = sensitiveInformationError;
 
-    if (person.isValid && validSsn) {
+    if (person.isValid && validSsn && this.birthDateValidation.valid) {
+      person = setEmptyStringsToNull(person);
       yield person.save();
 
       let requestReason = yield this.store.findRecord(
@@ -70,6 +92,7 @@ export default class PeopleNewController extends Controller {
   }
 
   reset() {
+    this.birthDateValidation = { valid: true };
     this.redirectUrl = null;
     this.sensitiveInformationError = null;
     this.removeUnsavedRecords();

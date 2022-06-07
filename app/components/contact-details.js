@@ -12,6 +12,8 @@ import {
   createPrimaryContact,
   createSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
+import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+
 export default class ContactDetailsComponent extends Component {
   @tracked editingContact;
   @tracked positions;
@@ -30,8 +32,13 @@ export default class ContactDetailsComponent extends Component {
     }
     this.positions = this.reloadPositions();
     if (!this.positions?.length) {
-      this.newContact();
+      if (this.selectedContact) {
+        this.fixErrorAndSelect(this.selectedContact);
+      } else {
+        this.newContact();
+      }
       this.args.onUpdate(this.editingContact);
+
       this.singlePosition = true;
     } else {
       this.singlePosition = false;
@@ -188,6 +195,17 @@ export default class ContactDetailsComponent extends Component {
     }
   }
 
+  get isAllFieldsEmpty() {
+    let { primaryContact, secondaryContact, address } = this.editingContact;
+    return (
+      !address?.street?.length &&
+      !address?.province?.length &&
+      !primaryContact?.email?.length &&
+      !primaryContact?.telephone?.length &&
+      !secondaryContact?.telephone?.length
+    );
+  }
+
   @dropTask
   *saveContact(event) {
     event.preventDefault();
@@ -201,8 +219,12 @@ export default class ContactDetailsComponent extends Component {
     if (valid) {
       if (address.isDirty) {
         address.fullAddress = combineFullAddress(address);
+        address = setEmptyStringsToNull(address);
       }
       primaryContact.contactAddress = address;
+
+      primaryContact = setEmptyStringsToNull(primaryContact);
+      secondaryContact = setEmptyStringsToNull(secondaryContact);
 
       this.selectedContact = {
         primaryContact,
@@ -222,5 +244,9 @@ export default class ContactDetailsComponent extends Component {
       this.editingContact = null;
       yield this.args.onUpdate(this.selectedContact);
     }
+  }
+
+  get isSelectedContactNewContact() {
+    return this.positions.some((pos) => !pos.primaryContact?.id);
   }
 }
