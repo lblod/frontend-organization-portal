@@ -5,7 +5,6 @@ import { keepLatestTask } from 'ember-concurrency';
 export default class PeopleIndexRoute extends Route {
   @service store;
   @service muSearch;
-  @service router;
   queryParams = {
     page: { refreshModel: true },
     sort: { refreshModel: true },
