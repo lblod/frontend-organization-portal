@@ -60,13 +60,6 @@ export default class AdministrativeUnitsNewController extends Controller {
     return this.isNewWorshipService || this.isNewCentralWorshipService;
   }
 
-  get isNewMunicipality() {
-    return (
-      this.model.administrativeUnit.classification?.id ===
-      CLASSIFICATION_CODE.MUNICIPALITY
-    );
-  }
-
   get hasCentralWorshipService() {
     const typesThatHaveACentralWorshipService = [
       RECOGNIZED_WORSHIP_TYPE.ISLAMIC,

@@ -40,11 +40,14 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     if (params.classificationId) {
       filter['classification_id'] = params.classificationId;
     } else {
-      // Only show worship related administrative units & municipalities for now
+      // Only show worship administrative units, municipalities, provinces, ocmw and districts for now
       filter['classification_id'] = `
         ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
         ${CLASSIFICATION.WORSHIP_SERVICE.id},
         ${CLASSIFICATION.MUNICIPALITY.id}
+        ${CLASSIFICATION.PROVINCE.id}
+        ${CLASSIFICATION.OCMW.id}
+        ${CLASSIFICATION.DISTRICT.id}
       `;
     }
 
