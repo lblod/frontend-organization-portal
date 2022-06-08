@@ -27,6 +27,8 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked recognizedWorshipTypeId = '';
   @tracked organizationStatus = '';
 
+  @tracked selectedMunicipality;
+
   get administrativeUnits() {
     return this.model.loadAdministrativeUnitsTaskInstance.isFinished
       ? this.model.loadAdministrativeUnitsTaskInstance.value
@@ -92,8 +94,9 @@ export default class AdministrativeUnitsIndexController extends Controller {
 
   @action
   setMunicipality(selection) {
+    this.selectedMunicipality = selection;
     if (selection !== null) {
-      this.municipality = selection;
+      this.municipality = selection.name;
     } else {
       this.municipality = '';
     }
@@ -123,6 +126,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
     this.page = 0;
     this.sort = 'name';
 
+    this.selectedMunicipality = null;
     // Triggers a refresh of the model
     this.page = null;
   }

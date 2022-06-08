@@ -4,7 +4,7 @@ import { task } from 'ember-concurrency';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 
-export default class MunicipalitySelectComponent extends Component {
+export default class MunicipalitySelectByNameComponent extends Component {
   @service store;
 
   municipalities = trackedTask(this, this.loadMunicipalitiesTask, () => [
@@ -46,7 +46,12 @@ export default class MunicipalitySelectComponent extends Component {
         },
       };
 
-      return yield this.store.query('administrative-unit', query);
+      const municipalities = yield this.store.query(
+        'administrative-unit',
+        query
+      );
+
+      return municipalities.mapBy('name');
     }
   }
 }

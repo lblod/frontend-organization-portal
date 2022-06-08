@@ -74,7 +74,7 @@
                       </:content>
                     </Item>
                   {{/if}}
-                {{else}}
+                {{else if (not this.isProvince)}}
                   <Item
                     @labelFor="related-provincie"
                     @required={{true}}
@@ -98,13 +98,13 @@
           </:card>
         </EditCard>
 
-        {{#if this.isCentralWorshipService}}
+        {{#if (or this.isCentralWorshipService this.isProvince)}}
           <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
             Heeft relatie met
           </AuHeading>
           <AuDataTable
             id="subOrganizations"
-            @content={{this.model.administrativeUnit.subOrganizations}}
+            @content={{this.model.subOrganizations}}
             @noDataMessage="Geen bestuur van de eredienst"
             as |t|
           >
@@ -132,11 +132,19 @@
                   {{subOrganization.classification.label}}
                 </td>
                 <td>
-                  <WorshipServiceSelect
-                    @selected={{subOrganization}}
-                    @onChange={{fn this.updateSubOrganization subOrganization}}
-                    @id="related-worship-service"
-                  />
+                  {{#if this.isCentralWorshipService}}
+                    <WorshipServiceSelect
+                      @selected={{subOrganization}}
+                      @onChange={{fn this.updateSubOrganization subOrganization}}
+                      @id="related-worship-service"
+                    />
+                  {{else}}
+                    <MunicipalitySelect
+                      @selected={{subOrganization}}
+                      @onChange={{fn this.updateSubOrganization subOrganization}}
+                      id="related-municipality"
+                    />
+                  {{/if}}
                 </td>
                 <td>
                   <OrganizationStatus

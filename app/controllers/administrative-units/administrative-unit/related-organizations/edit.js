@@ -13,6 +13,13 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     return this.isWorshipService || this.isCentralWorshipService;
   }
 
+  get isProvince() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.PROVINCE
+    );
+  }
+
   get isWorshipService() {
     return (
       this.model.administrativeUnit.classification?.get('id') ===
@@ -45,29 +52,26 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   @action
   addNewSubOrganization() {
     let subOrganization = this.store.createRecord('organization');
-    this.model.administrativeUnit.subOrganizations.pushObject(subOrganization);
+    this.model.subOrganizations.pushObject(subOrganization);
   }
 
   @action
   updateSubOrganization(removedOrganization, addedOrganization) {
-    this.model.administrativeUnit.subOrganizations.removeObject(
-      removedOrganization
-    );
-    this.model.administrativeUnit.subOrganizations.pushObject(
-      addedOrganization
-    );
+    this.model.subOrganizations.removeObject(removedOrganization);
+    this.model.subOrganizations.pushObject(addedOrganization);
   }
 
   @action
   removeSubOrganization(organization) {
-    this.model.administrativeUnit.subOrganizations.removeObject(organization);
+    this.model.subOrganizations.removeObject(organization);
   }
 
   @dropTask
   *save(event) {
     event.preventDefault();
 
-    let { administrativeUnit } = this.model;
+    let { administrativeUnit, subOrganizations } = this.model;
+    administrativeUnit.subOrganizations = subOrganizations;
 
     yield administrativeUnit.validate();
 

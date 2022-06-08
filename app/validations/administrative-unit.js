@@ -15,11 +15,6 @@ export default {
     ignoreBlank: true,
     message: 'Selecteer een optie',
   }), */
-  isSubOrganizationOf: validatePresence({
-    presence: true,
-    ignoreBlank: true,
-    message: 'Selecteer een optie',
-  }),
 };
 
 export function getStructuredIdentifierKBOValidations(store) {
