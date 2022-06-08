@@ -2,7 +2,10 @@
   <:sidebar>
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content au-o-box">
-        <form {{on "reset" this.resetFilters}} class="au-o-grid au-o-grid--small">
+        <form
+          {{on "reset" this.resetFilters}}
+          class="au-o-grid au-o-grid--small"
+        >
           <p class="au-o-grid__item">
             <AuLabel for="filter-given-name">Voornaam</AuLabel>
             <AuInput
@@ -40,11 +43,9 @@
             />
           </div>
           <div class="au-o-grid__item">
-            <AuButton
-              @skin="tertiary"
-              type="reset"
-            >
-              <AuIcon @icon="cross" @alignment="left" /> Herstel alle filters
+            <AuButton @skin="tertiary" type="reset">
+              <AuIcon @icon="cross" @alignment="left" />
+              Herstel alle filters
             </AuButton>
           </div>
         </form>
@@ -115,7 +116,7 @@
               probeer een andere zoekopdracht. Indien een persoon ontbreekt,
               meldt dit aan
               <a
-                href="mailto:{{config "contactEmail"}}"
+                href="mailto:{{config 'contactEmail'}}"
                 class="au-c-link"
               >{{config "contactEmail"}}</a>.
             </p>
@@ -144,7 +145,8 @@
             </td>
             <td>
               <AuLink
-                {{on 'click' (fn this.navigateToPosition person)}}
+                @route={{person.positionRoute}}
+                @models={{array person.id person.uuid}}
               >
                 {{person.position_name}}
               </AuLink>
