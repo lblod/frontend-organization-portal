@@ -32,14 +32,16 @@ export default class AdministrativeUnitsNewRoute extends Route {
         this.store.createRecord('administrative-unit'),
         administrativeUnitValidations
       ),
-      worshipAdministrativeUnit: createValidatedChangeset(
-        this.store.createRecord('worship-administrative-unit'),
+      worshipService: createValidatedChangeset(
+        this.store.createRecord('worship-service', {
+          crossBorder: false,
+        }),
         worshipAdministrativeUnitValidations
       ),
-      worshipService: this.store.createRecord('worship-service', {
-        crossBorder: false,
-      }),
-      centralWorshipService: this.store.createRecord('central-worship-service'),
+      centralWorshipService: createValidatedChangeset(
+        this.store.createRecord('central-worship-service'),
+        worshipAdministrativeUnitValidations
+      ),
       primarySite: this.store.createRecord('site'),
       address: createValidatedChangeset(
         this.store.createRecord('address'),
