@@ -59,9 +59,7 @@
                 <ClassificationSelect
                   @selected={{@model.administrativeUnit.classification}}
                   @selectedRecognizedWorshipTypeId={{@model.administrativeUnit.recognizedWorshipType.id}}
-                  @onChange={{fn
-                    (mut @model.administrativeUnit.classification)
-                  }}
+                  @onChange={{this.setClassification}}
                   @error={{hasError}}
                   @id="classification-select"
                 />
