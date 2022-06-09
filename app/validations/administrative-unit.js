@@ -1,6 +1,8 @@
 import { isBlank } from '@ember/utils';
 import { validatePresence } from 'ember-changeset-validations/validators';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
+import { validateConditionally } from 'frontend-organization-portal/validators/validate-conditionally';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default {
   name: validatePresence({ presence: true, ignoreBlank: true }),
@@ -15,6 +17,26 @@ export default {
     ignoreBlank: true,
     message: 'Selecteer een optie',
   }), */
+  isSubOrganizationOf: validateConditionally(
+    validatePresence({
+      presence: true,
+      ignoreBlank: true,
+      message: 'Selecteer een optie',
+    }),
+    function (changes, content) {
+      let unit = null;
+      if (changes.classification?.id) {
+        unit = changes;
+      } else {
+        unit = content;
+      }
+
+      const isProvince =
+        unit.classification?.get('id') === CLASSIFICATION_CODE.PROVINCE;
+
+      return !isProvince;
+    }
+  ),
 };
 
 export function getStructuredIdentifierKBOValidations(store) {

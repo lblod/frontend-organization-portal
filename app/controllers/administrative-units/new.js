@@ -93,7 +93,6 @@ export default class AdministrativeUnitsNewController extends Controller {
 
     let {
       administrativeUnit,
-      worshipAdministrativeUnit,
       centralWorshipService,
       worshipService,
       primarySite,
@@ -107,6 +106,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     } = this.model;
 
     let newAdministrativeUnit;
+    // Set the proper type(s) to the new admin unit
     if (this.isNewCentralWorshipService) {
       newAdministrativeUnit = centralWorshipService;
     } else if (this.isNewWorshipService) {
@@ -114,10 +114,11 @@ export default class AdministrativeUnitsNewController extends Controller {
     } else {
       newAdministrativeUnit = administrativeUnit;
     }
+    // Copy data entered in the frontend to the new admin unit
+    copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
     yield Promise.all([
-      administrativeUnit.validate(),
-      worshipAdministrativeUnit.validate(),
+      newAdministrativeUnit.validate(),
       address.validate(),
       contact.validate(),
       secondaryContact.validate(),
@@ -125,23 +126,12 @@ export default class AdministrativeUnitsNewController extends Controller {
     ]);
 
     if (
-      ((this.isNewWorshipAdministrativeUnit &&
-        worshipAdministrativeUnit.isValid) ||
-        administrativeUnit.isValid) &&
+      newAdministrativeUnit.isValid &&
       address.isValid &&
       contact.isValid &&
       secondaryContact.isValid &&
       structuredIdentifierKBO.isValid
     ) {
-      if (this.isNewWorshipAdministrativeUnit) {
-        copyAdministrativeUnitData(
-          newAdministrativeUnit,
-          worshipAdministrativeUnit
-        );
-      } else {
-        copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
-      }
-
       structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
       identifierKBO.structuredIdentifier = structuredIdentifierKBO;
       yield structuredIdentifierKBO.save();
@@ -176,6 +166,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       newAdministrativeUnit.primarySite = primarySite;
 
       newAdministrativeUnit = setEmptyStringsToNull(newAdministrativeUnit);
+
       yield newAdministrativeUnit.save();
 
       if (this.isNewWorshipAdministrativeUnit) {
@@ -262,6 +253,13 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
     administrativeUnit.organizationStatus;
   newAdministrativeUnit.isSubOrganizationOf =
     administrativeUnit.isSubOrganizationOf;
-  newAdministrativeUnit.subOrganizations = administrativeUnit.subOrganizations;
+  if (
+    administrativeUnit.subOrganizations &&
+    administrativeUnit.subOrganizations.length
+  ) {
+    newAdministrativeUnit.subOrganizations = [
+      administrativeUnit.subOrganizations,
+    ];
+  }
   newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
 }
