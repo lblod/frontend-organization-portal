@@ -3,6 +3,7 @@ import { validatePresence } from 'ember-changeset-validations/validators';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { validateConditionally } from 'frontend-organization-portal/validators/validate-conditionally';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
 
 export default {
   name: validatePresence({ presence: true, ignoreBlank: true }),
@@ -11,12 +12,31 @@ export default {
     ignoreBlank: true,
     message: 'Selecteer een optie',
   }),
-  // TODO enable when the data is complete and every unit has a status
-  /*   organizationStatus: validatePresence({
+  recognizedWorshipType: validateConditionally(
+    validatePresence({
+      presence: true,
+      ignoreBlank: true,
+      message: 'Selecteer een optie',
+    }),
+    function (changes, content) {
+      return isWorshipAdministrativeUnit(changes, content);
+    }
+  ),
+  isAssociatedWith: validateConditionally(
+    validatePresence({
+      presence: true,
+      ignoreBlank: true,
+      message: 'Selecteer een optie',
+    }),
+    function (changes, content) {
+      return isWorshipAdministrativeUnit(changes, content);
+    }
+  ),
+  organizationStatus: validatePresence({
     presence: true,
     ignoreBlank: true,
     message: 'Selecteer een optie',
-  }), */
+  }),
   isSubOrganizationOf: validateConditionally(
     validatePresence({
       presence: true,
@@ -24,17 +44,28 @@ export default {
       message: 'Selecteer een optie',
     }),
     function (changes, content) {
+      const worshipService = isWorshipService(changes, content);
+      const province = isProvince(changes, content);
+
       let unit = null;
-      if (changes.classification?.id) {
+      if (changes.classification?.id && changes.recognizedWorshipType?.id) {
         unit = changes;
       } else {
         unit = content;
       }
 
-      const isProvince =
-        unit.classification?.get('id') === CLASSIFICATION_CODE.PROVINCE;
+      const typesThatHaveACentralWorshipService = [
+        RECOGNIZED_WORSHIP_TYPE.ISLAMIC,
+        RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC,
+        RECOGNIZED_WORSHIP_TYPE.ORTHODOX,
+      ];
 
-      return !isProvince;
+      const requiresCentralWorshipService =
+        typesThatHaveACentralWorshipService.find(
+          (id) => id == unit.recognizedWorshipType?.get('id')
+        );
+
+      return !province || (worshipService && requiresCentralWorshipService);
     }
   ),
 };
@@ -43,6 +74,40 @@ export function getStructuredIdentifierKBOValidations(store) {
   return {
     localId: validateKBO(store),
   };
+}
+
+function isProvince(changes, content) {
+  return hasClassificationId(changes, content, CLASSIFICATION_CODE.PROVINCE);
+}
+
+function isWorshipService(changes, content) {
+  return hasClassificationId(
+    changes,
+    content,
+    CLASSIFICATION_CODE.WORSHIP_SERVICE
+  );
+}
+
+function isWorshipAdministrativeUnit(changes, content) {
+  return (
+    hasClassificationId(
+      changes,
+      content,
+      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+    ) ||
+    hasClassificationId(changes, content, CLASSIFICATION_CODE.WORSHIP_SERVICE)
+  );
+}
+
+function hasClassificationId(changes, content, classificationId) {
+  let unit = null;
+  if (changes.classification?.id) {
+    unit = changes;
+  } else {
+    unit = content;
+  }
+
+  return unit.classification?.get('id') === classificationId;
 }
 
 function validateKBO(store) {
