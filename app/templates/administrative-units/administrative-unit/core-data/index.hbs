@@ -108,6 +108,22 @@
                 </:content>
               </Item>
             {{/if}}
+            {{#if this.nisIdentifier.structuredIdentifier.localId}}
+              <Item>
+                <:label>{{this.nisIdentifier.idName}}</:label>
+                <:content>
+                  {{this.nisIdentifier.structuredIdentifier.localId}}
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if this.ovoIdentifier.structuredIdentifier.localId}}
+              <Item>
+                <:label>{{this.ovoIdentifier.idName}}</:label>
+                <:content>
+                  {{this.ovoIdentifier.structuredIdentifier.localId}}
+                </:content>
+              </Item>
+            {{/if}}
           </:right>
         </Card.Columns>
       </:card>

@@ -103,8 +103,12 @@ export default class AdministrativeUnitsNewController extends Controller {
       secondaryContact,
       identifierSharepoint,
       identifierKBO,
+      identifierNIS,
+      identifierOVO,
       structuredIdentifierSharepoint,
       structuredIdentifierKBO,
+      structuredIdentifierNIS,
+      structuredIdentifierOVO,
     } = this.model;
 
     yield Promise.all([
@@ -150,6 +154,16 @@ export default class AdministrativeUnitsNewController extends Controller {
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
 
+      structuredIdentifierNIS = setEmptyStringsToNull(structuredIdentifierNIS);
+      identifierNIS.structuredIdentifier = structuredIdentifierNIS;
+      yield structuredIdentifierNIS.save();
+      yield identifierNIS.save();
+
+      structuredIdentifierOVO = setEmptyStringsToNull(structuredIdentifierOVO);
+      identifierOVO.structuredIdentifier = structuredIdentifierOVO;
+      yield structuredIdentifierOVO.save();
+      yield identifierOVO.save();
+
       contact = setEmptyStringsToNull(contact);
       yield contact.save();
 
@@ -167,6 +181,8 @@ export default class AdministrativeUnitsNewController extends Controller {
       newAdministrativeUnit.identifiers.pushObjects([
         identifierKBO,
         identifierSharepoint,
+        identifierNIS,
+        identifierOVO,
       ]);
       newAdministrativeUnit.primarySite = primarySite;
 
@@ -203,7 +219,12 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.primarySite.rollbackAttributes();
     this.model.identifierSharepoint.rollbackAttributes();
     this.model.identifierKBO.rollbackAttributes();
+    this.model.identifierNIS.rollbackAttributes();
+    this.model.identifierOVO.rollbackAttributes();
     this.model.structuredIdentifierSharepoint.rollbackAttributes();
+    this.model.structuredIdentifierKBO.rollbackAttributes();
+    this.model.structuredIdentifierNIS.rollbackAttributes();
+    this.model.structuredIdentifierOVO.rollbackAttributes();
     this.model.administrativeUnitChangeset.rollbackAttributes();
   }
 

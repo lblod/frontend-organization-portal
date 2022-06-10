@@ -40,10 +40,14 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       address,
       contact,
       secondaryContact,
-      identifierKBO,
       identifierSharepoint,
-      structuredIdentifierKBO,
+      identifierKBO,
+      identifierNIS,
+      identifierOVO,
       structuredIdentifierSharepoint,
+      structuredIdentifierKBO,
+      structuredIdentifierNIS,
+      structuredIdentifierOVO,
     } = this.model;
 
     yield Promise.all([
@@ -112,6 +116,16 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       );
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
+
+      structuredIdentifierNIS = setEmptyStringsToNull(structuredIdentifierNIS);
+      identifierNIS.structuredIdentifier = structuredIdentifierNIS;
+      yield structuredIdentifierNIS.save();
+      yield identifierNIS.save();
+
+      structuredIdentifierOVO = setEmptyStringsToNull(structuredIdentifierOVO);
+      identifierOVO.structuredIdentifier = structuredIdentifierOVO;
+      yield structuredIdentifierOVO.save();
+      yield identifierOVO.save();
 
       administrativeUnit = setEmptyStringsToNull(administrativeUnit);
 

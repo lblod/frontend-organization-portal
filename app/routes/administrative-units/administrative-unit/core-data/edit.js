@@ -70,6 +70,12 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     let structuredIdentifierSharepoint =
       await identifierSharepoint.structuredIdentifier;
 
+    let identifierNIS = identifiers.findBy('idName', ID_NAME.NIS);
+    let structuredIdentifierNIS = await identifierNIS.structuredIdentifier;
+
+    let identifierOVO = identifiers.findBy('idName', ID_NAME.OVO);
+    let structuredIdentifierOVO = await identifierOVO.structuredIdentifier;
+
     return {
       administrativeUnit: createValidatedChangeset(
         administrativeUnit,
@@ -82,17 +88,26 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
         secondaryContactValidations
       ),
       identifierKBO,
+      identifierSharepoint,
+      identifierNIS,
+      identifierOVO,
       structuredIdentifierKBO: createValidatedChangeset(
         structuredIdentifierKBO,
         getStructuredIdentifierKBOValidations(this.store)
       ),
-      identifierSharepoint,
       structuredIdentifierSharepoint,
+      structuredIdentifierNIS,
+      structuredIdentifierOVO,
     };
   }
 
   createMissingIdentifiers(currentIdentifiers) {
-    const requiredIdNames = [ID_NAME.KBO, ID_NAME.SHAREPOINT];
+    const requiredIdNames = [
+      ID_NAME.KBO,
+      ID_NAME.SHAREPOINT,
+      ID_NAME.NIS,
+      ID_NAME.OVO,
+    ];
 
     return requiredIdNames.reduce((missingIdentifiers, requiredIdName) => {
       let identifier = currentIdentifiers.findBy('idName', requiredIdName);

@@ -4,6 +4,8 @@ export const ID_NAME = {
   KBO: 'KBO nummer',
   SHAREPOINT: 'SharePoint identificator',
   SSN: 'Rijksregisternummer',
+  NIS: 'NIS code',
+  OVO: 'OVO code',
 };
 
 export default class IdentifierModel extends Model {

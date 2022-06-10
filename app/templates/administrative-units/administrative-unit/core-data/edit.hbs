@@ -188,6 +188,26 @@
                     />
                   </:content>
                 </Item>
+                <Item @labelFor="nis-identifier">
+                  <:label>{{@model.identifierNIS.idName}}</:label>
+                  <:content>
+                    <AuInput
+                      @width="block"
+                      @value={{@model.structuredIdentifierNIS.localId}}
+                      id="nis-identifier"
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="ovo-identifier">
+                  <:label>{{@model.identifierOVO.idName}}</:label>
+                  <:content>
+                    <AuInput
+                      @width="block"
+                      @value={{@model.structuredIdentifierOVO.localId}}
+                      id="ovo-identifier"
+                    />
+                  </:content>
+                </Item>
               </:right>
             </Card.Columns>
           </:card>

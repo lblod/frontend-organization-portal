@@ -61,6 +61,14 @@ export default class AdministrativeUnitsNewRoute extends Route {
       structuredIdentifierSharepoint: this.store.createRecord(
         'structured-identifier'
       ),
+      identifierNIS: this.store.createRecord('identifier', {
+        idName: ID_NAME.NIS,
+      }),
+      structuredIdentifierNIS: this.store.createRecord('structured-identifier'),
+      identifierOVO: this.store.createRecord('identifier', {
+        idName: ID_NAME.OVO,
+      }),
+      structuredIdentifierOVO: this.store.createRecord('structured-identifier'),
     };
   }
 
