@@ -31,7 +31,7 @@ export default class MunicipalitySelectComponent extends Component {
         },
       });
 
-      return municipalities.mapBy('name');
+      return municipalities;
     } else {
       // Else load all the municipalities
       const query = {
