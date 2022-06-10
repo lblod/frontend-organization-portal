@@ -207,7 +207,7 @@
                   <Item @labelFor="related-worship-service">
                     <:label>Bestuur van de eredienst</:label>
                     <:content>
-                      <WorshipServiceSelect
+                      <WorshipServiceMultipleSelect
                         @selected={{@model.administrativeUnitChangeset.subOrganizations}}
                         @onChange={{fn
                           (mut @model.administrativeUnitChangeset.subOrganizations)
@@ -260,7 +260,7 @@
                 <Item @labelFor="related-municipality">
                   <:label>Gemeenten</:label>
                   <:content>
-                    <MunicipalitySelect
+                    <MunicipalityMultipleSelect
                       @selected={{@model.administrativeUnitChangeset.subOrganizations}}
                       @onChange={{fn
                         (mut @model.administrativeUnitChangeset.subOrganizations)

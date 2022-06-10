@@ -261,9 +261,8 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
     administrativeUnit.subOrganizations &&
     administrativeUnit.subOrganizations.length
   ) {
-    newAdministrativeUnit.subOrganizations = [
-      administrativeUnit.subOrganizations,
-    ];
+    newAdministrativeUnit.subOrganizations =
+      administrativeUnit.subOrganizations;
   }
   newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
 }
