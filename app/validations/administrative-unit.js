@@ -32,11 +32,12 @@ export default {
       return isWorshipAdministrativeUnit(changes, content);
     }
   ),
-  organizationStatus: validatePresence({
+  // TODO enable when all orgs have a status
+  /*   organizationStatus: validatePresence({
     presence: true,
     ignoreBlank: true,
     message: 'Selecteer een optie',
-  }),
+  }), */
   isSubOrganizationOf: validateConditionally(
     validatePresence({
       presence: true,
@@ -45,6 +46,10 @@ export default {
     }),
     function (changes, content) {
       const worshipService = isWorshipService(changes, content);
+      const worshipAdministrativeUnit = isWorshipAdministrativeUnit(
+        changes,
+        content
+      );
       const province = isProvince(changes, content);
 
       let unit = null;
@@ -65,7 +70,10 @@ export default {
           (id) => id == unit.recognizedWorshipType?.get('id')
         );
 
-      return !province || (worshipService && requiresCentralWorshipService);
+      return (
+        (!worshipAdministrativeUnit && !province) ||
+        (worshipService && requiresCentralWorshipService)
+      );
     }
   ),
 };
