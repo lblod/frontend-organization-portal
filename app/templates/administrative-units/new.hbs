@@ -59,10 +59,10 @@
                 <ClassificationSelect
                   @selected={{@model.administrativeUnitChangeset.classification}}
                   @selectedRecognizedWorshipTypeId={{@model.administrativeUnitChangeset.recognizedWorshipType.id}}
-                    @onChange={{fn
-                      (mut @model.administrativeUnitChangeset.classification)
-                    }}
-                    @error={{hasError}}
+                  @onChange={{fn
+                    (mut @model.administrativeUnitChangeset.classification)
+                  }}
+                  @error={{hasError}}
                   @id="classification-select"
                 />
               </:content>
@@ -80,6 +80,7 @@
                     @onChange={{fn
                       (mut @model.administrativeUnitChangeset.recognizedWorshipType)
                     }}
+                    @allowClear={{true}}
                     @error={{hasError}}
                     @id="recognized-worship-type-select"
                   />
