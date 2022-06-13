@@ -130,9 +130,8 @@
               <Item @labelFor="administrative-unit-name">
                 <:label>Naam eredienst</:label>
                 <:content>
-                  <TrimInput
+                  <AuInput
                     @value={{@model.administrativeUnit.name}}
-                    @onUpdate={{fn (mut @model.administrativeUnit.name)}}
                     @width="block"
                     @disabled={{true}}
                   />
@@ -177,10 +176,9 @@
               <Item @labelFor="governing-body-period">
                 <:label>Bestuursperiode</:label>
                 <:content>
-                  <TrimInput
+                  <AuInput
                     @width="block"
                     @value={{@model.governingBody.period}}
-                    @onUpdate={{fn (mut @model.governingBody.period)}}
                     @disabled={{true}}
                   />
                 </:content>
