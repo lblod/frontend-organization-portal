@@ -126,7 +126,8 @@ class FormState {
   get canAddDecisionInformation() {
     return (
       this.changeEventType &&
-      this.changeEventType?.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED
+      this.changeEventType?.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED &&
+      this.changeEventType?.id !== CHANGE_EVENT_TYPE.CITY
     );
   }
 
