@@ -130,8 +130,9 @@
               <Item @labelFor="administrative-unit-name">
                 <:label>Naam eredienst</:label>
                 <:content>
-                  <AuInput
+                  <TrimInput
                     @value={{@model.administrativeUnit.name}}
+                    @onUpdate={{fn (mut @model.administrativeUnit.name)}}
                     @width="block"
                     @disabled={{true}}
                   />
@@ -176,9 +177,10 @@
               <Item @labelFor="governing-body-period">
                 <:label>Bestuursperiode</:label>
                 <:content>
-                  <AuInput
+                  <TrimInput
                     @width="block"
                     @value={{@model.governingBody.period}}
+                    @onUpdate={{fn (mut @model.governingBody.period)}}
                     @disabled={{true}}
                   />
                 </:content>
@@ -212,8 +214,9 @@
               <Item @labelFor="reason-stop">
                 <:label>Reden stopzetting </:label>
                 <:content>
-                  <AuInput
+                  <TrimInput
                     @value={{@model.mandatory.reasonStopped}}
+                    @onUpdate={{fn (mut @model.mandatory.reasonStopped)}}
                     @width="block"
                     id="reason-stop"
                   />

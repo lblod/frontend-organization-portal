@@ -70,8 +70,9 @@
               >
                 <:label>Link naar besluit</:label>
                 <:content as |hasError|>
-                  <AuInput
+                  <TrimInput
                     @value={{@model.decision.documentLink}}
+                    @onUpdate={{fn (mut @model.decision.documentLink)}}
                     @width="block"
                     @error={{hasError}}
                     id="change-event-decision-link"
