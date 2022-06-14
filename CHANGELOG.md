@@ -4,6 +4,15 @@
 
 
 
+
+## 1.9.0-5 (2022-06-14)
+
+#### :rocket: Enhancement
+* [#365](https://github.com/lblod/frontend-organization-portal/pull/365) set modal to fullscreen ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.9.0-4 (2022-06-03)
 
 #### :bug: Bug Fix
