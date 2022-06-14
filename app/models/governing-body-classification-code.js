@@ -1,4 +1,4 @@
-import Model, { attr } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@ember-data/model';
 
 export const GOVERNING_BODY_CLASSIFICATION = {
   CHURCH_COUNCIL: '04f65457bf125b2dc59fd71917ac3d08',
@@ -12,4 +12,7 @@ export const GOVERNING_BODY_CLASSIFICATION = {
 
 export default class GoverningBodyClassificationCodeModel extends Model {
   @attr label;
+
+  @belongsTo('administrative-unit-classification-code', { inverse: null })
+  appliesWithin;
 }

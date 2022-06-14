@@ -1,4 +1,4 @@
-import Model, { attr } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@ember-data/model';
 
 export const BOARD_POSITION = {
   WORSHIP_MEMBER: '2e021095727b2464459a63e16ebeafd2',
@@ -38,6 +38,9 @@ export const MANDATARISSEN_POSITIONS_BOARD_BLACKLIST = [
 
 export default class BoardPositionModel extends Model {
   @attr label;
+
+  @belongsTo('governing-body-classification-code', { inverse: null })
+  appliesTo;
 }
 
 export function isWorshipMember(id) {
