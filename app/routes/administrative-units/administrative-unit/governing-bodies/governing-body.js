@@ -18,7 +18,9 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       }
     );
 
-    const governingBodyClassification = await governingBody.classification;
+    const untimedGoverningBodiy = await governingBody.isTimeSpecializationOf;
+    const governingBodyClassification =
+      await untimedGoverningBodiy.classification;
 
     return {
       administrativeUnit,

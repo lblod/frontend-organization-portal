@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import { mandatoryWithRequiredRoleValidations } from 'frontend-organization-portal/validations/mandatory';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyBoardMemberNewRoute extends Route {
   @service store;
@@ -16,12 +17,27 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       });
     }
   }
+
   async model({ personId, positionId }, transition) {
     let { governingBody } = this.modelFor(
       'administrative-units.administrative-unit.governing-bodies.governing-body'
     );
 
-    let mandatory = this.store.createRecord('worship-mandatory');
+    const administrativeUnit = this.modelFor(
+      'administrative-units.administrative-unit'
+    );
+    const classification = await administrativeUnit.classification;
+    let mandatory;
+
+    if (
+      classification.id == CLASSIFICATION_CODE.WORSHIP_SERVICE ||
+      classification.id == CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+    ) {
+      mandatory = this.store.createRecord('worship-mandatory');
+    } else {
+      mandatory = this.store.createRecord('mandatory');
+    }
+
     mandatory.isCurrentPosition = true;
     if (positionId) {
       let role = await this.store.findRecord('board-position', positionId);
@@ -38,9 +54,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     }
 
     return {
-      administrativeUnit: this.modelFor(
-        'administrative-units.administrative-unit'
-      ),
+      administrativeUnit,
       governingBody,
       mandatory: createValidatedChangeset(
         mandatory,

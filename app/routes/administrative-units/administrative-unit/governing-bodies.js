@@ -19,7 +19,19 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
       }
     );
 
-    let governingBodies = await administrativeUnit.governingBodies;
+    let untimedGoverningBodies = await administrativeUnit.governingBodies;
+    let governingBodies = [];
+
+    for (let governingBody of untimedGoverningBodies.toArray()) {
+      const timedGoverningBodies = governingBody
+        ? (await governingBody.hasTimeSpecializations)
+            .toArray()
+            .sort((a, b) => {
+              return b.endDate - a.endDate;
+            })
+        : [];
+      governingBodies.push(...timedGoverningBodies);
+    }
 
     return {
       administrativeUnit,

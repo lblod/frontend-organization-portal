@@ -2,12 +2,9 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import {
-  CENTRAL_WORSHIP_SERVICE_BOARD_POSITIONS_BLACKLIST,
-  WORSHIP_SERVICE_POSITIONS_BOARD_BLACKLIST,
-  BESTURSLEDEN_POSITIONS_BOARD_BLACKLIST,
-  MANDATARISSEN_POSITIONS_BOARD_BLACKLIST,
+  BOARD_MEMBER_ROLES,
+  MANDATARIES_ROLES,
 } from 'frontend-organization-portal/models/board-position';
 
 export default class MandateRoleSelectComponent extends Component {
@@ -22,9 +19,8 @@ export default class MandateRoleSelectComponent extends Component {
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
     yield Promise.resolve();
 
-    let positions = yield this.store.findAll('board-position');
+    let positions = [];
 
-    // Filter out positions depending on religion type when organization is set
     if (
       this.args.selectedAdministrativeUnit &&
       this.args.selectedAdministrativeUnit.id
@@ -32,50 +28,26 @@ export default class MandateRoleSelectComponent extends Component {
       const classification = yield this.args.selectedAdministrativeUnit
         .classification;
 
-      positions = this.filterOutBlacklistedPositions(positions, classification);
+      // Only get positions available for this type of administrative unit
+      positions = yield this.store.query('board-position', {
+        'filter[applies-to][applies-within][:id:]': classification.id,
+      });
 
+      // Filter out positions depending on religion type when organization is set
       if (this.args.isInMandatarissenContext) {
         positions = positions.filter(
-          (position) =>
-            !this.isIdInBlacklist(
-              position.id,
-              MANDATARISSEN_POSITIONS_BOARD_BLACKLIST
-            )
+          (position) => !this.isIdInBlacklist(position.id, BOARD_MEMBER_ROLES)
         );
       }
 
       if (this.args.isInBestuursledenContext) {
         positions = positions.filter(
-          (position) =>
-            !this.isIdInBlacklist(
-              position.id,
-              BESTURSLEDEN_POSITIONS_BOARD_BLACKLIST
-            )
+          (position) => !this.isIdInBlacklist(position.id, MANDATARIES_ROLES)
         );
       }
+    } else {
+      positions = yield this.store.findAll('board-position');
     }
-    return positions;
-  }
-
-  filterOutBlacklistedPositions(positions, classification) {
-    if (classification.id == CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE) {
-      positions = positions.filter(
-        (position) =>
-          !this.isIdInBlacklist(
-            position.id,
-            CENTRAL_WORSHIP_SERVICE_BOARD_POSITIONS_BLACKLIST
-          )
-      );
-    } else if (classification.id == CLASSIFICATION_CODE.WORSHIP_SERVICE) {
-      positions = positions.filter(
-        (position) =>
-          !this.isIdInBlacklist(
-            position.id,
-            WORSHIP_SERVICE_POSITIONS_BOARD_BLACKLIST
-          )
-      );
-    }
-
     return positions;
   }
 
