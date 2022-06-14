@@ -23,13 +23,14 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewRoute e
     }
   }
 
-  model() {
+  async model() {
     let administrativeUnit = this.modelFor(
       'administrative-units.administrative-unit'
     );
     let changeEvent = this.store.createRecord('change-event');
     let decision = this.store.createRecord('decision');
     let decisionActivity = this.store.createRecord('decisionActivity');
+    let classification = await administrativeUnit.classification;
 
     return {
       administrativeUnit,
@@ -42,6 +43,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewRoute e
       formState: new FormState({ currentOrganization: administrativeUnit }),
       changeEventRecord: changeEvent,
       decisionRecord: decision,
+      classification,
     };
   }
 
