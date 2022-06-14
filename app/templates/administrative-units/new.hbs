@@ -203,6 +203,18 @@
                 />
               </:content>
             </Item>
+            <Item @labelFor="regio">
+              <:label>Regio</:label>
+              <:content>
+                <RegionSelect
+                  @selected={{@model.administrativeUnitChangeset.locatedWithin}}
+                  @onChange={{fn
+                    (mut @model.administrativeUnitChangeset.locatedWithin)
+                  }}
+                  @id="regio"
+                />
+              </:content>
+            </Item>
           </:right>
         </Card.Columns>
       </:card>

@@ -5,7 +5,7 @@ export const ID_NAME = {
   SHAREPOINT: 'SharePoint identificator',
   SSN: 'Rijksregisternummer',
   NIS: 'NIS code',
-  OVO: 'OVO code',
+  OVO: 'OVO-nummer',
 };
 
 export default class IdentifierModel extends Model {

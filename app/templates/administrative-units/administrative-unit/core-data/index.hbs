@@ -124,6 +124,14 @@
                 </:content>
               </Item>
             {{/if}}
+            {{#if @model.administrativeUnit.locatedWithin}}
+              <Item>
+                <:label>Regio</:label>
+                <:content>
+                  {{@model.administrativeUnit.locatedWithin.label}}
+                </:content>
+              </Item>
+            {{/if}}
           </:right>
         </Card.Columns>
       </:card>
