@@ -19,21 +19,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
       }
     );
 
-    //worship services related administrative units only have one governing body and many nested governing bodies "has-time-specializations"
-    let governingBody = await administrativeUnit.governingBodies.firstObject;
-
-    // TODO: at the moment new administrative units don't have a governingBody set so this route breaks without this workaround
-    // Remove this once we have a proper plan for newly created administrative units
-    let governingBodies = governingBody
-      ? (await governingBody.hasTimeSpecializations).toArray().sort((a, b) => {
-          return b.endDate - a.endDate;
-        })
-      : [];
+    let governingBodies = await administrativeUnit.governingBodies;
 
     return {
       administrativeUnit,
       governingBodies,
-      governingBodyClassification: await governingBody?.classification,
     };
   }
 }
