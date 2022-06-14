@@ -5,15 +5,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @service store;
 
   async model({ governingBodyId }) {
-    let administrativeUnit = this.modelFor(
+    const administrativeUnit = this.modelFor(
       'administrative-units.administrative-unit'
     );
 
-    let { governingBodyClassification } = this.modelFor(
-      'administrative-units.administrative-unit.governing-bodies'
-    );
-
-    let governingBody = await this.store.findRecord(
+    const governingBody = await this.store.findRecord(
       'governing-body',
       governingBodyId,
       {
@@ -21,6 +17,10 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         include: 'mandates.role-board,mandates.held-by.governing-alias',
       }
     );
+
+    const untimedGoverningBodiy = await governingBody.isTimeSpecializationOf;
+    const governingBodyClassification =
+      await untimedGoverningBodiy.classification;
 
     return {
       administrativeUnit,

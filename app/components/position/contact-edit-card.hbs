@@ -89,7 +89,7 @@
             >
               <:label>Gemeente</:label>
               <:content as |errorMessage|>
-                <MunicipalitySelect
+                <MunicipalitySelectByName
                   @selected={{@address.municipality}}
                   @selectedProvince={{@address.province}}
                   @onChange={{fn (mut @address.municipality)}}

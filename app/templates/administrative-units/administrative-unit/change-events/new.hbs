@@ -47,7 +47,7 @@
                 <ChangeEventTypeSelect
                   @id="change-event-type"
                   @selected={{@model.formState.changeEventType}}
-                  @isCentralWorshipService={{this.isCentralWorshipService}}
+                  @administrativeUnitClassification={{@model.formState.currentOrganization.classification}}
                   @onChange={{fn (mut @model.formState.changeEventType)}}
                   @error={{hasError}}
                 />

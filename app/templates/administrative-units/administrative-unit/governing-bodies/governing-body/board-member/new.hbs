@@ -157,18 +157,20 @@
                   />
                 </:content>
               </Item>
-              {{! TODO: Hide this if the when "lid van rechtswege" is selected }}
-              <Item @labelFor="expected-end-date"  @errorMessage={{this.expectedEndDateErrorMessage}}>
-                <:label>Geplande einddatum</:label>
-                <:content>
-                  <Datepicker
-                    @id="expected-end-date"
-                    @onChange={{fn (mut @model.mandatory.expectedEndDate)}}
-                    @onValidate={{this.validateExpectedEndDate}}
-                    @value={{@model.mandatory.expectedEndDate}}
-                  />
-                </:content>
-              </Item>
+              {{#if this.isWorshipAdministrativeUnit}}
+                <Item @labelFor="expected-end-date" @errorMessage={{this.expectedEndDateErrorMessage}}>
+                  <:label>Geplande einddatum</:label>
+                  <:content as |errorMessage|>
+                    <Datepicker
+                      @id="expected-end-date"
+                      @onChange={{fn (mut @model.mandatory.expectedEndDate)}}
+                      @value={{@model.mandatory.expectedEndDate}}
+                      @onValidate={{this.validateExpectedEndDate}}
+                      @error={{errorMessage}}
+                    />
+                  </:content>
+                </Item>
+              {{/if}}
             </:left>
             <:right as |Item|>
               <Item @labelFor="governing-body-period">
@@ -207,16 +209,18 @@
                   />
                 </:content>
               </Item>
-              <Item @labelFor="reason-stop">
-                <:label>Reden stopzetting </:label>
-                <:content>
-                  <AuInput
-                    @value={{@model.mandatory.reasonStopped}}
-                    @width="block"
-                    id="reason-stop"
-                  />
-                </:content>
-              </Item>
+              {{#if this.isWorshipAdministrativeUnit}}
+                <Item @labelFor="reason-stop">
+                  <:label>Reden stopzetting</:label>
+                  <:content>
+                    <AuInput
+                      @value={{@model.mandatory.reasonStopped}}
+                      @width="block"
+                      id="reason-stop"
+                    />
+                  </:content>
+                </Item>
+              {{/if}}
             </:right>
           </Card.Columns>
         </:card>

@@ -47,6 +47,10 @@ export default class ClassificationSelectComponent extends Component {
       allowedIds = [
         CLASSIFICATION_CODE.WORSHIP_SERVICE,
         CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+        CLASSIFICATION_CODE.MUNICIPALITY,
+        CLASSIFICATION_CODE.PROVINCE,
+        CLASSIFICATION_CODE.OCMW,
+        CLASSIFICATION_CODE.DISTRICT,
       ];
     }
 

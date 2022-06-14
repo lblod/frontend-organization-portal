@@ -4,9 +4,28 @@ import { inject as service } from '@ember/service';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
+
+  get isWorshipAdministrativeUnit() {
+    return this.isWorshipService || this.isCentralWorshipService;
+  }
+
+  get isWorshipService() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.WORSHIP_SERVICE
+    );
+  }
+
+  get isCentralWorshipService() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+    );
+  }
 
   @action
   setKbo(value) {
@@ -16,16 +35,19 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   @dropTask
   *save(event) {
     event.preventDefault();
-
     let {
       administrativeUnit,
       address,
       contact,
       secondaryContact,
-      identifierKBO,
       identifierSharepoint,
-      structuredIdentifierKBO,
+      identifierKBO,
+      identifierNIS,
+      identifierOVO,
       structuredIdentifierSharepoint,
+      structuredIdentifierKBO,
+      structuredIdentifierNIS,
+      structuredIdentifierOVO,
     } = this.model;
 
     yield Promise.all([
@@ -44,6 +66,14 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       structuredIdentifierKBO.isValid
     ) {
       let primarySite = yield administrativeUnit.primarySite;
+
+      // TODO : "if" not needed when the data of all administrative units will be correct
+      // they should all have a primary site on creation
+      if (!primarySite) {
+        primarySite = primarySite = this.store.createRecord('site');
+        primarySite.address = address;
+        administrativeUnit.primarySite = primarySite;
+      }
 
       if (address.isDirty) {
         address.fullAddress = combineFullAddress(address);
@@ -86,6 +116,16 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       );
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
+
+      structuredIdentifierNIS = setEmptyStringsToNull(structuredIdentifierNIS);
+      identifierNIS.structuredIdentifier = structuredIdentifierNIS;
+      yield structuredIdentifierNIS.save();
+      yield identifierNIS.save();
+
+      structuredIdentifierOVO = setEmptyStringsToNull(structuredIdentifierOVO);
+      identifierOVO.structuredIdentifier = structuredIdentifierOVO;
+      yield structuredIdentifierOVO.save();
+      yield identifierOVO.save();
 
       administrativeUnit = setEmptyStringsToNull(administrativeUnit);
 

@@ -37,13 +37,13 @@
             <Item
               @labelFor="administrative-unit-name"
               @required={{true}}
-              @errorMessage={{@model.administrativeUnit.error.name.validation}}
+              @errorMessage={{@model.administrativeUnitChangeset.error.name.validation}}
             >
               <:label>Naam</:label>
               <:content as |hasError|>
                 <AuInput
                   @width="block"
-                  @value={{@model.administrativeUnit.name}}
+                  @value={{@model.administrativeUnitChangeset.name}}
                   @error={{hasError}}
                   id="administrative-unit-name"
                 />
@@ -52,39 +52,41 @@
             <Item
               @labelFor="classification-select"
               @required={{true}}
-              @errorMessage={{@model.administrativeUnit.error.classification.validation}}
+              @errorMessage={{@model.administrativeUnitChangeset.error.classification.validation}}
             >
               <:label>Type bestuur</:label>
               <:content as |hasError|>
                 <ClassificationSelect
-                  @selected={{@model.administrativeUnit.classification}}
-                  @selectedRecognizedWorshipTypeId={{@model.administrativeUnit.recognizedWorshipType.id}}
+                  @selected={{@model.administrativeUnitChangeset.classification}}
+                  @selectedRecognizedWorshipTypeId={{@model.administrativeUnitChangeset.recognizedWorshipType.id}}
                   @onChange={{fn
-                    (mut @model.administrativeUnit.classification)
+                    (mut @model.administrativeUnitChangeset.classification)
                   }}
                   @error={{hasError}}
                   @id="classification-select"
                 />
               </:content>
             </Item>
-            <Item
-              @labelFor="recognized-worship-type-select"
-              @required={{true}}
-              @errorMessage={{@model.administrativeUnit.error.recognizedWorshipType.validation}}
-            >
-              <:label>Soort eredienst</:label>
-              <:content as |hasError|>
-                <RecognizedWorshipTypeSelect
-                  @selected={{@model.administrativeUnit.recognizedWorshipType}}
-                  @selectedClassificationId={{@model.administrativeUnit.classification.id}}
-                  @onChange={{fn
-                    (mut @model.administrativeUnit.recognizedWorshipType)
-                  }}
-                  @error={{hasError}}
-                  @id="recognized-worship-type-select"
-                />
-              </:content>
-            </Item>
+            {{#if this.isNewWorshipAdministrativeUnit}}
+              <Item
+                @labelFor="recognized-worship-type-select"
+                @required={{true}}
+                @errorMessage={{@model.administrativeUnitChangeset.error.recognizedWorshipType.validation}}
+              >
+                <:label>Soort eredienst</:label>
+                <:content as |hasError|>
+                  <RecognizedWorshipTypeSelect
+                    @selected={{@model.administrativeUnitChangeset.recognizedWorshipType}}
+                    @onChange={{fn
+                      (mut @model.administrativeUnitChangeset.recognizedWorshipType)
+                    }}
+                    @allowClear={{true}}
+                    @error={{hasError}}
+                    @id="recognized-worship-type-select"
+                  />
+                </:content>
+              </Item>
+            {{/if}}
             {{#if this.isNewWorshipService}}
               <Item @labelFor="denomination">
                 <:label>Strekking</:label>
@@ -135,14 +137,14 @@
             <Item
               @labelFor="status-select"
               @required={{true}}
-              @errorMessage={{@model.administrativeUnit.error.organizationStatus.validation}}
+              @errorMessage={{@model.administrativeUnitChangeset.error.organizationStatus.validation}}
             >
               <:label>Status</:label>
               <:content as |hasError|>
                 <OrganizationStatusSelect
-                  @selected={{@model.administrativeUnit.organizationStatus}}
+                  @selected={{@model.administrativeUnitChangeset.organizationStatus}}
                   @onChange={{fn
-                    (mut @model.administrativeUnit.organizationStatus)
+                    (mut @model.administrativeUnitChangeset.organizationStatus)
                   }}
                   @error={{hasError}}
                   @id="status-select"
@@ -181,6 +183,38 @@
                 />
               </:content>
             </Item>
+            <Item @labelFor="nis-identifier">
+              <:label>{{@model.identifierNIS.idName}}</:label>
+              <:content>
+                <AuInput
+                  @width="block"
+                  @value={{@model.structuredIdentifierNIS.localId}}
+                  id="nis-identifier"
+                />
+              </:content>
+            </Item>
+            <Item @labelFor="ovo-identifier">
+              <:label>{{@model.identifierOVO.idName}}</:label>
+              <:content>
+                <AuInput
+                  @width="block"
+                  @value={{@model.structuredIdentifierOVO.localId}}
+                  id="ovo-identifier"
+                />
+              </:content>
+            </Item>
+            <Item @labelFor="regio">
+              <:label>Regio</:label>
+              <:content>
+                <RegionSelect
+                  @selected={{@model.administrativeUnitChangeset.locatedWithin}}
+                  @onChange={{fn
+                    (mut @model.administrativeUnitChangeset.locatedWithin)
+                  }}
+                  @id="regio"
+                />
+              </:content>
+            </Item>
           </:right>
         </Card.Columns>
       </:card>
@@ -194,63 +228,106 @@
       <:title>Primaire contactgegevens</:title>
     </Site::ContactEditCard>
 
-    <EditCard @containsRequiredFields={{true}}>
-      <:title>Gerelateerde organisaties</:title>
-      <:card as |Card|>
-        <Card.Columns>
-          <:left as |Item|>
-            {{#if this.isNewCentralWorshipService}}
-              <Item @labelFor="related-worship-service">
-                <:label>Bestuur van de eredienst</:label>
-                <:content>
-                  <WorshipServiceMultipleSelect
-                    @selected={{@model.administrativeUnit.subOrganizations}}
-                    @onChange={{fn
-                      (mut @model.administrativeUnit.subOrganizations)
-                    }}
-                    id="related-worship-service"
-                  />
-                </:content>
-              </Item>
-            {{else if this.hasCentralWorshipService}}
-              <Item
-                @labelFor="related-central-worship-service"
-                @required={{true}}
-                @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-              >
-                <:label>Centraal bestuur</:label>
-                <:content as |hasError|>
-                  <CentralWorshipSelect
-                    @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                    @onChange={{fn
-                      (mut @model.administrativeUnit.isSubOrganizationOf)
-                    }}
-                    @error={{hasError}}
-                    @id="related-central-worship-service"
-                  />
-                </:content>
-              </Item>
-            {{/if}}
-            <Item
-              @labelFor="related-representative-body"
-              @required={{true}}
-              @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
-            >
-              <:label>Representatief orgaan</:label>
-              <:content as |hasError|>
-                <RepresentativeBodySelect
-                  @selected={{@model.administrativeUnit.isAssociatedWith}}
-                  @onChange={{fn
-                    (mut @model.administrativeUnit.isAssociatedWith)
-                  }}
-                  @error={{hasError}}
-                  @id="related-representative-body"
-                />
-              </:content>
-            </Item>
-          </:left>
-        </Card.Columns>
-      </:card>
-    </EditCard>
+    {{#if this.model.administrativeUnitChangeset.classification}}
+      <EditCard @containsRequiredFields={{true}}>
+        <:title>Gerelateerde organisaties</:title>
+        <:card as |Card|>
+          {{#if this.isNewWorshipAdministrativeUnit}}
+            <Card.Columns>
+              <:left as |Item|>
+                {{#if this.isNewCentralWorshipService}}
+                  <Item @labelFor="related-worship-service">
+                    <:label>Bestuur van de eredienst</:label>
+                    <:content>
+                      <WorshipServiceMultipleSelect
+                        @selected={{@model.administrativeUnitChangeset.subOrganizations}}
+                        @onChange={{fn
+                          (mut @model.administrativeUnitChangeset.subOrganizations)
+                        }}
+                        id="related-worship-service"
+                      />
+                    </:content>
+                  </Item>
+                {{else if this.hasCentralWorshipService}}
+                  <Item
+                    @labelFor="related-central-worship-service"
+                    @required={{true}}
+                    @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
+                  >
+                    <:label>Centraal bestuur</:label>
+                    <:content as |hasError|>
+                      <CentralWorshipSelect
+                        @selected={{@model.administrativeUnitChangeset.isSubOrganizationOf}}
+                        @onChange={{fn
+                          (mut @model.administrativeUnitChangeset.isSubOrganizationOf)
+                        }}
+                        @error={{hasError}}
+                        @id="related-central-worship-service"
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
+                <Item
+                  @labelFor="related-representative-body"
+                  @required={{true}}
+                  @errorMessage={{@model.administrativeUnitChangeset.error.isAssociatedWith.validation}}
+                >
+                  <:label>Representatief orgaan</:label>
+                  <:content as |hasError|>
+                    <RepresentativeBodySelect
+                      @selected={{@model.administrativeUnitChangeset.isAssociatedWith}}
+                      @onChange={{fn
+                        (mut @model.administrativeUnitChangeset.isAssociatedWith)
+                      }}
+                      @error={{hasError}}
+                      @id="related-representative-body"
+                    />
+                  </:content>
+                </Item>
+              </:left>
+            </Card.Columns>
+          {{else if this.isNewProvince}}
+            <Card.Columns>
+              <:left as |Item|>
+                <Item @labelFor="related-municipality">
+                  <:label>Gemeenten</:label>
+                  <:content>
+                    <MunicipalityMultipleSelect
+                      @selected={{@model.administrativeUnitChangeset.subOrganizations}}
+                      @onChange={{fn
+                        (mut @model.administrativeUnitChangeset.subOrganizations)
+                      }}
+                      id="related-municipality"
+                    />
+                  </:content>
+                </Item>
+              </:left>
+            </Card.Columns>
+          {{else}}
+            <Card.Columns>
+              <:left as |Item|>
+                <Item
+                  @labelFor="related-provincie"
+                  @required={{true}}
+                  @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
+                >
+                  <:label>Provincie</:label>
+                  <:content as |hasError|>
+                    <ProvinceOrganizationSelect
+                      @selected={{@model.administrativeUnitChangeset.isSubOrganizationOf}}
+                      @onChange={{fn
+                        (mut @model.administrativeUnitChangeset.isSubOrganizationOf)
+                      }}
+                      @error={{hasError}}
+                      @id="related-provincie"
+                    />
+                  </:content>
+                </Item>
+              </:left>
+            </Card.Columns>
+          {{/if}}
+        </:card>
+      </EditCard>
+    {{/if}}
   </form>
 </div>

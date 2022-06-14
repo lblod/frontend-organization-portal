@@ -2,7 +2,6 @@
   <PowerSelect
     @allowClear={{true}}
     @searchEnabled={{true}}
-    @searchField="name"
     @loadingMessage="Aan het laden..."
     @noMatchesMessage="Geen resultaten"
     @searchMessage="Typ om te zoeken"
@@ -13,6 +12,6 @@
     @triggerId={{@id}}
     as |municipality|
   >
-    {{municipality.name}}
+    {{municipality}}
   </PowerSelect>
 </div>

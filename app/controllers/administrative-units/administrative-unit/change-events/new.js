@@ -2,7 +2,6 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import { isEmpty } from 'frontend-organization-portal/models/decision';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
@@ -18,6 +17,7 @@ const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.RECOGNITION_GRANTED]: ORGANIZATION_STATUS.ACTIVE,
   [CHANGE_EVENT_TYPE.SUSPENSION_OF_RECOGNITION]: ORGANIZATION_STATUS.INACTIVE,
   [CHANGE_EVENT_TYPE.SANCTIONED]: ORGANIZATION_STATUS.ACTIVE,
+  [CHANGE_EVENT_TYPE.CITY]: ORGANIZATION_STATUS.ACTIVE,
   // MERGER isn't added here since it has multiple resulting statuses based on the resulting organization
 };
 
@@ -37,9 +37,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   }
 
   get classificationCodes() {
-    return this.isCentralWorshipService
-      ? [CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE]
-      : [CLASSIFICATION_CODE.WORSHIP_SERVICE];
+    return [this.model.classification.id];
   }
 
   // TODO: replace this with a `url-for` helper.

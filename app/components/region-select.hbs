@@ -1,18 +1,18 @@
 <div class={{if @error "ember-power-select--error"}}>
   <PowerSelect
-    @allowClear={{true}}
+    @allowClear={{@allowClear}}
     @searchEnabled={{true}}
-    @searchField="name"
     @loadingMessage="Aan het laden..."
     @noMatchesMessage="Geen resultaten"
     @searchMessage="Typ om te zoeken"
-    @options={{this.municipalities.value}}
-    @renderInPlace={{true}}
+    @searchField="label"
+    @options={{this.regions}}
+    @search={{perform this.loadRegionsTask}}
     @selected={{@selected}}
     @onChange={{@onChange}}
     @triggerId={{@id}}
-    as |municipality|
+    as |region|
   >
-    {{municipality.name}}
+    {{region.label}}
   </PowerSelect>
 </div>

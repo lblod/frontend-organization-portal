@@ -37,11 +37,13 @@
                 {{@model.administrativeUnit.classification.label}}
               </:content>
             </Item>
-            <Item>
-              <:label>Soort eredienst</:label>
-              <:content
-              >{{@model.administrativeUnit.recognizedWorshipType.label}}</:content>
-            </Item>
+            {{#if this.isWorshipService}}
+              <Item>
+                <:label>Soort eredienst</:label>
+                <:content
+                >{{@model.administrativeUnit.recognizedWorshipType.label}}</:content>
+              </Item>
+            {{/if}}
             {{#if @model.administrativeUnit.denomination}}
               <Item>
                 <:label>Strekking</:label>
@@ -103,6 +105,30 @@
                     {{this.sharepointIdentifier.structuredIdentifier.localId}}
                     (externe link)
                   </AuLinkExternal>
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if this.nisIdentifier.structuredIdentifier.localId}}
+              <Item>
+                <:label>{{this.nisIdentifier.idName}}</:label>
+                <:content>
+                  {{this.nisIdentifier.structuredIdentifier.localId}}
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if this.ovoIdentifier.structuredIdentifier.localId}}
+              <Item>
+                <:label>{{this.ovoIdentifier.idName}}</:label>
+                <:content>
+                  {{this.ovoIdentifier.structuredIdentifier.localId}}
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if @model.administrativeUnit.locatedWithin}}
+              <Item>
+                <:label>Regio</:label>
+                <:content>
+                  {{@model.administrativeUnit.locatedWithin.label}}
                 </:content>
               </Item>
             {{/if}}
