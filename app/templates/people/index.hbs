@@ -8,17 +8,19 @@
         >
           <p class="au-o-grid__item">
             <AuLabel for="filter-given-name">Voornaam</AuLabel>
-            <AuInput
+            <TrimInput
               @width="block"
               @value={{this.given_name}}
+              @onUpdate={{fn (mut this.given_name)}}
               id="filter-given-name"
             />
           </p>
           <p class="au-o-grid__item">
             <AuLabel for="filter-family-name">Achternaam</AuLabel>
-            <AuInput
+            <TrimInput
               @width="block"
               @value={{this.family_name}}
+              @onUpdate={{fn (mut this.family_name)}}
               id="filter-family-name"
             />
           </p>

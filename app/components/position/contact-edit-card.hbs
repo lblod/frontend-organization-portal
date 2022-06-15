@@ -35,8 +35,9 @@
             >
               <:label>Straat</:label>
               <:content as |errorMessage|>
-                <AuInput
+                <TrimInput
                   @value={{@address.street}}
+                  @onUpdate={{fn (mut @address.street)}}
                   @width="block"
                   @error={{errorMessage}}
                   id="contact-address-street-name"
@@ -51,8 +52,9 @@
             >
               <:label>Huisnummer</:label>
               <:content as |errorMessage|>
-                <AuInput
+                <TrimInput
                   @value={{@address.number}}
+                  @onUpdate={{fn (mut @address.number)}}
                   @width="block"
                   @error={{errorMessage}}
                   id="contact-address-house-number"
@@ -62,8 +64,9 @@
             <Item @labelFor="contact-address-bus-number">
               <:label>Busnummer</:label>
               <:content>
-                <AuInput
+                <TrimInput
                   @value={{@address.boxNumber}}
+                  @onUpdate={{fn (mut @address.boxNumber)}}
                   @width="block"
                   id="contact-address-bus-number"
                 />
@@ -75,8 +78,9 @@
             >
               <:label>Postcode</:label>
               <:content as |errorMessage|>
-                <AuInput
+                <TrimInput
                   @value={{@address.postcode}}
+                  @onUpdate={{fn (mut @address.postcode)}}
                   @width="block"
                   @error={{errorMessage}}
                   id="contact-address-postal-code"
@@ -126,9 +130,10 @@
         >
           <:label>E-mail</:label>
           <:content as |errorMessage|>
-            <AuInput
+            <TrimInput
               @width="block"
               @value={{@primaryContact.email}}
+              @onUpdate={{fn (mut @primaryContact.email)}}
               @error={{errorMessage}}
               id="contact-email"
             />
@@ -143,9 +148,10 @@
         >
           <:label>Primair telefoonnummer</:label>
           <:content as |errorMessage|>
-            <AuInput
+            <TrimInput
               @width="block"
               @value={{@primaryContact.telephone}}
+              @onUpdate={{fn (mut @primaryContact.telephone)}}
               @error={{errorMessage}}
               id="contact-telephone"
             />
@@ -160,9 +166,10 @@
         >
           <:label>Secundair telefoonnummer</:label>
           <:content as |errorMessage|>
-            <AuInput
+            <TrimInput
               @width="block"
               @value={{@secondaryContact.telephone}}
+              @onUpdate={{fn (mut @secondaryContact.telephone)}}
               @error={{errorMessage}}
               id="secondary-contact-telephone"
             />
