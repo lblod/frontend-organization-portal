@@ -44,7 +44,7 @@ export default class PeopleIndexRoute extends Route {
       filter['organization_id'] = params.organization;
     }
 
-    return yield this.muSearch.search({
+    const page = yield this.muSearch.search({
       index: 'people',
       page: params.page,
       size: params.size,
@@ -56,5 +56,19 @@ export default class PeopleIndexRoute extends Route {
         return entry;
       },
     });
+
+    for (const person of page.toArray()) {
+      // TODO
+      // another option would be to reindex everything & keeping the type instead
+      // but this seems too much just to allow opening the link in a new tab...
+      // if it is a better option (reindex), we can do it as well
+
+      if (person.uri.includes('/rollenBedienaar/')) {
+        person.positionRoute = 'people.person.positions.minister';
+      } else if (person.uri.includes('/mandatarissen/')) {
+        person.positionRoute = 'people.person.positions.mandatory';
+      }
+    }
+    return page;
   }
 }

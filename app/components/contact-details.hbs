@@ -98,10 +98,10 @@
     </AuDataTable>
   </div>
 
-  <CustomModal
+  <AuModal
     @modalOpen={{this.editingContact}}
     @closeModal={{this.cancel}}
-    @size="large"
+    @size="fullscreen"
   >
     <:title>
       {{if this.isNew "Vul contactgegevens manueel in" "Corrigeer een fout"}}
@@ -155,5 +155,5 @@
         Annuleer
       </AuButton>
     </:footer>
-  </CustomModal>
+  </AuModal>
 {{/if}}

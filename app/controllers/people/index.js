@@ -41,29 +41,6 @@ export default class PeopleIndexController extends Controller {
     return this.model.loadedPeople && this.model.loadedPeople.length > 0;
   }
 
-  @action
-  async navigateToPosition(person) {
-    const ministerPosition = await this.store.query(
-      'minister-position-function',
-      {
-        'filter[:id:]': person.position_id,
-      }
-    );
-    if (ministerPosition.toArray().length) {
-      this.router.transitionTo(
-        'people.person.positions.minister',
-        person.id,
-        person.uuid
-      );
-    } else {
-      this.router.transitionTo(
-        'people.person.positions.mandatory',
-        person.id,
-        person.uuid
-      );
-    }
-  }
-
   get showTableLoader() {
     return this.isLoading && !this.hasPreviousData;
   }
