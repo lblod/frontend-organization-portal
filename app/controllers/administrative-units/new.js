@@ -57,6 +57,14 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.structuredIdentifierKBO.localId = value;
   }
 
+  @action
+  setClassification(value) {
+    this.model.administrativeUnitChangeset.classification = value;
+    this.model.administrativeUnitChangeset.subOrganizations = [];
+    this.model.administrativeUnitChangeset.isAssociatedWith = [];
+    this.model.administrativeUnitChangeset.isSubOrganizationOf = null;
+  }
+
   @dropTask
   *createAdministrativeUnitTask(event) {
     event.preventDefault();
