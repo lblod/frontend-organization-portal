@@ -285,24 +285,6 @@
                 </Item>
               </:left>
             </Card.Columns>
-          {{else if this.isNewProvince}}
-            <Card.Columns>
-              <:left as |Item|>
-                <Item @labelFor="related-municipality">
-                  <:label>Gemeenten</:label>
-                  <:content>
-                    <MunicipalityMultipleSelect
-                      @selected={{@model.administrativeUnitChangeset.subOrganizations}}
-                      @onChange={{fn
-                        (mut @model.administrativeUnitChangeset.subOrganizations)
-                      }}
-                      id="related-municipality"
-                    />
-                  </:content>
-                </Item>
-              </:left>
-            </Card.Columns>
-          {{else}}
             <Card.Columns>
               <:left as |Item|>
                 <Item

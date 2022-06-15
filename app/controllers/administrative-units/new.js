@@ -11,13 +11,6 @@ export default class AdministrativeUnitsNewController extends Controller {
   @service router;
   @service store;
 
-  get isNewProvince() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.PROVINCE
-    );
-  }
-
   get isNewWorshipService() {
     return (
       this.model.administrativeUnitChangeset.classification?.id ===
