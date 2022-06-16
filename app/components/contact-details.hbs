@@ -94,12 +94,28 @@
             </AuButton>
           </td>
         </c.body>
+
+{{#if this.editingContact}}
+   <ContactEditRow
+            @address={{this.editingContact.address}}
+            @primaryContact={{this.editingContact.primaryContact}}
+            @secondaryContact={{this.editingContact.secondaryContact}}
+            @isAddressSearchEnabledInitially={{if
+              (or
+                (not this.editingContact.address.id)
+                this.editingContact.address.addressRegisterUri
+              )
+              true
+              false
+            }}
+          />
+  {{/if}}
       </t.content>
     </AuDataTable>
   </div>
 
   <AuModal
-    @modalOpen={{this.editingContact}}
+    @modalOpen={{false}}
     @closeModal={{this.cancel}}
     @size="fullscreen"
   >
