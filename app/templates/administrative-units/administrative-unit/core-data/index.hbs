@@ -63,6 +63,14 @@
                 </:content>
               </Item>
             {{/if}}
+            {{#if @model.administrativeUnit.locatedWithin}}
+              <Item>
+                <:label>Regio</:label>
+                <:content>
+                  {{@model.administrativeUnit.locatedWithin.label}}
+                </:content>
+              </Item>
+            {{/if}}
           </:left>
           <:right as |Item|>
             <Item>
@@ -121,14 +129,6 @@
                 <:label>{{this.ovoIdentifier.idName}}</:label>
                 <:content>
                   {{this.ovoIdentifier.structuredIdentifier.localId}}
-                </:content>
-              </Item>
-            {{/if}}
-            {{#if @model.administrativeUnit.locatedWithin}}
-              <Item>
-                <:label>Regio</:label>
-                <:content>
-                  {{@model.administrativeUnit.locatedWithin.label}}
                 </:content>
               </Item>
             {{/if}}

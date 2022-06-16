@@ -136,6 +136,18 @@
                     </:content>
                   </Item>
                 {{/if}}
+                <Item @labelFor="regio">
+                  <:label>Regio</:label>
+                  <:content>
+                    <RegionSelect
+                      @selected={{@model.administrativeUnit.locatedWithin}}
+                      @onChange={{fn
+                        (mut @model.administrativeUnit.locatedWithin)
+                      }}
+                      @id="regio"
+                    />
+                  </:content>
+                </Item>
               </:left>
               <:right as |Item|>
                 <Item @labelFor="status-select">
@@ -205,18 +217,6 @@
                       @width="block"
                       @value={{@model.structuredIdentifierOVO.localId}}
                       id="ovo-identifier"
-                    />
-                  </:content>
-                </Item>
-                <Item @labelFor="regio">
-                  <:label>Regio</:label>
-                  <:content>
-                    <RegionSelect
-                      @selected={{@model.administrativeUnit.locatedWithin}}
-                      @onChange={{fn
-                        (mut @model.administrativeUnit.locatedWithin)
-                      }}
-                      @id="regio"
                     />
                   </:content>
                 </Item>
