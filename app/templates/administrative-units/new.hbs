@@ -131,18 +131,6 @@
                 </:content>
               </Item>
             {{/if}}
-            <Item @labelFor="regio">
-              <:label>Regio</:label>
-              <:content>
-                <RegionSelect
-                  @selected={{@model.administrativeUnitChangeset.locatedWithin}}
-                  @onChange={{fn
-                    (mut @model.administrativeUnitChangeset.locatedWithin)
-                  }}
-                  @id="regio"
-                />
-              </:content>
-            </Item>
           </:left>
           <:right as |Item|>
             <Item
@@ -211,6 +199,18 @@
                   @width="block"
                   @value={{@model.structuredIdentifierOVO.localId}}
                   id="ovo-identifier"
+                />
+              </:content>
+            </Item>
+            <Item @labelFor="regio">
+              <:label>Regio</:label>
+              <:content>
+                <RegionSelect
+                  @selected={{@model.administrativeUnitChangeset.locatedWithin}}
+                  @onChange={{fn
+                    (mut @model.administrativeUnitChangeset.locatedWithin)
+                  }}
+                  @id="regio"
                 />
               </:content>
             </Item>
@@ -285,25 +285,58 @@
                 </Item>
               </:left>
             </Card.Columns>
+          {{else}}
+
             <Card.Columns>
               <:left as |Item|>
+              {{#if (or this.isNewOCMW this.isNewDistrict)}}
                 <Item
-                  @labelFor="related-provincie"
+                  @labelFor="related-gemeente"
                   @required={{true}}
                   @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
                 >
-                  <:label>Provincie</:label>
+                  <:label>Gemeente</:label>
                   <:content as |hasError|>
-                    <ProvinceOrganizationSelect
+                    <AdministrativeUnitSelect
                       @selected={{@model.administrativeUnitChangeset.isSubOrganizationOf}}
                       @onChange={{fn
                         (mut @model.administrativeUnitChangeset.isSubOrganizationOf)
                       }}
+                      @classificationCodes={{this.classificationCodes}}
                       @error={{hasError}}
-                      @id="related-provincie"
+                      @id="related-gemeente"
                     />
                   </:content>
                 </Item>
+                {{#if @model.administrativeUnitChangeset.isSubOrganizationOf}}
+                  <Item>
+                    <:label>
+                      Provincie
+                    </:label>
+                    <:content>
+                      {{@model.administrativeUnitChangeset.isSubOrganizationOf.isSubOrganizationOf.name}}
+                    </:content>
+                  </Item>
+                {{/if}}
+              {{else}}
+                  <Item
+                    @labelFor="related-provincie"
+                    @required={{true}}
+                    @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
+                  >
+                    <:label>Provincie</:label>
+                    <:content as |hasError|>
+                      <ProvinceOrganizationSelect
+                        @selected={{@model.administrativeUnitChangeset.isSubOrganizationOf}}
+                        @onChange={{fn
+                          (mut @model.administrativeUnitChangeset.isSubOrganizationOf)
+                        }}
+                        @error={{hasError}}
+                        @id="related-provincie"
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
               </:left>
             </Card.Columns>
           {{/if}}

@@ -20,6 +20,20 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     );
   }
 
+  get isOCMW() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.OCMW
+    );
+  }
+
+  get isDistrict() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.DISTRICT
+    );
+  }
+
   get isWorshipService() {
     return (
       this.model.administrativeUnit.classification?.get('id') ===
@@ -47,6 +61,10 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
         (id) => id == this.model.administrativeUnit.recognizedWorshipType?.id
       )
     );
+  }
+
+  get classificationCodes() {
+    return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
 
   @action

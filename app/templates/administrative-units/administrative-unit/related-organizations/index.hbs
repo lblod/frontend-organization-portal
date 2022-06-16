@@ -51,6 +51,8 @@
                 <:label>
                   {{#if this.isWorshipAdministrativeUnit}}
                     Centraal bestuur
+                  {{else if (or this.isDistrict this.isOCMW)}}
+                    Gemeente
                   {{else}}
                     Provincie
                   {{/if}}

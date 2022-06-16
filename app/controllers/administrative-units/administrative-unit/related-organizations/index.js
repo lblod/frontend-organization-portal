@@ -24,4 +24,18 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
       CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
     );
   }
+
+  get isOCMW() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.OCMW
+    );
+  }
+
+  get isDistrict() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.DISTRICT
+    );
+  }
 }

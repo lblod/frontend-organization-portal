@@ -11,6 +11,20 @@ export default class AdministrativeUnitsNewController extends Controller {
   @service router;
   @service store;
 
+  get isNewOCMW() {
+    return (
+      this.model.administrativeUnitChangeset.classification?.id ===
+      CLASSIFICATION_CODE.OCMW
+    );
+  }
+
+  get isNewDistrict() {
+    return (
+      this.model.administrativeUnitChangeset.classification?.id ===
+      CLASSIFICATION_CODE.DISTRICT
+    );
+  }
+
   get isNewWorshipService() {
     return (
       this.model.administrativeUnitChangeset.classification?.id ===
@@ -43,6 +57,10 @@ export default class AdministrativeUnitsNewController extends Controller {
           id == this.model.administrativeUnitChangeset.recognizedWorshipType?.id
       )
     );
+  }
+
+  get classificationCodes() {
+    return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
 
   @action
