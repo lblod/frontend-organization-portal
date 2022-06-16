@@ -91,6 +91,9 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @action
   setClassificationId(selection) {
     this.classificationId = selection?.id;
+    if (!this.isWorshipAdministrativeUnit) {
+      this.recognizedWorshipTypeId = '';
+    }
   }
 
   @action

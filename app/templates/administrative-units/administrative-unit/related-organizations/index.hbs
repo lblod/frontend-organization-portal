@@ -31,43 +31,45 @@
       </div>
     {{/if}}
 
-    <DataCard>
-      <:title>Behoort tot</:title>
-      <:card as |Card|>
-        <Card.Columns>
-          <:left as |Item|>
-            {{#if @model.isAssociatedWith.name}}
-              <Item>
-                <:label>Representatief orgaan</:label>
-                <:content>
-                  <AuLink @route="organizations.organization.core-data" @model={{@model.isAssociatedWith.id}}>
-                    {{@model.isAssociatedWith.name}}
-                  </AuLink>
-                </:content>
-              </Item>
-            {{/if}}
-            {{#if @model.isSubOrganizationOf.name}}
-              <Item>
-                <:label>
-                  {{#if this.isWorshipAdministrativeUnit}}
-                    Centraal bestuur
-                  {{else if (or this.isDistrict this.isOCMW)}}
-                    Gemeente
-                  {{else}}
-                    Provincie
-                  {{/if}}
-                </:label>
-                <:content>
-                  <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
-                    {{@model.isSubOrganizationOf.name}}
-                  </AuLink>
-                </:content>
-              </Item>
-            {{/if}}
-          </:left>
-        </Card.Columns>
-      </:card>
-    </DataCard>
+    {{#unless this.isProvince}}
+      <DataCard>
+        <:title>Behoort tot</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              {{#if @model.isAssociatedWith.name}}
+                <Item>
+                  <:label>Representatief orgaan</:label>
+                  <:content>
+                    <AuLink @route="organizations.organization.core-data" @model={{@model.isAssociatedWith.id}}>
+                      {{@model.isAssociatedWith.name}}
+                    </AuLink>
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if @model.isSubOrganizationOf.name}}
+                <Item>
+                  <:label>
+                    {{#if this.isWorshipAdministrativeUnit}}
+                      Centraal bestuur
+                    {{else if (or this.isDistrict this.isOCMW)}}
+                      Gemeente
+                    {{else}}
+                      Provincie
+                    {{/if}}
+                  </:label>
+                  <:content>
+                    <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
+                      {{@model.isSubOrganizationOf.name}}
+                    </AuLink>
+                  </:content>
+                </Item>
+              {{/if}}
+            </:left>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+    {{/unless}}
 
     {{#if @model.subOrganizations.length}}
       <div>

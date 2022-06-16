@@ -32,100 +32,102 @@
       {{on "submit" (perform this.save)}}
     >
       <div class="au-o-flow au-o-flow--large">
-        <EditCard @containsRequiredFields={{true}}>
-          <:title>Behoort tot</:title>
-          <:card as |Card|>
-            <Card.Columns>
-              <:left as |Item|>
-                {{#if this.isWorshipAdministrativeUnit}}
-                  <Item
-                    @labelFor="related-representative-body"
-                    @required={{true}}
-                    @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
-                  >
-                    <:label>Representatief orgaan</:label>
-                    <:content as |hasError|>
-                      <RepresentativeBodySelect
-                        @selected={{@model.administrativeUnit.isAssociatedWith}}
-                        @onChange={{fn
-                          (mut @model.administrativeUnit.isAssociatedWith)
-                        }}
-                        @error={{hasError}}
-                        @id="related-representative-body"
-                      />
-                    </:content>
-                  </Item>
-                  {{#if (and this.isWorshipService this.hasCentralWorshipService)}}
+        {{#unless this.isProvince}}
+          <EditCard @containsRequiredFields={{true}}>
+            <:title>Behoort tot</:title>
+            <:card as |Card|>
+              <Card.Columns>
+                <:left as |Item|>
+                  {{#if this.isWorshipAdministrativeUnit}}
                     <Item
-                      @labelFor="related-central-worship-service"
+                      @labelFor="related-representative-body"
+                      @required={{true}}
+                      @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
+                    >
+                      <:label>Representatief orgaan</:label>
+                      <:content as |hasError|>
+                        <RepresentativeBodySelect
+                          @selected={{@model.administrativeUnit.isAssociatedWith}}
+                          @onChange={{fn
+                            (mut @model.administrativeUnit.isAssociatedWith)
+                          }}
+                          @error={{hasError}}
+                          @id="related-representative-body"
+                        />
+                      </:content>
+                    </Item>
+                    {{#if (and this.isWorshipService this.hasCentralWorshipService)}}
+                      <Item
+                        @labelFor="related-central-worship-service"
+                        @required={{true}}
+                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                      >
+                        <:label>Centraal bestuur</:label>
+                        <:content as |hasError|>
+                          <CentralWorshipSelect
+                            @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                            @onChange={{fn
+                              (mut @model.administrativeUnit.isSubOrganizationOf)
+                            }}
+                            @error={{hasError}}
+                            @id="related-central-worship-service"
+                          />
+                        </:content>
+                      </Item>
+                    {{/if}}
+                  {{else if (or this.isOCMW this.isDistrict)}}
+                    <Item
+                      @labelFor="related-gemeente"
                       @required={{true}}
                       @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
                     >
-                      <:label>Centraal bestuur</:label>
+                      <:label>Gemeente</:label>
                       <:content as |hasError|>
-                        <CentralWorshipSelect
+                        <AdministrativeUnitSelect
+                          @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                          @onChange={{fn
+                            (mut @model.administrativeUnit.isSubOrganizationOf)
+                          }}
+                          @classificationCodes={{this.classificationCodes}}
+                          @error={{hasError}}
+                          @id="related-gemeente"
+                        />
+                      </:content>
+                    </Item>
+                    {{#if @model.administrativeUnit.isSubOrganizationOf}}
+                      <Item>
+                        <:label>
+                          Provincie
+                        </:label>
+                        <:content>
+                          {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
+                        </:content>
+                      </Item>
+                    {{/if}}
+                  {{else if (not this.isProvince)}}
+                    <Item
+                      @labelFor="related-provincie"
+                      @required={{true}}
+                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                    >
+                      <:label>Provincie</:label>
+                      <:content as |hasError|>
+                        <ProvinceOrganizationSelect
                           @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                           @onChange={{fn
                             (mut @model.administrativeUnit.isSubOrganizationOf)
                           }}
                           @error={{hasError}}
-                          @id="related-central-worship-service"
+                          @id="related-provincie"
                         />
                       </:content>
                     </Item>
                   {{/if}}
-                {{else if (or this.isOCMW this.isDistrict)}}
-                  <Item
-                    @labelFor="related-gemeente"
-                    @required={{true}}
-                    @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-                  >
-                    <:label>Gemeente</:label>
-                    <:content as |hasError|>
-                      <AdministrativeUnitSelect
-                        @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                        @onChange={{fn
-                          (mut @model.administrativeUnit.isSubOrganizationOf)
-                        }}
-                        @classificationCodes={{this.classificationCodes}}
-                        @error={{hasError}}
-                        @id="related-gemeente"
-                      />
-                    </:content>
-                  </Item>
-                  {{#if @model.administrativeUnit.isSubOrganizationOf}}
-                    <Item>
-                      <:label>
-                        Provincie
-                      </:label>
-                      <:content>
-                        {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
-                      </:content>
-                    </Item>
-                  {{/if}}
-                {{else if (not this.isProvince)}}
-                  <Item
-                    @labelFor="related-provincie"
-                    @required={{true}}
-                    @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-                  >
-                    <:label>Provincie</:label>
-                    <:content as |hasError|>
-                      <ProvinceOrganizationSelect
-                        @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                        @onChange={{fn
-                          (mut @model.administrativeUnit.isSubOrganizationOf)
-                        }}
-                        @error={{hasError}}
-                        @id="related-provincie"
-                      />
-                    </:content>
-                  </Item>
-                {{/if}}
-              </:left>
-            </Card.Columns>
-          </:card>
-        </EditCard>
+                </:left>
+              </Card.Columns>
+            </:card>
+          </EditCard>
+        {{/unless}}
 
         {{#if (or this.isCentralWorshipService this.isProvince)}}
           <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">

@@ -8,4 +8,10 @@ export default class AdministrativeUnitsAdministrativeUnitController extends Con
       CLASSIFICATION_CODE.WORSHIP_SERVICE
     );
   }
+
+  get isProvince() {
+    return (
+      this.model.classification?.get('id') === CLASSIFICATION_CODE.PROVINCE
+    );
+  }
 }

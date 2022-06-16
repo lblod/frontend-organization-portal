@@ -11,7 +11,6 @@ export default class PeoplePersonPositionsMandatoryRoute extends Route {
       reload: true,
       include: [
         'contacts.contact-address',
-        'type-half',
         'mandate.role-board',
         'mandate.governing-body.is-time-specialization-of.classification',
         'mandate.governing-body.is-time-specialization-of.administrative-unit',

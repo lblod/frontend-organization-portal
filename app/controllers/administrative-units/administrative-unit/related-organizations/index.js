@@ -38,4 +38,11 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
       CLASSIFICATION_CODE.DISTRICT
     );
   }
+
+  get isProvince() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.PROVINCE
+    );
+  }
 }
