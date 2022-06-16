@@ -1,0 +1,42 @@
+<div class="au-o-box">
+  <AuHeading @skin="2" class="au-u-margin-bottom-large">
+    History Change Event:
+    {{@model.history.userFirstname}}
+    {{@model.history.userFamilyName}}
+  </AuHeading>
+
+  <AuHeading @level="2" @skin="3" class="au-u-margin-bottom">
+    {{@model.history.dateCreation}}
+  </AuHeading>
+  <AuTable @size={{@model.count}}>
+    <:header>
+      <tr>
+        <th>Subject</th>
+        <th>Predicate</th>
+        <th>Type</th>
+        <th>Result</th>
+      </tr>
+    </:header>
+    <:body>
+      {{#each @model.content as |detail|}}
+        <tr>
+          <td><AuHelpText>{{detail.subject}}</AuHelpText></td>
+          <td><AuHelpText>{{detail.predicate}}</AuHelpText></td>
+          <td>
+            <AuPill @skin={{if (eq "UPDATE" detail.type) "success" "info"}}>
+              {{detail.type}}
+            </AuPill>
+
+
+          </td>
+          {{#if (eq "UPDATE" detail.type)}}
+            <td><AuHelpText @skin="primary">from <span class="au-u-bold">{{detail.oldObject}}</span> to <span class="au-u-bold">{{detail.newObject}}</span></AuHelpText></td>
+          {{else}}
+            <td><AuHelpText @skin="primary">{{detail.obj}}</AuHelpText></td>
+          {{/if}}
+        </tr>
+      {{/each}}
+    </:body>
+
+  </AuTable>
+</div>
