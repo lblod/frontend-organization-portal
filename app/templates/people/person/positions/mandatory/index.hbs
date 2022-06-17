@@ -20,14 +20,16 @@
         <:action>
           <SecuredArea>
             <:edit>
-              <Button::Edit
-                @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
-                @models={{array
-                  administrativeUnit.id
-                  @model.mandatory.mandate.governingBody.id
-                  @model.mandatory.id
-                }}
-              />
+              {{#if this.isWorshipAdministrativeUnit}}
+                <Button::Edit
+                  @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
+                  @models={{array
+                    administrativeUnit.id
+                    @model.mandatory.mandate.governingBody.id
+                    @model.mandatory.id
+                  }}
+                />
+              {{/if}}
             </:edit>
             <:readOnly>
               <ReportWrongData />
