@@ -29,19 +29,16 @@ module.exports = function (environment) {
 
     announce: {
       maintenance: {
-        enabled: 'true',
-        message:
-          '(f.e. Het OrganisatiePortaal zal donderdag 24/03 tussen 12:00 en 15.00 u. onbeschikbaar zijn wegens onderhoud)',
+        enabled: '{{ANNOUNCE_MAINTENANCE_ENABLED}}',
+        message: '{{ANNOUNCE_MAINTENANCE_MESSAGE}}',
       },
       newDeployment: {
         enabled: '{{ANNOUNCE_NEW_DEPLOYMENT_ENABLED}}',
-        message:
-          '(f.e. Het OrganisatiePortaal zal vanaf donderdag 24/03, 19.00 uur t.e.m. vrijdag 25/03 8.00 uur onbeschikbaar zijn wegens de uitrol van een nieuwe versie)',
+        message: '{{ANNOUNCE_NEW_DEPLOYMENT_MESSAGE}}',
       },
       testing: {
         enabled: '{{ANNOUNCE_TESTING_ENABLED}}',
-        message:
-          '(f.e. Het OrganisatiePortaal zal vandaag, donderdag 24/03, niet stabiel zijn wegens uitvoering van testen.)',
+        message: '{{ANNOUNCE_TESTING_MESSAGE}}',
       },
     },
     appName: 'OrganisatiePortaal',
