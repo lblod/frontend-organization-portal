@@ -27,6 +27,23 @@ module.exports = function (environment) {
       },
     },
 
+    announce: {
+      maintenance: {
+        enabled: 'true',
+        message:
+          '(f.e. Het OrganisatiePortaal zal donderdag 24/03 tussen 12:00 en 15.00 u. onbeschikbaar zijn wegens onderhoud)',
+      },
+      newDeployment: {
+        enabled: '{{ANNOUNCE_NEW_DEPLOYMENT_ENABLED}}',
+        message:
+          '(f.e. Het OrganisatiePortaal zal vanaf donderdag 24/03, 19.00 uur t.e.m. vrijdag 25/03 8.00 uur onbeschikbaar zijn wegens de uitrol van een nieuwe versie)',
+      },
+      testing: {
+        enabled: '{{ANNOUNCE_TESTING_ENABLED}}',
+        message:
+          '(f.e. Het OrganisatiePortaal zal vandaag, donderdag 24/03, niet stabiel zijn wegens uitvoering van testen.)',
+      },
+    },
     appName: 'OrganisatiePortaal',
     contactEmail: 'organisaties.abb@vlaanderen.be',
     environmentName: '{{ENVIRONMENT_NAME}}', // Supported values: LOCAL, DEV, QA
