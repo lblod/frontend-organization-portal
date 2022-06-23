@@ -1,28 +1,78 @@
-<AuTable @size={{@model.count}}>
-  <:title>History changes</:title>
-  <:header>
-    <tr>
-      <th>User</th>
-      <th>Date</th>
-      <th>Detail</th>
-    </tr>
-  </:header>
-  <:body>
-    {{#each @model.content as |history|}}
-      <tr>
-        <td>{{history.userFirstname}} {{history.userFamilyName}}</td>
-        <td>{{history.dateCreation}}</td>
-        <td>
-          <AuLink
-            @route="history.detail"
-            @model={{history.id}}
-          >
-            Show detail
-          </AuLink>
+<SidebarContainer>
+  <:sidebar>
+    <div class="au-c-sidebar">
+      <div class="au-c-sidebar__content">
+        <div class="au-c-sidebar__header">
+          <h6 class="au-u-h6 au-u-medium">Menu modules</h6>
+        </div>
+        <ul class="au-c-list-navigation">
+          <li class="au-c-list-navigation__item">
+            <AuNavigationLink @route="administrative-units">
+              Bestuurseenheden
+            </AuNavigationLink>
+          </li>
+          <li class="au-c-list-navigation__item">
+            <AuNavigationLink @route="people">
+              Personen
+            </AuNavigationLink>
+          </li>
+        </ul>
+      </div>
+      <div class="au-c-sidebar__footer">
+        <a
+          href={{config "userManual.general"}}
+          class="au-c-link au-c-link--secondary au-c-link--icon"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <AuIcon @icon="manual" @alignment="left" />
+          Handleiding (externe link)
+        </a>
+        <AuHelpText @skin="secondary">
+          {{config "appName"}}
+          {{#if (config "showAppVersionHash")}}
+            (<a
+              class="au-c-link"
+              href="https://github.com/lblod/frontend-organization-portal/commit/{{app-version
+                shaOnly=true
+              }}"
+            >{{app-version shaOnly=true}}</a>)
+          {{else}}
+            v{{app-version versionOnly=true}}
+          {{/if}}
+        </AuHelpText>
+      </div>
+    </div>
+  </:sidebar>
+  <:content>
 
-        </td>
-      </tr>
-    {{/each}}
-  </:body>
+    <AuDataTable
+      id="historyOfChanges"
+      @content={{this.histories}}
+      @isLoading={{this.showTableLoader}}
+      @page={{this.page}}
+      @size={{this.size}}
+      @noDataMessage="Geen data"
+      as |t|
+    >
+      <t.content as |c|>
+        <c.header>
+          <th>User</th>
+          <th>Date</th>
+          <th></th>
+        </c.header>
+        <c.body as |history|>
+          <td>{{history.userFirstname}} {{history.userFamilyName}}</td>
+          <td>{{history.dateCreation}}</td>
+          <td>
+            <AuLink @route="history.detail" @model={{history.id}}>
+              Show detail
+            </AuLink>
 
-</AuTable>
+          </td>
+        </c.body>
+      </t.content>
+    </AuDataTable>
+
+  </:content>
+</SidebarContainer>
