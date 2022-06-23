@@ -27,6 +27,20 @@ module.exports = function (environment) {
       },
     },
 
+    announce: {
+      maintenance: {
+        enabled: '{{ANNOUNCE_MAINTENANCE_ENABLED}}',
+        message: '{{ANNOUNCE_MAINTENANCE_MESSAGE}}',
+      },
+      newDeployment: {
+        enabled: '{{ANNOUNCE_NEW_DEPLOYMENT_ENABLED}}',
+        message: '{{ANNOUNCE_NEW_DEPLOYMENT_MESSAGE}}',
+      },
+      testing: {
+        enabled: '{{ANNOUNCE_TESTING_ENABLED}}',
+        message: '{{ANNOUNCE_TESTING_MESSAGE}}',
+      },
+    },
     appName: 'OrganisatiePortaal',
     contactEmail: 'organisaties.abb@vlaanderen.be',
     environmentName: '{{ENVIRONMENT_NAME}}', // Supported values: LOCAL, DEV, QA
