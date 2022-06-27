@@ -3,9 +3,8 @@ import { inject as service } from '@ember/service';
 import fetch from 'fetch';
 import ArrayProxy from '@ember/array/proxy';
 import { A } from '@ember/array';
-import { keepLatestTask } from 'ember-concurrency';
 
-export default class HistoryIndexRoute extends Route {
+export default class HistoryRoute extends Route {
   @service session;
   queryParams = {
     page: { refreshModel: true },
@@ -58,16 +57,17 @@ export default class HistoryIndexRoute extends Route {
 
   async model(params) {
     return {
-      loadHistoriesTaskInstance: this.loadHistoriesTask.perform(params),
-      loadedHistoriesTask: this.loadHistoriesTask.lastSuccessful?.value,
+      //  loadHistoriesTaskInstance: this.loadHistoriesTask.perform(params),
+      // loadedHistoriesTask: this.loadHistoriesTask.lastSuccessful?.value,
+      history: await this.loadHistoriesTask(params),
     };
   }
 
-  @keepLatestTask({ cancelOn: 'deactivate' })
-  *loadHistoriesTask(params) {
+  //@keepLatestTask({ cancelOn: 'deactivate' })
+  async loadHistoriesTask(params) {
     const endpoint = `/history-changes?pageSize=10&pageNumber=${params.page}`;
 
-    const { count, content } = yield (yield fetch(endpoint)).json();
+    const { count, content } = await (await fetch(endpoint)).json();
     const pagination = this.getPaginationMetadata(
       params.page,
       content.length,

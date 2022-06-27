@@ -13,11 +13,10 @@ export default class HistoryDetailRoute extends Route {
   }
 
   async model({ id }) {
-    const hist = this.modelFor('history').find((h) => h.id === id);
+    const hist = this.modelFor('history').history.find((h) => h.id === id);
     const endpoint = `/history-changes/${hist.id}`;
     const data = await (await fetch(endpoint)).json();
     const entries = A(data.map((e) => e));
-
     return ArrayProxy.create({
       content: entries,
       count: entries.length,

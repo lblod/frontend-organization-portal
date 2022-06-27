@@ -10,9 +10,9 @@ Router.map(function () {
   this.route('login');
   this.route('mock-login');
   this.route('index', { path: '' });
-  this.route('history', function () {
-    this.route('detail', { path: '/detail/:id' }, function () {});
-  });
+  this.route('history');
+  this.route('history-detail', { path: '/history/detail/:id' }, function () {});
+
   this.route('people', { path: '/personen' }, function () {
     this.route('new-position', { path: '/nieuw-positie' });
     this.route('person', { path: '/:id/' }, function () {

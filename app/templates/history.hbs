@@ -1,22 +1,37 @@
 <SidebarContainer>
   <:sidebar>
     <div class="au-c-sidebar">
-      <div class="au-c-sidebar__content">
-        <div class="au-c-sidebar__header">
-          <h6 class="au-u-h6 au-u-medium">Menu modules</h6>
-        </div>
-        <ul class="au-c-list-navigation">
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink @route="administrative-units">
-              Bestuurseenheden
-            </AuNavigationLink>
-          </li>
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink @route="people">
-              Personen
-            </AuNavigationLink>
-          </li>
-        </ul>
+      <div class="au-c-sidebar__content au-o-box">
+        <form
+          class="au-o-grid au-o-grid--small"
+        >
+          <p class="au-o-grid__item">
+            <AuDatePicker
+              @id="history-datepicker"
+              @label="Datum"
+              @value={{this.date}}
+              @onChange={{this.onDateChange}}
+            />
+            <AuTimePicker
+              @id="history-timepicker"
+              @hoursLabel="Uren"
+              @minutesLabel="Minuten"
+              @secondsLabel="Seconden"
+              @nowLabel="Nu"
+              @hours={{this.hours}}
+              @minutes={{this.minutes}}
+              @seconds={{this.seconds}}
+              @showSeconds={{false}}
+              @showNow={{false}}
+              @onChange={{this.onTimeChange}}
+            />
+          </p>
+          <div class="au-o-grid__item">
+            <AuButton @skin="primary">
+             Filter
+            </AuButton>
+          </div>
+        </form>
       </div>
       <div class="au-c-sidebar__footer">
         <a
@@ -65,7 +80,7 @@
           <td>{{history.userFirstname}} {{history.userFamilyName}}</td>
           <td>{{history.dateCreation}}</td>
           <td>
-            <AuLink @route="history.detail" @model={{history.id}}>
+            <AuLink @route="history-detail" @model={{history.id}}>
               Show detail
             </AuLink>
 
