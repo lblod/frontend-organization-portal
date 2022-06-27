@@ -1,26 +1,36 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
+
 export default class HistoryController extends Controller {
+  @service router;
+
   @tracked
   page = 0;
   size = 10;
   @tracked
-  hours = 0;
+  fromDate;
   @tracked
-  minutes = 0;
-  @tracked
-  seconds = 0;
-  @tracked
-  date;
+  toDate;
 
   @action
-  onDateChange(date) {
-    console.log(`${date} changed`);
-  }
-  @action
-  onTimeChange(time) {
-    console.log(`${JSON.stringify(time)} changed`);
+  filter(ev) {
+    ev.preventDefault();
+    if (!this.fromDate || !this.toDate) {
+      this.router.transitionTo({
+        queryParams: { page: 0, size: 10, fromDate: null, toDate: null },
+      });
+    } else {
+      this.router.transitionTo({
+        queryParams: {
+          page: 0,
+          size: 10,
+          fromDate: this.fromDate?.toISOString() || null,
+          toDate: this.toDate?.toISOString() || null,
+        },
+      });
+    }
   }
 
   get histories() {

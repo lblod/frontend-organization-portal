@@ -3,32 +3,29 @@
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content au-o-box">
         <form
+          {{on "submit" this.filter}}
           class="au-o-grid au-o-grid--small"
         >
-          <p class="au-o-grid__item">
-            <AuDatePicker
-              @id="history-datepicker"
-              @label="Datum"
-              @value={{this.date}}
-              @onChange={{this.onDateChange}}
-            />
-            <AuTimePicker
-              @id="history-timepicker"
-              @hoursLabel="Uren"
-              @minutesLabel="Minuten"
-              @secondsLabel="Seconden"
-              @nowLabel="Nu"
-              @hours={{this.hours}}
-              @minutes={{this.minutes}}
-              @seconds={{this.seconds}}
-              @showSeconds={{false}}
-              @showNow={{false}}
-              @onChange={{this.onTimeChange}}
-            />
-          </p>
           <div class="au-o-grid__item">
-            <AuButton @skin="primary">
-             Filter
+              <AuDatePicker
+                @id="history-datepicker"
+                @label="Vanaaf"
+                @value={{this.fromDate}}
+                @onChange={{(fn (mut this.fromDate))}}
+              />
+            </div>
+          <div class="au-o-grid__item">
+            <AuDatePicker
+              @id="tot-datepicker"
+              @label="Tot"
+              @value={{this.toDate}}
+                @onChange={{(fn (mut this.toDate))}}
+
+            />
+          </div>
+          <div class="au-o-grid__item">
+            <AuButton @skin="primary" type="submit">
+              Filter
             </AuButton>
           </div>
         </form>

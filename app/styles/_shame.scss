@@ -170,3 +170,9 @@ $ember-power-select-focus-outline: solid 2px rgb(16, 108, 200) !default;
     }
   }
 }
+
+
+// date picker
+.duet-date__dialog.is-active {
+  transform: scale(0.8722) translateZ(0) translateY(0) !important;
+}

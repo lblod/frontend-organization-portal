@@ -8,6 +8,8 @@ export default class HistoryRoute extends Route {
   @service session;
   queryParams = {
     page: { refreshModel: true },
+    fromDate: { refreshModel: true },
+    toDate: { refreshModel: true },
   };
   beforeModel(transition) {
     this.session.requireAuthentication(transition, 'login');
@@ -57,15 +59,16 @@ export default class HistoryRoute extends Route {
 
   async model(params) {
     return {
-      //  loadHistoriesTaskInstance: this.loadHistoriesTask.perform(params),
-      // loadedHistoriesTask: this.loadHistoriesTask.lastSuccessful?.value,
       history: await this.loadHistoriesTask(params),
     };
   }
 
   //@keepLatestTask({ cancelOn: 'deactivate' })
   async loadHistoriesTask(params) {
-    const endpoint = `/history-changes?pageSize=10&pageNumber=${params.page}`;
+    let endpoint = `/history-changes?pageSize=10&pageNumber=${params.page}`;
+    if (params.fromDate && params.toDate) {
+      endpoint += `&fromDate=${params.fromDate}&toDate=${params.toDate}`;
+    }
 
     const { count, content } = await (await fetch(endpoint)).json();
     const pagination = this.getPaginationMetadata(
