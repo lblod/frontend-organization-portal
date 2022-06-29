@@ -42,134 +42,129 @@
       </AuToolbarGroup>
     </AuToolbar>
 
-    <AuDataTable
-      id="contactDetails"
-      @content={{this.positions}}
-      @noDataMessage="Geen contactpunten"
-      as |t|
-    >
-      <t.content as |c|>
-        <c.header>
-          <th>Adres</th>
-          <th>Provincie</th>
-          <th>E-mail</th>
-          <th>Primair telefoonummer</th>
-          <th>Secundair telefoonummer</th>
-          <th>Selecteer</th>
-          <th></th>
-        </c.header>
-        <c.body as |contact|>
-          <td>
-            {{contact.primaryContact.contactAddress.fullAddress}}
-          </td>
-          <td>
-            {{contact.primaryContact.contactAddress.province}}
-          </td>
-          <td>
-            {{contact.primaryContact.email}}
-          </td>
-          <td>
-            {{contact.primaryContact.telephone}}
-          </td>
-          <td>
-            {{contact.secondaryContact.telephone}}
-          </td>
-          <td>
-            <AuButton @skin="link" {{on "click" (perform this.copy contact)}}>
-              <AuControlCheckbox
-                @label=""
-                @checked={{(eq
-                  this.selectedContact.primaryContact.id
-                  contact.primaryContact.id
-                )}}
-              />
-            </AuButton>
-          </td>
-          <td>
-            <AuButton
-              @skin="link"
-              {{on "click" (fn this.fixErrorAndSelect contact)}}
-            >
-              Corrigeer fout
-            </AuButton>
-          </td>
-        </c.body>
+    <AuTable id="contactDetails">
+        <:header>
+          <tr>
+            <th>Adres</th>
+            <th>Bus</th>
+            <th>Provincie</th>
+            <th>E-mail</th>
+            <th>Primair telefoonummer</th>
+            <th>Secundair telefoonummer</th>
+            <th>Selecteer</th>
+            <th></th>
+          </tr>
+        </:header>
+        <:body>
+          {{#each this.positions as |contact|}}
+            <tr>
+              <td>
+                {{contact.primaryContact.contactAddress.fullAddress}}
+              </td>
+              <td>{{contact.primaryContact.contactAddress.boxNumber}}</td>
+              <td>
+                {{contact.primaryContact.contactAddress.province}}
+              </td>
+              <td>
+                {{contact.primaryContact.email}}
+              </td>
+              <td>
+                {{contact.primaryContact.telephone}}
+              </td>
+              <td>
+                {{contact.secondaryContact.telephone}}
+              </td>
+              <td>
+                <AuButton
+                  @skin="link"
+                  {{on "click" (perform this.copy contact)}}
+                >
+                  <AuControlCheckbox
+                    @label=""
+                    @checked={{(eq
+                      this.selectedContact.primaryContact.id
+                      contact.primaryContact.id
+                    )}}
+                  />
+                </AuButton>
+              </td>
+              <td>
+                <AuButton
+                  @skin="link"
+                  {{on "click" (fn this.fixErrorAndSelect contact)}}
+                >
+                  Corrigeer fout
+                </AuButton>
+              </td>
+            </tr>
+            {{#if (eq this.editingContact.primaryContact.id contact.primaryContact.id)}}
 
-{{#if this.editingContact}}
-   <ContactEditRow
-            @address={{this.editingContact.address}}
-            @primaryContact={{this.editingContact.primaryContact}}
-            @secondaryContact={{this.editingContact.secondaryContact}}
-            @isAddressSearchEnabledInitially={{if
-              (or
-                (not this.editingContact.address.id)
-                this.editingContact.address.addressRegisterUri
-              )
-              true
-              false
-            }}
-          />
-  {{/if}}
-      </t.content>
-    </AuDataTable>
+              <tr>
+                <ContactEditRow
+                  @address={{this.editingContact.address}}
+                  @primaryContact={{this.editingContact.primaryContact}}
+                  @secondaryContact={{this.editingContact.secondaryContact}}
+                  @isAddressSearchEnabledInitially={{if
+                    (or
+                      (not this.editingContact.address.id)
+                      this.editingContact.address.addressRegisterUri
+                    )
+                    true
+                    false
+                  }}
+                />
+                <td colspan="2">
+                  <AuButton
+                    @loading={{this.saveContact.isRunning}}
+                    @disabled={{(or
+                      this.isAllFieldsEmpty this.saveContact.isRunning
+                    )}}
+                    {{on "click" (perform this.saveContact)}}
+                  >
+                    Selecteren
+                  </AuButton>
+                  <AuButton @skin="secondary" {{on "click" this.cancel}}>
+                    Annuleer
+                  </AuButton>
+                </td>
+              </tr>
+            {{/if}}
+          {{/each}}
+           {{#if (and this.editingContact (not this.editingContact.primaryContact.id) )}}
+
+              <tr>
+                <ContactEditRow
+                  @address={{this.editingContact.address}}
+                  @primaryContact={{this.editingContact.primaryContact}}
+                  @secondaryContact={{this.editingContact.secondaryContact}}
+                  @isAddressSearchEnabledInitially={{if
+                    (or
+                      (not this.editingContact.address.id)
+                      this.editingContact.address.addressRegisterUri
+                    )
+                    true
+                    false
+                  }}
+                />
+                <td colspan="2">
+                  <AuButton
+                    @loading={{this.saveContact.isRunning}}
+                    @disabled={{(or
+                      this.isAllFieldsEmpty this.saveContact.isRunning
+                    )}}
+                    {{on "click" (perform this.saveContact)}}
+                  >
+                    Selecteren
+                  </AuButton>
+                  <AuButton @skin="secondary" {{on "click" this.cancel}}>
+                    Annuleer
+                  </AuButton>
+                </td>
+              </tr>
+            {{/if}}
+        </:body>
+
+    </AuTable>
   </div>
 
-  <AuModal
-    @modalOpen={{false}}
-    @closeModal={{this.cancel}}
-    @size="fullscreen"
-  >
-    <:title>
-      {{if this.isNew "Vul contactgegevens manueel in" "Corrigeer een fout"}}
-    </:title>
-    <:body>
-      <div class="au-o-box">
-        <div id="ember-appuniversum-wormhole"></div>
-        <form
-          id="edit-contact-form"
-          aria-label="edit-contact-form"
-          {{on "submit" (perform this.saveContact)}}
-        >
-          <Position::ContactEditCard
-            @address={{this.editingContact.address}}
-            @primaryContact={{this.editingContact.primaryContact}}
-            @secondaryContact={{this.editingContact.secondaryContact}}
-            @isAddressSearchEnabledInitially={{if
-              (or
-                (not this.editingContact.address.id)
-                this.editingContact.address.addressRegisterUri
-              )
-              true
-              false
-            }}
-          >
-            <:title></:title>
-          </Position::ContactEditCard>
-        </form>
-      </div>
-    </:body>
-    <:footer>
-      {{#unless this.isNew}}
-        <div class="au-u-margin-bottom-small">
-          <AuHelpText @skin="tertiary"><AuIcon
-              @icon="circle-info"
-              @alignement="left"
-              @ariaHidden={{true}}
-            />De opgeslagen wijzigingen worden automatisch aangepast op alle
-            plaatsen waar deze set contactgegevens gebruikt wordt.</AuHelpText>
-        </div>
-      {{/unless}}
-      <AuButton
-        @loading={{this.saveContact.isRunning}}
-        @disabled={{(or this.isAllFieldsEmpty this.saveContact.isRunning)}}
-        type="submit"
-        form="edit-contact-form"
-      >
-        Selecteren
-      </AuButton>
-      <AuButton @skin="secondary" {{on "click" this.cancel}}>
-        Annuleer
-      </AuButton>
-    </:footer>
-  </AuModal>
 {{/if}}
