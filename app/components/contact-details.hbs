@@ -43,126 +43,132 @@
     </AuToolbar>
 
     <AuTable id="contactDetails">
-        <:header>
+      <:header>
+        <tr>
+          <th>Adres</th>
+          <th>Bus</th>
+          <th>Provincie</th>
+          <th>E-mail</th>
+          <th>Primair telefoonummer</th>
+          <th>Secundair telefoonummer</th>
+          <th>Selecteer</th>
+          <th></th>
+        </tr>
+      </:header>
+      <:body>
+        {{#each this.positions as |contact|}}
           <tr>
-            <th>Adres</th>
-            <th>Bus</th>
-            <th>Provincie</th>
-            <th>E-mail</th>
-            <th>Primair telefoonummer</th>
-            <th>Secundair telefoonummer</th>
-            <th>Selecteer</th>
-            <th></th>
+            <td>
+              {{contact.primaryContact.contactAddress.fullAddress}}
+            </td>
+            <td>{{contact.primaryContact.contactAddress.boxNumber}}</td>
+            <td>
+              {{contact.primaryContact.contactAddress.province}}
+            </td>
+            <td>
+              {{contact.primaryContact.email}}
+            </td>
+            <td>
+              {{contact.primaryContact.telephone}}
+            </td>
+            <td>
+              {{contact.secondaryContact.telephone}}
+            </td>
+            <td>
+              <AuButton @skin="link" {{on "click" (perform this.copy contact)}}>
+                <AuControlCheckbox
+                  @label=""
+                  @checked={{(eq
+                    this.selectedContact.primaryContact.id
+                    contact.primaryContact.id
+                  )}}
+                />
+              </AuButton>
+            </td>
+            <td>
+              <AuButton
+                @skin="link"
+                {{on "click" (fn this.fixErrorAndSelect contact)}}
+              >
+                Corrigeer fout
+              </AuButton>
+            </td>
           </tr>
-        </:header>
-        <:body>
-          {{#each this.positions as |contact|}}
-            <tr>
-              <td>
-                {{contact.primaryContact.contactAddress.fullAddress}}
-              </td>
-              <td>{{contact.primaryContact.contactAddress.boxNumber}}</td>
-              <td>
-                {{contact.primaryContact.contactAddress.province}}
-              </td>
-              <td>
-                {{contact.primaryContact.email}}
-              </td>
-              <td>
-                {{contact.primaryContact.telephone}}
-              </td>
-              <td>
-                {{contact.secondaryContact.telephone}}
-              </td>
-              <td>
-                <AuButton
-                  @skin="link"
-                  {{on "click" (perform this.copy contact)}}
-                >
-                  <AuControlCheckbox
-                    @label=""
-                    @checked={{(eq
-                      this.selectedContact.primaryContact.id
-                      contact.primaryContact.id
+          {{#if
+            (eq this.editingContact.primaryContact.id contact.primaryContact.id)
+          }}
+
+            <tr class="au-u-background-gray-100">
+              <ContactEditRow
+                @address={{this.editingContact.address}}
+                @primaryContact={{this.editingContact.primaryContact}}
+                @secondaryContact={{this.editingContact.secondaryContact}}
+                @isAddressSearchEnabledInitially={{if
+                  (or
+                    (not this.editingContact.address.id)
+                    this.editingContact.address.addressRegisterUri
+                  )
+                  true
+                  false
+                }}
+              />
+              <td colspan="2" class="td-center" >
+                <div >
+                  <AuButton
+                   @skin="tertiary"
+                    @loading={{this.saveContact.isRunning}}
+                    @disabled={{(or
+                      this.isAllFieldsEmpty this.saveContact.isRunning
                     )}}
-                  />
-                </AuButton>
-              </td>
-              <td>
-                <AuButton
-                  @skin="link"
-                  {{on "click" (fn this.fixErrorAndSelect contact)}}
-                >
-                  Corrigeer fout
-                </AuButton>
+                    {{on "click" (perform this.saveContact)}}
+                  >
+                    Selecteren
+                  </AuButton>
+                  <AuButton @skin="tertiary" {{on "click" this.cancel}}>
+                    Annuleer
+                  </AuButton>
+                </div>
+
               </td>
             </tr>
-            {{#if (eq this.editingContact.primaryContact.id contact.primaryContact.id)}}
+          {{/if}}
+        {{/each}}
+        {{#if
+          (and this.editingContact (not this.editingContact.primaryContact.id))
+        }}
 
-              <tr>
-                <ContactEditRow
-                  @address={{this.editingContact.address}}
-                  @primaryContact={{this.editingContact.primaryContact}}
-                  @secondaryContact={{this.editingContact.secondaryContact}}
-                  @isAddressSearchEnabledInitially={{if
-                    (or
-                      (not this.editingContact.address.id)
-                      this.editingContact.address.addressRegisterUri
-                    )
-                    true
-                    false
-                  }}
-                />
-                <td colspan="2">
-                  <AuButton
-                    @loading={{this.saveContact.isRunning}}
-                    @disabled={{(or
-                      this.isAllFieldsEmpty this.saveContact.isRunning
-                    )}}
-                    {{on "click" (perform this.saveContact)}}
-                  >
-                    Selecteren
-                  </AuButton>
-                  <AuButton @skin="secondary" {{on "click" this.cancel}}>
-                    Annuleer
-                  </AuButton>
-                </td>
-              </tr>
-            {{/if}}
-          {{/each}}
-           {{#if (and this.editingContact (not this.editingContact.primaryContact.id) )}}
-
-              <tr>
-                <ContactEditRow
-                  @address={{this.editingContact.address}}
-                  @primaryContact={{this.editingContact.primaryContact}}
-                  @secondaryContact={{this.editingContact.secondaryContact}}
-                  @isAddressSearchEnabledInitially={{if
-                    (or
-                      (not this.editingContact.address.id)
-                      this.editingContact.address.addressRegisterUri
-                    )
-                    true
-                    false
-                  }}
-                />
-                <td colspan="2">
-                  <AuButton
-                    @loading={{this.saveContact.isRunning}}
-                    @disabled={{(or
-                      this.isAllFieldsEmpty this.saveContact.isRunning
-                    )}}
-                    {{on "click" (perform this.saveContact)}}
-                  >
-                    Selecteren
-                  </AuButton>
-                  <AuButton @skin="secondary" {{on "click" this.cancel}}>
-                    Annuleer
-                  </AuButton>
-                </td>
-              </tr>
-            {{/if}}
-        </:body>
+          <tr class="au-u-background-gray-100">
+            <ContactEditRow
+              @address={{this.editingContact.address}}
+              @primaryContact={{this.editingContact.primaryContact}}
+              @secondaryContact={{this.editingContact.secondaryContact}}
+              @isAddressSearchEnabledInitially={{if
+                (or
+                  (not this.editingContact.address.id)
+                  this.editingContact.address.addressRegisterUri
+                )
+                true
+                false
+              }}
+            />
+            <td colspan="2" class="td-center">
+              <AuButton
+               @skin="tertiary"
+                @loading={{this.saveContact.isRunning}}
+                @disabled={{(or
+                  this.isAllFieldsEmpty this.saveContact.isRunning
+                )}}
+                {{on "click" (perform this.saveContact)}}
+              >
+                Selecteren
+              </AuButton>
+              <AuButton  @skin="tertiary"  {{on "click" this.cancel}}>
+                Annuleer
+              </AuButton>
+            </td>
+          </tr>
+        {{/if}}
+      </:body>
 
     </AuTable>
   </div>

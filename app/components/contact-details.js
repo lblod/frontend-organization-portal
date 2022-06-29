@@ -80,7 +80,6 @@ export default class ContactDetailsComponent extends Component {
       }
     }
   }
-
   @action
   fixErrorAndSelect(contact) {
     this.isNew = false;
@@ -205,7 +204,6 @@ export default class ContactDetailsComponent extends Component {
       !secondaryContact?.telephone?.length
     );
   }
-
   @dropTask
   *saveContact(event) {
     event.preventDefault();
