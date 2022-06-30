@@ -75,15 +75,15 @@
               {{contact.secondaryContact.telephone}}
             </td>
             <td>
-              <AuButton @skin="link" {{on "click" (perform this.copy contact)}}>
                 <AuControlCheckbox
                   @label=""
                   @checked={{(eq
                     this.selectedContact.primaryContact.id
                     contact.primaryContact.id
                   )}}
+
+                  @onChange={{(perform this.copy contact)}}
                 />
-              </AuButton>
             </td>
             <td>
               <AuButton
@@ -95,7 +95,7 @@
             </td>
           </tr>
           {{#if
-            (eq this.editingContact.primaryContact.id contact.primaryContact.id)
+            (and (eq this.editingContact.primaryContact.id contact.primaryContact.id))
           }}
 
             <tr class="au-u-background-gray-100">
@@ -134,7 +134,7 @@
           {{/if}}
         {{/each}}
         {{#if
-          (and this.editingContact (not this.editingContact.primaryContact.id))
+          (and this.isNew (and this.editingContact (not this.editingContact.primaryContact.id)))
         }}
 
           <tr class="au-u-background-gray-100">
