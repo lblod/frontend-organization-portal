@@ -2,32 +2,28 @@
   <:sidebar>
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content au-o-box">
-        <form
-          {{on "submit" this.filter}}
-          class="au-o-grid au-o-grid--small"
-        >
+        <form {{on "submit" this.filter}} class="au-o-grid au-o-grid--small">
           <div class="au-o-grid__item">
-              <AuDatePicker
-                @id="history-datepicker"
-                @label="Vanaf"
-                @value={{this.fromDate}}
-                @onChange={{(fn (mut this.fromDate))}}
-              />
-            </div>
+            <AuDatePicker
+              @id="history-datepicker"
+              @label="Vanaf"
+              @value={{this.fromDate}}
+              @onChange={{(fn (mut this.fromDate))}}
+            />
+          </div>
           <div class="au-o-grid__item">
             <AuDatePicker
               @id="tot-datepicker"
               @label="Tot"
               @value={{this.toDate}}
-                @onChange={{(fn (mut this.toDate))}}
-
+              @onChange={{(fn (mut this.toDate))}}
             />
           </div>
-          <div class="au-o-grid__item">
+          {{!-- <div class="au-o-grid__item">
             <AuButton @skin="primary" type="submit">
               Filter
             </AuButton>
-          </div>
+          </div> --}}
         </form>
       </div>
       <div class="au-c-sidebar__footer">

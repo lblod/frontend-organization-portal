@@ -17,17 +17,24 @@ export default class HistoryController extends Controller {
   @action
   filter(ev) {
     ev.preventDefault();
-    if (!this.fromDate || !this.toDate) {
+    if (!this.fromDate?.length || !this.toDate?.length) {
       this.router.transitionTo({
         queryParams: { page: 0, size: 10, fromDate: null, toDate: null },
       });
     } else {
+      if (!(this.fromDate instanceof Date)) {
+        this.fromDate = new Date(this.fromDate);
+      }
+      if (!(this.toDate instanceof Date)) {
+        this.toDate = new Date(this.toDate);
+      }
+
       this.router.transitionTo({
         queryParams: {
           page: 0,
           size: 10,
-          fromDate: this.fromDate?.toISOString() || null,
-          toDate: this.toDate?.toISOString() || null,
+          fromDate: this.fromDate?.toISOString()?.slice(0, -5) || null,
+          toDate: this.toDate?.toISOString()?.slice(0, -5) || null,
         },
       });
     }
