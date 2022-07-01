@@ -9,7 +9,7 @@
           <div class="au-o-grid__item">
               <AuDatePicker
                 @id="history-datepicker"
-                @label="Vanaaf"
+                @label="Vanaf"
                 @value={{this.fromDate}}
                 @onChange={{(fn (mut this.fromDate))}}
               />
@@ -69,8 +69,8 @@
     >
       <t.content as |c|>
         <c.header>
-          <th>User</th>
-          <th>Date</th>
+          <th>Gebruiker</th>
+          <th>Datum</th>
           <th></th>
         </c.header>
         <c.body as |history|>
@@ -78,7 +78,7 @@
           <td>{{history.dateCreation}}</td>
           <td>
             <AuLink @route="history-detail" @model={{history.id}}>
-              Show detail
+              Toon detail
             </AuLink>
 
           </td>
