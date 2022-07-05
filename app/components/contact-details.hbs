@@ -33,7 +33,9 @@
       </AuToolbarGroup>
       <AuToolbarGroup>
         <AuButton
-          @disabled={{this.isSelectedContactNewContact}}
+          @disabled={{(or
+            this.isSelectedContactNewContact this.editingContact
+          )}}
           {{on "click" this.newContact}}
           class="au-u-margin-bottom-small"
         >
@@ -57,45 +59,13 @@
       </:header>
       <:body>
         {{#each this.positions as |contact|}}
-          <tr>
-            <td>
-              {{contact.primaryContact.contactAddress.fullAddress}}
-            </td>
-            <td>{{contact.primaryContact.contactAddress.boxNumber}}</td>
-            <td>
-              {{contact.primaryContact.contactAddress.province}}
-            </td>
-            <td>
-              {{contact.primaryContact.email}}
-            </td>
-            <td>
-              {{contact.primaryContact.telephone}}
-            </td>
-            <td>
-              {{contact.secondaryContact.telephone}}
-            </td>
-            <td>
-                <AuControlCheckbox
-                  @label=""
-                  @checked={{(eq
-                    this.selectedContact.primaryContact.id
-                    contact.primaryContact.id
-                  )}}
 
-                  @onChange={{(perform this.copy contact)}}
-                />
-            </td>
-            <td>
-              <AuButton
-                @skin="link"
-                {{on "click" (fn this.fixErrorAndSelect contact)}}
-              >
-                Corrigeer fout
-              </AuButton>
-            </td>
-          </tr>
           {{#if
-            (and (eq this.editingContact.primaryContact.id contact.primaryContact.id))
+            (and
+              (eq
+                this.editingContact.primaryContact.id contact.primaryContact.id
+              )
+            )
           }}
 
             <tr class="au-u-background-gray-100">
@@ -112,10 +82,17 @@
                   false
                 }}
               />
-              <td colspan="2" class="td-center" >
-                <div >
-                  <AuButton
-                   @skin="tertiary"
+              <td>
+                <AuControlCheckbox
+                  @disabled={{true}}
+                  @label=""
+                  @checked={{true}}
+                />
+              </td>
+              <td>
+                <div>
+                  {{!-- <AuButton
+                    @skin="tertiary"
                     @loading={{this.saveContact.isRunning}}
                     @disabled={{(or
                       this.isAllFieldsEmpty this.saveContact.isRunning
@@ -123,7 +100,7 @@
                     {{on "click" (perform this.saveContact)}}
                   >
                     Selecteren
-                  </AuButton>
+                  </AuButton> --}}
                   <AuButton @skin="tertiary" {{on "click" this.cancel}}>
                     Annuleer
                   </AuButton>
@@ -131,10 +108,66 @@
 
               </td>
             </tr>
+
+          {{else}}
+
+            <tr>
+              <td>
+                {{contact.primaryContact.contactAddress.fullAddress}}
+              </td>
+              <td
+              >{{contact.primaryCthis.isSelectedContactNewContactontact.contactAddress.boxNumber}}</td>
+              <td>
+                {{contact.primaryContact.contactAddress.province}}
+              </td>
+              <td>
+                {{contact.primaryContact.email}}
+              </td>
+              <td>
+                {{contact.primaryContact.telephone}}
+              </td>
+              <td>
+                {{contact.secondaryContact.telephone}}
+              </td>
+              <td>
+                <AuControlCheckbox
+                  @disabled={{this.editingContact}}
+                  @label=""
+                  @checked={{(or
+                    (and
+                      (not this.editingContact)
+                      (eq
+                        this.selectedContact.primaryContact.id
+                        contact.primaryContact.id
+                      )
+                    )
+                    (eq
+                      this.editingContact.primaryContact.id
+                      contact.primaryContact.id
+                    )
+                  )}}
+                  @onChange={{(perform this.copy contact)}}
+                />
+              </td>
+              <td>
+                <AuButton
+                  @disabled={{this.editingContact}}
+                  @skin="link"
+                  {{on "click" (fn this.fixErrorAndSelect contact)}}
+                >
+                  Corrigeer fout
+                </AuButton>
+              </td>
+            </tr>
           {{/if}}
         {{/each}}
         {{#if
-          (and this.isNew (and this.editingContact (not this.editingContact.primaryContact.id)))
+          (and
+            this.isNew
+            (and
+              this.editingContact (not this.editingContact.primaryContact.id)
+            )
+          )
         }}
 
           <tr class="au-u-background-gray-100">
@@ -151,9 +184,16 @@
                 false
               }}
             />
-            <td colspan="2" class="td-center">
-              <AuButton
-               @skin="tertiary"
+            <td>
+              <AuControlCheckbox
+                @disabled={{true}}
+                @label=""
+                @checked={{true}}
+              />
+            </td>
+            <td>
+              {{!-- <AuButton
+                @skin="tertiary"
                 @loading={{this.saveContact.isRunning}}
                 @disabled={{(or
                   this.isAllFieldsEmpty this.saveContact.isRunning
@@ -161,8 +201,8 @@
                 {{on "click" (perform this.saveContact)}}
               >
                 Selecteren
-              </AuButton>
-              <AuButton  @skin="tertiary"  {{on "click" this.cancel}}>
+              </AuButton> --}}
+              <AuButton @skin="tertiary" {{on "click" this.cancel}}>
                 Annuleer
               </AuButton>
             </td>

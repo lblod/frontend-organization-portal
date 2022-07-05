@@ -115,6 +115,7 @@ export default class ContactDetailsComponent extends Component {
       position,
       title,
     };
+    this.args.onUpdate(this.editingContact);
   }
 
   @action
@@ -139,6 +140,7 @@ export default class ContactDetailsComponent extends Component {
       address: createValidatedChangeset(address, getAddressValidations()),
     };
     this.editingContact = editing;
+    this.args.onUpdate(this.editingContact);
   }
 
   @dropTask
@@ -204,6 +206,7 @@ export default class ContactDetailsComponent extends Component {
       !secondaryContact?.telephone?.length
     );
   }
+
   @dropTask
   *saveContact(event) {
     event.preventDefault();
