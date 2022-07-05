@@ -182,16 +182,6 @@
               />
             </td>
             <td>
-              {{!-- <AuButton
-                @skin="tertiary"
-                @loading={{this.saveContact.isRunning}}
-                @disabled={{(or
-                  this.isAllFieldsEmpty this.saveContact.isRunning
-                )}}
-                {{on "click" (perform this.saveContact)}}
-              >
-                Selecteren
-              </AuButton> --}}
               <AuButton @skin="tertiary" {{on "click" this.cancel}}>
                 Annuleer
               </AuButton>
