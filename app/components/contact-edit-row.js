@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
-export default class AddressSearchInTableComponent extends Component {
+export default class ContactEditRowComponent extends Component {
   @service addressRegister;
 
   @tracked isAddressSearchMode = true;
@@ -73,8 +73,8 @@ export default class AddressSearchInTableComponent extends Component {
   }
 
   detectInitialInputMode() {
-    if (typeof this.args.isSearchEnabledInitially === 'boolean') {
-      this.isAddressSearchMode = this.args.isSearchEnabledInitially;
+    if (typeof this.args.isAddressSearchEnabledInitially === 'boolean') {
+      this.isAddressSearchMode = this.args.isAddressSearchEnabledInitially;
     } else {
       this.isAddressSearchMode = true;
     }
