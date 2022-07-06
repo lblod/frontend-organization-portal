@@ -235,6 +235,9 @@
       @error={{@primaryContact.error.telephone.validation}}
       id="{{id}}-contact-telephone"
     />
+    <AuHelpText  @skin="tertiary">
+      {{help-text "phone-number"}}
+    </AuHelpText>
     {{#if @primaryContact.error.telephone.validation}}
       <AuHelpText
         @error={{true}}
@@ -259,6 +262,9 @@
       @error={{@secondaryContact.error.telephone.validation}}
       id="{{id}}-secondary-contact-telephone"
     />
+          <AuHelpText  @skin="tertiary">
+            {{help-text "phone-number"}}
+          </AuHelpText>
     {{#if @secondaryContact.error.telephone.validation}}
       <AuHelpText
         @error={{true}}
