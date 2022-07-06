@@ -131,8 +131,9 @@
               <AuInput
                 @disabled={{not (this.isFinancialInvolvementType involvement)}}
                 @error={{errorMessage}}
+                @type="number"
                 aria-labelledby="financial-percentage"
-                value={{involvement.percentage}}
+                @value={{involvement.percentage}}
                 {{on "input" (fn this.handlePercentageChange involvement)}}
               />
               {{#if errorMessage}}
