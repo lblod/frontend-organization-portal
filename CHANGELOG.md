@@ -5,6 +5,17 @@
 
 
 
+## 1.9.1-0 (2022-07-06)
+#
+#### :bug: Bug Fix
+
+* [#371](https://github.com/lblod/frontend-organization-portal/pull/371) fix input percentage [@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
+
+
 ## 1.9.0 (2022-06-16)
 
 #### :rocket: Enhancement
