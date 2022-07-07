@@ -44,17 +44,17 @@
       </AuToolbarGroup>
     </AuToolbar>
 
-    <AuTable id="contactDetails">
+    <AuTable id="contactDetails" >
       <:header>
         <tr>
-          <th>Adres</th>
-          <th>Bus</th>
-          <th>Provincie</th>
-          <th>E-mail</th>
-          <th>Primair telefoonnummer</th>
-          <th>Secundair telefoonnummer</th>
-          <th>Selecteer</th>
-          <th></th>
+          <th width="20%">Adres</th>
+          <th width="10%">Bus</th>
+          <th width="15%">Provincie</th>
+          <th width="15%">E-mail</th>
+          <th width="15%">Primair telefoonnummer</th>
+          <th width="15%">Secundair telefoonnummer</th>
+          <th width="5%">Selecteer</th>
+          <th width="5%"></th>
         </tr>
       </:header>
       <:body>
@@ -82,14 +82,14 @@
                   false
                 }}
               />
-              <td>
+              <td width="5%">
                 <AuControlCheckbox
                   @disabled={{true}}
                   @label=""
                   @checked={{true}}
                 />
               </td>
-              <td>
+              <td width="5%">
                 <div>
                   <AuButton @skin="tertiary" {{on "click" this.cancel}}>
                     Annuleer
@@ -174,14 +174,14 @@
                 false
               }}
             />
-            <td>
+            <td width="5%">
               <AuControlCheckbox
                 @disabled={{true}}
                 @label=""
                 @checked={{true}}
               />
             </td>
-            <td>
+            <td width="5%">
               <AuButton @skin="tertiary" {{on "click" this.cancel}}>
                 Annuleer
               </AuButton>
