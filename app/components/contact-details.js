@@ -21,6 +21,7 @@ export default class ContactDetailsComponent extends Component {
   @tracked isNew;
   @service store;
   @service router;
+  @service contactDetails;
 
   constructor() {
     super(...arguments);
@@ -195,14 +196,7 @@ export default class ContactDetailsComponent extends Component {
   }
 
   get isAllFieldsEmpty() {
-    let { primaryContact, secondaryContact, address } = this.editingContact;
-    return (
-      !address?.street?.length &&
-      !address?.province?.length &&
-      !primaryContact?.email?.length &&
-      !primaryContact?.telephone?.length &&
-      !secondaryContact?.telephone?.length
-    );
+    return this.contactDetails.isAllFieldsEmpty(this.editingContact);
   }
 
   get isSelectedContactNewContact() {

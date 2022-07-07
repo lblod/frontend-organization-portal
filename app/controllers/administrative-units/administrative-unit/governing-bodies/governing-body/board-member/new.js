@@ -120,8 +120,14 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       mandatory.isValid
     ) {
       let contactValid = true;
+      let allContactFieldsEmpty = this.contactDetails.isAllFieldsEmpty(
+        this.computedContactDetails
+      );
 
-      if (this.computedContactDetails) {
+      if (
+        this.computedContactDetails &&
+        !allContactFieldsEmpty(this.computedContactDetails)
+      ) {
         let { primaryContact, secondaryContact, address } =
           this.computedContactDetails;
 
