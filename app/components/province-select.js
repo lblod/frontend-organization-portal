@@ -9,6 +9,7 @@ export default class ProvinceSelectComponent extends Component {
   @service store;
 
   @tracked previousMunicipality;
+  @tracked previousProvince;
 
   provinces = trackedTask(this, this.loadProvincesTask, () => [
     this.args.selectedMunicipality,
@@ -29,7 +30,10 @@ export default class ProvinceSelectComponent extends Component {
         this.previousMunicipality &&
         this.args.selectedMunicipality === this.previousMunicipality
       ) {
+        this.args.onChange(this.previousProvince);
+
         this.provinces.cancel(); //  prevent infinite loop.
+        return [this.previousProvince];
       }
 
       // If a municipality is selected, load the province it belongs to
@@ -55,9 +59,11 @@ export default class ProvinceSelectComponent extends Component {
 
     if (provinces.toArray().length === 1) {
       this.previousMunicipality = this.args.selectedMunicipality;
-      this.args.onChange(provinces.mapBy('name').toArray()[0]);
+      this.previousProvince = provinces.mapBy('name').toArray()[0];
+      this.args.onChange(this.previousProvince);
     } else {
       this.previousMunicipality = null;
+      this.previousProvince = null;
     }
     return provinces.mapBy('name');
   }
