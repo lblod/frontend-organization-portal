@@ -1,6 +1,6 @@
 {{#let (unique-id) as |id|}}
   {{#if this.isAddressSearchMode}}
-    <td>
+    <td width="20%">
       <AddressRegisterSelector
         @id="{{id}}-address-search"
         @width="block"
@@ -18,7 +18,7 @@
       </p>
     </td>
 
-    <td>
+    <td width="10%">
       <AddressRegisterBusNumberSelector
         @id="{{id}}-address-search-bus-select"
         @address={{this.addressWithBusNumber}}
@@ -40,7 +40,7 @@
       {{/if}}
     </td>
 
-    <td>
+    <td width="15%">
       <ProvinceSelect
         @selected={{@address.province}}
         @selectedMunicipality={{@address.municipality}}
@@ -55,7 +55,7 @@
 
   {{else}}
 
-    <td>
+    <td width="20%">
 
       <div class="au-o-block au-u-margin-bottom">
         <AuLabel
@@ -151,7 +151,7 @@
       </div>
 
     </td>
-    <td>
+    <td width="10%">
       <AuLabel
         @for="{{id}}-contact-address-bus-number"
         @required={{@required}}
@@ -170,7 +170,7 @@
         <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
       {{/if}}
     </td>
-    <td>
+    <td width="15%">
       <AuLabel
         @for="{{id}}-contact-address-province"
         @required={{not this.isBusNumberSelectionDisabled}}
@@ -194,7 +194,7 @@
     </td>
 
   {{/if}}
-  <td>
+  <td width="15%">
     {{#unless this.isAddressSearchMode}}
       <AuLabel
         @for="{{id}}-contact-email"
@@ -218,7 +218,7 @@
       >{{@primaryContact.error.email.validation}}</AuHelpText>
     {{/if}}
   </td>
-  <td>
+  <td width="15%">
     {{#unless this.isAddressSearchMode}}
       <AuLabel
         @for="{{id}}-contact-telephone"
@@ -245,7 +245,7 @@
       >{{@primaryContact.error.telephone.validation}}</AuHelpText>
     {{/if}}
   </td>
-  <td>
+  <td width="15%">
     {{#unless this.isAddressSearchMode}}
       <AuLabel
         @for="{{id}}-secondary-contact-telephone"
