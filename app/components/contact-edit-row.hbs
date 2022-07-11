@@ -29,6 +29,7 @@
         @placeholder={{if
           this.showBusNumbersNotAvailableMessage
           "Geen busnummer beschikbaar"
+          @address.boxNumber
         }}
       />
       {{#if this.selectedAddress}}
@@ -158,7 +159,7 @@
         @error={{@errorMessage}}
         class={{@labelClass}}
       >
-        Bus
+        Busnummer
       </AuLabel>
       <AuInput
         @value={{@address.boxNumber}}
