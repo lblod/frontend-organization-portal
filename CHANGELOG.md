@@ -5,6 +5,38 @@
 
 
 
+
+## 1.10.0-0 (2022-07-12)
+
+#### :rocket: Enhancement
+* [#372](https://github.com/lblod/frontend-organization-portal/pull/372) silently discard empty addresses ([@nbittich](https://github.com/nbittich))
+* [#373](https://github.com/lblod/frontend-organization-portal/pull/373) fix width fol columns ([@nbittich](https://github.com/nbittich))
+* [#369](https://github.com/lblod/frontend-organization-portal/pull/369) Poc nomodal ([@nbittich](https://github.com/nbittich))
+* [#368](https://github.com/lblod/frontend-organization-portal/pull/368) message announcement ([@nbittich](https://github.com/nbittich))
+* [#367](https://github.com/lblod/frontend-organization-portal/pull/367) Users expect the Provincie to be filled in automatically when the address is filled in ([@nbittich](https://github.com/nbittich))
+* [#364](https://github.com/lblod/frontend-organization-portal/pull/364) trim component ([@nbittich](https://github.com/nbittich))
+* [#365](https://github.com/lblod/frontend-organization-portal/pull/365) set modal to fullscreen ([@nbittich](https://github.com/nbittich))
+* [#362](https://github.com/lblod/frontend-organization-portal/pull/362) when open a new tab, we should be redirected to position ([@nbittich](https://github.com/nbittich))
+* [#363](https://github.com/lblod/frontend-organization-portal/pull/363) use au modal instead of custom ([@nbittich](https://github.com/nbittich))
+* [#361](https://github.com/lblod/frontend-organization-portal/pull/361) only show validation error when focus out ([@nbittich](https://github.com/nbittich))
+* [#360](https://github.com/lblod/frontend-organization-portal/pull/360) translation datepicker ([@nbittich](https://github.com/nbittich))
+* [#359](https://github.com/lblod/frontend-organization-portal/pull/359) Feature/stop saving empty litterals ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#353](https://github.com/lblod/frontend-organization-portal/pull/353) error service ([@nbittich](https://github.com/nbittich))
+* [#357](https://github.com/lblod/frontend-organization-portal/pull/357) Add contextual dropdowns in `new` and `edit` pages ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#355](https://github.com/lblod/frontend-organization-portal/pull/355) input mask for date ([@nbittich](https://github.com/nbittich))
+* [#356](https://github.com/lblod/frontend-organization-portal/pull/356) Enable auto search ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#354](https://github.com/lblod/frontend-organization-portal/pull/354) Add component to update already searched address ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### :bug: Bug Fix
+* [#374](https://github.com/lblod/frontend-organization-portal/pull/374) Can lose ability to select province in contact detail ([@nbittich](https://github.com/nbittich))
+* [#371](https://github.com/lblod/frontend-organization-portal/pull/371) fix input for percentage ([@nbittich](https://github.com/nbittich))
+* [#370](https://github.com/lblod/frontend-organization-portal/pull/370) When changing the address consecutively, the province doesn't get auto-filled ([@nbittich](https://github.com/nbittich))
+* [#358](https://github.com/lblod/frontend-organization-portal/pull/358) fix bug chrome & aumodal ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 2
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.9.1 (2022-07-06)
 #
 #### :bug: Bug Fix
