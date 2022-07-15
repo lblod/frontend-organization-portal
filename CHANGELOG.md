@@ -6,6 +6,15 @@
 
 
 
+
+## 1.10.0-1 (2022-07-15)
+
+#### :bug: Bug Fix
+* [#375](https://github.com/lblod/frontend-organization-portal/pull/375) fix date error translation ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.10.0-0 (2022-07-12)
 
 #### :rocket: Enhancement
