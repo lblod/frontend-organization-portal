@@ -174,8 +174,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
           'administrative-units.administrative-unit.governing-bodies.governing-body'
         );
       }
-    } else {
-      alert('not valid');
     }
   }
 
