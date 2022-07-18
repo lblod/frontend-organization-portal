@@ -7,6 +7,15 @@
 
 
 
+
+## 1.10.0-2 (2022-07-18)
+
+#### :bug: Bug Fix
+* [#376](https://github.com/lblod/frontend-organization-portal/pull/376) allContactFieldsEmpty not a function ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.10.0-1 (2022-07-15)
 
 #### :bug: Bug Fix
