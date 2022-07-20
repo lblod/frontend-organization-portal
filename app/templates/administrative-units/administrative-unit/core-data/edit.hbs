@@ -136,18 +136,20 @@
                     </:content>
                   </Item>
                 {{/if}}
-                <Item @labelFor="regio">
-                  <:label>Regio</:label>
-                  <:content>
-                    <RegionSelect
-                      @selected={{@model.administrativeUnit.locatedWithin}}
-                      @onChange={{fn
-                        (mut @model.administrativeUnit.locatedWithin)
-                      }}
-                      @id="regio"
-                    />
-                  </:content>
-                </Item>
+                {{#if this.isMunicipality}}
+                  <Item @labelFor="regio">
+                    <:label>Regio</:label>
+                    <:content>
+                      <RegionSelect
+                        @selected={{@model.administrativeUnit.locatedWithin}}
+                        @onChange={{fn
+                          (mut @model.administrativeUnit.locatedWithin)
+                        }}
+                        @id="regio"
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
               </:left>
               <:right as |Item|>
                 <Item @labelFor="status-select">
@@ -200,26 +202,22 @@
                     />
                   </:content>
                 </Item>
-                <Item @labelFor="nis-identifier">
-                  <:label>{{@model.identifierNIS.idName}}</:label>
-                  <:content>
-                    <AuInput
-                      @width="block"
-                      @value={{@model.structuredIdentifierNIS.localId}}
-                      id="nis-identifier"
-                    />
-                  </:content>
-                </Item>
-                <Item @labelFor="ovo-identifier">
-                  <:label>{{@model.identifierOVO.idName}}</:label>
-                  <:content>
-                    <AuInput
-                      @width="block"
-                      @value={{@model.structuredIdentifierOVO.localId}}
-                      id="ovo-identifier"
-                    />
-                  </:content>
-                </Item>
+                {{#if (or this.isMunicipality this.isProvince)}}
+                  <Item @labelFor="nis-identifier">
+                    <:label>{{@model.identifierNIS.idName}}</:label>
+                    <:content>
+                      {{@model.structuredIdentifierNIS.localId}}
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#unless this.isWorshipAdministrativeUnit}}
+                  <Item @labelFor="ovo-identifier">
+                    <:label>{{@model.identifierOVO.idName}}</:label>
+                    <:content>
+                      {{@model.structuredIdentifierOVO.localId}}
+                    </:content>
+                  </Item>
+                {{/unless}}
               </:right>
             </Card.Columns>
           </:card>

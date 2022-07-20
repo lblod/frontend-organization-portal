@@ -131,18 +131,20 @@
                 </:content>
               </Item>
             {{/if}}
-            <Item @labelFor="regio">
-              <:label>Regio</:label>
-              <:content>
-                <RegionSelect
-                  @selected={{@model.administrativeUnitChangeset.locatedWithin}}
-                  @onChange={{fn
-                    (mut @model.administrativeUnitChangeset.locatedWithin)
-                  }}
-                  @id="regio"
-                />
-              </:content>
-            </Item>
+            {{#if this.isNewMunicipality}}
+              <Item @labelFor="regio">
+                <:label>Regio</:label>
+                <:content>
+                  <RegionSelect
+                    @selected={{@model.administrativeUnitChangeset.locatedWithin}}
+                    @onChange={{fn
+                      (mut @model.administrativeUnitChangeset.locatedWithin)
+                    }}
+                    @id="regio"
+                  />
+                </:content>
+              </Item>
+            {{/if}}
           </:left>
           <:right as |Item|>
             <Item
@@ -191,26 +193,6 @@
                   @width="block"
                   @value={{@model.structuredIdentifierSharepoint.localId}}
                   id="sharepoint-identifier"
-                />
-              </:content>
-            </Item>
-            <Item @labelFor="nis-identifier">
-              <:label>{{@model.identifierNIS.idName}}</:label>
-              <:content>
-                <AuInput
-                  @width="block"
-                  @value={{@model.structuredIdentifierNIS.localId}}
-                  id="nis-identifier"
-                />
-              </:content>
-            </Item>
-            <Item @labelFor="ovo-identifier">
-              <:label>{{@model.identifierOVO.idName}}</:label>
-              <:content>
-                <AuInput
-                  @width="block"
-                  @value={{@model.structuredIdentifierOVO.localId}}
-                  id="ovo-identifier"
                 />
               </:content>
             </Item>

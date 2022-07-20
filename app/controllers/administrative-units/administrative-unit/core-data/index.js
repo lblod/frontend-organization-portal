@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import WorshipServiceModel from 'frontend-organization-portal/models/worship-service';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 const SHAREPOINT_LINK_BASE = {
   WORSHIP_SERVICE:
@@ -52,6 +53,13 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
 
   get isWorshipService() {
     return this.model.administrativeUnit instanceof WorshipServiceModel;
+  }
+
+  get isMunicipality() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.MUNICIPALITY
+    );
   }
 
   get sharePointLinkBase() {

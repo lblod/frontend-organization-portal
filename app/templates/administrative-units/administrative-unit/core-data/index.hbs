@@ -37,6 +37,20 @@
                 {{@model.administrativeUnit.classification.label}}
               </:content>
             </Item>
+
+            {{#if this.isMunicipality}}
+              <Item>
+                <:label>Stadstitel</:label>
+                <:content>
+                  {{#if @model.isCity}}
+                    Ja
+                  {{else}}
+                    Nee
+                  {{/if}}
+                </:content>
+              </Item>
+            {{/if}}
+
             {{#if this.isWorshipService}}
               <Item>
                 <:label>Soort eredienst</:label>

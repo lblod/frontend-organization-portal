@@ -20,8 +20,21 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       contacts = await primarySite.contacts;
     }
 
+    const changeEvents = (await administrativeUnit.changedBy).toArray();
+
+    let isCity = false;
+    for (const event of changeEvents) {
+      const eventType = await event.type;
+      const eventTypeId = eventType.id;
+
+      if (eventTypeId == 'e4c3d1ef-a34d-43b0-a18c-f4e60e2c8af3') {
+        isCity = true;
+      }
+    }
+
     return {
       administrativeUnit,
+      isCity,
       primaryContact: findPrimaryContact(contacts),
       secondaryContact: findSecondaryContact(contacts),
     };
