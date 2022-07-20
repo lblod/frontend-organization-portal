@@ -8,7 +8,7 @@
               <AdministrativeUnitSelectByName
                 @id="filter-name"
                 @selected={{this.name}}
-                @onChange={{fn (mut this.name)}}
+                @onChange={{this.setName}}
                 class="grow"
               />
           </div>

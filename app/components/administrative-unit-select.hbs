@@ -11,10 +11,6 @@
     @onChange={{@onChange}}
     as |administrativeUnit|
   >
-    {{#if (has-block)}}
-      {{yield administrativeUnit}}
-    {{else}}
-      {{administrativeUnit.name}}
-    {{/if}}
+    {{yield administrativeUnit}}
   </PowerSelect>
 </div>

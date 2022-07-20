@@ -90,6 +90,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
 
   @action
   setClassificationId(selection) {
+    this.page = null;
     this.classificationId = selection?.id;
     if (!this.isWorshipAdministrativeUnit) {
       this.recognizedWorshipTypeId = '';
@@ -98,11 +99,19 @@ export default class AdministrativeUnitsIndexController extends Controller {
 
   @action
   setRecognizedWorshipTypeId(selection) {
+    this.page = null;
     this.recognizedWorshipTypeId = selection?.id;
   }
 
   @action
+  setName(selection) {
+    this.page = null;
+    this.name = selection;
+  }
+
+  @action
   setOrganizationStatus(selection) {
+    this.page = null;
     if (selection !== null) {
       this.organizationStatus = selection.id;
     } else {
@@ -112,6 +121,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
 
   @action
   setMunicipality(selection) {
+    this.page = null;
     this.selectedMunicipality = selection;
     if (selection !== null) {
       this.municipality = selection.name;
@@ -122,6 +132,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
 
   @action
   setProvince(selection) {
+    this.page = null;
     if (selection !== null) {
       this.province = selection;
     } else {
