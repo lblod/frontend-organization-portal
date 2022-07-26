@@ -1,0 +1,16 @@
+<PowerSelect
+  @searchEnabled={{true}}
+  @loadingMessage="Aan het laden..."
+  @noMatchesMessage="Geen resultaten"
+  @searchMessage="Typ om te zoeken"
+  @searchField="name"
+  @search={{perform this.loadDistrictsTask}}
+  @options={{this.loadDistrictsTask.last}}
+  @selected={{@selected}}
+  @onChange={{@onChange}}
+  @triggerId={{@id}}
+  ...attributes
+  as |administrativeUnit|
+>
+  {{administrativeUnit.name}}
+</PowerSelect>

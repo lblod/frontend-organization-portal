@@ -75,7 +75,7 @@
                         </:content>
                       </Item>
                     {{/if}}
-                  {{else if (or this.isOCMW this.isDistrict)}}
+                  {{else if this.isDistrict}}
                     <Item
                       @labelFor="related-gemeente"
                       @required={{true}}
@@ -103,8 +103,29 @@
                           {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
                         </:content>
                       </Item>
+                      <Item @labelFor="related-ocmw">
+                        <:label>OCMW</:label>
+                        <:content>
+                          {{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.name}}
+                        </:content>
+                      </Item>
                     {{/if}}
                   {{else if (not this.isProvince)}}
+                    {{#if this.isOCMW}}
+                      <Item @labelFor="related-gemeente">
+                        <:label>Gemeente</:label>
+                        <:content>
+                          {{@model.administrativeUnit.isAssociatedWith.name}}
+                        </:content>
+                      </Item>
+                    {{else if this.isMunicipality}}
+                      <Item @labelFor="related-ocmw">
+                        <:label>OCMW</:label>
+                        <:content>
+                          {{@model.administrativeUnit.isAssociatedWith.name}}
+                        </:content>
+                      </Item>
+                    {{/if}}
                     <Item
                       @labelFor="related-provincie"
                       @required={{true}}
@@ -129,14 +150,14 @@
           </EditCard>
         {{/unless}}
 
-        {{#if (or this.isCentralWorshipService this.isProvince)}}
+        {{#if (or this.isCentralWorshipService this.isProvince this.isAntwerpen)}}
           <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
             Heeft relatie met
           </AuHeading>
           <AuDataTable
             id="subOrganizations"
             @content={{this.model.subOrganizations}}
-            @noDataMessage="Geen bestuur van de eredienst"
+            @noDataMessage="Geen bestuur"
             as |t|
           >
             <t.content as |c|>
@@ -169,7 +190,12 @@
                       @onChange={{fn this.updateSubOrganization subOrganization}}
                       @id="related-worship-service"
                     />
-                  {{else}}
+                  {{else if this.isAntwerpen}}
+                    <DistrictSelect
+                      @selected={{subOrganization}}
+                      @onChange={{fn this.updateSubOrganization subOrganization}}
+                      id="related-municipality"
+                    />                  {{else}}
                     <MunicipalitySelect
                       @selected={{subOrganization}}
                       @onChange={{fn this.updateSubOrganization subOrganization}}

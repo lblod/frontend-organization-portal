@@ -38,21 +38,32 @@
           <Card.Columns>
             <:left as |Item|>
               {{#if @model.isAssociatedWith.name}}
-                <Item>
-                  <:label>Representatief orgaan</:label>
-                  <:content>
-                    <AuLink @route="organizations.organization.core-data" @model={{@model.isAssociatedWith.id}}>
-                      {{@model.isAssociatedWith.name}}
-                    </AuLink>
-                  </:content>
-                </Item>
+                {{#if this.isWorshipAdministrativeUnit}}
+                  <Item>
+                    <:label>Representatief orgaan</:label>
+                    <:content>
+                      <AuLink @route="organizations.organization.core-data" @model={{@model.isAssociatedWith.id}}>
+                        {{@model.isAssociatedWith.name}}
+                      </AuLink>
+                    </:content>
+                  </Item>
+                {{else}}
+                  <Item>
+                    <:label>{{#if this.isOCMW}} Gemeente {{else}} OCMW {{/if}}</:label>
+                    <:content>
+                      <AuLink @route="administrative-units.administrative-unit.core-data" @model={{@model.isAssociatedWith.id}}>
+                        {{@model.isAssociatedWith.name}}
+                      </AuLink>
+                    </:content>
+                  </Item>
+                {{/if}}
               {{/if}}
               {{#if @model.isSubOrganizationOf.name}}
                 <Item>
                   <:label>
                     {{#if this.isWorshipAdministrativeUnit}}
                       Centraal bestuur
-                    {{else if (or this.isDistrict this.isOCMW)}}
+                    {{else if (or this.isDistrict)}}
                       Gemeente
                     {{else}}
                       Provincie
@@ -61,6 +72,26 @@
                   <:content>
                     <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
                       {{@model.isSubOrganizationOf.name}}
+                    </AuLink>
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if (and this.isDistrict @model.administrativeUnit.isSubOrganizationOf)}}
+                <Item>
+                  <:label>
+                    Provincie
+                  </:label>
+                  <:content>
+                    <AuLink @route="administrative-units.administrative-unit" @model={{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.id}}>
+                      {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
+                    </AuLink>
+                  </:content>
+                </Item>
+                <Item>
+                  <:label>OCMW</:label>
+                  <:content>
+                    <AuLink @route="administrative-units.administrative-unit" @model={{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.id}}>
+                      {{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.name}}
                     </AuLink>
                   </:content>
                 </Item>
@@ -77,7 +108,7 @@
           Heeft relatie met
         </AuHeading>
         <AuDataTable id="subOrganizations" @content={{this.model.subOrganizations}}
-          @noDataMessage="Geen bestuur van de eredienst" as |t|>
+          @noDataMessage="Geen bestuur" as |t|>
           <t.content as |c|>
             <c.header>
               <AuDataTableThSortable @field="classification.label" @currentSorting={{this.sort}}

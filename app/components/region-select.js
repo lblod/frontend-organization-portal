@@ -5,6 +5,12 @@ import { task } from 'ember-concurrency';
 export default class RepresentativeBodySelectComponent extends Component {
   @service store;
 
+  constructor() {
+    super(...arguments);
+
+    this.loadRegionsTask.perform();
+  }
+
   @task
   *loadRegionsTask(searchParams = '') {
     const query = {

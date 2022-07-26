@@ -6,7 +6,7 @@
     @noMatchesMessage="Geen resultaten"
     @searchMessage="Typ om te zoeken"
     @searchField="label"
-    @options={{this.regions}}
+    @options={{this.loadRegionsTask.last}}
     @search={{perform this.loadRegionsTask}}
     @selected={{@selected}}
     @onChange={{@onChange}}
