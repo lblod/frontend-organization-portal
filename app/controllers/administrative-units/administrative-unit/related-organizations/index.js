@@ -39,6 +39,13 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
     );
   }
 
+  get isMunicipality() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.MUNICIPALITY
+    );
+  }
+
   get isProvince() {
     return (
       this.model.administrativeUnit.classification?.get('id') ===

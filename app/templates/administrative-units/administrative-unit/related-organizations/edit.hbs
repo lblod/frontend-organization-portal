@@ -32,212 +32,50 @@
       {{on "submit" (perform this.save)}}
     >
       <div class="au-o-flow au-o-flow--large">
-        {{#unless this.isProvince}}
-          <EditCard @containsRequiredFields={{true}}>
-            <:title>Behoort tot</:title>
-            <:card as |Card|>
-              <Card.Columns>
-                <:left as |Item|>
-                  {{#if this.isWorshipAdministrativeUnit}}
-                    <Item
-                      @labelFor="related-representative-body"
-                      @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
-                    >
-                      <:label>Representatief orgaan</:label>
-                      <:content as |hasError|>
-                        <RepresentativeBodySelect
-                          @selected={{@model.administrativeUnit.isAssociatedWith}}
-                          @onChange={{fn
-                            (mut @model.administrativeUnit.isAssociatedWith)
-                          }}
-                          @error={{hasError}}
-                          @id="related-representative-body"
-                        />
-                      </:content>
-                    </Item>
-                    {{#if (and this.isWorshipService this.hasCentralWorshipService)}}
-                      <Item
-                        @labelFor="related-central-worship-service"
-                        @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-                      >
-                        <:label>Centraal bestuur</:label>
-                        <:content as |hasError|>
-                          <CentralWorshipSelect
-                            @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                            @onChange={{fn
-                              (mut @model.administrativeUnit.isSubOrganizationOf)
-                            }}
-                            @error={{hasError}}
-                            @id="related-central-worship-service"
-                          />
-                        </:content>
-                      </Item>
-                    {{/if}}
-                  {{else if this.isDistrict}}
-                    <Item
-                      @labelFor="related-gemeente"
-                      @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-                    >
-                      <:label>Gemeente</:label>
-                      <:content as |hasError|>
-                        <AdministrativeUnitSelect
-                          @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                          @onChange={{fn
-                            (mut @model.administrativeUnit.isSubOrganizationOf)
-                          }}
-                          @classificationCodes={{this.classificationCodes}}
-                          @error={{hasError}}
-                          @id="related-gemeente"
-                        />
-                      </:content>
-                    </Item>
-                    {{#if @model.administrativeUnit.isSubOrganizationOf}}
-                      <Item>
-                        <:label>
-                          Provincie
-                        </:label>
-                        <:content>
-                          {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
-                        </:content>
-                      </Item>
-                      <Item @labelFor="related-ocmw">
-                        <:label>OCMW</:label>
-                        <:content>
-                          {{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.name}}
-                        </:content>
-                      </Item>
-                    {{/if}}
-                  {{else if (not this.isProvince)}}
-                    {{#if this.isOCMW}}
-                      <Item @labelFor="related-gemeente">
-                        <:label>Gemeente</:label>
-                        <:content>
-                          {{@model.administrativeUnit.isAssociatedWith.name}}
-                        </:content>
-                      </Item>
-                    {{else if this.isMunicipality}}
-                      <Item @labelFor="related-ocmw">
-                        <:label>OCMW</:label>
-                        <:content>
-                          {{@model.administrativeUnit.isAssociatedWith.name}}
-                        </:content>
-                      </Item>
-                    {{/if}}
-                    <Item
-                      @labelFor="related-provincie"
-                      @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-                    >
-                      <:label>Provincie</:label>
-                      <:content as |hasError|>
-                        <ProvinceOrganizationSelect
-                          @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                          @onChange={{fn
-                            (mut @model.administrativeUnit.isSubOrganizationOf)
-                          }}
-                          @error={{hasError}}
-                          @id="related-provincie"
-                        />
-                      </:content>
-                    </Item>
-                  {{/if}}
-                </:left>
-              </Card.Columns>
-            </:card>
-          </EditCard>
-        {{/unless}}
 
-        {{#if (or this.isCentralWorshipService this.isProvince this.isAntwerpen)}}
-          <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
-            Heeft relatie met
-          </AuHeading>
-          <AuDataTable
-            id="subOrganizations"
-            @content={{this.model.subOrganizations}}
-            @noDataMessage="Geen bestuur"
-            as |t|
-          >
-            <t.content as |c|>
-              <c.header>
-                <AuDataTableThSortable
-                  @field="classification.label"
-                  @currentSorting={{this.sort}}
-                  @label="Type organisatie"
-                />
-                <AuDataTableThSortable
-                  @field="name"
-                  @currentSorting={{this.sort}}
-                  @label="Organisatie"
-                />
-                <AuDataTableThSortable
-                  @field="organizationStatus.label"
-                  @currentSorting={{this.sort}}
-                  @label="Status"
-                />
-                <th></th>
-              </c.header>
-              <c.body as |subOrganization|>
-                <td>
-                  {{subOrganization.classification.label}}
-                </td>
-                <td>
-                  {{#if this.isCentralWorshipService}}
-                    <WorshipServiceSelect
-                      @selected={{subOrganization}}
-                      @onChange={{fn this.updateSubOrganization subOrganization}}
-                      @id="related-worship-service"
-                    />
-                  {{else if this.isAntwerpen}}
-                    <DistrictSelect
-                      @selected={{subOrganization}}
-                      @onChange={{fn this.updateSubOrganization subOrganization}}
-                      id="related-municipality"
-                    />                  {{else}}
-                    <MunicipalitySelect
-                      @selected={{subOrganization}}
-                      @onChange={{fn this.updateSubOrganization subOrganization}}
-                      id="related-municipality"
-                    />
-                  {{/if}}
-                </td>
-                <td>
-                  <OrganizationStatus
-                    @id={{subOrganization.organizationStatus.id}}
-                    @label={{subOrganization.organizationStatus.label}}
-                  />
-                </td>
-                <td>
-                  <AuButton
-                    @alert={{true}}
-                    @icon="bin"
-                    @iconAlignment="left"
-                    @skin="link"
-                    {{on
-                      "click"
-                      (fn this.removeSubOrganization subOrganization)
-                    }}
-                  >
-                    Verwijder
-                  </AuButton>
-                </td>
-              </c.body>
-            </t.content>
-          </AuDataTable>
-
-          <div class="au-o-box au-o-box--small">
-            <AuButton
-              @skin="secondary"
-              @width="block"
-              @icon="add"
-              @iconAlignment="left"
-              {{on "click" this.addNewSubOrganization}}
-            >
-              Voeg nieuwe gerelateerde organisatie toe
-            </AuButton>
-          </div>
+        {{#if this.isWorshipService}}
+          <RelatedOrganizations::EditWorshipService
+            @model={{@model}}
+            @hasCentralWorshipService={{this.hasCentralWorshipService}}
+          />
+        {{/if}}
+        {{#if this.isCentralWorshipService}}
+          <RelatedOrganizations::EditCentralWorshipService
+            @model={{@model}}
+            @isAntwerpen={{this.isAntwerpen}}
+            @addNewSubOrganization={{this.addNewSubOrganization}}
+            @updateSubOrganization={{this.updateSubOrganization}}
+            @removeSubOrganization={{this.removeSubOrganization}}
+          />
+        {{/if}}
+        {{#if this.isDistrict}}
+          <RelatedOrganizations::EditDistrict @model={{@model}} @classificationCodes={{this.classificationCodes}} />
+        {{/if}}
+        {{#if this.isMunicipality}}
+          <RelatedOrganizations::EditMunicipality
+            @model={{@model}}
+            @isAntwerpen={{this.isAntwerpen}}
+            @addNewSubOrganization={{this.addNewSubOrganization}}
+            @updateSubOrganization={{this.updateSubOrganization}}
+            @removeSubOrganization={{this.removeSubOrganization}}
+          />
+        {{/if}}
+        {{#if this.isOCMW}}
+          <RelatedOrganizations::EditOcmw
+            @model={{@model}}
+            @isAntwerpen={{this.isAntwerpen}}
+            @addNewSubOrganization={{this.addNewSubOrganization}}
+            @updateSubOrganization={{this.updateSubOrganization}}
+            @removeSubOrganization={{this.removeSubOrganization}}
+          />
+        {{/if}}
+        {{#if this.isProvince}}
+          <RelatedOrganizations::EditProvince
+            @model={{@model}}
+            @addNewSubOrganization={{this.addNewSubOrganization}}
+            @updateSubOrganization={{this.updateSubOrganization}}
+            @removeSubOrganization={{this.removeSubOrganization}}
+          />
         {{/if}}
       </div>
     </form>

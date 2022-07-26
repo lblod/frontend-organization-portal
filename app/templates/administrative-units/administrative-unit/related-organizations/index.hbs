@@ -19,120 +19,23 @@
     </PageHeader>
 
     {{#if this.isWorshipService}}
-      <div>
-        Om de gerelateerde gemeenten te zien, ga naar
-        <LinkTo
-          class="au-c-link"
-          @model={{@model.administrativeUnit.id}}
-          @route="administrative-units.administrative-unit.local-involvements.index"
-        >
-          Betrokken lokale besturen
-        </LinkTo>
-      </div>
+      <RelatedOrganizations::ViewWorshipService @model={{@model}} />
+    {{/if}}
+    {{#if this.isCentralWorshipService}}
+      <RelatedOrganizations::ViewCentralWorshipService @model={{@model}} />
+    {{/if}}
+    {{#if this.isDistrict}}
+      <RelatedOrganizations::ViewDistrict @model={{@model}} />
+    {{/if}}
+    {{#if this.isMunicipality}}
+      <RelatedOrganizations::ViewMunicipality @model={{@model}} />
+    {{/if}}
+    {{#if this.isOCMW}}
+      <RelatedOrganizations::ViewOcmw @model={{@model}} />
+    {{/if}}
+    {{#if this.isProvince}}
+      <RelatedOrganizations::ViewProvince @model={{@model}} />
     {{/if}}
 
-    {{#unless this.isProvince}}
-      <DataCard>
-        <:title>Behoort tot</:title>
-        <:card as |Card|>
-          <Card.Columns>
-            <:left as |Item|>
-              {{#if @model.isAssociatedWith.name}}
-                {{#if this.isWorshipAdministrativeUnit}}
-                  <Item>
-                    <:label>Representatief orgaan</:label>
-                    <:content>
-                      <AuLink @route="organizations.organization.core-data" @model={{@model.isAssociatedWith.id}}>
-                        {{@model.isAssociatedWith.name}}
-                      </AuLink>
-                    </:content>
-                  </Item>
-                {{else}}
-                  <Item>
-                    <:label>{{#if this.isOCMW}} Gemeente {{else}} OCMW {{/if}}</:label>
-                    <:content>
-                      <AuLink @route="administrative-units.administrative-unit.core-data" @model={{@model.isAssociatedWith.id}}>
-                        {{@model.isAssociatedWith.name}}
-                      </AuLink>
-                    </:content>
-                  </Item>
-                {{/if}}
-              {{/if}}
-              {{#if @model.isSubOrganizationOf.name}}
-                <Item>
-                  <:label>
-                    {{#if this.isWorshipAdministrativeUnit}}
-                      Centraal bestuur
-                    {{else if (or this.isDistrict)}}
-                      Gemeente
-                    {{else}}
-                      Provincie
-                    {{/if}}
-                  </:label>
-                  <:content>
-                    <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
-                      {{@model.isSubOrganizationOf.name}}
-                    </AuLink>
-                  </:content>
-                </Item>
-              {{/if}}
-              {{#if (and this.isDistrict @model.administrativeUnit.isSubOrganizationOf)}}
-                <Item>
-                  <:label>
-                    Provincie
-                  </:label>
-                  <:content>
-                    <AuLink @route="administrative-units.administrative-unit" @model={{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.id}}>
-                      {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
-                    </AuLink>
-                  </:content>
-                </Item>
-                <Item>
-                  <:label>OCMW</:label>
-                  <:content>
-                    <AuLink @route="administrative-units.administrative-unit" @model={{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.id}}>
-                      {{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.name}}
-                    </AuLink>
-                  </:content>
-                </Item>
-              {{/if}}
-            </:left>
-          </Card.Columns>
-        </:card>
-      </DataCard>
-    {{/unless}}
-
-    {{#if @model.subOrganizations.length}}
-      <div>
-        <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
-          Heeft relatie met
-        </AuHeading>
-        <AuDataTable id="subOrganizations" @content={{this.model.subOrganizations}}
-          @noDataMessage="Geen bestuur" as |t|>
-          <t.content as |c|>
-            <c.header>
-              <AuDataTableThSortable @field="classification.label" @currentSorting={{this.sort}}
-                @label="Type organisatie" />
-              <AuDataTableThSortable @field="name" @currentSorting={{this.sort}} @label="Organisatie" />
-              <AuDataTableThSortable @field="organizationStatus.label" @currentSorting={{this.sort}} @label="Status" />
-            </c.header>
-            <c.body as |subOrganization|>
-              <td>
-                {{subOrganization.classification.label}}
-              </td>
-              <td>
-                <AuLink @route="administrative-units.administrative-unit" @model={{subOrganization.id}}>
-                  {{subOrganization.name}}
-                </AuLink>
-              </td>
-              <td>
-                <OrganizationStatus @id={{subOrganization.organizationStatus.id}}
-                  @label={{subOrganization.organizationStatus.label}} />
-              </td>
-            </c.body>
-          </t.content>
-        </AuDataTable>
-      </div>
-    {{/if}}
   </div>
 </div>

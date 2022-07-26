@@ -1,0 +1,42 @@
+<div>
+  Om de gerelateerde gemeenten te zien, ga naar
+  <LinkTo
+    class="au-c-link"
+    @model={{@model.administrativeUnit.id}}
+    @route="administrative-units.administrative-unit.local-involvements.index"
+  >
+    Betrokken lokale besturen
+  </LinkTo>
+</div>
+
+<DataCard>
+  <:title>Behoort tot</:title>
+  <:card as |Card|>
+    <Card.Columns>
+      <:left as |Item|>
+        {{#if @model.isAssociatedWith.name}}
+          <Item>
+            <:label>Representatief orgaan</:label>
+            <:content>
+              <AuLink @route="organizations.organization.core-data" @model={{@model.isAssociatedWith.id}}>
+                {{@model.isAssociatedWith.name}}
+              </AuLink>
+            </:content>
+          </Item>
+        {{/if}}
+        {{#if @model.isSubOrganizationOf}}
+          <Item>
+            <:label>
+                Centraal bestuur
+            </:label>
+            <:content>
+              <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
+                {{@model.isSubOrganizationOf.name}}
+              </AuLink>
+            </:content>
+          </Item>
+        {{/if}}
+      </:left>
+    </Card.Columns>
+  </:card>
+</DataCard>
