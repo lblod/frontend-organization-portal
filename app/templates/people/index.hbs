@@ -139,7 +139,14 @@
                   @route="administrative-units.administrative-unit"
                   @model={{person.organization_id}}
                 >
-                  {{person.organization_name}} ({{person.organization_classification}})
+                  {{person.organization_name}}
+
+                  {{#if (not (or
+                                (eq person.organization_classification "Centraal bestuur van de eredienst")
+                                (eq person.organization_classification "Bestuur van de eredienst")
+                  ))}}
+                    ({{person.organization_classification}})
+                  {{/if}}
                 </AuLink>
               {{/if}}
             </td>
