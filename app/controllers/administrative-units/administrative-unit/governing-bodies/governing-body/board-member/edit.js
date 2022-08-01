@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import { isWorshipMember } from 'frontend-organization-portal/models/board-position';
+import { isWorshipMember } from 'frontend-organization-portal/models/board-position-code';
 import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';

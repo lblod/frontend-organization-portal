@@ -18,7 +18,7 @@ const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.SUSPENSION_OF_RECOGNITION]: ORGANIZATION_STATUS.INACTIVE,
   [CHANGE_EVENT_TYPE.SANCTIONED]: ORGANIZATION_STATUS.ACTIVE,
   [CHANGE_EVENT_TYPE.CITY]: ORGANIZATION_STATUS.ACTIVE,
-  // MERGER isn't added here since it has multiple resulting statuses based on the resulting organization
+  // MERGER and FUSIE aren't added here since they have multiple resulting statuses based on the resulting organization
 };
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewController extends Controller {
@@ -127,7 +127,10 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
         for (let organization of allOriginalOrganizations) {
           let resultingStatusId;
 
-          if (changeEventType.id === CHANGE_EVENT_TYPE.MERGER) {
+          if (
+            changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
+            changeEventType.id === CHANGE_EVENT_TYPE.FUSIE
+          ) {
             if (formState.isCentralWorshipService) {
               resultingStatusId = ORGANIZATION_STATUS.INACTIVE;
             } else {
@@ -151,7 +154,10 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
           );
         }
 
-        if (changeEventType.id === CHANGE_EVENT_TYPE.MERGER) {
+        if (
+          changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
+          changeEventType.id === CHANGE_EVENT_TYPE.FUSIE
+        ) {
           changeEvent.resultingOrganizations.pushObject(
             formState.resultingOrganization
           );
@@ -263,6 +269,7 @@ async function createChangeEventResult({
 function canChangeMultipleOrganizations(changeEventType) {
   return (
     changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
+    changeEventType.id === CHANGE_EVENT_TYPE.FUSIE ||
     changeEventType.id === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
   );
 }

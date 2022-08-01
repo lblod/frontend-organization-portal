@@ -46,6 +46,15 @@
             </AuNavigationNestedLink>
           </li>
         {{/if}}
+        {{#unless this.isWorshipAdministrativeUnit}}
+          <li class="au-c-list-navigation__item">
+            <AuNavigationNestedLink
+              @route="administrative-units.administrative-unit.executives"
+            >
+              Leidinggevenden
+            </AuNavigationNestedLink>
+          </li>
+        {{/unless}}
         {{#unless this.isProvince}}
           <li class="au-c-list-navigation__item">
             <AuNavigationNestedLink

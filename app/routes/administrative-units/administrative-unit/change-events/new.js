@@ -137,12 +137,16 @@ class FormState {
     let changeEventTypeId = this.changeEventType?.id;
     return (
       changeEventTypeId === CHANGE_EVENT_TYPE.MERGER ||
+      changeEventTypeId === CHANGE_EVENT_TYPE.FUSIE ||
       changeEventTypeId === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
     );
   }
 
   get shouldSelectMultipleOriginalOrganizations() {
-    return this.changeEventType.id === CHANGE_EVENT_TYPE.MERGER;
+    return (
+      this.changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
+      this.changeEventType.id === CHANGE_EVENT_TYPE.FUSIE
+    );
   }
 
   get canCancelSelectingOriginalOrganization() {
@@ -160,7 +164,10 @@ class FormState {
   }
 
   get shouldSelectResultingOrganization() {
-    return this.changeEventType?.id === CHANGE_EVENT_TYPE.MERGER;
+    return (
+      this.changeEventType?.id === CHANGE_EVENT_TYPE.MERGER ||
+      this.changeEventType?.id === CHANGE_EVENT_TYPE.FUSIE
+    );
   }
 
   get allOriginalOrganizations() {

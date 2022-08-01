@@ -10,6 +10,11 @@ export default class PersonModel extends Model {
   })
   mandatories;
 
+  @hasMany('mandatory', {
+    inverse: 'governingAlias',
+  })
+  agents;
+
   @hasMany('agent-in-position', {
     inverse: 'person',
   })

@@ -40,7 +40,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
     mandatory.isCurrentPosition = true;
     if (positionId) {
-      let role = await this.store.findRecord('board-position', positionId);
+      let role = await this.store.findRecord('board-position-code', positionId);
       mandatory.role = role;
       mandatory.typeHalf = undefined;
     }

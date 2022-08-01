@@ -64,30 +64,49 @@ export default class ContactDetailsService extends Service {
       secondaryContact: secondaryContact,
     };
   }
+
+  async agentToPosition(agent, onlyActivePosition = true) {
+    const boardPosition = await agent.boardPosition;
+    if (onlyActivePosition && !isActivePosition(agent.endDate)) {
+      return null;
+    }
+    const role = await boardPosition.roleBoard;
+    const governingBody = await boardPosition.governingBody;
+    const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
+    const administrativeUnit = await isTimeSpecializationOf.administrativeUnit;
+    const mContacts = await boardPosition.contacts;
+    return {
+      position: agent,
+      title: `${role.label}, ${administrativeUnit.name}`,
+      role: role.label,
+      type: 'agent',
+      id: agent.id,
+      startDate: agent.startDate,
+      endDate: agent.endDate,
+      administrativeUnit,
+      primaryContact: mContacts,
+    };
+  }
+
   async getPersonAndAllPositions(personId) {
     let person = await this.store.findRecord('person', personId, {
       reload: true,
-      include: [
-        'mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit.classification',
-        'mandatories.contacts',
-        'mandatories.contacts.contact-address',
-        'mandatories.mandate.role-board',
-
-        'agents-in-position',
-        'agents-in-position.contacts',
-        'agents-in-position.contacts.contact-address',
-
-        'agents-in-position.position.function',
-        'agents-in-position.position.worship-service',
-      ].join(),
     });
     const positions = [];
-    const mandatories = person.mandatories.toArray();
 
-    const ministers = person.agentsInPosition.toArray();
+    const mandatories = (await person.mandatories).toArray(); // mandatarissen
+    const agents = (await person.agents).toArray(); // leidinggevenden
+    const ministers = (await person.agentsInPosition).toArray(); // bedinaren
 
     for (let mandatory of mandatories) {
       const position = await this.mandatoryToPosition(mandatory);
+      if (position) {
+        positions.push(position);
+      }
+    }
+
+    for (let agent of agents) {
+      const position = await this.agentToPosition(agent);
       if (position) {
         positions.push(position);
       }

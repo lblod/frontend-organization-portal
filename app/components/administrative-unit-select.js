@@ -22,7 +22,7 @@ export default class AdministrativeUnitSelectComponent extends Component {
     const selectedPositionId = this.args.selectedPosition;
 
     if (selectedPositionId) {
-      let boardPositions = yield this.store.query('board-position', {
+      let boardPositionCodes = yield this.store.query('board-position-code', {
         filter: {
           ':id:': selectedPositionId,
         },
@@ -45,8 +45,8 @@ export default class AdministrativeUnitSelectComponent extends Component {
         ) {
           allowedClassificationCodes = [CLASSIFICATION_CODE.WORSHIP_SERVICE];
         }
-      } else if (boardPositions.length) {
-        const selectedPosition = boardPositions.firstObject;
+      } else if (boardPositionCodes.length) {
+        const selectedPosition = boardPositionCodes.firstObject;
         const governingBodyClassification = yield selectedPosition.appliesTo;
         const classificationOption =
           yield governingBodyClassification.appliesWithin;

@@ -33,7 +33,7 @@ export default class PositionSelectComponent extends Component {
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
     yield Promise.resolve();
 
-    let boardPositions = [];
+    let boardPositionCodes = [];
     let ministerPositions = [];
 
     // Filter out blacklisted data if an administrative unit is selected
@@ -53,7 +53,7 @@ export default class PositionSelectComponent extends Component {
 
       const classification = yield administrativeUnit.classification;
 
-      boardPositions = yield this.store.query('board-position', {
+      boardPositionCodes = yield this.store.query('board-position-code', {
         'filter[applies-to][applies-within][:id:]': classification.id,
       });
 
@@ -63,7 +63,7 @@ export default class PositionSelectComponent extends Component {
         );
       }
     } else {
-      boardPositions = yield this.store.findAll('board-position');
+      boardPositionCodes = yield this.store.findAll('board-position-code');
 
       ministerPositions = yield this.store.findAll(
         'minister-position-function'
@@ -74,12 +74,12 @@ export default class PositionSelectComponent extends Component {
     if (ministerPositions.length) {
       positions = [
         ...ministerPositions.toArray(),
-        ...boardPositions.toArray(),
+        ...boardPositionCodes.toArray(),
       ].sort(function (a, b) {
         return a.label.localeCompare(b.label);
       });
     } else {
-      positions = [...boardPositions.toArray()].sort(function (a, b) {
+      positions = [...boardPositionCodes.toArray()].sort(function (a, b) {
         return a.label.localeCompare(b.label);
       });
     }

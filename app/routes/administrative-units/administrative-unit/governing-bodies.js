@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { EXECUTIVE_ORGANEN } from 'frontend-organization-portal/models/governing-body-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute extends Route {
   @service store;
@@ -23,14 +24,19 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
     let governingBodies = [];
 
     for (let governingBody of untimedGoverningBodies.toArray()) {
-      const timedGoverningBodies = governingBody
-        ? (await governingBody.hasTimeSpecializations)
-            .toArray()
-            .sort((a, b) => {
-              return b.endDate - a.endDate;
-            })
-        : [];
-      governingBodies.push(...timedGoverningBodies);
+      const governingBodyClassification = await governingBody.classification;
+      if (
+        !EXECUTIVE_ORGANEN.find((id) => id === governingBodyClassification.id)
+      ) {
+        const timedGoverningBodies = governingBody
+          ? (await governingBody.hasTimeSpecializations)
+              .toArray()
+              .sort((a, b) => {
+                return b.endDate - a.endDate;
+              })
+          : [];
+        governingBodies.push(...timedGoverningBodies);
+      }
     }
 
     return {

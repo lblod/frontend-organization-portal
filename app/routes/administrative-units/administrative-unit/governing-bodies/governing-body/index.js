@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import {
   BOARD_MEMBER_ROLES,
   MANDATARIES_ROLES,
-} from 'frontend-organization-portal/models/board-position';
+} from 'frontend-organization-portal/models/board-position-code';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyIndexRoute extends Route {
   @service store;

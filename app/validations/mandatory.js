@@ -1,6 +1,6 @@
 import { validatePresence } from 'ember-changeset-validations/validators';
 import { validateConditionally } from 'frontend-organization-portal/validators/validate-conditionally';
-import { isWorshipMember } from '../models/board-position';
+import { isWorshipMember } from '../models/board-position-code';
 
 const mandatoryValidations = {
   typeHalf: validateConditionally(

@@ -5,7 +5,7 @@ import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import {
   BOARD_MEMBER_ROLES,
   MANDATARIES_ROLES,
-} from 'frontend-organization-portal/models/board-position';
+} from 'frontend-organization-portal/models/board-position-code';
 
 export default class MandateRoleSelectComponent extends Component {
   @service store;
@@ -29,7 +29,7 @@ export default class MandateRoleSelectComponent extends Component {
         .classification;
 
       // Only get positions available for this type of administrative unit
-      positions = yield this.store.query('board-position', {
+      positions = yield this.store.query('board-position-code', {
         'filter[applies-to][applies-within][:id:]': classification.id,
       });
 
@@ -46,7 +46,7 @@ export default class MandateRoleSelectComponent extends Component {
         );
       }
     } else {
-      positions = yield this.store.findAll('board-position');
+      positions = yield this.store.findAll('board-position-code');
     }
     return positions;
   }

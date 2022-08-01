@@ -1,0 +1,58 @@
+{{page-title "Leidinggevenden"}}
+
+{{breadcrumb
+  "Leidinggevenden"
+  route="administrative-units.administrative-unit.executives"
+  model=(params-for "administrative-units.administrative-unit" param="id")
+}}
+
+<PageHeader class="au-o-box">
+  <:title>Leidinggevenden</:title>
+  <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+</PageHeader>
+
+<AuDataTable
+  @content={{@model.agents}}
+  @noDataMessage="Geen bedienaren"
+  as |t|
+>
+  <t.content as |c|>
+    <c.header>
+      <th class="au-c-data-table__header-title">Voornaam</th>
+      <th class="au-c-data-table__header-title">Achternaam</th>
+      <th class="au-c-data-table__header-title">Rol</th>
+      <th class="au-c-data-table__header-title">Status</th>
+      <th class="au-c-data-table__header-title">Start periode</th>
+      <th class="au-c-data-table__header-title">Einde periode</th>
+    </c.header>
+    <c.body as |agent|>
+        <td>
+          <AuLink @route="people.person" @model={{agent.governingAlias.id}}>
+            {{agent.governingAlias.givenName}}
+          </AuLink>
+        </td>
+        <td>
+          <AuLink @route="people.person" @model={{agent.governingAlias.id}}>
+            {{agent.governingAlias.familyName}}
+          </AuLink>
+        </td>
+        <td>
+          <AuLink
+            @route="people.person.positions.agent"
+            @models={{array agent.governingAlias.id agent.id}}
+          >
+            {{agent.boardPosition.roleBoard.label}}
+          </AuLink>
+        </td>
+        <td>
+          {{agent.status.label}}
+        </td>
+        <td>
+          {{date-format agent.startDate}}
+        </td>
+        <td>
+          {{date-format agent.endDate}}
+        </td>
+    </c.body>
+  </t.content>
+</AuDataTable>

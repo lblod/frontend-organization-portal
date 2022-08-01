@@ -1,0 +1,115 @@
+{{#let
+  @model.agent.boardPosition.governingBody.isTimeSpecializationOf
+  @model.agent.boardPosition.governingBody.isTimeSpecializationOf.administrativeUnit
+  as |governingBody administrativeUnit|
+}}
+  <div class="au-c-body-container au-c-body-container--scroll">
+    <div class="au-o-box au-o-flow au-o-flow--large">
+      <PageHeader>
+        <:title>
+          Positie:
+          {{@model.agent.boardPosition.roleBoard.label}},
+          <br />
+          {{governingBody.classification.label}}
+          {{governingBody.administrativeUnit.name}}
+        </:title>
+        <:subtitle>
+          {{@model.person.givenName}}
+          {{@model.person.familyName}}
+        </:subtitle>
+      </PageHeader>
+
+      <DataCard>
+        <:title>Positie</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item>
+                <:label>Type</:label>
+                <:content>Functionaris</:content>
+              </Item>
+              <Item>
+                <:label>Bestuursfunctie</:label>
+                <:content
+                >{{@model.agent.boardPosition.roleBoard.label}}</:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item>
+                <:label>Naam bestuur</:label>
+                <:content>
+                  <AuLink
+                    @route="administrative-units.administrative-unit"
+                    @model={{administrativeUnit.id}}
+                  >
+                    {{administrativeUnit.name}}
+                  </AuLink>
+                </:content>
+              </Item>
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+
+      <Position::ContactDataCard
+        @address={{@model.address}}
+        @primaryContact={{@model.contact}}
+        @secondaryContact={{@model.secondaryContact}}
+      />
+
+      <DataCard>
+        <:title>Aanstelling</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              {{#if @model.mandatory.startDate}}
+                <Item>
+                  <:label>Start mandaat</:label>
+                  <:content>
+                    {{date-format @model.mandatory.startDate}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if @model.mandatory.expectedEndDate}}
+                <Item>
+                  <:label>Geplande einddatum</:label>
+                  <:content>
+                    {{date-format @model.mandatory.expectedEndDate}}
+                  </:content>
+                </Item>
+              {{/if}}
+            </:left>
+            <:right as |Item|>
+              {{#if @model.agent.boardPosition.governingBody.period}}
+                <Item>
+                  <:label>Bestuursperiode</:label>
+                  <:content>
+                    {{@model.agent.boardPosition.governingBody.period}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if @model.mandatory.typeHalf.label}}
+                <Item>
+                  <:label>Verkozen</:label>
+                  <:content>{{@model.mandatory.typeHalf.label}}</:content>
+                </Item>
+              {{/if}}
+              {{#if @model.mandatory.endDate}}
+                <Item>
+                  <:label>Einddatum</:label>
+                  <:content>{{date-format @model.mandatory.endDate}}</:content>
+                </Item>
+              {{/if}}
+              {{#if @model.mandatory.reasonStopped}}
+                <Item>
+                  <:label>Stopzetting</:label>
+                  <:content>{{@model.mandatory.reasonStopped}}</:content>
+                </Item>
+              {{/if}}
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+    </div>
+  </div>
+{{/let}}

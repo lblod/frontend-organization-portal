@@ -194,11 +194,16 @@
                       >
                         {{position.role}}
                       </AuLink>
-
-                    {{else}}
-
+                    {{else if (eq position.type "mandatory")}}
                       <AuLink
                         @route="people.person.positions.mandatory"
+                        @models={{array @model.person.id position.id}}
+                      >
+                        {{position.role}}
+                      </AuLink>
+                    {{else}}
+                      <AuLink
+                        @route="people.person.positions.agent"
                         @models={{array @model.person.id position.id}}
                       >
                         {{position.role}}

@@ -34,6 +34,9 @@ Router.map(function () {
             this.route('edit');
           }
         );
+        this.route('agent', { path: '/functionaris/:agentId/' }, function () {
+          this.route('edit');
+        });
       });
     });
     this.route('new', { path: '/nieuw' });
@@ -80,6 +83,7 @@ Router.map(function () {
         this.route('ministers', { path: '/bedienaren' }, function () {
           this.route('new', { path: '/nieuwe-bedienaar' });
         });
+        this.route('executives', { path: '/leidinggevenden' });
         this.route(
           'local-involvements',
           { path: '/betrokken-lokale-besturen' },

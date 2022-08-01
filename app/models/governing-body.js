@@ -29,6 +29,11 @@ export default class GoverningBodyModel extends Model {
   })
   mandates;
 
+  @hasMany('board-position', {
+    inverse: 'governingBody',
+  })
+  boardPositions;
+
   get period() {
     let period = '-';
     if (this.startDate && this.endDate) {

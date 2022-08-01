@@ -92,7 +92,7 @@
           <Card.Columns>
             <:left as |Item|>
               <Item
-                @labelFor="board-position"
+                @labelFor="board-position-code"
                 @required={{true}}
                 @errorMessage={{@model.mandatory.error.role.validation}}
               >
@@ -103,7 +103,7 @@
                     @selectedAdministrativeUnit={{@model.administrativeUnit}}
                     @isInBestuursledenContext={{true}}
                     @onChange={{this.handleMandateRoleSelect}}
-                    @id="board-position"
+                    @id="board-position-code"
                     @error={{errorMessage}}
                   />
                 </:content>
