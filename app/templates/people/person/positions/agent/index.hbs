@@ -62,19 +62,19 @@
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              {{#if @model.mandatory.startDate}}
+              {{#if @model.agent.startDate}}
                 <Item>
                   <:label>Start mandaat</:label>
                   <:content>
-                    {{date-format @model.mandatory.startDate}}
+                    {{date-format @model.agent.startDate}}
                   </:content>
                 </Item>
               {{/if}}
-              {{#if @model.mandatory.expectedEndDate}}
+              {{#if @model.agent.expectedEndDate}}
                 <Item>
                   <:label>Geplande einddatum</:label>
                   <:content>
-                    {{date-format @model.mandatory.expectedEndDate}}
+                    {{date-format @model.agent.expectedEndDate}}
                   </:content>
                 </Item>
               {{/if}}
@@ -88,22 +88,10 @@
                   </:content>
                 </Item>
               {{/if}}
-              {{#if @model.mandatory.typeHalf.label}}
-                <Item>
-                  <:label>Verkozen</:label>
-                  <:content>{{@model.mandatory.typeHalf.label}}</:content>
-                </Item>
-              {{/if}}
-              {{#if @model.mandatory.endDate}}
+              {{#if @model.agent.endDate}}
                 <Item>
                   <:label>Einddatum</:label>
-                  <:content>{{date-format @model.mandatory.endDate}}</:content>
-                </Item>
-              {{/if}}
-              {{#if @model.mandatory.reasonStopped}}
-                <Item>
-                  <:label>Stopzetting</:label>
-                  <:content>{{@model.mandatory.reasonStopped}}</:content>
+                  <:content>{{date-format @model.agent.endDate}}</:content>
                 </Item>
               {{/if}}
             </:right>

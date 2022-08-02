@@ -134,21 +134,21 @@
               </AuLink>
             </td>
             <td>
-              {{#if person.organization_id}}
+              {{#each person.organizations as |organization|}}
                 <AuLink
                   @route="administrative-units.administrative-unit"
-                  @model={{person.organization_id}}
+                  @model={{organization.id}}
                 >
                   {{person.organization_name}}
 
                   {{#if (not (or
-                                (eq person.organization_classification "Centraal bestuur van de eredienst")
-                                (eq person.organization_classification "Bestuur van de eredienst")
+                                (eq organization.classification "Centraal bestuur van de eredienst")
+                                (eq organization.classification "Bestuur van de eredienst")
                   ))}}
-                    ({{person.organization_classification}})
+                    ({{organization.classification}})
                   {{/if}}
                 </AuLink>
-              {{/if}}
+              {{/each}}
             </td>
             <td>
               <AuLink

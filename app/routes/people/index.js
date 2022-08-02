@@ -68,8 +68,31 @@ export default class PeopleIndexRoute extends Route {
         person.positionRoute = 'people.person.positions.minister';
       } else if (person.uri.includes('/mandatarissen/')) {
         person.positionRoute = 'people.person.positions.mandatory';
+      } else if (person.uri.includes('/functionarissen/')) {
+        person.positionRoute = 'people.person.positions.agent';
+      }
+
+      // In the case of functionarissen, a bestuursfunctie is linked to multiple units (OCMW and Gemeente)
+      person.organizations = [];
+      if (Array.isArray(person.organization_id)) {
+        let i = 0;
+        person.organization_id.map((id) => {
+          person.organizations.push({
+            id: id,
+            classification: person.organization_classification[i],
+          });
+          i++;
+        });
+      } else {
+        person.organizations = [
+          {
+            id: person.organization_id,
+            classification: person.organization_classification,
+          },
+        ];
       }
     }
+
     return page;
   }
 }

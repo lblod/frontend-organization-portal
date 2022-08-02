@@ -9,18 +9,13 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
 
     let person = await this.store.findRecord('person', personId, {
       reload: true,
-      include: [
-        'mandatories.mandate.role-board',
-        'mandatories.mandate.governing-body.is-time-specialization-of.administrative-unit',
-        'agents-in-position',
-        'agents-in-position.position.function',
-        'agents-in-position.position.worship-service',
-      ].join(),
     });
-    const positions = [];
-    const mandatories = person.mandatories.toArray();
 
-    const ministers = person.agentsInPosition.toArray();
+    const positions = [];
+
+    const mandatories = (await person.mandatories).toArray(); // mandatarissen
+    const agents = (await person.agents).toArray(); // leidinggevenden
+    const ministers = (await person.agentsInPosition).toArray(); // bedinaren
 
     for (let mandatory of mandatories) {
       const mandate = await mandatory.mandate;
@@ -35,6 +30,23 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
         id: mandatory.id,
         startDate: mandatory.startDate,
         endDate: mandatory.endDate,
+        administrativeUnit,
+      });
+    }
+
+    for (let agent of agents) {
+      const boardPosition = await agent.boardPosition;
+      const role = await boardPosition.roleBoard;
+      const governingBody = await boardPosition.governingBody;
+      const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
+      const administrativeUnit =
+        await isTimeSpecializationOf.administrativeUnit;
+      positions.push({
+        role: role.label,
+        type: 'agent',
+        id: agent.id,
+        startDate: agent.startDate,
+        endDate: agent.endDate,
         administrativeUnit,
       });
     }
