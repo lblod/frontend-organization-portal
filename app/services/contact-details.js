@@ -15,6 +15,20 @@ import {
 export default class ContactDetailsService extends Service {
   @service store;
 
+  isAllFieldsEmpty(contact) {
+    if (!contact) {
+      return true;
+    }
+    let { primaryContact, secondaryContact, address } = contact;
+    return (
+      !address?.street?.length &&
+      !address?.province?.length &&
+      !primaryContact?.email?.length &&
+      !primaryContact?.telephone?.length &&
+      !secondaryContact?.telephone?.length
+    );
+  }
+
   async ministerToPosition(minister, onlyActivePosition = true) {
     if (onlyActivePosition && !isActivePosition(minister.agentEndDate)) {
       return null;

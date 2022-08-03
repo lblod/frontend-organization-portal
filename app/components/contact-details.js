@@ -6,13 +6,11 @@ import { inject as service } from '@ember/service';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import contactValidations from 'frontend-organization-portal/validations/contact-point';
 import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
-import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { getAddressValidations } from 'frontend-organization-portal/validations/address';
 import {
   createPrimaryContact,
   createSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
-import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
 export default class ContactDetailsComponent extends Component {
   @tracked editingContact;
@@ -23,6 +21,7 @@ export default class ContactDetailsComponent extends Component {
   @tracked isNew;
   @service store;
   @service router;
+  @service contactDetails;
 
   constructor() {
     super(...arguments);
@@ -80,7 +79,6 @@ export default class ContactDetailsComponent extends Component {
       }
     }
   }
-
   @action
   fixErrorAndSelect(contact) {
     this.isNew = false;
@@ -116,6 +114,7 @@ export default class ContactDetailsComponent extends Component {
       position,
       title,
     };
+    this.args.onUpdate(this.editingContact);
   }
 
   @action
@@ -140,6 +139,7 @@ export default class ContactDetailsComponent extends Component {
       address: createValidatedChangeset(address, getAddressValidations()),
     };
     this.editingContact = editing;
+    this.args.onUpdate(this.editingContact);
   }
 
   @dropTask
@@ -196,54 +196,7 @@ export default class ContactDetailsComponent extends Component {
   }
 
   get isAllFieldsEmpty() {
-    let { primaryContact, secondaryContact, address } = this.editingContact;
-    return (
-      !address?.street?.length &&
-      !address?.province?.length &&
-      !primaryContact?.email?.length &&
-      !primaryContact?.telephone?.length &&
-      !secondaryContact?.telephone?.length
-    );
-  }
-
-  @dropTask
-  *saveContact(event) {
-    event.preventDefault();
-    let { primaryContact, secondaryContact, address, position, title } =
-      this.editingContact;
-    yield primaryContact.validate();
-    yield secondaryContact.validate();
-    yield address.validate();
-    let valid =
-      primaryContact.isValid && secondaryContact.isValid && address.isValid;
-    if (valid) {
-      if (address.isDirty) {
-        address.fullAddress = combineFullAddress(address);
-        address = setEmptyStringsToNull(address);
-      }
-      primaryContact.contactAddress = address;
-
-      primaryContact = setEmptyStringsToNull(primaryContact);
-      secondaryContact = setEmptyStringsToNull(secondaryContact);
-
-      this.selectedContact = {
-        primaryContact,
-        secondaryContact,
-        address,
-        position,
-        title,
-      };
-
-      this.positions = [
-        ...this.reloadPositions().filter(
-          (p) =>
-            p.primaryContact?.id !== this.selectedContact?.primaryContact?.id
-        ),
-        this.selectedContact,
-      ];
-      this.editingContact = null;
-      yield this.args.onUpdate(this.selectedContact);
-    }
+    return this.contactDetails.isAllFieldsEmpty(this.editingContact);
   }
 
   get isSelectedContactNewContact() {

@@ -45,8 +45,9 @@
                 >
                   <:label>Voornaam</:label>
                   <:content as |hasError|>
-                    <AuInput
+                    <TrimInput
                       @value={{@model.person.givenName}}
+                      @onUpdate={{fn (mut @model.person.givenName)}}
                       @width="block"
                       @error={{hasError}}
                       id="person-given-name"
@@ -60,9 +61,10 @@
                 >
                   <:label>Achternaam</:label>
                   <:content as |hasError|>
-                    <AuInput
+                    <TrimInput
                       @width="block"
                       @value={{@model.person.familyName}}
+                      @onUpdate={{fn (mut @model.person.familyName)}}
                       @error={{hasError}}
                       id="person-family-name"
                     />
@@ -71,9 +73,10 @@
                 <Item @labelFor="person-used-name">
                   <:label>Roepnaam</:label>
                   <:content>
-                    <AuInput
+                    <TrimInput
                       @width="block"
                       @value={{@model.person.firstNameUsed}}
+                      @onUpdate={{fn (mut @model.person.firstNameUsed)}}
                       id="person-used-name"
                     />
                   </:content>

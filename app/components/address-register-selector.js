@@ -15,7 +15,6 @@ export default class AddressRegisterSelectorComponent extends Component {
     super(...arguments);
 
     this.addressRegister.setup({ endpoint: '/adresses-register' });
-
     if (this.args.address) {
       let addressSuggestion = this.args.address;
 
@@ -27,6 +26,7 @@ export default class AddressRegisterSelectorComponent extends Component {
 
   @task
   *selectSuggestion(addressSuggestion) {
+    this.args.onChange(null);
     this.addressSuggestion = addressSuggestion;
 
     if (addressSuggestion) {
@@ -50,8 +50,6 @@ export default class AddressRegisterSelectorComponent extends Component {
           ).values(),
         ],
       });
-    } else {
-      this.args.onChange(null);
     }
   }
 

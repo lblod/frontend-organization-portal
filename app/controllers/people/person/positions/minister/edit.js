@@ -15,6 +15,7 @@ const FINANCING_CODE = {
 export default class PeoplePersonPositionsMinisterEditController extends Controller {
   @service router;
   @service store;
+  @service contactDetails;
   @tracked computedContactDetails;
   @tracked willReceiveFinancing;
   @tracked redirectUrl;
@@ -81,8 +82,11 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
     ) {
       let contactValid = true;
       let primaryContactId = null;
+      let allContactFieldsEmpty = this.contactDetails.isAllFieldsEmpty(
+        this.computedContactDetails
+      );
 
-      if (this.computedContactDetails) {
+      if (this.computedContactDetails && !allContactFieldsEmpty) {
         let { primaryContact, secondaryContact, address } =
           this.computedContactDetails;
 
@@ -132,7 +136,11 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
 
         const oldPrimaryContactId = this.model.contact?.primaryContact?.id;
 
-        if (primaryContactId && primaryContactId !== oldPrimaryContactId) {
+        if (
+          !allContactFieldsEmpty &&
+          primaryContactId &&
+          primaryContactId !== oldPrimaryContactId
+        ) {
           const positionsWithSameOldAddress = this.model.allContacts?.filter(
             (c) =>
               c?.primaryContact?.id === oldPrimaryContactId &&

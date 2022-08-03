@@ -193,8 +193,9 @@
                     <Item @labelFor="reason-stop">
                       <:label>Reden stopzetting </:label>
                       <:content>
-                        <AuInput
+                        <TrimInput
                           @value={{@model.mandatory.reasonStopped}}
+                          @onUpdate={{fn (mut @model.mandatory.reasonStopped)}}
                           @width="block"
                           id="reason-stop"
                         />

@@ -1,0 +1,275 @@
+{{#let (unique-id) as |id|}}
+  {{#if this.isAddressSearchMode}}
+    <td width="20%">
+      <AddressRegisterSelector
+        @id="{{id}}-address-search"
+        @width="block"
+        @address={{@address}}
+        @onChange={{this.handleAddressChange}}
+        @error={{@errorMessage}}
+      />
+      {{#if @errorMessage}}
+        <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
+      {{/if}}
+      <p class="au-u-margin-top-tiny">
+        <AuButton @skin="link" {{on "click" this.toggleInputMode}}>
+          Vul adres manueel in
+        </AuButton>
+      </p>
+    </td>
+
+    <td width="10%">
+      <AddressRegisterBusNumberSelector
+        @id="{{id}}-address-search-bus-select"
+        @address={{this.addressWithBusNumber}}
+        @options={{this.addressesWithBusNumbers}}
+        @onChange={{this.handleBusNumberChange}}
+        @width="block"
+        @disabled={{this.isBusNumberSelectionDisabled}}
+        @placeholder={{if
+          this.showBusNumbersNotAvailableMessage
+          "Geen busnummer beschikbaar"
+          @address.boxNumber
+        }}
+      />
+      {{#if this.selectedAddress}}
+        <AuHelpText>
+          Staat het correcte busnummer niet in de lijst?
+          <AuLinkExternal href="mailto:{{config 'contactEmail'}}">Mail ons</AuLinkExternal>
+        </AuHelpText>
+      {{/if}}
+    </td>
+
+    <td width="15%">
+      <ProvinceSelect
+        @selected={{@address.province}}
+        @selectedMunicipality={{@address.municipality}}
+        @onChange={{fn (mut @address.province)}}
+        @id="{{id}}-contact-address-province"
+        @error={{@errorMessage}}
+      />
+      {{#if @errorMessage}}
+        <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
+      {{/if}}
+    </td>
+
+  {{else}}
+
+    <td width="20%">
+
+      <div class="au-o-block au-u-margin-bottom">
+        <AuLabel
+          @for="{{id}}-contact-address-street-name"
+          @required={{@required}}
+          @errorMessage={{@address.error.street.validation}}
+          @requiredLabel="*"
+          @error={{@errorMessage}}
+          class={{@labelClass}}
+        >
+          Straat
+        </AuLabel>
+
+        <AuInput
+          @value={{@address.street}}
+          @width="block"
+          @error={{@errorMessage}}
+          id="{{id}}-contact-address-street-name"
+        />
+        {{#if @errorMessage}}
+          <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
+        {{/if}}
+      </div>
+
+      <div class="au-o-block au-u-margin-bottom">
+        <AuLabel
+          @for="{{id}}-contact-address-house-number"
+          @required={{@required}}
+          @errorMessage={{@address.error.number.validation}}
+          @requiredLabel="*"
+          @error={{@errorMessage}}
+          class={{@labelClass}}
+        >
+          Huisnummer
+        </AuLabel>
+        <AuInput
+          @value={{@address.number}}
+          @width="block"
+          @error={{@errorMessage}}
+          id="{{id}}-contact-address-house-number"
+        />
+        {{#if @errorMessage}}
+          <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
+        {{/if}}
+      </div>
+      <div class="au-o-block au-u-margin-bottom">
+        <AuLabel
+          @for="{{id}}-contact-address-postal-code"
+          @required={{@required}}
+          @errorMessage={{@address.error.postcode.validation}}
+          @requiredLabel="*"
+          @error={{@errorMessage}}
+          class={{@labelClass}}
+        >
+          Postcode
+        </AuLabel>
+        <AuInput
+          @value={{@address.postcode}}
+          @width="block"
+          @error={{@errorMessage}}
+          id="{{id}}-contact-address-postal-code"
+        />
+        {{#if @errorMessage}}
+          <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
+        {{/if}}
+      </div>
+      <div class="au-o-block au-u-margin-bottom">
+        <AuLabel
+          @for="{{id}}-contact-address-municipality"
+          @required={{@required}}
+          @errorMessage={{@address.error.municipality.validation}}
+          @requiredLabel="*"
+          @error={{@errorMessage}}
+          class={{@labelClass}}
+        >
+          Gemeente
+        </AuLabel>
+        <MunicipalitySelect
+          @selected={{@address.municipality}}
+          @selectedProvince={{@address.province}}
+          @onChange={{fn (mut @address.municipality)}}
+          @id="{{id}}-contact-address-municipality"
+          @error={{@errorMessage}}
+        />
+        {{#if @errorMessage}}
+          <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
+        {{/if}}
+      </div>
+      <div class="au-o-block">
+        <AuButton @skin="link" {{on "click" this.toggleInputMode}}>
+          Vind adres in lijst
+        </AuButton>
+      </div>
+
+    </td>
+    <td width="10%">
+      <AuLabel
+        @for="{{id}}-contact-address-bus-number"
+        @required={{@required}}
+        @requiredLabel="*"
+        @error={{@errorMessage}}
+        class={{@labelClass}}
+      >
+        Busnummer
+      </AuLabel>
+      <AuInput
+        @value={{@address.boxNumber}}
+        @width="block"
+        id="{{id}}-contact-address-bus-number"
+      />
+      {{#if @errorMessage}}
+        <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
+      {{/if}}
+    </td>
+    <td width="15%">
+      <AuLabel
+        @for="{{id}}-contact-address-province"
+        @required={{not this.isBusNumberSelectionDisabled}}
+        @errorMessage={{@address.error.province.validation}}
+        @requiredLabel="*"
+        @error={{@errorMessage}}
+        class={{@labelClass}}
+      >
+        Provincie
+      </AuLabel>
+      <ProvinceSelect
+        @selected={{@address.province}}
+        @selectedMunicipality={{@address.municipality}}
+        @onChange={{fn (mut @address.province)}}
+        @id="contact-address-province"
+        @error={{@errorMessage}}
+      />
+      {{#if @errorMessage}}
+        <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
+      {{/if}}
+    </td>
+
+  {{/if}}
+  <td width="15%">
+    {{#unless this.isAddressSearchMode}}
+      <AuLabel
+        @for="{{id}}-contact-email"
+        @errorMessage={{@primaryContact.error.email.validation}}
+        @requiredLabel="*"
+        @error={{@primaryContact.error.email.validation}}
+        class={{@labelClass}}
+      >
+        E-mail
+      </AuLabel>
+    {{/unless}}
+    <AuInput
+      @width="block"
+      @value={{@primaryContact.email}}
+      @error={{@primaryContact.error.email.validation}}
+      id="{{id}}-contact-email"
+    />
+    {{#if @primaryContact.error.email.validation}}
+      <AuHelpText
+        @error={{true}}
+      >{{@primaryContact.error.email.validation}}</AuHelpText>
+    {{/if}}
+  </td>
+  <td width="15%">
+    {{#unless this.isAddressSearchMode}}
+      <AuLabel
+        @for="{{id}}-contact-telephone"
+        @errorMessage={{@primaryContact.error.telephone.validation}}
+        @requiredLabel="*"
+        @error={{@primaryContact.error.telephone.validation}}
+        class={{@labelClass}}
+      >
+        Primair telefoonnummer
+      </AuLabel>
+    {{/unless}}
+    <AuInput
+      @width="block"
+      @value={{@primaryContact.telephone}}
+      @error={{@primaryContact.error.telephone.validation}}
+      id="{{id}}-contact-telephone"
+    />
+    <AuHelpText  @skin="tertiary">
+      {{help-text "phone-number"}}
+    </AuHelpText>
+    {{#if @primaryContact.error.telephone.validation}}
+      <AuHelpText
+        @error={{true}}
+      >{{@primaryContact.error.telephone.validation}}</AuHelpText>
+    {{/if}}
+  </td>
+  <td width="15%">
+    {{#unless this.isAddressSearchMode}}
+      <AuLabel
+        @for="{{id}}-secondary-contact-telephone"
+        @errorMessage={{@secondaryContact.error.telephone.validation}}
+        @error={{@secondaryContact.error.telephone.validation}}
+        @requiredLabel="*"
+        class={{@labelClass}}
+      >
+        Secundair telefoonnummer
+      </AuLabel>
+    {{/unless}}
+    <AuInput
+      @width="block"
+      @value={{@secondaryContact.telephone}}
+      @error={{@secondaryContact.error.telephone.validation}}
+      id="{{id}}-secondary-contact-telephone"
+    />
+          <AuHelpText  @skin="tertiary">
+            {{help-text "phone-number"}}
+          </AuHelpText>
+    {{#if @secondaryContact.error.telephone.validation}}
+      <AuHelpText
+        @error={{true}}
+      >{{@secondaryContact.error.telephone.validation}}</AuHelpText>
+    {{/if}}
+  </td>
+{{/let}}

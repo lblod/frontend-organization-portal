@@ -11,6 +11,7 @@ import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/adminis
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditController extends Controller {
   @service router;
+  @service contactDetails;
 
   @tracked computedContactDetails;
   @tracked positionsWithSameOldAddress;
@@ -99,7 +100,10 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     ) {
       let contactValid = true;
       let primaryContactId = null;
-      if (this.computedContactDetails) {
+      let allContactFieldsEmpty = this.contactDetails.isAllFieldsEmpty(
+        this.computedContactDetails
+      );
+      if (this.computedContactDetails && !allContactFieldsEmpty) {
         let { primaryContact, secondaryContact, address } =
           this.computedContactDetails;
 
@@ -134,9 +138,14 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       if (contactValid) {
         mandatory = setEmptyStringsToNull(mandatory);
         yield mandatory.save();
+
         const oldPrimaryContactId = this.model.contact?.primaryContact?.id;
 
-        if (primaryContactId && primaryContactId !== oldPrimaryContactId) {
+        if (
+          !allContactFieldsEmpty &&
+          primaryContactId &&
+          primaryContactId !== oldPrimaryContactId
+        ) {
           const positionsWithSameOldAddress = this.model.allContacts?.filter(
             (c) =>
               c?.primaryContact?.id === oldPrimaryContactId &&

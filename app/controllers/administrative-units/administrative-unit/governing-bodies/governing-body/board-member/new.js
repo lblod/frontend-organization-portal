@@ -121,7 +121,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @dropTask
   *createMandatoryPositionTask(event) {
     event.preventDefault();
-
     let { mandatory, governingBody } = this.model;
 
     yield mandatory.validate();
@@ -139,8 +138,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       mandatory.isValid
     ) {
       let contactValid = true;
+      let allContactFieldsEmpty = this.contactDetails.isAllFieldsEmpty(
+        this.computedContactDetails
+      );
 
-      if (this.computedContactDetails) {
+      if (this.computedContactDetails && !allContactFieldsEmpty) {
         let { primaryContact, secondaryContact, address } =
           this.computedContactDetails;
 

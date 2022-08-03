@@ -41,9 +41,10 @@
             >
               <:label>Naam</:label>
               <:content as |hasError|>
-                <AuInput
+                <TrimInput
                   @width="block"
                   @value={{@model.administrativeUnitChangeset.name}}
+                  @onUpdate={{fn (mut @model.administrativeUnitChangeset.name)}}
                   @error={{hasError}}
                   id="administrative-unit-name"
                 />
@@ -90,9 +91,10 @@
               <Item @labelFor="denomination">
                 <:label>Strekking</:label>
                 <:content>
-                  <AuInput
+                  <TrimInput
                     @width="block"
                     @value={{@model.worshipService.denomination}}
+                    @onUpdate={{fn (mut @model.worshipService.denomination)}}
                     id="denomination"
                   />
                 </:content>
@@ -189,9 +191,10 @@
             <Item @labelFor="sharepoint-identifier">
               <:label>{{@model.identifierSharepoint.idName}}</:label>
               <:content>
-                <AuInput
+                <TrimInput
                   @width="block"
                   @value={{@model.structuredIdentifierSharepoint.localId}}
+                  @onUpdate={{fn (mut @model.structuredIdentifierSharepoint.localId)}}
                   id="sharepoint-identifier"
                 />
               </:content>

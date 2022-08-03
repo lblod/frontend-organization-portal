@@ -19,7 +19,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   expectedEndDateValidation = { valid: true };
   @tracked
   startDateValidation = { valid: true };
-
+  @service contactDetails;
   @service router;
 
   get isWorshipAdministrativeUnit() {
@@ -98,8 +98,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       mandatory.isValid
     ) {
       let contactValid = true;
+      let allContactFieldsEmpty = this.contactDetails.isAllFieldsEmpty(
+        this.computedContactDetails
+      );
       let primaryContactId = null;
-      if (this.computedContactDetails) {
+      if (this.computedContactDetails && !allContactFieldsEmpty) {
         let { primaryContact, secondaryContact, address } =
           this.computedContactDetails;
 
@@ -136,7 +139,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         yield mandatory.save();
         const oldPrimaryContactId = this.model.contact?.primaryContact?.id;
 
-        if (primaryContactId && primaryContactId !== oldPrimaryContactId) {
+        if (
+          !allContactFieldsEmpty &&
+          primaryContactId &&
+          primaryContactId !== oldPrimaryContactId
+        ) {
           const positionsWithSameOldAddress = this.model.allContacts?.filter(
             (c) =>
               c?.primaryContact?.id === oldPrimaryContactId &&
