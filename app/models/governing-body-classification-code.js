@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, { attr, hasMany } from '@ember-data/model';
 
 export const EXECUTIVE_ORGANEN = [
   '39854196-f214-4688-87a1-d6ad12baa2fa', // Algemeen Directeur
@@ -12,6 +12,6 @@ export const EXECUTIVE_ORGANEN = [
 export default class GoverningBodyClassificationCodeModel extends Model {
   @attr label;
 
-  @belongsTo('administrative-unit-classification-code', { inverse: null })
+  @hasMany('administrative-unit-classification-code', { inverse: null })
   appliesWithin;
 }

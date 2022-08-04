@@ -15,7 +15,7 @@ export default class AdministrativeUnitsAdministrativeUnitExecutivesRoute extend
     );
 
     let agents = await this.store.query('agent', {
-      'filter[board-position][governing-body][is-time-specialization-of][administrative-unit][:id:]':
+      'filter[board-position][governing-bodies][is-time-specialization-of][administrative-unit][:id:]':
         administrativeUnitId,
     });
 

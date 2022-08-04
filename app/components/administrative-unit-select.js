@@ -17,7 +17,8 @@ export default class AdministrativeUnitSelectComponent extends Component {
   *loadAdministrativeUnitsTask(searchParams = '') {
     yield timeout(500);
 
-    let allowedClassificationCodes = this.args.classificationCodes;
+    let classificationCodes = this.args.classificationCodes;
+    let allowedClassificationCodes = [];
 
     const selectedPositionId = this.args.selectedPosition;
 
@@ -39,7 +40,7 @@ export default class AdministrativeUnitSelectComponent extends Component {
       if (ministerPositions.length) {
         // Only worship services have minister positions
         if (
-          allowedClassificationCodes.find(
+          classificationCodes.find(
             (code) => code == CLASSIFICATION_CODE.WORSHIP_SERVICE
           )
         ) {
@@ -48,17 +49,17 @@ export default class AdministrativeUnitSelectComponent extends Component {
       } else if (boardPositionCodes.length) {
         const selectedPosition = boardPositionCodes.firstObject;
         const governingBodyClassification = yield selectedPosition.appliesTo;
-        const classificationOption =
+        const classificationOptions =
           yield governingBodyClassification.appliesWithin;
 
         // If we found one, we use it as the only allowed code
-        if (
-          allowedClassificationCodes.find(
-            (code) => code == classificationOption.id
-          )
-        ) {
-          allowedClassificationCodes = [classificationOption.id];
-        }
+        classificationOptions.forEach((classificationOption) => {
+          if (
+            classificationCodes.find((code) => code == classificationOption.id)
+          ) {
+            allowedClassificationCodes.push(classificationOption.id);
+          }
+        });
       }
     }
 
