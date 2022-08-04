@@ -42,19 +42,14 @@
         {{#if this.isCentralWorshipService}}
           <RelatedOrganizations::EditCentralWorshipService
             @model={{@model}}
-            @isAntwerpen={{this.isAntwerpen}}
             @addNewSubOrganization={{this.addNewSubOrganization}}
             @updateSubOrganization={{this.updateSubOrganization}}
             @removeSubOrganization={{this.removeSubOrganization}}
           />
         {{/if}}
-        {{#if this.isDistrict}}
-          <RelatedOrganizations::EditDistrict @model={{@model}} @classificationCodes={{this.classificationCodes}} />
-        {{/if}}
         {{#if this.isMunicipality}}
           <RelatedOrganizations::EditMunicipality
             @model={{@model}}
-            @isAntwerpen={{this.isAntwerpen}}
             @addNewSubOrganization={{this.addNewSubOrganization}}
             @updateSubOrganization={{this.updateSubOrganization}}
             @removeSubOrganization={{this.removeSubOrganization}}
@@ -63,10 +58,6 @@
         {{#if this.isOCMW}}
           <RelatedOrganizations::EditOcmw
             @model={{@model}}
-            @isAntwerpen={{this.isAntwerpen}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
           />
         {{/if}}
         {{#if this.isProvince}}

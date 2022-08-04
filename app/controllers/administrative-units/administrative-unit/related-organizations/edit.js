@@ -9,15 +9,6 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   @service router;
   @service store;
 
-  get isAntwerpen() {
-    return (
-      this.model.administrativeUnit.id ==
-        '670db1d66c0de3b931962e1044033ccfa9d6e3023aa9828a5f252c3bc69bd32c' || // gemeente
-      this.model.administrativeUnit.id ==
-        '83c7a12a4a8ac8dd82895715095a866dc4794e60de61b967419bdfc1e207ad96' // ocmw
-    );
-  }
-
   get isWorshipAdministrativeUnit() {
     return this.isWorshipService || this.isCentralWorshipService;
   }

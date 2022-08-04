@@ -4,17 +4,19 @@
       <:title>Gerelateerde organisaties</:title>
       <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
-        <SecuredArea>
-          <:edit>
-            <AuLink @route="administrative-units.administrative-unit.related-organizations.edit"
-              @skin="button-secondary" @icon="pencil" @iconAlignment="left">
-              Bewerk
-            </AuLink>
-          </:edit>
-          <:readOnly>
-            <ReportWrongData />
-          </:readOnly>
-        </SecuredArea>
+        {{#unless this.isDistrict}}
+          <SecuredArea>
+            <:edit>
+              <AuLink @route="administrative-units.administrative-unit.related-organizations.edit"
+                @skin="button-secondary" @icon="pencil" @iconAlignment="left">
+                Bewerk
+              </AuLink>
+            </:edit>
+            <:readOnly>
+              <ReportWrongData />
+            </:readOnly>
+          </SecuredArea>
+        {{/unless}}
       </:action>
     </PageHeader>
 
