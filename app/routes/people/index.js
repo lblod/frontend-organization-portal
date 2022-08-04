@@ -92,7 +92,6 @@ export default class PeopleIndexRoute extends Route {
         ];
       }
     }
-
     return page;
   }
 }

@@ -14,7 +14,7 @@
   <t.content as |c|>
     <c.header>
       <th class="au-c-data-table__header-title">Positie</th>
-      <th class="au-c-data-table__header-title">Organisatie</th>
+      <th class="au-c-data-table__header-title">Organisatie(s)</th>
       <th class="au-c-data-table__header-title">Status</th>
       {{! <th></th> }}
     </c.header>
@@ -44,14 +44,23 @@
         {{/if}}
       </td>
       <td>
-          {{#if position.administrativeUnit}}
+        {{#if position.administrativeUnit}}
+          <AuLink
+            @route="administrative-units.administrative-unit"
+            @model={{position.administrativeUnit.id}}
+          >
+            {{position.administrativeUnit.name}}
+          </AuLink>
+        {{else}}
+          {{#each position.administrativeUnits as |administrativeUnit|}}
             <AuLink
               @route="administrative-units.administrative-unit"
-              @model={{position.administrativeUnit.id}}
+              @model={{administrativeUnit.id}}
             >
-              {{position.administrativeUnit.name}}
+              {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
             </AuLink>
-          {{/if}}
+          {{/each}}
+        {{/if}}
       </td>
       <td>
         <PositionStatus @endDate={{position.endDate}} />

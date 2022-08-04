@@ -1,8 +1,4 @@
-{{#let
-  @model.agent.boardPosition.governingBody.isTimeSpecializationOf
-  @model.agent.boardPosition.governingBody.isTimeSpecializationOf.administrativeUnit
-  as |governingBody administrativeUnit|
-}}
+
   <div class="au-c-body-container au-c-body-container--scroll">
     <div class="au-o-box au-o-flow au-o-flow--large">
       <PageHeader>
@@ -10,8 +6,11 @@
           Positie:
           {{@model.agent.boardPosition.roleBoard.label}},
           <br />
-          {{governingBody.classification.label}}
-          {{governingBody.administrativeUnit.name}}
+          {{#each @model.governingBodies as |governingBody|}}
+            {{governingBody.administrativeUnit.classification.label}}
+            {{governingBody.administrativeUnit.name}}
+            <br />
+          {{/each}}
         </:title>
         <:subtitle>
           {{@model.person.givenName}}
@@ -38,12 +37,14 @@
               <Item>
                 <:label>Naam bestuur</:label>
                 <:content>
-                  <AuLink
-                    @route="administrative-units.administrative-unit"
-                    @model={{administrativeUnit.id}}
-                  >
-                    {{administrativeUnit.name}}
-                  </AuLink>
+                  {{#each @model.administrativeUnits as |administrativeUnit|}}
+                    <AuLink
+                      @route="administrative-units.administrative-unit"
+                      @model={{administrativeUnit.id}}
+                    >
+                      {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
+                    </AuLink>
+                  {{/each}}
                 </:content>
               </Item>
             </:right>
@@ -80,14 +81,17 @@
               {{/if}}
             </:left>
             <:right as |Item|>
-              {{#if @model.agent.boardPosition.governingBody.period}}
+              {{#each @model.governingBodiesInTime as |governingBodyInTime|}}
                 <Item>
-                  <:label>Bestuursperiode</:label>
+                  <:label>
+                    Bestuursperiode
+                    {{governingBodyInTime.isTimeSpecializationOf.administrativeUnit.classification.label}}
+                  </:label>
                   <:content>
-                    {{@model.agent.boardPosition.governingBody.period}}
+                    {{governingBodyInTime.period}}
                   </:content>
                 </Item>
-              {{/if}}
+              {{/each}}
               {{#if @model.agent.endDate}}
                 <Item>
                   <:label>Einddatum</:label>
@@ -100,4 +104,3 @@
       </DataCard>
     </div>
   </div>
-{{/let}}

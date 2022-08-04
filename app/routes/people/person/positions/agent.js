@@ -10,8 +10,8 @@ export default class PeoplePersonPositionsMandatoryRoute extends Route {
     let agent = await this.store.findRecord('agent', agentId, {
       reload: true,
       include: [
-        'board-position.governing-body.is-time-specialization-of.classification',
-        'board-position.governing-body.is-time-specialization-of.administrative-unit',
+        'board-position.governing-bodies.is-time-specialization-of.classification',
+        'board-position.governing-bodies.is-time-specialization-of.administrative-unit',
       ].join(),
     });
 

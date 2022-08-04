@@ -30,7 +30,7 @@ export default class GoverningBodyModel extends Model {
   mandates;
 
   @hasMany('board-position', {
-    inverse: 'governingBody',
+    inverse: 'governingBodies',
   })
   boardPositions;
 

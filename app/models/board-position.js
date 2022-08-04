@@ -1,4 +1,4 @@
-import { belongsTo } from '@ember-data/model';
+import { belongsTo, hasMany } from '@ember-data/model';
 import PostModel from './post';
 
 export default class BoardPositionModel extends PostModel {
@@ -10,8 +10,8 @@ export default class BoardPositionModel extends PostModel {
   @belongsTo('contact-point')
   contactPoint;
 
-  @belongsTo('governing-body', {
+  @hasMany('governing-body', {
     inverse: 'boardPositions',
   })
-  governingBody;
+  governingBodies;
 }

@@ -37,17 +37,24 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
     for (let agent of agents) {
       const boardPosition = await agent.boardPosition;
       const role = await boardPosition.roleBoard;
-      const governingBody = await boardPosition.governingBody;
-      const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
-      const administrativeUnit =
-        await isTimeSpecializationOf.administrativeUnit;
+      const governingBodies = await boardPosition.governingBodies;
+
+      let administrativeUnits = [];
+      for (const governingBody of governingBodies.toArray()) {
+        const isTimeSpecializationOf =
+          await governingBody.isTimeSpecializationOf;
+        const administrativeUnit =
+          await isTimeSpecializationOf.administrativeUnit;
+        administrativeUnits.push(administrativeUnit);
+      }
+
       positions.push({
         role: role.label,
         type: 'agent',
         id: agent.id,
         startDate: agent.startDate,
         endDate: agent.endDate,
-        administrativeUnit,
+        administrativeUnits,
       });
     }
 

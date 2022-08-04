@@ -85,19 +85,26 @@ export default class ContactDetailsService extends Service {
       return null;
     }
     const role = await boardPosition.roleBoard;
-    const governingBody = await boardPosition.governingBody;
-    const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
-    const administrativeUnit = await isTimeSpecializationOf.administrativeUnit;
+    const governingBodies = await boardPosition.governingBodies;
+
+    let administrativeUnits = [];
+    for (const governingBody of governingBodies.toArray()) {
+      const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
+      const administrativeUnit =
+        await isTimeSpecializationOf.administrativeUnit;
+      administrativeUnits.push(administrativeUnit);
+    }
+
     const mContacts = await boardPosition.contacts;
     return {
       position: agent,
-      title: `${role.label}, ${administrativeUnit.name}`,
+      title: `${role.label}, ${administrativeUnits[0].name}`,
       role: role.label,
       type: 'agent',
       id: agent.id,
       startDate: agent.startDate,
       endDate: agent.endDate,
-      administrativeUnit,
+      administrativeUnits,
       primaryContact: mContacts,
     };
   }
