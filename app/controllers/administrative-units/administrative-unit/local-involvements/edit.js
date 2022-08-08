@@ -166,8 +166,14 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
       );
     }
   }
-}
 
+  isDisabledPercentage(involvement) {
+    return !(
+      involvement.involvementType?.id === INVOLVEMENT_TYPE.FINANCIAL ||
+      involvement.involvementType?.id === INVOLVEMENT_TYPE.MID_FINANCIAL
+    );
+  }
+}
 function isFinancialInvolvementType(involvement) {
   return involvement.involvementType?.id === INVOLVEMENT_TYPE.FINANCIAL;
 }
