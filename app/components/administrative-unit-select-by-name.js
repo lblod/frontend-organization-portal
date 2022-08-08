@@ -1,7 +1,6 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
-import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitSelectByNameComponent extends Component {
   @service muSearch;
@@ -9,11 +8,6 @@ export default class AdministrativeUnitSelectByNameComponent extends Component {
   @restartableTask
   *loadAdministrativeUnitsTask(searchParams = '') {
     const filter = {};
-
-    // Only show worship related administrative units for now
-    filter[
-      'classification_id'
-    ] = `${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},${CLASSIFICATION.WORSHIP_SERVICE.id}`;
 
     if (searchParams.trim() !== '') {
       filter[`:phrase_prefix:name`] = searchParams;
@@ -30,9 +24,9 @@ export default class AdministrativeUnitSelectByNameComponent extends Component {
         return entry.name;
       },
     });
-    if (searchParams.trim() !== '' && result) {
-      return [...[searchParams], ...result.toArray()];
+
+    if (result) {
+      return [...[searchParams], ...new Set(result.toArray())];
     }
-    return result;
   }
 }

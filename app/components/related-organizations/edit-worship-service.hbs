@@ -1,0 +1,45 @@
+<EditCard @containsRequiredFields={{true}}>
+  <:title>Behoort tot</:title>
+  <:card as |Card|>
+    <Card.Columns>
+      <:left as |Item|>
+        <Item
+          @labelFor="related-representative-body"
+          @required={{true}}
+          @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
+        >
+          <:label>Representatief orgaan</:label>
+          <:content as |hasError|>
+            <RepresentativeBodySelect
+              @selected={{@model.administrativeUnit.isAssociatedWith}}
+              @onChange={{fn
+                (mut @model.administrativeUnit.isAssociatedWith)
+              }}
+              @error={{hasError}}
+              @id="related-representative-body"
+            />
+          </:content>
+        </Item>
+        {{#if @hasCentralWorshipService}}
+          <Item
+            @labelFor="related-central-worship-service"
+            @required={{true}}
+            @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+          >
+            <:label>Centraal bestuur</:label>
+            <:content as |hasError|>
+              <CentralWorshipSelect
+                @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                @onChange={{fn
+                  (mut @model.administrativeUnit.isSubOrganizationOf)
+                }}
+                @error={{hasError}}
+                @id="related-central-worship-service"
+              />
+            </:content>
+          </Item>
+        {{/if}}
+      </:left>
+    </Card.Columns>
+  </:card>
+</EditCard>

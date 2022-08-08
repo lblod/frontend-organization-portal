@@ -70,28 +70,27 @@
                     </PowerSelect>
                   </:content>
                 </Item>
-                <Item
-                  @labelFor="recognized-worship-type-select"
-                  @required={{true}}
-                  @errorMessage={{@model.administrativeUnit.error.recognizedWorshipType.validation}}
-                >
-                  <:label>Soort eredienst</:label>
-                  <:content as |hasError|>
-                    <RecognizedWorshipTypeSelect
-                      @selected={{@model.administrativeUnit.recognizedWorshipType}}
-                      @selectedClassificationId={{@model.administrativeUnit.classification.id}}
-                      @onChange={{fn
-                        (mut @model.administrativeUnit.recognizedWorshipType)
-                      }}
-                      @allowClear={{false}}
-                      @error={{hasError}}
-                      @id="recognized-worship-type-select"
-                    />
-                  </:content>
-                </Item>
-                {{#if
-                  (eq @model.worshipAdministrativeUnitType "worship-service")
-                }}
+                {{#if this.isWorshipAdministrativeUnit}}
+                  <Item
+                    @labelFor="recognized-worship-type-select"
+                    @required={{true}}
+                    @errorMessage={{@model.administrativeUnit.error.recognizedWorshipType.validation}}
+                  >
+                    <:label>Soort eredienst</:label>
+                    <:content as |hasError|>
+                      <RecognizedWorshipTypeSelect
+                        @selected={{@model.administrativeUnit.recognizedWorshipType}}
+                        @onChange={{fn
+                          (mut @model.administrativeUnit.recognizedWorshipType)
+                        }}
+                        @allowClear={{false}}
+                        @error={{hasError}}
+                        @id="recognized-worship-type-select"
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#if this.isWorshipService}}
                   <Item @labelFor="denomination">
                     <:label>Strekking</:label>
                     <:content>
@@ -136,6 +135,20 @@
                           />
                         </li>
                       </ul>
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#if this.isMunicipality}}
+                  <Item @labelFor="regio">
+                    <:label>Regio</:label>
+                    <:content>
+                      <RegionSelect
+                        @selected={{@model.administrativeUnit.locatedWithin}}
+                        @onChange={{fn
+                          (mut @model.administrativeUnit.locatedWithin)
+                        }}
+                        @id="regio"
+                      />
                     </:content>
                   </Item>
                 {{/if}}
@@ -192,6 +205,22 @@
                     />
                   </:content>
                 </Item>
+                {{#if (or this.isMunicipality this.isProvince)}}
+                  <Item @labelFor="nis-identifier">
+                    <:label>{{@model.identifierNIS.idName}}</:label>
+                    <:content>
+                      {{@model.structuredIdentifierNIS.localId}}
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#unless this.isWorshipAdministrativeUnit}}
+                  <Item @labelFor="ovo-identifier">
+                    <:label>{{@model.identifierOVO.idName}}</:label>
+                    <:content>
+                      {{@model.structuredIdentifierOVO.localId}}
+                    </:content>
+                  </Item>
+                {{/unless}}
               </:right>
             </Card.Columns>
           </:card>

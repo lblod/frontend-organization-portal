@@ -23,7 +23,7 @@
             Vestigingen
           </AuNavigationNestedLink>
         </li>
-        {{#if (not-eq @model.constructor.modelName "central-worship-service")}}
+        {{#if this.isWorshipService}}
           <li class="au-c-list-navigation__item">
             <AuNavigationNestedLink @route="administrative-units.administrative-unit.local-involvements">
               Betrokken lokale besturen
@@ -46,13 +46,24 @@
             </AuNavigationNestedLink>
           </li>
         {{/if}}
-        <li class="au-c-list-navigation__item">
-          <AuNavigationNestedLink
-            @route="administrative-units.administrative-unit.change-events"
-          >
-            Veranderingsgebeurtenissen
-          </AuNavigationNestedLink>
-        </li>
+        {{#unless this.isWorshipAdministrativeUnit}}
+          <li class="au-c-list-navigation__item">
+            <AuNavigationNestedLink
+              @route="administrative-units.administrative-unit.executives"
+            >
+              Leidinggevenden
+            </AuNavigationNestedLink>
+          </li>
+        {{/unless}}
+        {{#unless this.isProvince}}
+          <li class="au-c-list-navigation__item">
+            <AuNavigationNestedLink
+              @route="administrative-units.administrative-unit.change-events"
+            >
+              Veranderingsgebeurtenissen
+            </AuNavigationNestedLink>
+          </li>
+        {{/unless}}
         {{!--         Links temporarily hidden until page is completed
         <li class="au-c-list-navigation__item">
           <AuNavigationNestedLink>

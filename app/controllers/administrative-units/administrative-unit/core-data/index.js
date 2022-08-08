@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import WorshipServiceModel from 'frontend-organization-portal/models/worship-service';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 const SHAREPOINT_LINK_BASE = {
   WORSHIP_SERVICE:
@@ -18,6 +19,14 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
     return identifier?.idName === ID_NAME.KBO;
   }
 
+  isNisCodeIdentifier(identifier) {
+    return identifier?.idName === ID_NAME.NIS;
+  }
+
+  isOvoCodeIdentifier(identifier) {
+    return identifier?.idName === ID_NAME.OVO;
+  }
+
   get sharepointIdentifier() {
     return this.model.administrativeUnit.identifiers.find((id) =>
       this.isSharePointIdentifier(id)
@@ -30,8 +39,27 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
     );
   }
 
+  get nisIdentifier() {
+    return this.model.administrativeUnit.identifiers.find((id) =>
+      this.isNisCodeIdentifier(id)
+    );
+  }
+
+  get ovoIdentifier() {
+    return this.model.administrativeUnit.identifiers.find((id) =>
+      this.isOvoCodeIdentifier(id)
+    );
+  }
+
   get isWorshipService() {
     return this.model.administrativeUnit instanceof WorshipServiceModel;
+  }
+
+  get isMunicipality() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.MUNICIPALITY
+    );
   }
 
   get sharePointLinkBase() {

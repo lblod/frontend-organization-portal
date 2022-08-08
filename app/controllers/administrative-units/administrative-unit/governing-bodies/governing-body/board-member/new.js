@@ -3,10 +3,11 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
-import { isWorshipMember } from 'frontend-organization-portal/models/board-position';
+import { isWorshipMember } from 'frontend-organization-portal/models/board-position-code';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryNewController extends Controller {
   @service router;
@@ -32,6 +33,24 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   expectedEndDateValidation = { valid: true };
   @tracked
   startDateValidation = { valid: true };
+
+  get isWorshipAdministrativeUnit() {
+    return this.isWorshipService || this.isCentralWorshipService;
+  }
+
+  get isWorshipService() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.WORSHIP_SERVICE
+    );
+  }
+
+  get isCentralWorshipService() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+    );
+  }
 
   @action
   validateEndDate(validation) {

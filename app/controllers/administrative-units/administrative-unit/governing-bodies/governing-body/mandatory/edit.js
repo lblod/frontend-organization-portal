@@ -2,11 +2,12 @@ import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import { isWorshipMember } from 'frontend-organization-portal/models/board-position';
+import { isWorshipMember } from 'frontend-organization-portal/models/board-position-code';
 import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyMandatoryEditController extends Controller {
   @tracked computedContactDetails;
@@ -20,6 +21,25 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   startDateValidation = { valid: true };
   @service contactDetails;
   @service router;
+
+  get isWorshipAdministrativeUnit() {
+    return this.isWorshipService || this.isCentralWorshipService;
+  }
+
+  get isWorshipService() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.WORSHIP_SERVICE
+    );
+  }
+
+  get isCentralWorshipService() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+    );
+  }
+
   get showHalfElectionTypeSelect() {
     return isWorshipMember(this.model.mandatory.role?.id);
   }

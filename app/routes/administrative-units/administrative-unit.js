@@ -5,6 +5,6 @@ export default class AdministrativeUnitsAdministrativeUnitRoute extends Route {
   @service store;
 
   async model(params) {
-    return this.store.findRecord('worship-administrative-unit', params.id);
+    return this.store.findRecord('administrative-unit', params.id);
   }
 }

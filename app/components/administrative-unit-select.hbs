@@ -11,10 +11,13 @@
     @onChange={{@onChange}}
     as |administrativeUnit|
   >
-    {{#if (has-block)}}
-      {{yield administrativeUnit}}
-    {{else}}
-      {{administrativeUnit.name}}
+    {{administrativeUnit.name}}
+
+    {{#if (not (or
+                  (eq administrativeUnit.classification.label "Centraal bestuur van de eredienst")
+                  (eq administrativeUnit.classification.label "Bestuur van de eredienst")
+    ))}}
+      ({{administrativeUnit.classification.label}})
     {{/if}}
   </PowerSelect>
 </div>

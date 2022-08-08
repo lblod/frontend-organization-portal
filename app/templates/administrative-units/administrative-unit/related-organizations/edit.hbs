@@ -32,137 +32,41 @@
       {{on "submit" (perform this.save)}}
     >
       <div class="au-o-flow au-o-flow--large">
-        <EditCard @containsRequiredFields={{true}}>
-          <:title>Behoort tot</:title>
-          <:card as |Card|>
-            <Card.Columns>
-              <:left as |Item|>
-                <Item
-                  @labelFor="related-representative-body"
-                  @required={{true}}
-                  @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
-                >
-                  <:label>Representatief orgaan</:label>
-                  <:content as |hasError|>
-                    <RepresentativeBodySelect
-                      @selected={{@model.administrativeUnit.isAssociatedWith}}
-                      @onChange={{fn
-                        (mut @model.administrativeUnit.isAssociatedWith)
-                      }}
-                      @error={{hasError}}
-                      @id="related-representative-body"
-                    />
-                  </:content>
-                </Item>
-                {{#if
-                  (and 
-                    (eq @model.worshipAdministrativeUnitType "worship-service")
-                    this.hasCentralWorshipService
-                  )
-                }}
-                  <Item
-                    @labelFor="related-central-worship-service"
-                    @required={{true}}
-                    @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-                  >
-                    <:label>Centraal bestuur</:label>
-                    <:content as |hasError|>
-                      <CentralWorshipSelect
-                        @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                        @onChange={{fn
-                          (mut @model.administrativeUnit.isSubOrganizationOf)
-                        }}
-                        @error={{hasError}}
-                        @id="related-central-worship-service"
-                      />
-                    </:content>
-                  </Item>
-                {{/if}}
-              </:left>
-            </Card.Columns>
-          </:card>
-        </EditCard>
 
-        {{#if
-          (eq
-            @model.worshipAdministrativeUnitType
-            "central-worship-service"
-          )
-        }}
-          <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
-            Heeft relatie met
-          </AuHeading>
-          <AuDataTable
-            id="subOrganizations"
-            @content={{this.model.administrativeUnit.subOrganizations}}
-            @noDataMessage="Geen bestuur van de eredienst"
-            as |t|
-          >
-            <t.content as |c|>
-              <c.header>
-                <AuDataTableThSortable
-                  @field="classification.label"
-                  @currentSorting={{this.sort}}
-                  @label="Type organisatie"
-                />
-                <AuDataTableThSortable
-                  @field="name"
-                  @currentSorting={{this.sort}}
-                  @label="Organisatie"
-                />
-                <AuDataTableThSortable
-                  @field="organizationStatus.label"
-                  @currentSorting={{this.sort}}
-                  @label="Status"
-                />
-                <th></th>
-              </c.header>
-              <c.body as |subOrganization|>
-                <td>
-                  {{subOrganization.classification.label}}
-                </td>
-                <td>
-                  <WorshipServiceSelect
-                    @selected={{subOrganization}}
-                    @onChange={{fn this.updateSubOrganization subOrganization}}
-                    @id="related-worship-service"
-                  />
-                </td>
-                <td>
-                  <OrganizationStatus
-                    @id={{subOrganization.organizationStatus.id}}
-                    @label={{subOrganization.organizationStatus.label}}
-                  />
-                </td>
-                <td>
-                  <AuButton
-                    @alert={{true}}
-                    @icon="bin"
-                    @iconAlignment="left"
-                    @skin="link"
-                    {{on
-                      "click"
-                      (fn this.removeSubOrganization subOrganization)
-                    }}
-                  >
-                    Verwijder
-                  </AuButton>
-                </td>
-              </c.body>
-            </t.content>
-          </AuDataTable>
-
-          <div class="au-o-box au-o-box--small">
-            <AuButton
-              @skin="secondary"
-              @width="block"
-              @icon="add"
-              @iconAlignment="left"
-              {{on "click" this.addNewSubOrganization}}
-            >
-              Voeg nieuwe gerelateerde organisatie toe
-            </AuButton>
-          </div>
+        {{#if this.isWorshipService}}
+          <RelatedOrganizations::EditWorshipService
+            @model={{@model}}
+            @hasCentralWorshipService={{this.hasCentralWorshipService}}
+          />
+        {{/if}}
+        {{#if this.isCentralWorshipService}}
+          <RelatedOrganizations::EditCentralWorshipService
+            @model={{@model}}
+            @addNewSubOrganization={{this.addNewSubOrganization}}
+            @updateSubOrganization={{this.updateSubOrganization}}
+            @removeSubOrganization={{this.removeSubOrganization}}
+          />
+        {{/if}}
+        {{#if this.isMunicipality}}
+          <RelatedOrganizations::EditMunicipality
+            @model={{@model}}
+            @addNewSubOrganization={{this.addNewSubOrganization}}
+            @updateSubOrganization={{this.updateSubOrganization}}
+            @removeSubOrganization={{this.removeSubOrganization}}
+          />
+        {{/if}}
+        {{#if this.isOCMW}}
+          <RelatedOrganizations::EditOcmw
+            @model={{@model}}
+          />
+        {{/if}}
+        {{#if this.isProvince}}
+          <RelatedOrganizations::EditProvince
+            @model={{@model}}
+            @addNewSubOrganization={{this.addNewSubOrganization}}
+            @updateSubOrganization={{this.updateSubOrganization}}
+            @removeSubOrganization={{this.removeSubOrganization}}
+          />
         {{/if}}
       </div>
     </form>

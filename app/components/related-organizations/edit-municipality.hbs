@@ -1,0 +1,64 @@
+<EditCard @containsRequiredFields={{true}}>
+  <:title>Behoort tot</:title>
+  <:card as |Card|>
+    <Card.Columns>
+      <:left as |Item|>
+        <Item
+          @labelFor="related-provincie"
+          @required={{true}}
+          @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+        >
+          <:label>Provincie</:label>
+          <:content as |hasError|>
+            <ProvinceOrganizationSelect
+              @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+              @onChange={{fn
+                (mut @model.administrativeUnit.isSubOrganizationOf)
+              }}
+              @error={{hasError}}
+              @id="related-provincie"
+            />
+          </:content>
+        </Item>
+        <Item @labelFor="related-ocmw">
+          <:label>OCMW</:label>
+          <:content>
+            {{@model.administrativeUnit.isAssociatedWith.name}}
+          </:content>
+        </Item>
+      </:left>
+    </Card.Columns>
+  </:card>
+</EditCard>
+
+{{#if @model.subOrganizations.length}}
+  <div>
+    <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
+      Heeft relatie met
+    </AuHeading>
+    <AuDataTable id="subOrganizations" @content={{@model.subOrganizations}}
+      @noDataMessage="Geen bestuur" as |t|>
+      <t.content as |c|>
+        <c.header>
+          <AuDataTableThSortable @field="classification.label" @label="Type organisatie" />
+          <AuDataTableThSortable @field="name" @label="Organisatie" />
+          <AuDataTableThSortable @field="organizationStatus.label" @label="Status" />
+        </c.header>
+        <c.body as |subOrganization|>
+          <td>
+            {{subOrganization.classification.label}}
+          </td>
+          <td>
+            <AuLink @route="administrative-units.administrative-unit" @model={{subOrganization.id}}>
+              {{subOrganization.name}}
+            </AuLink>
+          </td>
+          <td>
+            <OrganizationStatus @id={{subOrganization.organizationStatus.id}}
+              @label={{subOrganization.organizationStatus.label}} />
+          </td>
+        </c.body>
+      </t.content>
+    </AuDataTable>
+  </div>
+{{/if}}

@@ -1,0 +1,32 @@
+<EditCard @containsRequiredFields={{true}}>
+  <:title>Behoort tot</:title>
+  <:card as |Card|>
+    <Card.Columns>
+      <:left as |Item|>
+        <Item
+          @labelFor="related-provincie"
+          @required={{true}}
+          @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+        >
+          <:label>Provincie</:label>
+          <:content as |hasError|>
+            <ProvinceOrganizationSelect
+              @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+              @onChange={{fn
+                (mut @model.administrativeUnit.isSubOrganizationOf)
+              }}
+              @error={{hasError}}
+              @id="related-provincie"
+            />
+          </:content>
+        </Item>
+        <Item>
+          <:label>Gemeente</:label>
+          <:content>
+            {{@model.administrativeUnit.isAssociatedWith.name}}
+          </:content>
+        </Item>
+      </:left>
+    </Card.Columns>
+  </:card>
+</EditCard>

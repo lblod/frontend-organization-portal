@@ -8,11 +8,10 @@ import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import { getAddressValidations } from 'frontend-organization-portal/validations/address';
 import contactValidations from 'frontend-organization-portal/validations/contact-point';
-import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
-
-import worshipAdministrativeUnitValidations, {
+import administrativeUnitValidations, {
   getStructuredIdentifierKBOValidations,
-} from 'frontend-organization-portal/validations/worship-administrative-unit';
+} from 'frontend-organization-portal/validations/administrative-unit';
+import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
 
 export default class AdministrativeUnitsNewRoute extends Route {
   @service store;
@@ -26,16 +25,16 @@ export default class AdministrativeUnitsNewRoute extends Route {
       });
     }
   }
+
   model() {
     return {
-      administrativeUnit: createValidatedChangeset(
-        this.store.createRecord('worship-administrative-unit'),
-        worshipAdministrativeUnitValidations
+      administrativeUnitChangeset: createValidatedChangeset(
+        this.store.createRecord('administrative-unit'),
+        administrativeUnitValidations
       ),
-      worshipService: this.store.createRecord('worship-service', {
-        crossBorder: false,
-      }),
+      administrativeUnit: this.store.createRecord('administrative-unit'),
       centralWorshipService: this.store.createRecord('central-worship-service'),
+      worshipService: this.store.createRecord('worship-service'),
       primarySite: this.store.createRecord('site'),
       address: createValidatedChangeset(
         this.store.createRecord('address'),

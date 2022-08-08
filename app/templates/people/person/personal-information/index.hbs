@@ -146,17 +146,33 @@
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              <Item>
-                <:label>Organisatie</:label>
-                <:content>
-                  <AuLink
-                    @model={{position.administrativeUnit.id}}
-                    @route="administrative-units.administrative-unit"
-                  >
-                    {{position.administrativeUnit.name}}
-                  </AuLink>
-                </:content>
-              </Item>
+              {{#if position.administrativeUnit}}
+                <Item>
+                  <:label>Organisatie</:label>
+                  <:content>
+                    <AuLink
+                      @model={{position.administrativeUnit.id}}
+                      @route="administrative-units.administrative-unit"
+                    >
+                      {{position.administrativeUnit.name}}
+                    </AuLink>
+                  </:content>
+                  </Item>
+              {{else}}
+                <Item>
+                  <:label>Organisaties</:label>
+                  <:content>
+                    {{#each position.administrativeUnits as |administrativeUnit|}}
+                      <AuLink
+                        @model={{administrativeUnit.id}}
+                        @route="administrative-units.administrative-unit"
+                      >
+                        {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
+                      </AuLink>
+                    {{/each}}
+                  </:content>
+                  </Item>
+              {{/if}}
               {{#if position.primaryContact.email}}
                 <Item>
                   <:label>E-mail</:label>
@@ -194,11 +210,16 @@
                       >
                         {{position.role}}
                       </AuLink>
-
-                    {{else}}
-
+                    {{else if (eq position.type "mandatory")}}
                       <AuLink
                         @route="people.person.positions.mandatory"
+                        @models={{array @model.person.id position.id}}
+                      >
+                        {{position.role}}
+                      </AuLink>
+                    {{else}}
+                      <AuLink
+                        @route="people.person.positions.agent"
                         @models={{array @model.person.id position.id}}
                       >
                         {{position.role}}

@@ -36,3 +36,8 @@ export function combineFullAddress(address) {
     return null;
   }
 }
+
+export function createAddress(store) {
+  let record = store.createRecord('address');
+  return record;
+}

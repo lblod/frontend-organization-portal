@@ -47,6 +47,7 @@
                     <SiteTypeSelect
                       @selected={{@model.site.siteType}}
                       @onChange={{fn (mut @model.site.siteType)}}
+                      @isWorshipAdministrativeUnit={{this.isWorshipAdministrativeUnit}}
                       @id="site-type"
                     />
                   </:content>

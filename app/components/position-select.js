@@ -3,11 +3,6 @@ import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import {
-  CENTRAL_WORSHIP_SERVICE_BOARD_POSITIONS_BLACKLIST,
-  WORSHIP_SERVICE_POSITIONS_BOARD_BLACKLIST,
-} from 'frontend-organization-portal/models/board-position';
-import { CENTRAL_WORSHIP_SERVICE_MINISTER_POSITIONS_BLACKLIST } from 'frontend-organization-portal/models/minister-position';
 
 export default class PositionSelectComponent extends Component {
   @service store;
@@ -38,17 +33,8 @@ export default class PositionSelectComponent extends Component {
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
     yield Promise.resolve();
 
-    const ministerPositions = yield this.store.findAll(
-      'minister-position-function'
-    );
-    const mandatePositions = yield this.store.findAll('board-position');
-
-    let positions = [
-      ...ministerPositions.toArray(),
-      ...mandatePositions.toArray(),
-    ].sort(function (a, b) {
-      return a.label.localeCompare(b.label);
-    });
+    let boardPositionCodes = [];
+    let ministerPositions = [];
 
     // Filter out blacklisted data if an administrative unit is selected
     if (
@@ -66,34 +52,38 @@ export default class PositionSelectComponent extends Component {
       )).firstObject;
 
       const classification = yield administrativeUnit.classification;
-      positions = this.filterOutBlacklistedPositions(positions, classification);
+
+      boardPositionCodes = yield this.store.query('board-position-code', {
+        'filter[applies-to][applies-within][:id:]': classification.id,
+      });
+
+      if (classification == CLASSIFICATION_CODE.WORSHIP_SERVICE) {
+        ministerPositions = yield this.store.findAll(
+          'minister-position-function'
+        );
+      }
+    } else {
+      boardPositionCodes = yield this.store.findAll('board-position-code');
+
+      ministerPositions = yield this.store.findAll(
+        'minister-position-function'
+      );
+    }
+
+    let positions;
+    if (ministerPositions.length) {
+      positions = [
+        ...ministerPositions.toArray(),
+        ...boardPositionCodes.toArray(),
+      ].sort(function (a, b) {
+        return a.label.localeCompare(b.label);
+      });
+    } else {
+      positions = [...boardPositionCodes.toArray()].sort(function (a, b) {
+        return a.label.localeCompare(b.label);
+      });
     }
 
     return positions;
-  }
-
-  filterOutBlacklistedPositions(positions, classification) {
-    if (classification.id == CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE) {
-      positions = positions.filter(
-        (position) =>
-          !this.isIdInBlacklist(position.id, [
-            ...CENTRAL_WORSHIP_SERVICE_BOARD_POSITIONS_BLACKLIST,
-            ...CENTRAL_WORSHIP_SERVICE_MINISTER_POSITIONS_BLACKLIST,
-          ])
-      );
-    } else if (classification.id == CLASSIFICATION_CODE.WORSHIP_SERVICE) {
-      positions = positions.filter(
-        (position) =>
-          !this.isIdInBlacklist(
-            position.id,
-            WORSHIP_SERVICE_POSITIONS_BOARD_BLACKLIST
-          )
-      );
-    }
-    return positions;
-  }
-
-  isIdInBlacklist(id, blacklist) {
-    return blacklist.find((element) => element == id);
   }
 }

@@ -40,7 +40,9 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsRou
       administrativeUnit,
       changeEvent,
       currentChangeEventResult,
-      isMergerChangeEvent: changeEventType.id === CHANGE_EVENT_TYPE.MERGER,
+      isMergerChangeEvent:
+        changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
+        changeEventType.id === CHANGE_EVENT_TYPE.FUSIE,
       shouldShowExtraInformationCard:
         shouldShowExtraInformationCard(changeEventType),
     };
@@ -61,6 +63,7 @@ async function findCurrentChangeEventResult(organization, changeEvent) {
 function shouldShowExtraInformationCard(changeEventType) {
   return (
     changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
+    changeEventType.id === CHANGE_EVENT_TYPE.FUSIE ||
     changeEventType.id === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
   );
 }

@@ -51,7 +51,7 @@
                 @labelFor="organization"
                 @required={{true}}
               >
-                <:label>Naam eredienst</:label>
+                <:label>Naam bestuur</:label>
                 <:content>
                   <AdministrativeUnitSelect
                     @classificationCodes={{this.classificationCodes}}
@@ -69,14 +69,14 @@
                   this.governingBodyClassifications
                 )
               }}
-                <Item @labelFor="board-position" @required={{true}}>
+                <Item @labelFor="board-position-code" @required={{true}}>
                   <:label>Mandaat</:label>
                   <:content>
                     <MandateRoleSelect
                       @selected={{this.selectedRole}}
                       @selectedAdministrativeUnit={{this.selectedOrganization}}
                       @onChange={{this.setRole}}
-                      @id="board-position"
+                      @id="board-position-code"
                     />
                   </:content>
                 </Item>

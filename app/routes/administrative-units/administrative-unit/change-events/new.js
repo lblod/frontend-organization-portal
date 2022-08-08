@@ -23,13 +23,14 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewRoute e
     }
   }
 
-  model() {
+  async model() {
     let administrativeUnit = this.modelFor(
       'administrative-units.administrative-unit'
     );
     let changeEvent = this.store.createRecord('change-event');
     let decision = this.store.createRecord('decision');
     let decisionActivity = this.store.createRecord('decisionActivity');
+    let classification = await administrativeUnit.classification;
 
     return {
       administrativeUnit,
@@ -42,6 +43,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewRoute e
       formState: new FormState({ currentOrganization: administrativeUnit }),
       changeEventRecord: changeEvent,
       decisionRecord: decision,
+      classification,
     };
   }
 
@@ -126,7 +128,8 @@ class FormState {
   get canAddDecisionInformation() {
     return (
       this.changeEventType &&
-      this.changeEventType?.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED
+      this.changeEventType?.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED &&
+      this.changeEventType?.id !== CHANGE_EVENT_TYPE.CITY
     );
   }
 
@@ -134,12 +137,16 @@ class FormState {
     let changeEventTypeId = this.changeEventType?.id;
     return (
       changeEventTypeId === CHANGE_EVENT_TYPE.MERGER ||
+      changeEventTypeId === CHANGE_EVENT_TYPE.FUSIE ||
       changeEventTypeId === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
     );
   }
 
   get shouldSelectMultipleOriginalOrganizations() {
-    return this.changeEventType.id === CHANGE_EVENT_TYPE.MERGER;
+    return (
+      this.changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
+      this.changeEventType.id === CHANGE_EVENT_TYPE.FUSIE
+    );
   }
 
   get canCancelSelectingOriginalOrganization() {
@@ -157,7 +164,10 @@ class FormState {
   }
 
   get shouldSelectResultingOrganization() {
-    return this.changeEventType?.id === CHANGE_EVENT_TYPE.MERGER;
+    return (
+      this.changeEventType?.id === CHANGE_EVENT_TYPE.MERGER ||
+      this.changeEventType?.id === CHANGE_EVENT_TYPE.FUSIE
+    );
   }
 
   get allOriginalOrganizations() {

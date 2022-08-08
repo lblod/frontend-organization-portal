@@ -4,17 +4,6 @@
     {{@model.person.givenName}}
     {{@model.person.familyName}}
   </:subtitle>
-  {{!-- <:action>
-    {{! TODO: Replace this with the "new" route once it is created }}
-    <AuLink
-      @route="people.person.positions"
-      @icon="add"
-      @iconAlignment="left"
-      @skin="button"
-    >
-      Nieuw
-    </AuLink>
-  </:action> --}}
 </PageHeader>
 
 <AuDataTable
@@ -25,7 +14,7 @@
   <t.content as |c|>
     <c.header>
       <th class="au-c-data-table__header-title">Positie</th>
-      <th class="au-c-data-table__header-title">Organisatie</th>
+      <th class="au-c-data-table__header-title">Organisatie(s)</th>
       <th class="au-c-data-table__header-title">Status</th>
       {{! <th></th> }}
     </c.header>
@@ -38,9 +27,16 @@
           >
             {{position.role}}
           </AuLink>
-        {{else}}
+        {{else if (eq position.type "mandatory")}}
           <AuLink
             @route="people.person.positions.mandatory"
+            @models={{array @model.person.id position.id}}
+          >
+            {{position.role}}
+          </AuLink>
+        {{else}}
+          <AuLink
+            @route="people.person.positions.agent"
             @models={{array @model.person.id position.id}}
           >
             {{position.role}}
@@ -48,22 +44,27 @@
         {{/if}}
       </td>
       <td>
-          {{#if position.administrativeUnit}}
+        {{#if position.administrativeUnit}}
+          <AuLink
+            @route="administrative-units.administrative-unit"
+            @model={{position.administrativeUnit.id}}
+          >
+            {{position.administrativeUnit.name}}
+          </AuLink>
+        {{else}}
+          {{#each position.administrativeUnits as |administrativeUnit|}}
             <AuLink
               @route="administrative-units.administrative-unit"
-              @model={{position.administrativeUnit.id}}
+              @model={{administrativeUnit.id}}
             >
-              {{position.administrativeUnit.name}}
+              {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
             </AuLink>
-          {{/if}}
+          {{/each}}
+        {{/if}}
       </td>
       <td>
         <PositionStatus @endDate={{position.endDate}} />
       </td>
-      {{! <td>
-        TODO Replace this with the correct route
-        <AuLink @route="people.person.positions">Bewerk</AuLink>
-      </td> }}
     </c.body>
   </t.content>
 </AuDataTable>

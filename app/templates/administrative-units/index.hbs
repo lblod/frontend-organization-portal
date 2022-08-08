@@ -8,14 +8,14 @@
               <AdministrativeUnitSelectByName
                 @id="filter-name"
                 @selected={{this.name}}
-                @onChange={{fn (mut this.name)}}
+                @onChange={{this.setName}}
                 class="grow"
               />
           </div>
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-municipality">Gemeente</AuLabel>
             <MunicipalitySelect
-              @selected={{this.municipality}}
+              @selected={{this.selectedMunicipality}}
               @onChange={{this.setMunicipality}}
               @selectedProvince={{this.province}}
               @id="filter-municipality"
@@ -40,16 +40,18 @@
               @id="classification"
             />
           </div>
-          <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
-            <AuLabel for="recognized-worship-types">Soort eredienst</AuLabel>
-            <RecognizedWorshipTypeSelect
-              @selected={{this.recognizedWorshipTypeId}}
-              @onChange={{this.setRecognizedWorshipTypeId}}
-              @allowClear={{true}}
-              @selectedClassificationId={{this.classificationId}}
-              @id="recognized-worship-types"
-            />
-          </div>
+          {{#if this.isWorshipAdministrativeUnit}}
+            <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
+              <AuLabel for="recognized-worship-types">Soort eredienst</AuLabel>
+              <RecognizedWorshipTypeSelect
+                @selected={{this.recognizedWorshipTypeId}}
+                @onChange={{this.setRecognizedWorshipTypeId}}
+                @allowClear={{true}}
+                @selectedClassificationId={{this.classificationId}}
+                @id="recognized-worship-types"
+              />
+            </div>
+          {{/if}}
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="statuses">Status</AuLabel>
             <OrganizationStatusSelect
@@ -112,11 +114,13 @@
             @currentSorting={{this.sort}}
             @label="Type bestuur"
           />
-          <AuDataTableThSortable
-            @field="recognized_worship_type_name"
-            @currentSorting={{this.sort}}
-            @label="Soort eredienst"
-          />
+          {{#if this.isWorshipAdministrativeUnit}}
+            <AuDataTableThSortable
+              @field="recognized_worship_type_name"
+              @currentSorting={{this.sort}}
+              @label="Soort eredienst"
+            />
+          {{/if}}
           <AuDataTableThSortable
             @field="province"
             @currentSorting={{this.sort}}
@@ -162,7 +166,9 @@
               </LinkTo>
             </td>
             <td>{{adminUnit.classification_name}}</td>
-            <td>{{adminUnit.recognized_worship_type_name}}</td>
+            {{#if this.isWorshipAdministrativeUnit}}
+              <td>{{adminUnit.recognized_worship_type_name}}</td>
+            {{/if}}
             <td>{{adminUnit.province}}</td>
             <td>{{adminUnit.municipality}}</td>
             <td>

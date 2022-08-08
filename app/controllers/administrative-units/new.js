@@ -4,56 +4,50 @@ import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import { GOVERNING_BODY_CLASSIFICATION } from 'frontend-organization-portal/models/governing-body-classification-code';
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
-
-const GOVERNING_BODY_CLASSIFICATION_MAP = {
-  [CLASSIFICATION_CODE.WORSHIP_SERVICE]: {
-    [RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC]:
-      GOVERNING_BODY_CLASSIFICATION.CHURCH_COUNCIL,
-    [RECOGNIZED_WORSHIP_TYPE.ANGLICAN]:
-      GOVERNING_BODY_CLASSIFICATION.CHURCH_COUNCIL,
-    [RECOGNIZED_WORSHIP_TYPE.ISRAELITE]:
-      GOVERNING_BODY_CLASSIFICATION.BOARD_OF_DIRECTORS,
-    [RECOGNIZED_WORSHIP_TYPE.ISLAMIC]: GOVERNING_BODY_CLASSIFICATION.COMMITTEE,
-    [RECOGNIZED_WORSHIP_TYPE.ORTHODOX]:
-      GOVERNING_BODY_CLASSIFICATION.CHURCH_FACTORY_COUNCIL,
-    [RECOGNIZED_WORSHIP_TYPE.PROTESTANT]:
-      GOVERNING_BODY_CLASSIFICATION.BOARD_OF_DIRECTORS,
-  },
-  [CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE]: {
-    [RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC]:
-      GOVERNING_BODY_CLASSIFICATION.CENTRAL_CHURCH_BOARD,
-    [RECOGNIZED_WORSHIP_TYPE.ANGLICAN]:
-      GOVERNING_BODY_CLASSIFICATION.CENTRAL_CHURCH_BOARD,
-    [RECOGNIZED_WORSHIP_TYPE.ISRAELITE]:
-      GOVERNING_BODY_CLASSIFICATION.CENTRAL_ADMINISTRATION,
-    [RECOGNIZED_WORSHIP_TYPE.ISLAMIC]:
-      GOVERNING_BODY_CLASSIFICATION.CENTRAL_ADMINISTRATION,
-    [RECOGNIZED_WORSHIP_TYPE.ORTHODOX]:
-      GOVERNING_BODY_CLASSIFICATION.CENTRAL_CHURCH_BOARD,
-    [RECOGNIZED_WORSHIP_TYPE.PROTESTANT]:
-      GOVERNING_BODY_CLASSIFICATION.CENTRAL_CHURCH_BOARD,
-  },
-};
 
 export default class AdministrativeUnitsNewController extends Controller {
   @service router;
   @service store;
 
+  get isNewOCMW() {
+    return (
+      this.model.administrativeUnitChangeset.classification?.id ===
+      CLASSIFICATION_CODE.OCMW
+    );
+  }
+
+  get isNewDistrict() {
+    return (
+      this.model.administrativeUnitChangeset.classification?.id ===
+      CLASSIFICATION_CODE.DISTRICT
+    );
+  }
+
+  get isNewMunicipality() {
+    return (
+      this.model.administrativeUnitChangeset.classification?.id ===
+      CLASSIFICATION_CODE.MUNICIPALITY
+    );
+  }
+
   get isNewWorshipService() {
     return (
-      this.model.administrativeUnit.classification?.id ===
+      this.model.administrativeUnitChangeset.classification?.id ===
       CLASSIFICATION_CODE.WORSHIP_SERVICE
     );
   }
 
   get isNewCentralWorshipService() {
     return (
-      this.model.administrativeUnit.classification?.id ===
+      this.model.administrativeUnitChangeset.classification?.id ===
       CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
     );
+  }
+
+  get isNewWorshipAdministrativeUnit() {
+    return this.isNewWorshipService || this.isNewCentralWorshipService;
   }
 
   get hasCentralWorshipService() {
@@ -66,9 +60,14 @@ export default class AdministrativeUnitsNewController extends Controller {
     return (
       this.isNewWorshipService &&
       typesThatHaveACentralWorshipService.find(
-        (id) => id == this.model.administrativeUnit.recognizedWorshipType?.id
+        (id) =>
+          id == this.model.administrativeUnitChangeset.recognizedWorshipType?.id
       )
     );
+  }
+
+  get classificationCodes() {
+    return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
 
   @action
@@ -76,11 +75,20 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.structuredIdentifierKBO.localId = value;
   }
 
+  @action
+  setClassification(value) {
+    this.model.administrativeUnitChangeset.classification = value;
+    this.model.administrativeUnitChangeset.subOrganizations = [];
+    this.model.administrativeUnitChangeset.isAssociatedWith = [];
+    this.model.administrativeUnitChangeset.isSubOrganizationOf = null;
+  }
+
   @dropTask
   *createAdministrativeUnitTask(event) {
     event.preventDefault();
 
     let {
+      administrativeUnitChangeset,
       administrativeUnit,
       centralWorshipService,
       worshipService,
@@ -94,12 +102,8 @@ export default class AdministrativeUnitsNewController extends Controller {
       structuredIdentifierKBO,
     } = this.model;
 
-    let newAdministrativeUnit = this.isNewCentralWorshipService
-      ? centralWorshipService
-      : worshipService;
-
     yield Promise.all([
-      administrativeUnit.validate(),
+      administrativeUnitChangeset.validate(),
       address.validate(),
       contact.validate(),
       secondaryContact.validate(),
@@ -107,13 +111,26 @@ export default class AdministrativeUnitsNewController extends Controller {
     ]);
 
     if (
-      administrativeUnit.isValid &&
+      administrativeUnitChangeset.isValid &&
       address.isValid &&
       contact.isValid &&
       secondaryContact.isValid &&
       structuredIdentifierKBO.isValid
     ) {
-      copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
+      let newAdministrativeUnit;
+      // Set the proper type to the new admin unit
+      if (this.isNewCentralWorshipService) {
+        newAdministrativeUnit = centralWorshipService;
+      } else if (this.isNewWorshipService) {
+        newAdministrativeUnit = worshipService;
+      } else {
+        newAdministrativeUnit = administrativeUnit;
+      }
+      // Copy data entered in the frontend to the new admin unit
+      copyAdministrativeUnitData(
+        newAdministrativeUnit,
+        administrativeUnitChangeset
+      );
 
       structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
       identifierKBO.structuredIdentifier = structuredIdentifierKBO;
@@ -149,19 +166,34 @@ export default class AdministrativeUnitsNewController extends Controller {
       newAdministrativeUnit.primarySite = primarySite;
 
       newAdministrativeUnit = setEmptyStringsToNull(newAdministrativeUnit);
+
       yield newAdministrativeUnit.save();
 
-      let governingBody = this.store.createRecord('governing-body');
-      governingBody.administrativeUnit = newAdministrativeUnit;
-      governingBody.classification = yield this.getGoverningBodyClassification(
-        administrativeUnit
-      );
-      yield governingBody.save();
+      const administrativeUnitClassification =
+        yield newAdministrativeUnit.classification;
 
-      let governingBodyTimeSpecialization =
-        this.store.createRecord('governing-body');
-      governingBodyTimeSpecialization.isTimeSpecializationOf = governingBody;
-      yield governingBodyTimeSpecialization.save();
+      const governingBodyClassifications = yield this.store.query(
+        'governing-body-classification-code',
+        {
+          filter: {
+            'applies-within': {
+              ':id:': administrativeUnitClassification.id,
+            },
+          },
+        }
+      );
+
+      for (let classification of governingBodyClassifications.toArray()) {
+        let governingBody = this.store.createRecord('governing-body');
+        governingBody.administrativeUnit = newAdministrativeUnit;
+        governingBody.classification = classification;
+        yield governingBody.save();
+
+        let governingBodyTimeSpecialization =
+          this.store.createRecord('governing-body');
+        governingBodyTimeSpecialization.isTimeSpecializationOf = governingBody;
+        yield governingBodyTimeSpecialization.save();
+      }
 
       this.router.replaceWith(
         'administrative-units.administrative-unit',
@@ -180,13 +212,13 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.identifierSharepoint.rollbackAttributes();
     this.model.identifierKBO.rollbackAttributes();
     this.model.structuredIdentifierSharepoint.rollbackAttributes();
-    this.model.centralWorshipService.rollbackAttributes();
-    this.model.worshipService.rollbackAttributes();
+    this.model.structuredIdentifierKBO.rollbackAttributes();
+    this.model.administrativeUnitChangeset.rollbackAttributes();
   }
 
   removeUnsavedChangesetRecords() {
-    if (this.model.administrativeUnit.isNew) {
-      this.model.administrativeUnit.destroyRecord();
+    if (this.model.administrativeUnitChangeset.isNew) {
+      this.model.administrativeUnitChangeset.destroyRecord();
     }
 
     if (this.model.address.isNew) {
@@ -205,24 +237,6 @@ export default class AdministrativeUnitsNewController extends Controller {
       this.model.structuredIdentifierKBO.destroyRecord();
     }
   }
-
-  async getGoverningBodyClassification(worshipAdministrativeUnit) {
-    let administrativeUnitClassification =
-      await worshipAdministrativeUnit.classification;
-    let worshipType = await worshipAdministrativeUnit.recognizedWorshipType;
-
-    let governingBodyClassificationId =
-      GOVERNING_BODY_CLASSIFICATION_MAP[administrativeUnitClassification.id][
-        worshipType.id
-      ];
-
-    let governingBodyClassification = await this.store.findRecord(
-      'governing-body-classification-code',
-      governingBodyClassificationId
-    );
-
-    return governingBodyClassification;
-  }
 }
 
 function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
@@ -234,6 +248,13 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
     administrativeUnit.organizationStatus;
   newAdministrativeUnit.isSubOrganizationOf =
     administrativeUnit.isSubOrganizationOf;
-  newAdministrativeUnit.subOrganizations = administrativeUnit.subOrganizations;
+  if (
+    administrativeUnit.subOrganizations &&
+    administrativeUnit.subOrganizations.length
+  ) {
+    newAdministrativeUnit.subOrganizations =
+      administrativeUnit.subOrganizations;
+  }
   newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
+  newAdministrativeUnit.locatedWithin = administrativeUnit.locatedWithin;
 }

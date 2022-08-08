@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsIndexController extends Controller {
   @service router;
@@ -26,6 +27,8 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked classificationId = '';
   @tracked recognizedWorshipTypeId = '';
   @tracked organizationStatus = '';
+
+  @tracked selectedMunicipality;
 
   get administrativeUnits() {
     return this.model.loadAdministrativeUnitsTaskInstance.isFinished
@@ -59,6 +62,20 @@ export default class AdministrativeUnitsIndexController extends Controller {
     return this.model.loadAdministrativeUnitsTaskInstance.isError;
   }
 
+  get isWorshipAdministrativeUnit() {
+    return this.isWorshipService || this.isCentralWorshipService;
+  }
+
+  get isWorshipService() {
+    return this.classificationId === CLASSIFICATION_CODE.WORSHIP_SERVICE;
+  }
+
+  get isCentralWorshipService() {
+    return (
+      this.classificationId === CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+    );
+  }
+
   @action
   search(event) {
     event.preventDefault();
@@ -73,16 +90,28 @@ export default class AdministrativeUnitsIndexController extends Controller {
 
   @action
   setClassificationId(selection) {
+    this.page = null;
     this.classificationId = selection?.id;
+    if (!this.isWorshipAdministrativeUnit) {
+      this.recognizedWorshipTypeId = '';
+    }
   }
 
   @action
   setRecognizedWorshipTypeId(selection) {
+    this.page = null;
     this.recognizedWorshipTypeId = selection?.id;
   }
 
   @action
+  setName(selection) {
+    this.page = null;
+    this.name = selection;
+  }
+
+  @action
   setOrganizationStatus(selection) {
+    this.page = null;
     if (selection !== null) {
       this.organizationStatus = selection.id;
     } else {
@@ -92,8 +121,10 @@ export default class AdministrativeUnitsIndexController extends Controller {
 
   @action
   setMunicipality(selection) {
+    this.page = null;
+    this.selectedMunicipality = selection;
     if (selection !== null) {
-      this.municipality = selection;
+      this.municipality = selection.name;
     } else {
       this.municipality = '';
     }
@@ -101,6 +132,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
 
   @action
   setProvince(selection) {
+    this.page = null;
     if (selection !== null) {
       this.province = selection;
     } else {
@@ -123,6 +155,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
     this.page = 0;
     this.sort = 'name';
 
+    this.selectedMunicipality = null;
     // Triggers a refresh of the model
     this.page = null;
   }

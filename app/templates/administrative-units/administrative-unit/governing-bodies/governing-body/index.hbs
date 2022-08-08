@@ -73,20 +73,22 @@
         <AuToolbarGroup>
           <AuHeading @level="4" @skin="5">Bestuursleden</AuHeading>
         </AuToolbarGroup>
-        <AuToolbarGroup>
-          <SecuredArea>
-            <:edit>
-              <AuLink
-                @route="administrative-units.administrative-unit.governing-bodies.governing-body.board-member.new"
-                @skin="button"
-                @icon="add"
-                @iconAlignment="left"
-              >
-                Nieuw
-              </AuLink>
-            </:edit>
-          </SecuredArea>
-        </AuToolbarGroup>
+        {{#if this.isWorshipAdministrativeUnit}}
+          <AuToolbarGroup>
+            <SecuredArea>
+              <:edit>
+                <AuLink
+                  @route="administrative-units.administrative-unit.governing-bodies.governing-body.board-member.new"
+                  @skin="button"
+                  @icon="add"
+                  @iconAlignment="left"
+                >
+                  Nieuw
+                </AuLink>
+              </:edit>
+            </SecuredArea>
+          </AuToolbarGroup>
+        {{/if}}
       </AuToolbar>
       <AuDataTable
         @content={{@model.memberMandatories}}
@@ -112,14 +114,15 @@
             />
             <th class="au-c-data-table__header-title">Start mandaat</th>
             <th class="au-c-data-table__header-title">Einde mandaat</th>
-            <SecuredArea>
-              <:edit>
-                <th></th>
-              </:edit>
-            </SecuredArea>
+            {{#if this.isWorshipAdministrativeUnit}}
+              <SecuredArea>
+                <:edit>
+                  <th></th>
+                </:edit>
+              </SecuredArea>
+            {{/if}}
           </c.header>
           <c.body as |mandatory|>
-
             <td>
               <AuLink
                 @route="people.person"
@@ -156,22 +159,24 @@
                 {{date-format mandatory.expectedEndDate}}
               {{/if}}
             </td>
-            <SecuredArea>
-              <:edit>
-                <td>
-                  <AuLink
-                    @route="administrative-units.administrative-unit.governing-bodies.governing-body.board-member.edit"
-                    @models={{array
-                      @model.administrativeUnit.id
-                      @model.governingBody.id
-                      mandatory.id
-                    }}
-                  >
-                    Bewerk
-                  </AuLink>
-                </td>
-              </:edit>
-            </SecuredArea>
+            {{#if this.isWorshipAdministrativeUnit}}
+              <SecuredArea>
+                <:edit>
+                  <td>
+                    <AuLink
+                      @route="administrative-units.administrative-unit.governing-bodies.governing-body.board-member.edit"
+                      @models={{array
+                        @model.administrativeUnit.id
+                        @model.governingBody.id
+                        mandatory.id
+                      }}
+                    >
+                      Bewerk
+                    </AuLink>
+                  </td>
+                </:edit>
+              </SecuredArea>
+            {{/if}}
           </c.body>
         </t.content>
       </AuDataTable>
@@ -182,20 +187,22 @@
         <AuToolbarGroup>
           <AuHeading @level="4" @skin="5">Mandatarissen</AuHeading>
         </AuToolbarGroup>
-        <AuToolbarGroup>
-          <SecuredArea>
-            <:edit>
-              <AuLink
-                @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
-                @skin="button"
-                @icon="add"
-                @iconAlignment="left"
-              >
-                Nieuw
-              </AuLink>
-            </:edit>
-          </SecuredArea>
-        </AuToolbarGroup>
+        {{#if this.isWorshipAdministrativeUnit}}
+          <AuToolbarGroup>
+            <SecuredArea>
+              <:edit>
+                <AuLink
+                  @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
+                  @skin="button"
+                  @icon="add"
+                  @iconAlignment="left"
+                >
+                  Nieuw
+                </AuLink>
+              </:edit>
+            </SecuredArea>
+          </AuToolbarGroup>
+        {{/if}}
       </AuToolbar>
       <AuDataTable
         @content={{@model.otherMandatories}}
@@ -221,11 +228,13 @@
             />
             <th class="au-c-data-table__header-title">Start mandaat</th>
             <th class="au-c-data-table__header-title">Einde mandaat</th>
-            <SecuredArea>
-              <:edit>
-                <th></th>
-              </:edit>
-            </SecuredArea>
+            {{#if this.isWorshipAdministrativeUnit}}
+              <SecuredArea>
+                <:edit>
+                  <th></th>
+                </:edit>
+              </SecuredArea>
+            {{/if}}
           </c.header>
           <c.body as |mandatory|>
             <td>
@@ -264,22 +273,24 @@
                 {{date-format mandatory.expectedEndDate}}
               {{/if}}
             </td>
-            <SecuredArea>
-              <:edit>
-                <td>
-                  <AuLink
-                    @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
-                    @models={{array
-                      @model.administrativeUnit.id
-                      @model.governingBody.id
-                      mandatory.id
-                    }}
-                  >
-                    Bewerk
-                  </AuLink>
-                </td>
-              </:edit>
-            </SecuredArea>
+            {{#if this.isWorshipAdministrativeUnit}}
+              <SecuredArea>
+                <:edit>
+                  <td>
+                    <AuLink
+                      @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
+                      @models={{array
+                        @model.administrativeUnit.id
+                        @model.governingBody.id
+                        mandatory.id
+                      }}
+                    >
+                      Bewerk
+                    </AuLink>
+                  </td>
+                </:edit>
+              </SecuredArea>
+            {{/if}}
           </c.body>
         </t.content>
       </AuDataTable>

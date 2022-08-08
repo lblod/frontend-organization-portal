@@ -18,7 +18,7 @@
     @sort={{this.sort}}
     @page={{this.page}}
     @size={{this.size}}
-    @noDataMessage="Geen bestuur van de eredienst" as |t|>
+    @noDataMessage="Geen bestuur" as |t|>
     <t.content as |c|>
       <c.header>
         <AuDataTableThSortable @field="classification.label" @currentSorting={{this.sort}} @label="Type organisatie" />

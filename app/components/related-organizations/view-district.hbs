@@ -1,0 +1,41 @@
+<DataCard>
+  <:title>Behoort tot</:title>
+  <:card as |Card|>
+    <Card.Columns>
+      <:left as |Item|>
+        {{#if @model.isSubOrganizationOf.name}}
+          <Item>
+            <:label>
+              Gemeente
+            </:label>
+            <:content>
+              <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
+                {{@model.isSubOrganizationOf.name}}
+              </AuLink>
+            </:content>
+          </Item>
+        {{/if}}
+        {{#if @model.administrativeUnit.isSubOrganizationOf}}
+          <Item>
+            <:label>
+              Provincie
+            </:label>
+            <:content>
+              <AuLink @route="administrative-units.administrative-unit" @model={{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.id}}>
+                {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
+              </AuLink>
+            </:content>
+          </Item>
+          <Item>
+            <:label>OCMW</:label>
+            <:content>
+              <AuLink @route="administrative-units.administrative-unit" @model={{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.id}}>
+                {{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.name}}
+              </AuLink>
+            </:content>
+          </Item>
+        {{/if}}
+      </:left>
+    </Card.Columns>
+  </:card>
+</DataCard>
