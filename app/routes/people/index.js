@@ -75,14 +75,12 @@ export default class PeopleIndexRoute extends Route {
       // In the case of functionarissen, a bestuursfunctie is linked to multiple units (OCMW and Gemeente)
       person.organizations = [];
       if (Array.isArray(person.organization_id)) {
-        let i = 0;
-        person.organization_id.map((id) => {
+        for (let [index, id] of person.organization_id.entries()) {
           person.organizations.push({
-            id: id,
-            classification: person.organization_classification[i],
+            id,
+            classification: person.organization_classification[index],
           });
-          i++;
-        });
+        }
       } else {
         person.organizations = [
           {
