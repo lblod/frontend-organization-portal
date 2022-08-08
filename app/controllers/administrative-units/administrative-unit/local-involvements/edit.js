@@ -85,7 +85,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
       involvement.percentage = 0;
     }
 
-    if (this.isLessOrOneFinancialLocalInvolvement) {
+    if (this.isOneOrLessFinancialLocalInvolvement) {
       this.hideMoreThanOneFinancialTypeError();
     }
   }
@@ -98,7 +98,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     this.hideTotalFinancingPercentageError();
   }
 
-  get isLessOrOneFinancialLocalInvolvement() {
+  get isOneOrLessFinancialLocalInvolvement() {
     let hasFinancialLocalInvolvements = this.model.involvements.filter(
       (involvement) => isFinancialInvolvementType(involvement)
     );
@@ -141,14 +141,14 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     if (!this.isValidTotalFinancingPercentage) {
       this.showTotalFinancingPercentageError = true;
     }
-    if (!this.isLessOrOneFinancialLocalInvolvement) {
+    if (!this.isOneOrLessFinancialLocalInvolvement) {
       this.showMoreThanOneFinancialTypeError = true;
     }
 
     if (
       !areSomeLocalInvolvementsInvalid &&
       this.isValidTotalFinancingPercentage &&
-      this.isLessOrOneFinancialLocalInvolvement
+      this.isOneOrLessFinancialLocalInvolvement
     ) {
       let localInvolvementsWithUnsavedChanges = involvements.filter(
         (involvement) => involvement.isDirty
