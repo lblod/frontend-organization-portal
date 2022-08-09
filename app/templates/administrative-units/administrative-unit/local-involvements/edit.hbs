@@ -129,7 +129,7 @@
               as |errorMessage|
             }}
               <AuInput
-                @disabled={{not (this.isFinancialInvolvementType involvement)}}
+                @disabled={{this.isDisabledPercentage involvement}}
                 @error={{errorMessage}}
                 @type="number"
                 step="any"
