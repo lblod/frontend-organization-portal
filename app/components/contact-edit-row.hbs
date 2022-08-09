@@ -133,7 +133,7 @@
         >
           Gemeente
         </AuLabel>
-        <MunicipalitySelect
+        <MunicipalitySelectByName
           @selected={{@address.municipality}}
           @selectedProvince={{@address.province}}
           @onChange={{fn (mut @address.municipality)}}
