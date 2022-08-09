@@ -42,6 +42,9 @@ export default class ProvinceSelectComponent extends Component {
           'sub-organizations': {
             ':exact:name': this.args.selectedMunicipality,
           },
+          classification: {
+            id: CLASSIFICATION_CODE.PROVINCE,
+          },
         },
       });
     } else {
