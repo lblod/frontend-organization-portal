@@ -61,6 +61,8 @@ export default class AdministrativeUnitSelectComponent extends Component {
           }
         });
       }
+    } else {
+      allowedClassificationCodes = classificationCodes;
     }
 
     const query = {
