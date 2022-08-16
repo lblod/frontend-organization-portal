@@ -40,7 +40,7 @@
               @id="classification"
             />
           </div>
-          {{#if this.isWorshipAdministrativeUnit}}
+          {{#if this.modelHasOnlyWorshipAdministrativeUnits}}
             <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
               <AuLabel for="recognized-worship-types">Soort eredienst</AuLabel>
               <RecognizedWorshipTypeSelect
@@ -114,7 +114,7 @@
             @currentSorting={{this.sort}}
             @label="Type bestuur"
           />
-          {{#if this.isWorshipAdministrativeUnit}}
+          {{#if this.modelHasOnlyWorshipAdministrativeUnits}}
             <AuDataTableThSortable
               @field="recognized_worship_type_name"
               @currentSorting={{this.sort}}
@@ -166,7 +166,7 @@
               </LinkTo>
             </td>
             <td>{{adminUnit.classification_name}}</td>
-            {{#if this.isWorshipAdministrativeUnit}}
+            {{#if this.modelHasOnlyWorshipAdministrativeUnits}}
               <td>{{adminUnit.recognized_worship_type_name}}</td>
             {{/if}}
             <td>{{adminUnit.province}}</td>
