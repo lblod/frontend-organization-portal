@@ -24,6 +24,9 @@ export default class MunicipalitySelectComponent extends Component {
           'is-sub-organization-of': {
             ':exact:name': this.args.selectedProvince,
           },
+          classification: {
+            id: CLASSIFICATION_CODE.MUNICIPALITY,
+          },
         },
         sort: 'name',
         page: {
