@@ -29,13 +29,18 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
         !EXECUTIVE_ORGANEN.find((id) => id === governingBodyClassification.id)
       ) {
         const timedGoverningBodies = governingBody
-          ? (await governingBody.hasTimeSpecializations)
-              .toArray()
-              .sort((a, b) => {
-                return b.endDate - a.endDate;
-              })
+          ? await governingBody.hasTimeSpecializations
           : [];
-        governingBodies.push(...timedGoverningBodies);
+
+        const sortedTimesGoverningBodies = timedGoverningBodies
+          .toArray()
+          .sort((a, b) => {
+            if (a.endDate && b.endDate) {
+              return b.endDate - a.endDate;
+            }
+            return b.startDate - a.startDate;
+          });
+        governingBodies.push(...sortedTimesGoverningBodies);
       }
     }
 
