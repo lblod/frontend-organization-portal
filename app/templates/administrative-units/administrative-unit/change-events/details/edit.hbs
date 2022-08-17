@@ -78,24 +78,32 @@
           </:left>
           <:right as |Item|>
             {{#if @model.canAddDecisionInformation}}
-              <Item @labelFor="change-event-decision-activity-date"
-                @errorMessage={{this.endDateValidation.errorMessage}}
-              >
-                <:label>Datum ministerieel besluit</:label>
-                <:content as |hasError|>
-                  <Datepicker
-                    @id="change-event-decision-activity-date"
-                    @value={{@model.decisionActivity.endDate}}
-                    @onChange={{fn (mut @model.decisionActivity.endDate)}}
-                    @onValidate={{this.validateEndDate}}
-                    @error={{hasError}}
-                  />
-                </:content>
-              </Item>
+              {{#unless this.isCityChangeEvent}}
+                <Item @labelFor="change-event-decision-activity-date"
+                  @errorMessage={{this.endDateValidation.errorMessage}}
+                >
+                  <:label>Datum ministerieel besluit</:label>
+                  <:content as |hasError|>
+                    <Datepicker
+                      @id="change-event-decision-activity-date"
+                      @value={{@model.decisionActivity.endDate}}
+                      @onChange={{fn (mut @model.decisionActivity.endDate)}}
+                      @onValidate={{this.validateEndDate}}
+                      @error={{hasError}}
+                    />
+                  </:content>
+                </Item>
+              {{/unless}}
               <Item @labelFor="change-event-decision-publication-date"
                 @errorMessage={{this.publicationDateValidation.errorMessage}}
               >
-                <:label>Datum publicatie BS</:label>
+                <:label>
+                  {{#if this.isCityChangeEvent}}
+                    Datum besluit
+                  {{else}}
+                    Datum publicatie BS
+                  {{/if}}
+                </:label>
                 <:content as |hasError|>
                   <Datepicker
                     @id="change-event-decision-publication-date"
