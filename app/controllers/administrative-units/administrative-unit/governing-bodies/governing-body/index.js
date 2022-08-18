@@ -3,8 +3,10 @@ import { tracked } from '@glimmer/tracking';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyIndexController extends Controller {
-  queryParams = ['sort'];
+  queryParams = ['page', 'sort', 'size'];
 
+  size = 25;
+  @tracked page = 0;
   @tracked sort = 'governing-alias.given-name';
 
   get isWorshipAdministrativeUnit() {

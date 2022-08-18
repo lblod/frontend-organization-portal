@@ -93,6 +93,8 @@
       <AuDataTable
         @content={{@model.memberMandatories}}
         @noDataMessage="Geen bestuursleden"
+        @page={{this.page}}
+        @size={{this.size}}
         as |t|
       >
         <t.content as |c|>
