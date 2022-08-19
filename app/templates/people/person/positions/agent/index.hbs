@@ -37,13 +37,16 @@
               <Item>
                 <:label>Naam bestuur</:label>
                 <:content>
-                  {{#each @model.administrativeUnits as |administrativeUnit|}}
+                  {{#each @model.administrativeUnits as |administrativeUnit index|}}
                     <AuLink
                       @route="administrative-units.administrative-unit"
                       @model={{administrativeUnit.id}}
                     >
                       {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
                     </AuLink>
+                    {{#if (gt @model.administrativeUnits.length 1)}}
+                      {{unless index "/"}}
+                    {{/if}}
                   {{/each}}
                 </:content>
               </Item>

@@ -52,13 +52,16 @@
             {{position.administrativeUnit.name}}
           </AuLink>
         {{else}}
-          {{#each position.administrativeUnits as |administrativeUnit|}}
+          {{#each position.administrativeUnits as |administrativeUnit index|}}
             <AuLink
               @route="administrative-units.administrative-unit"
               @model={{administrativeUnit.id}}
             >
               {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
             </AuLink>
+            {{#if (gt position.administrativeUnits.length 1)}}
+              {{unless index "/"}}
+            {{/if}}
           {{/each}}
         {{/if}}
       </td>

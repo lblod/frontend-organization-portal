@@ -136,7 +136,7 @@
               </AuLink>
             </td>
             <td>
-              {{#each person.organizations as |organization|}}
+              {{#each person.organizations as |organization index|}}
                 <AuLink
                   @route="administrative-units.administrative-unit"
                   @model={{organization.id}}
@@ -150,6 +150,9 @@
                     ({{organization.classification}})
                   {{/if}}
                 </AuLink>
+                {{#if (gt person.organizations.length 1)}}
+                  {{unless index "/"}}
+                {{/if}}
               {{/each}}
             </td>
             <td>

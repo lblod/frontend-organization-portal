@@ -25,4 +25,10 @@ export default class AdministrativeUnitsAdministrativeUnitController extends Con
       this.model.classification?.get('id') === CLASSIFICATION_CODE.PROVINCE
     );
   }
+
+  get isDistrict() {
+    return (
+      this.model.classification?.get('id') === CLASSIFICATION_CODE.DISTRICT
+    );
+  }
 }
