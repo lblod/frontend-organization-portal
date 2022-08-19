@@ -5,7 +5,7 @@
         Veranderingsgebeurtenis:
         {{@model.changeEvent.type.label}}
       </:title>
-      <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+      <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         <SecuredArea>
           <:edit>
