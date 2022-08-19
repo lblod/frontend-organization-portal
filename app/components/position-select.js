@@ -58,16 +58,21 @@ export default class PositionSelectComponent extends Component {
       });
 
       if (classification == CLASSIFICATION_CODE.WORSHIP_SERVICE) {
-        ministerPositions = yield this.store.findAll(
-          'minister-position-function'
+        ministerPositions = yield this.store.query(
+          'minister-position-function',
+          {
+            page: { size: 100 },
+          }
         );
       }
     } else {
-      boardPositionCodes = yield this.store.findAll('board-position-code');
+      boardPositionCodes = yield this.store.query('board-position-code', {
+        page: { size: 100 },
+      });
 
-      ministerPositions = yield this.store.findAll(
-        'minister-position-function'
-      );
+      ministerPositions = yield this.store.query('minister-position-function', {
+        page: { size: 100 },
+      });
     }
 
     let positions;
