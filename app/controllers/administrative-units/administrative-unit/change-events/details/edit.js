@@ -5,6 +5,7 @@ import { isEmpty } from 'frontend-organization-portal/models/decision';
 import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEditController extends Controller {
   @service router;
@@ -14,6 +15,13 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
 
   @tracked
   publicationDateValidation = { valid: true };
+
+  get isCityChangeEvent() {
+    return (
+      this.model.changeEvent.type &&
+      this.model.changeEvent.type.get('id') == CHANGE_EVENT_TYPE.CITY
+    );
+  }
 
   @action
   validateEndDate(validation) {

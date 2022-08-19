@@ -70,7 +70,13 @@
             }}
               {{#if publicationDate}}
                 <Item>
-                  <:label>Datum publicatie BS</:label>
+                  <:label>
+                    {{#if this.isCityChangeEvent}}
+                      Datum besluit
+                    {{else}}
+                      Datum publicatie BS
+                    {{/if}}
+                  </:label>
                   <:content>
                     {{date-format publicationDate}}
                   </:content>
