@@ -63,21 +63,16 @@ export default class AdministrativeUnitsIndexController extends Controller {
   }
 
   get modelHasOnlyWorshipAdministrativeUnits() {
-    let worshipAdministrativeUnits = [];
     if (this.administrativeUnits) {
-      worshipAdministrativeUnits = this.administrativeUnits.filter(
-        (adminUnit) => {
-          return (
-            adminUnit.classification_id ==
-              CLASSIFICATION_CODE.WORSHIP_SERVICE ||
-            adminUnit.classification_id ==
-              CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
-          );
-        }
-      );
+      return !this.administrativeUnits.toArray().some((adminUnit) => {
+        return (
+          adminUnit.classification_id !== CLASSIFICATION_CODE.WORSHIP_SERVICE &&
+          adminUnit.classification_id !==
+            CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+        );
+      });
     }
-
-    return worshipAdministrativeUnits.length == this.size;
+    return false;
   }
 
   get isWorshipAdministrativeUnit() {
