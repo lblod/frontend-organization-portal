@@ -44,10 +44,7 @@ export const CHANGE_EVENTS_OCMW = [
   CHANGE_EVENT_TYPE.FUSIE,
 ];
 
-export const CHANGE_EVENTS_DISTRICT = [
-  CHANGE_EVENT_TYPE.NAME_CHANGE,
-  CHANGE_EVENT_TYPE.FUSIE,
-];
+export const CHANGE_EVENTS_DISTRICT = [CHANGE_EVENT_TYPE.NAME_CHANGE];
 
 export default class ChangeEventTypeModel extends Model {
   @attr label;
