@@ -19,7 +19,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
   get isCityChangeEvent() {
     return (
       this.model.changeEvent.type &&
-      this.model.changeEvent.type?.get('id') == CHANGE_EVENT_TYPE.CITY
+      this.model.changeEvent.type.get('id') == CHANGE_EVENT_TYPE.CITY
     );
   }
 
