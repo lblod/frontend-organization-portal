@@ -162,13 +162,16 @@
                 <Item>
                   <:label>Organisaties</:label>
                   <:content>
-                    {{#each position.administrativeUnits as |administrativeUnit|}}
+                    {{#each position.administrativeUnits as |administrativeUnit index|}}
                       <AuLink
                         @model={{administrativeUnit.id}}
                         @route="administrative-units.administrative-unit"
                       >
                         {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
                       </AuLink>
+                      {{#if (gt position.administrativeUnits.length 1)}}
+                        {{unless index "/"}}
+                      {{/if}}
                     {{/each}}
                   </:content>
                   </Item>
