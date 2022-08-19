@@ -5,14 +5,11 @@ export default class GoverningBodyStatusComponent extends Component {
     const today = new Date();
 
     if (this.args.startDate) {
-      if (!this.args.endDate || this.args.endDate > today) {
-        return true;
-      } else {
-        return false;
-      }
+      return !this.args.endDate || this.args.endDate > today;
     } else if (this.args.endDate) {
       return this.args.endDate > today;
+    } else {
+      return false;
     }
-    return null;
   }
 }
