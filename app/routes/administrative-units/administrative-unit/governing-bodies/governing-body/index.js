@@ -9,10 +9,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @service store;
 
   queryParams = {
+    page: { refreshModel: true },
     sort: { refreshModel: true },
   };
 
-  async model({ sort }) {
+  async model(params) {
     let { administrativeUnit, governingBodyClassification, governingBody } =
       this.modelFor(
         'administrative-units.administrative-unit.governing-bodies.governing-body'
@@ -31,12 +32,16 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         'mandate.governing-body',
         'mandate.role-board',
       ].join(),
-      sort,
+      sort: params.sort,
     };
 
     let memberMandatories = await this.store.query('mandatory', {
       ...query,
       ['filter[mandate][role-board][:id:]']: BOARD_MEMBER_ROLES.join(),
+      page: {
+        size: params.size,
+        number: params.page,
+      },
     });
 
     let otherMandatories = await this.store.query('mandatory', {
