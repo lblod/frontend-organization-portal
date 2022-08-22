@@ -18,4 +18,7 @@ export default class LocationModel extends Model {
     inverse: 'locatedWithin',
   })
   locations;
+
+  @belongsTo('concept')
+  exactMatch;
 }
