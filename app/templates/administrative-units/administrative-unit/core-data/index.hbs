@@ -130,11 +130,11 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if this.nisIdentifier.structuredIdentifier.localId}}
+            {{#if @model.administrativeUnit.scope.exactMatch}}
               <Item>
-                <:label>{{this.nisIdentifier.idName}}</:label>
+                <:label>NIS</:label>
                 <:content>
-                  {{this.nisIdentifier.structuredIdentifier.localId}}
+                  {{@model.administrativeUnit.scope.exactMatch.notation}}
                 </:content>
               </Item>
             {{/if}}
