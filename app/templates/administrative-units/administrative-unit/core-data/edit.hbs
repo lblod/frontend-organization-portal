@@ -209,7 +209,7 @@
                   <Item @labelFor="nis-identifier">
                     <:label>{{@model.identifierNIS.idName}}</:label>
                     <:content>
-                      {{@model.structuredIdentifierNIS.localId}}
+                      {{@model.administrativeUnit.scope.exactMatch.notation}}
                     </:content>
                   </Item>
                 {{/if}}
