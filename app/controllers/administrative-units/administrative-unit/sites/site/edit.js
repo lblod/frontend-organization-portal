@@ -4,7 +4,6 @@ import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
-
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditController extends Controller {
   @service router;
   @tracked isPrimarySite;
@@ -24,7 +23,6 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
   @dropTask
   *save(event) {
     event.preventDefault();
-
     let { address, administrativeUnit, contact, secondaryContact, site } =
       this.model;
 
@@ -65,7 +63,6 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
       if (this.isCurrentPrimarySite && !this.isPrimarySite) {
         nonPrimarySites.pushObject(site);
         administrativeUnit.primarySite = null;
-
         yield administrativeUnit.save();
       } else if (this.isPrimarySite && !this.isCurrentPrimarySite) {
         let previousPrimarySite = this.model.currentPrimarySite;
@@ -77,6 +74,13 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
         administrativeUnit.primarySite = site;
         nonPrimarySites.removeObject(site);
 
+        yield administrativeUnit.save();
+      }
+
+      // force it to be primary site if there is no primary site
+      if (!administrativeUnit.primarySite?.get('id')) {
+        administrativeUnit.primarySite = site;
+        nonPrimarySites.removeObject(site);
         yield administrativeUnit.save();
       }
 
