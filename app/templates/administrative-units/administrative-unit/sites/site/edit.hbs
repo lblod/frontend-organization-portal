@@ -87,7 +87,7 @@
 
         <Site::ContactEditCard
           @address={{@model.address}}
-          @primaryContact={{@model.primaryContact}}
+          @primaryContact={{@model.contact}}
           @secondaryContact={{@model.secondaryContact}}
           @isAddressSearchEnabledInitially={{if
               (or (not @model.address.id) @model.address.addressRegisterUri)
