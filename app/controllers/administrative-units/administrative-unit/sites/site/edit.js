@@ -28,11 +28,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     ) {
       this.isNoPrimarySiteErrorMessage =
         'Deze vestiging wordt automatisch als primair contactadres aangeduid omdat er nog geen primair contactadres aangeduid is.';
-      setTimeout(() => {
-        this.updateIsPrimarySite(true);
-      }, 2000);
-    } else {
-      this.isNoPrimarySiteErrorMessage = null;
+      setTimeout(() => (this.isPrimarySite = true), 50);
     }
   }
 
