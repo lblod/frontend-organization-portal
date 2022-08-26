@@ -116,5 +116,6 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     if (secondaryContact.isNew) {
       secondaryContact.destroyRecord();
     }
+    this.isNoPrimarySiteErrorMessage = null;
   }
 }
