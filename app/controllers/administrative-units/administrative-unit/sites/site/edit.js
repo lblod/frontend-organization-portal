@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
@@ -7,6 +8,7 @@ import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditController extends Controller {
   @service router;
   @tracked isPrimarySite;
+  @tracked isNoPrimarySiteErrorMessage;
 
   get isCurrentPrimarySite() {
     return this.model.site.id === this.model.currentPrimarySite?.id;
@@ -14,6 +16,20 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
 
   setup() {
     this.isPrimarySite = this.isCurrentPrimarySite;
+  }
+
+  @action
+  updateIsPrimarySite(isPrimarySite) {
+    this.isPrimarySite = isPrimarySite;
+    if (
+      !this.isPrimarySite &&
+      (!this.model.administrativeUnit.primarySite?.get('id') ||
+        this.isCurrentPrimarySite)
+    ) {
+      this.isNoPrimarySiteErrorMessage =
+        'Deze vestiging wordt automatisch als primair contactadres aangeduid omdat er nog geen primair contactadres aangeduid is.';
+      setTimeout(() => (this.isPrimarySite = true), 50);
+    }
   }
 
   reset() {

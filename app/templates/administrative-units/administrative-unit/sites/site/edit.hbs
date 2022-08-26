@@ -53,7 +53,9 @@
                 </Item>
               </:left>
               <:right as |Item|>
-                <Item>
+                <Item
+                     @errorMessage={{this.isNoPrimarySiteErrorMessage}}
+                >
                   <:label>Primair correspondentieadres</:label>
                   <:content>
                     <ul class="au-c-list-inline">
@@ -63,7 +65,7 @@
                           @name="is-primary-site"
                           @value={{this.isPrimarySite}}
                           @identifier="primary-site-true"
-                          @onChange={{fn (mut this.isPrimarySite) true}}
+                          @onChange={{this.updateIsPrimarySite true}}
                           checked={{this.isPrimarySite}}
                         />
                       </li>
@@ -73,7 +75,7 @@
                           @name="is-primary-site"
                           @value={{this.isPrimarySite}}
                           @identifier="primary-site-false"
-                          @onChange={{fn (mut this.isPrimarySite) false}}
+                          @onChange={{this.updateIsPrimarySite false}}
                           checked={{not this.isPrimarySite}}
                         />
                       </li>
