@@ -40,6 +40,18 @@
 
 
 
+
+## 1.11.0-1 (2022-08-29)
+
+#### :rocket: Enhancement
+* [#393](https://github.com/lblod/frontend-organization-portal/pull/393) warning if nor primary site ([@nbittich](https://github.com/nbittich))
+
+#### :bug: Bug Fix
+* [#395](https://github.com/lblod/frontend-organization-portal/pull/395) reset error message ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.11.0-0 (2022-08-24)
 
 #### :rocket: Enhancement
