@@ -235,7 +235,7 @@
                 {{else if this.hasCentralWorshipService}}
                   <Item
                     @labelFor="related-central-worship-service"
-                    @required={{true}}
+                    @required={{false}}
                     @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
                   >
                     <:label>Centraal bestuur</:label>
@@ -277,7 +277,7 @@
               {{#if (or this.isNewOCMW this.isNewDistrict)}}
                 <Item
                   @labelFor="related-gemeente"
-                  @required={{true}}
+                  @required={{false}}
                   @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
                 >
                   <:label>Gemeente</:label>
@@ -306,7 +306,7 @@
               {{else}}
                   <Item
                     @labelFor="related-provincie"
-                    @required={{true}}
+                    @required={{false}}
                     @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
                   >
                     <:label>Provincie</:label>

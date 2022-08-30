@@ -23,7 +23,7 @@
         {{#if @hasCentralWorshipService}}
           <Item
             @labelFor="related-central-worship-service"
-            @required={{true}}
+            @required={{false}}
             @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
           >
             <:label>Centraal bestuur</:label>
