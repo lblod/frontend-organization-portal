@@ -41,6 +41,15 @@
 
 
 
+
+## 1.11.0-2 (2022-08-31)
+
+#### :bug: Bug Fix
+* [#396](https://github.com/lblod/frontend-organization-portal/pull/396) sub organization not required ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.11.0-1 (2022-08-29)
 
 #### :rocket: Enhancement
