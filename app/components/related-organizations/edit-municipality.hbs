@@ -5,7 +5,7 @@
       <:left as |Item|>
         <Item
           @labelFor="related-provincie"
-          @required={{true}}
+          @required={{false}}
           @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
         >
           <:label>Provincie</:label>
