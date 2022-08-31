@@ -39,6 +39,21 @@
 
 
 
+
+## 1.10.1 (2022-08-31)
+
+#### :rocket: Enhancement
+* [#393](https://github.com/lblod/frontend-organization-portal/pull/393) warning if nor primary site ([@nbittich](https://github.com/nbittich))
+* [#380](https://github.com/lblod/frontend-organization-portal/pull/380) don't show the clear button if municipality selected ([@nbittich](https://github.com/nbittich))
+
+#### :bug: Bug Fix
+* [#395](https://github.com/lblod/frontend-organization-portal/pull/395) reset error message ([@nbittich](https://github.com/nbittich))
+* [#392](https://github.com/lblod/frontend-organization-portal/pull/392) force primary site if there is no primary site selected ([@nbittich](https://github.com/nbittich))
+* [#396](https://github.com/lblod/frontend-organization-portal/pull/396) sub organization not required ([@nbittich](https://github.com/nbittich))
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
+
 ## 1.10.0-2 (2022-07-18)
 
 #### :bug: Bug Fix
