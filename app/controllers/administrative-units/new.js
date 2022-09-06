@@ -6,6 +6,37 @@ import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/rec
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+import { GOVERNING_BODY_CLASSIFICATION } from 'frontend-organization-portal/models/governing-body-classification-code';
+
+const GOVERNING_BODY_CLASSIFICATION_MAP = {
+  [CLASSIFICATION_CODE.WORSHIP_SERVICE]: {
+    [RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC]:
+      GOVERNING_BODY_CLASSIFICATION.CHURCH_COUNCIL,
+    [RECOGNIZED_WORSHIP_TYPE.ANGLICAN]:
+      GOVERNING_BODY_CLASSIFICATION.CHURCH_COUNCIL,
+    [RECOGNIZED_WORSHIP_TYPE.ISRAELITE]:
+      GOVERNING_BODY_CLASSIFICATION.BOARD_OF_DIRECTORS,
+    [RECOGNIZED_WORSHIP_TYPE.ISLAMIC]: GOVERNING_BODY_CLASSIFICATION.COMMITTEE,
+    [RECOGNIZED_WORSHIP_TYPE.ORTHODOX]:
+      GOVERNING_BODY_CLASSIFICATION.CHURCH_FACTORY_COUNCIL,
+    [RECOGNIZED_WORSHIP_TYPE.PROTESTANT]:
+      GOVERNING_BODY_CLASSIFICATION.BOARD_OF_DIRECTORS,
+  },
+  [CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE]: {
+    [RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC]:
+      GOVERNING_BODY_CLASSIFICATION.CENTRAL_CHURCH_BOARD,
+    [RECOGNIZED_WORSHIP_TYPE.ANGLICAN]:
+      GOVERNING_BODY_CLASSIFICATION.CENTRAL_CHURCH_BOARD,
+    [RECOGNIZED_WORSHIP_TYPE.ISRAELITE]:
+      GOVERNING_BODY_CLASSIFICATION.CENTRAL_ADMINISTRATION,
+    [RECOGNIZED_WORSHIP_TYPE.ISLAMIC]:
+      GOVERNING_BODY_CLASSIFICATION.CENTRAL_ADMINISTRATION,
+    [RECOGNIZED_WORSHIP_TYPE.ORTHODOX]:
+      GOVERNING_BODY_CLASSIFICATION.CENTRAL_CHURCH_BOARD,
+    [RECOGNIZED_WORSHIP_TYPE.PROTESTANT]:
+      GOVERNING_BODY_CLASSIFICATION.CENTRAL_CHURCH_BOARD,
+  },
+};
 
 export default class AdministrativeUnitsNewController extends Controller {
   @service router;
@@ -172,18 +203,26 @@ export default class AdministrativeUnitsNewController extends Controller {
       const administrativeUnitClassification =
         yield newAdministrativeUnit.classification;
 
-      const governingBodyClassifications = yield this.store.query(
-        'governing-body-classification-code',
-        {
-          filter: {
-            'applies-within': {
-              ':id:': administrativeUnitClassification.id,
+      let governingBodyClassifications;
+      if (this.isNewWorshipAdministrativeUnit) {
+        governingBodyClassifications = [
+          yield this.getGoverningBodyClassification(newAdministrativeUnit),
+        ];
+      } else {
+        governingBodyClassifications = yield this.store.query(
+          'governing-body-classification-code',
+          {
+            filter: {
+              'applies-within': {
+                ':id:': administrativeUnitClassification.id,
+              },
             },
-          },
-        }
-      );
+          }
+        );
+        governingBodyClassifications = governingBodyClassifications.toArray();
+      }
 
-      for (let classification of governingBodyClassifications.toArray()) {
+      for (let classification of governingBodyClassifications) {
         let governingBody = this.store.createRecord('governing-body');
         governingBody.administrativeUnit = newAdministrativeUnit;
         governingBody.classification = classification;
@@ -236,6 +275,24 @@ export default class AdministrativeUnitsNewController extends Controller {
     if (this.model.structuredIdentifierKBO.isNew) {
       this.model.structuredIdentifierKBO.destroyRecord();
     }
+  }
+
+  async getGoverningBodyClassification(administrativeUnit) {
+    let administrativeUnitClassification =
+      await administrativeUnit.classification;
+    let worshipType = await administrativeUnit.recognizedWorshipType;
+
+    let governingBodyClassificationId =
+      GOVERNING_BODY_CLASSIFICATION_MAP[administrativeUnitClassification.id][
+        worshipType.id
+      ];
+
+    let governingBodyClassification = await this.store.findRecord(
+      'governing-body-classification-code',
+      governingBodyClassificationId
+    );
+
+    return governingBodyClassification;
   }
 }
 
