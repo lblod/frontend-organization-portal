@@ -42,6 +42,16 @@
 
 
 
+
+## 1.11.0-3 (2022-09-06)
+
+#### :bug: Bug Fix
+* [#397](https://github.com/lblod/frontend-organization-portal/pull/397) Add back logic for orgaan type depending on religion ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### Committers: 1
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+
+
 ## 1.11.0-2 (2022-08-31)
 
 #### :bug: Bug Fix
