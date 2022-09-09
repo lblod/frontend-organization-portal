@@ -132,6 +132,7 @@
                 @disabled={{not (this.isFinancialInvolvementType involvement)}}
                 @error={{errorMessage}}
                 @type="number"
+                step="any"
                 aria-labelledby="financial-percentage"
                 @value={{involvement.percentage}}
                 {{on "input" (fn this.handlePercentageChange involvement)}}
