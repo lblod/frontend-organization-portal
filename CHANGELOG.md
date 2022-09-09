@@ -43,6 +43,15 @@
 
 
 
+
+## 1.11.0-4 (2022-09-09)
+
+#### :bug: Bug Fix
+* [#398](https://github.com/lblod/frontend-organization-portal/pull/398) allow decimal values for financial percentage ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.11.0-3 (2022-09-06)
 
 #### :bug: Bug Fix
