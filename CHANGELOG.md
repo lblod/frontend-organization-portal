@@ -40,6 +40,18 @@
 
 
 
+
+## 1.10.2 (2022-09-09)
+
+#### :rocket: Enhancement
+* [#379](https://github.com/lblod/frontend-organization-portal/pull/379) leave percentage empty but editable in case of mede financiering ([@nbittich](https://github.com/nbittich))
+
+#### :bug: Bug Fix
+* [#398](https://github.com/lblod/frontend-organization-portal/pull/398) allow decimal values for financial percentage ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.10.1 (2022-08-31)
 
 #### :rocket: Enhancement
