@@ -7,6 +7,7 @@ import { isEmpty } from 'frontend-organization-portal/models/decision';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
 import { tracked } from '@glimmer/tracking';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.NAME_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
@@ -76,6 +77,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
     const {
       administrativeUnit: currentOrganization,
+      classification,
       changeEvent,
       decision,
       decisionActivity,
@@ -99,16 +101,11 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       (shouldSaveDecision ? decision.isValid : true) &&
       changeEvent.isValid
     ) {
-      if (shouldSaveDecision) {
-        if (!isEmpty(decision) || decisionActivity.endDate) {
-          if (decisionActivity.endDate) {
-            yield decisionActivity.save();
-            decision.hasDecisionActivity = decisionActivity;
-          }
-          yield decision.save();
-          changeEvent.decision = decision;
-        }
-      }
+      changeEvent.decision = yield saveDecision(
+        shouldSaveDecision,
+        decision,
+        decisionActivity
+      );
 
       let changeEventType = formState.changeEventType;
       changeEvent.type = changeEventType;
@@ -194,7 +191,6 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
         ) {
           changeEvent.resultingOrganizations.pushObject(currentOrganization);
         }
-
         yield createChangeEventResult({
           resultingStatusId:
             RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.id],
@@ -206,6 +202,21 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
       yield changeEvent.save(); // persist the original and resulting organization information
 
+      if (
+        (classification.id === CLASSIFICATION_CODE.MUNICIPALITY ||
+          classification.id === CLASSIFICATION_CODE.OCMW) &&
+        (changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
+          changeEventType.id === CHANGE_EVENT_TYPE.FUSIE)
+      ) {
+        mergeAssociated({
+          store: this.store,
+          changeEvent,
+          shouldSaveDecision,
+          decision,
+          decisionActivity,
+          administrativeUnit: currentOrganization,
+        });
+      }
       this.router.transitionTo(
         'administrative-units.administrative-unit.change-events.details',
         changeEvent.id
@@ -286,6 +297,83 @@ async function findMostRecentChangeEvent(store, organization) {
 
   if (mostRecentChangeEventResults.length > 0) {
     return await mostRecentChangeEventResults.firstObject.resultFrom;
+  } else {
+    return null;
+  }
+}
+
+async function mergeAssociated(ctx) {
+  let { store, changeEvent, shouldSaveDecision, decision, decisionActivity } =
+    ctx;
+
+  const results = await changeEvent.results;
+
+  decision = await decision;
+  decisionActivity = await decisionActivity;
+
+  let associatedChangeEvent = store.createRecord('change-event');
+  let associatedDecision = store.createRecord('decision');
+  let associatedDecisionActivity = store.createRecord('decisionActivity');
+
+  //copy decision
+  associatedDecision.publicationDate = decision.publicationDate;
+  associatedDecision.documentLink = decision.documentLink;
+
+  associatedDecisionActivity.endDate = decisionActivity.endDate;
+
+  // copy changeEvent
+  associatedChangeEvent.date = changeEvent.date;
+  associatedChangeEvent.description = changeEvent.description;
+
+  associatedChangeEvent.type = changeEvent.type;
+
+  await associatedChangeEvent.save();
+
+  await saveDecision(
+    shouldSaveDecision,
+    associatedDecision,
+    associatedDecisionActivity
+  );
+
+  for (const org of changeEvent.originalOrganizations.toArray()) {
+    const unit = await org.isAssociatedWith;
+    associatedChangeEvent.originalOrganizations.pushObject(unit);
+  }
+
+  for (const org of changeEvent.resultingOrganizations.toArray()) {
+    const unit = await org.isAssociatedWith;
+    associatedChangeEvent.resultingOrganizations.pushObject(unit);
+  }
+
+  const createChangeEventResults = [];
+
+  for (const r of results.toArray()) {
+    const result = await r;
+    const resultingOrganization = await result.resultingOrganization;
+    const associatedOrg = await resultingOrganization.isAssociatedWith;
+    createChangeEventResults.push(
+      createChangeEventResult({
+        resultingStatusId: result.status.get('id'),
+        resultingOrganization: associatedOrg,
+        changeEvent: associatedChangeEvent,
+        store,
+      })
+    );
+  }
+  await Promise.all(createChangeEventResults);
+  await associatedChangeEvent.save();
+}
+
+async function saveDecision(shouldSaveDecision, decision, decisionActivity) {
+  if (shouldSaveDecision) {
+    if (!isEmpty(decision) || decisionActivity.endDate) {
+      if (decisionActivity.endDate) {
+        await decisionActivity.save();
+        decision.hasDecisionActivity = decisionActivity;
+      }
+      await decision.save();
+      return decision;
+    }
   } else {
     return null;
   }
