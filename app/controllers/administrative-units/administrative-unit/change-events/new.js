@@ -205,8 +205,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       if (
         (classification.id === CLASSIFICATION_CODE.MUNICIPALITY ||
           classification.id === CLASSIFICATION_CODE.OCMW) &&
-        (changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
-          changeEventType.id === CHANGE_EVENT_TYPE.FUSIE)
+        changeEventType.id === CHANGE_EVENT_TYPE.FUSIE
       ) {
         mergeAssociated({
           store: this.store,
