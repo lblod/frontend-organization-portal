@@ -44,6 +44,15 @@
 
 
 
+
+## 1.11.0-5 (2022-09-14)
+
+#### :rocket: Enhancement
+* [#399](https://github.com/lblod/frontend-organization-portal/pull/399) OCMW's don't merge when the municipalities do ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.11.0-4 (2022-09-09)
 
 #### :bug: Bug Fix
