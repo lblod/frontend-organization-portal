@@ -45,6 +45,46 @@
 
 
 
+## 1.11.0 (2022-09-16)
+
+
+#### :rocket: Enhancement
+* [#399](https://github.com/lblod/frontend-organization-portal/pull/399) OCMW's don't merge when the municipalities do ([@nbittich](https://github.com/nbittich))
+* [#393](https://github.com/lblod/frontend-organization-portal/pull/393) warning if nor primary site ([@nbittich](https://github.com/nbittich))
+* [#391](https://github.com/lblod/frontend-organization-portal/pull/391) nis code ([@nbittich](https://github.com/nbittich))
+* [#380](https://github.com/lblod/frontend-organization-portal/pull/380) don't show the clear button if municipality selected ([@nbittich](https://github.com/nbittich))
+* [#379](https://github.com/lblod/frontend-organization-portal/pull/379) leave percentage empty but editable in case of mede financiering ([@nbittich](https://github.com/nbittich))
+* [#366](https://github.com/lblod/frontend-organization-portal/pull/366) Onbard new administrative unit types ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#378](https://github.com/lblod/frontend-organization-portal/pull/378) only one gemeente/province with  type betrokkenheid relationship toezicht ([@nbittich](https://github.com/nbittich))
+
+
+#### :bug: Bug Fix
+* [#398](https://github.com/lblod/frontend-organization-portal/pull/398) allow decimal values for financial percentage ([@nbittich](https://github.com/nbittich))
+* [#397](https://github.com/lblod/frontend-organization-portal/pull/397) Add back logic for orgaan type depending on religion ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#396](https://github.com/lblod/frontend-organization-portal/pull/396) sub organization not required ([@nbittich](https://github.com/nbittich))
+* [#395](https://github.com/lblod/frontend-organization-portal/pull/395) reset error message ([@nbittich](https://github.com/nbittich))
+* [#392](https://github.com/lblod/frontend-organization-portal/pull/392) force primary site if there is no primary site selected ([@nbittich](https://github.com/nbittich))
+* [#388](https://github.com/lblod/frontend-organization-portal/pull/388) Add fields for city title change event ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#389](https://github.com/lblod/frontend-organization-portal/pull/389) Remove merge option from district change events ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#390](https://github.com/lblod/frontend-organization-portal/pull/390) Fix pagination of bestursleden table ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#386](https://github.com/lblod/frontend-organization-portal/pull/386) Fix logic of governing body status component ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#387](https://github.com/lblod/frontend-organization-portal/pull/387) Hide leidinggevenden for districts ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#383](https://github.com/lblod/frontend-organization-portal/pull/383) Show type religion column when only worship units are shown ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#385](https://github.com/lblod/frontend-organization-portal/pull/385) Show type of admin unit in titles ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#384](https://github.com/lblod/frontend-organization-portal/pull/384) Fix logic of site types ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#382](https://github.com/lblod/frontend-organization-portal/pull/382) Show all positions in filter dropdown ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#381](https://github.com/lblod/frontend-organization-portal/pull/381) Fix classification in municilapity select ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#377](https://github.com/lblod/frontend-organization-portal/pull/377) Fix button position to right ([@iurianu](https://github.com/iurianu))
+
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Iulian Andriescu ([@iurianu](https://github.com/iurianu))
+
+
+
+
 ## 1.11.0-5 (2022-09-14)
 
 #### :rocket: Enhancement
