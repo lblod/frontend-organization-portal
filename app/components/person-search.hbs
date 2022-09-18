@@ -106,10 +106,19 @@
               </td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>Voeg nieuwe positie toe</td>
+              <td>
+
+                <AuButton
+                  @skin="tertiary"
+                  {{on "click" (fn @onSelect key)}}
+                  @loading={{@loading}}
+                >
+                  Voeg nieuwe positie toe
+                </AuButton>
+              </td>
             </tr>
-            <tr>
-              {{#each values as |position|}}
+            {{#each values as |position|}}
+              <tr>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>
@@ -141,7 +150,6 @@
                       {{unless index "/"}}
                     {{/if}}
                   {{/each}}
-
                 </td>
                 <td>
                   <AuLink
@@ -152,8 +160,8 @@
                   </AuLink>
                 </td>
                 <td>Bewerk</td>
-              {{/each}}
-            </tr>
+              </tr>
+            {{/each}}
           {{/each-in}}
           {{#if this.searchPeopleTask.lastSuccessful.value.rest}}
             <tr>
@@ -187,8 +195,9 @@
               <td>&nbsp;</td>
               <td>Voeg nieuwe positie toe</td>
             </tr>
-            <tr>
-              {{#each values as |position|}}
+            {{#each values as |position|}}
+              <tr>
+
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>
@@ -231,8 +240,9 @@
                   </AuLink>
                 </td>
                 <td>Bewerk</td>
-              {{/each}}
-            </tr>
+              </tr>
+
+            {{/each}}
           {{/each-in}}
 
         {{/if}}

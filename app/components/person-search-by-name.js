@@ -53,10 +53,9 @@ export default class PersonSearchByNameComponent extends Component {
         };
       },
     });
-    result = removeDuplicates(result.toArray(), ['family_name', 'given_name']);
 
     this.results = [];
-
+    result = result.toArray();
     for (const person of result.map((r) => r.data)) {
       if (person.uri.includes('/rollenBedienaar/')) {
         person.positionRoute = 'people.person.positions.minister';
@@ -85,7 +84,7 @@ export default class PersonSearchByNameComponent extends Component {
       }
       this.results.push(person);
     }
-
+    result = removeDuplicates(result, ['family_name', 'given_name']);
     if (params.length && result) {
       const arr = [...[param_object], ...result];
       return arr;

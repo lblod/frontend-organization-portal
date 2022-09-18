@@ -24,7 +24,7 @@ export default class PersonSearchComponent extends Component {
   *searchPeopleTask(event) {
     event.preventDefault();
     if (this.searchParams.selectedPerson && this.searchParams.results) {
-      const { id, family_name, given_name } = this.searchParams.selectedPerson;
+      const { id } = this.searchParams.selectedPerson;
       if (id) {
         for (const [key, values] of this.searchParams.results) {
           if (id === key.id) {
@@ -77,7 +77,7 @@ function groupBy(list, keyGetter) {
   const map = new Map();
   list.forEach((item, index) => {
     const key = keyGetter(item);
-    const collection = null;
+    let collection = null;
     let max_order = 0;
     for (const [k, values] of map) {
       if (key.id === k.id) {
