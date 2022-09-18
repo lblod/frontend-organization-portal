@@ -18,37 +18,75 @@ function removeDuplicates(arr, fields) {
 export default class PersonSearchByNameComponent extends Component {
   @service muSearch;
   @tracked searching;
+  @tracked results;
 
   @restartableTask
   *loadPersonTask(searchParams = '') {
     const filter = {};
     this.searching = true;
-    const fieldName = this.args.fieldName; // either given_name or family_name
-    if (searchParams.trim() !== '') {
-      filter[`:phrase_prefix:${fieldName}`] = searchParams;
+    const params = searchParams
+      .trim()
+      .replace(/\s+/g, ' ')
+      .split(' ')
+      .filter((p) => p.trim().length);
+    let param_object = { family_name: params[0], given_name: params[1] || '' };
+
+    const q_params = params.join(' OR ');
+    if (q_params.length) {
+      filter[
+        `:query:given_name`
+      ] = `(family_name: (${q_params}*)) OR (given_name: (${q_params}*))`;
     }
 
     let result = yield this.muSearch.search({
       index: 'people',
-      sort: fieldName,
       page: '0',
       size: '100',
       filters: filter,
       dataMapping: (data) => {
         const entry = data.attributes;
         return {
-          given_name: entry.given_name.trim().toLowerCase(),
+          id: entry.id,
           family_name: entry.family_name.trim().toLowerCase(),
+          given_name: entry.given_name.trim().toLowerCase(),
+          data: entry,
         };
       },
     });
     result = removeDuplicates(result.toArray(), ['family_name', 'given_name']);
-    if (searchParams.trim() !== '' && result) {
-      let param_object = {
-        family_name: '',
-        given_name: '',
-      };
-      param_object[fieldName] = searchParams.trim();
+
+    this.results = [];
+
+    for (const person of result.map((r) => r.data)) {
+      if (person.uri.includes('/rollenBedienaar/')) {
+        person.positionRoute = 'people.person.positions.minister';
+      } else if (person.uri.includes('/mandatarissen/')) {
+        person.positionRoute = 'people.person.positions.mandatory';
+      } else if (person.uri.includes('/functionarissen/')) {
+        person.positionRoute = 'people.person.positions.agent';
+      }
+
+      // In the case of functionarissen, a bestuursfunctie is linked to multiple units (OCMW and Gemeente)
+      person.organizations = [];
+      if (Array.isArray(person.organization_id)) {
+        for (let [index, id] of person.organization_id.entries()) {
+          person.organizations.push({
+            id,
+            classification: person.organization_classification[index],
+          });
+        }
+      } else {
+        person.organizations = [
+          {
+            id: person.organization_id,
+            classification: person.organization_classification,
+          },
+        ];
+      }
+      this.results.push(person);
+    }
+
+    if (params.length && result) {
       const arr = [...[param_object], ...result];
       return arr;
     }
@@ -57,14 +95,6 @@ export default class PersonSearchByNameComponent extends Component {
   @action
   changed(p) {
     this.searching = false;
-    this.args.onChange(p, this.args.fieldName);
-  }
-  @action
-  getLabel(person) {
-    if (!this.searching) {
-      return person[this.args.fieldName];
-    } else {
-      return `${person.given_name} ${person.family_name}`;
-    }
+    this.args.onChange(p, this.results);
   }
 }

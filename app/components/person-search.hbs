@@ -7,7 +7,8 @@
     <:edit>
       <p class="au-u-margin-bottom">
         <b class="au-u-medium">
-          Zoek een reeds gekende persoon in de databank op voor- of achternaam, of
+          Zoek een reeds gekende persoon in de databank op voor- of achternaam,
+          of
         </b>
         <AuLink
           @route="people.new"
@@ -24,16 +25,15 @@
 
   <div class="au-o-grid au-o-grid--bottom">
     <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
-      <AuLabel for="person-given-name">Voornaam</AuLabel>
+      <AuLabel for="person-search-name">Naam</AuLabel>
       <PersonSearchByName
-              @id="person-given-name"
-              @fieldName="given_name"
-              @selected={{this.searchParams.selectedPerson}}
-              @onChange={{this.searchParams.selectPerson}}
-              class="block"
+        @id="person-search-name"
+        @selected={{this.searchParams.selectedPerson}}
+        @onChange={{this.searchParams.selectPerson}}
+        class="block"
       />
     </p>
-    <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
+    {{!-- <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
       <AuLabel for="person-family-name">Achternaam</AuLabel>
       <PersonSearchByName
               @id="person-family-name"
@@ -42,7 +42,7 @@
               @onChange={{this.searchParams.selectPerson}}
               class="block"
       />
-    </p>
+    </p> --}}
     <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
       <AuButton
         @disabled={{not this.canSearch}}
@@ -55,23 +55,20 @@
     </p>
   </div>
 </form>
-
+{{!-- {{this.searchPeopleTask.lastSuccessful.value}} --}}
 {{#if this.searchPeopleTask.last}}
-  <div class="person-search-results au-u-margin-top-large">
-    <AuDataTable
-      @content={{this.searchPeopleTask.lastSuccessful.value}}
-      @isLoading={{and
-        (not this.searchPeopleTask.lastSuccessful.value)
-        this.searchPeopleTask.isRunning
-      }}
-      as |t|
-    >
-      <t.content class="au-c-data-table__table--small" as |c|>
-        <c.header>
+  <div class="au-c-data-table__wrapper au-u-margin-top-large">
+    <table class="au-c-data-table__table au-c-data-table__table--small">
+      <thead>
+        <tr>
           <th>Voornaam</th>
           <th>Achternaam</th>
+          <th>Organisatie</th>
+          <th>Positie</th>
           <th></th>
-        </c.header>
+        </tr>
+      </thead>
+      <tbody>
         {{#if this.searchPeopleTask.last.isError}}
           <TableMessage::Error />
         {{else if (and
@@ -84,27 +81,163 @@
               probeer een andere zoekopdracht. Indien een persoon ontbreekt,
               meldt dit aan
               <a
-                href="mailto:{{config "contactEmail"}}"
+                href="mailto:{{config 'contactEmail'}}"
                 class="au-c-link"
               >{{config "contactEmail"}}</a>.
             </p>
           </TableMessage>
         {{else}}
-          <c.body as |person|>
-            <td>
-              {{person.givenName}}
-            </td>
-            <td>
-              {{person.familyName}}
-            </td>
-            <td>
-              <AuButton @skin="tertiary" {{on "click" (fn @onSelect person)}} @loading={{@loading}}>
-                Selecteer
-              </AuButton>
-            </td>
-          </c.body>
+          {{#each-in
+            this.searchPeopleTask.lastSuccessful.value.first
+            as |key values|
+          }}
+            <tr>
+              <td>
+                <AuLink @route="people.person" @model={{key.id}}>
+                  {{key.given_name}}
+                </AuLink>
+
+              </td>
+              <td>
+                <AuLink @route="people.person" @model={{key.id}}>
+                  {{key.given_name}}
+                </AuLink>
+
+              </td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>Voeg nieuwe positie toe</td>
+            </tr>
+            <tr>
+              {{#each values as |position|}}
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>
+                  {{#each position.organizations as |organization index|}}
+                    <AuLink
+                      @route="administrative-units.administrative-unit"
+                      @model={{organization.id}}
+                    >
+                      {{position.organization_name}}
+
+                      {{#if
+                        (not
+                          (or
+                            (eq
+                              organization.classification
+                              "Centraal bestuur van de eredienst"
+                            )
+                            (eq
+                              organization.classification
+                              "Bestuur van de eredienst"
+                            )
+                          )
+                        )
+                      }}
+                        ({{organization.classification}})
+                      {{/if}}
+                    </AuLink>
+                    {{#if (gt position.organizations.length 1)}}
+                      {{unless index "/"}}
+                    {{/if}}
+                  {{/each}}
+
+                </td>
+                <td>
+                  <AuLink
+                    @route={{position.positionRoute}}
+                    @models={{array position.id position.uuid}}
+                  >
+                    {{position.position_name}}
+                  </AuLink>
+                </td>
+                <td>Bewerk</td>
+              {{/each}}
+            </tr>
+          {{/each-in}}
+          {{#if this.searchPeopleTask.lastSuccessful.value.rest}}
+            <tr>
+              <td
+                colspan="5"
+                class="au-u-max-width au-u-h4 au-c-alert--warning au-u-text-center"
+              >
+                <AuIcon @icon="alert-triangle" />
+                <span>Potential matches</span>
+              </td>
+            </tr>
+          {{/if}}
+          {{#each-in
+            this.searchPeopleTask.lastSuccessful.value.rest
+            as |key values|
+          }}
+            <tr>
+              <td>
+                <AuLink @route="people.person" @model={{key.id}}>
+                  {{key.given_name}}
+                </AuLink>
+
+              </td>
+              <td>
+                <AuLink @route="people.person" @model={{key.id}}>
+                  {{key.given_name}}
+                </AuLink>
+
+              </td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>Voeg nieuwe positie toe</td>
+            </tr>
+            <tr>
+              {{#each values as |position|}}
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>
+                  {{#each position.organizations as |organization index|}}
+                    <AuLink
+                      @route="administrative-units.administrative-unit"
+                      @model={{organization.id}}
+                    >
+                      {{position.organization_name}}
+
+                      {{#if
+                        (not
+                          (or
+                            (eq
+                              organization.classification
+                              "Centraal bestuur van de eredienst"
+                            )
+                            (eq
+                              organization.classification
+                              "Bestuur van de eredienst"
+                            )
+                          )
+                        )
+                      }}
+                        ({{organization.classification}})
+                      {{/if}}
+                    </AuLink>
+                    {{#if (gt position.organizations.length 1)}}
+                      {{unless index "/"}}
+                    {{/if}}
+                  {{/each}}
+
+                </td>
+                <td>
+                  <AuLink
+                    @route={{position.positionRoute}}
+                    @models={{array position.id position.uuid}}
+                  >
+                    {{position.position_name}}
+                  </AuLink>
+                </td>
+                <td>Bewerk</td>
+              {{/each}}
+            </tr>
+          {{/each-in}}
+
         {{/if}}
-      </t.content>
-    </AuDataTable>
+      </tbody>
+
+    </table>
   </div>
 {{/if}}

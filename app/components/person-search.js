@@ -1,3 +1,7 @@
+/* eslint-disable require-yield */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+/* eslint-disable no-const-assign */
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
@@ -11,80 +15,84 @@ export default class PersonSearchComponent extends Component {
 
   get canSearch() {
     return (
-      this.searchParams.givenName.trim() || this.searchParams.familyName.trim()
+      this.searchParams?.selectedPerson?.given_name?.trim() ||
+      this.searchParams?.selectedPerson?.family_name?.trim()
     );
   }
 
   @restartableTask
   *searchPeopleTask(event) {
     event.preventDefault();
-
-    if (this.canSearch) {
-      let query = {};
-
-      if (this.searchParams.givenName) {
-        query['filter[given-name]'] = this.searchParams.givenName;
+    if (this.searchParams.selectedPerson && this.searchParams.results) {
+      const { id, family_name, given_name } = this.searchParams.selectedPerson;
+      if (id) {
+        for (const [key, values] of this.searchParams.results) {
+          if (id === key.id) {
+            const new_map = new Map();
+            new_map.set(key, values);
+            return {
+              first: new_map,
+              rest: new Map(),
+            };
+          }
+        }
       }
 
-      if (this.searchParams.familyName) {
-        query['filter[family-name]'] = this.searchParams.familyName;
-      }
-
-      // TODO: implement pagination once it's possible without 2-way-binding
-      // More information: https://github.com/mu-semtech/ember-data-table/issues/27
-      // We temporarily increase the number of results to increase the chances that everything fits on one page
-      query['page[size]'] = 100;
-
-      let result = yield this.store.query('person', query);
-      return this.caseInsensitiveSort(result);
+      return this.sortByOrder(this.searchParams.results);
     }
   }
 
-  caseInsensitiveSort(data) {
-    const sortedFields = data.toArray().sort(
-      (a, b) =>
-        a.givenName.trim().localeCompare(b.givenName.trim(), undefined, {
-          sensitivity: 'base',
-        }) ||
-        a.familyName.trim().localeCompare(b.familyName.trim(), undefined, {
-          sensitivity: 'base',
-        })
-    );
-    return sortedFields;
+  sortByOrder(map) {
+    const ordered = [...map].sort((a, b) => a[0].order - b[0].order);
+    const first = ordered.shift();
+    return {
+      first: new Map([first]),
+      rest: new Map(ordered),
+    };
   }
 }
 
 class SeachParams {
-  @tracked givenName;
-  @tracked familyName;
   @tracked selectedPerson;
+  @tracked results;
 
   @action
-  selectPerson(p, fieldName) {
-    if (p?.given_name && p?.family_name) {
-      this.givenName = p.given_name;
-      this.familyName = p.family_name;
-    } else {
-      switch (fieldName) {
-        case 'family_name':
-          this.familyName = p?.family_name || '';
-          break;
-        case 'given_name':
-          this.givenName = p?.given_name || '';
-          break;
-      }
-    }
-    this.selectedPerson = {
-      given_name: this.givenName,
-      family_name: this.familyName,
-    };
+  selectPerson(p, results) {
+    this.selectedPerson = p;
+    this.results = groupBy(results, ({ id, family_name, given_name }) => {
+      return { id, family_name, given_name };
+    });
   }
+
   constructor() {
     this.reset();
   }
 
   reset() {
-    this.givenName = '';
-    this.familyName = '';
+    this.selectedPerson = null;
+    this.results = null;
   }
+}
+function groupBy(list, keyGetter) {
+  const map = new Map();
+  list.forEach((item, index) => {
+    const key = keyGetter(item);
+    const collection = null;
+    let max_order = 0;
+    for (const [k, values] of map) {
+      if (key.id === k.id) {
+        collection = values;
+      }
+      if (k.order > max_order) {
+        max_order = k.order;
+      }
+    }
+    if (!collection) {
+      key.order = max_order + 1;
+      map.set(key, [item]);
+    } else {
+      collection.push(item);
+    }
+  });
+  return map;
 }
