@@ -19,6 +19,7 @@ export default class PersonSearchByNameComponent extends Component {
   @service muSearch;
   @tracked searching;
   @tracked results;
+  @tracked router;
 
   @restartableTask
   *loadPersonTask(searchParams = '') {
@@ -61,6 +62,8 @@ export default class PersonSearchByNameComponent extends Component {
         person.positionRoute = 'people.person.positions.minister';
       } else if (person.uri.includes('/mandatarissen/')) {
         person.positionRoute = 'people.person.positions.mandatory';
+        person.positionEditRoute =
+          'administrative-units.administrative-unit.governing-bodies.governing-body.board-member.edit';
       } else if (person.uri.includes('/functionarissen/')) {
         person.positionRoute = 'people.person.positions.agent';
       }
