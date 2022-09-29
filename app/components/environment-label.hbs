@@ -1,5 +1,6 @@
-  {{#if this.showEnvironmentLabel}}
-    <div class="au-c-environment-pill {{this.environmentClass}}">
-      {{this.environmentName}}
-    </div>
-  {{/if}}
+<div class="au-c-environment {{this.environmentClass}} au-u-flex au-u-flex--between au-u-flex--spaced au-u-2-2 au-u-padding-small">
+  <span class="au-u-para-lead au-u-medium">
+    Environment: <strong>{{this.environmentName}}</strong>
+  </span>
+  <span class="au-u-para">{{this.environmentDescription}}</span>
+</div>

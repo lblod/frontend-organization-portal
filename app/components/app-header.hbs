@@ -4,7 +4,6 @@
   @appTitle={{config "appName"}}
   @contactRoute="contact"
 >
-  <EnvironmentLabel />
   {{#if this.session.isAuthenticated}}
     <AuDropdown
       @title={{this.currentSession.user.firstName}}
