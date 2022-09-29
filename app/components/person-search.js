@@ -33,6 +33,7 @@ export default class PersonSearchComponent extends Component {
             return {
               first: new_map,
               rest: new Map(),
+              hasRest: false,
             };
           }
         }
@@ -45,9 +46,11 @@ export default class PersonSearchComponent extends Component {
   sortByOrder(map) {
     const ordered = [...map].sort((a, b) => a[0].order - b[0].order);
     const first = ordered.shift();
+    const map_ordered = new Map(ordered);
     return {
       first: new Map([first]),
-      rest: new Map(ordered),
+      rest: map_ordered,
+      hasRest: map_ordered.size > 0,
     };
   }
 }

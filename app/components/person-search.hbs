@@ -100,7 +100,7 @@
               </td>
               <td>
                 <AuLink @route="people.person" @model={{key.id}}>
-                  {{key.given_name}}
+                  {{key.family_name}}
                 </AuLink>
 
               </td>
@@ -169,7 +169,7 @@
               </tr>
             {{/each}}
           {{/each-in}}
-          {{#if this.searchPeopleTask.lastSuccessful.value.rest}}
+          {{#if this.searchPeopleTask.lastSuccessful.value.hasRest}}
             <tr>
               <td
                 colspan="5"
@@ -193,7 +193,7 @@
               </td>
               <td>
                 <AuLink @route="people.person" @model={{key.id}}>
-                  {{key.given_name}}
+                  {{key.family_name}}
                 </AuLink>
 
               </td>
