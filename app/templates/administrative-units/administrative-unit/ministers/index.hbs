@@ -21,7 +21,7 @@
 </PageHeader>
 
 <AuDataTable
-  @content={{@model.ministerPositions}}
+  @content={{@model.ministers}}
   @noDataMessage="Geen bedienaren"
   as |t|
 >
@@ -37,8 +37,7 @@
         </:edit>
       </SecuredArea>
     </c.header>
-    <c.body as |ministerPosition|>
-      {{#let ministerPosition.agentsInPosition.firstObject as |minister|}}
+    <c.body as |minister|>
         <td>
           <AuLink @route="people.person" @model={{minister.person.id}}>
             {{minister.person.givenName}}
@@ -54,7 +53,7 @@
             @route="people.person.positions.minister"
             @models={{array minister.person.id minister.id}}
           >
-            {{ministerPosition.function.label}}
+            {{minister.ministerPosition.function.label}}
           </AuLink>
         </td>
         <td>
@@ -73,7 +72,6 @@
             </td>
           </:edit>
         </SecuredArea>
-      {{/let}}
     </c.body>
   </t.content>
 </AuDataTable>
