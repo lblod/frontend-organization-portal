@@ -22,10 +22,22 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersIndexRoute ex
     );
 
     let ministerPositions = await administrativeUnit.ministerPositions;
+    let positions = [];
+    for (const mp of ministerPositions.toArray()) {
+      const agentInPosition = (await mp.agentsInPosition).toArray();
+
+      if (agentInPosition?.length > 0) {
+        const position = agentInPosition[0];
+        const person = await position.person;
+        if (person) {
+          positions.push(mp);
+        }
+      }
+    }
 
     return {
       administrativeUnit: administrativeUnit,
-      ministerPositions,
+      ministerPositions: positions,
     };
   }
 }
