@@ -4,16 +4,14 @@ import PostModel from './post';
 export const MAPPING_POSITION_RELIGION = {
   // ROMAN_CATHOLIC
   b13d1d623626bc1ee75c7d20bc60e3c0: [
-    'ea58c73d9b4fc8a24a4b3eaa73a33995', // Kapelaan
-    '689b3123e29cff78e310df38a774b9bb', // Kerkbedienaar
-    '59837b12c14f215a4efadae950be0072', // Onderpastoor
-    '84b3a2321d1b69b6de782bb04e1a6862', // Parochieassistent
+    'ea58c73d9b4fc8a24a4b3eaa73a33995', // Coördinator
+    '59837b12c14f215a4efadae950be0072', // Medepastoor
+    '84b3a2321d1b69b6de782bb04e1a6862', // Aangesteld priester
     '5c7fefe1b921dfd4c550924bb7a9331d', // Pastoor
   ],
   // ANGLICAN
   '99536dd6eb0d2ef38a89efafb17e7389': [
-    '67548f1fe5bf52e5a7ad33dcce47472d', // Kapelaan van de andere kerken
-    'fa4191f9d7050fe62ec3fc0e16541711', // Kapelaan van de kerken te Antwerpen en te Elsene (Geünifieerde anglicaanse kerk)
+    'fa4191f9d7050fe62ec3fc0e16541711', // Kapelaan
   ],
   // ISLAMIC
   '9d8bd472a00bf0a5c7b7186606365a52': [
@@ -28,17 +26,13 @@ export const MAPPING_POSITION_RELIGION = {
   ],
   // ORTHODOX
   '84bcd6896f575bae4857ff8d2764bed8': [
-    '59837b12c14f215a4efadae950be0072', // Onderpastoor
-    'efbf2ff50b5c4f693f129ac03319c4f2', // Bedienaar
-    '04d3b5325f2ebc5eaf96849519af4254', // Pastoor-deken
+    'f274cb5a-ba44-4931-a1a8-38ec34513215', // Diaken
+    'efbf2ff50b5c4f693f129ac03319c4f2', // Priester
+    '04d3b5325f2ebc5eaf96849519af4254', // Rector
   ],
   // PROTESTANT
   e8cba1540b35a32e9cb45126c38c03c6: [
-    '83d50e9184ae4a628851370079d162f6', // Eerste predikant
-    '92aad8fc5cc7a13a7b0ddc7cc13c02aa', // Hulppredikant
-    '85543bba7601ca598212f0feb9bdb4c2', // Predikant bij het voorzitterschap van de Synode
-    '97083de35cd36b36a72185807e941c8a', // Tweede predikant bij het voorzitterschap van de Synode
-    '158b739bc1087d5246df2fa54acff29c', // Secretaris bij het voorzitterschap van de Synode
+    '83d50e9184ae4a628851370079d162f6', // Predikant
   ],
 };
 
