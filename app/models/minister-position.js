@@ -1,4 +1,4 @@
-import { belongsTo } from '@ember-data/model';
+import { belongsTo, hasMany } from '@ember-data/model';
 import PostModel from './post';
 
 export const MAPPING_POSITION_RELIGION = {
@@ -51,4 +51,9 @@ export default class MinisterPositionModel extends PostModel {
     inverse: 'ministerPositions',
   })
   representativeBody;
+
+  @hasMany('minister', {
+    inverse: 'ministerPosition',
+  })
+  heldByMinisters;
 }

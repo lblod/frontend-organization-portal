@@ -16,28 +16,24 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersIndexRoute ex
         reload: true,
         include: [
           'minister-positions.function',
-          'minister-positions.agents-in-position.person',
+          'minister-positions.held-by-ministers.person',
         ].join(),
       }
     );
 
     let ministerPositions = await administrativeUnit.ministerPositions;
-    let positions = [];
-    for (const mp of ministerPositions.toArray()) {
-      const agentInPosition = (await mp.agentsInPosition).toArray();
+    let ministers = [];
 
-      if (agentInPosition?.length > 0) {
-        const position = agentInPosition[0];
-        const person = await position.person;
-        if (person) {
-          positions.push(mp);
-        }
+    for (const ministerPosition of ministerPositions.toArray()) {
+      const heldByMinisters = await ministerPosition.heldByMinisters;
+      if (heldByMinisters.length) {
+        ministers.push(...heldByMinisters.toArray());
       }
     }
 
     return {
       administrativeUnit: administrativeUnit,
-      ministerPositions: positions,
+      ministers,
     };
   }
 }
