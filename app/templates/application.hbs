@@ -1,21 +1,17 @@
-{{page-title (config "appName")}}
+{{page-title
+  (concat
+    'Organisatie Portaal' (if this.showEnvironment (concat ' - ' this.environmentName))
+  )
+}}
+<AuApp class='{{(if this.showEnvironment (concat 'au-c-app--environment au-c-environment--' this.environmentName))}}'>
 
-{{#if this.showEnvironment}}
-  <div class="au-c-app--environment au-c-app-environment-{{this.environmentName}}">
-
-    <EnvironmentLabel />
-
-    <AppHeader />
-    
-    <div id="main" class="au-c-main-container">
-      <div class="au-c-main-container__content" id="content" tabindex="-1">
-        {{outlet}}
-      </div>
-    </div>
-
-  </div>
-
-{{else}}
+  {{#if this.showEnvironment}}
+    <Environment::Banner
+      @environmentName={{this.environmentName}}
+      @environmentTitle={{this.environmentTitle}}
+      @applicationName='Organisatie Portaal'
+    />
+  {{/if}}
 
   <AppHeader />
 
@@ -42,4 +38,4 @@
 
   </main>
 
-{{/if}}
+</AuApp> 

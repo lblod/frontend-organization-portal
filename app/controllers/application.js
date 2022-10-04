@@ -7,6 +7,11 @@ export default class ApplicationController extends Controller {
       .environmentName;
   }
 
+  get environmentTitle() {
+    return getOwner(this).resolveRegistration('config:environment')
+      .environmentTitle;
+  }
+
   get showEnvironment() {
     return (
       this.environmentName !== '' &&
