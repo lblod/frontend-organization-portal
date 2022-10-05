@@ -77,11 +77,11 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if @model.administrativeUnit.locatedWithin}}
+            {{#if @model.administrativeUnit.scope.locatedWithin}}
               <Item>
                 <:label>Regio</:label>
                 <:content>
-                  {{@model.administrativeUnit.locatedWithin.label}}
+                  {{@model.administrativeUnit.scope.locatedWithin.label}}
                 </:content>
               </Item>
             {{/if}}
