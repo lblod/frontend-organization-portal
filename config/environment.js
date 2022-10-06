@@ -43,7 +43,7 @@ module.exports = function (environment) {
     },
     appName: 'OrganisatiePortaal',
     contactEmail: 'organisaties.abb@vlaanderen.be',
-    environmentName: '{{ENVIRONMENT_NAME}}', // Supported values: LOCAL, DEV, QA
+    environmentName: '{{ENVIRONMENT_NAME}}',
     environmentTitle: '{{ENVIRONMENT_TITLE}}',
     environmentClass: '{{ENVIRONMENT_CLASS}}',
 

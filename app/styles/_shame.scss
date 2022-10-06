@@ -196,3 +196,11 @@ $ember-power-select-focus-outline: solid 2px rgb(16, 108, 200) !default;
     }
   }
 }
+
+.au-c-body-container {
+  &.au-c-body-container--scroll {
+    .au-c-button-group {
+      flex-direction: row-reverse;
+    }
+  }
+}

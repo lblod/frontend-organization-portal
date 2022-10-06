@@ -1,23 +1,23 @@
-/* ==================================
-   #ENVIRONMENT BANNER
-   ================================== */
+/*==================================
+  #ENVIRONMENT BANNER
+  ================================== */
 
-/* Variables
-   ========================================================================== */
+/*Variables
+  ========================================================================== */
 
 $au-environment-dev-color : #4CAF50; //#e86ab9;
 $au-environment-test-color  : #FFF176;
 $au-env-element-height: 4rem;
-
+  
 %full-fixed-to-left {
   position: fixed; 
   left: 0; 
   width: 100%;
 }
-
+   
 /* Component
-   ========================================================================== */
-
+  ========================================================================== */
+   
 .au-c-app--environment {
   position: relative;
   overflow-y: auto;
@@ -26,29 +26,18 @@ $au-env-element-height: 4rem;
     height: calc(3.5 * $au-env-element-height);
     top: 0;
     z-index: 3;
-    .au-c-alert__message {
-      br {
-        display: none;
-      }
-    }
-    p {
-      line-height: 2rem;
-    }
     a {
       font: inherit;
       color: inherit;
     }
   }
-  header {
+  .au-c-main-header {
     @extend %full-fixed-to-left;
     height: $au-env-element-height;
     top: calc(3.5 * $au-env-element-height);
     .au-c-brand__logo, .au-c-brand__logotype {
       max-height: $au-env-element-height !important;
     }
-    .au-c-main-header__title--link {
-      overflow: visible;
-    }  
   }
   #main {
     margin-top: calc(4.5 * $au-env-element-height);
@@ -57,7 +46,7 @@ $au-env-element-height: 4rem;
     .au-c-alert {
       height: calc(2.5 * $au-env-element-height);
     }
-    header {
+    .au-c-main-header {
       top: calc(2.5 * $au-env-element-height);
     }
     #main {
@@ -71,12 +60,9 @@ $au-env-element-height: 4rem;
         div {
           flex-direction: row !important;
         }
-        br {
-          display: inline;
-        }
       }
     }
-    header {
+    .au-c-main-header {
       top: calc(1.5 * $au-env-element-height);
     }
     #main {
@@ -84,7 +70,7 @@ $au-env-element-height: 4rem;
     }
   }
 }
-
+   
 .au-c-environment--development > .au-c-alert--warning {
   background-color: $au-environment-dev-color;
   border-color: darken($au-environment-dev-color, 7%);
