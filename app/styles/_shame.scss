@@ -185,15 +185,9 @@ $ember-power-select-focus-outline: solid 2px rgb(16, 108, 200) !default;
   vertical-align: top !important;
 }
 
-.au-c-body-container {
-  header {
-    .au-c-toolbar {
-      .au-c-toolbar__group {
-        &:first-of-type {
-          max-width: calc(100% - 100px)
-        }
-      }
-    }
+header {
+  &.au-c-main-header {
+    z-index: 3;
   }
 }
 
@@ -201,6 +195,15 @@ $ember-power-select-focus-outline: solid 2px rgb(16, 108, 200) !default;
   &.au-c-body-container--scroll {
     .au-c-button-group {
       flex-direction: row-reverse;
+    }
+  }
+  header {
+    .au-c-toolbar {
+      .au-c-toolbar__group {
+        &:first-of-type {
+          max-width: calc(100% - 100px)
+        }
+      }
     }
   }
 }

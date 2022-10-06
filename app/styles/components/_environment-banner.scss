@@ -42,7 +42,24 @@ $au-env-element-height: 4rem;
   #main {
     margin-top: calc(4.5 * $au-env-element-height);
   }
-  @media (min-width: 576px) {
+  .au-c-main-container {
+    height: calc(100vh - (4.5 * $au-env-element-height));
+  }
+  @include mq($from:xsmall) {
+    .au-c-alert {
+      height: calc(3.5 * $au-env-element-height);
+    }
+    .au-c-main-header {
+      top: calc(3.5 * $au-env-element-height);
+    }
+    #main {
+      margin-top: calc(4.5 * $au-env-element-height);
+    }
+    .au-c-main-container {
+      height: calc(100vh - (4.5 * $au-env-element-height));
+    }
+  }
+  @include mq($from:small) {
     .au-c-alert {
       height: calc(2.5 * $au-env-element-height);
     }
@@ -52,8 +69,11 @@ $au-env-element-height: 4rem;
     #main {
       margin-top: calc(3.5 * $au-env-element-height);
     }
+    .au-c-main-container {
+      height: calc(100vh - (3.5 * $au-env-element-height));
+    }
   }
-  @media (min-width: 992px) {
+  @include mq($from:medium) {
     .au-c-alert {
       height: calc(1.5 * $au-env-element-height);
       .au-c-alert__message {
@@ -67,6 +87,9 @@ $au-env-element-height: 4rem;
     }
     #main {
       margin-top: calc(2.5 * $au-env-element-height);
+    }
+    .au-c-main-container {
+      height: calc(100vh - (2.5 * $au-env-element-height));
     }
   }
 }
