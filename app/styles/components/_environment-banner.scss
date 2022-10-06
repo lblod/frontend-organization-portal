@@ -26,14 +26,6 @@ $au-env-element-height: 4rem;
     height: calc(3.5 * $au-env-element-height);
     top: 0;
     z-index: 3;
-    .au-c-alert__message {
-      br {
-        display: none;
-      }
-    }
-    p {
-      line-height: 2rem;
-    }
     a {
       font: inherit;
       color: inherit;
@@ -46,9 +38,6 @@ $au-env-element-height: 4rem;
     .au-c-brand__logo, .au-c-brand__logotype {
       max-height: $au-env-element-height !important;
     }
-    .au-c-main-header__title--link {
-      overflow: visible;
-    }  
   }
   #main {
     margin-top: calc(4.5 * $au-env-element-height);
@@ -70,9 +59,6 @@ $au-env-element-height: 4rem;
       .au-c-alert__message {
         div {
           flex-direction: row !important;
-        }
-        br {
-          display: inline;
         }
       }
     }
