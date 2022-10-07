@@ -46,6 +46,15 @@
 
 
 
+
+## 1.12.0-1 (2022-10-07)
+
+#### :bug: Bug Fix
+* [#405](https://github.com/lblod/frontend-organization-portal/pull/405) positions not listed ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.12.0-0 (2022-10-05)
 
 #### :rocket: Enhancement
