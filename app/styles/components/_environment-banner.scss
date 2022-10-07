@@ -39,11 +39,9 @@ $au-env-element-height: 4rem;
       max-height: $au-env-element-height !important;
     }
   }
-  #main {
-    margin-top: calc(4.5 * $au-env-element-height);
-  }
   .au-c-main-container {
     height: calc(100vh - (4.5 * $au-env-element-height));
+    margin-top: calc(4.5 * $au-env-element-height);
   }
   @include mq($from:xsmall) {
     .au-c-alert {
@@ -52,11 +50,9 @@ $au-env-element-height: 4rem;
     .au-c-main-header {
       top: calc(3.5 * $au-env-element-height);
     }
-    #main {
-      margin-top: calc(4.5 * $au-env-element-height);
-    }
     .au-c-main-container {
       height: calc(100vh - (4.5 * $au-env-element-height));
+      margin-top: calc(4.5 * $au-env-element-height);
     }
   }
   @include mq($from:small) {
@@ -66,11 +62,9 @@ $au-env-element-height: 4rem;
     .au-c-main-header {
       top: calc(2.5 * $au-env-element-height);
     }
-    #main {
-      margin-top: calc(3.5 * $au-env-element-height);
-    }
     .au-c-main-container {
       height: calc(100vh - (3.5 * $au-env-element-height));
+      margin-top: calc(3.5 * $au-env-element-height);
     }
   }
   @include mq($from:medium) {
@@ -85,11 +79,9 @@ $au-env-element-height: 4rem;
     .au-c-main-header {
       top: calc(1.5 * $au-env-element-height);
     }
-    #main {
-      margin-top: calc(2.5 * $au-env-element-height);
-    }
     .au-c-main-container {
       height: calc(100vh - (2.5 * $au-env-element-height));
+      margin-top: calc(2.5 * $au-env-element-height);
     }
   }
 }
