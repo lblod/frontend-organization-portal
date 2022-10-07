@@ -57,7 +57,7 @@ export default class PositionSelectComponent extends Component {
         'filter[applies-to][applies-within][:id:]': classification.id,
       });
 
-      if (classification == CLASSIFICATION_CODE.WORSHIP_SERVICE) {
+      if (classification.id == CLASSIFICATION_CODE.WORSHIP_SERVICE) {
         ministerPositions = yield this.store.query(
           'minister-position-function',
           {
