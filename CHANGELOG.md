@@ -47,6 +47,22 @@
 
 
 
+## 1.12.0 (2022-10-07)
+
+#### :bug: Bug Fix
+* [#405](https://github.com/lblod/frontend-organization-portal/pull/405) positions not listed ([@nbittich](https://github.com/nbittich))
+* [#404](https://github.com/lblod/frontend-organization-portal/pull/404) Feat/fix regio ([@nbittich](https://github.com/nbittich))
+* [#403](https://github.com/lblod/frontend-organization-portal/pull/403) hide governing bodies in the future ([@nbittich](https://github.com/nbittich))
+* [#402](https://github.com/lblod/frontend-organization-portal/pull/402) fix empty person for bedinaeren ([@nbittich](https://github.com/nbittich))
+
+#### :rocket: Enhancement
+* [#401](https://github.com/lblod/frontend-organization-portal/pull/401) contextual dropdown update with new codelist minister position ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
+
+
 ## 1.12.0-1 (2022-10-07)
 
 #### :bug: Bug Fix
