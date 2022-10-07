@@ -143,9 +143,9 @@
                     <:label>Regio</:label>
                     <:content>
                       <RegionSelect
-                        @selected={{@model.administrativeUnit.locatedWithin}}
+                        @selected={{@model.administrativeUnit.scope}}
                         @onChange={{fn
-                          (mut @model.administrativeUnit.locatedWithin)
+                          (mut @model.administrativeUnit.scope)
                         }}
                         @id="regio"
                       />

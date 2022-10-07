@@ -40,13 +40,20 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
             }
             return b.startDate - a.startDate;
           });
+
         governingBodies.push(...sortedTimesGoverningBodies);
       }
     }
 
+    const now = new Date().getTime();
+
     return {
       administrativeUnit,
-      governingBodies,
+      governingBodies: governingBodies.filter((governingBody) => {
+        return (
+          !governingBody.startDate || governingBody.startDate.getTime() <= now
+        );
+      }),
     };
   }
 }

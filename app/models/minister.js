@@ -7,7 +7,7 @@ export default class MinisterModel extends AgentInPositionModel {
   @tracked isCurrentPosition;
 
   @belongsTo('minister-position', {
-    inverse: null,
+    inverse: 'heldByMinisters',
   })
   ministerPosition;
 

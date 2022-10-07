@@ -314,4 +314,5 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
   }
   newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
   newAdministrativeUnit.locatedWithin = administrativeUnit.locatedWithin;
+  newAdministrativeUnit.scope = administrativeUnit.scope;
 }
