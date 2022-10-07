@@ -85,6 +85,7 @@ export default class PersonSearchByNameComponent extends Component {
           },
         ];
       }
+      person.agentEndDate = person.agent_end_date;
       this.results.push(person);
     }
     result = removeDuplicates(result, ['family_name', 'given_name']);

@@ -65,6 +65,8 @@
           <th>Achternaam</th>
           <th>Organisatie</th>
           <th>Positie</th>
+          <th>Status</th>
+          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -106,6 +108,10 @@
               </td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
+              <td></td>
+              <td>
+                <AuButton @icon="nav-up" @skin="tertiary" />
+              </td>
               <td>
 
                 <AuButton
@@ -159,12 +165,18 @@
                     {{position.position_name}}
                   </AuLink>
                 </td>
+
                 <td>
-                    <AuLink
-                      @route=""
-                    >
-                      Bewerk
-                    </AuLink>
+                  <PositionStatus @endDate={{position.agentEndDate}} />
+
+                </td>
+                <td>
+
+                </td>
+                <td>
+                  <AuLink @route="">
+                    Bewerk
+                  </AuLink>
                 </td>
               </tr>
             {{/each}}
@@ -172,7 +184,7 @@
           {{#if this.searchPeopleTask.lastSuccessful.value.hasRest}}
             <tr>
               <td
-                colspan="5"
+                colspan="7"
                 class="au-u-max-width au-u-h4 au-c-alert--warning au-u-text-center"
               >
                 <AuIcon @icon="alert-triangle" />
@@ -199,7 +211,20 @@
               </td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>Voeg nieuwe positie toe</td>
+              <td>&nbsp;</td>
+              <td>
+                <AuButton @icon="nav-up" @skin="tertiary" />
+              </td>
+              <td>
+
+                <AuButton
+                  @skin="tertiary"
+                  {{on "click" (fn @onSelect key)}}
+                  @loading={{@loading}}
+                >
+                  Voeg nieuwe positie toe
+                </AuButton>
+              </td>
             </tr>
             {{#each values as |position|}}
               <tr>
@@ -245,12 +270,16 @@
                     {{position.position_name}}
                   </AuLink>
                 </td>
+
                 <td>
-                  <AuLink
-                      @route=""
-                    >
-                      Bewerk
-                    </AuLink>
+                  <PositionStatus @endDate={{position.agentEndDate}} />
+
+                </td>
+                <td>&nbsp;</td>
+                <td>
+                  <AuLink @route="">
+                    Bewerk
+                  </AuLink>
                 </td>
               </tr>
 
