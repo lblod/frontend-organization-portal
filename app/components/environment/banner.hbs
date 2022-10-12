@@ -1,0 +1,17 @@
+<AuAlert @size='tiny' @skin='warning' class='au-u-margin-bottom-none au-u-flex--row'>
+  <div class='au-u-flex au-u-flex--column au-u-flex--spaced-tiny au-u-flex--start'>
+    <p class='au-u-flex au-u-medium au-u-1-5@medium au-u-flex--vertical-center'>
+      Environment: {{@environmentName}}
+    </p>
+    <div class='au-u-flex au-u-flex--column au-u-flex--spaced-tiny au-u-4-5@medium'>
+      <p class='au-u-4-5@medium'>
+        Dit is de <strong>{{@environmentTitle}}</strong> van het Organisatieportaal met fictieve en testgegevens.
+        De productieomgeving met de echte data vind je op <a href='https://organisations.abb.vlaanderen.be'>organisations.abb.vlaanderen.be</a> 
+      </p>
+      <p class='au-u-1-5@medium au-u-flex au-u-flex--end au-u-flex--vertical-center'>
+        {{@applicationName}}
+        {{app-version versionOnly=true showExtended=true}}
+      </p>
+    </div>
+  </div>
+</AuAlert>

@@ -43,7 +43,9 @@ module.exports = function (environment) {
     },
     appName: 'OrganisatiePortaal',
     contactEmail: 'organisaties.abb@vlaanderen.be',
-    environmentName: '{{ENVIRONMENT_NAME}}', // Supported values: LOCAL, DEV, QA
+    environmentName: '{{ENVIRONMENT_NAME}}',
+    environmentTitle: '{{ENVIRONMENT_TITLE}}',
+    environmentClass: '{{ENVIRONMENT_CLASS}}',
 
     torii: {
       disableRedirectInitializer: true,
@@ -75,7 +77,8 @@ module.exports = function (environment) {
 
   if (environment === 'development') {
     ENV.showAppVersionHash = true;
-    ENV.environmentName = 'LOCAL';
+    ENV.environmentName = 'development';
+    ENV.environmentTitle = 'ontwikkelomgeving';
     ENV.torii.providers['acmidm-oauth2'].logoutUrl = '/mock-login';
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
@@ -87,6 +90,8 @@ module.exports = function (environment) {
   if (environment === 'test') {
     // Testem prefers this...
     ENV.locationType = 'none';
+    ENV.environmentName = 'test';
+    ENV.environmentTitle = 'testomgeving';
 
     // keep test console output quieter
     ENV.APP.LOG_ACTIVE_GENERATION = false;

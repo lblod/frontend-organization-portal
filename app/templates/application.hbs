@@ -1,26 +1,43 @@
-{{page-title (config "appName")}}
+{{page-title
+  (concat
+    'Organisatie Portaal' (if this.showEnvironment (concat ' - ' this.environmentName))
+  )
+}}
+<AuApp class='{{(if this.showEnvironment (concat 'au-c-app--environment au-c-environment--' this.environmentName))}}'>
 
-<AppHeader />
+  {{#if this.showEnvironment}}
+    <Environment::Banner
+      @environmentName={{this.environmentName}}
+      @environmentTitle={{this.environmentTitle}}
+      @applicationName='Organisatie Portaal'
+    />
+  {{/if}}
 
-{{#if (eq "true" (config "announce.maintenance.enabled"))}}
-  <AuAlert @skin="warning"  @icon="alert-triangle" class="au-u-margin-bottom-none">
-    <p>{{config "announce.maintenance.message"}}</p>
-  </AuAlert>
-{{else if (eq "true" (config "announce.newDeployment.enabled"))}}
-  <AuAlert @skin="warning" @icon="alert-triangle"  class="au-u-margin-bottom-none">
-    <p>{{config "announce.newDeployment.message"}}</p>
-  </AuAlert>
-{{else if (eq "true" (config "announce.testing.enabled"))}}
-  <AuAlert @skin="warning" @icon="alert-triangle"  class="au-u-margin-bottom-none">
-    <p>{{config "announce.testing.message"}}</p>
-  </AuAlert>
+  <AppHeader />
 
-{{/if}}
+  {{#if (eq "true" (config "announce.maintenance.enabled"))}}
+    <AuAlert @skin="warning"  @icon="alert-triangle" class="au-u-margin-bottom-none au-c-env-announcement">
+      <p>{{config "announce.maintenance.message"}}</p>
+    </AuAlert>
+  {{else if (eq "true" (config "announce.newDeployment.enabled"))}}
+    <AuAlert @skin="warning" @icon="alert-triangle"  class="au-u-margin-bottom-none au-c-env-announcement">
+      <p>{{config "announce.newDeployment.message"}}</p>
+    </AuAlert>
+  {{else if (eq "true" (config "announce.testing.enabled"))}}
+    <AuAlert @skin="warning" @icon="alert-triangle"  class="au-u-margin-bottom-none au-c-env-announcement">
+      <p>{{config "announce.testing.message"}}</p>
+    </AuAlert>
 
-<main id="main" class="au-c-main-container">
+  {{/if}}
 
-  <div class="au-c-main-container__content" id="content" tabindex="-1">
+  <main id="main" class="au-c-main-container">
 
-    {{outlet}}
-  </div>
-</main>
+
+
+    <div class="au-c-main-container__content" id="content" tabindex="-1">
+      {{outlet}}
+    </div>
+
+  </main>
+
+</AuApp> 

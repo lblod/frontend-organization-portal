@@ -92,7 +92,7 @@
 @import "components/cards";
 @import "components/sidebar-container";
 @import "components/table-message";
-@import "components/environment-pill";
+@import "components/environment-banner";
 
 // PLUGINS
 @import "ember-appuniversum/p-ember-power-select";
@@ -103,6 +103,7 @@
 @import "appuniversum/u-align-text";
 @import "appuniversum/u-background";
 @import "appuniversum/u-break-word";
+@import "appuniversum/u-flex";
 @import "appuniversum/u-headings";
 @import "appuniversum/u-hide";
 @import "appuniversum/u-font-family";
