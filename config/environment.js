@@ -45,7 +45,6 @@ module.exports = function (environment) {
     contactEmail: 'organisaties.abb@vlaanderen.be',
     environmentName: '{{ENVIRONMENT_NAME}}',
     environmentTitle: '{{ENVIRONMENT_TITLE}}',
-    environmentClass: '{{ENVIRONMENT_CLASS}}',
 
     torii: {
       disableRedirectInitializer: true,
