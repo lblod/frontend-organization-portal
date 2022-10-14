@@ -37,16 +37,23 @@ $au-env-element-height: 4rem;
 .au-c-app--environment {
   position: relative;
   overflow-y: auto;
-  .au-c-alert:not(.au-c-env-announcement) {
-    @extend %full-fixed-to-left;
-    height: calc(3.5 * $au-env-element-height);
-    top: 0;
-    z-index: 3;
-    a {
-      font: inherit;
-      color: inherit;
+  .au-c-alert {
+    &:not(.au-c-env-announcement) {
+      @extend %full-fixed-to-left;
+      height: calc(3.5 * $au-env-element-height);
+      top: 0;
+      z-index: 3;
+      a {
+        font: inherit;
+        color: inherit;
+      }
+    }
+    &.au-c-app-helpdesk-banner {
+      height: calc(2.5 * $au-env-element-height) !important;
+      position: relative !important;
     }
   }
+
   .au-c-main-header {
     @extend %full-fixed-to-left;
     height: $au-env-element-height;
