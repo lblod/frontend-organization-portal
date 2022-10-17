@@ -21,10 +21,14 @@ export default class AdministrativeUnitModel extends OrganizationModel {
     inverse: 'administrativeUnit',
   })
   involvedBoards;
+
   @belongsTo('concept', {
     inverse: null,
   })
   exactMatch;
-  @belongsTo('location', { inverse: null })
+
+  @belongsTo('location', {
+    inverse: null,
+  })
   scope;
 }

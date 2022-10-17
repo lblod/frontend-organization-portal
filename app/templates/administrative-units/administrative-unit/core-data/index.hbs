@@ -2,7 +2,8 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Kerngegevens</:title>
-      <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
+      <:subtitle>{{@model.administrativeUnit.name}}
+        ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         <SecuredArea>
           <:edit>
@@ -77,11 +78,11 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if @model.administrativeUnit.scope}}
+            {{#if @model.administrativeUnit.scope.locatedWithin}}
               <Item>
                 <:label>Regio</:label>
                 <:content>
-                  {{@model.administrativeUnit.scope.label}}
+                  {{@model.administrativeUnit.scope.locatedWithin.label}}
                 </:content>
               </Item>
             {{/if}}
