@@ -4,46 +4,42 @@
   <div class="au-o-region-large au-o-layout">
     <AuHeading class="au-u-margin-bottom">Contact</AuHeading>
     <p class="au-u-margin-bottom">
-      FAQ en andere informatie over de werking van het OrganisatiePortaal kan je
-      terugvinden in onze
-      <a
-        href={{config "userManual.general"}}
-        class="au-c-link"
-        target="_blank"
-        rel="noopener noreferrer"
-      >handleiding (externe link)</a>.
+      Heb je meer informatie nodig bij de werking van het OrganisatiePortaal?
     </p>
 
-    <form class="au-c-form">
-      <fieldset>
-        <legend class="au-c-label">Waar gaat uw bericht over?</legend>
-        <ul>
-          {{#each this.subjectOptions as |subject|}}
-            <li>
-              <AuControlRadio
-                @label={{subject}}
-                @value={{subject}}
-                @name="contact-subject"
-                @onChange={{fn (mut this.subject) subject}}
-                checked={{eq this.subject subject}}
-              />
-            </li>
-          {{/each}}
-        </ul>
-      </fieldset>
+      <ul>
+        {{#each this.subjectOptions as |subject|}}
+          <li>
+            <a 
+              href={{subject.link}} title={{subject.title}}
+              rel="noopener noreferrer" target="_blank"
+              class="au-c-link"
+            >
+              {{subject.title}}
+            </a>
+          </li>
+        {{/each}}
+      </ul>
 
-      {{#if this.canSend}}
-        <a href={{this.mailto}} class="au-c-button">Bericht versturen</a>
-      {{else}}
-        <AuButton @disabled="true">Stel bericht op</AuButton>
-      {{/if}}
-    </form>
+    <p class="au-u-margin-top au-u-margin-bottom">Indien geen van bovenstaande informatiebronnen je kan helpen, klik op één van onderstaande meldingen om onze helpdesk te contacteren:</p>
 
-    <p class="au-u-margin-top">
-      Of neem rechtstreeks contact op via mail
-      <a href="mailto:{{config "contactEmail"}}" class="au-c-link">{{config
-          "contactEmail"
-        }}</a>.
-    </p>
+      <ul>
+        {{#each this.issueOptions as |issue|}}
+          <li>
+            <a 
+              href={{issue.link}} title={{issue.title}}
+              rel="noopener noreferrer" target="_blank"
+              class="au-c-link"
+            >
+              {{issue.title}}
+            </a>
+          </li>
+        {{/each}}
+      </ul>
+
+    <p class="au-u-margin-top au-u-margin-bottom">Merk je een fout op in data gebruik dan de meldingslink “Zie je een fout in de data? Meld het ons!” rechtsboven de pagina's met gegeven in het OP.</p>
+    <p>Na het verzenden van het formulier wordt je melding of vraag omgezet in een ticket en wordt dit beha class="au-u-margin-bottom"ndeld door onze helpdeskmedewerker(s). Gelieve geen vragen rechtstreeks naar het persoonlijk e-mailadres van de helpdeskmedewer(s) te sturen.</p>
+    <p class="au-u-margin-top">Tips om onze helpdeskmedewerker(s) te helpen, vind je in onze handleiding onder de sectie <a class="au-c-link" href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/ondersteuning/helpdesk" rel="nofollow noopener noreferrer" target=""blank>helpdesk.</a></p>
+
   </div>
 </StaticPage>
