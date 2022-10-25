@@ -18,8 +18,7 @@
             </Item>
             <Item>
               <:label>Soort eredienst</:label>
-              <:content
-              >{{@model.representativeBody.recognizedWorshipType.label}}</:content>
+              <:content>{{@model.representativeBody.recognizedWorshipType.label}}</:content>
             </Item>
           </:left>
           <:right as |Item|>
@@ -28,7 +27,7 @@
               <:content>
                 <OrganizationStatus
                   @id={{@model.representativeBody.organizationStatus.id}}
-                @label={{@model.representativeBody.organizationStatus.label}}
+                  @label={{@model.representativeBody.organizationStatus.label}}
                 />
               </:content>
             </Item>

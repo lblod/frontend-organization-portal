@@ -5,7 +5,7 @@
 >
   <SecuredArea>
     <:edit>
-      <p class="au-u-margin-bottom">
+      <p class="au-u-margin-bottom au-u-hidden">
         <b class="au-u-medium">
           Zoek een reeds gekende persoon in de databank op voor- of achternaam, of
         </b>
@@ -78,25 +78,12 @@
           (not this.searchPeopleTask.lastSuccessful.value)
           (not this.searchPeopleTask.isRunning)
         )}}
-          <TableMessage>
-            <p class="au-u-hidden">
-              Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of
-              probeer een andere zoekopdracht. Indien een persoon ontbreekt,
-              meldt dit aan
-              <a
-                href="mailto:{{config "contactEmail"}}"
-                class="au-c-link"
-              >{{config "contactEmail"}}</a>.
-            </p>
-            <p class="au-u-margin-bottom-large">Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, probeer een andere zoekopdracht of voeg een nieuwe persoon toe!</p>
-            <AuLink
-              @route="people.new"
-              @query={{hash redirectUrl=@personCreationRedirectUrl}}
-              class="au-c-button au-c-button--secondary"
-            >
-              + Voeg een nieuwe persoon toe!
-            </AuLink>
-          </TableMessage>
+          <TableMessage::NoResult />
+        {{else if (and
+          (not this.searchPeopleTask.lastSuccessful.value)
+          (this.searchPeopleTask.isRunning)
+        )}}
+          <TableMessage::SomeResult />
         {{else}}
           <c.body as |person|>
             <td>
