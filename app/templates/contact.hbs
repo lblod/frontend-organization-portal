@@ -7,39 +7,41 @@
       Heb je meer informatie nodig bij de werking van het OrganisatiePortaal?
     </p>
 
-      <ul>
-        {{#each this.subjectOptions as |subject|}}
-          <li>
-            <a 
-              href={{subject.link}} title={{subject.title}}
-              rel="noopener noreferrer" target="_blank"
-              class="au-c-link"
-            >
-              {{subject.title}}
-            </a>
-          </li>
-        {{/each}}
-      </ul>
+    <ul>
+      {{#each this.subjectOptions as |subject|}}
+        <li>
+          <a 
+            href={{subject.link}} title={{subject.title}}
+            rel="nofollow noopener noreferrer" 
+            target="_blank" class="au-c-link"
+          >
+            {{subject.title}}
+          </a>
+        </li>
+      {{/each}}
+    </ul>
 
     <p class="au-u-margin-top au-u-margin-bottom">Indien geen van bovenstaande informatiebronnen je kan helpen, klik op één van onderstaande meldingen om onze helpdesk te contacteren:</p>
 
-      <ul>
-        {{#each this.issueOptions as |issue|}}
-          <li>
-            <a 
-              href={{issue.link}} title={{issue.title}}
-              rel="noopener noreferrer" target="_blank"
-              class="au-c-link"
-            >
-              {{issue.title}}
-            </a>
-          </li>
-        {{/each}}
-      </ul>
+    <ul>
+      {{#each this.issueOptions as |issue|}}
+        <li>
+          <a 
+            href={{issue.link}} title={{issue.title}}
+            rel="nofollow noopener noreferrer" 
+            target="_blank" class="au-c-link"
+          >
+            {{issue.title}}
+          </a>
+        </li>
+      {{/each}}
+    </ul>
 
     <p class="au-u-margin-top au-u-margin-bottom">Merk je een fout op in data gebruik dan de meldingslink “Zie je een fout in de data? Meld het ons!” rechtsboven de pagina's met gegeven in het OP.</p>
+
     <p>Na het verzenden van het formulier wordt je melding of vraag omgezet in een ticket en wordt dit beha class="au-u-margin-bottom"ndeld door onze helpdeskmedewerker(s). Gelieve geen vragen rechtstreeks naar het persoonlijk e-mailadres van de helpdeskmedewer(s) te sturen.</p>
-    <p class="au-u-margin-top">Tips om onze helpdeskmedewerker(s) te helpen, vind je in onze handleiding onder de sectie <a class="au-c-link" href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/ondersteuning/helpdesk" rel="nofollow noopener noreferrer" target=""blank>helpdesk.</a></p>
+
+    <p class="au-u-margin-top">Tips om onze helpdeskmedewerker(s) te helpen, vind je in onze handleiding onder de sectie <a target="_blank" class="au-c-link" rel="nofollow noopener noreferrer" href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/ondersteuning/helpdesk">helpdesk.</a></p>
 
   </div>
 </StaticPage>
