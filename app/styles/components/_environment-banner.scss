@@ -7,6 +7,7 @@
 
 $au-environment-dev-color : #4CAF50; //#e86ab9;
 $au-environment-test-color  : #FFF176;
+$au-environment-local-color: #FFF9E8;
 $au-env-element-height: 4rem;
   
 %full-fixed-to-left {
@@ -140,5 +141,11 @@ $au-env-element-height: 4rem;
 .au-c-environment--test > .au-c-alert:not(.au-c-env-announcement) {
   background-color: $au-environment-test-color;
   border-color: darken($au-environment-test-color, 30%);
+  color: $au-gray-1000;
+}
+
+.au-c-environment--local > .au-c-alert:not(.au-c-env-announcement) {
+  background-color: $au-environment-local-color;
+  border-color: darken($au-environment-local-color, 30%);
   color: $au-gray-1000;
 }
