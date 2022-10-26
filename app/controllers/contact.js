@@ -1,13 +1,5 @@
 import Controller from '@ember/controller';
-import { tracked } from '@glimmer/tracking';
-import config from 'frontend-organization-portal/config/environment';
-
-const CONTACT_EMAIL = config.contactEmail;
-
 export default class ContactController extends Controller {
-  @tracked subject = null;
-  contactEmail = CONTACT_EMAIL;
-
   subjectOptions = [
     {
       title: 'Bekijk onze handleiding',
@@ -24,10 +16,6 @@ export default class ContactController extends Controller {
   ];
 
   issueOptions = [
-    {
-      title: 'Ik wil een een bug of probleem melden',
-      link: 'https://binnenland.atlassian.net/servicedesk/customer/portal/13/group/30/create/157',
-    },
     {
       title: 'Ik heb problemen met inloggen',
       link: 'https://binnenland.atlassian.net/servicedesk/customer/portal/13/group/30/create/154',

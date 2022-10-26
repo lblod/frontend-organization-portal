@@ -55,6 +55,13 @@ table.dataTable tbody th {
   margin-bottom: $au-unit-tiny;
 }
 
+.au-c-list--styled {
+  padding-left: 1em;
+  &.au-c-list--styled__disc {
+    list-style-type: disc;
+  }
+}
+
 .au-c-list-inline__item {
   display: flex;
   align-items: center;
