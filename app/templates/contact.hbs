@@ -14,13 +14,12 @@
     >
       {{#each this.subjectOptions as |subject|}}
         <Item>
-          <a 
-            href={{subject.link}} title={{subject.title}}
-            rel="nofollow noopener noreferrer" 
-            target="_blank" class="au-c-link"
+          <AuLinkExternal 
+            href={{subject.link}} 
+            title={{subject.title}}
           >
             {{subject.title}}
-          </a>
+          </AuLinkExternal>
         </Item>
       {{/each}}
     </AuList>    
@@ -34,13 +33,12 @@
     >
       {{#each this.issueOptions as |issue|}}
         <Item>
-          <a
-            href={{issue.link}} title={{issue.title}}
-            rel="nofollow noopener noreferrer" 
-            target="_blank" class="au-c-link"
+          <AuLinkExternal
+            href={{issue.link}} 
+            title={{issue.title}}
           >
             {{issue.title}}
-          </a>
+          </AuLinkExternal>
         </Item>
       {{/each}}
       <Item class="au-c-list__item">Merk je een fout op in data gebruik dan de meldingslink “Zie je een fout in de data? Meld het ons!” rechtsboven de pagina's met gegeven in het OP.</Item>
