@@ -9,21 +9,21 @@ const isLocalhost = Boolean(
 
 export default class ApplicationController extends Controller {
   get environmentName() {
-    if (isLocalhost) {
-      return 'local';
-    } else {
-      return getOwner(this).resolveRegistration('config:environment')
-        .environmentName;
-    }
+    const thisEnvironmentValues = isLocalhost
+      ? 'local'
+      : getOwner(this).resolveRegistration('config:environment')
+          .environmentName;
+
+    return thisEnvironmentValues;
   }
 
   get environmentTitle() {
-    if (isLocalhost) {
-      return 'lokalomgeving';
-    } else {
-      return getOwner(this).resolveRegistration('config:environment')
-        .environmentTitle;
-    }
+    const thisEnvironmentValues = isLocalhost
+      ? 'lokalomgeving'
+      : getOwner(this).resolveRegistration('config:environment')
+          .environmentTitle;
+
+    return thisEnvironmentValues;
   }
 
   get showEnvironment() {
