@@ -33,7 +33,7 @@
 
   {{#if this.isSelectingTargetPerson}}
     <PersonSearch
-        @onSelect={{(perform this.selectTargetPerson)}}
+      @onSelect={{(perform this.selectTargetPerson)}}
       @loading={{this.selectTargetPerson.isRunning}}
       @personCreationRedirectUrl={{this.router.currentURL}}
     />

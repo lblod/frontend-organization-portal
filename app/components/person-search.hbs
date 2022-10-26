@@ -26,21 +26,21 @@
     <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
       <AuLabel for="person-given-name">Voornaam</AuLabel>
       <PersonSearchByName
-              @id="person-given-name"
-              @fieldName="given_name"
-              @selected={{this.searchParams.selectedPerson}}
-              @onChange={{this.searchParams.selectPerson}}
-              class="block"
+        @id="person-given-name"
+        @fieldName="given_name"
+        @selected={{this.searchParams.selectedPerson}}
+        @onChange={{this.searchParams.selectPerson}}
+        class="block"
       />
     </p>
     <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
       <AuLabel for="person-family-name">Achternaam</AuLabel>
       <PersonSearchByName
-              @id="person-family-name"
-              @fieldName="family_name"
-              @selected={{this.searchParams.selectedPerson}}
-              @onChange={{this.searchParams.selectPerson}}
-              class="block"
+        @id="person-family-name"
+        @fieldName="family_name"
+        @selected={{this.searchParams.selectedPerson}}
+        @onChange={{this.searchParams.selectPerson}}
+        class="block"
       />
     </p>
     <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
@@ -62,7 +62,7 @@
       @content={{this.searchPeopleTask.lastSuccessful.value}}
       @isLoading={{and
         (not this.searchPeopleTask.lastSuccessful.value)
-        this.searchPeopleTask.isRunning
+        (this.searchPeopleTask.isRunning)
       }}
       as |t|
     >
@@ -79,11 +79,6 @@
           (not this.searchPeopleTask.isRunning)
         )}}
           <TableMessage::NoResult />
-        {{else if (and
-          (not this.searchPeopleTask.lastSuccessful.value)
-          (this.searchPeopleTask.isRunning)
-        )}}
-          <TableMessage::SomeResult />
         {{else}}
           <c.body as |person|>
             <td>
@@ -98,6 +93,12 @@
               </AuButton>
             </td>
           </c.body>
+        {{/if}}
+        {{#if (and
+          (not this.searchPeopleTask.isRunning)
+          (not this.searchPeopleTask.last.isError)
+        )}}
+          <TableMessage::SomeResult />
         {{/if}}
       </t.content>
     </AuDataTable>
