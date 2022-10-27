@@ -1,32 +1,32 @@
 import Controller from '@ember/controller';
-import { tracked } from '@glimmer/tracking';
-import config from 'frontend-organization-portal/config/environment';
-
-const CONTACT_EMAIL = config.contactEmail;
-
 export default class ContactController extends Controller {
-  @tracked subject = null;
-  contactEmail = CONTACT_EMAIL;
-
   subjectOptions = [
-    'Melden van onvolledige of foutieve data',
-    'Melden van een bug of probleem',
-    'Een inhoudelijke vraag',
-    'Een vraag over de applicatie',
-    'Een suggestie voor verbetering',
-    'Aanmelden',
-    'Technische hulp',
+    {
+      title: 'Bekijk onze handleiding',
+      link: 'https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/',
+    },
+    {
+      title: 'Bekijk onze FAQ',
+      link: 'https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/ondersteuning/veelgestelde-vragen-faq',
+    },
+    {
+      title: 'Bekijk ons vocabularium',
+      link: 'https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/ondersteuning/vocabularium',
+    },
   ];
 
-  get canSend() {
-    return Boolean(this.subject);
-  }
-
-  get mailto() {
-    return `mailto:${CONTACT_EMAIL}?subject=${this.subject}`;
-  }
-
-  reset() {
-    this.subject = null;
-  }
+  issueOptions = [
+    {
+      title: 'Ik heb problemen met inloggen',
+      link: 'https://binnenland.atlassian.net/servicedesk/customer/portal/13/group/30/create/154',
+    },
+    {
+      title: 'Ik heb een verbetersuggestie',
+      link: 'https://binnenland.atlassian.net/servicedesk/customer/portal/13/group/30/create/153',
+    },
+    {
+      title: 'Ik heb nog een andere vraag',
+      link: 'https://binnenland.atlassian.net/servicedesk/customer/portal/13/group/30/create/229',
+    },
+  ];
 }
