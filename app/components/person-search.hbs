@@ -49,7 +49,7 @@
       @content={{this.searchPeopleTask.lastSuccessful.value}}
       @isLoading={{and
         (not this.searchPeopleTask.lastSuccessful.value)
-        (this.searchPeopleTask.isRunning)
+        this.searchPeopleTask.isRunning
       }}
       as |t|
     > 
@@ -69,23 +69,19 @@
             @personCreationRedirectUrl={{@personCreationRedirectUrl}}
           />
         {{else}}
-          {{#if this.searchPeopleTask.isRunning}}
-            <tr><td colspan="100%" class="is-loading-data">Aan het laden...</td></tr>
-          {{else}} 
-            <c.body as |person|>
-              <td>
-                {{person.givenName}}
-              </td>
-              <td>
-                {{person.familyName}}
-              </td>
-              <td>
-                <AuButton @skin="tertiary" {{on "click" (fn @onSelect person)}} @loading={{@loading}}>
-                  Selecteer
-                </AuButton>
-              </td>
-            </c.body>
-            {{/if}}
+          <c.body as |person|>
+            <td>
+              {{person.givenName}}
+            </td>
+            <td>
+              {{person.familyName}}
+            </td>
+            <td>
+              <AuButton @skin="tertiary" {{on "click" (fn @onSelect person)}} @loading={{@loading}}>
+                Selecteer
+              </AuButton>
+            </td>
+          </c.body>
           {{#if (and
             (not this.searchPeopleTask.isRunning)
             (not this.searchPeopleTask.last.isError)
