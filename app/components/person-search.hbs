@@ -86,7 +86,9 @@
             (not this.searchPeopleTask.isRunning)
             (not this.searchPeopleTask.last.isError)
           )}}
-            <TableMessage::HasResults />
+            <TableMessage::HasResults 
+              @personCreationRedirectUrl={{@personCreationRedirectUrl}}
+            />
           {{/if}}
         {{/if}}
       </t.content>

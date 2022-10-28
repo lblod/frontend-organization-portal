@@ -3,8 +3,11 @@
     <p class="has-results">
         Als u de persoon die u zoekt niet vindt, kijk na op spelfouten of probeer een andere zoekopdracht. 
         Indien de persoon ontbreekt, 
-        <a href="mailto:{{config "contactEmail"}}" class="au-c-link">
+        <AuLink
+            @route="people.new"
+            @query={{hash redirectUrl=@personCreationRedirectUrl}}
+        >
             + voeg een nieuwe persoon toe
-        </a>.
+        </AuLink>
     </p>
 </TableMessage>
