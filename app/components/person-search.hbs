@@ -47,7 +47,6 @@
   <div class="person-search-results au-u-margin-top-large">
     <AuDataTable
       @content={{this.searchPeopleTask.lastSuccessful.value}}
-      @loadingMessage="Aan het laden..."
       @isLoading={{and
         (not this.searchPeopleTask.lastSuccessful.value)
         (this.searchPeopleTask.isRunning)
