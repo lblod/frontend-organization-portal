@@ -112,7 +112,17 @@
         {{#if this.hasErrored}}
           <TableMessage::Error />
         {{else if this.hasNoResults}}
-          <TableMessage::NoResult />
+         <TableMessage>
+            <p>
+              Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of
+              probeer een andere zoekopdracht. Indien een persoon ontbreekt,
+              meldt dit aan
+              <a
+                href="mailto:{{config 'contactEmail'}}"
+                class="au-c-link"
+              >{{config "contactEmail"}}</a>.
+            </p>
+          </TableMessage>
         {{else}}
           <c.body as |person|>
             <td>

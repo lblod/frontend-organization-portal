@@ -65,7 +65,9 @@
           (not this.searchPeopleTask.lastSuccessful.value)
           (not this.searchPeopleTask.isRunning)
         )}}
-          <TableMessage::NoResult />
+          <TableMessage::NoResult 
+            @personCreationRedirectUrl={{@personCreationRedirectUrl}}
+          />
         {{else}}
           <c.body as |person|>
             <td>
