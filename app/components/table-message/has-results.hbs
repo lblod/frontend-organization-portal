@@ -1,0 +1,13 @@
+{{!-- Partial Result Message --}}
+<TableMessage>
+    <p class="has-results">
+        Als u de persoon die u zoekt niet vindt, kijk na op spelfouten of probeer een andere zoekopdracht. 
+        Indien de persoon ontbreekt, 
+        <AuLink
+            @route="people.new"
+            @query={{hash redirectUrl=@personCreationRedirectUrl}}
+        >
+            + voeg een nieuwe persoon toe
+        </AuLink>
+    </p>
+</TableMessage>

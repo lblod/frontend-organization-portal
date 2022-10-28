@@ -4,19 +4,6 @@
   {{on "submit" (perform this.searchPeopleTask)}}
 >
   <SecuredArea>
-    <:edit>
-      <p class="au-u-margin-bottom">
-        <b class="au-u-medium">
-          Zoek een reeds gekende persoon in de databank op voor- of achternaam, of
-        </b>
-        <AuLink
-          @route="people.new"
-          @query={{hash redirectUrl=@personCreationRedirectUrl}}
-        >
-          voeg een nieuwe persoon toe.
-        </AuLink>
-      </p>
-    </:edit>
     <:readOnly>
       <ReportWrongData />
     </:readOnly>
@@ -26,21 +13,21 @@
     <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
       <AuLabel for="person-given-name">Voornaam</AuLabel>
       <PersonSearchByName
-              @id="person-given-name"
-              @fieldName="given_name"
-              @selected={{this.searchParams.selectedPerson}}
-              @onChange={{this.searchParams.selectPerson}}
-              class="block"
+        @id="person-given-name"
+        @fieldName="given_name"
+        @selected={{this.searchParams.selectedPerson}}
+        @onChange={{this.searchParams.selectPerson}}
+        class="block"
       />
     </p>
     <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
       <AuLabel for="person-family-name">Achternaam</AuLabel>
       <PersonSearchByName
-              @id="person-family-name"
-              @fieldName="family_name"
-              @selected={{this.searchParams.selectedPerson}}
-              @onChange={{this.searchParams.selectPerson}}
-              class="block"
+        @id="person-family-name"
+        @fieldName="family_name"
+        @selected={{this.searchParams.selectedPerson}}
+        @onChange={{this.searchParams.selectPerson}}
+        class="block"
       />
     </p>
     <p class="au-o-grid__item au-u-1-3@medium au-u-1-1@small">
@@ -65,7 +52,7 @@
         this.searchPeopleTask.isRunning
       }}
       as |t|
-    >
+    > 
       <t.content class="au-c-data-table__table--small" as |c|>
         <c.header>
           <th>Voornaam</th>
@@ -78,17 +65,9 @@
           (not this.searchPeopleTask.lastSuccessful.value)
           (not this.searchPeopleTask.isRunning)
         )}}
-          <TableMessage>
-            <p>
-              Er werden geen zoekresultaten gevonden. Kijk na op spelfouten, of
-              probeer een andere zoekopdracht. Indien een persoon ontbreekt,
-              meldt dit aan
-              <a
-                href="mailto:{{config "contactEmail"}}"
-                class="au-c-link"
-              >{{config "contactEmail"}}</a>.
-            </p>
-          </TableMessage>
+          <TableMessage::NoResult 
+            @personCreationRedirectUrl={{@personCreationRedirectUrl}}
+          />
         {{else}}
           <c.body as |person|>
             <td>
@@ -103,6 +82,14 @@
               </AuButton>
             </td>
           </c.body>
+          {{#if (and
+            (not this.searchPeopleTask.isRunning)
+            (not this.searchPeopleTask.last.isError)
+          )}}
+            <TableMessage::HasResults 
+              @personCreationRedirectUrl={{@personCreationRedirectUrl}}
+            />
+          {{/if}}
         {{/if}}
       </t.content>
     </AuDataTable>
