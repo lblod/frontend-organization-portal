@@ -4,19 +4,6 @@
   {{on "submit" (perform this.searchPeopleTask)}}
 >
   <SecuredArea>
-    <:edit>
-      <p class="au-u-margin-bottom au-u-hidden">
-        <b class="au-u-medium">
-          Zoek een reeds gekende persoon in de databank op voor- of achternaam, of
-        </b>
-        <AuLink
-          @route="people.new"
-          @query={{hash redirectUrl=@personCreationRedirectUrl}}
-        >
-          voeg een nieuwe persoon toe.
-        </AuLink>
-      </p>
-    </:edit>
     <:readOnly>
       <ReportWrongData />
     </:readOnly>
@@ -93,12 +80,12 @@
               </AuButton>
             </td>
           </c.body>
-        {{/if}}
-        {{#if (and
-          (not this.searchPeopleTask.isRunning)
-          (not this.searchPeopleTask.last.isError)
-        )}}
-          <TableMessage::SomeResult />
+            {{#if (and
+              (not this.searchPeopleTask.isRunning)
+              (not this.searchPeopleTask.last.isError)
+            )}}
+              <TableMessage::HasResults />
+            {{/if}}
         {{/if}}
       </t.content>
     </AuDataTable>
