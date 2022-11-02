@@ -13,10 +13,24 @@
 >
   <t.content as |c|>
     <c.header>
-      <th class="au-c-data-table__header-title">Positie</th>
-      <th class="au-c-data-table__header-title">Organisatie(s)</th>
-      <th class="au-c-data-table__header-title">Status</th>
-      {{! <th></th> }}
+      <AuDataTableThSortable 
+        @class="au-c-data-table__header-title"
+        @field="role"
+        @currentSorting={{this.sort}}
+        @label="Positie"
+      />
+      <AuDataTableThSortable 
+        @class="au-c-data-table__header-title"
+        @field="administrativeUnit"
+        @currentSorting={{this.sort}}
+        @label="Organisatie(s)"
+      />
+      <AuDataTableThSortable 
+        @class="au-c-data-table__header-title"
+        @field="status"
+        @currentSorting={{this.sort}}
+        @label="Status"
+      />
     </c.header>
     <c.body as |position|>
       <td>
