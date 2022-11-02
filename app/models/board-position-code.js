@@ -6,6 +6,8 @@ export const BOARD_POSITION_CODE = {
 
 export const BOARD_MEMBER_ROLES = [
   '2e021095727b2464459a63e16ebeafd2', // Bestuurslid van het bestuur van de eredienst
+  '2962f0bd-2836-4758-9866-8ce8ea2c536f', // Bestuurslid van het bestuur van de eredienst (Kleine Helft)
+  'a8b5509b-f86b-48f8-94d6-fe463a9b77e3', // Bestuurslid van het bestuur van de eredienst (Grote Helft)
   '5972fccd87f864c4ec06bfbd20b5008b', // Bestuurslid (van rechtswege)  van het bestuur van de eredienst
   'f848fa3cc2c5fb7c581a116866293925', // Bestuurslid van het centraal bestuur van de eredienst
   '8c91c321ad477c4fc372ee36358d3ed4', // Expert van het centraal bestuur van de eredienst
