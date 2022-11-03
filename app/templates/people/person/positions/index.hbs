@@ -9,14 +9,30 @@
 <AuDataTable
   @content={{@model.positions}}
   @noDataMessage="Geen posities"
+  @page={{this.page}}
+  @size={{this.size}}
   as |t|
 >
   <t.content as |c|>
     <c.header>
-      <th class="au-c-data-table__header-title">Positie</th>
-      <th class="au-c-data-table__header-title">Organisatie(s)</th>
-      <th class="au-c-data-table__header-title">Status</th>
-      {{! <th></th> }}
+      <AuDataTableThSortable 
+        @class="au-c-data-table__header-title"
+        @field="position.role"
+        @currentSorting={{this.sort}}
+        @label="Positie"
+      />
+      <AuDataTableThSortable 
+        @class="au-c-data-table__header-title"
+        @field="position.administrative-unit.name"
+        @currentSorting={{this.sort}}
+        @label="Organisatie(s)"
+      />
+      <AuDataTableThSortable 
+        @class="au-c-data-table__header-title"
+        @field="position.status"
+        @currentSorting={{this.sort}}
+        @label="Status"
+      />
     </c.header>
     <c.body as |position|>
       <td>
