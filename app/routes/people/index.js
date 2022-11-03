@@ -47,10 +47,10 @@ export default class PeopleIndexRoute extends Route {
 
     const page = yield this.muSearch.search({
       index: 'people',
+      filters: filter,
+      sort: params.sort,
       page: params.page,
       size: params.size,
-      sort: params.sort,
-      filters: filter,
       dataMapping: (data) => {
         const entry = data.attributes;
         entry.end_date = entry.end_date ? new Date(entry.end_date) : null;

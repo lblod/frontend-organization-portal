@@ -11,6 +11,7 @@
             <TrimInput
               @width="block"
               @value={{this.given_name}}
+              {{on "focus" this.resetPagination}}
               @onUpdate={{fn (mut this.given_name)}}
               id="filter-given-name"
             />
@@ -20,6 +21,7 @@
             <TrimInput
               @width="block"
               @value={{this.family_name}}
+              {{on "focus" this.resetPagination}}
               @onUpdate={{fn (mut this.family_name)}}
               id="filter-family-name"
             />
@@ -28,6 +30,7 @@
             <AuLabel for="filter-organization">Organisatie</AuLabel>
             <AdministrativeUnitSelect
               @allowClear={{true}}
+              {{on "click" this.resetPagination}}
               @classificationCodes={{this.classificationCodes}}
               @selected={{or this.selectedOrganization this.organization}}
               @onChange={{this.setOrganization}}
@@ -38,6 +41,7 @@
           <div class="au-o-grid__item">
             <AuLabel for="positions">Positie</AuLabel>
             <PositionSelect
+              {{on "click" this.resetPagination}}
               @selected={{this.position}}
               @onChange={{this.setPosition}}
               @selectedAdministrativeUnit={{this.organization}}
