@@ -4,7 +4,12 @@ import { inject as service } from '@ember/service';
 export default class PeoplePersonPositionsIndexRoute extends Route {
   @service store;
 
-  async model() {
+  queryParams = {
+    sort: { refreshModel: true },
+    page: { refreshModel: true },
+  };
+
+  async model(params) {
     let { id: personId } = this.paramsFor('people.person');
 
     let person = await this.store.findRecord('person', personId, {
@@ -71,9 +76,12 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
         administrativeUnit,
       });
     }
+
     return {
       person,
       positions,
+      sort: params.sort,
+      page: { size: params.size, number: params.page },
     };
   }
 }

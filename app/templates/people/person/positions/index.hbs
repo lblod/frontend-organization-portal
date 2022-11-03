@@ -9,6 +9,8 @@
 <AuDataTable
   @content={{@model.positions}}
   @noDataMessage="Geen posities"
+  @page={{this.page}}
+  @size={{this.size}}
   as |t|
 >
   <t.content as |c|>
@@ -27,7 +29,7 @@
       />
       <AuDataTableThSortable 
         @class="au-c-data-table__header-title"
-        @field="status"
+        @field="endDate"
         @currentSorting={{this.sort}}
         @label="Status"
       />
