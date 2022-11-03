@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { isActivePosition } from 'frontend-organization-portal/utils/position';
 
 export default class PeoplePersonPositionsIndexRoute extends Route {
   @service store;
@@ -16,7 +17,7 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
       reload: true,
     });
 
-    const positions = [];
+    let positions = [];
 
     const mandatories = (await person.mandatories).toArray(); // mandatarissen
     const agents = (await person.agents).toArray(); // leidinggevenden
@@ -77,11 +78,44 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
       });
     }
 
+    // We have to sort manually instead of directly in the backend request because we are merging
+    // ressources from different types in this route
+
+    if (params.sort.length) {
+      if (params.sort == 'position.status') {
+        positions = positions.sort(function (a, b) {
+          return isActivePosition(b.endDate) - isActivePosition(a.endDate);
+        });
+      } else if (params.sort == '-position.status') {
+        positions = positions.sort(function (a, b) {
+          return isActivePosition(a.endDate) - isActivePosition(b.endDate);
+        });
+      } else if (params.sort == 'position.role') {
+        positions = positions.sort(function (a, b) {
+          return a.role.localeCompare(b.role);
+        });
+      } else if (params.sort == '-position.role') {
+        positions = positions.sort(function (a, b) {
+          return b.role.localeCompare(a.role);
+        });
+      } else if (params.sort == 'position.administrative-unit.name') {
+        positions = positions.sort(function (a, b) {
+          return a.administrativeUnit.name.localeCompare(
+            b.administrativeUnit.name
+          );
+        });
+      } else if (params.sort == '-position.administrative-unit.name') {
+        positions = positions.sort(function (a, b) {
+          return b.administrativeUnit.name.localeCompare(
+            a.administrativeUnit.name
+          );
+        });
+      }
+    }
+
     return {
       person,
       positions,
-      sort: params.sort,
-      page: { size: params.size, number: params.page },
     };
   }
 }

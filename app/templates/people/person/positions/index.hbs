@@ -17,19 +17,19 @@
     <c.header>
       <AuDataTableThSortable 
         @class="au-c-data-table__header-title"
-        @field="role"
+        @field="position.role"
         @currentSorting={{this.sort}}
         @label="Positie"
       />
       <AuDataTableThSortable 
         @class="au-c-data-table__header-title"
-        @field="administrativeUnit"
+        @field="position.administrative-unit.name"
         @currentSorting={{this.sort}}
         @label="Organisatie(s)"
       />
       <AuDataTableThSortable 
         @class="au-c-data-table__header-title"
-        @field="endDate"
+        @field="position.status"
         @currentSorting={{this.sort}}
         @label="Status"
       />

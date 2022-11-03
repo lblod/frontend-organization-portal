@@ -4,14 +4,9 @@ import { tracked } from '@glimmer/tracking';
 export default class PeoplePersonPositionsIndexController extends Controller {
   @service router;
 
-  queryParams = ['page', 'size', 'role', 'administrativeUnit', 'endDate'];
+  queryParams = ['sort', 'page', 'size'];
 
+  @tracked sort = 'position.status';
   @tracked page = 0;
-  size = 25;
-  @tracked sort = 'role';
-  @tracked role;
-  @tracked administrativeUnit;
-  @tracked endDate;
-
-  @tracked positions;
+  @tracked size = 25;
 }
