@@ -56,12 +56,26 @@ export default class PeopleIndexController extends Controller {
   }
 
   @action
+  setGivenName(given_name) {
+    this.page = null;
+    this.given_name = given_name;
+  }
+
+  @action
+  setFamilyName(family_name) {
+    this.page = null;
+    this.family_name = family_name;
+  }
+
+  @action
   setPosition(position) {
+    this.page = null;
     this.position = position?.id;
   }
 
   @action
   setOrganization(organization) {
+    this.page = null;
     this.organization = organization?.id;
     this.selectedOrganization = organization;
   }
@@ -69,6 +83,12 @@ export default class PeopleIndexController extends Controller {
   @action
   search(event) {
     event.preventDefault();
+
+    if (this.page > 0) {
+      this.resetPagination();
+    } else {
+      this.router.refresh();
+    }
   }
 
   resetPagination = () => (this.page = null);
