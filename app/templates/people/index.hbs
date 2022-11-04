@@ -11,7 +11,7 @@
             <TrimInput
               @width="block"
               @value={{this.given_name}}
-              @onUpdate={{fn (mut this.given_name)}}
+              @onUpdate={{this.setGivenName}}
               id="filter-given-name"
             />
           </p>
@@ -20,7 +20,7 @@
             <TrimInput
               @width="block"
               @value={{this.family_name}}
-              @onUpdate={{fn (mut this.family_name)}}
+              @onUpdate={{this.setFamilyName}}
               id="filter-family-name"
             />
           </p>

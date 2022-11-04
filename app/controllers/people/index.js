@@ -56,12 +56,26 @@ export default class PeopleIndexController extends Controller {
   }
 
   @action
+  setGivenName(given_name) {
+    this.page = null;
+    this.given_name = given_name;
+  }
+
+  @action
+  setFamilyName(family_name) {
+    this.page = null;
+    this.family_name = family_name;
+  }
+
+  @action
   setPosition(position) {
+    this.page = null;
     this.position = position?.id;
   }
 
   @action
   setOrganization(organization) {
+    this.page = null;
     this.organization = organization?.id;
     this.selectedOrganization = organization;
   }
@@ -71,15 +85,13 @@ export default class PeopleIndexController extends Controller {
     event.preventDefault();
 
     if (this.page > 0) {
-      this.resetPagination(); // updating `page` will refresh the model
+      this.resetPagination();
     } else {
       this.router.refresh();
     }
   }
 
-  resetPagination() {
-    this.page = 0;
-  }
+  resetPagination = () => (this.page = null);
 
   @action
   resetFilters() {
