@@ -20,6 +20,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
   @tracked personId;
   @tracked positionId;
+  @tracked redirectUrl;
 
   @tracked targetPerson = null;
   @tracked contact = null;
@@ -66,6 +67,17 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     } else {
       mandatory.isCurrentPosition = false;
     }
+  }
+
+  @dropTask
+  *selectNewPerson(p) {
+    const { person, positions } =
+      yield this.contactDetails.getPersonAndAllPositions(p.personId);
+    this.allContacts = yield this.contactDetails.positionsToEditableContacts(
+      positions
+    );
+    this.contact = { position: this.model.mandatory };
+    this.targetPerson = person;
   }
 
   @dropTask
