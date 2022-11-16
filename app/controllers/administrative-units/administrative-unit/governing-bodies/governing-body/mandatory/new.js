@@ -70,17 +70,6 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   }
 
   @dropTask
-  *selectNewPerson(p) {
-    const { person, positions } =
-      yield this.contactDetails.getPersonAndAllPositions(p.personId);
-    this.allContacts = yield this.contactDetails.positionsToEditableContacts(
-      positions
-    );
-    this.contact = { position: this.model.mandatory };
-    this.targetPerson = person;
-  }
-
-  @dropTask
   *selectTargetPerson(p) {
     const { person, positions } =
       yield this.contactDetails.getPersonAndAllPositions(p.id);
