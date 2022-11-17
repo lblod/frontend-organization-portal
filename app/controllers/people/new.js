@@ -76,17 +76,11 @@ export default class PeopleNewController extends Controller {
       let newPersonId = person.id;
 
       if (this.redirectUrl) {
-        let tempUrl = new URL('http://temp' + this.redirectUrl),
-          tempParams = tempUrl.searchParams;
-
-        tempParams.set('personId', newPersonId);
-        tempUrl.search = tempParams.toString();
-
-        let newRedirectUrl = tempUrl.toString().split('temp')[1];
         // When passing a url the query params are ignored so we add the person id manually for now
         this.router.transitionTo(
-          newRedirectUrl
-          //`${this.redirectUrl}${this.redirectUrl.includes('?'), '?', '&'}personId=${newPersonId}`
+          `${this.redirectUrl}${
+            (this.redirectUrl.lastIndexOf('?') != -1, '?', '&')
+          }personId=${newPersonId}`
         );
       } else {
         this.router.transitionTo('people.person', newPersonId);
