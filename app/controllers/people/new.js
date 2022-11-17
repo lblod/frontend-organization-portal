@@ -77,7 +77,15 @@ export default class PeopleNewController extends Controller {
 
       if (this.redirectUrl) {
         // When passing a url the query params are ignored so we add the person id manually for now
-        this.router.transitionTo(`${this.redirectUrl}&personId=${newPersonId}`);
+        if (this.redirectUrl.includes('mandataris')) {
+          this.router.transitionTo(
+            `${this.redirectUrl}&personId=${newPersonId}`
+          );
+        } else {
+          this.router.transitionTo(
+            `${this.redirectUrl}?personId=${newPersonId}`
+          );
+        }
       } else {
         this.router.transitionTo('people.person', newPersonId);
       }
