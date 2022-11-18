@@ -79,7 +79,7 @@ export default class PeopleNewController extends Controller {
         // When passing a url the query params are ignored so we add the person id manually for now
         this.router.transitionTo(
           `${this.redirectUrl}${
-            (this.redirectUrl.lastIndexOf('?') == -1, '?', '&')
+            this.redirectUrl.lastIndexOf('?') == -1 ? '?' : '&'
           }personId=${newPersonId}`
         );
       } else {
