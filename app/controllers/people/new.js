@@ -18,6 +18,7 @@ export default class PeopleNewController extends Controller {
   queryParams = ['redirectUrl'];
 
   @tracked redirectUrl;
+  @tracked positionId;
 
   @tracked
   sensitiveInformationError;
@@ -73,9 +74,14 @@ export default class PeopleNewController extends Controller {
       );
 
       let newPersonId = person.id;
+
       if (this.redirectUrl) {
         // When passing a url the query params are ignored so we add the person id manually for now
-        this.router.transitionTo(`${this.redirectUrl}?personId=${newPersonId}`);
+        this.router.transitionTo(
+          `${this.redirectUrl}${
+            this.redirectUrl.lastIndexOf('?') == -1 ? '?' : '&'
+          }personId=${newPersonId}`
+        );
       } else {
         this.router.transitionTo('people.person', newPersonId);
       }

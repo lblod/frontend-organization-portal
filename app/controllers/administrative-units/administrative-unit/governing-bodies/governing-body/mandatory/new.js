@@ -20,6 +20,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
   @tracked personId;
   @tracked positionId;
+  @tracked redirectUrl;
 
   @tracked targetPerson = null;
   @tracked contact = null;
