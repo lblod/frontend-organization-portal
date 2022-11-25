@@ -1,3 +1,22 @@
+## 1.13.0 (2022-11-25)
+
+#### :rocket: Enhancement
+* [#417](https://github.com/lblod/frontend-organization-portal/pull/417) On creating a new person follow up with linking it to a position ([@iurianu](https://github.com/iurianu))
+* [#414](https://github.com/lblod/frontend-organization-portal/pull/414) Delegate creation of admin unit relationships to a service ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#409](https://github.com/lblod/frontend-organization-portal/pull/409) Improve Search Instructions ([@iurianu](https://github.com/iurianu))
+* [#406](https://github.com/lblod/frontend-organization-portal/pull/406) Show a login button in the header ([@iurianu](https://github.com/iurianu))
+* [#400](https://github.com/lblod/frontend-organization-portal/pull/400) small improvements ([@iurianu](https://github.com/iurianu))
+
+#### :bug: Bug Fix
+* [#416](https://github.com/lblod/frontend-organization-portal/pull/416) Bug/Fix reset pagination on persons search ([@iurianu](https://github.com/iurianu))
+* [#407](https://github.com/lblod/frontend-organization-portal/pull/407) Bug fixes ([@iurianu](https://github.com/iurianu))
+
+#### Committers: 3
+- Boris De Vloed ([@bdevloed](https://github.com/bdevloed))
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Iulian Andriescu ([@iurianu](https://github.com/iurianu))
+
+
 ## 1.13.0-0 (2022-11-24)
 
 #### :rocket: Enhancement
