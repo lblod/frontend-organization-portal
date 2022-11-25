@@ -5,14 +5,6 @@
 }}
 <AuApp class='{{(if this.showEnvironment (concat 'au-c-app--environment au-c-environment--' this.environmentName))}}'>
 
-  {{#if this.showEnvironment}}
-    <Environment::Banner
-      @environmentName={{this.environmentName}}
-      @environmentTitle={{this.environmentTitle}}
-      @applicationName='Organisatie Portaal'
-    />
-  {{/if}}
-
   <AppHeader />
 
   {{#if (eq "true" (config "announce.maintenance.enabled"))}}
@@ -31,8 +23,6 @@
   {{/if}}
 
   <main id="main" class="au-c-main-container">
-
-
 
     <div class="au-c-main-container__content" id="content" tabindex="-1">
       {{outlet}}
