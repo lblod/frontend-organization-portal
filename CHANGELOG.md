@@ -1,3 +1,12 @@
+## 1.13.1 (2022-11-25)
+
+#### :bug: Bug Fix
+* [#418](https://github.com/lblod/frontend-organization-portal/pull/418) Hotfix revert banner - showing on prod ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### Committers: 1
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+
+
 ## 1.13.0 (2022-11-25)
 
 #### :rocket: Enhancement
