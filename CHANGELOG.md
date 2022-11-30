@@ -1,3 +1,12 @@
+## 1.13.2 (2022-11-30)
+
+#### :bug: Bug Fix
+* [#408](https://github.com/lblod/frontend-organization-portal/pull/408) Fix references to region vs municipatily ([@bdevloed](https://github.com/bdevloed))
+
+#### Committers: 1
+- Boris De Vloed ([@bdevloed](https://github.com/bdevloed))
+
+
 ## 1.13.1 (2022-11-25)
 
 #### :bug: Bug Fix
