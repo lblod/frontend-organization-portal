@@ -236,6 +236,6 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
       administrativeUnit.subOrganizations;
   }
   newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
-  newAdministrativeUnit.locatedWithin = administrativeUnit.locatedWithin;
-  newAdministrativeUnit.scope = administrativeUnit.scope;
+  newAdministrativeUnit.scope.locatedWithin =
+    administrativeUnit.scope.locatedWithin;
 }
