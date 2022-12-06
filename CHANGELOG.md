@@ -1,3 +1,13 @@
+
+## 1.13.3 (2022-12-06)
+
+#### :rocket: Enhancement
+* [#419](https://github.com/lblod/frontend-organization-portal/pull/419) check whether scope is defined before copying ([@bdevloed](https://github.com/bdevloed))
+
+#### Committers: 1
+- Boris De Vloed ([@bdevloed](https://github.com/bdevloed))
+
+
 ## 1.13.2 (2022-11-30)
 
 #### :bug: Bug Fix
