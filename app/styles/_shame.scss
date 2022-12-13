@@ -192,7 +192,23 @@ $ember-power-select-focus-outline: solid 2px rgb(16, 108, 200) !default;
   vertical-align: top !important;
 }
 
+// Re-add updates from other tasks
+
+header {
+  &.au-c-main-header {
+    z-index: 3;
+  }
+}
+
 .au-c-body-container {
+  &.au-c-body-container--scroll {
+    .au-c-button-group {
+      flex-direction: row-reverse;
+      @include mq($from:medium) {
+        justify-content: flex-start;
+      }
+    }
+  }
   header {
     .au-c-toolbar {
       .au-c-toolbar__group {
@@ -201,5 +217,11 @@ $ember-power-select-focus-outline: solid 2px rgb(16, 108, 200) !default;
         }
       }
     }
+  }
+}
+
+.au-c-card-item__label {
+  &.au-c-card-item__label--edit {
+    align-self: baseline;
   }
 }
