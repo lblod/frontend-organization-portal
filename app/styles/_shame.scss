@@ -120,9 +120,11 @@ table.dataTable tbody th {
 }
 
 // Allow buttons to be aligned on the right side
+// Reverse Button Order :: OP-1757
 .au-c-button-group--align-right {
-  @include mq($from:medium) {
-    justify-content: flex-end;
+  @include mq($from:xsmall) {
+    justify-content: flex-start;
+    flex-direction: row-reverse;
   }
 }
 
@@ -203,3 +205,4 @@ $ember-power-select-focus-outline: solid 2px rgb(16, 108, 200) !default;
     }
   }
 }
+
