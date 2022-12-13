@@ -36,6 +36,14 @@ $au-env-element-height: 4rem;
   ========================================================================== */
    
 .au-c-app--environment {
+  &.au-c-environment--PROD {
+    .au-c-alert {
+      display: none !important;
+    }
+  }
+}
+
+.au-c-app--environment {
   &:not(.au-c-environment--PROD) {
     position: relative;
     overflow-y: auto;
