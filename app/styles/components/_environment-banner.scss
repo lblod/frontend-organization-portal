@@ -36,97 +36,99 @@ $au-env-element-height: 4rem;
   ========================================================================== */
    
 .au-c-app--environment {
-  position: relative;
-  overflow-y: auto;
-  .au-c-alert {
-    &:not(.au-c-env-announcement) {
-      @extend %full-fixed-to-left;
-      height: calc(3.5 * $au-env-element-height);
-      top: 0;
-      z-index: 3;
-      a {
-        font: inherit;
-        color: inherit;
+  &:not(.au-c-environment--PROD) {
+    position: relative;
+    overflow-y: auto;
+    .au-c-alert {
+      &:not(.au-c-env-announcement) {
+        @extend %full-fixed-to-left;
+        height: calc(3.5 * $au-env-element-height);
+        top: 0;
+        z-index: 3;
+        a {
+          font: inherit;
+          color: inherit;
+        }
+      }
+      &.au-c-app-helpdesk-banner {
+        height: calc(2.5 * $au-env-element-height) !important;
+        position: relative !important;
       }
     }
-    &.au-c-app-helpdesk-banner {
-      height: calc(2.5 * $au-env-element-height) !important;
-      position: relative !important;
-    }
-  }
 
-  .au-c-main-header {
-    @extend %full-fixed-to-left;
-    height: $au-env-element-height;
-    top: calc(3.5 * $au-env-element-height);
-    .au-c-brand__logo, .au-c-brand__logotype {
-      max-height: $au-env-element-height !important;
-    }
-    .au-c-main-header__title {
-      overflow: visible;
-    }
-  }
-  .au-c-main-container {
-    height: calc(100vh - (4.5 * $au-env-element-height));
-    margin-top: calc(4.5 * $au-env-element-height);
-  }
-  .au-c-env-announcement {
-    margin-top: calc(4.5 * $au-env-element-height);
-    + .au-c-main-container {
-      height: calc(100vh - (4 * $au-env-element-height)) !important;
-      margin-top: 0 !important;
-    }
-  }
-  @include mq($from:xsmall) {
-    .au-c-alert:not(.au-c-env-announcement) {
-      height: calc(3.5 * $au-env-element-height);
-    }
     .au-c-main-header {
+      @extend %full-fixed-to-left;
+      height: $au-env-element-height;
       top: calc(3.5 * $au-env-element-height);
+      .au-c-brand__logo, .au-c-brand__logotype {
+        max-height: $au-env-element-height !important;
+      }
+      .au-c-main-header__title {
+        overflow: visible;
+      }
     }
     .au-c-main-container {
       height: calc(100vh - (4.5 * $au-env-element-height));
       margin-top: calc(4.5 * $au-env-element-height);
     }
-  }
-  @include mq($from:small) {
-    .au-c-alert:not(.au-c-env-announcement) {
-      height: calc(2.5 * $au-env-element-height);
-    }
-    .au-c-main-header {
-      top: calc(2.5 * $au-env-element-height);
-    }
-    .au-c-main-container {
-      height: calc(100vh - (3.5 * $au-env-element-height));
-      margin-top: calc(3.5 * $au-env-element-height);
-    }
     .au-c-env-announcement {
-      margin-top: calc(3.5 * $au-env-element-height);
+      margin-top: calc(4.5 * $au-env-element-height);
       + .au-c-main-container {
-        height: calc(100vh - (3 * $au-env-element-height)) !important;
+        height: calc(100vh - (4 * $au-env-element-height)) !important;
+        margin-top: 0 !important;
       }
     }
-  }
-  @include mq($from:medium) {
-    .au-c-alert:not(.au-c-env-announcement) {
-      height: calc(1.5 * $au-env-element-height);
-      .au-c-alert__message {
-        div {
-          flex-direction: row !important;
+    @include mq($from:xsmall) {
+      .au-c-alert:not(.au-c-env-announcement) {
+        height: calc(3.5 * $au-env-element-height);
+      }
+      .au-c-main-header {
+        top: calc(3.5 * $au-env-element-height);
+      }
+      .au-c-main-container {
+        height: calc(100vh - (4.5 * $au-env-element-height));
+        margin-top: calc(4.5 * $au-env-element-height);
+      }
+    }
+    @include mq($from:small) {
+      .au-c-alert:not(.au-c-env-announcement) {
+        height: calc(2.5 * $au-env-element-height);
+      }
+      .au-c-main-header {
+        top: calc(2.5 * $au-env-element-height);
+      }
+      .au-c-main-container {
+        height: calc(100vh - (3.5 * $au-env-element-height));
+        margin-top: calc(3.5 * $au-env-element-height);
+      }
+      .au-c-env-announcement {
+        margin-top: calc(3.5 * $au-env-element-height);
+        + .au-c-main-container {
+          height: calc(100vh - (3 * $au-env-element-height)) !important;
         }
       }
     }
-    .au-c-main-header {
-      top: calc(1.5 * $au-env-element-height);
-    }
-    .au-c-main-container {
-      height: calc(100vh - (2.5 * $au-env-element-height));
-      margin-top: calc(2.5 * $au-env-element-height);
-    }
-    .au-c-env-announcement {
-      margin-top: calc(2.5 * $au-env-element-height);
-      + .au-c-main-container {
-        height: calc(100vh - (4 * $au-env-element-height)) !important;
+    @include mq($from:medium) {
+      .au-c-alert:not(.au-c-env-announcement) {
+        height: calc(1.5 * $au-env-element-height);
+        .au-c-alert__message {
+          div {
+            flex-direction: row !important;
+          }
+        }
+      }
+      .au-c-main-header {
+        top: calc(1.5 * $au-env-element-height);
+      }
+      .au-c-main-container {
+        height: calc(100vh - (2.5 * $au-env-element-height));
+        margin-top: calc(2.5 * $au-env-element-height);
+      }
+      .au-c-env-announcement {
+        margin-top: calc(2.5 * $au-env-element-height);
+        + .au-c-main-container {
+          height: calc(100vh - (4 * $au-env-element-height)) !important;
+        }
       }
     }
   }
