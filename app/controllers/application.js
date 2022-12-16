@@ -17,15 +17,6 @@ export default class ApplicationController extends Controller {
     return thisEnvironmentValues;
   }
 
-  get environmentTitle() {
-    const thisEnvironmentValues = isLocalhost
-      ? 'lokalomgeving'
-      : getOwner(this).resolveRegistration('config:environment')
-          .environmentTitle;
-
-    return thisEnvironmentValues;
-  }
-
   get showEnvironment() {
     return (
       this.environmentName !== '' &&
