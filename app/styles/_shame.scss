@@ -124,7 +124,6 @@ table.dataTable tbody th {
 .au-c-button-group--align-right {
   @include mq($from:xsmall) {
     justify-content: flex-start;
-    flex-direction: row-reverse;
   }
 }
 

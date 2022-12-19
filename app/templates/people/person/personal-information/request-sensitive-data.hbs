@@ -7,13 +7,12 @@
         {{@model.person.familyName}}
       </:subtitle>
       <:action>
+        <AuButton @skin="secondary" {{on "click" this.cancel}}>
+          Annuleer
+        </AuButton>      
         <AuButton form="request-sensitive-information" type="submit" @disabled={{not this.reasonCode}}>
-            Volgende
-          </AuButton>
-
-          <AuButton @skin="secondary" {{on "click" this.cancel}}>
-            Annuleer
-          </AuButton>
+          Volgende
+        </AuButton>
       </:action>
     </PageHeader>
 

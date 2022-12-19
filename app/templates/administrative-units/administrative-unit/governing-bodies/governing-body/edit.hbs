@@ -10,6 +10,9 @@
       <:action>
         <div>
           <AuButtonGroup class="au-c-button-group--align-right">
+            <AuButton {{on "click" this.cancel}} @skin="secondary">
+              Annuleer
+            </AuButton>
             <AuButton
               @loading={{this.save.isRunning}}
               @disabled={{this.save.isRunning}}
@@ -17,10 +20,6 @@
               form="edit-governing-body-form"
             >
               Opslaan
-            </AuButton>
-
-            <AuButton {{on "click" this.cancel}} @skin="secondary">
-              Annuleer
             </AuButton>
           </AuButtonGroup>
           <ReportWrongData />
