@@ -50,11 +50,12 @@ $card-label-whitespace: $au-unit-small;
 }
 
 .au-c-card-item--align-top {
-  align-items: flex-start;
+  @extend .au-u-flex--vertical-start;
 }
 
 .au-c-card-item__label {
   width: 100%;
+  align-self: baseline;
 
   @include mq(small) {
     flex-basis: $card-label-width;

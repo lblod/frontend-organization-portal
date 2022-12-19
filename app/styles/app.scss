@@ -21,10 +21,10 @@
 
 // VARIABLES
 
-@import "appuniversum/s-colors.scss";
-@import "appuniversum/s-global";
-@import "appuniversum/s-utilities";
-@import "appuniversum/s-root";
+@import "ember-appuniversum/s-colors.scss";
+@import "ember-appuniversum/s-global";
+@import "ember-appuniversum/s-utilities";
+@import "ember-appuniversum/s-root";
 
 // MIXINS
 @import "appuniversum/t-font-size";
@@ -38,15 +38,15 @@
 
 
 // ELEMENTS
-@import "appuniversum/e-page";
+@import "ember-appuniversum/e-page";
 
 
 // OBJECTS
-@import "appuniversum/o-box";
-@import "appuniversum/o-flow";
-@import "appuniversum/o-grid";
-@import "appuniversum/o-layout";
-@import "appuniversum/o-region";
+@import "ember-appuniversum/o-box";
+@import "ember-appuniversum/o-flow";
+@import "ember-appuniversum/o-grid";
+@import "ember-appuniversum/o-layout";
+@import "ember-appuniversum/o-region";
 
 
 // COMPONENTS
