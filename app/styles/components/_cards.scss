@@ -40,10 +40,6 @@ $card-label-whitespace: $au-unit-small;
     margin-top: $au-unit-small;
   }
 
-  .au-c-card--fill & {
-    align-items: center;
-  }
-
   @include mq($until: small) {
     flex-direction: column;
   }
@@ -55,7 +51,6 @@ $card-label-whitespace: $au-unit-small;
 
 .au-c-card-item__label {
   width: 100%;
-  align-self: baseline;
 
   @include mq(small) {
     flex-basis: $card-label-width;
