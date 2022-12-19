@@ -7,6 +7,9 @@
       <:title>Voeg een nieuwe persoon toe</:title>
       <:action>
         <AuButtonGroup class="au-c-button-group--align-right">
+          <AuButton @skin="secondary" {{on "click" this.cancel}}>
+            Annuleer
+          </AuButton>
           <AuButton
             @loading={{this.savePersonTask.isRunning}}
             @disabled={{this.savePersonTask.isRunning}}
@@ -14,10 +17,6 @@
             type="submit"
           >
             Opslaan
-          </AuButton>
-
-          <AuButton @skin="secondary" {{on "click" this.cancel}}>
-            Annuleer
           </AuButton>
         </AuButtonGroup>
       </:action>

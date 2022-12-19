@@ -9,6 +9,9 @@
       <:action>
         <div>
           <AuButtonGroup class="au-c-button-group--align-right">
+            <AuLink {{on "click" this.cancel}} @skin="button-secondary">
+              Annuleer
+            </AuLink>            
             <AuButton
               @loading={{this.save.isRunning}}
               @disabled={{this.save.isRunning}}
@@ -17,10 +20,6 @@
             >
               Opslaan
             </AuButton>
-
-            <AuLink {{on "click" this.cancel}} @skin="button-secondary">
-              Annuleer
-            </AuLink>
           </AuButtonGroup>
           <ReportWrongData />
         </div>
