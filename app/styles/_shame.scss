@@ -123,7 +123,7 @@ table.dataTable tbody th {
 // Reverse Button Order :: OP-1757
 .au-c-button-group--align-right {
   @include mq($from:xsmall) {
-    justify-content: flex-start;
+    justify-content: flex-end;
   }
 }
 
