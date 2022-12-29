@@ -1,5 +1,5 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-
+import { dashedDateFormat } from '../utils/date-format';
 export default class ChangeEventModel extends Model {
   @attr('date') date;
   @attr description;
@@ -28,4 +28,8 @@ export default class ChangeEventModel extends Model {
     inverse: 'resultFrom',
   })
   results;
+
+  get changeDate() {
+    return dashedDateFormat(this.date);
+  }
 }

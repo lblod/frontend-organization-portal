@@ -36,9 +36,8 @@
               <Item>
                 <:content>
                   <AuHelpText @skin="tertiary">Gewijzigd op
-                    {{date-format
-                      @model.representativeBody.resultedFrom.firstObject.date
-                    }}</AuHelpText>
+                    {{@model.representativeBody.resultedFrom.changeDate}}
+                    </AuHelpText>
                 </:content>
               </Item>
             {{/if}}

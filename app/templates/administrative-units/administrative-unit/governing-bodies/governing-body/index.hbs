@@ -51,7 +51,7 @@
               <Item>
                 <:label>Startdatum</:label>
                 <:content>
-                  {{date-format @model.governingBody.startDate}}
+                  {{@model.governingBody.startDatum}}
                 </:content>
               </Item>
             {{/if}}
@@ -59,7 +59,7 @@
               <Item>
                 <:label>Einddatum</:label>
                 <:content>
-                  {{date-format @model.governingBody.endDate}}
+                  {{@model.governingBody.eindDatum}}
                 </:content>
               </Item>
             {{/if}}
@@ -151,14 +151,14 @@
             </td>
             <td>
               {{#if mandatory.startDate}}
-                {{date-format mandatory.startDate}}
+                {{mandatory.startDatum}}
               {{/if}}
             </td>
             <td>
               {{#if mandatory.endDate}}
-                {{date-format mandatory.endDate}}
+                {{mandatory.eindDatum}}
               {{else if mandatory.expectedEndDate}}
-                {{date-format mandatory.expectedEndDate}}
+                {{mandatory.mandaatExpectedEndDate}}
               {{/if}}
             </td>
             {{#if this.isWorshipAdministrativeUnit}}
@@ -265,14 +265,14 @@
             </td>
             <td>
               {{#if mandatory.startDate}}
-                {{date-format mandatory.startDate}}
+                {{mandatory.startDatum}}
               {{/if}}
             </td>
             <td>
               {{#if mandatory.endDate}}
-                {{date-format mandatory.endDate}}
+                {{mandatory.eindDatum}}
               {{else if mandatory.expectedEndDate}}
-                {{date-format mandatory.expectedEndDate}}
+                {{mandatory.mandaatExpectedEndDate}}
               {{/if}}
             </td>
             {{#if this.isWorshipAdministrativeUnit}}

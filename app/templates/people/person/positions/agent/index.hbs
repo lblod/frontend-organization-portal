@@ -70,7 +70,7 @@
                 <Item>
                   <:label>Start mandaat</:label>
                   <:content>
-                    {{date-format @model.agent.startDate}}
+                    {{@model.agent.startDatum}}
                   </:content>
                 </Item>
               {{/if}}
@@ -78,7 +78,7 @@
                 <Item>
                   <:label>Geplande einddatum</:label>
                   <:content>
-                    {{date-format @model.agent.expectedEndDate}}
+                    {{@model.agent.mandaatExpectedEndDate}}
                   </:content>
                 </Item>
               {{/if}}
@@ -98,7 +98,7 @@
               {{#if @model.agent.endDate}}
                 <Item>
                   <:label>Einddatum</:label>
-                  <:content>{{date-format @model.agent.endDate}}</:content>
+                  <:content>{{@model.agent.eindDatum}}</:content>
                 </Item>
               {{/if}}
             </:right>

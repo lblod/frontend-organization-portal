@@ -1,4 +1,5 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
+import { dashedDateFormat } from '../utils/date-format';
 
 export default class DecisionModel extends Model {
   @attr('date') publicationDate;
@@ -8,6 +9,10 @@ export default class DecisionModel extends Model {
     inverse: 'givesCauseTo',
   })
   hasDecisionActivity;
+
+  get hasPublicationDate() {
+    return dashedDateFormat(this.publicationDate);
+  }
 }
 
 export function isEmpty(decisionRecord) {

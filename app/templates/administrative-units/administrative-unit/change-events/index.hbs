@@ -61,7 +61,9 @@
             {{changeEvent.type.label}}
           </AuLink>
         </td>
-        <td>{{date-format changeEvent.date}}</td>
+        <td>
+            {{changeEvent.changeDate}}
+        </td>
         <td>{{changeEvent.description}}</td>
         <td>
           <OrganizationStatus @id={{changeEventResult.status.id}} @label={{changeEventResult.status.label}}/>

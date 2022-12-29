@@ -85,7 +85,7 @@
                 <Item>
                   <:label>Start mandaat</:label>
                   <:content>
-                    {{date-format @model.mandatory.startDate}}
+                    {{@model.mandatory.startDatum}}
                   </:content>
                 </Item>
               {{/if}}
@@ -93,7 +93,7 @@
                 <Item>
                   <:label>Geplande einddatum</:label>
                   <:content>
-                    {{date-format @model.mandatory.expectedEndDate}}
+                    {{@model.mandatory.mandaatExpectedEndDate}}
                   </:content>
                 </Item>
               {{/if}}
@@ -116,7 +116,7 @@
               {{#if @model.mandatory.endDate}}
                 <Item>
                   <:label>Einddatum</:label>
-                  <:content>{{date-format @model.mandatory.endDate}}</:content>
+                  <:content>{{@model.mandatory.eindDatum}}</:content>
                 </Item>
               {{/if}}
               {{#if @model.mandatory.reasonStopped}}

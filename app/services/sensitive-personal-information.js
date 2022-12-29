@@ -1,5 +1,6 @@
 import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { dashedDateFormat } from '../utils/date-format';
 import fetch from 'fetch';
 
 const PRIVACY_CENTRIC_SERVICE_ENDPOINT = {
@@ -110,7 +111,7 @@ export default class SensitivePersonalInformationService extends Service {
     if (dateOfBirth) {
       sensitiveInformation.dateOfBirth = obfuscated
         ? dateOfBirth
-        : new Date(dateOfBirth);
+        : new Date(dashedDateFormat(dateOfBirth));
     }
 
     if (registration) {

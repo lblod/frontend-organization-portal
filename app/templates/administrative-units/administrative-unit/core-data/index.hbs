@@ -103,9 +103,7 @@
                 <:content>
                   <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
                     Gewijzigd op
-                    {{date-format
-                      @model.administrativeUnit.resultedFrom.firstObject.date
-                    }}
+                    {{@model.administrativeUnit.resultedFrom.changeDate}}
                   </AuHelpText>
                 </:content>
               </Item>
