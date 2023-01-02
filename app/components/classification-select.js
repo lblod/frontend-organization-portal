@@ -61,7 +61,6 @@ export default class ClassificationSelectComponent extends Component {
     }
 
     return yield this.store.query('administrative-unit-classification-code', {
-      'filter[:id:]': allowedIds.join(),
       sort: 'label',
     });
   }

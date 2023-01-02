@@ -37,19 +37,19 @@ export default class AdministrativeUnitsIndexRoute extends Route {
       filter[`:${filterType}:name`] = name;
     }
 
-    if (params.classificationId) {
-      filter['classification_id'] = params.classificationId;
-    } else {
-      // Only show worship administrative units, municipalities, provinces, ocmw and districts for now
-      filter['classification_id'] = `
-        ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
-        ${CLASSIFICATION.WORSHIP_SERVICE.id},
-        ${CLASSIFICATION.MUNICIPALITY.id}
-        ${CLASSIFICATION.PROVINCE.id}
-        ${CLASSIFICATION.OCMW.id}
-        ${CLASSIFICATION.DISTRICT.id}
-      `;
-    }
+    // if (params.classificationId) {
+    //   filter['classification_id'] = params.classificationId;
+    // } else {
+    //   // Only show worship administrative units, municipalities, provinces, ocmw and districts for now
+    //   filter['classification_id'] = `
+    //     ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
+    //     ${CLASSIFICATION.WORSHIP_SERVICE.id},
+    //     ${CLASSIFICATION.MUNICIPALITY.id}
+    //     ${CLASSIFICATION.PROVINCE.id}
+    //     ${CLASSIFICATION.OCMW.id}
+    //     ${CLASSIFICATION.DISTRICT.id}
+    //   `;
+    // }
 
     if (params.municipality) {
       filter[':phrase:municipality'] = params.municipality;

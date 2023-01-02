@@ -4,7 +4,9 @@ import { tracked } from '@glimmer/tracking';
 
 const EDITOR_ROLES = [
   'ABBOrganisatiePortaalGebruiker-editeerder',
+  'ABBOrganisatiePortaalGebruiker-worship-editeerder',
   'ABBOrganisatiePortaalGebruiker-beheerder',
+  'ABBOrganisatiePortaalGebruiker-worship-beheerder',
 ];
 
 const READER_ROLES = ['ABBOrganisatiePortaalGebruiker-lezer'];
