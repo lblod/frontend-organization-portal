@@ -81,14 +81,14 @@
             <:left as |Item|>
               <Item>
                 <:label>Startdatum</:label>
-                <:content>{{date-format @model.minister.startDate}}</:content>
+                <:content>{{date-format @model.minister.agentStartDate}}</:content>
               </Item>
             </:left>
             <:right as |Item|>
               {{#if @model.minister.agentEndDate}}
                 <Item>
                   <:label>Einddatum</:label>
-                  <:content>{{date-format @model.minister.endDate}}</:content>
+                  <:content>{{date-format @model.minister.agentEndDate}}</:content>
                 </Item>
               {{/if}}
             </:right>
