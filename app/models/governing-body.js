@@ -13,7 +13,6 @@ export default class GoverningBodyModel extends Model {
     inverse: null,
   })
   classification;
-  Mandaat;
 
   @belongsTo('governing-body', {
     inverse: 'hasTimeSpecializations',
