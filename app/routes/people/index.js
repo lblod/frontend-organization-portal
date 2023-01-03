@@ -54,6 +54,9 @@ export default class PeopleIndexRoute extends Route {
       dataMapping: (data) => {
         const entry = data.attributes;
         entry.end_date = entry.end_date ? new Date(entry.end_date) : null;
+        // we changed the logic of indexing id & uuid in mu-search config, so we remap it here
+        entry.id = entry.person_id;
+        entry.uuid = entry.person_uuid;
         return entry;
       },
     });
