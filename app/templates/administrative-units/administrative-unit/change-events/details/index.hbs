@@ -52,20 +52,20 @@
           </:left>
           <:right as |Item|>
             {{#let
-              @model.changeEvent.decision.hasDecisionActivity.eindDatum
+              @model.changeEvent.decision.hasDecisionActivity.endDate
               as |endDate|
             }}
               {{#if endDate}}
                 <Item>
                   <:label>Datum ministerieel besluit</:label>
                   <:content>
-                    {{endDate}}
+                    {{date-format endDate}}
                   </:content>
                 </Item>
               {{/if}}
             {{/let}}
             {{#let
-              @model.changeEvent.decision.hasPublicationDate
+              @model.changeEvent.decision.publicationDate
               as |publicationDate|
             }}
               {{#if publicationDate}}
@@ -78,7 +78,7 @@
                     {{/if}}
                   </:label>
                   <:content>
-                    {{publicationDate}}
+                    {{date-format publicationDate}}
                   </:content>
                 </Item>
               {{/if}}
@@ -86,7 +86,7 @@
             <Item>
               <:label>Datum veranderingsgebeurtenis</:label>
               <:content>
-                {{@model.changeEvent.changeDate}}
+                {{date-format @model.changeEvent.date}}
               </:content>
             </Item>
           </:right>

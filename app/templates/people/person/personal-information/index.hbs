@@ -69,7 +69,8 @@
                 <Item>
                   <:label>Geboortedatum</:label>
                   <:content>
-                  {{@model.requestSensitiveInformation.dateOfBirth}}</:content>
+                    {{date-format @model.requestSensitiveInformation.dateOfBirth}}
+                  </:content>
                 </Item>
               {{/if}}
               {{#if @model.askSensitiveInformation.nationalities}}

@@ -1,5 +1,4 @@
 import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
-import { dashedDateFormat } from '../utils/date-format';
 
 export default class GoverningBodyModel extends Model {
   @attr('date') startDate;
@@ -35,14 +34,6 @@ export default class GoverningBodyModel extends Model {
     inverse: 'governingBodies',
   })
   boardPositions;
-
-  get startDatum() {
-    return dashedDateFormat(this.startDate);
-  }
-
-  get eindDatum() {
-    return dashedDateFormat(this.endDate);
-  }
 
   get period() {
     let period = '-';

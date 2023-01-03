@@ -1,6 +1,6 @@
 {{#let
   (concat
-    @model.changeEvent.type.label " " (@model.changeEvent.changeDate)
+    @model.changeEvent.type.label " " (date-format @model.changeEvent.date)
   )
   as |title|
 }}

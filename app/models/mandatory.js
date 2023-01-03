@@ -1,7 +1,6 @@
 import { attr, hasMany, belongsTo } from '@ember-data/model';
 import { tracked } from '@glimmer/tracking';
 import AgentInPositionModel from './agent-in-position';
-import { dashedDateFormat } from '../utils/date-format';
 
 export default class MandatoryModel extends AgentInPositionModel {
   // TODO: These are only used for validations
@@ -31,12 +30,4 @@ export default class MandatoryModel extends AgentInPositionModel {
     inverse: null,
   })
   contacts;
-
-  get startDatum() {
-    return dashedDateFormat(this.startDate);
-  }
-
-  get eindDatum() {
-    return dashedDateFormat(this.endDate);
-  }
 }
