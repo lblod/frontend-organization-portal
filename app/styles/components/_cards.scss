@@ -40,17 +40,13 @@ $card-label-whitespace: $au-unit-small;
     margin-top: $au-unit-small;
   }
 
-  .au-c-card--fill & {
-    align-items: center;
-  }
-
   @include mq($until: small) {
     flex-direction: column;
   }
 }
 
 .au-c-card-item--align-top {
-  align-items: flex-start;
+  @extend .au-u-flex--vertical-start;
 }
 
 .au-c-card-item__label {
