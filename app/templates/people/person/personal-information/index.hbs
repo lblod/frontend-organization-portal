@@ -68,8 +68,9 @@
               {{else if @model.requestSensitiveInformation.dateOfBirth}}
                 <Item>
                   <:label>Geboortedatum</:label>
-                  <:content
-                  >{{date-format @model.requestSensitiveInformation.dateOfBirth}}</:content>
+                  <:content>
+                    {{date-format @model.requestSensitiveInformation.dateOfBirth}}
+                  </:content>
                 </Item>
               {{/if}}
               {{#if @model.askSensitiveInformation.nationalities}}

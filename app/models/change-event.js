@@ -1,5 +1,4 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-
 export default class ChangeEventModel extends Model {
   @attr('date') date;
   @attr description;
