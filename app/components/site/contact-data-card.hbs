@@ -35,6 +35,14 @@
             </:content>
           </Item>
         {{/if}}
+        {{#if @primaryContact.email}}
+          <Item>
+            <:label>E-mail</:label>
+            <:content>
+              {{@primaryContact.email}}
+            </:content>
+          </Item>
+        {{/if}}
         {{#if @primaryContact.website}}
           <Item>
             <:label>Website</:label>
