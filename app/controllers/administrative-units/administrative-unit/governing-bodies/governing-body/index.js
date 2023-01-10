@@ -26,4 +26,8 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
     );
   }
+
+  get positionsCantBeCreatedOrEdited() {
+    return new Date() >= new Date('2023-02-01');
+  }
 }

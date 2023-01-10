@@ -24,6 +24,10 @@ export default class PeopleNewPositionController extends Controller {
 
   @tracked positionTypes = [MANDATE, MINISTER];
 
+  get positionsCantBeCreatedOrEdited() {
+    return new Date() >= new Date('2023-02-01');
+  }
+
   @action
   async setOrganization(organization) {
     this.governingBodyClassifications = null;

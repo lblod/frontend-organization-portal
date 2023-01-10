@@ -73,7 +73,9 @@
         <AuToolbarGroup>
           <AuHeading @level="4" @skin="5">Bestuursleden</AuHeading>
         </AuToolbarGroup>
-        {{#if this.isWorshipAdministrativeUnit}}
+        {{!-- Disabling positions editing from 01/02/2022. Don't remove position
+        editing code, we will use it for positions unavailable in Loket --}}
+        {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
           <AuToolbarGroup>
             <SecuredArea>
               <:edit>
@@ -116,7 +118,9 @@
             />
             <th class="au-c-data-table__header-title">Start mandaat</th>
             <th class="au-c-data-table__header-title">Einde mandaat</th>
-            {{#if this.isWorshipAdministrativeUnit}}
+            {{!-- Disabling positions editing from 01/02/2022. Don't remove position
+            editing code, we will use it for positions unavailable in Loket --}}
+            {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
               <SecuredArea>
                 <:edit>
                   <th></th>
@@ -161,7 +165,9 @@
                 {{date-format mandatory.expectedEndDate}}
               {{/if}}
             </td>
-            {{#if this.isWorshipAdministrativeUnit}}
+            {{!-- Disabling positions editing from 01/02/2022. Don't remove position
+            editing code, we will use it for positions unavailable in Loket --}}
+            {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
               <SecuredArea>
                 <:edit>
                   <td>
@@ -189,7 +195,9 @@
         <AuToolbarGroup>
           <AuHeading @level="4" @skin="5">Mandatarissen</AuHeading>
         </AuToolbarGroup>
-        {{#if this.isWorshipAdministrativeUnit}}
+        {{!-- Disabling positions editing from 01/02/2022. Don't remove position
+        editing code, we will use it for positions unavailable in Loket --}}
+        {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
           <AuToolbarGroup>
             <SecuredArea>
               <:edit>
@@ -230,7 +238,9 @@
             />
             <th class="au-c-data-table__header-title">Start mandaat</th>
             <th class="au-c-data-table__header-title">Einde mandaat</th>
-            {{#if this.isWorshipAdministrativeUnit}}
+            {{!-- Disabling positions editing from 01/02/2022. Don't remove position
+            editing code, we will use it for positions unavailable in Loket --}}
+            {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
               <SecuredArea>
                 <:edit>
                   <th></th>
@@ -275,7 +285,9 @@
                 {{date-format mandatory.expectedEndDate}}
               {{/if}}
             </td>
-            {{#if this.isWorshipAdministrativeUnit}}
+            {{!-- Disabling positions editing from 01/02/2022. Don't remove position
+            editing code, we will use it for positions unavailable in Loket --}}
+            {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
               <SecuredArea>
                 <:edit>
                   <td>
