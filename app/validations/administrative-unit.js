@@ -3,10 +3,13 @@ import { validatePresence } from 'ember-changeset-validations/validators';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { validateConditionally } from 'frontend-organization-portal/validators/validate-conditionally';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-//import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
 
 export default {
-  name: validatePresence({ presence: true, ignoreBlank: true }),
+  name: validatePresence({
+    presence: true,
+    ignoreBlank: true,
+    message: 'Vul de naam in',
+  }),
   classification: validatePresence({
     presence: true,
     ignoreBlank: true,
