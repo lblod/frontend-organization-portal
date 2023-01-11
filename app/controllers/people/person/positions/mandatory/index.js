@@ -27,4 +27,8 @@ export default class MandatoryIndexController extends Controller {
         .get('id') === CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
     );
   }
+
+  get positionsCantBeCreatedOrEdited() {
+    return new Date() >= new Date('2023-02-01');
+  }
 }
