@@ -35,13 +35,11 @@ export default {
       return isWorshipAdministrativeUnit(changes, content);
     }
   ),
-  // TODO enable when all orgs have a status
-  /*   organizationStatus: validatePresence({
+  organizationStatus: validatePresence({
     presence: true,
     ignoreBlank: true,
     message: 'Selecteer een optie',
-  }), */
-
+  }),
   /* todo this was disabled in OP-1705, as of today, this is not mandatory
   isSubOrganizationOf: validateConditionally(
     validatePresence({
