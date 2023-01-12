@@ -44,7 +44,6 @@ module.exports = function (environment) {
     appName: 'Organisatie Portaal',
     contactEmail: 'organisaties.abb@vlaanderen.be',
     environmentName: '{{ENVIRONMENT_NAME}}',
-    environmentTitle: '{{ENVIRONMENT_TITLE}}',
 
     torii: {
       disableRedirectInitializer: true,
