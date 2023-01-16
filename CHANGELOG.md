@@ -1,4 +1,31 @@
 
+
+## 1.14.0-0 (2023-01-16)
+
+#### :rocket: Enhancement
+* [#432](https://github.com/lblod/frontend-organization-portal/pull/432) Disable position creation or edition from 01/02/2023 ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#431](https://github.com/lblod/frontend-organization-portal/pull/431) Add email to primary contact info ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#425](https://github.com/lblod/frontend-organization-portal/pull/425) Change date format ([@iurianu](https://github.com/iurianu))
+* [#426](https://github.com/lblod/frontend-organization-portal/pull/426) Sort governing bodies by period ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#421](https://github.com/lblod/frontend-organization-portal/pull/421) Fix - Feat/Redo change button order ([@iurianu](https://github.com/iurianu))
+
+#### :bug: Bug Fix
+* [#436](https://github.com/lblod/frontend-organization-portal/pull/436) Fix data table navigation in bestuurseenheid page ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#434](https://github.com/lblod/frontend-organization-portal/pull/434) Enable org status validation ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#435](https://github.com/lblod/frontend-organization-portal/pull/435) Add error message for name validation ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#433](https://github.com/lblod/frontend-organization-portal/pull/433) fix position not shown ([@nbittich](https://github.com/nbittich))
+* [#430](https://github.com/lblod/frontend-organization-portal/pull/430) fix missing person ([@nbittich](https://github.com/nbittich))
+* [#423](https://github.com/lblod/frontend-organization-portal/pull/423) Fix/Align Labels to Baseline ([@iurianu](https://github.com/iurianu))
+* [#427](https://github.com/lblod/frontend-organization-portal/pull/427) Show Schepen positions in bestuursleden table ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#424](https://github.com/lblod/frontend-organization-portal/pull/424) hotfix/fix container height ([@iurianu](https://github.com/iurianu))
+* [#422](https://github.com/lblod/frontend-organization-portal/pull/422) Bug/Typo: Add letter "i" in Province - person template ([@iurianu](https://github.com/iurianu))
+
+#### Committers: 3
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Iulian Andriescu ([@iurianu](https://github.com/iurianu))
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
+
 ## 1.13.3 (2022-12-06)
 
 #### :rocket: Enhancement
