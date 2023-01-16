@@ -28,8 +28,6 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked recognizedWorshipTypeId = '';
   @tracked organizationStatus = '';
 
-  @tracked selectedMunicipality;
-
   get administrativeUnits() {
     return this.model.loadAdministrativeUnitsTaskInstance.isFinished
       ? this.model.loadAdministrativeUnitsTaskInstance.value
@@ -135,17 +133,15 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @action
   setMunicipality(selection) {
     this.page = null;
-    this.selectedMunicipality = selection;
-    if (selection !== null) {
-      this.municipality = selection.name;
-    } else {
-      this.municipality = '';
-    }
+    this.municipality = selection;
   }
 
   @action
   setProvince(selection) {
-    this.page = null;
+    // Don't reset pagination if the provincie is set automatically via municipality
+    if (!this.municipality) {
+      this.page = null;
+    }
     if (selection !== null) {
       this.province = selection;
     } else {
@@ -168,7 +164,6 @@ export default class AdministrativeUnitsIndexController extends Controller {
     this.page = 0;
     this.sort = 'name';
 
-    this.selectedMunicipality = null;
     // Triggers a refresh of the model
     this.page = null;
   }

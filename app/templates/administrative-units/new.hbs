@@ -6,6 +6,9 @@
     <:title>Voeg bestuurseenheid toe</:title>
     <:action>
       <AuButtonGroup class="au-c-button-group--align-right">
+        <AuLink @route="administrative-units" @skin="button-secondary">
+          Annuleer
+        </AuLink>        
         <AuButton
           @loading={{this.createAdministrativeUnitTask.isRunning}}
           type="submit"
@@ -15,10 +18,6 @@
         >
           Voeg toe
         </AuButton>
-
-        <AuLink @route="administrative-units" @skin="button-secondary">
-          Annuleer
-        </AuLink>
       </AuButtonGroup>
     </:action>
   </PageHeader>

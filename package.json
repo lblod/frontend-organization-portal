@@ -27,7 +27,8 @@
     "test:ember": "ember test"
   },
   "devDependencies": {
-    "@appuniversum/ember-appuniversum": "^1.1.1",
+    "@appuniversum/appuniversum": "^1.2.0",
+    "@appuniversum/ember-appuniversum": "^1.10.0",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.6.0",
     "@glimmer/component": "^1.0.4",

@@ -9,14 +9,18 @@
       <:action>
         <SecuredArea>
           <:edit>
-            <AuLink
-              @route="people.person.personal-information.edit"
-              @skin="button-secondary"
-              @icon="pencil"
-              @iconAlignment="left"
-            >
-              Bewerk
-            </AuLink>
+            {{!-- Disabling positions editing from 01/02/2022. Don't remove position
+            editing code, we will use it for positions unavailable in Loket --}}
+            {{#unless this.positionsCantBeCreatedOrEdited}}
+              <AuLink
+                @route="people.person.personal-information.edit"
+                @skin="button-secondary"
+                @icon="pencil"
+                @iconAlignment="left"
+              >
+                Bewerk
+              </AuLink>
+            {{/unless}}
           </:edit>
           <:readOnly>
             <ReportWrongData />
@@ -68,8 +72,9 @@
               {{else if @model.requestSensitiveInformation.dateOfBirth}}
                 <Item>
                   <:label>Geboortedatum</:label>
-                  <:content
-                  >{{date-format @model.requestSensitiveInformation.dateOfBirth}}</:content>
+                  <:content>
+                    {{date-format @model.requestSensitiveInformation.dateOfBirth}}
+                  </:content>
                 </Item>
               {{/if}}
               {{#if @model.askSensitiveInformation.nationalities}}
@@ -194,7 +199,7 @@
               {{/if}}
               {{#if position.primaryContact.contactAddress.province}}
                 <Item>
-                  <:label>Province</:label>
+                  <:label>Provincie</:label>
                   <:content>
                     {{position.primaryContact.contactAddress.province}}
                   </:content>

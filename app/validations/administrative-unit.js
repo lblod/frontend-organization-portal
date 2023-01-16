@@ -3,10 +3,13 @@ import { validatePresence } from 'ember-changeset-validations/validators';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { validateConditionally } from 'frontend-organization-portal/validators/validate-conditionally';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-//import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
 
 export default {
-  name: validatePresence({ presence: true, ignoreBlank: true }),
+  name: validatePresence({
+    presence: true,
+    ignoreBlank: true,
+    message: 'Vul de naam in',
+  }),
   classification: validatePresence({
     presence: true,
     ignoreBlank: true,
@@ -32,13 +35,11 @@ export default {
       return isWorshipAdministrativeUnit(changes, content);
     }
   ),
-  // TODO enable when all orgs have a status
-  /*   organizationStatus: validatePresence({
+  organizationStatus: validatePresence({
     presence: true,
     ignoreBlank: true,
     message: 'Selecteer een optie',
-  }), */
-
+  }),
   /* todo this was disabled in OP-1705, as of today, this is not mandatory
   isSubOrganizationOf: validateConditionally(
     validatePresence({

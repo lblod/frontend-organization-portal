@@ -149,7 +149,24 @@
             {{help-text "phone-number"}}
           </:helpText>
         </Item>
-
+        <Item
+          @labelFor="site-contact-email"
+          @errorMessage={{@primaryContact.error.email.validation}}
+        >
+          <:label>E-mail</:label>
+          <:content as |errorMessage|>
+            <TrimInput
+              @width="block"
+              @value={{@primaryContact.email}}
+              @onUpdate={{fn (mut @primaryContact.email)}}
+              @error={{errorMessage}}
+              id="site-contact-email"
+            />
+          </:content>
+          <:helpText>
+            {{help-text "email"}}
+          </:helpText>
+        </Item>
         <Item
           @labelFor="site-contact-website"
           @errorMessage={{@primaryContact.error.website.validation}}

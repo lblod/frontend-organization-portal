@@ -18,6 +18,13 @@
       <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         <AuButtonGroup>
+          <AuLink
+            @route="administrative-units.administrative-unit.change-events.details"
+            @model={{@model.changeEvent.id}}
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>          
           <AuButton
             @loading={{this.save.isRunning}}
             @disabled={{this.save.isRunning}}
@@ -25,13 +32,6 @@
           >
             Opslaan
           </AuButton>
-          <AuLink
-            @route="administrative-units.administrative-unit.change-events.details"
-            @model={{@model.changeEvent.id}}
-            @skin="button-secondary"
-          >
-            Annuleer
-          </AuLink>
         </AuButtonGroup>
       </:action>
     </PageHeader>

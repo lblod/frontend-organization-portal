@@ -32,23 +32,23 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
           ? await governingBody.hasTimeSpecializations
           : [];
 
-        const sortedTimesGoverningBodies = timedGoverningBodies
-          .toArray()
-          .sort((a, b) => {
-            if (a.endDate && b.endDate) {
-              return b.endDate - a.endDate;
-            }
-            return b.startDate - a.startDate;
-          });
+        const arrayTimedGoverningBodies = timedGoverningBodies.toArray();
 
-        governingBodies.push(...sortedTimesGoverningBodies);
+        governingBodies.push(...arrayTimedGoverningBodies);
       }
     }
+
+    const sortedTimesGoverningBodies = governingBodies.sort((a, b) => {
+      if (a.endDate && b.endDate) {
+        return b.endDate - a.endDate;
+      }
+      return b.startDate - a.startDate;
+    });
 
     const now = new Date().getTime();
     return {
       administrativeUnit,
-      governingBodies: governingBodies.filter((governingBody) => {
+      governingBodies: sortedTimesGoverningBodies.filter((governingBody) => {
         return (
           !governingBody.startDate || governingBody.startDate.getTime() <= now
         );

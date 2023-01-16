@@ -12,4 +12,8 @@ export default class PeoplePersonPersonalInformationIndexController extends Cont
       .map((n) => n.nationalityLabel)
       .join(', ');
   }
+
+  get positionsCantBeCreatedOrEdited() {
+    return new Date() >= new Date('2023-02-01');
+  }
 }

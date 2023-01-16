@@ -4,6 +4,12 @@
       <:title>Voeg vestiging toe</:title>
       <:action>
         <AuButtonGroup class="au-c-button-group--align-right">
+          <AuLink
+            @route="administrative-units.administrative-unit.sites"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>          
           <AuButton
             @loading={{this.createSiteTask.isRunning}}
             @disabled={{this.createSiteTask.isRunning}}
@@ -14,13 +20,6 @@
           >
             Voeg toe
           </AuButton>
-
-          <AuLink
-            @route="administrative-units.administrative-unit.sites"
-            @skin="button-secondary"
-          >
-            Annuleer
-          </AuLink>
         </AuButtonGroup>
       </:action>
     </PageHeader>

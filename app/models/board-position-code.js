@@ -14,6 +14,7 @@ export const BOARD_MEMBER_ROLES = [
   '6e26e94ea4b127eeb850fb6debe07271', // Vertegenwoordiger aangesteld door het representatief orgaan van het centraal bestuur van de eredienst
   'fa0201b3-2cda-4821-a15e-350ff57d77e0', // Lid van college
   '59a90e03-4f22-4bb9-8c91-132618db4b38', // Toegevoegde schepen
+  '5ab0e9b8a3b2ca7c5e000014', // Schepen
   '5ab0e9b8a3b2ca7c5e000011', // Gemeenteraadslid
   '5ab0e9b8a3b2ca7c5e000017', // Lid van het Vast Bureau
   '5ab0e9b8a3b2ca7c5e000019', // Lid van het Bijzonder Comité voor de Sociale Dienst
