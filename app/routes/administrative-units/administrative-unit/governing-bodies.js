@@ -44,7 +44,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
       } else if (a.startDate && b.startDate) {
         return b.startDate - a.startDate;
       } else {
-        return b.endDate ? true : b.startDate ? true : false;
+        return b.endDate ? 1 : b.startDate ? 1 : -1;
       }
     });
 
