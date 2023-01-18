@@ -41,8 +41,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
     const sortedTimesGoverningBodies = governingBodies.sort((a, b) => {
       if (a.endDate && b.endDate) {
         return b.endDate - a.endDate;
+      } else if (a.startDate && b.startDate) {
+        return b.startDate - a.startDate;
+      } else {
+        return b.endDate ? 1 : b.startDate ? 1 : -1;
       }
-      return b.startDate - a.startDate;
     });
 
     const now = new Date().getTime();
