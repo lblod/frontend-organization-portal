@@ -1,5 +1,15 @@
 
 
+
+## 1.14.0-1 (2023-01-18)
+
+#### :bug: Bug Fix
+* [#439](https://github.com/lblod/frontend-organization-portal/pull/439) Fix filtering organen ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### Committers: 1
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+
+
 ## 1.14.0-0 (2023-01-16)
 
 #### :rocket: Enhancement
