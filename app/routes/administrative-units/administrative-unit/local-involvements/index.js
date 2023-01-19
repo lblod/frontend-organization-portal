@@ -17,7 +17,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsIndex
     let query = {
       include: 'involvement-type,administrative-unit.classification',
       filter: {
-        ['worship-service']: {
+        ['worship-administrative-unit']: {
           [':id:']: administrativeUnit.id,
         },
       },

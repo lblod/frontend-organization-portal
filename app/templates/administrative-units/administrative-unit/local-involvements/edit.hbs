@@ -2,7 +2,7 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <PageHeader class="au-o-box">
     <:title>Bewerk betrokken lokale besturen</:title>
-    <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+    <:subtitle>{{@model.worshipAdministrativeUnit.name}}</:subtitle>
     <:action>
       <div>
         <AuButtonGroup class="au-c-button-group--align-right">
@@ -45,17 +45,19 @@
           >Naam</th>
           <th id="classification">Type instelling</th>
           <th id="involvement-type">Type betrokkenheid</th>
-          <th id="financial-percentage">
-            Financieel percentage
-            <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
-              Het totaal van alle percentages moet gelijk zijn aan 100
-            </AuHelpText>
-          </th>
-          {{! Make sure this column has a minimum width so the columns don't shift when the button is shown }}
-          <th
-            style="min-width: 18rem;"
-            {{! template-lint-disable no-inline-styles }}
-          ></th>
+          {{#if this.isWorshipService}}
+            <th id="financial-percentage">
+              Financieel percentage
+              <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
+                Het totaal van alle percentages moet gelijk zijn aan 100
+              </AuHelpText>
+            </th>
+            {{! Make sure this column has a minimum width so the columns don't shift when the button is shown }}
+            <th
+              style="min-width: 18rem;"
+              {{! template-lint-disable no-inline-styles }}
+            ></th>
+          {{/if}}
         </c.header>
         <c.body as |involvement|>
           <td>
@@ -94,20 +96,29 @@
               as |errorMessage|
             }}
               <div class={{if errorMessage "ember-power-select--error"}}>
-                <PowerSelect
-                  @noMatchesMessage="Geen resultaten"
-                  @options={{@model.involvementTypes}}
-                  @selected={{involvement.involvementType}}
-                  @onChange={{fn
-                    this.handleInvolvementTypeSelection
-                    involvement
-                  }}
-                  @ariaLabelledBy="involvement-type"
-                  @allowClear={{involvement.isNew}}
-                  as |involvementType|
-                >
-                  {{involvementType.label}}
-                </PowerSelect>
+                {{#if this.isWorshipService}}
+                  <PowerSelect
+                    @noMatchesMessage="Geen resultaten"
+                    @options={{this.model.involvementTypes}}
+                    @selected={{involvement.involvementType}}
+                    @onChange={{fn
+                      this.handleInvolvementTypeSelection
+                      involvement
+                    }}
+                    @ariaLabelledBy="involvement-type"
+                    @allowClear={{involvement.isNew}}
+                    as |involvementType|
+                  >
+                    {{involvementType.label}}
+                  </PowerSelect>
+                {{else}}
+                  <AuInput
+                    @width="block"
+                    @value={{involvement.involvementType.label}}
+                    @disabled={{true}}
+                    aria-labelledby="involvement-type"
+                  />
+                {{/if}}
               </div>
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
@@ -117,69 +128,73 @@
               {{/if}}
             {{/let}}
           </td>
-          <td>
-            {{#let
-              (or
-                involvement.error.percentage.validation
-                (if
-                  (and
-                    (this.isFinancialInvolvementType involvement)
-                    this.showTotalFinancingPercentageError
+          {{#if this.isWorshipService}}
+            <td>
+              {{#let
+                (or
+                  involvement.error.percentage.validation
+                  (if
+                    (and
+                      (this.isFinancialInvolvementType involvement)
+                      this.showTotalFinancingPercentageError
+                    )
+                    "Het totaal van alle percentages moet gelijk zijn aan 100"
                   )
-                  "Het totaal van alle percentages moet gelijk zijn aan 100"
                 )
-              )
-              as |errorMessage|
-            }}
-              <AuInput
-                @disabled={{this.isDisabledPercentage involvement}}
-                @error={{errorMessage}}
-                @type="number"
-                step="any"
-                aria-labelledby="financial-percentage"
-                @value={{involvement.percentage}}
-                {{on "input" (fn this.handlePercentageChange involvement)}}
-              />
-              {{#if errorMessage}}
-                <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+                as |errorMessage|
+              }}
+                <AuInput
+                  @disabled={{this.isDisabledPercentage involvement}}
+                  @error={{errorMessage}}
+                  @type="number"
+                  step="any"
+                  aria-labelledby="financial-percentage"
+                  @value={{involvement.percentage}}
+                  {{on "input" (fn this.handlePercentageChange involvement)}}
+                />
+                {{#if errorMessage}}
+                  <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+                {{/if}}
+              {{/let}}
+            </td>
+            <td class="align-middle">
+              {{#if
+                (and
+                  involvement.isNew
+                  (not involvement.administrativeUnit.id)
+                  (not involvement.involvementType.id)
+                  (eq involvement.percentage 0)
+                )
+              }}
+                <AuButton
+                  @alert={{true}}
+                  @icon="bin"
+                  @iconAlignment="left"
+                  @skin="link"
+                  {{on
+                    "click"
+                    (fn this.deleteUnsavedLocalInvolvement involvement)
+                  }}
+                >Verwijder</AuButton>
               {{/if}}
-            {{/let}}
-          </td>
-          <td class="align-middle">
-            {{#if
-              (and
-                involvement.isNew
-                (not involvement.administrativeUnit.id)
-                (not involvement.involvementType.id)
-                (eq involvement.percentage 0)
-              )
-            }}
-              <AuButton
-                @alert={{true}}
-                @icon="bin"
-                @iconAlignment="left"
-                @skin="link"
-                {{on
-                  "click"
-                  (fn this.deleteUnsavedLocalInvolvement involvement)
-                }}
-              >Verwijder</AuButton>
-            {{/if}}
-          </td>
+            </td>
+          {{/if}}
         </c.body>
       </t.content>
     </AuDataTable>
   </form>
 
-  <div class="au-o-box au-o-box--small">
-    <AuButton
-      @skin="secondary"
-      @width="block"
-      @icon="add"
-      @iconAlignment="left"
-      {{on "click" this.addNewLocalInvolvement}}
-    >
-      Voeg nieuw betrokken lokaal bestuur toe
-    </AuButton>
-  </div>
+  {{#if this.isWorshipService}}
+    <div class="au-o-box au-o-box--small">
+      <AuButton
+        @skin="secondary"
+        @width="block"
+        @icon="add"
+        @iconAlignment="left"
+        {{on "click" this.addNewLocalInvolvement}}
+      >
+        Voeg nieuw betrokken lokaal bestuur toe
+      </AuButton>
+    </div>
+  {{/if}}
 </div>

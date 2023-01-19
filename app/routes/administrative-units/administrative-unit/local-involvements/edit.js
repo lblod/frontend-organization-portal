@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import localInvolvementValidations from 'frontend-organization-portal/validations/local-involvement';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditRoute extends Route {
   @service store;
@@ -21,8 +22,8 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
       'administrative-units.administrative-unit'
     );
 
-    let administrativeUnit = await this.store.findRecord(
-      'worship-service',
+    let worshipAdministrativeUnit = await this.store.findRecord(
+      'worship-administrative-unit',
       administrativeUnitId,
       {
         reload: true,
@@ -31,15 +32,25 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
       }
     );
 
-    let involvementTypes = await this.store.findAll('involvement-type');
+    let involvementTypes;
+    const classification = await worshipAdministrativeUnit.classification;
+    if (classification.id == CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE) {
+      involvementTypes = await this.store.query('involvement-type', {
+        filter: {
+          id: 'ac400cc9f135ac7873fb3e551ec738c1', // Toezichthoundend
+        },
+      });
+    } else {
+      involvementTypes = await this.store.findAll('involvement-type');
+    }
 
-    let involvements = await administrativeUnit.involvements;
+    let involvements = await worshipAdministrativeUnit.involvements;
     involvements = involvements.map((involvement) => {
       return createValidatedChangeset(involvement, localInvolvementValidations);
     });
 
     return {
-      administrativeUnit,
+      worshipAdministrativeUnit,
       involvements,
       involvementTypes,
     };

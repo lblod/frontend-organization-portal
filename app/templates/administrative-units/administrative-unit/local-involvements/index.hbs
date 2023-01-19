@@ -45,17 +45,21 @@
         @currentSorting={{this.sort}}
         @label="Type betrokkenheid"
       />
-      <AuDataTableThSortable
-        @field="percentage"
-        @currentSorting={{this.sort}}
-        @label="Financieel percentage"
-      />
+      {{#if this.isWorshipService}}
+        <AuDataTableThSortable
+          @field="percentage"
+          @currentSorting={{this.sort}}
+          @label="Financieel percentage"
+        />
+      {{/if}}
     </c.header>
     <c.body as |involvement|>
       <td>{{involvement.administrativeUnit.name}}</td>
       <td>{{involvement.administrativeUnit.classification.label}}</td>
       <td>{{involvement.involvementType.label}}</td>
-      <td>{{involvement.percentage}}%</td>
+      {{#if this.isWorshipService}}
+        <td>{{involvement.percentage}}%</td>
+      {{/if}}
     </c.body>
   </t.content>
 </AuDataTable>

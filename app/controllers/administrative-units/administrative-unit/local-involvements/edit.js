@@ -20,6 +20,13 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     CLASSIFICATION_CODE.PROVINCE,
   ];
 
+  get isWorshipService() {
+    return (
+      this.model.worshipAdministrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.WORSHIP_SERVICE
+    );
+  }
+
   get totalFinancingPercentage() {
     return this.model.involvements.reduce((percentageTotal, involvement) => {
       let percentage = parseFloat(involvement.percentage);
@@ -107,10 +114,19 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
 
   @action
   addNewLocalInvolvement() {
-    let involvement = this.store.createRecord('local-involvement', {
-      worshipService: this.model.administrativeUnit,
-      percentage: 0,
-    });
+    let involvement;
+    if (this.isWorshipService) {
+      involvement = this.store.createRecord('local-involvement', {
+        worshipAdministrativeUnit: this.model.worshipAdministrativeUnit,
+        percentage: 0,
+      });
+    } else {
+      involvement = this.store.createRecord('local-involvement', {
+        worshipAdministrativeUnit: this.model.worshipAdministrativeUnit,
+        involvementType: this.model.involvementTypes.firstObject,
+        percentage: 100,
+      });
+    }
 
     this.model.involvements.pushObject(
       createValidatedChangeset(involvement, localInvolvementValidations)
@@ -162,7 +178,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
 
       this.router.transitionTo(
         'administrative-units.administrative-unit.local-involvements',
-        this.model.administrativeUnit.id
+        this.model.worshipAdministrativeUnit.id
       );
     }
   }
@@ -174,6 +190,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     );
   }
 }
+
 function isFinancialInvolvementType(involvement) {
   return involvement.involvementType?.id === INVOLVEMENT_TYPE.FINANCIAL;
 }
