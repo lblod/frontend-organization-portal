@@ -11,4 +11,9 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
     inverse: 'worshipService',
   })
   ministerPositions;
+
+  @hasMany('local-involvement', {
+    inverse: 'worshipAdministrativeUnit',
+  })
+  involvements;
 }

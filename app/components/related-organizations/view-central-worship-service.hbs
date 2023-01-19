@@ -1,3 +1,14 @@
+<div>
+  Om de gerelateerde gemeenten te zien, ga naar
+  <LinkTo
+    class="au-c-link"
+    @model={{@model.administrativeUnit.id}}
+    @route="administrative-units.administrative-unit.local-involvements.index"
+  >
+    Betrokken lokale besturen
+  </LinkTo>
+</div>
+
 <DataCard>
   <:title>Behoort tot</:title>
   <:card as |Card|>
