@@ -1,6 +1,6 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 
-export default class LocalqInvolvementModel extends Model {
+export default class LocalInvolvementModel extends Model {
   @attr('number') percentage;
 
   @belongsTo('involvement-type', {
