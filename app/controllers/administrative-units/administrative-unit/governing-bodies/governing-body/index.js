@@ -28,6 +28,8 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   }
 
   get positionsCantBeCreatedOrEdited() {
-    return new Date() >= new Date('2023-02-01');
+    return (
+      !this.isCentralWorshipService && new Date() >= new Date('2023-02-01')
+    );
   }
 }

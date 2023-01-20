@@ -22,10 +22,16 @@ export default class PeopleNewPositionController extends Controller {
 
   @tracked positionType;
 
-  @tracked positionTypes = [MANDATE, MINISTER];
-
-  get positionsCantBeCreatedOrEdited() {
+  get positionsCantBeCreatedOrEditedUnlessCentralWorshipService() {
     return new Date() >= new Date('2023-02-01');
+  }
+
+  get positionTypes() {
+    if (this.positionsCantBeCreatedOrEditedUnlessCentralWorshipService) {
+      return [MANDATE];
+    } else {
+      return [MANDATE, MINISTER];
+    }
   }
 
   @action
@@ -75,6 +81,8 @@ export default class PeopleNewPositionController extends Controller {
   get classificationCodes() {
     if (this.positionType === MINISTER) {
       return [CLASSIFICATION_CODE.WORSHIP_SERVICE];
+    } else if (this.positionsCantBeCreatedOrEditedUnlessCentralWorshipService) {
+      return [CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE];
     }
     return [
       CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,

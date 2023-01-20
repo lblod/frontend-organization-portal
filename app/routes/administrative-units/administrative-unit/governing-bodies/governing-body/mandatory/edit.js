@@ -10,9 +10,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @service router;
 
   beforeModel() {
-    // Disabling positions creation and edition, they now happen in Loket.
-    const positionsCantBeCreatedOrEdited = new Date() >= new Date('2023-02-01');
-    if (!this.currentSession.canEdit || positionsCantBeCreatedOrEdited) {
+    if (!this.currentSession.canEdit) {
       this.router.transitionTo('route-not-found', {
         wildcard: 'pagina-niet-gevonden',
       });
