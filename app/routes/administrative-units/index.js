@@ -65,6 +65,8 @@ export default class AdministrativeUnitsIndexRoute extends Route {
 
     if (params.organizationStatus) {
       filter['status_id'] = params.organizationStatus;
+    } else {
+      filter[':query:status_id'] = `(_exists_:status_id)`;
     }
     return yield this.muSearch.search({
       index: 'units',
