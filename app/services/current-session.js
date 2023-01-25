@@ -9,7 +9,22 @@ const EDITOR_ROLES = [
   'ABBOrganisatiePortaalGebruiker-worship-beheerder',
 ];
 
-const READER_ROLES = ['ABBOrganisatiePortaalGebruiker-lezer'];
+const WORSHIP_ROLES = [
+  'ABBOrganisatiePortaalGebruiker-worship-beheerder',
+  'ABBOrganisatiePortaalGebruiker-worship-editeerder',
+  'ABBOrganisatiePortaalGebruiker-worship-lezer',
+];
+
+const UNIT_ROLES = [
+  'ABBOrganisatiePortaalGebruiker-editeerder',
+  'ABBOrganisatiePortaalGebruiker-beheerder',
+  'ABBOrganisatiePortaalGebruiker-lezer',
+];
+
+const READER_ROLES = [
+  'ABBOrganisatiePortaalGebruiker-worship-lezer',
+  'ABBOrganisatiePortaalGebruiker-lezer',
+];
 
 export default class CurrentSessionService extends Service {
   @service session;
@@ -35,6 +50,13 @@ export default class CurrentSessionService extends Service {
       //let groupId = sessionData?.group?.data?.id;
       //this.group = await this.store.findRecord('group', groupId);
     }
+  }
+  get hasWorshipRole() {
+    return this.roles.some((role) => WORSHIP_ROLES.includes(role));
+  }
+
+  get hasUnitRole() {
+    return this.roles.some((role) => UNIT_ROLES.includes(role));
   }
 
   get canEdit() {
