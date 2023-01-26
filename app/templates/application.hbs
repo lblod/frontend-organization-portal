@@ -14,6 +14,9 @@
     />
   {{/if}}  
   <AppHeader />
+    <AuAlert @skin="warning"  @icon="alert-triangle" class="au-u-margin-bottom-none au-c-env-announcement">
+      <p>{{config "announce.maintenance.message"}}</p>
+    </AuAlert>
   {{#if (eq "true" (config "announce.maintenance.enabled"))}}
     <AuAlert @skin="warning"  @icon="alert-triangle" class="au-u-margin-bottom-none au-c-env-announcement">
       <p>{{config "announce.maintenance.message"}}</p>
