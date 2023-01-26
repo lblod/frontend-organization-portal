@@ -27,6 +27,9 @@
           <div>
             {{! TODO: add "Voorwaarde" section once file uploads are supported }}
             <AuButtonGroup class="au-c-button-group--align-right">
+              <AuButton @skin="secondary" {{on "click" this.cancel}}>
+                Annuleer
+              </AuButton>              
               <AuButton
                 @loading={{this.save.isRunning}}
                 @disabled={{this.save.isRunning}}
@@ -34,9 +37,6 @@
                 form="minister-position-edit-form"
               >
                 Opslaan
-              </AuButton>
-              <AuButton @skin="secondary" {{on "click" this.cancel}}>
-                Annuleer
               </AuButton>
             </AuButtonGroup>
             <ReportWrongData />

@@ -15,6 +15,12 @@
       <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         <AuButtonGroup>
+          <AuLink
+            @route="administrative-units.administrative-unit.change-events"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>          
           <AuButton
             @loading={{this.createNewChangeEventTask.isRunning}}
             @disabled={{this.createNewChangeEventTask.isRunning}}
@@ -22,12 +28,6 @@
           >
             Opslaan
           </AuButton>
-          <AuLink
-            @route="administrative-units.administrative-unit.change-events"
-            @skin="button-secondary"
-          >
-            Annuleer
-          </AuLink>
         </AuButtonGroup>
       </:action>
     </PageHeader>

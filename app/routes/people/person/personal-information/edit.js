@@ -11,7 +11,9 @@ export default class PeoplePersonPersonalInformationEditRoute extends Route {
   @service store;
 
   beforeModel() {
-    if (!this.currentSession.canEdit) {
+    // Disabling positions creation and edition, they now happen in Loket.
+    const positionsCantBeCreatedOrEdited = new Date() >= new Date('2023-02-01');
+    if (!this.currentSession.canEdit || positionsCantBeCreatedOrEdited) {
       this.router.transitionTo('route-not-found', {
         wildcard: 'pagina-niet-gevonden',
       });

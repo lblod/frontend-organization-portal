@@ -1,6 +1,6 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 
-export default class PublicInvolvementModel extends Model {
+export default class LocalInvolvementModel extends Model {
   @attr('number') percentage;
 
   @belongsTo('involvement-type', {
@@ -8,10 +8,10 @@ export default class PublicInvolvementModel extends Model {
   })
   involvementType;
 
-  @belongsTo('worship-service', {
+  @belongsTo('worship-administrative-unit', {
     inverse: 'involvements',
   })
-  worshipService;
+  worshipAdministrativeUnit;
 
   @belongsTo('administrative-unit', {
     inverse: 'involvedBoards',

@@ -6,6 +6,12 @@
       <:action>
         <div>
           <AuButtonGroup class="au-c-button-group--align-right">
+            <AuLink
+              @route="administrative-units.administrative-unit.related-organizations"
+              @skin="button-secondary"
+            >
+              Annuleer
+            </AuLink>            
             <AuButton
               @loading={{this.save.isRunning}}
               @disabled={{this.save.isRunning}}
@@ -14,12 +20,6 @@
             >
               Opslaan
             </AuButton>
-            <AuLink
-              @route="administrative-units.administrative-unit.related-organizations"
-              @skin="button-secondary"
-            >
-              Annuleer
-            </AuLink>
           </AuButtonGroup>
           <ReportWrongData />
         </div>

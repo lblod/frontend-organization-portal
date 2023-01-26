@@ -3,8 +3,8 @@
     'Organisatie Portaal' (if this.showEnvironment (concat ' - ' this.environmentName))
   )
 }}
-<AuApp class='{{(if this.showEnvironment (concat 'au-c-app--environment au-c-environment--' this.environmentName))}}'>
 
+<AuApp class='{{(if this.showEnvironment (concat 'au-c-app--environment au-c-environment--' this.environmentName))}}'>
   {{#if this.showEnvironment}}
     <EnvironmentBanner
       @applicationName="OrganisatiePortaal"
@@ -26,15 +26,10 @@
     <AuAlert @skin="warning" @icon="alert-triangle"  class="au-u-margin-bottom-none au-c-env-announcement">
       <p>{{config "announce.testing.message"}}</p>
     </AuAlert>
-
   {{/if}}
-
   <main id="main" class="au-c-main-container">
-
-    <div class="au-c-main-container__content" id="content" tabindex="-1">
+    <div class="au-c-main-container__content au-c-main-container__content--scroll" id="content" tabindex="-1">
       {{outlet}}
     </div>
-
   </main>
-
 </AuApp> 

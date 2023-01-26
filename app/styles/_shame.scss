@@ -120,8 +120,9 @@ table.dataTable tbody th {
 }
 
 // Allow buttons to be aligned on the right side
+// Reverse Button Order :: OP-1757
 .au-c-button-group--align-right {
-  @include mq($from:medium) {
+  @include mq($from:xsmall) {
     justify-content: flex-end;
   }
 }
@@ -198,6 +199,24 @@ $ember-power-select-focus-outline: solid 2px rgb(16, 108, 200) !default;
         &:first-of-type {
           max-width: calc(100% - 100px)
         }
+      }
+    }
+  }
+}
+
+/* 
+> HotFix 21.12.2022
+> container-height must be changed, 
+> for when announcement banner is active
+*/
+
+.au-c-env-announcement {   
+  @media (min-width: 63.9375em) {
+    height: 97px;
+    + .au-c-main-container {
+      height: calc(100vh - 97px);
+      .au-c-sidebar-container__content {
+        height: calc(100% - 40px);
       }
     }
   }

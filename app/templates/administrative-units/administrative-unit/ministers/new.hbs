@@ -10,6 +10,12 @@
       {{#unless this.isSelectingTargetPerson}}
         {{! TODO: add "Voorwaarde" section once file uploads are supported }}
         <AuButtonGroup class="au-c-button-group--align-right">
+          <AuLink
+            @route="administrative-units.administrative-unit.ministers"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>          
           <AuButton
             @icon="add"
             @iconAlignment="left"
@@ -20,12 +26,6 @@
           >
             Voeg toe
           </AuButton>
-          <AuLink
-            @route="administrative-units.administrative-unit.ministers"
-            @skin="button-secondary"
-          >
-            Annuleer
-          </AuLink>
         </AuButtonGroup>
       {{/unless}}
     </:action>

@@ -8,6 +8,12 @@
     <:action>
       {{#unless this.isSelectingTargetPerson}}
         <AuButtonGroup class="au-c-button-group--align-right">
+          <AuLink
+            @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+            @skin="button-secondary"
+          >
+            Annuleer
+          </AuLink>          
           <AuButton
             @icon="add"
             @iconAlignment="left"
@@ -18,12 +24,6 @@
           >
             Voeg toe
           </AuButton>
-          <AuLink
-            @route="administrative-units.administrative-unit.governing-bodies.governing-body"
-            @skin="button-secondary"
-          >
-            Annuleer
-          </AuLink>
         </AuButtonGroup>
       {{/unless}}
     </:action>
