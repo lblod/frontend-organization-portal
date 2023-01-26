@@ -87,7 +87,7 @@ $lg-height: 160px;
 .au-c-env-announcement {
     padding: 0.5rem 2.5rem;
     height: $sm-height;
-    margin-top: $md-height;
+    margin-top: calc($md-height + $df-height);
     + .au-c-main-container {
         height: calc(100vh - $lg-height);
         margin-top: 0 !important;
@@ -96,7 +96,7 @@ $lg-height: 160px;
 
 @media (min-width: 1024px) {
     .au-c-env-announcement {
-        margin-top: $xs-height;
+        margin-top: $sm-height;
         + .au-c-main-container {
             height: calc(100vh - $lg-height) !important;
         }

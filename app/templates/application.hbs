@@ -7,18 +7,16 @@
 
   {{#if this.showEnvironment}}
     <EnvironmentBanner
-      @applicationName="Organisatie Portaal"
+      @applicationName="OrganisatiePortaal"
       @environmentName={{this.environmentName}}
-      @message='Dit is de <strong>
-        {{(if (eq this.environment 'test') 'testomgeving' (if 
-          (eq this.environment 'development')
-            (if this.isLocalhost 'lokale omgeving' 'ontvikkelomgeving')
-          ))
-        }}</strong> van het Organisatie Portaal met fictieve en testgegevens. De productieomgeving met de echte data vind je op <a href="https://organisaties.abb.lblod.info/" title="Organisatie Portaal" rel="tag">https://organisaties.abb.lblod.info/</a>.'
+      @skin={{this.environmentValues.skin}}
+      @message='Dit is de <strong>{{this.environmentValues.title}}</strong> van het Organisatie Portaal met fictieve en testgegevens. De productieomgeving met de echte data vind je op <a href="https://organisaties.abb.lblod.info/" title="Organisatie Portaal" rel="tag">https://organisaties.abb.lblod.info/</a>.'
     />
   {{/if}}  
   <AppHeader />
-
+    <AuAlert @skin="warning"  @icon="alert-triangle" class="au-u-margin-bottom-none au-c-env-announcement">
+      <p>{{config "announce.maintenance.message"}}</p>
+    </AuAlert>
   {{#if (eq "true" (config "announce.maintenance.enabled"))}}
     <AuAlert @skin="warning"  @icon="alert-triangle" class="au-u-margin-bottom-none au-c-env-announcement">
       <p>{{config "announce.maintenance.message"}}</p>

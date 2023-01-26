@@ -12,21 +12,39 @@ export default class ApplicationController extends Controller {
     }
   }
 
-  get environment() {
-    return getOwner(this).resolveRegistration('config:environment').environment;
-  }
-
   get environmentName() {
-    const thisEnvironmentValues = this.isLocalhost
+    const thisEnvironmentName = this.isLocalhost
       ? 'local'
       : getOwner(this).resolveRegistration('config:environment')
           .environmentName;
 
-    return thisEnvironmentValues;
+    return thisEnvironmentName;
   }
 
-  get applicationName() {
-    return getOwner(this).resolveRegistration('config:environment').appName;
+  get environmentValues() {
+    let environment = this.environmentName;
+    switch (environment) {
+      case 'test':
+        return {
+          title: 'testomegeving',
+          skin: 'warning',
+        };
+      case 'development':
+        return {
+          title: 'ontwikkelomgeving',
+          skin: 'success',
+        };
+      case 'local':
+        return {
+          title: 'lokale omgeving',
+          skin: 'error',
+        };
+      default:
+        return {
+          title: '',
+          skin: 'muted',
+        };
+    }
   }
 
   get showEnvironment() {

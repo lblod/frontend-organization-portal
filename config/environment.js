@@ -41,7 +41,7 @@ module.exports = function (environment) {
         message: '{{ANNOUNCE_TESTING_MESSAGE}}',
       },
     },
-    appName: 'Organisatie Portaal',
+    appName: 'OrganisatiePortaal',
     contactEmail: 'organisaties.abb@vlaanderen.be',
     environmentName: '{{ENVIRONMENT_NAME}}',
 
@@ -72,6 +72,14 @@ module.exports = function (environment) {
       },
     },
   };
+
+  // if (window.location.hostname === 'localhost' || window.location.hostname === '[::1]') {
+  //   ENV.locationType = 'none';
+  //   ENV.showAppVersionHash = true;
+  //   ENV.environmentName = 'local';
+  //   ENV.environmentTitle = 'lokale omgeving';
+  //   ENV.torii.providers['acmidm-oauth2'].logoutUrl = '/mock-login';
+  // }
 
   if (environment === 'development') {
     ENV.showAppVersionHash = true;
