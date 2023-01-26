@@ -73,14 +73,6 @@ module.exports = function (environment) {
     },
   };
 
-  // if (window.location.hostname === 'localhost' || window.location.hostname === '[::1]') {
-  //   ENV.locationType = 'none';
-  //   ENV.showAppVersionHash = true;
-  //   ENV.environmentName = 'local';
-  //   ENV.environmentTitle = 'lokale omgeving';
-  //   ENV.torii.providers['acmidm-oauth2'].logoutUrl = '/mock-login';
-  // }
-
   if (environment === 'development') {
     ENV.showAppVersionHash = true;
     ENV.environmentName = 'development';
