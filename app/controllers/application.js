@@ -26,7 +26,7 @@ export default class ApplicationController extends Controller {
     switch (environment) {
       case 'test':
         return {
-          title: 'testomegeving',
+          title: 'testomgeving',
           skin: 'warning',
         };
       case 'development':
