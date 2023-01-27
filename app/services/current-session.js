@@ -59,6 +59,10 @@ export default class CurrentSessionService extends Service {
     return this.roles.some((role) => UNIT_ROLES.includes(role));
   }
 
+  get hasUnitRoleAndWorshipRole() {
+    return this.hasWorshipRole && this.hasUnitRole;
+  }
+
   get canEdit() {
     return this.roles.some((role) => EDITOR_ROLES.includes(role));
   }

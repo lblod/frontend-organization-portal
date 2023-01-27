@@ -5,7 +5,7 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
 
 export default class AdministrativeUnitsIndexRoute extends Route {
   @service muSearch;
-
+  @service currentSession;
   queryParams = {
     page: { refreshModel: true },
     sort: { refreshModel: true },
@@ -37,19 +37,36 @@ export default class AdministrativeUnitsIndexRoute extends Route {
       filter[`:${filterType}:name`] = name;
     }
 
-    // if (params.classificationId) {
-    //   filter['classification_id'] = params.classificationId;
-    // } else {
-    //   // Only show worship administrative units, municipalities, provinces, ocmw and districts for now
-    //   filter['classification_id'] = `
-    //     ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
-    //     ${CLASSIFICATION.WORSHIP_SERVICE.id},
-    //     ${CLASSIFICATION.MUNICIPALITY.id}
-    //     ${CLASSIFICATION.PROVINCE.id}
-    //     ${CLASSIFICATION.OCMW.id}
-    //     ${CLASSIFICATION.DISTRICT.id}
-    //   `;
-    // }
+    if (params.classificationId) {
+      filter['classification_id'] = params.classificationId;
+    } else {
+      if (
+        this.currentSession.hasUnitRole &&
+        this.currentSession.hasWorshipRole
+      ) {
+        filter['classification_id'] = `
+         ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
+         ${CLASSIFICATION.WORSHIP_SERVICE.id},
+         ${CLASSIFICATION.MUNICIPALITY.id}
+         ${CLASSIFICATION.PROVINCE.id}
+         ${CLASSIFICATION.OCMW.id}
+         ${CLASSIFICATION.DISTRICT.id}
+       `;
+      }
+      if (this.currentSession.hasWorshipRole) {
+        filter['classification_id'] = `
+         ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
+         ${CLASSIFICATION.WORSHIP_SERVICE.id},
+        `;
+      } else {
+        filter['classification_id'] = `
+         ${CLASSIFICATION.MUNICIPALITY.id}
+         ${CLASSIFICATION.PROVINCE.id}
+         ${CLASSIFICATION.OCMW.id}
+         ${CLASSIFICATION.DISTRICT.id}
+       `;
+      }
+    }
 
     if (params.municipality) {
       filter[':phrase:municipality'] = params.municipality;

@@ -7,6 +7,7 @@ import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/adminis
 export default class PeopleIndexController extends Controller {
   @service router;
   @service store;
+  @service currentSession;
   queryParams = [
     'page',
     'size',
@@ -109,7 +110,7 @@ export default class PeopleIndexController extends Controller {
   }
 
   get classificationCodes() {
-    return [
+    let allowedIds = [
       CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
       CLASSIFICATION_CODE.WORSHIP_SERVICE,
       CLASSIFICATION_CODE.MUNICIPALITY,
@@ -117,5 +118,23 @@ export default class PeopleIndexController extends Controller {
       CLASSIFICATION_CODE.DISTRICT,
       CLASSIFICATION_CODE.PROVINCE,
     ];
+
+    if (!this.currentSession.hasUnitRoleAndWorshipRole) {
+      if (this.currentSession.hasUnitRole) {
+        allowedIds = allowedIds.filter(
+          (id) =>
+            ![
+              CLASSIFICATION_CODE.WORSHIP_SERVICE,
+              CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+            ].includes(id)
+        );
+      } else {
+        allowedIds = [
+          CLASSIFICATION_CODE.WORSHIP_SERVICE,
+          CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+        ];
+      }
+    }
+    return allowedIds;
   }
 }
