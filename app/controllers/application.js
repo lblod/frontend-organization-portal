@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { getOwner } from '@ember/application';
+
 export default class ApplicationController extends Controller {
   get isLocalhost() {
     if (
@@ -21,15 +22,15 @@ export default class ApplicationController extends Controller {
     return thisEnvironmentName;
   }
 
-  get environmentValues() {
+  get environmentInfo() {
     let environment = this.environmentName;
     switch (environment) {
-      case 'test':
+      case 'QA':
         return {
           title: 'testomgeving',
           skin: 'warning',
         };
-      case 'development':
+      case 'DEV':
         return {
           title: 'ontwikkelomgeving',
           skin: 'success',
@@ -42,7 +43,6 @@ export default class ApplicationController extends Controller {
       default:
         return {
           title: '',
-          skin: 'muted',
         };
     }
   }
@@ -50,6 +50,7 @@ export default class ApplicationController extends Controller {
   get showEnvironment() {
     return (
       this.environmentName !== '' &&
+      this.environmentInfo.title !== '' &&
       this.environmentName !== '{{ENVIRONMENT_NAME}}'
     );
   }

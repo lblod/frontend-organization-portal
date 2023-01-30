@@ -101,19 +101,3 @@ $lg-height: 160px;
         }
     }
 }
-
-/* Make sure banner does not appear in production
-    ========================================================================== */
-
-.au-c-app--environment.au-c-environment--PROD,
-.au-c-app--environment.au-c-environment--production {
-    .au-c-alert  {
-        display: none !important;
-    }
-    .au-c-main-header {
-        top: 0 !important;
-    }
-    .au-c-main-container  {
-        margin-top: $df-height !important;
-    }
-}

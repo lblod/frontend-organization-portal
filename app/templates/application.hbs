@@ -4,13 +4,13 @@
   )
 }}
 
-<AuApp class='{{(if this.showEnvironment (concat 'au-c-app--environment au-c-environment--' this.environmentName))}}'>
+<AuApp class='{{if this.showEnvironment 'au-c-app--environment'}}'>
   {{#if this.showEnvironment}}
     <EnvironmentBanner
       @applicationName="OrganisatiePortaal"
       @environmentName={{this.environmentName}}
-      @skin={{this.environmentValues.skin}}
-      @message='Dit is de <strong>{{this.environmentValues.title}}</strong> van het Organisatie Portaal met fictieve en testgegevens. De productieomgeving met de echte data vind je op <a href="https://organisaties.abb.lblod.info/" title="Organisatie Portaal" rel="tag">https://organisaties.abb.lblod.info/</a>.'
+      @skin={{this.environmentInfo.skin}}
+      @message='Dit is de <strong>{{this.environmentInfo.title}}</strong> van het Organisatie Portaal met fictieve en testgegevens. De productieomgeving met de echte data vind je op <a href="https://organisaties.abb.lblod.info/" title="Organisatie Portaal" rel="tag">https://organisaties.abb.lblod.info/</a>.'
     />
   {{/if}}
   <AppHeader />
