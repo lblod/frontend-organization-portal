@@ -1,34 +1,56 @@
 import Controller from '@ember/controller';
 import { getOwner } from '@ember/application';
 
-const isLocalhost = Boolean(
-  window.location.hostname === 'localhost' ||
-    // [::1] is the IPv6 localhost address.
-    window.location.hostname === '[::1]'
-);
-
 export default class ApplicationController extends Controller {
+  get isLocalhost() {
+    if (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '[::1]'
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   get environmentName() {
-    const thisEnvironmentValues = isLocalhost
+    const thisEnvironmentName = this.isLocalhost
       ? 'local'
       : getOwner(this).resolveRegistration('config:environment')
           .environmentName;
 
-    return thisEnvironmentValues;
+    return thisEnvironmentName;
   }
 
-  get environmentTitle() {
-    const thisEnvironmentValues = isLocalhost
-      ? 'lokalomgeving'
-      : getOwner(this).resolveRegistration('config:environment')
-          .environmentTitle;
-
-    return thisEnvironmentValues;
+  get environmentInfo() {
+    let environment = this.environmentName;
+    switch (environment) {
+      case 'QA':
+        return {
+          title: 'testomgeving',
+          skin: 'warning',
+        };
+      case 'DEV':
+        return {
+          title: 'ontwikkelomgeving',
+          skin: 'success',
+        };
+      case 'local':
+        return {
+          title: 'lokale omgeving',
+          skin: 'error',
+        };
+      default:
+        return {
+          title: '',
+        };
+    }
   }
 
   get showEnvironment() {
     return (
       this.environmentName !== '' &&
+      this.environmentInfo.title !== '' &&
       this.environmentName !== '{{ENVIRONMENT_NAME}}'
     );
   }

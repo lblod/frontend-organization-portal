@@ -1,151 +1,103 @@
-/*==================================
-  #ENVIRONMENT BANNER
-  ================================== */
 
-/*Variables
-  ========================================================================== */
+$df-height:  40px;    
+$xs-height:  60px;
+$sm-height: 100px;
+$md-height: 140px;
+$lg-height: 160px;
 
-$au-environment-dev-color : #4CAF50; //#e86ab9;
-$au-environment-test-color  : #FFF176;
-$au-environment-local-color: #FFF9E8;
-$au-env-element-height: 4rem;
-  
-%full-fixed-to-left {
-  position: fixed; 
-  left: 0; 
-  width: 100%;
+%header-styles {
+    position: fixed; 
+    left: 0; 
+    top: 0;
+    z-index: 3;
+    width: 100%;
 }
 
-/* Announcement
-  ========================================================================== */
-
-.au-c-env-announcement {
-  padding: 0.5rem 2.5rem;
-  height: calc(1.5 * $au-env-element-height);
-  + .au-c-main-container {
-    height: calc(100vh - (4 * $au-env-element-height));
-  }
-  @include mq($from:medium) {
-    + .au-c-main-container {
-      height: calc(100vh - (2.5 * $au-env-element-height));
-    }
-  }
-}
-   
-/* Component
-  ========================================================================== */
-   
 .au-c-app--environment {
-  position: relative;
-  overflow-y: auto;
-  .au-c-alert {
-    &:not(.au-c-env-announcement) {
-      @extend %full-fixed-to-left;
-      height: calc(3.5 * $au-env-element-height);
-      top: 0;
-      z-index: 3;
-      a {
-        font: inherit;
-        color: inherit;
-      }
+    position: relative !important;
+    .au-c-main-container {
+        margin-top: calc($df-height + $md-height); // mobile
     }
-    &.au-c-app-helpdesk-banner {
-      height: calc(2.5 * $au-env-element-height) !important;
-      position: relative !important;
+    @media (min-width: 1024px) {
+        .au-c-main-container {
+            margin-top: calc($df-height + $xs-height); // desktop
+        }
     }
-  }
+}
 
-  .au-c-main-header {
-    @extend %full-fixed-to-left;
-    height: $au-env-element-height;
-    top: calc(3.5 * $au-env-element-height);
+/* Addon
+    ========================================================================== */
+
+.au-c-main-header {
+    @extend %header-styles;
+    height: $df-height;
+    top: $md-height;
     .au-c-brand__logo, .au-c-brand__logotype {
-      max-height: $au-env-element-height !important;
+        height: $df-height;
     }
     .au-c-main-header__title {
-      overflow: visible;
+        overflow: visible;
     }
-  }
-  .au-c-main-container {
-    height: calc(100vh - (4.5 * $au-env-element-height));
-    margin-top: calc(4.5 * $au-env-element-height);
-  }
-  .au-c-env-announcement {
-    margin-top: calc(4.5 * $au-env-element-height);
-    + .au-c-main-container {
-      height: calc(100vh - (4 * $au-env-element-height)) !important;
-      margin-top: 0 !important;
+}
+
+.au-c-alert {
+    &.au-c-app-helpdesk-banner {
+        height: $sm-height !important;
     }
-  }
-  @include mq($from:xsmall) {
-    .au-c-alert:not(.au-c-env-announcement) {
-      height: calc(3.5 * $au-env-element-height);
-    }
-    .au-c-main-header {
-      top: calc(3.5 * $au-env-element-height);
-    }
-    .au-c-main-container {
-      height: calc(100vh - (4.5 * $au-env-element-height));
-      margin-top: calc(4.5 * $au-env-element-height);
-    }
-  }
-  @include mq($from:small) {
-    .au-c-alert:not(.au-c-env-announcement) {
-      height: calc(2.5 * $au-env-element-height);
-    }
-    .au-c-main-header {
-      top: calc(2.5 * $au-env-element-height);
-    }
-    .au-c-main-container {
-      height: calc(100vh - (3.5 * $au-env-element-height));
-      margin-top: calc(3.5 * $au-env-element-height);
-    }
-    .au-c-env-announcement {
-      margin-top: calc(3.5 * $au-env-element-height);
-      + .au-c-main-container {
-        height: calc(100vh - (3 * $au-env-element-height)) !important;
-      }
-    }
-  }
-  @include mq($from:medium) {
-    .au-c-alert:not(.au-c-env-announcement) {
-      height: calc(1.5 * $au-env-element-height);
-      .au-c-alert__message {
-        div {
-          flex-direction: row !important;
+    &:not(.au-c-env-announcement) {
+        @extend %header-styles;
+        height: $md-height;
+        a {
+            font: inherit;
+            color: inherit;
         }
-      }
+    } 
+    &.au-c-app-helpdesk-banner {
+        position: relative !important;
+    }
+}
+
+@media (min-width: 500px) {
+    .au-c-alert {
+        &:not(.au-c-env-announcement) {
+            height: $md-height;
+        }
+    }
+}
+
+@media (min-width: 1024px) {
+    .au-c-alert {
+        &:not(.au-c-env-announcement) {
+            height: $xs-height;        
+        }
+        .au-c-alert__message {
+            div {
+                flex-direction: row !important;
+            }
+        } 
     }
     .au-c-main-header {
-      top: calc(1.5 * $au-env-element-height);
+        top: $xs-height;
     }
-    .au-c-main-container {
-      height: calc(100vh - (2.5 * $au-env-element-height));
-      margin-top: calc(2.5 * $au-env-element-height);
+}
+
+/* Add extra styles for when the Announcement is active
+    ========================================================================== */
+
+.au-c-env-announcement {
+    height: $sm-height;
+    margin-top: calc($md-height + $df-height);
+    + .au-c-main-container {
+        height: calc(100vh - $lg-height);
+        margin-top: 0 !important;
     }
+}
+
+@media (min-width: 1024px) {
     .au-c-env-announcement {
-      margin-top: calc(2.5 * $au-env-element-height);
-      + .au-c-main-container {
-        height: calc(100vh - (4 * $au-env-element-height)) !important;
-      }
+        margin-top: $sm-height;
+        + .au-c-main-container {
+            height: calc(100vh - $lg-height) !important;
+        }
     }
-  }
-}
-   
-.au-c-environment--development > .au-c-alert:not(.au-c-env-announcement) {
-  background-color: $au-environment-dev-color;
-  border-color: darken($au-environment-dev-color, 7%);
-  color: $au-white;
-}
-
-.au-c-environment--test > .au-c-alert:not(.au-c-env-announcement) {
-  background-color: $au-environment-test-color;
-  border-color: darken($au-environment-test-color, 30%);
-  color: $au-gray-1000;
-}
-
-.au-c-environment--local > .au-c-alert:not(.au-c-env-announcement) {
-  background-color: $au-environment-local-color;
-  border-color: darken($au-environment-local-color, 30%);
-  color: $au-gray-1000;
 }

@@ -27,14 +27,14 @@
 @import "ember-appuniversum/s-root";
 
 // MIXINS
-@import "appuniversum/t-font-size";
-@import "appuniversum/t-sass-mq";
+@import "ember-appuniversum/t-font-size";
+@import "ember-appuniversum/t-sass-mq";
 
 
 // GENERIC
-@import "appuniversum/g-reset";
-@import "appuniversum/g-box-sizing";
-@import "appuniversum/g-font";
+@import "ember-appuniversum/g-reset";
+@import "ember-appuniversum/g-box-sizing";
+@import "ember-appuniversum/g-font";
 
 
 // ELEMENTS
@@ -99,21 +99,21 @@
 
 
 // UTILITIES
-@import "appuniversum/u-align-text";
-@import "appuniversum/u-background";
-@import "appuniversum/u-break-word";
-@import "appuniversum/u-flex";
-@import "appuniversum/u-headings";
-@import "appuniversum/u-hide";
-@import "appuniversum/u-font-family";
-@import "appuniversum/u-font-weights";
-@import "appuniversum/u-max-widths";
-@import "appuniversum/u-paragraphs";
-@import "appuniversum/u-print";
-@import "appuniversum/u-responsive-spacings";
-@import "appuniversum/u-spacings";
-@import "appuniversum/u-visible";
-@import "appuniversum/u-widths";
+@import "ember-appuniversum/u-align-text";
+@import "ember-appuniversum/u-background";
+@import "ember-appuniversum/u-break-word";
+@import "ember-appuniversum/u-flex";
+@import "ember-appuniversum/u-headings";
+@import "ember-appuniversum/u-hide";
+@import "ember-appuniversum/u-font-family";
+@import "ember-appuniversum/u-font-weights";
+@import "ember-appuniversum/u-max-widths";
+@import "ember-appuniversum/u-paragraphs";
+@import "ember-appuniversum/u-print";
+@import "ember-appuniversum/u-responsive-spacings";
+@import "ember-appuniversum/u-spacings";
+@import "ember-appuniversum/u-visible";
+@import "ember-appuniversum/u-widths";
 
 // TEMPORARY HACKS AND QUICKFIXES
 @import 'shame';
