@@ -55,7 +55,92 @@
       </AuHeading>
 
       <ul class="au-o-grid au-o-grid">
+      {{#if this.hasWorshipRole}}
         <li class="au-o-grid__item au-u-1-2@medium au-u-2-5@large">
+          <AuCard @flex={{true}} as |c|>
+            <c.header @badgeSkin="brand" @badgeIcon="sitemap">
+              <AuHeading @level="3" @skin="4">
+                Worship Bestuurseenheden
+              </AuHeading>
+            </c.header>
+            <c.content>
+              <p>
+                Bekijk en bewerk
+              </p>
+              <ul>
+                <li>
+                  Kerninformatie over besturen
+                </li>
+                <li>
+                  Data over bestuursorganen en mandaten
+                </li>
+                <li>
+                  Documenten en dossiers
+                </li>
+              </ul>
+            </c.content>
+            <c.footer>
+              <AuButtonGroup class="au-c-button-group--wrap">
+                <AuButton {{on "click" (fn this.goToWorshipContext "administrative-units" )}}>
+                  Ga naar bestuurseenheden
+                </AuButton>
+                <a
+                  href={{config "userManual.module.administrativeUnits"}}
+                  class="au-c-button au-c-button--link-secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <AuIcon @icon="manual" @alignment="left" />
+                  Handleiding (externe link)
+                </a>
+              </AuButtonGroup>
+            </c.footer>
+          </AuCard>
+        </li>
+        <li class="au-o-grid__item au-u-1-2@medium au-u-2-5@large">
+          <AuCard @flex={{true}} as |c|>
+            <c.header @badgeSkin="brand" @badgeIcon="users">
+              <AuHeading @level="2" @skin="4">
+               Worship Personen
+              </AuHeading>
+            </c.header>
+            <c.content>
+              <p>
+                Bekijk en bewerk
+              </p>
+              <ul>
+                <li>
+                  Persoonlijke informatie over personen
+                </li>
+                <li>
+                  Contactinformatie
+                </li>
+                <li>
+                  Posities
+                </li>
+              </ul>
+            </c.content>
+            <c.footer>
+              <AuButtonGroup class="au-c-button-group--wrap">
+                <AuButton {{on "click" (fn this.goToWorshipContext "people")}}>
+                  Ga naar personen
+                </AuButton>
+                <a
+                  href={{config "userManual.module.people"}}
+                  class="au-c-button au-c-button--link-secondary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <AuIcon @icon="manual" @alignment="left" />
+                  Handleiding (externe link)
+                </a>
+              </AuButtonGroup>
+            </c.footer>
+          </AuCard>
+        </li>
+        {{/if}}
+        {{#if this.hasUnitRole}}
+         <li class="au-o-grid__item au-u-1-2@medium au-u-2-5@large">
           <AuCard @flex={{true}} as |c|>
             <c.header @badgeSkin="brand" @badgeIcon="sitemap">
               <AuHeading @level="3" @skin="4">
@@ -80,9 +165,9 @@
             </c.content>
             <c.footer>
               <AuButtonGroup class="au-c-button-group--wrap">
-                <LinkTo class="au-c-button" @route="administrative-units">
+                <AuButton {{on "click" (fn this.goToUnitContext "administrative-units" )}}>
                   Ga naar bestuurseenheden
-                </LinkTo>
+                </AuButton>
                 <a
                   href={{config "userManual.module.administrativeUnits"}}
                   class="au-c-button au-c-button--link-secondary"
@@ -100,7 +185,7 @@
           <AuCard @flex={{true}} as |c|>
             <c.header @badgeSkin="brand" @badgeIcon="users">
               <AuHeading @level="2" @skin="4">
-                Personen
+               Personen
               </AuHeading>
             </c.header>
             <c.content>
@@ -121,9 +206,9 @@
             </c.content>
             <c.footer>
               <AuButtonGroup class="au-c-button-group--wrap">
-                <LinkTo class="au-c-button" @route="people">
+                <AuButton {{on "click" (fn this.goToUnitContext "people")}}>
                   Ga naar personen
-                </LinkTo>
+                </AuButton>
                 <a
                   href={{config "userManual.module.people"}}
                   class="au-c-button au-c-button--link-secondary"
@@ -137,6 +222,7 @@
             </c.footer>
           </AuCard>
         </li>
+        {{/if}}
       </ul>
     </div>
   </:content>

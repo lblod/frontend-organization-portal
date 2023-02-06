@@ -34,7 +34,8 @@ export default class CurrentSessionService extends Service {
   @tracked user;
   @tracked group;
   @tracked roles;
-
+  @tracked _onlyWorshipContext;
+  @tracked _onlyUnitContext;
   async load() {
     if (this.session.isAuthenticated) {
       let sessionData = this.session.data.authenticated.relationships;
@@ -52,11 +53,17 @@ export default class CurrentSessionService extends Service {
     }
   }
   get hasWorshipRole() {
-    return this.roles.some((role) => WORSHIP_ROLES.includes(role));
+    return (
+      !this.onlyUnitContext &&
+      this.roles.some((role) => WORSHIP_ROLES.includes(role))
+    );
   }
 
   get hasUnitRole() {
-    return this.roles.some((role) => UNIT_ROLES.includes(role));
+    return (
+      !this.onlyWorshipContext &&
+      this.roles.some((role) => UNIT_ROLES.includes(role))
+    );
   }
 
   get hasUnitRoleAndWorshipRole() {
@@ -71,5 +78,18 @@ export default class CurrentSessionService extends Service {
     return (
       !this.canEdit && this.roles.some((role) => READER_ROLES.includes(role))
     );
+  }
+
+  set onlyWorshipContext(value) {
+    this._onlyWorshipContext = value;
+  }
+  get onlyWorshipContext() {
+    return this._onlyWorshipContext;
+  }
+  get onlyUnitContext() {
+    return this._onlyUnitContext;
+  }
+  set onlyUnitContext(value) {
+    this._onlyUnitContext = value;
   }
 }
