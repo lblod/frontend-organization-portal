@@ -27,21 +27,27 @@ export default class SensitivePersonalInformationService extends Service {
     return null;
   }
 
-  getEndpoint(suffix) {
-    // TODO will not work if they have both unit & worship roles combined. find a way to workaround
-    // or maybe have a combined privacy graph in that case
+  getEndpoint(suffix, administrativeUnitPersonType) {
+    if (
+      this.currentSession.hasUnitRoleAndWorshipRole &&
+      administrativeUnitPersonType
+    ) {
+      return suffix;
+    }
     if (this.currentSession.hasWorshipRole) {
       return '/worship' + suffix;
+    } else {
+      return suffix;
     }
-    return suffix;
   }
   /**
    * Check what sensitive data are present for a person
    * @param {PersonModel} person
    */
-  async askInformation(person) {
+  async askInformation(person, administrativeUnitPersonType) {
     const askEndpoint = `${this.getEndpoint(
-      PRIVACY_CENTRIC_SERVICE_ENDPOINT.ASK
+      PRIVACY_CENTRIC_SERVICE_ENDPOINT.ASK,
+      administrativeUnitPersonType
     )}/${person.id}`;
     let response = await this._request(askEndpoint, {});
     let data = await response.json();
@@ -53,7 +59,7 @@ export default class SensitivePersonalInformationService extends Service {
    * @param {PersonModel} person
    * @param {String} ssn
    */
-  async validateSsn(person, ssn) {
+  async validateSsn(person, ssn, administrativeUnitPersonType) {
     let validSsn = false;
     let sensitiveInformationError = null;
     if (!ssn || ssn?.length === 0) {
@@ -63,7 +69,8 @@ export default class SensitivePersonalInformationService extends Service {
         'Vul het (elfcijferige) Rijksregisternummer in.';
     } else {
       const validateSsnEndpoint = `${this.getEndpoint(
-        PRIVACY_CENTRIC_SERVICE_ENDPOINT.VALIDATE_SSN
+        PRIVACY_CENTRIC_SERVICE_ENDPOINT.VALIDATE_SSN,
+        administrativeUnitPersonType
       )}/${person.id}?ssn=${ssn}`;
       let response = await this._request(validateSsnEndpoint, {});
       let data = await response.json();
@@ -83,7 +90,7 @@ export default class SensitivePersonalInformationService extends Service {
    * @param {RequestReasonModel} requestReason
    * @returns {Promise<SensitivePersonalInformation>}
    */
-  async getInformation(person, requestReason) {
+  async getInformation(person, requestReason, administrativeUnitPersonType) {
     let body = {
       data: {
         type: 'person-information-requests',
@@ -105,7 +112,10 @@ export default class SensitivePersonalInformationService extends Service {
     };
 
     let response = await this._request(
-      this.getEndpoint(PRIVACY_CENTRIC_SERVICE_ENDPOINT.REQUEST),
+      this.getEndpoint(
+        PRIVACY_CENTRIC_SERVICE_ENDPOINT.REQUEST,
+        administrativeUnitPersonType
+      ),
       body
     );
     let data = (await response.json()).data;
@@ -163,9 +173,17 @@ export default class SensitivePersonalInformationService extends Service {
    * @param {RequestReasonModel} updateReason
    * @returns {Promise}
    */
-  async updateInformation(sensitiveInformation, person, updateReason) {
+  async updateInformation(
+    sensitiveInformation,
+    person,
+    updateReason,
+    administrativeUnitPersonType
+  ) {
     await this._request(
-      this.getEndpoint(PRIVACY_CENTRIC_SERVICE_ENDPOINT.UPDATE),
+      this.getEndpoint(
+        PRIVACY_CENTRIC_SERVICE_ENDPOINT.UPDATE,
+        administrativeUnitPersonType
+      ),
       generateUpdateRequestBody(sensitiveInformation, person, updateReason)
     );
     STORAGE.set(person.id, sensitiveInformation);
