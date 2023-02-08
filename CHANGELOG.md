@@ -1,6 +1,17 @@
 
 
 
+
+## 1.15.0-0 (2023-02-08)
+
+#### :rocket: Enhancement
+* [#420](https://github.com/lblod/frontend-organization-portal/pull/420) Implement Environment Banner ([@iurianu](https://github.com/iurianu))
+* [#440](https://github.com/lblod/frontend-organization-portal/pull/440) Feat / Change Headline in Templates ([@iurianu](https://github.com/iurianu))
+
+#### Committers: 1
+- Iulian Andriescu ([@iurianu](https://github.com/iurianu))
+
+
 ## 1.14.0 (2023-01-21)
 
 #### :rocket: Enhancement
