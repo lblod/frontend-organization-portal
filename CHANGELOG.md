@@ -2,6 +2,15 @@
 
 
 
+
+## 1.15.0-1 (2023-02-08)
+
+#### :bug: Bug Fix
+* [#445](https://github.com/lblod/frontend-organization-portal/pull/445) Update link in banner ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### Committers: 1
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+
 ## 1.15.0-0 (2023-02-08)
 
 #### :rocket: Enhancement
