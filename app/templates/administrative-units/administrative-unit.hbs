@@ -10,77 +10,77 @@
     <div class="au-c-sidebar">
       <ul class="au-c-list-navigation">
         <li class="au-c-list-navigation__item">
-          <AuNavigationNestedLink
+          <AuNavigationLink
             @route="administrative-units.administrative-unit.core-data"
           >
             Kerngegevens
-          </AuNavigationNestedLink>
+          </AuNavigationLink>
         </li>
         <li class="au-c-list-navigation__item">
-          <AuNavigationNestedLink
+          <AuNavigationLink
             @route="administrative-units.administrative-unit.sites"
           >
             Vestigingen
-          </AuNavigationNestedLink>
+          </AuNavigationLink>
         </li>
         {{#if this.isWorshipAdministrativeUnit}}
           <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink @route="administrative-units.administrative-unit.local-involvements">
+            <AuNavigationLink @route="administrative-units.administrative-unit.local-involvements">
               Betrokken lokale besturen
-            </AuNavigationNestedLink>
+            </AuNavigationLink>
           </li>
         {{/if}}
         <li class="au-c-list-navigation__item">
-          <AuNavigationNestedLink
+          <AuNavigationLink
             @route="administrative-units.administrative-unit.governing-bodies"
           >
             Bestuursorganen
-          </AuNavigationNestedLink>
+          </AuNavigationLink>
         </li>
         {{#if (eq @model.constructor.modelName "worship-service")}}
           <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink
+            <AuNavigationLink
               @route="administrative-units.administrative-unit.ministers"
             >
               Bedienaren
-            </AuNavigationNestedLink>
+            </AuNavigationLink>
           </li>
         {{/if}}
         {{#if (not (or this.isDistrict this.isWorshipAdministrativeUnit))}}
           <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink
+            <AuNavigationLink
               @route="administrative-units.administrative-unit.executives"
             >
               Leidinggevenden
-            </AuNavigationNestedLink>
+            </AuNavigationLink>
           </li>
         {{/if}}
         {{#unless this.isProvince}}
           <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink
+            <AuNavigationLink
               @route="administrative-units.administrative-unit.change-events"
             >
               Veranderingsgebeurtenissen
-            </AuNavigationNestedLink>
+            </AuNavigationLink>
           </li>
         {{/unless}}
         {{!--         Links temporarily hidden until page is completed
         <li class="au-c-list-navigation__item">
-          <AuNavigationNestedLink>
+          <AuNavigationLink>
             Documenten
-          </AuNavigationNestedLink>
+          </AuNavigationLink>
         </li>
         <li class="au-c-list-navigation__item">
-          <AuNavigationNestedLink>
+          <AuNavigationLink>
             Dossiers
-          </AuNavigationNestedLink>
+          </AuNavigationLink>
         </li> --}}
         <li class="au-c-list-navigation__item">
-          <AuNavigationNestedLink
+          <AuNavigationLink
             @route="administrative-units.administrative-unit.related-organizations"
           >
             Gerelateerde organisaties
-          </AuNavigationNestedLink>
+          </AuNavigationLink>
         </li>
       </ul>
     </div>

@@ -70,13 +70,10 @@
 
     <div>
       <AuToolbar class="au-u-margin-bottom-small">
-        <AuToolbarGroup>
-          <AuHeading @level="4" @skin="5">Bestuursleden</AuHeading>
-        </AuToolbarGroup>
+        <AuHeading @level="4" @skin="5">Bestuursleden</AuHeading>
         {{!-- Disabling positions editing from 01/02/2022. Don't remove position
         editing code, we will use it for positions unavailable in Loket --}}
         {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
-          <AuToolbarGroup>
             <SecuredArea>
               <:edit>
                 <AuLink
@@ -89,7 +86,6 @@
                 </AuLink>
               </:edit>
             </SecuredArea>
-          </AuToolbarGroup>
         {{/if}}
       </AuToolbar>
       <AuDataTable
@@ -192,26 +188,22 @@
 
     <div>
       <AuToolbar class="au-u-margin-bottom-small">
-        <AuToolbarGroup>
-          <AuHeading @level="4" @skin="5">Mandatarissen</AuHeading>
-        </AuToolbarGroup>
+        <AuHeading @level="4" @skin="5">Mandatarissen</AuHeading>
         {{!-- Disabling positions editing from 01/02/2022. Don't remove position
         editing code, we will use it for positions unavailable in Loket --}}
         {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
-          <AuToolbarGroup>
-            <SecuredArea>
-              <:edit>
-                <AuLink
-                  @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
-                  @skin="button"
-                  @icon="add"
-                  @iconAlignment="left"
-                >
-                  Nieuw
-                </AuLink>
-              </:edit>
-            </SecuredArea>
-          </AuToolbarGroup>
+          <SecuredArea>
+            <:edit>
+              <AuLink
+                @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
+                @skin="button"
+                @icon="add"
+                @iconAlignment="left"
+              >
+                Nieuw
+              </AuLink>
+            </:edit>
+          </SecuredArea>
         {{/if}}
       </AuToolbar>
       <AuDataTable

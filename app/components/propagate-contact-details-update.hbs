@@ -27,19 +27,15 @@
     <AuCard as |c|>
       <c.header>
         <AuToolbar>
-          <AuToolbarGroup>
             <AuHeading @level="3" @skin="4">
               De wijziging(en) in de contactgegevens zijn opgeslagen. De
               contactgegevens die je zonet bewerkt hebt, worden ook in
               onderstaande posities gebruikt. Wens je de wijziging(en) ook in
               deze posities toe te passen?
             </AuHeading>
-          </AuToolbarGroup>
         </AuToolbar>
-
       </c.header>
       <c.content>
-
         <AuDataTable
           id="contactDetails"
           @content={{this.positions}}
@@ -70,7 +66,6 @@
               </td>
             </c.body>
           </t.content>
-
         </AuDataTable>
       </c.content>
     </AuCard>

@@ -1,25 +1,17 @@
 <header ...attributes>
   {{#if (has-block "action")}}
     <AuToolbar>
-      <AuToolbarGroup>
-        <AuHeading>
-          {{yield to="title"}}
-        </AuHeading>
-      </AuToolbarGroup>
-      <AuToolbarGroup>
-        {{yield to="action"}}
-      </AuToolbarGroup>
+      <AuHeading>
+        {{yield to="title"}}
+      </AuHeading>
+      {{yield to="action"}}
     </AuToolbar>
   {{else if (has-block "alert")}}
     <AuToolbar>
-      <AuToolbarGroup>
-        <AuHeading class="au-u-margin-right">
-          {{yield to="title"}}
-        </AuHeading>
-      </AuToolbarGroup>
-      <AuToolbarGroup>
-        {{yield to="alert"}}
-      </AuToolbarGroup>
+      <AuHeading class="au-u-margin-right">
+        {{yield to="title"}}
+      </AuHeading>
+      {{yield to="alert"}}
     </AuToolbar>
   {{else}}
     <AuHeading>

@@ -23,15 +23,12 @@
 {{else}}
   <div class="au-u-max-width-large">
     <AuToolbar>
-      <AuToolbarGroup>
         <AuHeading
           @skin={{or @headingSkin "5"}}
           class="au-u-margin-bottom-tiny"
         >
           {{@title}}
         </AuHeading>
-      </AuToolbarGroup>
-      <AuToolbarGroup>
         <AuButton
           @disabled={{(or
             this.isSelectedContactNewContact this.editingContact
@@ -41,9 +38,7 @@
         >
           Nieuw
         </AuButton>
-      </AuToolbarGroup>
     </AuToolbar>
-
     <AuTable id="contactDetails" >
       <:header>
         <tr>
@@ -98,9 +93,7 @@
 
               </td>
             </tr>
-
           {{else}}
-
             <tr>
               <td>
                 {{contact.primaryContact.contactAddress.fullAddress}}
@@ -159,7 +152,6 @@
             )
           )
         }}
-
           <tr class="au-u-background-gray-100 tr-top">
             <ContactEditRow
               @address={{this.editingContact.address}}
@@ -189,8 +181,6 @@
           </tr>
         {{/if}}
       </:body>
-
     </AuTable>
   </div>
-
 {{/if}}
