@@ -18,12 +18,36 @@
 >
   <t.content as |c|>
     <c.header>
-      <th class="au-c-data-table__header-title">Voornaam</th>
-      <th class="au-c-data-table__header-title">Achternaam</th>
-      <th class="au-c-data-table__header-title">Rol</th>
-      <th class="au-c-data-table__header-title">Status</th>
-      <th class="au-c-data-table__header-title">Start periode</th>
-      <th class="au-c-data-table__header-title">Einde periode</th>
+      <AuDataTableThSortable
+        @field="governing-alias.given-name"
+        @currentSorting={{this.sort}}
+        @label="Voornaam"
+      />
+      <AuDataTableThSortable
+        @field="governing-alias.family-name"
+        @currentSorting={{this.sort}}
+        @label="Achternaam"
+      />     
+      <AuDataTableThSortable
+        @field="board-position.role-board.label"
+        @currentSorting={{this.sort}}
+        @label="Rol"
+      />            
+      <AuDataTableThSortable
+        @field="status.label"
+        @currentSorting={{this.sort}}
+        @label="Status"
+      />             
+      <AuDataTableThSortable
+        @field="start-date"
+        @currentSorting={{this.sort}}
+        @label="Start periode"
+      />
+      <AuDataTableThSortable
+        @field="end-date"
+        @currentSorting={{this.sort}}
+        @label="Einde periode"
+      />   
     </c.header>
     <c.body as |agent|>
         <td>
