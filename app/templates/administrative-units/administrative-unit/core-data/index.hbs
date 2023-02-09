@@ -78,7 +78,7 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if @model.administrativeUnit.scope.locatedWithin}}
+            {{#if (and @model.administrativeUnit.scope.locatedWithin this.isMunicipality)}}
               <Item>
                 <:label>Regio</:label>
                 <:content>
