@@ -116,8 +116,16 @@
               @currentSorting={{this.sort}}
               @label="Mandaat"
             />
-            <th class="au-c-data-table__header-title">Start mandaat</th>
-            <th class="au-c-data-table__header-title">Einde mandaat</th>
+            <AuDataTableThSortable
+              @field="start-date"
+              @currentSorting={{this.sort}}
+              @label="Start mandaat"
+            />
+            <AuDataTableThSortable
+              @field="end-date"
+              @currentSorting={{this.sort}}
+              @label="Einde mandaat"
+            />            
             {{!-- Disabling positions editing from 01/02/2022. Don't remove position
             editing code, we will use it for positions unavailable in Loket --}}
             {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
@@ -236,8 +244,16 @@
               @currentSorting={{this.sort}}
               @label="Mandaat"
             />
-            <th class="au-c-data-table__header-title">Start mandaat</th>
-            <th class="au-c-data-table__header-title">Einde mandaat</th>
+            <AuDataTableThSortable
+              @field="start-date"
+              @currentSorting={{this.sort}}
+              @label="Start mandaat"
+            />
+            <AuDataTableThSortable
+              @field="end-date"
+              @currentSorting={{this.sort}}
+              @label="Einde mandaat"
+            />   
             {{!-- Disabling positions editing from 01/02/2022. Don't remove position
             editing code, we will use it for positions unavailable in Loket --}}
             {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
