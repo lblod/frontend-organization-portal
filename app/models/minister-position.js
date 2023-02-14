@@ -18,6 +18,7 @@ export const MAPPING_POSITION_RELIGION = {
     'e357bc8f4cc3a694fde2239748768a22', // Eerste Imam in rang
     'c4a3fd586211b17b06f574885e23f355', // Tweede Imam in rang
     '5ebb798bd59c3b48c25116032caa02b7', // Derde Imam in rang
+    '7d8e0c15-7726-4196-9416-6dc40ed858bb', // Waarnemende imam
   ],
   // ISRAELITE
   '1a1abeafc973d27cebcb2d7a15b2d823': [
