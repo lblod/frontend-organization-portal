@@ -4,7 +4,7 @@ import Component from '@glimmer/component';
 import { deprecate } from '@ember/debug';
 import { action } from '@ember/object';
 
-export default class AuNavigationNestedLink extends Component {
+export default class AuNavigationNestedLinkComponent extends Component {
   get route() {
     if (this.args.linkRoute) {
       deprecate('@linkRoute is deprecated, use @route instead', false, {

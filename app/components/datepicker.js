@@ -7,7 +7,6 @@ import {
   INVALID_DATE,
   MIN_DATE,
   MAX_DATE,
-  formatNl,
 } from 'frontend-organization-portal/utils/datepicker';
 
 export default class DatepickerComponent extends Component {
@@ -19,7 +18,7 @@ export default class DatepickerComponent extends Component {
   }
 
   @action
-  onChange(dt) {
+  onChange(isoDate, dt) {
     let { date, validation } = this.validate(dt);
     if (validation.valid || validation.error === EMPTY_DATE) {
       this.args.onChange?.(date);
@@ -31,14 +30,6 @@ export default class DatepickerComponent extends Component {
   @action
   focusOut() {
     this.args.onValidate?.(this.validation);
-  }
-
-  get value() {
-    const { date } = this.validate(this.args.value);
-    if (date instanceof Date) {
-      return formatNl(date);
-    }
-    return date;
   }
 
   validate(dt) {
@@ -56,14 +47,17 @@ export default class DatepickerComponent extends Component {
       if (dt.length != 8) {
         return { date: dt, validation: { valid: false, error: INVALID_DATE } };
       }
+
       date = new Date(
         `${dt.substring(4, 8)}-${dt.substring(2, 4)}-${dt.substring(0, 2)}`
       );
     }
+
     let valid = date !== 'Invalid Date' && !isNaN(date);
     if (!valid) {
       return { date: dt, validation: { valid, error: INVALID_DATE } };
     }
+
     const min = this.args.min;
     const max = this.args.max;
 
