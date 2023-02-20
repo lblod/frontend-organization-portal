@@ -29,6 +29,7 @@ const READER_ROLES = [
 export default class CurrentSessionService extends Service {
   @service session;
   @service store;
+  @service role;
 
   @tracked account;
   @tracked user;
@@ -39,7 +40,9 @@ export default class CurrentSessionService extends Service {
   async load() {
     if (this.session.isAuthenticated) {
       let sessionData = this.session.data.authenticated.relationships;
-      this.roles = this.session.data.authenticated.data?.attributes?.roles;
+      this.roles = [
+        ...new Set(this.session.data.authenticated.data?.attributes?.roles),
+      ];
       let accountId = sessionData.account.data.id;
 
       this.account = await this.store.findRecord('account', accountId, {

@@ -1,0 +1,26 @@
+<StaticPage>
+  <div class="au-o-layout au-o-region-large">
+
+    <AuHeading @skin="4" class="au-u-margin-bottom">Kies een role</AuHeading>
+    {{#if this.model.roles}}
+      <ul>
+        {{#each this.model.roles as |role|}}
+          <li>
+            <div
+              class="au-o-box au-o-box--small au-c-card au-u-margin-bottom-small"
+            >
+              <AuButton
+                @skin="tertiary"
+                {{on "click" (fn this.updateActiveRole role)}}
+              >
+                <strong>
+                  {{role}}
+                </strong>
+              </AuButton>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+    {{/if}}
+  </div>
+</StaticPage>
