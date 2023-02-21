@@ -4,15 +4,15 @@ import { tracked } from '@glimmer/tracking';
 
 const EDITOR_ROLES = [
   'ABBOrganisatiePortaalGebruiker-editeerder',
-  'ABBOrganisatiePortaalGebruiker-worship-editeerder',
+  'ABBOrganisatiePortaalErediensten-editeerder',
   'ABBOrganisatiePortaalGebruiker-beheerder',
-  'ABBOrganisatiePortaalGebruiker-worship-beheerder',
+  'ABBOrganisatiePortaalErediensten-beheerder',
 ];
 
 const WORSHIP_ROLES = [
-  'ABBOrganisatiePortaalGebruiker-worship-beheerder',
-  'ABBOrganisatiePortaalGebruiker-worship-editeerder',
-  'ABBOrganisatiePortaalGebruiker-worship-lezer',
+  'ABBOrganisatiePortaalErediensten-beheerder',
+  'ABBOrganisatiePortaalErediensten-editeerder',
+  'ABBOrganisatiePortaalErediensten-lezer',
 ];
 
 const UNIT_ROLES = [
@@ -22,7 +22,7 @@ const UNIT_ROLES = [
 ];
 
 const READER_ROLES = [
-  'ABBOrganisatiePortaalGebruiker-worship-lezer',
+  'ABBOrganisatiePortaalErediensten-lezer',
   'ABBOrganisatiePortaalGebruiker-lezer',
 ];
 
