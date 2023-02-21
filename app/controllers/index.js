@@ -7,16 +7,7 @@ export default class IndexController extends Controller {
   @service router;
 
   @action
-  goToUnitContext(route) {
-    this.currentSession.onlyUnitContext = true;
-    this.currentSession.onlyWorshipContext = false;
-    this.router.transitionTo(route);
-  }
-
-  @action
-  goToWorshipContext(route) {
-    this.currentSession.onlyWorshipContext = true;
-    this.currentSession.onlyUnitContext = false;
+  goToContext(route) {
     this.router.transitionTo(route);
   }
 

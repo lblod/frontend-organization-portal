@@ -35,8 +35,6 @@ export default class CurrentSessionService extends Service {
   @tracked user;
   @tracked group;
   @tracked roles;
-  @tracked _onlyWorshipContext;
-  @tracked _onlyUnitContext;
   async load() {
     if (this.session.isAuthenticated) {
       let sessionData = this.session.data.authenticated.relationships;
@@ -56,43 +54,22 @@ export default class CurrentSessionService extends Service {
     }
   }
   get hasWorshipRole() {
-    return (
-      !this.onlyUnitContext &&
-      this.roles.some((role) => WORSHIP_ROLES.includes(role))
-    );
+    return WORSHIP_ROLES.includes(this.role.activeRole);
   }
 
   get hasUnitRole() {
-    return (
-      !this.onlyWorshipContext &&
-      this.roles.some((role) => UNIT_ROLES.includes(role))
-    );
+    return UNIT_ROLES.includes(this.role.activeRole);
   }
 
   get hasUnitRoleAndWorshipRole() {
-    return this.hasWorshipRole && this.hasUnitRole;
+    return this.hasWorshipRole && this.hasUnitRole; // todo no longer needed
   }
 
   get canEdit() {
-    return this.roles.some((role) => EDITOR_ROLES.includes(role));
+    return EDITOR_ROLES.includes(this.role.activeRole);
   }
 
   get canOnlyRead() {
-    return (
-      !this.canEdit && this.roles.some((role) => READER_ROLES.includes(role))
-    );
-  }
-
-  set onlyWorshipContext(value) {
-    this._onlyWorshipContext = value;
-  }
-  get onlyWorshipContext() {
-    return this._onlyWorshipContext;
-  }
-  get onlyUnitContext() {
-    return this._onlyUnitContext;
-  }
-  set onlyUnitContext(value) {
-    this._onlyUnitContext = value;
+    return READER_ROLES.includes(this.role.activeRole);
   }
 }
