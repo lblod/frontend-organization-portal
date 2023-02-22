@@ -119,21 +119,19 @@ export default class PeopleIndexController extends Controller {
       CLASSIFICATION_CODE.PROVINCE,
     ];
 
-    if (!this.currentSession.hasUnitRoleAndWorshipRole) {
-      if (this.currentSession.hasUnitRole) {
-        allowedIds = allowedIds.filter(
-          (id) =>
-            ![
-              CLASSIFICATION_CODE.WORSHIP_SERVICE,
-              CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
-            ].includes(id)
-        );
-      } else {
-        allowedIds = [
-          CLASSIFICATION_CODE.WORSHIP_SERVICE,
-          CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
-        ];
-      }
+    if (this.currentSession.hasUnitRole) {
+      allowedIds = allowedIds.filter(
+        (id) =>
+          ![
+            CLASSIFICATION_CODE.WORSHIP_SERVICE,
+            CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+          ].includes(id)
+      );
+    } else {
+      allowedIds = [
+        CLASSIFICATION_CODE.WORSHIP_SERVICE,
+        CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+      ];
     }
     return allowedIds;
   }

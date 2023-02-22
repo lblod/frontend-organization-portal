@@ -27,13 +27,7 @@ export default class SensitivePersonalInformationService extends Service {
     return null;
   }
 
-  getEndpoint(suffix, administrativeUnitPersonType) {
-    if (
-      this.currentSession.hasUnitRoleAndWorshipRole &&
-      administrativeUnitPersonType
-    ) {
-      return suffix;
-    }
+  getEndpoint(suffix) {
     if (this.currentSession.hasWorshipRole) {
       return '/worship' + suffix;
     } else {
@@ -44,10 +38,9 @@ export default class SensitivePersonalInformationService extends Service {
    * Check what sensitive data are present for a person
    * @param {PersonModel} person
    */
-  async askInformation(person, administrativeUnitPersonType) {
+  async askInformation(person) {
     const askEndpoint = `${this.getEndpoint(
-      PRIVACY_CENTRIC_SERVICE_ENDPOINT.ASK,
-      administrativeUnitPersonType
+      PRIVACY_CENTRIC_SERVICE_ENDPOINT.ASK
     )}/${person.id}`;
     let response = await this._request(askEndpoint, {});
     let data = await response.json();
@@ -59,7 +52,7 @@ export default class SensitivePersonalInformationService extends Service {
    * @param {PersonModel} person
    * @param {String} ssn
    */
-  async validateSsn(person, ssn, administrativeUnitPersonType) {
+  async validateSsn(person, ssn) {
     let validSsn = false;
     let sensitiveInformationError = null;
     if (!ssn || ssn?.length === 0) {
@@ -69,8 +62,7 @@ export default class SensitivePersonalInformationService extends Service {
         'Vul het (elfcijferige) Rijksregisternummer in.';
     } else {
       const validateSsnEndpoint = `${this.getEndpoint(
-        PRIVACY_CENTRIC_SERVICE_ENDPOINT.VALIDATE_SSN,
-        administrativeUnitPersonType
+        PRIVACY_CENTRIC_SERVICE_ENDPOINT.VALIDATE_SSN
       )}/${person.id}?ssn=${ssn}`;
       let response = await this._request(validateSsnEndpoint, {});
       let data = await response.json();
@@ -90,7 +82,7 @@ export default class SensitivePersonalInformationService extends Service {
    * @param {RequestReasonModel} requestReason
    * @returns {Promise<SensitivePersonalInformation>}
    */
-  async getInformation(person, requestReason, administrativeUnitPersonType) {
+  async getInformation(person, requestReason) {
     let body = {
       data: {
         type: 'person-information-requests',
@@ -112,10 +104,7 @@ export default class SensitivePersonalInformationService extends Service {
     };
 
     let response = await this._request(
-      this.getEndpoint(
-        PRIVACY_CENTRIC_SERVICE_ENDPOINT.REQUEST,
-        administrativeUnitPersonType
-      ),
+      this.getEndpoint(PRIVACY_CENTRIC_SERVICE_ENDPOINT.REQUEST),
       body
     );
     let data = (await response.json()).data;
@@ -173,17 +162,9 @@ export default class SensitivePersonalInformationService extends Service {
    * @param {RequestReasonModel} updateReason
    * @returns {Promise}
    */
-  async updateInformation(
-    sensitiveInformation,
-    person,
-    updateReason,
-    administrativeUnitPersonType
-  ) {
+  async updateInformation(sensitiveInformation, person, updateReason) {
     await this._request(
-      this.getEndpoint(
-        PRIVACY_CENTRIC_SERVICE_ENDPOINT.UPDATE,
-        administrativeUnitPersonType
-      ),
+      this.getEndpoint(PRIVACY_CENTRIC_SERVICE_ENDPOINT.UPDATE),
       generateUpdateRequestBody(sensitiveInformation, person, updateReason)
     );
     STORAGE.set(person.id, sensitiveInformation);

@@ -61,10 +61,6 @@ export default class CurrentSessionService extends Service {
     return UNIT_ROLES.includes(this.role.activeRole);
   }
 
-  get hasUnitRoleAndWorshipRole() {
-    return this.hasWorshipRole && this.hasUnitRole; // todo no longer needed
-  }
-
   get canEdit() {
     return EDITOR_ROLES.includes(this.role.activeRole);
   }

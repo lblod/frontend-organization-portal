@@ -20,14 +20,9 @@ export default class PeoplePersonPersonalInformationEditRoute extends Route {
     }
   }
   async model() {
-    let {
-      person,
-      requestSensitiveInformation,
-      askSensitiveInformation,
-      administrativeUnitPersonType,
-    } = this.modelFor('people.person.personal-information');
+    let { person, requestSensitiveInformation, askSensitiveInformation } =
+      this.modelFor('people.person.personal-information');
     let sensitiveInformation = requestSensitiveInformation;
-    console.log('here: ', administrativeUnitPersonType);
     if (askSensitiveInformation?.isEmpty()) {
       sensitiveInformation = new SensitivePersonalInformation();
     }
@@ -35,7 +30,6 @@ export default class PeoplePersonPersonalInformationEditRoute extends Route {
       person: createValidatedChangeset(person, personValidations),
       sensitiveInformation: sensitiveInformation,
       askSensitiveInformation,
-      administrativeUnitPersonType,
     };
   }
 

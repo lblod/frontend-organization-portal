@@ -11,10 +11,6 @@ export default class IndexController extends Controller {
     this.router.transitionTo(route);
   }
 
-  get hasUnitRoleAndWorshipRole() {
-    return this.currentSession.hasUnitRoleAndWorshipRole;
-  }
-
   get hasUnitRole() {
     return this.currentSession.hasUnitRole;
   }

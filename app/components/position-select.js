@@ -67,38 +67,25 @@ export default class PositionSelectComponent extends Component {
         );
       }
     } else {
-      if (!this.currentSession.hasUnitRoleAndWorshipRole) {
-        let allowedIds = [];
-        if (this.currentSession.hasUnitRole) {
-          allowedIds = [
-            CLASSIFICATION_CODE.MUNICIPALITY,
-            CLASSIFICATION_CODE.PROVINCE,
-            CLASSIFICATION_CODE.OCMW,
-            CLASSIFICATION_CODE.DISTRICT,
-          ];
-        } else {
-          allowedIds = [
-            CLASSIFICATION_CODE.WORSHIP_SERVICE,
-            CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
-          ];
-        }
-        boardPositionCodes = yield this.store.query('board-position-code', {
-          'filter[applies-to][applies-within][:id:]': allowedIds.join(),
-          page: { size: 100 },
-        });
-        if (this.currentSession.hasWorshipRole) {
-          ministerPositions = yield this.store.query(
-            'minister-position-function',
-            {
-              page: { size: 100 },
-            }
-          );
-        }
+      let allowedIds = [];
+      if (this.currentSession.hasUnitRole) {
+        allowedIds = [
+          CLASSIFICATION_CODE.MUNICIPALITY,
+          CLASSIFICATION_CODE.PROVINCE,
+          CLASSIFICATION_CODE.OCMW,
+          CLASSIFICATION_CODE.DISTRICT,
+        ];
       } else {
-        boardPositionCodes = yield this.store.query('board-position-code', {
-          page: { size: 100 },
-        });
-
+        allowedIds = [
+          CLASSIFICATION_CODE.WORSHIP_SERVICE,
+          CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+        ];
+      }
+      boardPositionCodes = yield this.store.query('board-position-code', {
+        'filter[applies-to][applies-within][:id:]': allowedIds.join(),
+        page: { size: 100 },
+      });
+      if (this.currentSession.hasWorshipRole) {
         ministerPositions = yield this.store.query(
           'minister-position-function',
           {

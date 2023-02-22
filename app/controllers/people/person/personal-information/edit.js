@@ -72,8 +72,7 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
   @dropTask
   *save(event) {
     event.preventDefault();
-    let { person, sensitiveInformation, administrativeUnitPersonType } =
-      this.model;
+    let { person, sensitiveInformation } = this.model;
     yield person.validate();
     let valid = person.isValid;
 
@@ -81,8 +80,7 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
       let { validSsn, sensitiveInformationError } =
         yield this.sensitivePersonalInformation.validateSsn(
           person,
-          sensitiveInformation.ssn,
-          administrativeUnitPersonType
+          sensitiveInformation.ssn
         );
       this.validSsn = validSsn;
       this.sensitiveInformationError = sensitiveInformationError;
@@ -99,8 +97,7 @@ export default class PeoplePersonPersonalInformationEditController extends Contr
         yield this.sensitivePersonalInformation.updateInformation(
           sensitiveInformation,
           person,
-          requestReason,
-          administrativeUnitPersonType
+          requestReason
         );
       }
       this.router.refresh();
