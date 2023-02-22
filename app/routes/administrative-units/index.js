@@ -40,19 +40,6 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     if (params.classificationId) {
       filter['classification_id'] = params.classificationId;
     } else {
-      if (
-        this.currentSession.hasUnitRole &&
-        this.currentSession.hasWorshipRole
-      ) {
-        filter['classification_id'] = `
-         ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
-         ${CLASSIFICATION.WORSHIP_SERVICE.id},
-         ${CLASSIFICATION.MUNICIPALITY.id}
-         ${CLASSIFICATION.PROVINCE.id}
-         ${CLASSIFICATION.OCMW.id}
-         ${CLASSIFICATION.DISTRICT.id}
-       `;
-      }
       if (this.currentSession.hasWorshipRole) {
         filter['classification_id'] = `
          ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
