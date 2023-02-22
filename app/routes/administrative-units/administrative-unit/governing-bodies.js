@@ -48,14 +48,9 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
       }
     });
 
-    const now = new Date().getTime();
     return {
       administrativeUnit,
-      governingBodies: sortedTimesGoverningBodies.filter((governingBody) => {
-        return (
-          !governingBody.startDate || governingBody.startDate.getTime() <= now
-        );
-      }),
+      governingBodies: sortedTimesGoverningBodies,
     };
   }
 }
