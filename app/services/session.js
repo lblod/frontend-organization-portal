@@ -6,15 +6,15 @@ export default class SessionService extends BaseSessionService {
   @service currentSession;
   @service role;
 
-  handleAuthentication(routeAfterAuthentication) {
+  async handleAuthentication(routeAfterAuthentication) {
     super.handleAuthentication(routeAfterAuthentication);
-    this.currentSession.load();
-    this.role.loadActiveRole();
+    await this.currentSession.load();
+    await this.role.loadActiveRole();
   }
 
-  handleInvalidation() {
+  async handleInvalidation() {
     let logoutUrl = config.torii.providers['acmidm-oauth2'].logoutUrl;
-    this.role.destroyActiveRole();
+    await this.role.destroyActiveRole();
     super.handleInvalidation(logoutUrl);
   }
 }
