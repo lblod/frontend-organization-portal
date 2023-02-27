@@ -7,7 +7,7 @@ import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/adminis
 
 export default class ClassificationSelectComponent extends Component {
   @service store;
-
+  @service currentSession;
   classifications = trackedTask(this, this.loadClassificationsTask, () => [
     this.args.selectedRecognizedWorshipTypeId,
   ]);
@@ -35,6 +35,7 @@ export default class ClassificationSelectComponent extends Component {
     yield Promise.resolve();
 
     let allowedIds;
+
     let selectedRecognizedWorshipTypeId =
       this.args.selectedRecognizedWorshipTypeId;
 
@@ -57,6 +58,21 @@ export default class ClassificationSelectComponent extends Component {
         CLASSIFICATION_CODE.PROVINCE,
         CLASSIFICATION_CODE.OCMW,
         CLASSIFICATION_CODE.DISTRICT,
+      ];
+    }
+
+    if (this.currentSession.hasUnitRole) {
+      allowedIds = allowedIds.filter(
+        (id) =>
+          ![
+            CLASSIFICATION_CODE.WORSHIP_SERVICE,
+            CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+          ].includes(id)
+      );
+    } else {
+      allowedIds = [
+        CLASSIFICATION_CODE.WORSHIP_SERVICE,
+        CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
       ];
     }
 

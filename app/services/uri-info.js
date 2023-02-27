@@ -4,7 +4,7 @@ import config from 'frontend-organization-portal/config/environment';
 import { assert } from '@ember/debug';
 
 /**
- * Service which interacts with the mu-uri-info-service microservice:
+ *Service which interacts with the mu-uri-info-service microservice:
  *
  * https://github.com/redpencilio/mu-uri-info-service
  */

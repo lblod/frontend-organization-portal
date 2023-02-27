@@ -136,19 +136,31 @@
             </td>
             <td>
               {{#each person.organizations as |organization index|}}
-                <AuLink
-                  @route="administrative-units.administrative-unit"
-                  @model={{organization.id}}
-                >
-                  {{person.organization_name}}
+                {{#if organization.id}}
+                  <AuLink
+                    @route="administrative-units.administrative-unit"
+                    @model={{organization.id}}
+                  >
+                    {{person.organization_name}}
 
-                  {{#if (not (or
-                                (eq organization.classification "Centraal bestuur van de eredienst")
-                                (eq organization.classification "Bestuur van de eredienst")
-                  ))}}
-                    ({{organization.classification}})
-                  {{/if}}
-                </AuLink>
+                    {{#if
+                      (not
+                        (or
+                          (eq
+                            organization.classification
+                            "Centraal bestuur van de eredienst"
+                          )
+                          (eq
+                            organization.classification
+                            "Bestuur van de eredienst"
+                          )
+                        )
+                      )
+                    }}
+                      ({{organization.classification}})
+                    {{/if}}
+                  </AuLink>
+                {{/if}}
                 {{#if (gt person.organizations.length 1)}}
                   {{unless index "/"}}
                 {{/if}}

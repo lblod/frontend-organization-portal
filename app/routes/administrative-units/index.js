@@ -5,7 +5,7 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
 
 export default class AdministrativeUnitsIndexRoute extends Route {
   @service muSearch;
-
+  @service currentSession;
   queryParams = {
     page: { refreshModel: true },
     sort: { refreshModel: true },
@@ -40,15 +40,19 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     if (params.classificationId) {
       filter['classification_id'] = params.classificationId;
     } else {
-      // Only show worship administrative units, municipalities, provinces, ocmw and districts for now
-      filter['classification_id'] = `
-        ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
-        ${CLASSIFICATION.WORSHIP_SERVICE.id},
-        ${CLASSIFICATION.MUNICIPALITY.id}
-        ${CLASSIFICATION.PROVINCE.id}
-        ${CLASSIFICATION.OCMW.id}
-        ${CLASSIFICATION.DISTRICT.id}
-      `;
+      if (this.currentSession.hasWorshipRole) {
+        filter['classification_id'] = `
+         ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
+         ${CLASSIFICATION.WORSHIP_SERVICE.id},
+        `;
+      } else {
+        filter['classification_id'] = `
+         ${CLASSIFICATION.MUNICIPALITY.id}
+         ${CLASSIFICATION.PROVINCE.id}
+         ${CLASSIFICATION.OCMW.id}
+         ${CLASSIFICATION.DISTRICT.id}
+       `;
+      }
     }
 
     if (params.municipality) {
@@ -65,6 +69,8 @@ export default class AdministrativeUnitsIndexRoute extends Route {
 
     if (params.organizationStatus) {
       filter['status_id'] = params.organizationStatus;
+    } else {
+      filter[':query:status_id'] = `(_exists_:status_id)`;
     }
     return yield this.muSearch.search({
       index: 'units',

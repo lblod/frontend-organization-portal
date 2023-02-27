@@ -6,6 +6,7 @@ import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/adminis
 
 export default class PositionSelectComponent extends Component {
   @service store;
+  @service currentSession;
 
   positions = trackedTask(this, this.loadPositionTask, () => [
     this.args.selectedAdministrativeUnit,
@@ -66,13 +67,32 @@ export default class PositionSelectComponent extends Component {
         );
       }
     } else {
+      let allowedIds = [];
+      if (this.currentSession.hasUnitRole) {
+        allowedIds = [
+          CLASSIFICATION_CODE.MUNICIPALITY,
+          CLASSIFICATION_CODE.PROVINCE,
+          CLASSIFICATION_CODE.OCMW,
+          CLASSIFICATION_CODE.DISTRICT,
+        ];
+      } else {
+        allowedIds = [
+          CLASSIFICATION_CODE.WORSHIP_SERVICE,
+          CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+        ];
+      }
       boardPositionCodes = yield this.store.query('board-position-code', {
+        'filter[applies-to][applies-within][:id:]': allowedIds.join(),
         page: { size: 100 },
       });
-
-      ministerPositions = yield this.store.query('minister-position-function', {
-        page: { size: 100 },
-      });
+      if (this.currentSession.hasWorshipRole) {
+        ministerPositions = yield this.store.query(
+          'minister-position-function',
+          {
+            page: { size: 100 },
+          }
+        );
+      }
     }
 
     let positions;

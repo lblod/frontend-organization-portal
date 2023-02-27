@@ -80,9 +80,11 @@
             </c.content>
             <c.footer>
               <AuButtonGroup class="au-c-button-group--wrap">
-                <LinkTo class="au-c-button" @route="administrative-units">
+                <AuButton
+                  {{on "click" (fn this.goToContext "administrative-units")}}
+                >
                   Ga naar bestuurseenheden
-                </LinkTo>
+                </AuButton>
                 <a
                   href={{config "userManual.module.administrativeUnits"}}
                   class="au-c-button au-c-button--link-secondary"
@@ -121,9 +123,9 @@
             </c.content>
             <c.footer>
               <AuButtonGroup class="au-c-button-group--wrap">
-                <LinkTo class="au-c-button" @route="people">
+                <AuButton {{on "click" (fn this.goToContext "people")}}>
                   Ga naar personen
-                </LinkTo>
+                </AuButton>
                 <a
                   href={{config "userManual.module.people"}}
                   class="au-c-button au-c-button--link-secondary"

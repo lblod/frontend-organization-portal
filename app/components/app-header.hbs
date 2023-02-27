@@ -11,10 +11,7 @@
       @alignment="right"
       role="menu"
     >
-      <AuButton
-        @skin="tertiary" role="menuitem"
-        {{on "click" this.logout}}
-      >
+      <AuButton @skin="tertiary" role="menuitem" {{on "click" this.logout}}>
         <AuIcon @icon="logout" @alignment="left" />Afmelden
       </AuButton>
     </AuDropdown>

@@ -4,14 +4,17 @@ import config from 'frontend-organization-portal/config/environment';
 
 export default class SessionService extends BaseSessionService {
   @service currentSession;
+  @service role;
 
-  handleAuthentication(routeAfterAuthentication) {
+  async handleAuthentication(routeAfterAuthentication) {
     super.handleAuthentication(routeAfterAuthentication);
-    this.currentSession.load();
+    await this.currentSession.load();
+    await this.role.loadActiveRole();
   }
 
-  handleInvalidation() {
+  async handleInvalidation() {
     let logoutUrl = config.torii.providers['acmidm-oauth2'].logoutUrl;
+    await this.role.destroyActiveRole();
     super.handleInvalidation(logoutUrl);
   }
 }

@@ -13,6 +13,7 @@ const STORAGE = new Map();
 
 export default class SensitivePersonalInformationService extends Service {
   @service store;
+  @service currentSession;
 
   hasStoredSensitiveInformation(person) {
     return STORAGE.has(person.id);
@@ -26,12 +27,21 @@ export default class SensitivePersonalInformationService extends Service {
     return null;
   }
 
+  getEndpoint(suffix) {
+    if (this.currentSession.hasWorshipRole) {
+      return '/worship' + suffix;
+    } else {
+      return suffix;
+    }
+  }
   /**
    * Check what sensitive data are present for a person
    * @param {PersonModel} person
    */
   async askInformation(person) {
-    const askEndpoint = `${PRIVACY_CENTRIC_SERVICE_ENDPOINT.ASK}/${person.id}`;
+    const askEndpoint = `${this.getEndpoint(
+      PRIVACY_CENTRIC_SERVICE_ENDPOINT.ASK
+    )}/${person.id}`;
     let response = await this._request(askEndpoint, {});
     let data = await response.json();
     return await this.mapSensitivePersonalInformation(data?.data, true);
@@ -51,7 +61,9 @@ export default class SensitivePersonalInformationService extends Service {
       sensitiveInformationError =
         'Vul het (elfcijferige) Rijksregisternummer in.';
     } else {
-      const validateSsnEndpoint = `${PRIVACY_CENTRIC_SERVICE_ENDPOINT.VALIDATE_SSN}/${person.id}?ssn=${ssn}`;
+      const validateSsnEndpoint = `${this.getEndpoint(
+        PRIVACY_CENTRIC_SERVICE_ENDPOINT.VALIDATE_SSN
+      )}/${person.id}?ssn=${ssn}`;
       let response = await this._request(validateSsnEndpoint, {});
       let data = await response.json();
       validSsn = data?.data?.attributes['is-valid'];
@@ -92,7 +104,7 @@ export default class SensitivePersonalInformationService extends Service {
     };
 
     let response = await this._request(
-      PRIVACY_CENTRIC_SERVICE_ENDPOINT.REQUEST,
+      this.getEndpoint(PRIVACY_CENTRIC_SERVICE_ENDPOINT.REQUEST),
       body
     );
     let data = (await response.json()).data;
@@ -152,7 +164,7 @@ export default class SensitivePersonalInformationService extends Service {
    */
   async updateInformation(sensitiveInformation, person, updateReason) {
     await this._request(
-      PRIVACY_CENTRIC_SERVICE_ENDPOINT.UPDATE,
+      this.getEndpoint(PRIVACY_CENTRIC_SERVICE_ENDPOINT.UPDATE),
       generateUpdateRequestBody(sensitiveInformation, person, updateReason)
     );
     STORAGE.set(person.id, sensitiveInformation);
