@@ -99,12 +99,9 @@
               <div class={{if errorMessage "ember-power-select--error"}}>
                 {{#if this.isWorshipService}}
                   {{#if
-                    (and
-                      involvement.administrativeUnit
-                      (eq
-                        this.municipalityCode
-                        involvement.administrativeUnit.classification.id
-                      )
+                    (eq
+                      this.municipalityCode
+                      involvement.administrativeUnit.classification.id
                     )
                   }}
                     <PowerSelect
