@@ -46,11 +46,6 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   }
 
   @action
-  doSomething(callback) {
-    callback();
-  }
-
-  @action
   isFinancial(involvement) {
     return isFinancialInvolvementType(involvement);
   }
