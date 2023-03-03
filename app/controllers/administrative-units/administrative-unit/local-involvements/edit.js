@@ -41,6 +41,15 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     }, 0);
   }
 
+  get municipalityCode() {
+    return CLASSIFICATION_CODE.MUNICIPALITY;
+  }
+
+  @action
+  doSomething(callback) {
+    callback();
+  }
+
   @action
   isFinancial(involvement) {
     return isFinancialInvolvementType(involvement);

@@ -11,7 +11,7 @@
             @skin="button-secondary"
           >
             Annuleer
-          </AuLink>          
+          </AuLink>
           <AuButton
             @loading={{this.save.isRunning}}
             @disabled={{this.save.isRunning}}
@@ -68,6 +68,7 @@
               <AdministrativeUnitSelect
                 @selected={{involvement.administrativeUnit}}
                 @onChange={{fn (mut involvement.administrativeUnit)}}
+                @onChangeExtra={{(fn (mut involvement.involvementType) null)}}
                 @allowClear={{involvement.isNew}}
                 @ariaLabelledBy="administrative-unit"
                 @error={{errorMessage}}
@@ -97,20 +98,46 @@
             }}
               <div class={{if errorMessage "ember-power-select--error"}}>
                 {{#if this.isWorshipService}}
-                  <PowerSelect
-                    @noMatchesMessage="Geen resultaten"
-                    @options={{this.model.involvementTypes}}
-                    @selected={{involvement.involvementType}}
-                    @onChange={{fn
-                      this.handleInvolvementTypeSelection
-                      involvement
-                    }}
-                    @ariaLabelledBy="involvement-type"
-                    @allowClear={{involvement.isNew}}
-                    as |involvementType|
-                  >
-                    {{involvementType.label}}
-                  </PowerSelect>
+                  {{#if
+                    (and
+                      involvement.administrativeUnit
+                      (eq
+                        this.municipalityCode
+                        involvement.administrativeUnit.classification.id
+                      )
+                    )
+                  }}
+                    <PowerSelect
+                      @noMatchesMessage="Geen resultaten"
+                      @options={{this.model.involvementTypes}}
+                      @selected={{involvement.involvementType}}
+                      @onChange={{fn
+                        this.handleInvolvementTypeSelection
+                        involvement
+                      }}
+                      @ariaLabelledBy="involvement-type"
+                      @allowClear={{involvement.isNew}}
+                      as |involvementType|
+                    >
+                      {{involvementType.label}}
+                    </PowerSelect>
+                  {{else}}
+
+                    <PowerSelect
+                      @noMatchesMessage="Geen resultaten"
+                      @options={{this.model.involvementTypesProvince}}
+                      @selected={{involvement.involvementType}}
+                      @onChange={{fn
+                        this.handleInvolvementTypeSelection
+                        involvement
+                      }}
+                      @ariaLabelledBy="involvement-type"
+                      @allowClear={{involvement.isNew}}
+                      as |involvementType|
+                    >
+                      {{involvementType.label}}
+                    </PowerSelect>
+                  {{/if}}
                 {{else}}
                   <AuInput
                     @width="block"
@@ -123,8 +150,14 @@
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
               {{/if}}
-              {{#if (and (this.isFinancial involvement) this.showMoreThanOneFinancialTypeError )}}
-                <AuHelpText @error={{true}}>Er kan slechts één gemeente- of provincieoverheid optreden als hoofdtoezichthouder</AuHelpText>
+              {{#if
+                (and
+                  (this.isFinancial involvement)
+                  this.showMoreThanOneFinancialTypeError
+                )
+              }}
+                <AuHelpText @error={{true}}>Er kan slechts één gemeente- of
+                  provincieoverheid optreden als hoofdtoezichthouder</AuHelpText>
               {{/if}}
             {{/let}}
           </td>
