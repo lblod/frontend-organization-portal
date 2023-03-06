@@ -4,6 +4,7 @@ import { restartableTask, timeout, task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
+import { action } from '@ember/object';
 export default class AdministrativeUnitSelectComponent extends Component {
   @service store;
   @tracked loadedRecord;
@@ -11,6 +12,14 @@ export default class AdministrativeUnitSelectComponent extends Component {
   constructor() {
     super(...arguments);
     this.loadRecord.perform();
+  }
+
+  @action
+  triggerChange(event) {
+    this.args.onChange(event);
+    if (this.args.onChangeExtra) {
+      this.args.onChangeExtra();
+    }
   }
 
   @restartableTask

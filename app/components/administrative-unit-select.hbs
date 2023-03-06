@@ -8,15 +8,24 @@
     @searchField="name"
     @search={{perform this.loadAdministrativeUnitsTask}}
     @selected={{this.selectedAdministrativeUnit}}
-    @onChange={{@onChange}}
+    @onChange={{this.triggerChange}}
     as |administrativeUnit|
   >
     {{administrativeUnit.name}}
 
-    {{#if (not (or
-                  (eq administrativeUnit.classification.label "Centraal bestuur van de eredienst")
-                  (eq administrativeUnit.classification.label "Bestuur van de eredienst")
-    ))}}
+    {{#if
+      (not
+        (or
+          (eq
+            administrativeUnit.classification.label
+            "Centraal bestuur van de eredienst"
+          )
+          (eq
+            administrativeUnit.classification.label "Bestuur van de eredienst"
+          )
+        )
+      )
+    }}
       ({{administrativeUnit.classification.label}})
     {{/if}}
   </PowerSelect>

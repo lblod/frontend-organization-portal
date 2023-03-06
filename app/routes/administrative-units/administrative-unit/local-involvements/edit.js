@@ -41,18 +41,22 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
         },
       });
     } else {
-      involvementTypes = await this.store.findAll('involvement-type');
+      involvementTypes = await this.store.query('involvement-type', {});
     }
-
     let involvements = await worshipAdministrativeUnit.involvements;
     involvements = involvements.map((involvement) => {
       return createValidatedChangeset(involvement, localInvolvementValidations);
     });
 
+    let involvementTypesProvince = involvementTypes
+      .toArray()
+      .filter((it) => it.id !== '0f845f00ee76099c89518cbaf6a7b77f'); // Non adviserend
+
     return {
       worshipAdministrativeUnit,
       involvements,
       involvementTypes,
+      involvementTypesProvince,
     };
   }
 
