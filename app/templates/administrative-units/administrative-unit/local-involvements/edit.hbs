@@ -68,7 +68,6 @@
               <AdministrativeUnitSelect
                 @selected={{involvement.administrativeUnit}}
                 @onChange={{fn (mut involvement.administrativeUnit)}}
-                @onChangeExtra={{(fn (mut involvement.involvementType) null)}}
                 @allowClear={{involvement.isNew}}
                 @ariaLabelledBy="administrative-unit"
                 @error={{errorMessage}}
