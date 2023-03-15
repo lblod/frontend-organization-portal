@@ -4,6 +4,15 @@
 
 
 
+
+## 1.16.0-1 (2023-03-15)
+
+#### :bug: Bug Fix
+* [#454](https://github.com/lblod/frontend-organization-portal/pull/454) unnecessary callback as we validate the chosen involvement ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
 ## 1.16.0-0 (2023-03-13)
 
 #### :rocket: Enhancement
