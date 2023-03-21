@@ -45,6 +45,11 @@ export default class AdministrativeUnitsIndexRoute extends Route {
          ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
          ${CLASSIFICATION.WORSHIP_SERVICE.id},
         `;
+      } else if (this.currentSession.hasAgbApbRole) {
+        filter['classification_id'] = `
+         ${CLASSIFICATION.AGB.id},
+         ${CLASSIFICATION.APB.id},
+        `;
       } else {
         filter['classification_id'] = `
          ${CLASSIFICATION.MUNICIPALITY.id}
