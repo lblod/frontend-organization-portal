@@ -5,6 +5,32 @@
 
 
 
+## 1.16.0 (2023-03-24)
+
+#### :rocket: Enhancement
+* [#452](https://github.com/lblod/frontend-organization-portal/pull/452) only municipality for adviserende ([@nbittich](https://github.com/nbittich))
+* [#443](https://github.com/lblod/frontend-organization-portal/pull/443) draft hard split2023 ([@nbittich](https://github.com/nbittich))
+* [#451](https://github.com/lblod/frontend-organization-portal/pull/451) Allow user to see all organen periods ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#449](https://github.com/lblod/frontend-organization-portal/pull/449) Use `AuDateInput` component from bumped ember-appuniversum ([@iurianu](https://github.com/iurianu))
+* [#450](https://github.com/lblod/frontend-organization-portal/pull/450) add new position ([@nbittich](https://github.com/nbittich))
+* [#444](https://github.com/lblod/frontend-organization-portal/pull/444) Feat / Date sorting for governing bodies ([@iurianu](https://github.com/iurianu))
+* [#446](https://github.com/lblod/frontend-organization-portal/pull/446) Feat / Filter on Leidinggevenden ([@iurianu](https://github.com/iurianu))
+* [#448](https://github.com/lblod/frontend-organization-portal/pull/448) Hide regio for OCMWs ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#447](https://github.com/lblod/frontend-organization-portal/pull/447) Update text of module Personen ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### :bug: Bug Fix
+* [#453](https://github.com/lblod/frontend-organization-portal/pull/453) validate involvement type ([@nbittich](https://github.com/nbittich))
+* [#454](https://github.com/lblod/frontend-organization-portal/pull/454) unnecessary callback as we validate the chosen involvement ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 3
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Iulian Andriescu ([@iurianu](https://github.com/iurianu))
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
+
+
+
+
 ## 1.16.0-1 (2023-03-15)
 
 #### :bug: Bug Fix
