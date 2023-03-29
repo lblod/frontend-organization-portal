@@ -59,6 +59,7 @@ export default class ContactDetailsService extends Service {
       return null;
     }
     const role = await mandate.roleBoard;
+    const status = await mandatory.status;
     const governingBody = await mandate.governingBody;
     const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
     const administrativeUnit = await isTimeSpecializationOf.administrativeUnit;
@@ -70,6 +71,7 @@ export default class ContactDetailsService extends Service {
       title: `${role.label}, ${administrativeUnit.name}`,
       role: role.label,
       type: 'mandatory',
+      status,
       id: mandatory.id,
       startDate: mandatory.startDate,
       endDate: mandatory.endDate,
@@ -85,6 +87,7 @@ export default class ContactDetailsService extends Service {
       return null;
     }
     const role = await boardPosition.roleBoard;
+    const status = await agent.status;
     const governingBodies = await boardPosition.governingBodies;
 
     let administrativeUnits = [];
@@ -105,6 +108,7 @@ export default class ContactDetailsService extends Service {
       startDate: agent.startDate,
       endDate: agent.endDate,
       administrativeUnits,
+      status,
       primaryContact: mContacts,
     };
   }
