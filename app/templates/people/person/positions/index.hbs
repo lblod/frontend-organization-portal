@@ -23,6 +23,12 @@
       />
       <AuDataTableThSortable
         @class="au-c-data-table__header-title"
+        @field="position.status"
+        @currentSorting={{this.sort}}
+        @label="Status positie"
+      />
+      <AuDataTableThSortable
+        @class="au-c-data-table__header-title"
         @field="position.administrative-unit.name"
         @currentSorting={{this.sort}}
         @label="Organisatie(s)"
@@ -59,6 +65,7 @@
           </AuLink>
         {{/if}}
       </td>
+      <td>{{position.status.label}}</td>
       <td>
         {{#if position.administrativeUnit}}
           <AuLink
@@ -73,7 +80,8 @@
               @route="administrative-units.administrative-unit"
               @model={{administrativeUnit.id}}
             >
-              {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
+              {{administrativeUnit.name}}
+              ({{administrativeUnit.classification.label}})
             </AuLink>
             {{#if (gt position.administrativeUnits.length 1)}}
               {{unless index "/"}}

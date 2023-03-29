@@ -5,7 +5,8 @@
         Bestuursorgaan:
         {{@model.governingBodyClassification.label}}
       </:title>
-      <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
+      <:subtitle>{{@model.administrativeUnit.name}}
+        ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         <SecuredArea>
           <:edit>
@@ -71,21 +72,26 @@
     <div>
       <AuToolbar class="au-u-margin-bottom-small">
         <AuHeading @level="4" @skin="5">Bestuursleden</AuHeading>
-        {{!-- Disabling positions editing from 01/02/2022. Don't remove position
-        editing code, we will use it for positions unavailable in Loket --}}
-        {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
-            <SecuredArea>
-              <:edit>
-                <AuLink
-                  @route="administrative-units.administrative-unit.governing-bodies.governing-body.board-member.new"
-                  @skin="button"
-                  @icon="add"
-                  @iconAlignment="left"
-                >
-                  Nieuw
-                </AuLink>
-              </:edit>
-            </SecuredArea>
+        {{! Disabling positions editing from 01/02/2022. Don't remove position
+        editing code, we will use it for positions unavailable in Loket }}
+        {{#if
+          (and
+            this.isWorshipAdministrativeUnit
+            (not this.positionsCantBeCreatedOrEdited)
+          )
+        }}
+          <SecuredArea>
+            <:edit>
+              <AuLink
+                @route="administrative-units.administrative-unit.governing-bodies.governing-body.board-member.new"
+                @skin="button"
+                @icon="add"
+                @iconAlignment="left"
+              >
+                Nieuw
+              </AuLink>
+            </:edit>
+          </SecuredArea>
         {{/if}}
       </AuToolbar>
       <AuDataTable
@@ -113,6 +119,11 @@
               @label="Mandaat"
             />
             <AuDataTableThSortable
+              @field="status-bestuursleden"
+              @currentSorting={{this.sort}}
+              @label="Status mandaat"
+            />
+            <AuDataTableThSortable
               @field="start-date"
               @currentSorting={{this.sort}}
               @label="Start mandaat"
@@ -121,10 +132,15 @@
               @field="end-date"
               @currentSorting={{this.sort}}
               @label="Einde mandaat"
-            />            
-            {{!-- Disabling positions editing from 01/02/2022. Don't remove position
-            editing code, we will use it for positions unavailable in Loket --}}
-            {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
+            />
+            {{! Disabling positions editing from 01/02/2022. Don't remove position
+            editing code, we will use it for positions unavailable in Loket }}
+            {{#if
+              (and
+                this.isWorshipAdministrativeUnit
+                (not this.positionsCantBeCreatedOrEdited)
+              )
+            }}
               <SecuredArea>
                 <:edit>
                   <th></th>
@@ -158,6 +174,9 @@
               </AuLink>
             </td>
             <td>
+              {{mandatory.status.label}}
+            </td>
+            <td>
               {{#if mandatory.startDate}}
                 {{date-format mandatory.startDate}}
               {{/if}}
@@ -169,9 +188,14 @@
                 {{date-format mandatory.expectedEndDate}}
               {{/if}}
             </td>
-            {{!-- Disabling positions editing from 01/02/2022. Don't remove position
-            editing code, we will use it for positions unavailable in Loket --}}
-            {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
+            {{! Disabling positions editing from 01/02/2022. Don't remove position
+            editing code, we will use it for positions unavailable in Loket }}
+            {{#if
+              (and
+                this.isWorshipAdministrativeUnit
+                (not this.positionsCantBeCreatedOrEdited)
+              )
+            }}
               <SecuredArea>
                 <:edit>
                   <td>
@@ -197,9 +221,14 @@
     <div>
       <AuToolbar class="au-u-margin-bottom-small">
         <AuHeading @level="4" @skin="5">Mandatarissen</AuHeading>
-        {{!-- Disabling positions editing from 01/02/2022. Don't remove position
-        editing code, we will use it for positions unavailable in Loket --}}
-        {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
+        {{! Disabling positions editing from 01/02/2022. Don't remove position
+        editing code, we will use it for positions unavailable in Loket }}
+        {{#if
+          (and
+            this.isWorshipAdministrativeUnit
+            (not this.positionsCantBeCreatedOrEdited)
+          )
+        }}
           <SecuredArea>
             <:edit>
               <AuLink
@@ -232,6 +261,11 @@
               @label="Achternaam"
             />
             <AuDataTableThSortable
+              @field="status"
+              @currentSorting={{this.sort}}
+              @label="Status mandaat"
+            />
+            <AuDataTableThSortable
               @field="mandate.role-board.label"
               @currentSorting={{this.sort}}
               @label="Mandaat"
@@ -245,10 +279,15 @@
               @field="end-date"
               @currentSorting={{this.sort}}
               @label="Einde mandaat"
-            />   
-            {{!-- Disabling positions editing from 01/02/2022. Don't remove position
-            editing code, we will use it for positions unavailable in Loket --}}
-            {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
+            />
+            {{! Disabling positions editing from 01/02/2022. Don't remove position
+            editing code, we will use it for positions unavailable in Loket }}
+            {{#if
+              (and
+                this.isWorshipAdministrativeUnit
+                (not this.positionsCantBeCreatedOrEdited)
+              )
+            }}
               <SecuredArea>
                 <:edit>
                   <th></th>
@@ -274,6 +313,9 @@
               </AuLink>
             </td>
             <td>
+              {{mandatory.status.label}}
+            </td>
+            <td>
               <AuLink
                 @route="people.person.positions.mandatory"
                 @models={{array mandatory.governingAlias.id mandatory.id}}
@@ -293,9 +335,14 @@
                 {{date-format mandatory.expectedEndDate}}
               {{/if}}
             </td>
-            {{!-- Disabling positions editing from 01/02/2022. Don't remove position
-            editing code, we will use it for positions unavailable in Loket --}}
-            {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
+            {{! Disabling positions editing from 01/02/2022. Don't remove position
+            editing code, we will use it for positions unavailable in Loket }}
+            {{#if
+              (and
+                this.isWorshipAdministrativeUnit
+                (not this.positionsCantBeCreatedOrEdited)
+              )
+            }}
               <SecuredArea>
                 <:edit>
                   <td>

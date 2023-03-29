@@ -25,6 +25,7 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
 
     for (let mandatory of mandatories) {
       const mandate = await mandatory.mandate;
+      const status = await mandatory.status;
       const role = await mandate.roleBoard;
       const governingBody = await mandate.governingBody;
       const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
@@ -33,6 +34,7 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
       positions.push({
         role: role.label,
         type: 'mandatory',
+        status,
         id: mandatory.id,
         startDate: mandatory.startDate,
         endDate: mandatory.endDate,
@@ -41,6 +43,7 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
     }
 
     for (let agent of agents) {
+      const status = await agent.status;
       const boardPosition = await agent.boardPosition;
       const role = await boardPosition.roleBoard;
       const governingBodies = await boardPosition.governingBodies;
@@ -58,6 +61,7 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
         role: role.label,
         type: 'agent',
         id: agent.id,
+        status,
         startDate: agent.startDate,
         endDate: agent.endDate,
         administrativeUnits,

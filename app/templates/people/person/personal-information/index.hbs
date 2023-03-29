@@ -9,8 +9,8 @@
       <:action>
         <SecuredArea>
           <:edit>
-            {{!-- Disabling positions editing from 01/02/2022. Don't remove position
-            editing code, we will use it for positions unavailable in Loket --}}
+            {{! Disabling positions editing from 01/02/2022. Don't remove position
+            editing code, we will use it for positions unavailable in Loket }}
             {{#unless this.positionsCantBeCreatedOrEdited}}
               <AuLink
                 @route="people.person.personal-information.edit"
@@ -63,7 +63,6 @@
                     <AuLink
                       @route="people.person.personal-information.request-sensitive-data"
                       @query={{hash redirectUrl=this.currentURL}}
-
                     >
                       Consulteer
                     </AuLink>
@@ -73,7 +72,9 @@
                 <Item>
                   <:label>Geboortedatum</:label>
                   <:content>
-                    {{date-format @model.requestSensitiveInformation.dateOfBirth}}
+                    {{date-format
+                      @model.requestSensitiveInformation.dateOfBirth
+                    }}
                   </:content>
                 </Item>
               {{/if}}
@@ -92,8 +93,7 @@
               {{else if @model.requestSensitiveInformation.nationalities}}
                 <Item>
                   <:label>Nationaliteit</:label>
-                  <:content
-                  >{{this.nationalities}}</:content>
+                  <:content>{{this.nationalities}}</:content>
                 </Item>
               {{/if}}
               {{#if @model.askSensitiveInformation.gender}}
@@ -103,7 +103,6 @@
                     <AuLink
                       @route="people.person.personal-information.request-sensitive-data"
                       @query={{hash redirectUrl=this.currentURL}}
-
                     >
                       Consulteer
                     </AuLink>
@@ -125,7 +124,6 @@
                     <AuLink
                       @route="people.person.personal-information.request-sensitive-data"
                       @query={{hash redirectUrl=this.currentURL}}
-
                     >
                       Consulteer
                     </AuLink>
@@ -134,8 +132,9 @@
               {{else if @model.requestSensitiveInformation.ssn}}
                 <Item>
                   <:label>Rijksregisternummer</:label>
-                  <:content
-                  >{{rrn-format @model.requestSensitiveInformation.ssn}}</:content>
+                  <:content>{{rrn-format
+                      @model.requestSensitiveInformation.ssn
+                    }}</:content>
                 </Item>
               {{/if}}
             {{/if}}
@@ -162,24 +161,28 @@
                       {{position.administrativeUnit.name}}
                     </AuLink>
                   </:content>
-                  </Item>
+                </Item>
               {{else}}
                 <Item>
                   <:label>Organisaties</:label>
                   <:content>
-                    {{#each position.administrativeUnits as |administrativeUnit index|}}
+                    {{#each
+                      position.administrativeUnits
+                      as |administrativeUnit index|
+                    }}
                       <AuLink
                         @model={{administrativeUnit.id}}
                         @route="administrative-units.administrative-unit"
                       >
-                        {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
+                        {{administrativeUnit.name}}
+                        ({{administrativeUnit.classification.label}})
                       </AuLink>
                       {{#if (gt position.administrativeUnits.length 1)}}
                         {{unless index "/"}}
                       {{/if}}
                     {{/each}}
                   </:content>
-                  </Item>
+                </Item>
               {{/if}}
               {{#if position.primaryContact.email}}
                 <Item>
@@ -237,6 +240,14 @@
                 </Item>
               {{/if}}
 
+              {{#if position.status}}
+                <Item>
+                  <:label>Status positie</:label>
+                  <:content>
+                    {{position.status.label}}
+                  </:content>
+                </Item>
+              {{/if}}
               {{#if position.primaryContact.telephone}}
                 <Item>
                   <:label>Primair telefoonnummer</:label>
