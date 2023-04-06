@@ -58,6 +58,8 @@ export default class ClassificationSelectComponent extends Component {
         CLASSIFICATION_CODE.PROVINCE,
         CLASSIFICATION_CODE.OCMW,
         CLASSIFICATION_CODE.DISTRICT,
+        CLASSIFICATION_CODE.AGB,
+        CLASSIFICATION_CODE.APB,
       ];
     }
 
