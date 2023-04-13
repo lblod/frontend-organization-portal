@@ -46,11 +46,17 @@
                   <:content as |hasError|>
                     <TrimInput
                       @width="block"
+                      @disabled={{or this.isProvince this.isMunicipality}}
                       @value={{@model.administrativeUnit.name}}
                       @onUpdate={{fn (mut @model.administrativeUnit.name)}}
                       @error={{hasError}}
                       id="worship-service-name"
                     />
+                      {{#if (or this.isProvince this.isMunicipality)}}
+                      <AuHelpText>
+        De naam van een gemeente en provincie kan voorlopig niet langer aangepast worden. Indien toch een aanpassing nodig, gelieve deze via de helpdesk aan te vragen.
+                      </AuHelpText>
+                    {{/if}}
                   </:content>
                 </Item>
                 <Item @labelFor="classification">
