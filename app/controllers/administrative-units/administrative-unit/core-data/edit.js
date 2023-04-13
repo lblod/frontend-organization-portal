@@ -128,8 +128,14 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       yield identifierSharepoint.save();
 
       administrativeUnit = setEmptyStringsToNull(administrativeUnit);
-
-      yield administrativeUnit.save();
+      if (this.isProvince || this.isMunicipality) {
+        // set province or municipality name to null as data are already in the shared graph
+        administrativeUnit.name = null;
+        yield administrativeUnit.save();
+        yield administrativeUnit.reload();
+      } else {
+        yield administrativeUnit.save();
+      }
 
       this.router.transitionTo(
         'administrative-units.administrative-unit.core-data',
