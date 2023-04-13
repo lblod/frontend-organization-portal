@@ -2,13 +2,18 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Gerelateerde organisaties</:title>
-      <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
+      <:subtitle>{{@model.administrativeUnit.name}}
+        ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         {{#unless this.isDistrict}}
           <SecuredArea>
             <:edit>
-              <AuLink @route="administrative-units.administrative-unit.related-organizations.edit"
-                @skin="button-secondary" @icon="pencil" @iconAlignment="left">
+              <AuLink
+                @route="administrative-units.administrative-unit.related-organizations.edit"
+                @skin="button-secondary"
+                @icon="pencil"
+                @iconAlignment="left"
+              >
                 Bewerk
               </AuLink>
             </:edit>
@@ -36,6 +41,12 @@
       <RelatedOrganizations::ViewOcmw @model={{@model}} />
     {{/if}}
     {{#if this.isProvince}}
+      <RelatedOrganizations::ViewProvince @model={{@model}} />
+    {{/if}}
+    {{#if this.isAgb}}
+      <RelatedOrganizations::ViewAgb @model={{@model}} />
+    {{/if}}
+    {{#if this.isApb}}
       <RelatedOrganizations::ViewProvince @model={{@model}} />
     {{/if}}
 

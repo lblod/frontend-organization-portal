@@ -77,6 +77,16 @@ export default class AdministrativeUnitsIndexController extends Controller {
     return this.isWorshipService || this.isCentralWorshipService;
   }
 
+  get isAgbOrApb() {
+    return this.isAgb || this.isApb;
+  }
+  get isAgb() {
+    return this.classificationId === CLASSIFICATION_CODE.AGB;
+  }
+
+  get isApb() {
+    return this.classificationId === CLASSIFICATION_CODE.APB;
+  }
   get isWorshipService() {
     return this.classificationId === CLASSIFICATION_CODE.WORSHIP_SERVICE;
   }
