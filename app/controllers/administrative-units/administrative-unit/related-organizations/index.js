@@ -54,8 +54,6 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
   }
 
   get isApb() {
-    console.log(this.model.administrativeUnit.classification?.get('id'));
-    console.log(CLASSIFICATION_CODE.APB);
     return (
       this.model.administrativeUnit.classification?.get('id') ===
       CLASSIFICATION_CODE.APB
