@@ -8,16 +8,16 @@
             Provincie
           </:label>
           <:content>
-            <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
-              {{@model.isSubOrganizationOf.name}}
+            <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.isSubOrganizationOf.id}}>
+              {{@model.isSubOrganizationOf.isSubOrganizationOf.name}}
             </AuLink>
           </:content>
         </Item>
         <Item>
           <:label>Gemeente</:label>
           <:content>
-            <AuLink @route="administrative-units.administrative-unit.core-data" @model={{@model.isAssociatedWith.id}}>
-              {{@model.isAssociatedWith.name}}
+            <AuLink @route="administrative-units.administrative-unit.core-data" @model={{@model.isSubOrganizationOf.id}}>
+              {{@model.isSubOrganizationOf.name}}
             </AuLink>
           </:content>
         </Item>

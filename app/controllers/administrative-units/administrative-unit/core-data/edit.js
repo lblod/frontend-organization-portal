@@ -41,6 +41,19 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     );
   }
 
+  get isAgb() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.AGB
+    );
+  }
+
+  get isApb() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.APB
+    );
+  }
   @action
   setKbo(value) {
     this.model.structuredIdentifierKBO.localId = value;

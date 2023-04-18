@@ -19,6 +19,19 @@ export default class AdministrativeUnitsNewController extends Controller {
     );
   }
 
+  get isNewAgb() {
+    return (
+      this.model.administrativeUnitChangeset.classification?.id ===
+      CLASSIFICATION_CODE.AGB
+    );
+  }
+  get isNewApb() {
+    return (
+      this.model.administrativeUnitChangeset.classification?.id ===
+      CLASSIFICATION_CODE.APB
+    );
+  }
+
   get isNewDistrict() {
     return (
       this.model.administrativeUnitChangeset.classification?.id ===

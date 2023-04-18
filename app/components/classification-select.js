@@ -49,6 +49,8 @@ export default class ClassificationSelectComponent extends Component {
         CLASSIFICATION_CODE.WORSHIP_SERVICE,
         CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
         CLASSIFICATION_CODE.DISTRICT,
+        CLASSIFICATION_CODE.AGB,
+        CLASSIFICATION_CODE.APB,
       ];
     } else {
       allowedIds = [

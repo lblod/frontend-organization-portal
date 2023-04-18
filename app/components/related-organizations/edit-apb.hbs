@@ -20,10 +20,21 @@
             />
           </:content>
         </Item>
-        <Item @labelFor="related-municipality">
+          <Item
+          @labelFor="related-gemeente"
+          @required={{false}}
+          @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
+        >
           <:label>Gemeente</:label>
-          <:content>
-            {{@model.administrativeUnit.isAssociatedWith.name}}
+          <:content as |hasError|>
+            <MunicipalitySelect
+              @selected={{@model.administrativeUnit.isAssociatedWith}}
+              @onChange={{fn
+                (mut @model.administrativeUnit.isAssociatedWith)
+              }}
+              @error={{hasError}}
+              @id="related-gemeente"
+            />
           </:content>
         </Item>
       </:left>

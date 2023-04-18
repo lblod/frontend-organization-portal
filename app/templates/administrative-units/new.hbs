@@ -8,7 +8,7 @@
       <AuButtonGroup class="au-c-button-group--align-right">
         <AuLink @route="administrative-units" @skin="button-secondary">
           Annuleer
-        </AuLink>        
+        </AuLink>
         <AuButton
           @loading={{this.createAdministrativeUnitTask.isRunning}}
           type="submit"
@@ -273,7 +273,7 @@
 
             <Card.Columns>
               <:left as |Item|>
-              {{#if (or this.isNewOCMW this.isNewDistrict)}}
+              {{#if (or this.isNewOCMW this.isNewAgb this.isNewDistrict)}}
                 <Item
                   @labelFor="related-gemeente"
                   @required={{false}}
@@ -292,6 +292,7 @@
                     />
                   </:content>
                 </Item>
+
                 {{#if @model.administrativeUnitChangeset.isSubOrganizationOf}}
                   <Item>
                     <:label>
@@ -302,6 +303,7 @@
                     </:content>
                   </Item>
                 {{/if}}
+
               {{else}}
                   <Item
                     @labelFor="related-provincie"
@@ -320,6 +322,27 @@
                       />
                     </:content>
                   </Item>
+                  {{#if this.isNewApb}}
+  <Item
+                  @labelFor="related-gemeente"
+                  @required={{false}}
+                  @errorMessage={{@model.administrativeUnitChangeset.error.isAssociatedWith.validation}}
+                >
+                  <:label>Gemeente</:label>
+                  <:content as |hasError|>
+                    <AdministrativeUnitSelect
+                      @selected={{@model.administrativeUnitChangeset.isAssociatedWith}}
+                      @onChange={{fn
+                        (mut @model.administrativeUnitChangeset.isAssociatedWith)
+                      }}
+                      @classificationCodes={{this.classificationCodes}}
+                      @error={{hasError}}
+                      @id="related-gemeente"
+                    />
+                  </:content>
+                </Item>
+                  {{/if}}
+
                 {{/if}}
               </:left>
             </Card.Columns>
