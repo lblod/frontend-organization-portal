@@ -7,8 +7,6 @@ const EDITOR_ROLES = [
   'ABBOrganisatiePortaalErediensten-editeerder',
   'ABBOrganisatiePortaalGebruiker-beheerder',
   'ABBOrganisatiePortaalErediensten-beheerder',
-  //'ABBOrganisatiePortaalAgbApb-beheerder',
-  // 'ABBOrganisatiePortaalAgbApb-editeerder',
 ];
 
 const WORSHIP_ROLES = [
@@ -16,12 +14,6 @@ const WORSHIP_ROLES = [
   'ABBOrganisatiePortaalErediensten-editeerder',
   'ABBOrganisatiePortaalErediensten-lezer',
 ];
-
-// const AGB_APB_ROLES = [
-//   'ABBOrganisatiePortaalAgbApb-beheerder',
-//   'ABBOrganisatiePortaalAgbApb-editeerder',
-//   'ABBOrganisatiePortaalAgbApb-lezer',
-// ];
 
 const UNIT_ROLES = [
   'ABBOrganisatiePortaalGebruiker-editeerder',
@@ -32,7 +24,6 @@ const UNIT_ROLES = [
 const READER_ROLES = [
   'ABBOrganisatiePortaalErediensten-lezer',
   'ABBOrganisatiePortaalGebruiker-lezer',
-  //'ABBOrganisatiePortaalAgbApb-lezer',
 ];
 
 export default class CurrentSessionService extends Service {
@@ -65,10 +56,6 @@ export default class CurrentSessionService extends Service {
   get hasWorshipRole() {
     return WORSHIP_ROLES.includes(this.role.activeRole);
   }
-
-  // get hasAgbApbRole() {
-  //   return AGB_APB_ROLES.includes(this.role.activeRole);
-  // }
 
   get hasUnitRole() {
     return UNIT_ROLES.includes(this.role.activeRole);
