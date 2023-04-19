@@ -52,6 +52,20 @@ export default class SiteTypeSelectComponent extends Component {
     );
   }
 
+  get isAgb() {
+    return (
+      this.args.administrativeUnitClassification.get('id') ===
+      CLASSIFICATION_CODE.AGB
+    );
+  }
+
+  get isApb() {
+    return (
+      this.args.administrativeUnitClassification.get('id') ===
+      CLASSIFICATION_CODE.APB
+    );
+  }
+
   @task
   *loadSiteTypesTask() {
     let allTypes = yield this.store.findAll('site-type', { reload: true });
@@ -71,6 +85,12 @@ export default class SiteTypeSelectComponent extends Component {
       );
       filteredTypes.push(
         allTypes.find((type) => type.id == 'fbec5e94aba343b0a7361aca8a0c7d79') // Ander administratief adres
+      );
+    } else if (this.isAgb || this.isApb) {
+      filteredTypes.push(
+        allTypes.find(
+          (type) => type.id == 'dcc01338-842c-4fbd-ba68-3ca6f3af975c'
+        ) // CorrespondentieAddres
       );
     } else if (this.isProvince) {
       filteredTypes.push(

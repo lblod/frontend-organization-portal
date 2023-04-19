@@ -131,6 +131,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       secondaryContact.isValid &&
       structuredIdentifierKBO.isValid
     ) {
+      const siteTypes = yield this.store.findAll('site-type');
       let newAdministrativeUnit;
       // Set the proper type to the new admin unit
       if (this.isNewCentralWorshipService) {
@@ -171,6 +172,11 @@ export default class AdministrativeUnitsNewController extends Controller {
 
       primarySite.address = address;
       primarySite.contacts.pushObjects([contact, secondaryContact]);
+      if (this.isNewAgb || this.isNewApb) {
+        primarySite.siteType = siteTypes.find(
+          (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
+        );
+      }
       yield primarySite.save();
 
       newAdministrativeUnit.identifiers.pushObjects([
