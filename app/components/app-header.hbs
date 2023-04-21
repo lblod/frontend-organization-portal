@@ -11,6 +11,9 @@
       @alignment="right"
       role="menu"
     >
+      <AuLink @skin="tertiary" role="menuitem" @route="select-role">
+        <AuIcon @icon="user" @alignment="left" />Kies role
+      </AuLink>
       <AuButton @skin="tertiary" role="menuitem" {{on "click" this.logout}}>
         <AuIcon @icon="logout" @alignment="left" />Afmelden
       </AuButton>

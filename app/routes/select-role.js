@@ -8,9 +8,6 @@ export default class SelectRoleRoute extends Route {
   @service router;
   beforeModel(transition) {
     this.session.requireAuthentication(transition, 'login');
-    if (this.role.activeRole) {
-      this.router.replaceWith('index');
-    }
   }
 
   model() {
