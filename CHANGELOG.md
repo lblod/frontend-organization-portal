@@ -5,6 +5,20 @@
 
 
 
+
+## 1.17.0-0 (2023-05-08)
+
+#### :rocket: Enhancement
+* [#458](https://github.com/lblod/frontend-organization-portal/pull/458) select role in the user menu on the right top ([@nbittich](https://github.com/nbittich))
+* [#456](https://github.com/lblod/frontend-organization-portal/pull/456) add mandataris status ([@nbittich](https://github.com/nbittich))
+
+#### :bug: Bug Fix
+* [#457](https://github.com/lblod/frontend-organization-portal/pull/457) disable editing municipality province name ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
+
 ## 1.16.0 (2023-03-24)
 
 #### :rocket: Enhancement
