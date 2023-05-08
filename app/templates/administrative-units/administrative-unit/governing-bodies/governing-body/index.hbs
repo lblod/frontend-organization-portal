@@ -261,14 +261,14 @@
               @label="Achternaam"
             />
             <AuDataTableThSortable
-              @field="status"
-              @currentSorting={{this.sort}}
-              @label="Status mandaat"
-            />
-            <AuDataTableThSortable
               @field="mandate.role-board.label"
               @currentSorting={{this.sort}}
               @label="Mandaat"
+            />
+            <AuDataTableThSortable
+              @field="status"
+              @currentSorting={{this.sort}}
+              @label="Status mandaat"
             />
             <AuDataTableThSortable
               @field="start-date"
