@@ -313,15 +313,15 @@
               </AuLink>
             </td>
             <td>
-              {{mandatory.status.label}}
-            </td>
-            <td>
               <AuLink
                 @route="people.person.positions.mandatory"
                 @models={{array mandatory.governingAlias.id mandatory.id}}
               >
                 {{mandatory.mandate.roleBoard.label}}
               </AuLink>
+            </td>
+            <td>
+              {{mandatory.status.label}}
             </td>
             <td>
               {{#if mandatory.startDate}}
