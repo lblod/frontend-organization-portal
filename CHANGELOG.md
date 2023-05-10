@@ -6,6 +6,10 @@
 
 
 
+## 1.17.0-1 (2023-05-10)
+* bugfix order of columns
+
+
 ## 1.17.0-0 (2023-05-08)
 
 #### :rocket: Enhancement
