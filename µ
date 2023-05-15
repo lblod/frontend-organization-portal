@@ -16,12 +16,15 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @action
   async validateStartDate(validation) {
     await this.model.governingBody.validate();
+
+    console.log(validation);
     this.startDateValidation = validateDate(validation, false);
   }
 
   @action
   async validateEndDate(validation) {
     await this.model.governingBody.validate();
+    console.log(validation);
     this.endDateValidation = validateDate(validation);
   }
 
@@ -41,7 +44,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     yield this.model.governingBody.validate();
 
     if (
-      this.model.governingBody.isValid &&
+      this.model.governingBody.valid &&
       this.endDateValidation.valid &&
       this.startDateValidation.valid
     ) {
