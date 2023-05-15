@@ -63,8 +63,8 @@ function validateNoOverlap(otherBodies, startDate, endDate) {
       const otherStartDate = new Date(body.startDate).getTime();
 
       if (
-        otherStartDate >= startDate.getTime() &&
-        otherStartDate <= endDate.getTime()
+        otherStartDate > startDate.getTime() &&
+        otherStartDate < endDate.getTime()
       ) {
         return 'Geen overlap';
       }
@@ -73,8 +73,8 @@ function validateNoOverlap(otherBodies, startDate, endDate) {
       const otherEndDate = new Date(body.endDate).getTime();
 
       if (
-        otherEndDate >= startDate.getTime() &&
-        otherEndDate <= endDate.getTime()
+        otherEndDate > startDate.getTime() &&
+        otherEndDate < endDate.getTime()
       ) {
         return 'Geen overlap';
       }
