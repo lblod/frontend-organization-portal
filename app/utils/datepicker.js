@@ -40,7 +40,7 @@ export function validate(validation, allowEmpty = true, errorMessages) {
       case EMPTY_DATE: {
         return {
           valid: allowEmpty,
-          errorMessages: !allowEmpty
+          errorMessage: !allowEmpty
             ? errorMessages?.emptyDate || 'Vul de datum in.'
             : null,
         };
