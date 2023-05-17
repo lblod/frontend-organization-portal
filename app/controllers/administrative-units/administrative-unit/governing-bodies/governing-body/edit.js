@@ -13,22 +13,25 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @tracked
   endDateValidation = { valid: true };
 
+  resetValidation() {
+    this.startDateValidation = { valid: true };
+    this.endDateValidation = { valid: true };
+  }
   @action
   async validateStartDate(validation) {
-    await this.model.governingBody.validate();
-    this.startDateValidation = validateDate(validation, false);
+    this.resetValidation();
+    this.startDateValidation = validateDate(validation);
   }
 
   @action
   async validateEndDate(validation) {
-    await this.model.governingBody.validate();
+    this.resetValidation();
     this.endDateValidation = validateDate(validation);
   }
 
   @action
   cancel() {
-    this.startDateValidation = { valid: true };
-    this.endDateValidation = { valid: true };
+    this.resetValidation();
     this.model.governingBody.rollbackAttributes();
 
     this.router.transitionTo(

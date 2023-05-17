@@ -14,7 +14,7 @@ const governingBodyValidations = (governingBodies) => {
       validatePresence({
         presence: true,
         ignoreBlank: true,
-        message: 'Vul de effectieve einddatum in',
+        message: 'Vul de einddatum in',
       }),
       validateEndDateAfterStartDate(governingBodies),
     ],
@@ -39,11 +39,13 @@ function validateEndDateAfterStartDate(governingBodies) {
   };
 }
 function validateStartDateBeforeEndDate(governingBodies) {
-  return (_key, newValue, _oldValue, changes, content) => {
+  return (_key, newValue, oldValue, changes, content) => {
+    const newStartDateValue = newValue || oldValue;
+
     // The messages should also appear when the content of one of the fields is deleted.
     const effectiveEndDateValue = changes?.endDate || content.endDate;
 
-    const newStartDate = new Date(newValue);
+    const newStartDate = new Date(newStartDateValue);
 
     if (effectiveEndDateValue) {
       const effectiveEndDate = new Date(effectiveEndDateValue);
@@ -58,6 +60,9 @@ function validateStartDateBeforeEndDate(governingBodies) {
 }
 
 function validateNoOverlap(otherBodies, startDate, endDate) {
+  if (!otherBodies || !startDate || !endDate) {
+    return true; // do not validate if empty
+  }
   for (const body of otherBodies) {
     if (body.startDate) {
       const otherStartDate = new Date(body.startDate).getTime();
