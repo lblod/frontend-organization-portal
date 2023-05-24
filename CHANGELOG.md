@@ -6,6 +6,17 @@
 
 
 
+
+## 1.17.1-0 (2023-05-24)
+
+#### :bug: Bug Fix
+* [#460](https://github.com/lblod/frontend-organization-portal/pull/460) validation error bugfix ([@nbittich](https://github.com/nbittich))
+* [#459](https://github.com/lblod/frontend-organization-portal/pull/459) governing bodies date validation ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 1
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+
+
 ## 1.17.0 (2023-05-14)
 #### :rocket: Enhancement
 * [#458](https://github.com/lblod/frontend-organization-portal/pull/458) select role in the user menu on the right top ([@nbittich](https://github.com/nbittich))
