@@ -47,6 +47,8 @@ export default class AdministrativeUnitsIndexRoute extends Route {
         `;
       } else {
         filter['classification_id'] = `
+         ${CLASSIFICATION.AGB.id},
+         ${CLASSIFICATION.APB.id},
          ${CLASSIFICATION.MUNICIPALITY.id}
          ${CLASSIFICATION.PROVINCE.id}
          ${CLASSIFICATION.OCMW.id}

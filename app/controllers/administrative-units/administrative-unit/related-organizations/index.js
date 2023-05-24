@@ -46,6 +46,20 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
     );
   }
 
+  get isAgb() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.AGB
+    );
+  }
+
+  get isApb() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.APB
+    );
+  }
+
   get isProvince() {
     return (
       this.model.administrativeUnit.classification?.get('id') ===

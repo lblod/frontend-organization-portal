@@ -5,7 +5,16 @@ export default class AdministrativeUnitsAdministrativeUnitController extends Con
   get isWorshipAdministrativeUnit() {
     return this.isWorshipService || this.isCentralWorshipService;
   }
+  get isAgbOrApb() {
+    return this.isAgb || this.isApb;
+  }
+  get isAgb() {
+    return this.model.classification?.get('id') === CLASSIFICATION_CODE.AGB;
+  }
 
+  get isApb() {
+    return this.model.classification?.get('id') === CLASSIFICATION_CODE.APB;
+  }
   get isWorshipService() {
     return (
       this.model.classification?.get('id') ===

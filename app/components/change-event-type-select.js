@@ -6,6 +6,7 @@ import {
   CHANGE_EVENTS_CENTRAL_WORSHIP_SERVICE,
   CHANGE_EVENTS_MUNICIPALITY,
   CHANGE_EVENTS_OCMW,
+  CHANGE_EVENTS_AGB_APB,
   CHANGE_EVENTS_DISTRICT,
 } from 'frontend-organization-portal/models/change-event-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
@@ -45,6 +46,12 @@ export default class ChangeEventTypeSelectComponent extends Component {
       types = types.filter((t) =>
         this.isIdInList(t.id, CHANGE_EVENTS_DISTRICT)
       );
+    }
+    if (
+      classification.id == CLASSIFICATION_CODE.AGB ||
+      classification.id == CLASSIFICATION_CODE.APB
+    ) {
+      types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_AGB_APB));
     }
 
     return types;

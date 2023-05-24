@@ -34,6 +34,19 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     );
   }
 
+  get isAgb() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.AGB
+    );
+  }
+
+  get isApb() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.APB
+    );
+  }
   get isDistrict() {
     return (
       this.model.administrativeUnit.classification?.get('id') ===

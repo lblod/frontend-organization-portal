@@ -21,6 +21,8 @@ export default class AdministrativeUnitSelectByNameComponent extends Component {
         `;
     } else {
       filter['classification_id'] = `
+        ${CLASSIFICATION.AGB.id},
+         ${CLASSIFICATION.APB.id},
          ${CLASSIFICATION.MUNICIPALITY.id}
          ${CLASSIFICATION.PROVINCE.id}
          ${CLASSIFICATION.OCMW.id}
