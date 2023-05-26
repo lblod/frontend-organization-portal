@@ -6,6 +6,7 @@ import {
 } from 'frontend-organization-portal/models/contact-point';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import { getAddressValidations } from 'frontend-organization-portal/validations/address';
+import { getSiteValidations } from 'frontend-organization-portal/validations/site';
 import contactValidations from 'frontend-organization-portal/validations/contact-point';
 import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
 
@@ -28,7 +29,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewRoute extends 
 
     return {
       administrativeUnit,
-      site: this.store.createRecord('site'),
+      site: createValidatedChangeset(
+        this.store.createRecord('site'),
+        getSiteValidations()
+      ),
       address: createValidatedChangeset(
         this.store.createRecord('address'),
         getAddressValidations(true)
