@@ -42,11 +42,17 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     let { address, administrativeUnit, contact, secondaryContact, site } =
       this.model;
 
+    yield site.validate();
     yield address.validate();
     yield contact.validate();
     yield secondaryContact.validate();
 
-    if (address.isValid && contact.isValid && secondaryContact.isValid) {
+    if (
+      site.isValid &&
+      address.isValid &&
+      contact.isValid &&
+      secondaryContact.isValid
+    ) {
       if (address.isDirty) {
         address.fullAddress = combineFullAddress(address);
         address = setEmptyStringsToNull(address);

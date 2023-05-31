@@ -129,7 +129,7 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if @model.administrativeUnit.scope.exactMatch}}
+            {{#if ( and @model.administrativeUnit.scope.exactMatch  (or this.isMunicipality this.isProvince))}}
               <Item>
                 <:label>NIS</:label>
                 <:content>

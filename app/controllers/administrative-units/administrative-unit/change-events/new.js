@@ -75,6 +75,13 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
     });
   }
 
+  get isAgbOrApb() {
+    return (
+      this.model.classification.id === CLASSIFICATION_CODE.AGB ||
+      this.model.classification.id === CLASSIFICATION_CODE.APB
+    );
+  }
+
   @dropTask
   *createNewChangeEventTask(event) {
     event.preventDefault();
