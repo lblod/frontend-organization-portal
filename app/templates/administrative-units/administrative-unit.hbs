@@ -30,6 +30,7 @@
             </AuNavigationNestedLink>
           </li>
         {{/if}}
+        {{#unless this.isAgbOrApb}}
         <li class="au-c-list-navigation__item">
           <AuNavigationNestedLink
             @route="administrative-units.administrative-unit.governing-bodies"
@@ -37,6 +38,7 @@
             Bestuursorganen
           </AuNavigationNestedLink>
         </li>
+        {{/unless}}
         {{#if (eq @model.constructor.modelName "worship-service")}}
           <li class="au-c-list-navigation__item">
             <AuNavigationNestedLink
