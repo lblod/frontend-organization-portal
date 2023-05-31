@@ -14,7 +14,7 @@
               @skin="button-secondary"
             >
               Annuleer
-            </AuLink>            
+            </AuLink>
             <AuButton
               @loading={{this.save.isRunning}}
               @disabled={{this.save.isRunning}}
@@ -40,14 +40,19 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <Item @labelFor="site-type">
+                <Item @labelFor="site-type"
+ @required={{true}}
+
+                      @errorMessage={{@model.site.error.siteType.validation}}
+                >
                   <:label>Type vestiging</:label>
-                  <:content>
+                  <:content  as |hasError|>
                     <SiteTypeSelect
                       @selected={{@model.site.siteType}}
                       @onChange={{fn (mut @model.site.siteType)}}
                       @administrativeUnitClassification={{this.model.administrativeUnit.classification}}
                       @id="site-type"
+                      @error={{hasError}}
                     />
                   </:content>
                 </Item>
