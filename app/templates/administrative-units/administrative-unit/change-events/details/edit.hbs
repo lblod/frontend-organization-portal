@@ -24,7 +24,7 @@
             @skin="button-secondary"
           >
             Annuleer
-          </AuLink>          
+          </AuLink>
           <AuButton
             @loading={{this.save.isRunning}}
             @disabled={{this.save.isRunning}}
@@ -77,7 +77,7 @@
             {{/if}}
           </:left>
           <:right as |Item|>
-            {{#if @model.canAddDecisionInformation}}
+            {{#if (and (not this.isAgbOrApb) @model.canAddDecisionInformation)}}
               {{#unless this.isCityChangeEvent}}
                 <Item @labelFor="change-event-decision-activity-date"
                   @errorMessage={{this.endDateValidation.errorMessage}}

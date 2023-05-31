@@ -21,15 +21,17 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
   }
 
   async model() {
-    let { changeEvent, ...detailsPageModel } = this.modelFor(
-      'administrative-units.administrative-unit.change-events.details'
-    );
+    let { changeEvent, administrativeUnit, ...detailsPageModel } =
+      this.modelFor(
+        'administrative-units.administrative-unit.change-events.details'
+      );
 
     let changeEventType = await changeEvent.type;
     let canAddDecisionInformation =
       changeEventType.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED;
 
     let model = {
+      administrativeUnit,
       ...detailsPageModel,
       changeEvent: createValidatedChangeset(
         changeEvent,

@@ -20,7 +20,7 @@
             @skin="button-secondary"
           >
             Annuleer
-          </AuLink>          
+          </AuLink>
           <AuButton
             @loading={{this.createNewChangeEventTask.isRunning}}
             @disabled={{this.createNewChangeEventTask.isRunning}}
@@ -85,7 +85,7 @@
             {{/if}}
           </:left>
           <:right as |Item|>
-            {{#if @model.formState.canAddDecisionInformation}}
+            {{#if (and (not this.isAgbOrApb) @model.formState.canAddDecisionInformation)}}
               {{#unless @model.formState.isCityChangeEvent}}
                 <Item @labelFor="change-event-decision-activity-date"
                   @errorMessage={{this.endDateValidation.errorMessage}}
@@ -106,7 +106,7 @@
                 @errorMessage={{this.publicationEndDateValidation.errorMessage}}
               >
                 <:label>
-                  {{#if @model.formState.isCityChangeEvent}}
+                  {{#if (and (not this.isAgbOrApb) @model.formState.isCityChangeEvent)}}
                     Datum besluit
                   {{else}}
                     Datum publicatie BS

@@ -6,6 +6,7 @@ import { validate as validateDate } from 'frontend-organization-portal/utils/dat
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEditController extends Controller {
   @service router;
@@ -22,7 +23,14 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
       this.model.changeEvent.type.get('id') == CHANGE_EVENT_TYPE.CITY
     );
   }
-
+  get isAgbOrApb() {
+    return (
+      this.model.administrativeUnit.classification.get('id') ===
+        CLASSIFICATION_CODE.AGB ||
+      this.model.administrativeUnit.classification.get('id') ===
+        CLASSIFICATION_CODE.APB
+    );
+  }
   @action
   validateEndDate(validation) {
     this.endDateValidation = validateDate(validation);
