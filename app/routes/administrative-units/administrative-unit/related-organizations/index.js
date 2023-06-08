@@ -16,6 +16,8 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
 
     const isAssociatedWith = await administrativeUnit.isAssociatedWith;
     const isSubOrganizationOf = await administrativeUnit.isSubOrganizationOf;
+    const wasFoundedByOrganization =
+      await administrativeUnit.wasFoundedByOrganization;
     const subOrganizations = await this.loadSubOrganizationsTask.perform(
       administrativeUnit.id,
       params,
@@ -25,6 +27,7 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
 
     return {
       administrativeUnit,
+      wasFoundedByOrganization,
       isAssociatedWith,
       isSubOrganizationOf,
       subOrganizations,

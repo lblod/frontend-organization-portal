@@ -276,7 +276,7 @@
               {{#if (or this.isNewOCMW this.isNewAgb this.isNewDistrict)}}
                 <Item
                   @labelFor="related-gemeente"
-                  @required={{false}}
+                  @required={{this.isNewAgb}}
                   @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
                 >
                   <:label>Gemeente</:label>
@@ -304,6 +304,26 @@
                   </Item>
                 {{/if}}
 
+                {{#if this.isNewAgb}}
+                  <Item
+                    @labelFor="oprichting-gemeente"
+                    @required={{true}}
+                    @errorMessage={{@model.administrativeUnitChangeset.error.wasFoundedByOrganization.validation}}
+                  >
+                    <:label>Werd opgericht door</:label>
+                    <:content as |hasError|>
+                    <AdministrativeUnitSelect
+                      @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
+                      @onChange={{fn
+                        (mut @model.administrativeUnitChangeset.wasFoundedByOrganization)
+                      }}
+                      @classificationCodes={{this.classificationCodes}}
+                      @error={{hasError}}
+                      @id="oprichting-gemeente"
+                    />
+                    </:content>
+                </Item>
+                {{/if}}
               {{else}}
                   <Item
                     @labelFor="related-provincie"
@@ -341,6 +361,23 @@
                     />
                   </:content>
                 </Item>
+                  <Item
+                    @labelFor="opregicht-provincie"
+                    @required={{false}}
+                    @errorMessage={{@model.administrativeUnitChangeset.error.wasFoundedByOrganization.validation}}
+                  >
+                    <:label>Werd opgericht door</:label>
+                    <:content as |hasError|>
+                      <ProvinceOrganizationSelect
+                        @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
+                        @onChange={{fn
+                          (mut @model.administrativeUnitChangeset.wasFoundedByOrganization)
+                        }}
+                        @error={{hasError}}
+                        @id="opregicht-provincie"
+                      />
+                    </:content>
+                  </Item>
                   {{/if}}
 
                 {{/if}}

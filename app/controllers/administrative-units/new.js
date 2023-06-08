@@ -93,8 +93,10 @@ export default class AdministrativeUnitsNewController extends Controller {
   setClassification(value) {
     this.model.administrativeUnitChangeset.classification = value;
     this.model.administrativeUnitChangeset.subOrganizations = [];
+    this.model.administrativeUnitChangeset.foundedOrganizations = [];
     this.model.administrativeUnitChangeset.isAssociatedWith = [];
     this.model.administrativeUnitChangeset.isSubOrganizationOf = null;
+    this.model.administrativeUnitChangeset.wasFoundedByOrganization = null;
   }
 
   @dropTask
@@ -245,6 +247,8 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
   newAdministrativeUnit.classification = administrativeUnit.classification;
   newAdministrativeUnit.organizationStatus =
     administrativeUnit.organizationStatus;
+  newAdministrativeUnit.wasFoundedByOrganization =
+    administrativeUnit.wasFoundedByOrganization;
   newAdministrativeUnit.isSubOrganizationOf =
     administrativeUnit.isSubOrganizationOf;
   if (
@@ -253,6 +257,13 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
   ) {
     newAdministrativeUnit.subOrganizations =
       administrativeUnit.subOrganizations;
+  }
+  if (
+    administrativeUnit.foundedOrganizations &&
+    administrativeUnit.foundedOrganizations.length
+  ) {
+    newAdministrativeUnit.foundedOrganizations =
+      administrativeUnit.foundedOrganizations;
   }
   newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
   if (administrativeUnit.scope) {

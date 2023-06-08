@@ -21,6 +21,15 @@
             </AuLink>
           </:content>
         </Item>
+
+        <Item>
+          <:label>Werd opgericht door</:label>
+          <:content>
+            <AuLink @route="administrative-units.administrative-unit.core-data" @model={{@model.wasFoundedByOrganization.id}}>
+              {{@model.wasFoundedByOrganization.name}}
+            </AuLink>
+          </:content>
+        </Item>
       </:left>
     </Card.Columns>
   </:card>
