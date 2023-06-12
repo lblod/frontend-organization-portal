@@ -327,7 +327,7 @@
               {{else}}
                   <Item
                     @labelFor="related-provincie"
-                    @required={{false}}
+                    @required={{this.isNewApb}}
                     @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
                   >
                     <:label>Provincie</:label>
@@ -345,7 +345,7 @@
                   {{#if this.isNewApb}}
   <Item
                   @labelFor="related-gemeente"
-                  @required={{false}}
+                  @required={{true}}
                   @errorMessage={{@model.administrativeUnitChangeset.error.isAssociatedWith.validation}}
                 >
                   <:label>Gemeente</:label>
@@ -363,7 +363,7 @@
                 </Item>
                   <Item
                     @labelFor="opregicht-provincie"
-                    @required={{false}}
+                    @required={{true}}
                     @errorMessage={{@model.administrativeUnitChangeset.error.wasFoundedByOrganization.validation}}
                   >
                     <:label>Werd opgericht door</:label>
