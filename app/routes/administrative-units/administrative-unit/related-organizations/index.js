@@ -39,6 +39,7 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
     if (isProvince) {
       return yield this.store.query('administrative-unit', {
         'filter[:or:][is-sub-organization-of][:id:]': id,
+        'filter[:or:][was-founded-by-organization][:id:]': id,
         'filter[:or:][is-sub-organization-of][is-sub-organization-of][:id:]':
           id,
         'page[size]': 500,
@@ -47,7 +48,8 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
       });
     }
     return yield this.store.query('administrative-unit', {
-      'filter[is-sub-organization-of][:id:]': id,
+      'filter[:or:][is-sub-organization-of][:id:]': id,
+      'filter[:or:][was-founded-by-organization][:id:]': id,
       'page[size]': 500,
       include: 'classification',
       sort: params.sort,

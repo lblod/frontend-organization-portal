@@ -25,7 +25,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
   @dropTask({ cancelOn: 'deactivate' })
   *loadSubOrganizationsTask(id, params) {
     return yield this.store.query('administrative-unit', {
-      'filter[is-associated-with][:id:]': id,
+      'filter[:or:][is-associated-with][:id:]': id,
+      'filter[:or:][founded-organizations][:id:]': id,
       include: 'classification',
       sort: params.sort,
       page: { size: params.size, number: params.page },
