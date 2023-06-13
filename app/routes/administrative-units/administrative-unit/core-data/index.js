@@ -20,6 +20,17 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       contacts = await primarySite.contacts;
     }
 
+    let resultedFrom = (await administrativeUnit.resultedFrom).toArray();
+    resultedFrom = resultedFrom.sort((a1, a2) => {
+      if (!a2.date) {
+        return -1;
+      }
+      if (!a1.date) {
+        return 1;
+      }
+      return new Date(a2.date).getTime() - new Date(a1.date).getTime();
+    });
+
     const changeEvents = (await administrativeUnit.changedBy).toArray();
 
     let isCity = false;
@@ -34,6 +45,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
 
     return {
       administrativeUnit,
+      resultedFrom,
       isCity,
       primaryContact: findPrimaryContact(contacts),
       secondaryContact: findSecondaryContact(contacts),

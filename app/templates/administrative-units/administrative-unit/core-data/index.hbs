@@ -97,13 +97,12 @@
                 />
               </:content>
             </Item>
-            {{! TODO: Take the last date from the change events }}
-            {{#if @model.administrativeUnit.resultedFrom}}
+            {{#if @model.resultedFrom}}
               <Item>
                 <:content>
                   <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
                     Gewijzigd op
-                    {{date-format @model.administrativeUnit.resultedFrom.firstObject.date}}
+                    {{date-format @model.resultedFrom.firstObject.date}}
                   </AuHelpText>
                 </:content>
               </Item>
