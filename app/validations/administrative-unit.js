@@ -40,7 +40,20 @@ export default {
     ignoreBlank: true,
     message: 'Selecteer een optie',
   }),
-  /* todo this was disabled in OP-1705, as of today, this is not mandatory
+  wasFoundedByOrganization: validateConditionally(
+    validatePresence({
+      presence: true,
+      ignoreBlank: true,
+      message: 'Selecteer een optie',
+    }),
+    function (changes, content) {
+      return (
+        isMunicipality(changes, content) ||
+        isAgb(changes, content) ||
+        isApb(changes, content)
+      );
+    }
+  ),
   isSubOrganizationOf: validateConditionally(
     validatePresence({
       presence: true,
@@ -48,38 +61,41 @@ export default {
       message: 'Selecteer een optie',
     }),
     function (changes, content) {
-      const worshipService = isWorshipService(changes, content);
-      const worshipAdministrativeUnit = isWorshipAdministrativeUnit(
-        changes,
-        content
-      );
-      const province = isProvince(changes, content);
+      return isAgb(changes, content) || isApb(changes, content);
 
-      let unit = null;
-      if (changes.classification?.id && changes.recognizedWorshipType?.id) {
-        unit = changes;
-      } else {
-        unit = content;
-      }
+      //todo this was disabled in OP-1705, as of today, this is not mandatory
 
-      const typesThatHaveACentralWorshipService = [
-        RECOGNIZED_WORSHIP_TYPE.ISLAMIC,
-        RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC,
-        RECOGNIZED_WORSHIP_TYPE.ORTHODOX,
-      ];
+      //const worshipService = isWorshipService(changes, content);
+      //const worshipAdministrativeUnit = isWorshipAdministrativeUnit(
+      //  changes,
+      //  content
+      //);
+      // const province = isProvince(changes, content);
 
-      const requiresCentralWorshipService =
-        typesThatHaveACentralWorshipService.find(
-          (id) => id == unit.recognizedWorshipType?.get('id')
-        );
-
-      return (
-        (!worshipAdministrativeUnit && !province) ||
-        (worshipService && requiresCentralWorshipService)
-      );
+      // let unit = null;
+      // if (changes.classification?.id && changes.recognizedWorshipType?.id) {
+      //   unit = changes;
+      // } else {
+      //   unit = content;
+      // }
+      //
+      // const typesThatHaveACentralWorshipService = [
+      //   RECOGNIZED_WORSHIP_TYPE.ISLAMIC,
+      //   RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC,
+      //   RECOGNIZED_WORSHIP_TYPE.ORTHODOX,
+      // ];
+      //
+      // const requiresCentralWorshipService =
+      //   typesThatHaveACentralWorshipService.find(
+      //     (id) => id == unit.recognizedWorshipType?.get('id')
+      //   );
+      //
+      // return (
+      //   (!worshipAdministrativeUnit && !province) ||
+      //   (worshipService && requiresCentralWorshipService)
+      // );
     }
   ),
-   */
 };
 
 export function getStructuredIdentifierKBOValidations(store) {
@@ -100,6 +116,19 @@ export function getStructuredIdentifierKBOValidations(store) {
 //   );
 // }
 
+function isMunicipality(changes, content) {
+  return hasClassificationId(
+    changes,
+    content,
+    CLASSIFICATION_CODE.MUNICIPALITY
+  );
+}
+function isAgb(changes, content) {
+  return hasClassificationId(changes, content, CLASSIFICATION_CODE.AGB);
+}
+function isApb(changes, content) {
+  return hasClassificationId(changes, content, CLASSIFICATION_CODE.APB);
+}
 function isWorshipAdministrativeUnit(changes, content) {
   return (
     hasClassificationId(

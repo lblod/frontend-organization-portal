@@ -156,4 +156,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       );
     }
   }
+  get classificationCodes() {
+    return [CLASSIFICATION_CODE.MUNICIPALITY];
+  }
 }
