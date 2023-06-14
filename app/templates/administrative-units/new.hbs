@@ -86,9 +86,9 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if this.isNewWorshipService}}
+    {{#if this.isNewWorshipService}}
               <Item @labelFor="denomination">
-                <:label>Strekking</:label>
+    <:label>Strekking</:label>
                 <:content>
                   <TrimInput
                     @width="block"
@@ -283,9 +283,7 @@
                   <:content as |hasError|>
                     <AdministrativeUnitSelect
                       @selected={{@model.administrativeUnitChangeset.isSubOrganizationOf}}
-                      @onChange={{fn
-                        (mut @model.administrativeUnitChangeset.isSubOrganizationOf)
-                      }}
+                      @onChange={{this.setRelation}}
                       @classificationCodes={{this.classificationCodes}}
                       @error={{hasError}}
                       @id="related-gemeente"
@@ -313,10 +311,9 @@
                     <:label>Werd opgericht door</:label>
                     <:content as |hasError|>
                     <AdministrativeUnitSelect
+                      @disabled={{true}}
                       @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
-                      @onChange={{fn
-                        (mut @model.administrativeUnitChangeset.wasFoundedByOrganization)
-                      }}
+                      @onChange={{this.setRelation }}
                       @classificationCodes={{this.classificationCodes}}
                       @error={{hasError}}
                       @id="oprichting-gemeente"
@@ -334,8 +331,7 @@
                     <:content as |hasError|>
                       <ProvinceOrganizationSelect
                         @selected={{@model.administrativeUnitChangeset.isSubOrganizationOf}}
-                        @onChange={{fn
-                          (mut @model.administrativeUnitChangeset.isSubOrganizationOf)
+                        @onChange={{this.setRelation
                         }}
                         @error={{hasError}}
                         @id="related-provincie"
@@ -369,9 +365,9 @@
                     <:label>Werd opgericht door</:label>
                     <:content as |hasError|>
                       <ProvinceOrganizationSelect
+                      @disabled={{true}}
                         @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
-                        @onChange={{fn
-                          (mut @model.administrativeUnitChangeset.wasFoundedByOrganization)
+                        @onChange={{this.setRelation
                         }}
                         @error={{hasError}}
                         @id="opregicht-provincie"

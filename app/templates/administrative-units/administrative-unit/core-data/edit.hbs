@@ -260,8 +260,7 @@
                   <:content as |hasError|>
                     <AdministrativeUnitSelect
                       @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                      @onChange={{fn
-                        (mut @model.administrativeUnit.isSubOrganizationOf)
+                      @onChange={{this.setRelation
                       }}
                       @classificationCodes={{this.classificationCodes}}
                       @error={{hasError}}
@@ -289,9 +288,9 @@
                     <:label>Werd opgericht door</:label>
                     <:content as |hasError|>
                     <AdministrativeUnitSelect
+                      @disabled={{true}}
                       @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
-                      @onChange={{fn
-                        (mut @model.administrativeUnit.wasFoundedByOrganization)
+                      @onChange={{this.setRelation
                       }}
                       @classificationCodes={{this.classificationCodes}}
                       @error={{hasError}}
@@ -309,8 +308,7 @@
                     <:content as |hasError|>
                       <ProvinceOrganizationSelect
                         @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                        @onChange={{fn
-                          (mut @model.administrativeUnit.isSubOrganizationOf)
+                        @onChange={{this.setRelation
                         }}
                         @error={{hasError}}
                         @id="related-provincie"
@@ -343,9 +341,9 @@
                     <:label>Werd opgericht door</:label>
                     <:content as |hasError|>
                       <ProvinceOrganizationSelect
+                      @disabled={{true}}
                         @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
-                        @onChange={{fn
-                          (mut @model.administrativeUnit.wasFoundedByOrganization)
+                        @onChange={{this.setRelation
                         }}
                         @error={{hasError}}
                         @id="opregicht-provincie"
