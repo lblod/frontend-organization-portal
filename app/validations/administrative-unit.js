@@ -32,7 +32,9 @@ export default {
       message: 'Selecteer een optie',
     }),
     function (changes, content) {
-      return isWorshipAdministrativeUnit(changes, content);
+      return (
+        isWorshipAdministrativeUnit(changes, content) || isApb(changes, content)
+      );
     }
   ),
   organizationStatus: validatePresence({
