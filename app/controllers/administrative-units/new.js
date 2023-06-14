@@ -85,6 +85,12 @@ export default class AdministrativeUnitsNewController extends Controller {
   }
 
   @action
+  setRelation(unit) {
+    this.model.administrativeUnitChangeset.isSubOrganizationOf = unit;
+    if (this.isNewAgb || this.isNewApb)
+      this.model.administrativeUnitChangeset.wasFoundedByOrganization = unit;
+  }
+  @action
   setKbo(value) {
     this.model.structuredIdentifierKBO.localId = value;
   }

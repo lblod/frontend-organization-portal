@@ -58,7 +58,12 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   setKbo(value) {
     this.model.structuredIdentifierKBO.localId = value;
   }
-
+  @action
+  setRelation(unit) {
+    this.model.administrativeUnit.isSubOrganizationOf = unit;
+    if (this.isAgb || this.isApb)
+      this.model.administrativeUnit.wasFoundedByOrganization = unit;
+  }
   @dropTask
   *save(event) {
     event.preventDefault();
