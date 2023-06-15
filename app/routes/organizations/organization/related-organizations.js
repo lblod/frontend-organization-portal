@@ -27,7 +27,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
     return yield this.store.query('administrative-unit', {
       'filter[:or:][is-associated-with][:id:]': id,
       'filter[:or:][founded-organizations][:id:]': id,
-      include: 'classification',
+      include: ['classification', 'organization-status'].join(),
       sort: params.sort,
       page: { size: params.size, number: params.page },
     });

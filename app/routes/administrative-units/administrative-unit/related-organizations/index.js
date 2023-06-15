@@ -43,7 +43,7 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
         'filter[:or:][is-sub-organization-of][is-sub-organization-of][:id:]':
           id,
         'page[size]': 500,
-        include: 'classification',
+        include: ['classification', 'organization-status'].join(),
         sort: params.sort,
       });
     }
@@ -51,7 +51,7 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
       'filter[:or:][is-sub-organization-of][:id:]': id,
       'filter[:or:][was-founded-by-organization][:id:]': id,
       'page[size]': 500,
-      include: 'classification',
+      include: ['classification', 'organization-status'].join(),
       sort: params.sort,
     });
   }
