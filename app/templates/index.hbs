@@ -139,6 +139,35 @@
             </c.footer>
           </AuCard>
         </li>
+        <li class="au-o-grid__item au-u-1-2@medium au-u-2-5@large">
+          <AuCard @flex={{true}} as |c|>
+            <c.header @badgeSkin="brand" @badgeIcon="sitemap">
+              <AuHeading @level="3" @skin="4">
+                Organisaties
+              </AuHeading>
+            </c.header>
+            <c.content>
+              <p>
+                Bekijk en bewerk
+              </p>
+              <ul>
+                <li>
+                  Data over organisatie
+                </li>
+              </ul>
+            </c.content>
+            <c.footer>
+              <AuButtonGroup class="au-c-button-group--wrap">
+                <AuButton
+                  {{on "click" (fn this.goToContext "organizations")}}
+                >
+                  Ga naar organisaties
+                </AuButton>
+              </AuButtonGroup>
+            </c.footer>
+          </AuCard>
+        </li>
+
       </ul>
     </div>
   </:content>
