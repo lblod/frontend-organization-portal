@@ -106,6 +106,21 @@
                 />
               </:content>
             </Item>
+            <Item
+              @labelFor="site-address-country"
+              @required={{true}}
+              @errorMessage={{@address.error.country.validation}}
+            >
+              <:label>Land</:label>
+              <:content as |hasError|>
+                <CountrySelect
+                  @selected={{@address.country}}
+                  @onChange={{fn (mut @address.country)}}
+                  @id="site-address-country"
+                  @error={{hasError}}
+                />
+              </:content>
+            </Item>
           </:commonInput>
         </AddressSearch>
       </:left>
