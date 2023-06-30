@@ -8,6 +8,10 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   @service currentSession;
   @service router;
 
+  queryParams = {
+    sort: { refreshModel: true },
+  };
+
   beforeModel() {
     if (!this.currentSession.canEdit) {
       this.router.transitionTo('route-not-found', {
@@ -16,13 +20,13 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     }
   }
 
-  async model() {
+  async model(params) {
     let administrativeUnit = await this.modelFor(
       'administrative-units.administrative-unit.related-organizations'
     );
 
     const subOrganizations = (
-      await this.loadSubOrganizationsTask.perform(administrativeUnit.id)
+      await this.loadSubOrganizationsTask.perform(administrativeUnit.id, params)
     ).toArray();
 
     return {
@@ -35,11 +39,12 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   }
 
   @dropTask({ cancelOn: 'deactivate' })
-  *loadSubOrganizationsTask(id) {
+  *loadSubOrganizationsTask(id, params) {
     return yield this.store.query('administrative-unit', {
       'filter[is-sub-organization-of][:id:]': id,
       'page[size]': 500,
       include: 'classification',
+      sort: params.sort,
     });
   }
 }
