@@ -106,6 +106,8 @@
                 />
               </:content>
             </Item>
+          </:commonInput>
+          <:manualAddressInputAfterCommonInput>
             <Item
               @labelFor="site-address-country"
               @required={{true}}
@@ -121,7 +123,7 @@
                 />
               </:content>
             </Item>
-          </:commonInput>
+          </:manualAddressInputAfterCommonInput>
         </AddressSearch>
       </:left>
       <:right as |Item|>
