@@ -11,12 +11,14 @@
             {{@address.fullAddress}}
           </:content>
         </Item>
-        <Item>
-          <:label>Provincie</:label>
-          <:content>
-            {{@address.province}}
-          </:content>
-        </Item>
+        {{#if @address.province}}
+          <Item>
+            <:label>Provincie</:label>
+            <:content>
+              {{@address.province}}
+            </:content>
+          </Item>
+        {{/if}}
       </:left>
       <:right as |Item|>
         {{#if @primaryContact.telephone}}

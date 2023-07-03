@@ -18,20 +18,26 @@ export default class AddressModel extends Model {
 }
 
 export function combineFullAddress(address) {
-  let fullStreet = `${address.street || ''} ${address.number || ''} ${
+  let fullAddress = [];
+
+  const fullStreet = `${address.street || ''} ${address.number || ''} ${
     address.boxNumber || ''
   }`.trim();
 
-  let muncipalityInformation = `${address.postcode || ''} ${
-    address.municipality || ''
-  }`.trim();
+  if (fullStreet) fullAddress.push(fullStreet);
 
-  if (fullStreet && muncipalityInformation) {
-    return `${fullStreet}, ${muncipalityInformation}`;
-  } else if (fullStreet) {
-    return fullStreet;
-  } else if (muncipalityInformation) {
-    return muncipalityInformation;
+  const municipalityInformation = `
+    ${address.postcode || ''} ${address.municipality || ''}
+  `.trim();
+
+  if (municipalityInformation) fullAddress.push(municipalityInformation);
+
+  const countryInformation = `${address.country || ''}`;
+
+  if (countryInformation) fullAddress.push(countryInformation);
+
+  if (fullAddress.length) {
+    return fullAddress.join(', ');
   } else {
     return null;
   }

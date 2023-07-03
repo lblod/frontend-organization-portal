@@ -104,6 +104,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       }
 
       if (address.isDirty) {
+        if (address.country != 'België') {
+          address.province = '';
+        }
         address.fullAddress = combineFullAddress(address);
         address = setEmptyStringsToNull(address);
         yield address.save();

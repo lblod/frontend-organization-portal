@@ -12,6 +12,21 @@
         >
           <:manualAddressInputBeforeButton>
             <Item
+              @labelFor="site-address-country"
+              @required={{true}}
+              @errorMessage={{@address.error.country.validation}}
+            >
+              <:label>Land</:label>
+              <:content as |hasError|>
+                <CountrySelect
+                  @selected={{@address.country}}
+                  @onChange={{this.updateCountry}}
+                  @id="site-address-country"
+                  @error={{hasError}}
+                />
+              </:content>
+            </Item>
+            <Item
               @labelFor="site-address-street-name"
               @required={{true}}
               @errorMessage={{@address.error.street.validation}}
@@ -72,40 +87,61 @@
                 />
               </:content>
             </Item>
-            <Item
-              @labelFor="site-address-municipality"
-              @required={{true}}
-              @errorMessage={{@address.error.municipality.validation}}
-            >
-              <:label>Gemeente</:label>
-              <:content as |hasError|>
-                <MunicipalitySelectByName
-                  @selected={{@address.municipality}}
-                  @selectedProvince={{@address.province}}
-                  @onChange={{fn (mut @address.municipality)}}
-                  @id="site-address-municipality"
-                  @error={{hasError}}
-                />
-              </:content>
-            </Item>
+            {{#if this.isCountryBelgium}}
+              <Item
+                @labelFor="site-address-municipality"
+                @required={{true}}
+                @errorMessage={{@address.error.municipality.validation}}
+              >
+                <:label>Gemeente</:label>
+                <:content as |hasError|>
+                  <MunicipalitySelectByName
+                    @selected={{@address.municipality}}
+                    @selectedProvince={{@address.province}}
+                    @onChange={{fn (mut @address.municipality)}}
+                    @id="site-address-municipality"
+                    @error={{hasError}}
+                  />
+                </:content>
+              </Item>
+            {{else}}
+              <Item
+                @labelFor="site-address-municipality"
+                @required={{true}}
+                @errorMessage={{@address.error.municipality.validation}}
+              >
+                <:label>Gemeente</:label>
+                <:content as |hasError|>
+                  <TrimInput
+                    @width="block"
+                    @value={{@address.municipality}}
+                    @onUpdate={{fn (mut @address.municipality)}}
+                    @error={{hasError}}
+                    id="site-address-municipality"
+                  />
+                </:content>
+              </Item>
+            {{/if}}
           </:manualAddressInput>
           <:commonInput>
-            <Item
-              @labelFor="site-address-province"
-              @required={{true}}
-              @errorMessage={{@address.error.province.validation}}
-            >
-              <:label>Provincie</:label>
-              <:content as |hasError|>
-                <ProvinceSelect
-                  @selected={{@address.province}}
-                  @selectedMunicipality={{@address.municipality}}
-                  @onChange={{fn (mut @address.province)}}
-                  @id="site-address-province"
-                  @error={{hasError}}
-                />
-              </:content>
-            </Item>
+            {{#if this.isCountryBelgium}}
+              <Item
+                @labelFor="site-address-province"
+                @required={{true}}
+                @errorMessage={{@address.error.province.validation}}
+              >
+                <:label>Provincie</:label>
+                <:content as |hasError|>
+                  <ProvinceSelect
+                    @selected={{@address.province}}
+                    @selectedMunicipality={{@address.municipality}}
+                    @onChange={{fn (mut @address.province)}}
+                    @id="site-address-province"
+                    @error={{hasError}}
+                  />
+                </:content>
+              </Item>
+            {{/if}}
           </:commonInput>
         </AddressSearch>
       </:left>

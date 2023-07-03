@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditController extends Controller {
   @service router;
   @tracked isPrimarySite;
@@ -54,6 +55,9 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
       secondaryContact.isValid
     ) {
       if (address.isDirty) {
+        if (address.country != 'België') {
+          address.province = '';
+        }
         address.fullAddress = combineFullAddress(address);
         address = setEmptyStringsToNull(address);
 

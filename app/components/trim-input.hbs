@@ -4,6 +4,7 @@
   autocomplete={{@autocomplete}}
   @width={{@width}}
   @id={{@id}}
-  @value={{this.value}}
+  @value={{@value}}
+  {{on "focusout" (perform this.trimInput)}}
   ...attributes
 />
