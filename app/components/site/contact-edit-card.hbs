@@ -20,7 +20,7 @@
               <:content as |hasError|>
                 <CountrySelect
                   @selected={{@address.country}}
-                  @onChange={{fn (mut @address.country)}}
+                  @onChange={{this.updateCountry}}
                   @id="site-address-country"
                   @error={{hasError}}
                 />
