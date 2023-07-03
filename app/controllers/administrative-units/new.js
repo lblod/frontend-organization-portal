@@ -80,6 +80,19 @@ export default class AdministrativeUnitsNewController extends Controller {
     );
   }
 
+  get isNewIGS() {
+    const typesThatAreIGS = [
+      CLASSIFICATION_CODE.PROJECTVERENIGING,
+      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+    ];
+
+    return typesThatAreIGS.find(
+      (id) => id == this.model.administrativeUnitChangeset.classification?.id
+    );
+  }
+
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }

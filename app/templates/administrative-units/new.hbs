@@ -146,6 +146,23 @@
                 </:content>
               </Item>
             {{/if}}
+            {{#if this.isNewIGS}}
+              <Item 
+                @labelFor="geplandeEinddatum" 
+                @required={{true}}
+                @errorMessage={{@model.administrativeUnitChangeset.error.geplandeEinddatum.validation}}
+              >
+                <:label>Geplande einddatum</:label>
+                <:content  as |hasError|>
+                  <AuDatePicker 
+                    @onChange={{fn
+                      (mut @model.administrativeUnitChangeset.geplandeEinddatum)
+                    }}
+                    @error={{hasError}}
+                  />
+                </:content>
+              </Item>
+            {{/if}}
           </:left>
           <:right as |Item|>
             <Item
