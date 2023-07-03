@@ -81,7 +81,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
         administrativeUnit,
         administrativeUnitValidations
       ),
-      address: createValidatedChangeset(address, getAddressValidations(true)),
+      address: createValidatedChangeset(address, getAddressValidations()),
       contact: createValidatedChangeset(primaryContact, contactValidations),
       secondaryContact: createValidatedChangeset(
         secondaryContact,
