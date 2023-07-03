@@ -50,7 +50,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute ext
 
     return {
       site: createValidatedChangeset(site, getSiteValidations()),
-      address: createValidatedChangeset(address, getAddressValidations()),
+      address: createValidatedChangeset(address, getAddressValidations(true)),
       contact: createValidatedChangeset(contact, contactValidations),
       secondaryContact: createValidatedChangeset(
         secondaryContact,

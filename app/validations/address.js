@@ -1,4 +1,5 @@
 import { validatePresence } from 'ember-changeset-validations/validators';
+import { validateConditionally } from 'frontend-organization-portal/validators/validate-conditionally';
 
 export function getAddressValidations(isAlwaysRequired = false) {
   const REQUIRED_MESSAGE = 'Vul het volledige adres in';
@@ -45,12 +46,31 @@ export function getAddressValidations(isAlwaysRequired = false) {
         : ['street', 'number', 'postcode', 'municipality', 'province'],
     }),
   };
+
   if (isProvinceRequired) {
-    addressValidation.province = validatePresence({
-      presence: true,
-      ignoreBlank: true,
-      message: REQUIRED_MESSAGE,
-    });
+    addressValidation.province = validateConditionally(
+      validatePresence({
+        presence: true,
+        ignoreBlank: true,
+        message: REQUIRED_MESSAGE,
+      }),
+
+      function (changes, content) {
+        return isCountryBelgium(changes, content);
+      }
+    );
   }
+
   return addressValidation;
+}
+
+function isCountryBelgium(changes, content) {
+  let address = null;
+  if (changes.country) {
+    address = changes;
+  } else {
+    address = content;
+  }
+
+  return address.country === 'België';
 }

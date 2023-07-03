@@ -38,7 +38,7 @@ export default class AdministrativeUnitsNewRoute extends Route {
       primarySite: this.store.createRecord('site'),
       address: createValidatedChangeset(
         this.store.createRecord('address'),
-        getAddressValidations()
+        getAddressValidations(true)
       ),
       contact: createValidatedChangeset(
         createPrimaryContact(this.store),

@@ -35,7 +35,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewRoute extends 
       ),
       address: createValidatedChangeset(
         this.store.createRecord('address'),
-        getAddressValidations()
+        getAddressValidations(true)
       ),
       contact: createValidatedChangeset(
         createPrimaryContact(this.store),
