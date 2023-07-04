@@ -10,5 +10,6 @@ export default class ContactEditCard extends Component {
   updateCountry(value) {
     this.args.address.country = value;
     this.args.address.municipality = null;
+    this.args.address.province = null;
   }
 }
