@@ -61,7 +61,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
   }
 
   get modelHasOnlyWorshipAdministrativeUnits() {
-    if (this.administrativeUnits) {
+    if (this.administrativeUnits && !this.isIGS) {
       return !this.administrativeUnits.toArray().some((adminUnit) => {
         return (
           adminUnit.classification_id !== CLASSIFICATION_CODE.WORSHIP_SERVICE &&
@@ -95,6 +95,17 @@ export default class AdministrativeUnitsIndexController extends Controller {
     return (
       this.classificationId === CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
     );
+  }
+
+  get isIGS() {
+    const typesThatAreIGS = [
+      CLASSIFICATION_CODE.PROJECTVERENIGING,
+      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+    ];
+
+    return typesThatAreIGS.find((id) => id === this.classificationId);
   }
 
   @action
