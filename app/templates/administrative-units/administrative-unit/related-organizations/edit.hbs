@@ -68,9 +68,7 @@
             @removeSubOrganization={{this.removeSubOrganization}}
           />
         {{/if}}
-
         {{#if this.isApb}}
-
           <RelatedOrganizations::EditApb
             @model={{@model}}
             @addNewSubOrganization={{this.addNewSubOrganization}}
@@ -79,8 +77,15 @@
           />
         {{/if}}
         {{#if this.isAgb}}
-
           <RelatedOrganizations::EditAgb
+            @model={{@model}}
+            @addNewSubOrganization={{this.addNewSubOrganization}}
+            @updateSubOrganization={{this.updateSubOrganization}}
+            @removeSubOrganization={{this.removeSubOrganization}}
+          />
+        {{/if}}
+        {{#if this.isIgs}}
+          <RelatedOrganizations::EditIgs
             @model={{@model}}
             @addNewSubOrganization={{this.addNewSubOrganization}}
             @updateSubOrganization={{this.updateSubOrganization}}

@@ -49,6 +49,8 @@
     {{#if this.isApb}}
       <RelatedOrganizations::ViewApb @model={{@model}} />
     {{/if}}
-
+    {{#if this.isIgs}}
+      <RelatedOrganizations::ViewIgs @model={{@model}} />
+    {{/if}}
   </div>
 </div>

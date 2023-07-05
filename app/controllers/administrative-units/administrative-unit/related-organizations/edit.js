@@ -47,10 +47,24 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
       CLASSIFICATION_CODE.APB
     );
   }
+
   get isDistrict() {
     return (
       this.model.administrativeUnit.classification?.get('id') ===
       CLASSIFICATION_CODE.DISTRICT
+    );
+  }
+
+  get isIgs() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+        CLASSIFICATION_CODE.PROJECTVERENIGING ||
+      this.model.administrativeUnit.classification?.get('id') ===
+        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
+      this.model.administrativeUnit.classification?.get('id') ===
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
+      this.model.administrativeUnit.classification?.get('id') ===
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
     );
   }
 
