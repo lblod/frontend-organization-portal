@@ -108,7 +108,6 @@ export default {
       validateFutureDate,
     ],
     function (changes, content) {
-      console.log('running');
       return isIGS(changes, content);
     }
   ),
