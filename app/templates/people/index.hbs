@@ -138,8 +138,7 @@
               {{#each person.organizations as |organization index|}}
                 {{#if (and
                   organization.id
-                  (not-eq organization.classification "Autonoom gemeentebedrijf")
-                  (not-eq organization.classification "Autonoom provinciebedrijf")
+                  (not organization.isAgbOrApb)
                 )}}
                   <AuLink
                     @route="administrative-units.administrative-unit"
@@ -164,10 +163,7 @@
                       ({{organization.classification}})
                     {{/if}}
                   </AuLink>
-                {{else if (or
-                  (eq organization.classification "Autonoom gemeentebedrijf")
-                  (eq organization.classification "Autonoom provinciebedrijf")
-                )}}
+                {{else if organization.isAgbOrApb}}
                   {{person.organization_name}}
                 {{/if}}
                 {{#if (gt person.organizations.length 1)}}
