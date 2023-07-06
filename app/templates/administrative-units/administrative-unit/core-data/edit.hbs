@@ -157,6 +157,34 @@
                     </:content>
                   </Item>
                 {{/if}}
+                {{#if this.isIGS}}
+                  <Item 
+                    @labelFor="geplandeEinddatum" 
+                    @required={{true}}
+                    @errorMessage={{@model.administrativeUnit.error.geplandeEinddatum.validation}}
+                  >
+                    <:label>Geplande einddatum</:label>
+                    <:content  as |hasError|>
+                      <Datepicker 
+                        @onChange={{fn
+                          (mut @model.administrativeUnit.geplandeEinddatum)
+                        }}
+                        @error={{hasError}}
+                      />
+                    </:content>
+                  </Item>
+                  <Item @labelFor="doel">
+                    <:label>Doel</:label>
+                    <:content>
+                      <AuTextarea
+                        @width="block"
+                        @onChange={{fn
+                          (mut @model.administrativeUnit.doel)
+                        }}
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
               </:left>
               <:right as |Item|>
                 <Item @labelFor="status-select">

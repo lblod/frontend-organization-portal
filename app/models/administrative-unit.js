@@ -33,4 +33,5 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   scope;
 
   @attr geplandeEinddatum;
+  @attr doel;
 }

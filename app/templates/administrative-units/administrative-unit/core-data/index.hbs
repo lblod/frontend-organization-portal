@@ -86,6 +86,20 @@
                 </:content>
               </Item>
             {{/if}}
+            {{#if this.isIGS}}
+              <Item>
+                <:label>Geplande einddatum</:label>
+                <:content>
+                  {{@model.administrativeUnit.geplandeEinddatum}}
+                </:content>
+              </Item>
+              <Item>
+                <:label>Doel</:label>
+                <:content>
+                  {{@model.administrativeUnit.doel}}
+                </:content>
+              </Item>
+            {{/if}}
           </:left>
           <:right as |Item|>
             <Item>
