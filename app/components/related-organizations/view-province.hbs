@@ -7,9 +7,9 @@
       @noDataMessage="Geen bestuur" as |t|>
       <t.content as |c|>
         <c.header>
-          <AuDataTableThSortable @field="classification.label" @label="Type organisatie" />
-          <AuDataTableThSortable @field="name" @label="Organisatie" />
-          <AuDataTableThSortable @field="organizationStatus.label" @label="Status" />
+          <AuDataTableThSortable @field="classification.label" @label="Type organisatie" @currentSorting={{@sort}} />
+          <AuDataTableThSortable @field="name" @label="Organisatie" @currentSorting={{@sort}} />
+          <AuDataTableThSortable @field="organizationStatus.label" @label="Status" @currentSorting={{@sort}} />
         </c.header>
         <c.body as |subOrganization|>
           <td>

@@ -29,19 +29,19 @@
       <RelatedOrganizations::ViewWorshipService @model={{@model}} />
     {{/if}}
     {{#if this.isCentralWorshipService}}
-      <RelatedOrganizations::ViewCentralWorshipService @model={{@model}} />
+      <RelatedOrganizations::ViewCentralWorshipService @model={{@model}} @sort={{this.sort}} />
     {{/if}}
     {{#if this.isDistrict}}
       <RelatedOrganizations::ViewDistrict @model={{@model}} />
     {{/if}}
     {{#if this.isMunicipality}}
-      <RelatedOrganizations::ViewMunicipality @model={{@model}} />
+      <RelatedOrganizations::ViewMunicipality @model={{@model}} @sort={{this.sort}} />
     {{/if}}
     {{#if this.isOCMW}}
       <RelatedOrganizations::ViewOcmw @model={{@model}} />
     {{/if}}
     {{#if this.isProvince}}
-      <RelatedOrganizations::ViewProvince @model={{@model}} />
+      <RelatedOrganizations::ViewProvince @model={{@model}} @sort={{this.sort}} />
     {{/if}}
     {{#if this.isAgb}}
       <RelatedOrganizations::ViewAgb @model={{@model}} />

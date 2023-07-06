@@ -4,10 +4,15 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { tracked } from '@glimmer/tracking';
 
 export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEditController extends Controller {
   @service router;
   @service store;
+
+  queryParams = ['sort'];
+
+  @tracked sort = 'name';
 
   get isWorshipAdministrativeUnit() {
     return this.isWorshipService || this.isCentralWorshipService;
