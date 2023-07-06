@@ -80,6 +80,19 @@ export default class AdministrativeUnitsNewController extends Controller {
     );
   }
 
+  get isNewIGS() {
+    const typesThatAreIGS = [
+      CLASSIFICATION_CODE.PROJECTVERENIGING,
+      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+    ];
+
+    return typesThatAreIGS.find(
+      (id) => id == this.model.administrativeUnitChangeset.classification?.id
+    );
+  }
+
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
@@ -180,7 +193,7 @@ export default class AdministrativeUnitsNewController extends Controller {
 
       primarySite.address = address;
       primarySite.contacts.pushObjects([contact, secondaryContact]);
-      if (this.isNewAgb || this.isNewApb) {
+      if (this.isNewAgb || this.isNewApb || this.isNewIGS) {
         primarySite.siteType = siteTypes.find(
           (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
         );
