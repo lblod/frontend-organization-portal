@@ -59,6 +59,18 @@ export default class SiteTypeSelectComponent extends Component {
     );
   }
 
+  get isIGS() {
+    const typesThatAreIGS = [
+      CLASSIFICATION_CODE.PROJECTVERENIGING,
+      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+    ];
+    return typesThatAreIGS.includes(
+      this.args.administrativeUnitClassification.get('id')
+    );
+  }
+
   get isApb() {
     return (
       this.args.administrativeUnitClassification.get('id') ===
@@ -86,7 +98,7 @@ export default class SiteTypeSelectComponent extends Component {
       filteredTypes.push(
         allTypes.find((type) => type.id == 'fbec5e94aba343b0a7361aca8a0c7d79') // Ander administratief adres
       );
-    } else if (this.isAgb || this.isApb) {
+    } else if (this.isAgb || this.isApb || this.isIGS) {
       filteredTypes.push(
         allTypes.find(
           (type) => type.id == 'dcc01338-842c-4fbd-ba68-3ca6f3af975c'
