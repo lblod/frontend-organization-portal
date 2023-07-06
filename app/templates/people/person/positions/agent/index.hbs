@@ -38,12 +38,16 @@
                 <:label>Naam bestuur</:label>
                 <:content>
                   {{#each @model.administrativeUnits as |administrativeUnit index|}}
-                    <AuLink
-                      @route="administrative-units.administrative-unit"
-                      @model={{administrativeUnit.id}}
-                    >
+                    {{#if administrativeUnit.classification.isAgbOrApb}}
                       {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
-                    </AuLink>
+                    {{else}}
+                      <AuLink
+                        @route="administrative-units.administrative-unit"
+                        @model={{administrativeUnit.id}}
+                      >
+                        {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
+                      </AuLink>
+                    {{/if}}
                     {{#if (gt @model.administrativeUnits.length 1)}}
                       {{unless index "/"}}
                     {{/if}}
