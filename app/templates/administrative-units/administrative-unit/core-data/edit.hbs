@@ -169,18 +169,20 @@
                         @onChange={{fn
                           (mut @model.administrativeUnit.expectedEndDate)
                         }}
+                        @value={{@model.administrativeUnit.expectedEndDate}}
                         @error={{hasError}}
                       />
                     </:content>
                   </Item>
-                  <Item @labelFor="doel">
-                    <:label>Doel</:label>
+                  <Item @labelFor="purpose">
+                    <:label>Purpose</:label>
                     <:content>
                       <AuTextarea
                         @width="block"
                         @onChange={{fn
-                          (mut @model.administrativeUnit.doel)
+                          (mut @model.administrativeUnit.purpose)
                         }}
+                        @value={{@model.administrativeUnit.purpose}}
                       />
                     </:content>
                   </Item>

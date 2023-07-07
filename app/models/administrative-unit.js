@@ -32,6 +32,6 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   })
   scope;
 
-  @attr expectedEndDate;
+  @attr('date') expectedEndDate;
   @attr purpose;
 }
