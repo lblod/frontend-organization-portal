@@ -337,14 +337,6 @@
                     </:content>
                 </Item>
                 {{/if}}
-                {{#if (and this.isNewIGS @model.administrativeUnitChangeset.isSubOrganizationOf)}}
-                  <Item @labelFor="related-regio">
-                    <:label>Regio</:label>
-                    <:content>
-                      {{@model.administrativeUnitChangeset.isSubOrganizationOf.scope.locatedWithin.label}}
-                    </:content>
-                  </Item>
-                {{/if}}
               {{else}}
                 <Item
                   @labelFor="related-provincie"

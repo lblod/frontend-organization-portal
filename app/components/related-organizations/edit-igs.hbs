@@ -26,12 +26,6 @@
             {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
           </:content>
         </Item>
-        <Item @labelFor="related-regio">
-          <:label>Regio</:label>
-          <:content>
-            {{@model.administrativeUnit.isSubOrganizationOf.scope.locatedWithin.label}}
-          </:content>
-        </Item>
       </:left>
     </Card.Columns>
   </:card>
