@@ -98,7 +98,7 @@ export default {
       // );
     }
   ),
-  geplandeEinddatum: validateConditionally(
+  expectedEndDate: validateConditionally(
     [
       validatePresence({
         presence: true,

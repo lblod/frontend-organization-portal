@@ -159,15 +159,15 @@
                 {{/if}}
                 {{#if this.isIGS}}
                   <Item 
-                    @labelFor="geplandeEinddatum" 
+                    @labelFor="expectedEndDate" 
                     @required={{true}}
-                    @errorMessage={{@model.administrativeUnit.error.geplandeEinddatum.validation}}
+                    @errorMessage={{@model.administrativeUnit.error.expectedEndDate.validation}}
                   >
                     <:label>Geplande einddatum</:label>
                     <:content  as |hasError|>
                       <Datepicker 
                         @onChange={{fn
-                          (mut @model.administrativeUnit.geplandeEinddatum)
+                          (mut @model.administrativeUnit.expectedEndDate)
                         }}
                         @error={{hasError}}
                       />
