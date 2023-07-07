@@ -5,16 +5,7 @@ export default class AdministrativeUnitsAdministrativeUnitController extends Con
   get isWorshipAdministrativeUnit() {
     return this.isWorshipService || this.isCentralWorshipService;
   }
-  get isAgbOrApb() {
-    return this.isAgb || this.isApb;
-  }
-  get isAgb() {
-    return this.model.classification?.get('id') === CLASSIFICATION_CODE.AGB;
-  }
 
-  get isApb() {
-    return this.model.classification?.get('id') === CLASSIFICATION_CODE.APB;
-  }
   get isWorshipService() {
     return (
       this.model.classification?.get('id') ===
@@ -38,6 +29,31 @@ export default class AdministrativeUnitsAdministrativeUnitController extends Con
   get isDistrict() {
     return (
       this.model.classification?.get('id') === CLASSIFICATION_CODE.DISTRICT
+    );
+  }
+
+  get isAgbOrApb() {
+    return this.isAgb || this.isApb;
+  }
+
+  get isAgb() {
+    return this.model.classification?.get('id') === CLASSIFICATION_CODE.AGB;
+  }
+
+  get isApb() {
+    return this.model.classification?.get('id') === CLASSIFICATION_CODE.APB;
+  }
+
+  get isIgs() {
+    return (
+      this.model.classification?.get('id') ===
+        CLASSIFICATION_CODE.PROJECTVERENIGING ||
+      this.model.classification?.get('id') ===
+        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
+      this.model.classification?.get('id') ===
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
+      this.model.classification?.get('id') ===
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
     );
   }
 }
