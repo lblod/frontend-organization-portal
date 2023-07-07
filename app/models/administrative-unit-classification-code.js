@@ -69,4 +69,10 @@ export const CLASSIFICATION = {
 
 export default class AdministrativeUnitClassificationCodeModel extends Model {
   @attr label;
+
+  get isAgbOrApb() {
+    return (
+      this.id === CLASSIFICATION_CODE.AGB || this.id === CLASSIFICATION_CODE.APB
+    );
+  }
 }

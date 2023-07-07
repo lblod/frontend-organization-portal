@@ -3,8 +3,8 @@
     <PageHeader>
       <:title>Bewerk vestiging</:title>
       <:subtitle>
-        {{@model.address.fullAddress}},
-        {{@model.administrativeUnit.name}}
+        {{this.model.address.fullAddress}},
+        {{this.model.administrativeUnit.name}}
       </:subtitle>
       <:action>
         <div>
@@ -41,15 +41,14 @@
             <Card.Columns>
               <:left as |Item|>
                 <Item @labelFor="site-type"
- @required={{true}}
-
-                      @errorMessage={{@model.site.error.siteType.validation}}
+                  @required={{true}}
+                  @errorMessage={{this.model.site.error.siteType.validation}}
                 >
                   <:label>Type vestiging</:label>
                   <:content  as |hasError|>
                     <SiteTypeSelect
-                      @selected={{@model.site.siteType}}
-                      @onChange={{fn (mut @model.site.siteType)}}
+                      @selected={{this.model.site.siteType}}
+                      @onChange={{fn (mut this.model.site.siteType)}}
                       @administrativeUnitClassification={{this.model.administrativeUnit.classification}}
                       @id="site-type"
                       @error={{hasError}}
@@ -59,7 +58,7 @@
               </:left>
               <:right as |Item|>
                 <Item
-                     @errorMessage={{this.isNoPrimarySiteErrorMessage}}
+                  @errorMessage={{this.isNoPrimarySiteErrorMessage}}
                 >
                   <:label>Primair correspondentieadres</:label>
                   <:content>
@@ -93,11 +92,11 @@
         </EditCard>
 
         <Site::ContactEditCard
-          @address={{@model.address}}
-          @primaryContact={{@model.contact}}
-          @secondaryContact={{@model.secondaryContact}}
+          @address={{this.model.address}}
+          @primaryContact={{this.model.contact}}
+          @secondaryContact={{this.model.secondaryContact}}
           @isAddressSearchEnabledInitially={{if
-              (or (not @model.address.id) @model.address.addressRegisterUri)
+              (or (not this.model.address.id) this.model.address.addressRegisterUri)
             true
             false
           }}

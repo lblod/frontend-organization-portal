@@ -27,6 +27,9 @@ export default class AdministrativeUnitsNewRoute extends Route {
   }
 
   model() {
+    const address = this.store.createRecord('address');
+    address.country = 'België';
+
     return {
       administrativeUnitChangeset: createValidatedChangeset(
         this.store.createRecord('administrative-unit'),
@@ -36,10 +39,7 @@ export default class AdministrativeUnitsNewRoute extends Route {
       centralWorshipService: this.store.createRecord('central-worship-service'),
       worshipService: this.store.createRecord('worship-service'),
       primarySite: this.store.createRecord('site'),
-      address: createValidatedChangeset(
-        this.store.createRecord('address'),
-        getAddressValidations(true)
-      ),
+      address: createValidatedChangeset(address, getAddressValidations(true)),
       contact: createValidatedChangeset(
         createPrimaryContact(this.store),
         contactValidations

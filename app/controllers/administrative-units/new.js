@@ -187,13 +187,17 @@ export default class AdministrativeUnitsNewController extends Controller {
       secondaryContact = setEmptyStringsToNull(secondaryContact);
       yield secondaryContact.save();
 
+      if (address.country != 'België') {
+        address.province = '';
+      }
+
       address.fullAddress = combineFullAddress(address);
       address = setEmptyStringsToNull(address);
       yield address.save();
 
       primarySite.address = address;
       primarySite.contacts.pushObjects([contact, secondaryContact]);
-      if (this.isNewAgb || this.isNewApb) {
+      if (this.isNewAgb || this.isNewApb || this.isNewIGS) {
         primarySite.siteType = siteTypes.find(
           (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
         );

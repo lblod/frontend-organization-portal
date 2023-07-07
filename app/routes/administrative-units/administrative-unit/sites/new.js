@@ -27,16 +27,16 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewRoute extends 
       'administrative-units.administrative-unit'
     );
 
+    const address = this.store.createRecord('address');
+    address.country = 'België';
+
     return {
       administrativeUnit,
       site: createValidatedChangeset(
         this.store.createRecord('site'),
         getSiteValidations()
       ),
-      address: createValidatedChangeset(
-        this.store.createRecord('address'),
-        getAddressValidations(true)
-      ),
+      address: createValidatedChangeset(address, getAddressValidations(true)),
       contact: createValidatedChangeset(
         createPrimaryContact(this.store),
         contactValidations

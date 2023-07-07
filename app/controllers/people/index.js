@@ -117,6 +117,8 @@ export default class PeopleIndexController extends Controller {
       CLASSIFICATION_CODE.OCMW,
       CLASSIFICATION_CODE.DISTRICT,
       CLASSIFICATION_CODE.PROVINCE,
+      CLASSIFICATION_CODE.AGB,
+      CLASSIFICATION_CODE.APB,
     ];
 
     if (this.currentSession.hasUnitRole) {

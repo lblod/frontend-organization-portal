@@ -31,6 +31,7 @@ export default class AddressRegisterSelectorComponent extends Component {
 
     if (addressSuggestion) {
       const addresses = yield this.addressRegister.findAll(addressSuggestion);
+
       if (!this.sourceCrab) {
         this.sourceCrab = yield this.store.findRecord(
           'concept',

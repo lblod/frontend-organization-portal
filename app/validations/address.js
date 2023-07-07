@@ -1,4 +1,5 @@
 import { validatePresence } from 'ember-changeset-validations/validators';
+import { validateConditionally } from 'frontend-organization-portal/validators/validate-conditionally';
 
 export function getAddressValidations(isAlwaysRequired = false) {
   const REQUIRED_MESSAGE = 'Vul het volledige adres in';
@@ -10,7 +11,7 @@ export function getAddressValidations(isAlwaysRequired = false) {
       message: REQUIRED_MESSAGE,
       on: isAlwaysRequired
         ? null
-        : ['number', 'postcode', 'municipality', 'province'],
+        : ['number', 'postcode', 'municipality', 'province', 'country'],
     }),
     number: validatePresence({
       presence: true,
@@ -18,7 +19,7 @@ export function getAddressValidations(isAlwaysRequired = false) {
       message: REQUIRED_MESSAGE,
       on: isAlwaysRequired
         ? null
-        : ['street', 'postcode', 'municipality', 'province'],
+        : ['street', 'postcode', 'municipality', 'province', 'country'],
     }),
     postcode: validatePresence({
       presence: true,
@@ -26,7 +27,7 @@ export function getAddressValidations(isAlwaysRequired = false) {
       message: REQUIRED_MESSAGE,
       on: isAlwaysRequired
         ? null
-        : ['street', 'number', 'municipality', 'province'],
+        : ['street', 'number', 'municipality', 'province', 'country'],
     }),
     municipality: validatePresence({
       presence: true,
@@ -34,15 +35,42 @@ export function getAddressValidations(isAlwaysRequired = false) {
       message: REQUIRED_MESSAGE,
       on: isAlwaysRequired
         ? null
-        : ['street', 'number', 'postcode', 'province'],
+        : ['street', 'number', 'postcode', 'province', 'country'],
     }),
-  };
-  if (isProvinceRequired) {
-    addressValidation.province = validatePresence({
+    country: validatePresence({
       presence: true,
       ignoreBlank: true,
       message: REQUIRED_MESSAGE,
-    });
+      on: isAlwaysRequired
+        ? null
+        : ['street', 'number', 'postcode', 'municipality', 'province'],
+    }),
+  };
+
+  if (isProvinceRequired) {
+    addressValidation.province = validateConditionally(
+      validatePresence({
+        presence: true,
+        ignoreBlank: true,
+        message: REQUIRED_MESSAGE,
+      }),
+
+      function (changes, content) {
+        return isCountryBelgium(changes, content);
+      }
+    );
   }
+
   return addressValidation;
+}
+
+function isCountryBelgium(changes, content) {
+  let address = null;
+  if (changes.country) {
+    address = changes;
+  } else {
+    address = content;
+  }
+
+  return address.country === 'België';
 }
