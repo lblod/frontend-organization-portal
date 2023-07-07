@@ -136,7 +136,10 @@
             </td>
             <td>
               {{#each person.organizations as |organization index|}}
-                {{#if organization.id}}
+                {{#if (and
+                  organization.id
+                  (not organization.isAgbOrApb)
+                )}}
                   <AuLink
                     @route="administrative-units.administrative-unit"
                     @model={{organization.id}}
@@ -160,6 +163,8 @@
                       ({{organization.classification}})
                     {{/if}}
                   </AuLink>
+                {{else if organization.isAgbOrApb}}
+                  {{person.organization_name}}
                 {{/if}}
                 {{#if (gt person.organizations.length 1)}}
                   {{unless index "/"}}

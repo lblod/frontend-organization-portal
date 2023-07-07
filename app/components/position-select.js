@@ -74,6 +74,8 @@ export default class PositionSelectComponent extends Component {
           CLASSIFICATION_CODE.PROVINCE,
           CLASSIFICATION_CODE.OCMW,
           CLASSIFICATION_CODE.DISTRICT,
+          CLASSIFICATION_CODE.AGB,
+          CLASSIFICATION_CODE.APB,
         ];
       } else {
         allowedIds = [

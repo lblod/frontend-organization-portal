@@ -170,13 +170,17 @@
                       position.administrativeUnits
                       as |administrativeUnit index|
                     }}
-                      <AuLink
-                        @model={{administrativeUnit.id}}
-                        @route="administrative-units.administrative-unit"
-                      >
-                        {{administrativeUnit.name}}
-                        ({{administrativeUnit.classification.label}})
-                      </AuLink>
+                      {{#if administrativeUnit.classification.isAgbOrApb}}
+                        {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
+                      {{else}}
+                        <AuLink
+                          @model={{administrativeUnit.id}}
+                          @route="administrative-units.administrative-unit"
+                        >
+                          {{administrativeUnit.name}}
+                          ({{administrativeUnit.classification.label}})
+                        </AuLink>
+                      {{/if}}
                       {{#if (gt position.administrativeUnits.length 1)}}
                         {{unless index "/"}}
                       {{/if}}

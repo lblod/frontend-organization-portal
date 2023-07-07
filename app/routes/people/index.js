@@ -79,20 +79,35 @@ export default class PeopleIndexRoute extends Route {
       person.organizations = [];
       if (Array.isArray(person.organization_id)) {
         for (let [index, id] of person.organization_id.entries()) {
+          const isAgbOrApb = this.isClassificationAgbOrApb(
+            person.organization_classification[index]
+          );
           person.organizations.push({
             id,
             classification: person.organization_classification[index],
+            isAgbOrApb,
           });
         }
       } else {
+        const isAgbOrApb = this.isClassificationAgbOrApb(
+          person.organization_classification
+        );
         person.organizations = [
           {
             id: person.organization_id,
             classification: person.organization_classification,
+            isAgbOrApb,
           },
         ];
       }
     }
     return page;
+  }
+
+  isClassificationAgbOrApb(classification) {
+    return (
+      classification === 'Autonoom gemeentebedrijf' ||
+      classification === 'Autonoom provinciebedrijf'
+    );
   }
 }
