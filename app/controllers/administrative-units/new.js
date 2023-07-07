@@ -187,6 +187,10 @@ export default class AdministrativeUnitsNewController extends Controller {
       secondaryContact = setEmptyStringsToNull(secondaryContact);
       yield secondaryContact.save();
 
+      if (address.country != 'België') {
+        address.province = '';
+      }
+
       address.fullAddress = combineFullAddress(address);
       address = setEmptyStringsToNull(address);
       yield address.save();

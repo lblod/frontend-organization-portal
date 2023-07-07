@@ -89,6 +89,7 @@ export default class AddressSearchComponent extends Component {
       source,
       municipality: address.municipality,
       province: null,
+      country: address.country,
       addressRegisterUri: address.uri,
     });
   }
@@ -102,6 +103,7 @@ export default class AddressSearchComponent extends Component {
       source: null,
       municipality: null,
       province: null,
+      country: null,
       addressRegisterUri: null,
     });
   }
