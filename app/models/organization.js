@@ -73,4 +73,14 @@ export default class OrganizationModel extends Model {
     inverse: 'foundedOrganizations',
   })
   wasFoundedByOrganization;
+
+  @hasMany('organization', {
+    inverse: 'hasParticipants',
+  })
+  participatesIn;
+
+  @hasMany('organization', {
+    inverse: 'participatesIn',
+  })
+  hasParticipants;
 }

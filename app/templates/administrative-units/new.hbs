@@ -292,7 +292,7 @@
               {{#if (or this.isNewOCMW this.isNewAgb this.isNewDistrict this.isNewIGS)}}
                 <Item
                   @labelFor="related-gemeente"
-                  @required={{this.isNewAgb}}
+                  @required={{(or this.isNewAgb this.isNewIGS)}}
                   @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
                 >
                   <:label>Gemeente</:label>
@@ -329,13 +329,31 @@
                     <AdministrativeUnitSelect
                       @disabled={{true}}
                       @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
-                      @onChange={{this.setRelation }}
+                      @onChange={{this.setRelation}}
                       @classificationCodes={{this.classificationCodes}}
                       @error={{hasError}}
                       @id="oprichting-gemeente"
                     />
                     </:content>
-                </Item>
+                  </Item>
+                {{/if}}
+
+                {{#if this.isNewIGS}}
+                  <Item
+                    @labelFor="has-participants"
+                    @errorMessage={{@model.administrativeUnitChangeset.error.hasParticipants.validation}}
+                  >
+                    <:label>Heeft als participanten</:label>
+                    <:content as |hasError|>
+                    <AdministrativeUnitMultipleSelect
+                      @selected={{@model.administrativeUnitChangeset.hasParticipants}}
+                      @onChange={{this.setHasParticipants}}
+                      @classificationCodes={{this.classificationCodesIgsParticipants}}
+                      @error={{hasError}}
+                      @id="has-participants"
+                    />
+                    </:content>
+                  </Item>
                 {{/if}}
               {{else}}
                 <Item
