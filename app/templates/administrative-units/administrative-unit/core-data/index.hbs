@@ -88,6 +88,12 @@
             {{/if}}
             {{#if this.isIGS}}
               <Item>
+                <:label>Regio</:label>
+                <:content>
+                  {{@model.igsRegio.label}}
+                </:content>
+              </Item>
+              <Item>
                 <:label>Geplande einddatum</:label>
                 <:content>
                   {{date-format @model.administrativeUnit.expectedEndDate}}

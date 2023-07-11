@@ -158,6 +158,17 @@
                   </Item>
                 {{/if}}
                 {{#if this.isIGS}}
+                  <Item @labelFor="igs-regio" >
+                    <:label>Regio</:label>
+                    <:content>
+                      <TrimInput
+                        @width="block"
+                        @value={{@model.igsRegio.label}}
+                        @disabled="true"
+                        id="igs-regio"
+                      />
+                    </:content>
+                  </Item>
                   <Item 
                     @labelFor="expectedEndDate" 
                     @required={{true}}

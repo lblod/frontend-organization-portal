@@ -73,4 +73,6 @@ export default class OrganizationModel extends Model {
     inverse: 'foundedOrganizations',
   })
   wasFoundedByOrganization;
+  @attr('date') expectedEndDate;
+  @attr purpose;
 }
