@@ -92,9 +92,10 @@
         {{#if this.isIgs}}
           <RelatedOrganizations::EditIgs
             @model={{@model}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
+            @classificationCodesIgsParticipants={{this.classificationCodesIgsParticipants}}
+            @addNewHasParticipants={{this.addNewHasParticipants}}
+            @updateHasParticipants={{this.updateHasParticipants}}
+            @removeHasParticipants={{this.removeHasParticipants}}
           />
         {{/if}}
       </div>

@@ -24,6 +24,12 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
       administrativeUnit.classification.get('id') ==
         CLASSIFICATION_CODE.PROVINCE
     );
+    const participatesIn = await administrativeUnit.participatesIn;
+
+    const hasParticipants = await this.loadHasParticipantsTask.perform(
+      administrativeUnit.id,
+      params
+    );
 
     return {
       administrativeUnit,
@@ -31,6 +37,8 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
       isAssociatedWith,
       isSubOrganizationOf,
       subOrganizations,
+      participatesIn,
+      hasParticipants,
     };
   }
 
@@ -50,6 +58,16 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
     return yield this.store.query('administrative-unit', {
       'filter[:or:][is-sub-organization-of][:id:]': id,
       'filter[:or:][was-founded-by-organization][:id:]': id,
+      'page[size]': 500,
+      include: 'classification',
+      sort: params.sort,
+    });
+  }
+
+  @dropTask({ cancelOn: 'deactivate' })
+  *loadHasParticipantsTask(id, params) {
+    return yield this.store.query('administrative-unit', {
+      'filter[participates-in][:id:]': id,
       'page[size]': 500,
       include: 'classification',
       sort: params.sort,

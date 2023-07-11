@@ -106,6 +106,19 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
 
+  get classificationCodesIgsParticipants() {
+    return [
+      CLASSIFICATION_CODE.MUNICIPALITY,
+      CLASSIFICATION_CODE.OCMW,
+      CLASSIFICATION_CODE.AGB,
+      CLASSIFICATION_CODE.PROJECTVERENIGING,
+      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+      // TODO when onboarded, add politiezone, hulpverleningzone and companies
+    ];
+  }
+
   @action
   addNewSubOrganization() {
     let subOrganization = this.store.createRecord('organization');
@@ -123,12 +136,30 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     this.model.subOrganizations.removeObject(organization);
   }
 
+  @action
+  addNewHasParticipants() {
+    let organization = this.store.createRecord('organization');
+    this.model.hasParticipants.pushObject(organization);
+  }
+
+  @action
+  updateHasParticipants(removedOrganization, addedOrganization) {
+    this.model.hasParticipants.removeObject(removedOrganization);
+    this.model.hasParticipants.pushObject(addedOrganization);
+  }
+
+  @action
+  removeHasParticipants(organization) {
+    this.model.hasParticipants.removeObject(organization);
+  }
+
   @dropTask
   *save(event) {
     event.preventDefault();
 
-    let { administrativeUnit, subOrganizations } = this.model;
+    let { administrativeUnit, subOrganizations, hasParticipants } = this.model;
     administrativeUnit.subOrganizations = subOrganizations;
+    administrativeUnit.hasParticipants = hasParticipants;
 
     yield administrativeUnit.validate();
 
