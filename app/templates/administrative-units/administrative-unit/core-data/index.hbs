@@ -86,6 +86,26 @@
                 </:content>
               </Item>
             {{/if}}
+            {{#if this.isIGS}}
+              <Item>
+                <:label>Regio</:label>
+                <:content>
+                  {{@model.igsRegio.label}}
+                </:content>
+              </Item>
+              <Item>
+                <:label>Geplande einddatum</:label>
+                <:content>
+                  {{date-format @model.administrativeUnit.expectedEndDate}}
+                </:content>
+              </Item>
+              <Item>
+                <:label>Doel</:label>
+                <:content>
+                  {{@model.administrativeUnit.purpose}}
+                </:content>
+              </Item>
+            {{/if}}
           </:left>
           <:right as |Item|>
             <Item>

@@ -1,4 +1,4 @@
-import { hasMany, belongsTo, attr } from '@ember-data/model';
+import { hasMany, belongsTo } from '@ember-data/model';
 import OrganizationModel from './organization';
 
 export default class AdministrativeUnitModel extends OrganizationModel {
@@ -31,6 +31,4 @@ export default class AdministrativeUnitModel extends OrganizationModel {
     inverse: null,
   })
   scope;
-
-  @attr geplandeEinddatum;
 }
