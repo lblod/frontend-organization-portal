@@ -138,7 +138,7 @@
               {{#each person.organizations as |organization index|}}
                 {{#if (and
                   organization.id
-                  (not organization.isAgbOrApb)
+                  organization.displayLinkToOrgaan
                 )}}
                   <AuLink
                     @route="administrative-units.administrative-unit"
@@ -163,7 +163,7 @@
                       ({{organization.classification}})
                     {{/if}}
                   </AuLink>
-                {{else if organization.isAgbOrApb}}
+                {{else if (not organization.displayLinkToOrgaan)}}
                   {{person.organization_name}}
                 {{/if}}
                 {{#if (gt person.organizations.length 1)}}
