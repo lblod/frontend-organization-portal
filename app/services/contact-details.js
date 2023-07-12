@@ -98,7 +98,8 @@ export default class ContactDetailsService extends Service {
       administrativeUnits.push(administrativeUnit);
     }
 
-    const mContacts = await boardPosition.contacts;
+    const primaryContact = await boardPosition.contactPoint;
+
     return {
       position: agent,
       title: `${role.label}, ${administrativeUnits[0].name}`,
@@ -109,7 +110,7 @@ export default class ContactDetailsService extends Service {
       endDate: agent.endDate,
       administrativeUnits,
       status,
-      primaryContact: mContacts,
+      primaryContact,
     };
   }
 
