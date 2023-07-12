@@ -3,6 +3,8 @@ import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
 export default class OrganizationModel extends Model {
   @attr name;
   @attr alternativeName;
+  @attr('date') expectedEndDate;
+  @attr purpose;
 
   @belongsTo('site', {
     inverse: null,

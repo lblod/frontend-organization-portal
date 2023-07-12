@@ -8,6 +8,7 @@ import {
   CHANGE_EVENTS_OCMW,
   CHANGE_EVENTS_AGB_APB,
   CHANGE_EVENTS_DISTRICT,
+  CHANGE_EVENTS_IGS,
 } from 'frontend-organization-portal/models/change-event-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
@@ -52,6 +53,15 @@ export default class ChangeEventTypeSelectComponent extends Component {
       classification.id == CLASSIFICATION_CODE.APB
     ) {
       types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_AGB_APB));
+    }
+    if (
+      classification.id == CLASSIFICATION_CODE.PROJECTVERENIGING ||
+      classification.id == CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
+      classification.id == CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
+      classification.id ==
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
+    ) {
+      types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_IGS));
     }
 
     return types;

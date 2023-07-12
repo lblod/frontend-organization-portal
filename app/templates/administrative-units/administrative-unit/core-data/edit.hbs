@@ -157,6 +157,47 @@
                     </:content>
                   </Item>
                 {{/if}}
+                {{#if this.isIgs}}
+                  <Item @labelFor="igs-regio" >
+                    <:label>Regio</:label>
+                    <:content>
+                      <TrimInput
+                        @width="block"
+                        @value={{@model.igsRegio.label}}
+                        @disabled="true"
+                        id="igs-regio"
+                      />
+                    </:content>
+                  </Item>
+                  <Item 
+                    @labelFor="expectedEndDate" 
+                    @required={{true}}
+                    @errorMessage={{@model.administrativeUnit.error.expectedEndDate.validation}}
+                  >
+                    <:label>Geplande einddatum</:label>
+                    <:content  as |hasError|>
+                      <Datepicker 
+                        @onChange={{fn
+                          (mut @model.administrativeUnit.expectedEndDate)
+                        }}
+                        @value={{@model.administrativeUnit.expectedEndDate}}
+                        @error={{hasError}}
+                      />
+                    </:content>
+                  </Item>
+                  <Item @labelFor="purpose">
+                    <:label>Doel</:label>
+                    <:content>
+                      <AuTextarea
+                        @width="block"
+                        @onChange={{fn
+                          (mut @model.administrativeUnit.purpose)
+                        }}
+                        @value={{@model.administrativeUnit.purpose}}
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
               </:left>
               <:right as |Item|>
                 <Item @labelFor="status-select">
