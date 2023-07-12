@@ -97,12 +97,31 @@ export default class AdministrativeUnitsNewController extends Controller {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
 
+  get classificationCodesIgsParticipants() {
+    return [
+      CLASSIFICATION_CODE.MUNICIPALITY,
+      CLASSIFICATION_CODE.OCMW,
+      CLASSIFICATION_CODE.AGB,
+      CLASSIFICATION_CODE.PROJECTVERENIGING,
+      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+      // TODO when onboarded, add politiezone, hulpverleningzone and companies
+    ];
+  }
+
   @action
   setRelation(unit) {
     this.model.administrativeUnitChangeset.isSubOrganizationOf = unit;
     if (this.isNewAgb || this.isNewApb)
       this.model.administrativeUnitChangeset.wasFoundedByOrganization = unit;
   }
+
+  @action
+  setHasParticipants(units) {
+    this.model.administrativeUnitChangeset.hasParticipants = units;
+  }
+
   @action
   setKbo(value) {
     this.model.structuredIdentifierKBO.localId = value;
@@ -116,6 +135,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.administrativeUnitChangeset.isAssociatedWith = [];
     this.model.administrativeUnitChangeset.isSubOrganizationOf = null;
     this.model.administrativeUnitChangeset.wasFoundedByOrganization = null;
+    this.model.administrativeUnitChangeset.hasParticipants = [];
   }
 
   @dropTask
@@ -295,5 +315,11 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
       newAdministrativeUnit.scope.locatedWithin =
         administrativeUnit.scope.locatedWithin;
     }
+  }
+  if (
+    administrativeUnit.hasParticipants &&
+    administrativeUnit.hasParticipants.length
+  ) {
+    newAdministrativeUnit.hasParticipants = administrativeUnit.hasParticipants;
   }
 }

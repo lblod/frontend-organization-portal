@@ -55,28 +55,53 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     );
   }
 
-  get isIGS() {
-    const typesThatAreIGS = [
+  get isIgs() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+        CLASSIFICATION_CODE.PROJECTVERENIGING ||
+      this.model.administrativeUnit.classification?.get('id') ===
+        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
+      this.model.administrativeUnit.classification?.get('id') ===
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
+      this.model.administrativeUnit.classification?.get('id') ===
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
+    );
+  }
+
+  get classificationCodes() {
+    return [CLASSIFICATION_CODE.MUNICIPALITY];
+  }
+
+  get classificationCodesIgsParticipants() {
+    return [
+      CLASSIFICATION_CODE.MUNICIPALITY,
+      CLASSIFICATION_CODE.OCMW,
+      CLASSIFICATION_CODE.AGB,
       CLASSIFICATION_CODE.PROJECTVERENIGING,
       CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
       CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
       CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+      // TODO when onboarded, add politiezone, hulpverleningzone and companies
     ];
-    return typesThatAreIGS.includes(
-      this.model.administrativeUnit.classification?.get('id')
-    );
   }
 
   @action
   setKbo(value) {
     this.model.structuredIdentifierKBO.localId = value;
   }
+
   @action
   setRelation(unit) {
     this.model.administrativeUnit.isSubOrganizationOf = unit;
     if (this.isAgb || this.isApb)
       this.model.administrativeUnit.wasFoundedByOrganization = unit;
   }
+
+  @action
+  setHasParticipants(units) {
+    this.model.administrativeUnit.hasParticipants = units;
+  }
+
   @dropTask
   *save(event) {
     event.preventDefault();
@@ -176,8 +201,5 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         administrativeUnit.id
       );
     }
-  }
-  get classificationCodes() {
-    return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
 }

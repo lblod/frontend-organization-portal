@@ -3,6 +3,8 @@ import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
 export default class OrganizationModel extends Model {
   @attr name;
   @attr alternativeName;
+  @attr('date') expectedEndDate;
+  @attr purpose;
 
   @belongsTo('site', {
     inverse: null,
@@ -73,6 +75,14 @@ export default class OrganizationModel extends Model {
     inverse: 'foundedOrganizations',
   })
   wasFoundedByOrganization;
-  @attr('date') expectedEndDate;
-  @attr purpose;
+
+  @hasMany('organization', {
+    inverse: 'hasParticipants',
+  })
+  participatesIn;
+
+  @hasMany('organization', {
+    inverse: 'participatesIn',
+  })
+  hasParticipants;
 }
