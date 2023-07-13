@@ -7,6 +7,16 @@
 
 
 
+
+## 1.17.2 (2023-07-13)
+
+#### :bug: Bug Fix
+* [#485](https://github.com/lblod/frontend-organization-portal/pull/485) Fix contact point of agents not resolving ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### Committers: 1
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+
+
 ## 1.17.1 (2023-05-25)
 
 #### :bug: Bug Fix
