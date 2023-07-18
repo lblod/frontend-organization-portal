@@ -75,4 +75,14 @@ export default class AdministrativeUnitClassificationCodeModel extends Model {
       this.id === CLASSIFICATION_CODE.AGB || this.id === CLASSIFICATION_CODE.APB
     );
   }
+
+  get isIgs() {
+    return (
+      this.id === CLASSIFICATION_CODE.PROJECTVERENIGING ||
+      this.id === CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
+      this.id === CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
+      this.id ===
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
+    );
+  }
 }
