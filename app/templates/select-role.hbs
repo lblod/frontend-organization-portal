@@ -1,7 +1,7 @@
 <StaticPage>
   <div class="au-o-layout au-o-region-large">
 
-    <AuHeading @skin="4" class="au-u-margin-bottom">Kies een role</AuHeading>
+    <AuHeading @skin="4" class="au-u-margin-bottom">Kies een rol</AuHeading>
     {{#if this.model.roles}}
       <ul>
         {{#each this.model.roles as |role|}}
@@ -14,7 +14,7 @@
                 {{on "click" (fn this.updateActiveRole role)}}
               >
                 <strong>
-                  {{role}}
+                  {{convert-role-names role}}
                 </strong>
               </AuButton>
             </div>
