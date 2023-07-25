@@ -212,14 +212,12 @@
                     </:content>
                   </Item>
                 {{/if}}
-                {{#unless this.isWorshipAdministrativeUnit}}
-                  <Item @labelFor="ovo-identifier">
-                    <:label>{{@model.identifierOVO.idName}}</:label>
-                    <:content>
-                      {{@model.structuredIdentifierOVO.localId}}
-                    </:content>
-                  </Item>
-                {{/unless}}
+                <Item @labelFor="ovo-identifier">
+                  <:label>{{@model.identifierOVO.idName}}</:label>
+                  <:content>
+                    {{@model.structuredIdentifierOVO.localId}}
+                  </:content>
+                </Item>
               </:right>
             </Card.Columns>
           </:card>
