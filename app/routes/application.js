@@ -12,7 +12,7 @@ export default class ApplicationRoute extends Route {
       await this.currentSession.load();
       await this.role.loadActiveRole();
     } catch {
-      this.session.invalidate();
+      this.router.transitionTo('auth.logout');
     }
   }
 }
