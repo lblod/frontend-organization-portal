@@ -45,17 +45,13 @@ module.exports = function (environment) {
     contactEmail: 'organisaties.abb@vlaanderen.be',
     environmentName: '{{ENVIRONMENT_NAME}}',
 
-    torii: {
-      disableRedirectInitializer: true,
-      providers: {
-        'acmidm-oauth2': {
-          apiKey: '{{OAUTH_API_KEY}}',
-          baseUrl: '{{OAUTH_API_BASE_URL}}',
-          scope: '{{OAUTH_API_SCOPE}}',
-          redirectUri: '{{OAUTH_API_REDIRECT_URL}}',
-          logoutUrl: '{{OAUTH_API_LOGOUT_URL}}',
-        },
-      },
+    acmidm: {
+      clientId: '{{OAUTH_API_KEY}}',
+      scope: '{{OAUTH_API_SCOPE}}',
+      authUrl: '{{OAUTH_API_BASE_URL}}',
+      logoutUrl: '{{OAUTH_API_LOGOUT_URL}}',
+      authRedirectUrl: '{{OAUTH_API_REDIRECT_URL}}',
+      switchRedirectUrl: '{{OAUTH_SWITCH_URL}}',
     },
 
     showAppVersionHash: process.env.SHOW_APP_VERSION_HASH === 'true',
@@ -76,7 +72,6 @@ module.exports = function (environment) {
   if (environment === 'development') {
     ENV.showAppVersionHash = true;
     ENV.environmentName = 'development';
-    ENV.torii.providers['acmidm-oauth2'].logoutUrl = '/mock-login';
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
