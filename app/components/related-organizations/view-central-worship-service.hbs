@@ -40,6 +40,16 @@
       @page={{@page}}
       @size={{@size}}
       @noDataMessage="Geen bestuur" as |t|>
+      <t.menu as |menu|>
+        <menu.general>
+          <div class="au-o-box">
+            <AuToggleSwitch
+              @label="Verberg niet actieve organisaties"
+              @checked={{@organizationStatus}}
+            />
+          </div>
+        </menu.general>
+      </t.menu>
       <t.content as |c|>
         <c.header>
           <AuDataTableThSortable @field="classification.label" @label="Type organisatie" @currentSorting={{@sort}} />
