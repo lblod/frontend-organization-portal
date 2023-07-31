@@ -34,7 +34,11 @@
     <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
       Heeft relatie met
     </AuHeading>
-    <AuDataTable id="subOrganizations" @content={{@model.subOrganizations}}
+    <AuDataTable 
+      id="subOrganizations" 
+      @content={{@model.subOrganizations}}
+      @page={{@page}}
+      @size={{@size}}
       @noDataMessage="Geen bestuur" as |t|>
       <t.content as |c|>
         <c.header>
