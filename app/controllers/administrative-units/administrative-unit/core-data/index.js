@@ -104,6 +104,17 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
       CLASSIFICATION_CODE.APB
     );
   }
+  get isIGS() {
+    const typesThatAreIGS = [
+      CLASSIFICATION_CODE.PROJECTVERENIGING,
+      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+    ];
+    return typesThatAreIGS.includes(
+      this.model.administrativeUnit.classification?.get('id')
+    );
+  }
 
   get sharePointLinkBase() {
     if (this.isWorshipService) {

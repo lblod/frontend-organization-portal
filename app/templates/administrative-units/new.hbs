@@ -140,6 +140,23 @@
                 </:content>
               </Item>
             {{/if}}
+            {{#if this.isNewIGS}}
+              <Item 
+                @labelFor="expectedEndDate" 
+                @required={{true}}
+                @errorMessage={{@model.administrativeUnitChangeset.error.expectedEndDate.validation}}
+              >
+                <:label>Geplande einddatum</:label>
+                <:content  as |hasError|>
+                  <Datepicker 
+                    @onChange={{fn
+                      (mut @model.administrativeUnitChangeset.expectedEndDate)
+                    }}
+                    @error={{hasError}}
+                  />
+                </:content>
+              </Item>
+            {{/if}}
           </:left>
           <:right as |Item|>
             <Item
@@ -264,13 +281,12 @@
               </:left>
             </Card.Columns>
           {{else}}
-
             <Card.Columns>
               <:left as |Item|>
-              {{#if (or this.isNewOCMW this.isNewAgb this.isNewDistrict)}}
+              {{#if (or this.isNewOCMW this.isNewAgb this.isNewDistrict this.isNewIGS)}}
                 <Item
                   @labelFor="related-gemeente"
-                  @required={{this.isNewAgb}}
+                  @required={{(or this.isNewAgb this.isNewIGS)}}
                   @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
                 >
                   <:label>Gemeente</:label>
@@ -307,50 +323,68 @@
                     <AdministrativeUnitSelect
                       @disabled={{true}}
                       @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
-                      @onChange={{this.setRelation }}
+                      @onChange={{this.setRelation}}
                       @classificationCodes={{this.classificationCodes}}
                       @error={{hasError}}
                       @id="oprichting-gemeente"
                     />
                     </:content>
-                </Item>
+                  </Item>
                 {{/if}}
-              {{else}}
+
+                {{#if this.isNewIGS}}
                   <Item
-                    @labelFor="related-provincie"
-                    @required={{this.isNewApb}}
-                    @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
+                    @labelFor="has-participants"
+                    @errorMessage={{@model.administrativeUnitChangeset.error.hasParticipants.validation}}
                   >
-                    <:label>Provincie</:label>
+                    <:label>Heeft als participanten</:label>
                     <:content as |hasError|>
-                      <ProvinceOrganizationSelect
-                        @selected={{@model.administrativeUnitChangeset.isSubOrganizationOf}}
-                        @onChange={{this.setRelation
-                        }}
-                        @error={{hasError}}
-                        @id="related-provincie"
-                      />
+                    <AdministrativeUnitMultipleSelect
+                      @selected={{@model.administrativeUnitChangeset.hasParticipants}}
+                      @onChange={{this.setHasParticipants}}
+                      @classificationCodes={{this.classificationCodesIgsParticipants}}
+                      @error={{hasError}}
+                      @id="has-participants"
+                    />
                     </:content>
                   </Item>
-                  {{#if this.isNewApb}}
-  <Item
-                  @labelFor="related-gemeente"
-                  @required={{true}}
-                  @errorMessage={{@model.administrativeUnitChangeset.error.isAssociatedWith.validation}}
+                {{/if}}
+              {{else}}
+                <Item
+                  @labelFor="related-provincie"
+                  @required={{this.isNewApb}}
+                  @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
                 >
-                  <:label>Gemeente</:label>
+                  <:label>Provincie</:label>
                   <:content as |hasError|>
-                    <AdministrativeUnitSelect
-                      @selected={{@model.administrativeUnitChangeset.isAssociatedWith}}
-                      @onChange={{fn
-                        (mut @model.administrativeUnitChangeset.isAssociatedWith)
+                    <ProvinceOrganizationSelect
+                      @selected={{@model.administrativeUnitChangeset.isSubOrganizationOf}}
+                      @onChange={{this.setRelation
                       }}
-                      @classificationCodes={{this.classificationCodes}}
                       @error={{hasError}}
-                      @id="related-gemeente"
+                      @id="related-provincie"
                     />
                   </:content>
                 </Item>
+                {{#if this.isNewApb}}
+                  <Item
+                    @labelFor="related-gemeente"
+                    @required={{true}}
+                    @errorMessage={{@model.administrativeUnitChangeset.error.isAssociatedWith.validation}}
+                  >
+                    <:label>Gemeente</:label>
+                    <:content as |hasError|>
+                      <AdministrativeUnitSelect
+                        @selected={{@model.administrativeUnitChangeset.isAssociatedWith}}
+                        @onChange={{fn
+                          (mut @model.administrativeUnitChangeset.isAssociatedWith)
+                        }}
+                        @classificationCodes={{this.classificationCodes}}
+                        @error={{hasError}}
+                        @id="related-gemeente"
+                      />
+                    </:content>
+                  </Item>
                   <Item
                     @labelFor="opregicht-provincie"
                     @required={{true}}
@@ -368,9 +402,8 @@
                       />
                     </:content>
                   </Item>
-                  {{/if}}
-
                 {{/if}}
+              {{/if}}
               </:left>
             </Card.Columns>
           {{/if}}

@@ -15,16 +15,19 @@
     {{administrativeUnit.name}}
 
     {{#if
-      (not
-        (or
-          (eq
-            administrativeUnit.classification.label
-            "Centraal bestuur van de eredienst"
-          )
-          (eq
-            administrativeUnit.classification.label "Bestuur van de eredienst"
+      (and
+        (not
+          (or
+            (eq
+              administrativeUnit.classification.label
+              "Centraal bestuur van de eredienst"
+            )
+            (eq
+              administrativeUnit.classification.label "Bestuur van de eredienst"
+            )
           )
         )
+        administrativeUnit.classification
       )
     }}
       ({{administrativeUnit.classification.label}})
