@@ -9,6 +9,7 @@ export const CLASSIFICATION_CODE = {
   CENTRAL_WORSHIP_SERVICE: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
   AGB: '36a82ba0-7ff1-4697-a9dd-2e94df73b721',
   APB: '80310756-ce0a-4a1b-9b8e-7c01b6cc7a2d',
+  REPRESENTATIVE_ORGAN: '89a00b5a-024f-4630-a722-65a5e68967e5',
 };
 
 export const CLASSIFICATION = {
@@ -43,6 +44,10 @@ export const CLASSIFICATION = {
   APB: {
     id: '80310756-ce0a-4a1b-9b8e-7c01b6cc7a2d',
     label: 'Autonoom provinciebedrijf',
+  },
+  REPRESENTATIVE_ORGAN: {
+    id: '89a00b5a-024f-4630-a722-65a5e68967e5',
+    label: 'Representatief orgaan',
   },
 };
 
