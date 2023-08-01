@@ -147,13 +147,7 @@
                   <Item @labelFor="regio">
                     <:label>Regio</:label>
                     <:content>
-                      <RegionSelect
-                        @selected={{@model.administrativeUnit.scope.locatedWithin}}
-                        @onChange={{fn
-                          (mut @model.administrativeUnit.scope.locatedWithin)
-                        }}
-                        @id="regio"
-                      />
+                      {{@model.administrativeUnit.scope.locatedWithin.label}}
                     </:content>
                   </Item>
                 {{/if}}
@@ -259,14 +253,12 @@
                     </:content>
                   </Item>
                 {{/if}}
-                {{#unless this.isWorshipAdministrativeUnit}}
-                  <Item @labelFor="ovo-identifier">
-                    <:label>{{@model.identifierOVO.idName}}</:label>
-                    <:content>
-                      {{@model.structuredIdentifierOVO.localId}}
-                    </:content>
-                  </Item>
-                {{/unless}}
+                <Item @labelFor="ovo-identifier">
+                  <:label>{{@model.identifierOVO.idName}}</:label>
+                  <:content>
+                    {{@model.structuredIdentifierOVO.localId}}
+                  </:content>
+                </Item>
               </:right>
             </Card.Columns>
           </:card>

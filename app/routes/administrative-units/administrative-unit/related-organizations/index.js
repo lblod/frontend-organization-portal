@@ -7,6 +7,8 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
 
   queryParams = {
     sort: { refreshModel: true },
+    page: { refreshModel: true },
+    organizationStatus: { refreshModel: true, replace: true },
   };
 
   async model(params) {
@@ -50,17 +52,23 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
         'filter[:or:][was-founded-by-organization][:id:]': id,
         'filter[:or:][is-sub-organization-of][is-sub-organization-of][:id:]':
           id,
-        'page[size]': 500,
+        'filter[organization-status][:id:]': params.organizationStatus
+          ? '63cc561de9188d64ba5840a42ae8f0d6'
+          : undefined,
         include: 'classification',
         sort: params.sort,
+        page: { size: params.size, number: params.page },
       });
     }
     return yield this.store.query('administrative-unit', {
       'filter[:or:][is-sub-organization-of][:id:]': id,
       'filter[:or:][was-founded-by-organization][:id:]': id,
-      'page[size]': 500,
+      'filter[organization-status][:id:]': params.organizationStatus
+        ? '63cc561de9188d64ba5840a42ae8f0d6'
+        : undefined,
       include: 'classification',
       sort: params.sort,
+      page: { size: params.size, number: params.page },
     });
   }
 

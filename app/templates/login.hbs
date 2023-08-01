@@ -4,40 +4,20 @@
       <div class="au-o-grid__item au-u-3-4@small au-u-1-2@medium">
         <AuContent @skin="large">
           <h1>OrganisatiePortaal</h1>
-          <p class="au-c-heading au-c-heading--4">Een webapplicatie die helpt met
-            het visualiseren en bewerken van data over besturen van een eredienst
-            en personen.</p>
+          <p class="au-c-heading au-c-heading--4">Consulteer organisatie- en contactinformatie van lokale besturen en hun samenwerkingsverbanden.</p>
           <p>Lukt het aanmelden niet? Neem contact op met uw interne beheerder.
             Indien er zich een probleem voordoet, contacteer
             <a
               class="au-c-link"
               href="https://overheid.vlaanderen.be/ict/ict-diensten/gebruikersbeheer"
             >gebruikersbeheer Vlaanderen</a>.</p>
-          <p>Het aanmelden gebeurt in een pop-up; zorg dat de instellingen van uw
-            browser correct staan indien deze niet verschijnt.</p>
         </AuContent>
       </div>
       <div
         role="menu"
         class="au-o-grid__item au-u-1-4@small au-u-1-2@medium au-u-text-right@medium"
       >
-        <Acmidm::Login role="menuitem" @styles="au-c-button" as |acmidm|>
-          <AuButton
-            loading={{acmidm.isAuthenticating}}
-            disabled={{acmidm.isAuthenticating}}
-            {{on "click" acmidm.login}}
-          >
-            {{#if acmidm.isAuthenticating}}
-              Aan het aanmelden...
-            {{else}}
-              Meld je aan
-            {{/if}}
-          </AuButton>
-
-          {{#if acmidm.errorMessage}}
-            <p>{{acmidm.errorMessage}}</p>
-          {{/if}}
-        </Acmidm::Login>
+        <LoginButton />
       </div>
     </div>
   </section>
@@ -56,11 +36,10 @@
               </AuHeading>
             </c.header>
             <c.content>
-              <p>Bekijk en bewerk</p>
               <ul>
                 <li>Kerninformatie over besturen</li>
-                <li>Bestuursorganen</li>
-                <li>Documenten en dossiers</li>
+                <li>Bestuursorganen en mandaten</li>
+                <li>Gerelateerde organisaties</li>
               </ul>
             </c.content>
             <c.footer>
@@ -86,7 +65,6 @@
               </AuHeading>
             </c.header>
             <c.content>
-              <p>Bekijk</p>
               <ul>
                 <li>Kerngegevens over personen</li>
                 <li>Contactgegevens</li>

@@ -1,20 +1,21 @@
 import { inject as service } from '@ember/service';
-import BaseSessionService from 'ember-simple-auth/services/session';
-import config from 'frontend-organization-portal/config/environment';
+import SessionService from 'ember-simple-auth/services/session';
 
-export default class SessionService extends BaseSessionService {
+export default class OPSessionService extends SessionService {
   @service currentSession;
-  @service role;
 
-  async handleAuthentication(routeAfterAuthentication) {
-    super.handleAuthentication(routeAfterAuthentication);
-    await this.currentSession.load();
-    await this.role.loadActiveRole();
+  get isMockLoginSession() {
+    return this.isAuthenticated
+      ? this.data.authenticated.authenticator.includes('mock-login')
+      : false;
   }
 
-  async handleInvalidation() {
-    let logoutUrl = config.torii.providers['acmidm-oauth2'].logoutUrl;
-    await this.role.destroyActiveRole();
-    super.handleInvalidation(logoutUrl);
+  async handleAuthentication(routeAfterAuthentication) {
+    await this.currentSession.load();
+    super.handleAuthentication(routeAfterAuthentication);
+  }
+
+  handleInvalidation() {
+    // Invalidation is handled in the relevant routes directly
   }
 }

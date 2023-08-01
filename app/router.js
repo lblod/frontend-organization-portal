@@ -10,6 +10,12 @@ Router.map(function () {
   this.route('login');
   this.route('mock-login');
   this.route('select-role');
+  this.route('auth', { path: '/authorization' }, function () {
+    this.route('callback');
+    this.route('login');
+    this.route('logout');
+    this.route('switch');
+  });
   this.route('index', { path: '' });
   this.route('people', { path: '/personen' }, function () {
     this.route('new-position', { path: '/nieuw-positie' });

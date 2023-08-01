@@ -10,11 +10,13 @@ export default {
     ignoreBlank: true,
     message: 'Vul de naam in',
   }),
+
   classification: validatePresence({
     presence: true,
     ignoreBlank: true,
     message: 'Selecteer een optie',
   }),
+
   recognizedWorshipType: validateConditionally(
     validatePresence({
       presence: true,
@@ -25,6 +27,7 @@ export default {
       return isWorshipAdministrativeUnit(changes, content);
     }
   ),
+
   isAssociatedWith: validateConditionally(
     validatePresence({
       presence: true,
@@ -37,11 +40,13 @@ export default {
       );
     }
   ),
+
   organizationStatus: validatePresence({
     presence: true,
     ignoreBlank: true,
     message: 'Selecteer een optie',
   }),
+
   wasFoundedByOrganization: validateConditionally(
     validatePresence({
       presence: true,
@@ -49,13 +54,10 @@ export default {
       message: 'Selecteer een optie',
     }),
     function (changes, content) {
-      return (
-        isMunicipality(changes, content) ||
-        isAgb(changes, content) ||
-        isApb(changes, content)
-      );
+      return isAgb(changes, content) || isApb(changes, content);
     }
   ),
+
   isSubOrganizationOf: validateConditionally(
     validatePresence({
       presence: true,
@@ -119,31 +121,14 @@ export function getStructuredIdentifierKBOValidations(store) {
   };
 }
 
-// function isProvince(changes, content) {
-//   return hasClassificationId(changes, content, CLASSIFICATION_CODE.PROVINCE);
-// }
-
-// function isWorshipService(changes, content) {
-//   return hasClassificationId(
-//     changes,
-//     content,
-//     CLASSIFICATION_CODE.WORSHIP_SERVICE
-//   );
-// }
-
-function isMunicipality(changes, content) {
-  return hasClassificationId(
-    changes,
-    content,
-    CLASSIFICATION_CODE.MUNICIPALITY
-  );
-}
 function isAgb(changes, content) {
   return hasClassificationId(changes, content, CLASSIFICATION_CODE.AGB);
 }
+
 function isApb(changes, content) {
   return hasClassificationId(changes, content, CLASSIFICATION_CODE.APB);
 }
+
 function isIGS(changes, content) {
   const typesThatAreIGS = [
     CLASSIFICATION_CODE.PROJECTVERENIGING,
@@ -153,6 +138,7 @@ function isIGS(changes, content) {
   ];
   return hasClassificationId(changes, content, typesThatAreIGS);
 }
+
 function isWorshipAdministrativeUnit(changes, content) {
   return (
     hasClassificationId(
