@@ -306,7 +306,7 @@ async function findMostRecentChangeEvent(store, organization) {
   });
 
   if (mostRecentChangeEventResults.length > 0) {
-    return await mostRecentChangeEventResults.firstObject.resultFrom;
+    return await mostRecentChangeEventResults[0].resultFrom;
   } else {
     return null;
   }
@@ -345,19 +345,19 @@ async function mergeAssociated(ctx) {
     associatedDecisionActivity
   );
 
-  for (const org of changeEvent.originalOrganizations.toArray()) {
+  for (const org of changeEvent.originalOrganizations.slice()) {
     const unit = await org.isAssociatedWith;
     associatedChangeEvent.originalOrganizations.pushObject(unit);
   }
 
-  for (const org of changeEvent.resultingOrganizations.toArray()) {
+  for (const org of changeEvent.resultingOrganizations.slice()) {
     const unit = await org.isAssociatedWith;
     associatedChangeEvent.resultingOrganizations.pushObject(unit);
   }
 
   const createChangeEventResults = [];
 
-  for (const r of results.toArray()) {
+  for (const r of results.slice()) {
     const result = await r;
     const resultingOrganization = await result.resultingOrganization;
     const associatedOrg = await resultingOrganization.isAssociatedWith;

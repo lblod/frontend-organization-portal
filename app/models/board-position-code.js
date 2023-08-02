@@ -47,7 +47,10 @@ export const MANDATARIES_ROLES = [
 export default class BoardPositionCodeModel extends Model {
   @attr label;
 
-  @belongsTo('governing-body-classification-code', { inverse: null })
+  @belongsTo('governing-body-classification-code', {
+    inverse: null,
+    async: true,
+  })
   appliesTo;
 }
 

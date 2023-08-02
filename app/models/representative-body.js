@@ -8,11 +8,13 @@ export const BLACKLIST_RO = [
 export default class RepresentativeBodyModel extends OrganizationModel {
   @belongsTo('recognized-worship-type', {
     inverse: null,
+    async: true,
   })
   recognizedWorshipType;
 
   @hasMany('minister-positions', {
     inverse: 'representativeBody',
+    async: true,
   })
   ministerPositions;
 }

@@ -27,7 +27,7 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
 
     const subOrganizations = (
       await this.loadSubOrganizationsTask.perform(administrativeUnit.id, params)
-    ).toArray();
+    ).slice();
 
     return {
       administrativeUnit: createValidatedChangeset(

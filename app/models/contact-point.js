@@ -14,6 +14,7 @@ export default class ContactPointModel extends Model {
 
   @belongsTo('address', {
     inverse: null,
+    async: true,
   })
   contactAddress;
 }

@@ -13,6 +13,7 @@ export default class IdentifierModel extends Model {
 
   @belongsTo('structured-identifier', {
     inverse: null,
+    async: true,
   })
   structuredIdentifier;
 }

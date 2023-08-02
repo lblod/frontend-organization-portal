@@ -13,21 +13,25 @@ export default class MandatoryModel extends AgentInPositionModel {
 
   @belongsTo('mandatory-status-code', {
     inverse: null,
+    async: true,
   })
   status;
 
   @belongsTo('person', {
     inverse: 'mandatories',
+    async: true,
   })
   governingAlias;
 
   @belongsTo('mandate', {
     inverse: 'heldBy',
+    async: true,
   })
   mandate;
 
   @hasMany('contact-point', {
     inverse: null,
+    async: true,
   })
   contacts;
 }

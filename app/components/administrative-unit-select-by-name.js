@@ -43,7 +43,7 @@ export default class AdministrativeUnitSelectByNameComponent extends Component {
     });
 
     if (result) {
-      return [...[searchParams], ...new Set(result.toArray())];
+      return [...[searchParams], ...new Set(result.slice())];
     }
   }
 }

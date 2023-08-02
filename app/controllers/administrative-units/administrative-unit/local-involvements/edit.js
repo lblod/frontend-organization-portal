@@ -127,7 +127,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     } else {
       involvement = this.store.createRecord('local-involvement', {
         worshipAdministrativeUnit: this.model.worshipAdministrativeUnit,
-        involvementType: this.model.involvementTypes.firstObject,
+        involvementType: this.model.involvementTypes[0],
         percentage: 100,
       });
     }
@@ -155,7 +155,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     yield Promise.all(validationPromises);
 
     let areSomeLocalInvolvementsInvalid = involvements
-      .toArray()
+      .slice()
       .some((involvement) => involvement.isInvalid);
 
     if (!this.isValidTotalFinancingPercentage) {

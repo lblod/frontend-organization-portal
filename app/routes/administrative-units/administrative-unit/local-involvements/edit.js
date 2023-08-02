@@ -49,7 +49,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
     });
 
     let involvementTypesProvince = involvementTypes
-      .toArray()
+      .slice()
       .filter((it) => it.id !== '0f845f00ee76099c89518cbaf6a7b77f'); // Non adviserend
 
     return {

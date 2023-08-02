@@ -42,7 +42,7 @@ export default class PersonSearchByNameComponent extends Component {
         };
       },
     });
-    result = removeDuplicates(result.toArray(), ['family_name', 'given_name']);
+    result = removeDuplicates(result.slice(), ['family_name', 'given_name']);
     if (searchParams.trim() !== '' && result) {
       let param_object = {
         family_name: '',

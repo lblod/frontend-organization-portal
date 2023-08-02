@@ -52,7 +52,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsRou
 async function findCurrentChangeEventResult(organization, changeEvent) {
   let results = await changeEvent.results;
 
-  for (let result of results.toArray()) {
+  for (let result of results.slice()) {
     let resultingOrganization = await result.resultingOrganization;
     if (resultingOrganization.id === organization.id) {
       return result;

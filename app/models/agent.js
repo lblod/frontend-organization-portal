@@ -7,16 +7,19 @@ export default class AgentModel extends AgentInPositionModel {
 
   @belongsTo('agent-status-code', {
     inverse: null,
+    async: true,
   })
   status;
 
   @belongsTo('person', {
     inverse: 'agents',
+    async: true,
   })
   governingAlias;
 
   @belongsTo('board-position', {
     inverse: null,
+    async: true,
   })
   boardPosition;
 }

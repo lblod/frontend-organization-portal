@@ -175,7 +175,7 @@ function validateKBO(store) {
     return {
       message: 'Dit KBO-nummer behoort tot',
       meta: {
-        administrativeUnit: records.firstObject,
+        administrativeUnit: records[0],
       },
     };
   };
