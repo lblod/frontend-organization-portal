@@ -1,16 +1,17 @@
-<PowerSelectMultiple
-  @allowClear={{true}}
-  @searchEnabled={{true}}
-  @loadingMessage="Aan het laden..."
-  @noMatchesMessage="Geen resultaten"
-  @searchMessage="Typ om te zoeken"
-  @searchField="name"
-  @search={{perform this.loadAdministrativeUnitMultipleTask}}
-  @selected={{@selected}}
-  @onChange={{@onChange}}
-  @triggerId={{@id}}
-  ...attributes
-  as |administrativeUnit|
->
-  {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
-</PowerSelectMultiple>
+<div class={{if @error "ember-power-select--error"}} ...attributes>
+  <PowerSelectMultiple
+    @allowClear={{true}}
+    @searchEnabled={{true}}
+    @loadingMessage="Aan het laden..."
+    @noMatchesMessage="Geen resultaten"
+    @searchMessage="Typ om te zoeken"
+    @searchField="name"
+    @search={{perform this.loadAdministrativeUnitMultipleTask}}
+    @selected={{@selected}}
+    @onChange={{@onChange}}
+    @triggerId={{@id}}
+    as |administrativeUnit|
+  >
+    {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
+  </PowerSelectMultiple>
+</div>

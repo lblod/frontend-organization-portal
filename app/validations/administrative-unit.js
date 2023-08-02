@@ -41,6 +41,17 @@ export default {
     }
   ),
 
+  hasParticipants: validateConditionally(
+    validatePresence({
+      presence: true,
+      ignoreBlank: true,
+      message: 'Selecteer een optie',
+    }),
+    function (changes, content) {
+      return isIGS(changes, content);
+    }
+  ),
+
   organizationStatus: validatePresence({
     presence: true,
     ignoreBlank: true,
@@ -65,7 +76,11 @@ export default {
       message: 'Selecteer een optie',
     }),
     function (changes, content) {
-      return isAgb(changes, content) || isApb(changes, content);
+      return (
+        isAgb(changes, content) ||
+        isApb(changes, content) ||
+        isIGS(changes, content)
+      );
 
       //todo this was disabled in OP-1705, as of today, this is not mandatory
 

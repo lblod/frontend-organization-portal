@@ -35,6 +35,13 @@
   <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
     Heeft als participanten
   </AuHeading>
+
+  {{#if @model.administrativeUnit.error.hasParticipants.validation}}
+    <div>
+      <AuHelpText @error={{true}}>{{@model.administrativeUnit.error.hasParticipants.validation}}</AuHelpText>
+    </div>
+  {{/if}}
+
   <AuDataTable
     id="hasParticipants"
     @content={{@model.hasParticipants}}
