@@ -63,17 +63,25 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     let missingIdentifiers = this.createMissingIdentifiers(identifiers);
     identifiers.pushObjects(missingIdentifiers);
 
-    let identifierKBO = identifiers.findBy('idName', ID_NAME.KBO);
+    let identifierKBO = identifiers.find(
+      (identifier) => identifier.idName === ID_NAME.KBO
+    );
     let structuredIdentifierKBO = await identifierKBO.structuredIdentifier;
 
-    let identifierSharepoint = identifiers.findBy('idName', ID_NAME.SHAREPOINT);
+    let identifierSharepoint = identifiers.find(
+      (identifier) => identifier.idName === ID_NAME.SHAREPOINT
+    );
     let structuredIdentifierSharepoint =
       await identifierSharepoint.structuredIdentifier;
 
-    let identifierNIS = identifiers.findBy('idName', ID_NAME.NIS);
+    let identifierNIS = identifiers.find(
+      (identifier) => identifier.idName === ID_NAME.NIS
+    );
     let structuredIdentifierNIS = await identifierNIS.structuredIdentifier;
 
-    let identifierOVO = identifiers.findBy('idName', ID_NAME.OVO);
+    let identifierOVO = identifiers.find(
+      (identifier) => identifier.idName === ID_NAME.OVO
+    );
     let structuredIdentifierOVO = await identifierOVO.structuredIdentifier;
 
     return {
@@ -110,7 +118,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     ];
 
     return requiredIdNames.reduce((missingIdentifiers, requiredIdName) => {
-      let identifier = currentIdentifiers.findBy('idName', requiredIdName);
+      let identifier = currentIdentifiers.find(
+        (identifier) => identifier.idName === requiredIdName
+      );
 
       if (!identifier) {
         identifier = this.store.createRecord('identifier', {

@@ -42,9 +42,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
         isCity = true;
       }
     }
-
+    const identifiers = (await administrativeUnit.identifiers).slice();
     return {
       administrativeUnit,
+      identifiers,
       resultedFrom,
       isCity,
       primaryContact: findPrimaryContact(contacts),

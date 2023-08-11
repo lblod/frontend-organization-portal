@@ -37,27 +37,19 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
   }
 
   get sharepointIdentifier() {
-    return this.model.administrativeUnit.identifiers.find((id) =>
-      this.isSharePointIdentifier(id)
-    );
+    return this.model.identifiers.find((id) => this.isSharePointIdentifier(id));
   }
 
   get kboIdentifier() {
-    return this.model.administrativeUnit.identifiers.find((id) =>
-      this.isKboIdentifier(id)
-    );
+    return this.model.identifiers.find((id) => this.isKboIdentifier(id));
   }
 
   get nisIdentifier() {
-    return this.model.administrativeUnit.identifiers.find((id) =>
-      this.isNisCodeIdentifier(id)
-    );
+    return this.model.identifiers.find((id) => this.isNisCodeIdentifier(id));
   }
 
   get ovoIdentifier() {
-    return this.model.administrativeUnit.identifiers.find((id) =>
-      this.isOvoCodeIdentifier(id)
-    );
+    return this.model.identifiers.find((id) => this.isOvoCodeIdentifier(id));
   }
 
   get isWorshipService() {
