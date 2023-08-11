@@ -151,6 +151,47 @@
                     </:content>
                   </Item>
                 {{/if}}
+                {{#if this.isIgs}}
+                  <Item @labelFor="igs-regio" >
+                    <:label>Regio</:label>
+                    <:content>
+                      <TrimInput
+                        @width="block"
+                        @value={{@model.igsRegio.label}}
+                        @disabled="true"
+                        id="igs-regio"
+                      />
+                    </:content>
+                  </Item>
+                  <Item 
+                    @labelFor="expectedEndDate" 
+                    @required={{true}}
+                    @errorMessage={{@model.administrativeUnit.error.expectedEndDate.validation}}
+                  >
+                    <:label>Geplande einddatum</:label>
+                    <:content  as |hasError|>
+                      <Datepicker 
+                        @onChange={{fn
+                          (mut @model.administrativeUnit.expectedEndDate)
+                        }}
+                        @value={{@model.administrativeUnit.expectedEndDate}}
+                        @error={{hasError}}
+                      />
+                    </:content>
+                  </Item>
+                  <Item @labelFor="purpose">
+                    <:label>Doel</:label>
+                    <:content>
+                      <AuTextarea
+                        @width="block"
+                        @onChange={{fn
+                          (mut @model.administrativeUnit.purpose)
+                        }}
+                        @value={{@model.administrativeUnit.purpose}}
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
               </:left>
               <:right as |Item|>
                 <Item @labelFor="status-select">
@@ -235,121 +276,139 @@
         >
           <:title>Primaire contactgegevens</:title>
         </Site::ContactEditCard>
+
+        {{#if (and @model.administrativeUnit.classification (or this.isAgb this.isApb this.isIgs))}}
+          <EditCard @containsRequiredFields={{true}}>
+            <:title>Gerelateerde organisaties</:title>
+            <:card as |Card|>
+                <Card.Columns>
+                  <:left as |Item|>
+                  {{#if (or this.isAgb this.isIgs)}}
+                    <Item
+                      @labelFor="related-gemeente"
+                      @required={{true}}
+                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                    >
+                      <:label>Gemeente</:label>
+                      <:content as |hasError|>
+                        <AdministrativeUnitSelect
+                          @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                          @onChange={{this.setRelation}}
+                          @classificationCodes={{this.classificationCodes}}
+                          @error={{hasError}}
+                          @id="related-gemeente"
+                        />
+                      </:content>
+                    </Item>
+
+                    {{#if @model.administrativeUnit.isSubOrganizationOf}}
+                      <Item>
+                        <:label>
+                          Provincie
+                        </:label>
+                        <:content>
+                          {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
+                        </:content>
+                      </Item>
+                    {{/if}}
+
+                    {{#if this.isAgb}}
+                      <Item
+                        @labelFor="oprichting-gemeente"
+                        @required={{true}}
+                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
+                      >
+                        <:label>Werd opgericht door</:label>
+                        <:content as |hasError|>
+                        <AdministrativeUnitSelect
+                          @disabled={{true}}
+                          @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
+                          @onChange={{this.setRelation}}
+                          @classificationCodes={{this.classificationCodes}}
+                          @error={{hasError}}
+                          @id="oprichting-gemeente"
+                        />
+                        </:content>
+                      </Item>
+                    {{/if}}
+
+                    {{#if this.isIgs}}
+                      <Item
+                        @labelFor="has-participants"
+                        @errorMessage={{@model.administrativeUnit.error.hasParticipants.validation}}
+                      >
+                        <:label>Heeft als participanten</:label>
+                        <:content as |hasError|>
+                        <AdministrativeUnitMultipleSelect
+                          @selected={{@model.administrativeUnit.hasParticipants}}
+                          @onChange={{this.setHasParticipants}}
+                          @classificationCodes={{this.classificationCodesIgsParticipants}}
+                          @error={{hasError}}
+                          @id="has-participants"
+                        />
+                        </:content>
+                      </Item>
+                    {{/if}}
+                  {{else}}
+                      <Item
+                        @labelFor="related-provincie"
+                        @required={{true}}
+                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                      >
+                        <:label>Provincie</:label>
+                        <:content as |hasError|>
+                          <ProvinceOrganizationSelect
+                            @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                            @onChange={{this.setRelation
+                            }}
+                            @error={{hasError}}
+                            @id="related-provincie"
+                          />
+                        </:content>
+                      </Item>
+                    <Item
+                      @labelFor="related-gemeente"
+                      @required={{true}}
+                      @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
+                    >
+                      <:label>Gemeente</:label>
+                      <:content as |hasError|>
+                        <AdministrativeUnitSelect
+                          @selected={{@model.administrativeUnit.isAssociatedWith}}
+                          @onChange={{fn
+                            (mut @model.administrativeUnit.isAssociatedWith)
+                          }}
+                          @classificationCodes={{this.classificationCodes}}
+                          @error={{hasError}}
+                          @id="related-gemeente"
+                        />
+                      </:content>
+                    </Item>
+                      <Item
+                        @labelFor="opregicht-provincie"
+                        @required={{true}}
+                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
+                      >
+                        <:label>Werd opgericht door</:label>
+                        <:content as |hasError|>
+                          <ProvinceOrganizationSelect
+                          @disabled={{true}}
+                            @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
+                            @onChange={{this.setRelation
+                            }}
+                            @error={{hasError}}
+                            @id="opregicht-provincie"
+                          />
+                        </:content>
+                      </Item>
+
+                    {{/if}}
+                  </:left>
+                </Card.Columns>
+            </:card>
+          </EditCard>
+        {{/if}}
       </div>
-  {{#if (and @model.administrativeUnit.classification (or this.isAgb this.isApb))}}
-      <EditCard @containsRequiredFields={{true}}>
-        <:title>Gerelateerde organisaties</:title>
-        <:card as |Card|>
-            <Card.Columns>
-              <:left as |Item|>
-              {{#if this.isAgb}}
-                <Item
-                  @labelFor="related-gemeente"
-                  @required={{true}}
-                  @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-                >
-                  <:label>Gemeente</:label>
-                  <:content as |hasError|>
-                    <AdministrativeUnitSelect
-                      @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                      @onChange={{this.setRelation
-                      }}
-                      @classificationCodes={{this.classificationCodes}}
-                      @error={{hasError}}
-                      @id="related-gemeente"
-                    />
-                  </:content>
-                </Item>
-
-                {{#if @model.administrativeUnit.isSubOrganizationOf}}
-                  <Item>
-                    <:label>
-                      Provincie
-                    </:label>
-                    <:content>
-                      {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
-                    </:content>
-                  </Item>
-                {{/if}}
-
-                  <Item
-                    @labelFor="oprichting-gemeente"
-                    @required={{true}}
-                    @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
-                  >
-                    <:label>Werd opgericht door</:label>
-                    <:content as |hasError|>
-                    <AdministrativeUnitSelect
-                      @disabled={{true}}
-                      @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
-                      @onChange={{this.setRelation
-                      }}
-                      @classificationCodes={{this.classificationCodes}}
-                      @error={{hasError}}
-                      @id="oprichting-gemeente"
-                    />
-                    </:content>
-                </Item>
-              {{else}}
-                  <Item
-                    @labelFor="related-provincie"
-                    @required={{true}}
-                    @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-                  >
-                    <:label>Provincie</:label>
-                    <:content as |hasError|>
-                      <ProvinceOrganizationSelect
-                        @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                        @onChange={{this.setRelation
-                        }}
-                        @error={{hasError}}
-                        @id="related-provincie"
-                      />
-                    </:content>
-                  </Item>
-  <Item
-                  @labelFor="related-gemeente"
-                  @required={{true}}
-                  @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
-                >
-                  <:label>Gemeente</:label>
-                  <:content as |hasError|>
-                    <AdministrativeUnitSelect
-                      @selected={{@model.administrativeUnit.isAssociatedWith}}
-                      @onChange={{fn
-                        (mut @model.administrativeUnit.isAssociatedWith)
-                      }}
-                      @classificationCodes={{this.classificationCodes}}
-                      @error={{hasError}}
-                      @id="related-gemeente"
-                    />
-                  </:content>
-                </Item>
-                  <Item
-                    @labelFor="opregicht-provincie"
-                    @required={{true}}
-                    @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
-                  >
-                    <:label>Werd opgericht door</:label>
-                    <:content as |hasError|>
-                      <ProvinceOrganizationSelect
-                      @disabled={{true}}
-                        @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
-                        @onChange={{this.setRelation
-                        }}
-                        @error={{hasError}}
-                        @id="opregicht-provincie"
-                      />
-                    </:content>
-                  </Item>
-
-                {{/if}}
-              </:left>
-            </Card.Columns>
-        </:card>
-      </EditCard>
-    {{/if}}
-
     </form>
   </div>
 </div>

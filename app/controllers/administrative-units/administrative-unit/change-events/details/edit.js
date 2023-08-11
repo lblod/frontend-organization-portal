@@ -23,6 +23,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
       this.model.changeEvent.type.get('id') == CHANGE_EVENT_TYPE.CITY
     );
   }
+
   get isAgbOrApb() {
     return (
       this.model.administrativeUnit.classification.get('id') ===
@@ -31,6 +32,20 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
         CLASSIFICATION_CODE.APB
     );
   }
+
+  get isIgs() {
+    return (
+      this.model.administrativeUnit.classification.get('id') ===
+        CLASSIFICATION_CODE.PROJECTVERENIGING ||
+      this.model.administrativeUnit.classification.get('id') ===
+        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
+      this.model.administrativeUnit.classification.get('id') ===
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
+      this.model.administrativeUnit.classification.get('id') ===
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
+    );
+  }
+
   @action
   validateEndDate(validation) {
     this.endDateValidation = validateDate(validation);

@@ -79,24 +79,24 @@ export default class PeopleIndexRoute extends Route {
       person.organizations = [];
       if (Array.isArray(person.organization_id)) {
         for (let [index, id] of person.organization_id.entries()) {
-          const isAgbOrApb = this.isClassificationAgbOrApb(
+          const displayLinkToOrgaan = !this.isClassificationAgbOrApbOrIgs(
             person.organization_classification[index]
           );
           person.organizations.push({
             id,
             classification: person.organization_classification[index],
-            isAgbOrApb,
+            displayLinkToOrgaan,
           });
         }
       } else {
-        const isAgbOrApb = this.isClassificationAgbOrApb(
+        const displayLinkToOrgaan = !this.isClassificationAgbOrApbOrIgs(
           person.organization_classification
         );
         person.organizations = [
           {
             id: person.organization_id,
             classification: person.organization_classification,
-            isAgbOrApb,
+            displayLinkToOrgaan,
           },
         ];
       }
@@ -104,10 +104,14 @@ export default class PeopleIndexRoute extends Route {
     return page;
   }
 
-  isClassificationAgbOrApb(classification) {
+  isClassificationAgbOrApbOrIgs(classification) {
     return (
       classification === 'Autonoom gemeentebedrijf' ||
-      classification === 'Autonoom provinciebedrijf'
+      classification === 'Autonoom provinciebedrijf' ||
+      classification === 'Projectvereniging' ||
+      classification === 'Dienstverlenende vereniging' ||
+      classification === 'Opdrachthoudende vereniging' ||
+      classification === 'Opdrachthoudende vereniging met private deelname'
     );
   }
 }

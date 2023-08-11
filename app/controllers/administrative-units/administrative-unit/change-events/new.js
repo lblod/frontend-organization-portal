@@ -82,6 +82,18 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
     );
   }
 
+  get isIgs() {
+    return (
+      this.model.classification.id === CLASSIFICATION_CODE.PROJECTVERENIGING ||
+      this.model.classification.id ===
+        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
+      this.model.classification.id ===
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
+      this.model.classification.id ===
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
+    );
+  }
+
   @dropTask
   *createNewChangeEventTask(event) {
     event.preventDefault();

@@ -38,7 +38,7 @@
                 <:label>Naam bestuur</:label>
                 <:content>
                   {{#each @model.administrativeUnits as |administrativeUnit index|}}
-                    {{#if administrativeUnit.classification.isAgbOrApb}}
+                    {{#if (or administrativeUnit.classification.isAgbOrApb administrativeUnit.classification.isIgs)}}
                       {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
                     {{else}}
                       <AuLink
