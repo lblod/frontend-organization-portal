@@ -12,9 +12,8 @@
           <:content as |hasError|>
             <MunicipalitySelect
               @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-              @onChange={{fn
-                (mut @model.administrativeUnit.isSubOrganizationOf)
-              }}
+              @onChange={{@updateRelatedOrg}}
+
               @error={{hasError}}
               @id="related-gemeente"
             />

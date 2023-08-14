@@ -12,9 +12,9 @@
           <:content as |hasError|>
             <ProvinceOrganizationSelect
               @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-              @onChange={{fn
-                (mut @model.administrativeUnit.isSubOrganizationOf)
-              }}
+
+              @onChange={{@updateRelatedOrg}}
+
               @error={{hasError}}
               @id="related-provincie"
             />
