@@ -74,6 +74,7 @@
         {{#if this.isApb}}
           <RelatedOrganizations::EditApb
             @model={{@model}}
+            @updateRelatedOrg={{this.updateRelatedOrg}}
             @addNewSubOrganization={{this.addNewSubOrganization}}
             @updateSubOrganization={{this.updateSubOrganization}}
             @removeSubOrganization={{this.removeSubOrganization}}
@@ -83,6 +84,7 @@
         {{#if this.isAgb}}
           <RelatedOrganizations::EditAgb
             @model={{@model}}
+            @updateRelatedOrg={{this.updateRelatedOrg}}
             @addNewSubOrganization={{this.addNewSubOrganization}}
             @updateSubOrganization={{this.updateSubOrganization}}
             @removeSubOrganization={{this.removeSubOrganization}}

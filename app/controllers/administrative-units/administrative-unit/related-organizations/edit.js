@@ -135,6 +135,11 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   removeSubOrganization(organization) {
     this.model.subOrganizations.removeObject(organization);
   }
+  @action
+  updateRelatedOrg(org) {
+    this.model.administrativeUnit.isSubOrganizationOf = org;
+    this.model.administrativeUnit.wasFoundedByOrganization = org;
+  }
 
   @action
   addNewHasParticipants() {
