@@ -149,7 +149,7 @@
                 <Item>
                   <:label>Resulterende organisatie</:label>
                   <:content>
-                    {{@model.changeEvent.resultingOrganizations.firstObject.name}}
+                    {{get @model.changeEvent.resultingOrganizations "0.name"}}
                   </:content>
                 </Item>
                 <Item>
