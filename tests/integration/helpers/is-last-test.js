@@ -14,16 +14,16 @@ module('Integration | Helper | is-last', function (hooks) {
       {{is-last this.currentItem this.list}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'false');
+    assert.strictEqual(this.element.textContent.trim(), 'false');
 
     this.set('currentItem', 3);
-    assert.equal(this.element.textContent.trim(), 'true');
+    assert.strictEqual(this.element.textContent.trim(), 'true');
 
     this.set('list', [10, 11]);
-    assert.equal(this.element.textContent.trim(), 'false');
+    assert.strictEqual(this.element.textContent.trim(), 'false');
 
     this.set('currentItem', 11);
-    assert.equal(this.element.textContent.trim(), 'true');
+    assert.strictEqual(this.element.textContent.trim(), 'true');
   });
 
   test('it works with an array of objects', async function (assert) {
@@ -41,10 +41,10 @@ module('Integration | Helper | is-last', function (hooks) {
       {{is-last this.currentItem this.list}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'false');
+    assert.strictEqual(this.element.textContent.trim(), 'false');
 
     this.set('currentItem', this.list[1]);
-    assert.equal(this.element.textContent.trim(), 'true');
+    assert.strictEqual(this.element.textContent.trim(), 'true');
   });
 
   test('it always returns false when the list is empty', async function (assert) {
@@ -55,6 +55,6 @@ module('Integration | Helper | is-last', function (hooks) {
       {{is-last this.currentItem this.list}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'false');
+    assert.strictEqual(this.element.textContent.trim(), 'false');
   });
 });

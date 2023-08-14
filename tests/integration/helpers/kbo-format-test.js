@@ -12,6 +12,6 @@ module('Integration | Helper | kbo-format', function (hooks) {
 
     await render(hbs`{{kbo-format inputValue}}`);
 
-    assert.equal(this.element.textContent.trim(), '1234');
+    assert.strictEqual(this.element.textContent.trim(), '1234');
   });
 });
