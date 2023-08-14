@@ -29,12 +29,17 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
       await this.loadSubOrganizationsTask.perform(administrativeUnit.id, params)
     ).slice();
 
+    const hasParticipants = (
+      await this.loadHasParticipantsTask.perform(administrativeUnit.id, params)
+    ).toArray();
+
     return {
       administrativeUnit: createValidatedChangeset(
         administrativeUnit,
         administrativeUnitValidations
       ),
       subOrganizations,
+      hasParticipants,
     };
   }
 
@@ -42,6 +47,16 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   *loadSubOrganizationsTask(id, params) {
     return yield this.store.query('administrative-unit', {
       'filter[is-sub-organization-of][:id:]': id,
+      'page[size]': 500,
+      include: 'classification',
+      sort: params.sort,
+    });
+  }
+
+  @dropTask({ cancelOn: 'deactivate' })
+  *loadHasParticipantsTask(id, params) {
+    return yield this.store.query('administrative-unit', {
+      'filter[participates-in][:id:]': id,
       'page[size]': 500,
       include: 'classification',
       sort: params.sort,

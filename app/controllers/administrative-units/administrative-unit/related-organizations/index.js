@@ -49,6 +49,13 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
     );
   }
 
+  get isProvince() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.PROVINCE
+    );
+  }
+
   get isAgb() {
     return (
       this.model.administrativeUnit.classification?.get('id') ===
@@ -63,10 +70,16 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
     );
   }
 
-  get isProvince() {
+  get isIgs() {
     return (
       this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.PROVINCE
+        CLASSIFICATION_CODE.PROJECTVERENIGING ||
+      this.model.administrativeUnit.classification?.get('id') ===
+        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
+      this.model.administrativeUnit.classification?.get('id') ===
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
+      this.model.administrativeUnit.classification?.get('id') ===
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
     );
   }
 }

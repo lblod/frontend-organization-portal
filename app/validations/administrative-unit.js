@@ -100,6 +100,19 @@ export default {
       // );
     }
   ),
+  expectedEndDate: validateConditionally(
+    [
+      validatePresence({
+        presence: true,
+        ignoreBlank: true,
+        message: 'Vul de datum in',
+      }),
+      validateFutureDate,
+    ],
+    function (changes, content) {
+      return isIGS(changes, content);
+    }
+  ),
 };
 
 export function getStructuredIdentifierKBOValidations(store) {
@@ -114,6 +127,16 @@ function isAgb(changes, content) {
 
 function isApb(changes, content) {
   return hasClassificationId(changes, content, CLASSIFICATION_CODE.APB);
+}
+
+function isIGS(changes, content) {
+  const typesThatAreIGS = [
+    CLASSIFICATION_CODE.PROJECTVERENIGING,
+    CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
+    CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
+    CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+  ];
+  return hasClassificationId(changes, content, typesThatAreIGS);
 }
 
 function isWorshipAdministrativeUnit(changes, content) {
@@ -134,8 +157,11 @@ function hasClassificationId(changes, content, classificationId) {
   } else {
     unit = content;
   }
-
-  return unit.classification?.get('id') === classificationId;
+  if (Array.isArray(classificationId)) {
+    return classificationId.includes(unit.classification?.get('id'));
+  } else {
+    return unit.classification?.get('id') === classificationId;
+  }
 }
 
 function validateKBO(store) {
@@ -179,4 +205,14 @@ function validateKBO(store) {
       },
     };
   };
+}
+
+function validateFutureDate(_key, newValue) {
+  const newValueDate = new Date(newValue);
+  const today = new Date();
+  if (newValueDate < today) {
+    return 'De datum mag niet in het verleden liggen';
+  } else {
+    return true;
+  }
 }

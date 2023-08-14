@@ -16,6 +16,7 @@ import administrativeUnitValidations, {
 } from 'frontend-organization-portal/validations/administrative-unit';
 import { A } from '@ember/array';
 import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute extends Route {
   @service store;
@@ -84,6 +85,35 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     );
     let structuredIdentifierOVO = await identifierOVO.structuredIdentifier;
 
+    let igsRegio;
+    const typesThatAreIGS = [
+      CLASSIFICATION_CODE.PROJECTVERENIGING,
+      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+    ];
+    const isIGS = typesThatAreIGS.includes(
+      administrativeUnit.classification?.get('id')
+    );
+
+    if (isIGS) {
+      const primarySite = await administrativeUnit.primarySite;
+      const address = await primarySite.address;
+      const municipalityString = address.municipality;
+      const municipalityUnit = (
+        await this.store.query('administrative-unit', {
+          filter: {
+            ':exact:name': municipalityString,
+            classification: {
+              ':id:': CLASSIFICATION_CODE.MUNICIPALITY,
+            },
+          },
+        })
+      ).firstObject;
+      const scope = await municipalityUnit.scope;
+      igsRegio = await scope.locatedWithin;
+    }
+
     return {
       administrativeUnit: createValidatedChangeset(
         administrativeUnit,
@@ -106,6 +136,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
       structuredIdentifierSharepoint,
       structuredIdentifierNIS,
       structuredIdentifierOVO,
+      igsRegio,
     };
   }
 
