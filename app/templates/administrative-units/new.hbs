@@ -141,14 +141,14 @@
               </Item>
             {{/if}}
             {{#if this.isNewIGS}}
-              <Item 
-                @labelFor="expectedEndDate" 
+              <Item
+                @labelFor="expectedEndDate"
                 @required={{true}}
                 @errorMessage={{@model.administrativeUnitChangeset.error.expectedEndDate.validation}}
               >
                 <:label>Geplande einddatum</:label>
                 <:content  as |hasError|>
-                  <Datepicker 
+                  <Datepicker
                     @onChange={{fn
                       (mut @model.administrativeUnitChangeset.expectedEndDate)
                     }}
@@ -156,6 +156,18 @@
                   />
                 </:content>
               </Item>
+              <Item @labelFor="purpose">
+                    <:label>Doel</:label>
+                    <:content>
+                      <AuTextarea
+                        @width="block"
+                        @onChange={{fn
+                          (mut @model.administrativeUnitChangeset.purpose)
+                        }}
+                        @value={{@model.administrativeUnitChangeset.purpose}}
+                      />
+                    </:content>
+                  </Item>
             {{/if}}
           </:left>
           <:right as |Item|>
