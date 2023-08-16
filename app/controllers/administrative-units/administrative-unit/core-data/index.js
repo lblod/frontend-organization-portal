@@ -134,4 +134,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
     }
     return SHAREPOINT_LINK_BASE.CENTRAL_WORSHIP_SERVICE;
   }
+  get expiredExpectedEndDate() {
+    const expectedEndDate = this.model.administrativeUnit.expectedEndDate;
+    return expectedEndDate && expectedEndDate < new Date();
+  }
 }

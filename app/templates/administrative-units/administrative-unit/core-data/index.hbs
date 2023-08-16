@@ -97,6 +97,9 @@
                 <:label>Geplande einddatum</:label>
                 <:content>
                   {{date-format @model.administrativeUnit.expectedEndDate}}
+                  {{#if this.expiredExpectedEndDate}}
+                    <AuPill @skin="error">De geplande einddatum is overschreden</AuPill>
+                  {{/if}}
                 </:content>
               </Item>
               <Item>
