@@ -322,4 +322,10 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
   ) {
     newAdministrativeUnit.hasParticipants = administrativeUnit.hasParticipants;
   }
+  if (administrativeUnit.expectedEndDate) {
+    newAdministrativeUnit.expectedEndDate = administrativeUnit.expectedEndDate;
+  }
+  if (administrativeUnit.purpose?.length) {
+    newAdministrativeUnit.purpose = administrativeUnit.purpose;
+  }
 }
