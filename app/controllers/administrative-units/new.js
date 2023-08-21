@@ -285,6 +285,7 @@ export default class AdministrativeUnitsNewController extends Controller {
 
 function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
   newAdministrativeUnit.name = administrativeUnit.name;
+  newAdministrativeUnit.expectedEndDate = administrativeUnit.expectedEndDate;
   newAdministrativeUnit.recognizedWorshipType =
     administrativeUnit.recognizedWorshipType;
   newAdministrativeUnit.classification = administrativeUnit.classification;
