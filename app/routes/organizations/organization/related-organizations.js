@@ -8,6 +8,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
   queryParams = {
     sort: { refreshModel: true },
     page: { refreshModel: true },
+    organizationStatus: { refreshModel: true, replace: true },
   };
 
   async model(params) {
@@ -27,6 +28,9 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
     return yield this.store.query('administrative-unit', {
       'filter[:or:][is-associated-with][:id:]': id,
       'filter[:or:][founded-organizations][:id:]': id,
+      'filter[organization-status][:id:]': params.organizationStatus
+        ? '63cc561de9188d64ba5840a42ae8f0d6'
+        : undefined,
       include: 'classification',
       sort: params.sort,
       page: { size: params.size, number: params.page },
