@@ -347,6 +347,7 @@
                 {{#if this.isNewIGS}}
                   <Item
                     @labelFor="has-participants"
+                    @required={{true}}
                     @errorMessage={{@model.administrativeUnitChangeset.error.hasParticipants.validation}}
                   >
                     <:label>Heeft als participanten</:label>
