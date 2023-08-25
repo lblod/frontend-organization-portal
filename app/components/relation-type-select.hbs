@@ -1,0 +1,14 @@
+<PowerSelect
+  @allowClear={{@allowClear}}
+  @loadingMessage="Aan het laden..."
+  @noMatchesMessage="Geen resultaten"
+  @placeholder="Zoek type relatie"
+  @options={{this.relationTypes}}
+  @selected={{@selected}}
+  @onChange={{@onChange}}
+  @triggerId={{@id}}
+  ...attributes
+  as |relationType|
+>
+  {{relationType}}
+</PowerSelect>

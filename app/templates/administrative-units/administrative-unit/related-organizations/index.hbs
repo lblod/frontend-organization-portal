@@ -50,7 +50,12 @@
       <RelatedOrganizations::ViewApb @model={{@model}} />
     {{/if}}
     {{#if this.isIgs}}
-      <RelatedOrganizations::ViewIgs @model={{@model}} @sort={{this.sort}} />
+      <RelatedOrganizations::ViewIgs
+        @model={{@model}}
+        @sort={{this.sort}}
+        @selectedRelationType={{this.relationType}}
+        @setFilterRelationType={{this.setFilterRelationType}}
+      />
     {{/if}}
   </div>
 </div>

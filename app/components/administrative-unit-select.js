@@ -76,7 +76,7 @@ export default class AdministrativeUnitSelectComponent extends Component {
 
     const query = {
       sort: 'name',
-      include: 'classification',
+      include: 'classification,organization-status',
     };
 
     if (allowedClassificationCodes.length) {

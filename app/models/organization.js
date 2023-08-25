@@ -1,5 +1,11 @@
 import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
 
+export const RELATION_TYPES = {
+  HAS_RELATION_WITH: 'Heeft een relatie met',
+  PARTICIPATES_IN: 'Participeert in',
+  HAS_PARTICIPANTS: 'Heeft als participanten',
+};
+
 export default class OrganizationModel extends Model {
   @attr name;
   @attr alternativeName;

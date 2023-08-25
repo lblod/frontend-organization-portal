@@ -31,31 +31,32 @@
   </:card>
 </EditCard>
 
-{{#if @model.subOrganizations.length}}
+{{#if @model.clonedRelatedOrganizations.length}}
   <div>
-    <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
-      Heeft relatie met
-    </AuHeading>
-    <AuDataTable id="subOrganizations" @content={{@model.subOrganizations}}
+    <AuDataTable id="clonedRelatedOrganizations" @content={{@model.clonedRelatedOrganizations}}
       @noDataMessage="Geen bestuur" as |t|>
       <t.content as |c|>
         <c.header>
+          <AuDataTableThSortable @field="relationType" @label="Type relatie" @currentSorting={{@sort}} />
           <AuDataTableThSortable @field="classification.label" @label="Type organisatie" @currentSorting={{@sort}} />
           <AuDataTableThSortable @field="name" @label="Organisatie" @currentSorting={{@sort}} />
           <AuDataTableThSortable @field="organizationStatus.label" @label="Status" @currentSorting={{@sort}} />
         </c.header>
-        <c.body as |subOrganization|>
+        <c.body as |organization|>
           <td>
-            {{subOrganization.classification.label}}
+            {{organization.relationType}}
           </td>
           <td>
-            <AuLink @route="administrative-units.administrative-unit" @model={{subOrganization.id}}>
-              {{subOrganization.name}}
+            {{organization.classification.label}}
+          </td>
+          <td>
+            <AuLink @route="administrative-units.administrative-unit" @model={{organization.id}}>
+              {{organization.name}}
             </AuLink>
           </td>
           <td>
-            <OrganizationStatus @id={{subOrganization.organizationStatus.id}}
-              @label={{subOrganization.organizationStatus.label}} />
+            <OrganizationStatus @id={{organization.organizationStatus.id}}
+              @label={{organization.organizationStatus.label}} />
           </td>
         </c.body>
       </t.content>

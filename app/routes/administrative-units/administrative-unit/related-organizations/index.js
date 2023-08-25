@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+
 export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIndexRoute extends Route {
   @service store;
 
@@ -9,6 +10,7 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
     sort: { refreshModel: true },
     page: { refreshModel: true },
     organizationStatus: { refreshModel: true, replace: true },
+    relationType: { refreshModel: true, replace: true },
   };
 
   async model(params) {
@@ -20,27 +22,67 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
     const isSubOrganizationOf = await administrativeUnit.isSubOrganizationOf;
     const wasFoundedByOrganization =
       await administrativeUnit.wasFoundedByOrganization;
-    const subOrganizations = await this.loadSubOrganizationsTask.perform(
-      administrativeUnit.id,
-      params,
-      administrativeUnit.classification.get('id') ==
-        CLASSIFICATION_CODE.PROVINCE
-    );
-    const participatesIn = await administrativeUnit.participatesIn;
 
-    const hasParticipants = await this.loadHasParticipantsTask.perform(
-      administrativeUnit.id,
-      params
-    );
+    let relatedOrganizations = [];
+
+    // Note: we use labels here, it's not robus, but will change in a very near future because the model of
+    // relationships is going to change
+    if (
+      !params.relationType ||
+      params.relationType == 'Heeft een relatie met'
+    ) {
+      const subOrganizations = await this.loadSubOrganizationsTask.perform(
+        administrativeUnit.id,
+        params,
+        administrativeUnit.classification.get('id') ==
+          CLASSIFICATION_CODE.PROVINCE
+      );
+      for (const subOrganization of subOrganizations.toArray()) {
+        // Using a cloning subterfuge otherwise the `relationType` gets overridden
+        // if we have multiple times the same admin unit
+        const clone = await this.cloneOrganization(subOrganization);
+        clone.relationType = 'Heeft een relatie met';
+
+        relatedOrganizations.push(clone);
+      }
+    }
+
+    if (!params.relationType || params.relationType == 'Participeert in') {
+      const participatesIn = await administrativeUnit.participatesIn;
+      for (const participant of participatesIn.toArray()) {
+        // Using a cloning subterfuge otherwise the `relationType` gets overridden
+        // if we have multiple times the same admin unit
+        const clone = await this.cloneOrganization(participant);
+        clone.relationType = 'Participeert in';
+
+        relatedOrganizations.push(clone);
+      }
+    }
+
+    if (
+      !params.relationType ||
+      params.relationType == 'Heeft als participanten'
+    ) {
+      const hasParticipants = await this.loadHasParticipantsTask.perform(
+        administrativeUnit.id,
+        params
+      );
+      for (const participant of hasParticipants.toArray()) {
+        // Using a cloning subterfuge otherwise the `relationType` gets overridden
+        // if we have multiple times the same admin unit
+        const clone = await this.cloneOrganization(participant);
+        clone.relationType = 'Heeft als participanten';
+
+        relatedOrganizations.push(clone);
+      }
+    }
 
     return {
       administrativeUnit,
       wasFoundedByOrganization,
       isAssociatedWith,
       isSubOrganizationOf,
-      subOrganizations,
-      participatesIn,
-      hasParticipants,
+      relatedOrganizations,
     };
   }
 
@@ -80,5 +122,16 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
       include: 'classification',
       sort: params.sort,
     });
+  }
+
+  async cloneOrganization(organization) {
+    const clone = this.store.createRecord('organization');
+
+    clone.opUuid = organization.id;
+    clone.name = organization.name;
+    clone.organizationStatus = await organization.organizationStatus;
+    clone.classification = await organization.classification;
+
+    return clone;
   }
 }

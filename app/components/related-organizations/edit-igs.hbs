@@ -32,10 +32,6 @@
 </EditCard>
 
 <div>
-  <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
-    Heeft als participanten
-  </AuHeading>
-
   {{#if @model.administrativeUnit.error.hasParticipants.validation}}
     <div>
       <AuHelpText @error={{true}}>{{@model.administrativeUnit.error.hasParticipants.validation}}</AuHelpText>
@@ -43,26 +39,35 @@
   {{/if}}
 
   <AuDataTable
-    id="hasParticipants"
-    @content={{@model.hasParticipants}}
+    id="clonedRelatedOrganizations"
+    @content={{@model.clonedRelatedOrganizations}}
     @noDataMessage="Geen bestuur"
     as |t|
   >
     <t.content as |c|>
       <c.header>
-        <th>Type organisatie</th>
-        <th>Organisatie</th>
-        <th>Status</th>
+        <AuDataTableThSortable @field="relationType" @label="Type relatie" @currentSorting={{@sort}} />
+        <AuDataTableThSortable @field="classification.label" @label="Type organisatie" @currentSorting={{@sort}} />
+        <AuDataTableThSortable @field="name" @label="Organisatie" @currentSorting={{@sort}} />
+        <AuDataTableThSortable @field="organizationStatus.label" @label="Status" @currentSorting={{@sort}} />
         <th></th>
       </c.header>
       <c.body as |organization|>
+        <td>
+          <RelationTypeSelect
+            @selected={{organization.relationType}}
+            @onChange={{fn @updateRelationType organization}}
+            @administrativeUnit={{@model.administrativeUnit}}
+            id="relation-type"
+          />
+        </td>
         <td>
           {{organization.classification.label}}
         </td>
         <td>
           <AdministrativeUnitSelect
             @selected={{organization}}
-            @onChange={{fn @updateHasParticipants organization}}
+            @onChange={{fn @updateRelatedOrganization organization}}
             @classificationCodes={{@classificationCodesIgsParticipants}}
           />
         </td>
@@ -80,7 +85,7 @@
             @skin="link"
             {{on
               "click"
-              (fn @removeHasParticipants organization)
+              (fn @removeRelatedOrganization organization)
             }}
           >
             Verwijder
@@ -96,7 +101,7 @@
       @width="block"
       @icon="add"
       @iconAlignment="left"
-      {{on "click" @addNewHasParticipants}}
+      {{on "click" @addNewRelatedOrganization}}
     >
       Voeg nieuwe gerelateerde organisatie toe
     </AuButton>

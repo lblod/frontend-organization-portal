@@ -35,25 +35,40 @@
   </:card>
 </DataCard>
 
-{{#if @model.participatesIn.length}}
+{{#if @model.relatedOrganizations.length}}
   <div>
-    <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
-      Participeert in
-    </AuHeading>
-    <AuDataTable id="participatesIn" @content={{@model.participatesIn}}
+    <AuDataTable 
+      id="subOrganizations" 
+      @content={{@model.relatedOrganizations}}
+      @page={{@page}}
+      @size={{@size}}
       @noDataMessage="Geen bestuur" as |t|>
+      <t.menu as |menu|>
+        <menu.general>
+          <div class="au-o-box">
+            <AuToggleSwitch
+              @label="Verberg niet actieve organisaties"
+              @checked={{@organizationStatus}}
+            />
+          </div>
+        </menu.general>
+      </t.menu>
       <t.content as |c|>
         <c.header>
+          <AuDataTableThSortable @field="relationType" @label="Type relatie" @currentSorting={{@sort}} />
           <AuDataTableThSortable @field="classification.label" @label="Type organisatie" @currentSorting={{@sort}} />
           <AuDataTableThSortable @field="name" @label="Organisatie" @currentSorting={{@sort}} />
           <AuDataTableThSortable @field="organizationStatus.label" @label="Status" @currentSorting={{@sort}} />
         </c.header>
         <c.body as |organization|>
           <td>
+            {{organization.relationType}}
+          </td>
+          <td>
             {{organization.classification.label}}
           </td>
           <td>
-            <AuLink @route="administrative-units.administrative-unit" @model={{organization.id}}>
+            <AuLink @route="administrative-units.administrative-unit" @model={{organization.opUuid}}>
               {{organization.name}}
             </AuLink>
           </td>

@@ -5,6 +5,7 @@ import { action } from '@ember/object';
 import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { tracked } from '@glimmer/tracking';
+import { RELATION_TYPES } from 'frontend-organization-portal/models/organization';
 
 export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEditController extends Controller {
   @service router;
@@ -119,22 +120,38 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     ];
   }
 
+  // TODO fix table pagination (index page only)
+  // TODO Remove sorting in edit mode ?
+
   @action
-  addNewSubOrganization() {
-    let subOrganization = this.store.createRecord('organization');
-    this.model.subOrganizations.pushObject(subOrganization);
+  addNewRelatedOrganization() {
+    let clonedOrganization = this.store.createRecord('organization');
+    if (this.isCentralWorshipService) {
+      clonedOrganization.relationType = RELATION_TYPES.HAS_RELATION_WITH;
+    } else if (this.isIgs) {
+      clonedOrganization.relationType = RELATION_TYPES.HAS_PARTICIPANTS;
+    }
+    this.model.clonedRelatedOrganizations.pushObject(clonedOrganization);
   }
 
   @action
-  updateSubOrganization(removedOrganization, addedOrganization) {
-    this.model.subOrganizations.removeObject(removedOrganization);
-    this.model.subOrganizations.pushObject(addedOrganization);
+  updateRelatedOrganization(removedClonedOrganization, addedOrganization) {
+    this.model.clonedRelatedOrganizations.removeObject(
+      removedClonedOrganization
+    );
+
+    const addedClonedOrganization = this.cloneOrganization(addedOrganization);
+    addedClonedOrganization.opUuid = addedOrganization.id;
+    addedClonedOrganization.relationType =
+      removedClonedOrganization.relationType;
+    this.model.clonedRelatedOrganizations.pushObject(addedClonedOrganization);
   }
 
   @action
-  removeSubOrganization(organization) {
-    this.model.subOrganizations.removeObject(organization);
+  removeRelatedOrganization(clonedOrganization) {
+    this.model.clonedRelatedOrganizations.removeObject(clonedOrganization);
   }
+
   @action
   updateRelatedOrg(org) {
     this.model.administrativeUnit.isSubOrganizationOf = org;
@@ -142,27 +159,41 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   }
 
   @action
-  addNewHasParticipants() {
-    let organization = this.store.createRecord('organization');
-    this.model.hasParticipants.pushObject(organization);
-  }
-
-  @action
-  updateHasParticipants(removedOrganization, addedOrganization) {
-    this.model.hasParticipants.removeObject(removedOrganization);
-    this.model.hasParticipants.pushObject(addedOrganization);
-  }
-
-  @action
-  removeHasParticipants(organization) {
-    this.model.hasParticipants.removeObject(organization);
+  updateRelationType(organization, relationType) {
+    console.log(this.model.clonedRelatedOrganizations);
+    const clonedOrganization = this.model.clonedRelatedOrganizations.find(
+      (clonedOrg) => {
+        if (clonedOrg.opUuid) return clonedOrg.opUuid == organization.opUuid;
+        else return clonedOrg.id == organization.id;
+      }
+    );
+    clonedOrganization.relationType = relationType;
   }
 
   @dropTask
   *save(event) {
     event.preventDefault();
 
-    let { administrativeUnit, subOrganizations, hasParticipants } = this.model;
+    let { administrativeUnit, clonedRelatedOrganizations } = this.model;
+
+    let subOrganizations = [];
+    let hasParticipants = [];
+    for (const clonedOrganization of clonedRelatedOrganizations) {
+      if (clonedOrganization.opUuid) {
+        const organization = yield this.store.findRecord(
+          'organization',
+          clonedOrganization.opUuid
+        );
+        if (clonedOrganization.relationType == 'Heeft een relatie met') {
+          subOrganizations.push(organization);
+        } else if (
+          clonedOrganization.relationType == 'Heeft als participanten'
+        ) {
+          hasParticipants.push(organization);
+        }
+      }
+    }
+
     administrativeUnit.subOrganizations = subOrganizations;
     administrativeUnit.hasParticipants = hasParticipants;
 
@@ -176,5 +207,16 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
         administrativeUnit.id
       );
     }
+  }
+
+  cloneOrganization(organization) {
+    const clone = this.store.createRecord('organization');
+
+    clone.opUuid = organization.id;
+    clone.name = organization.name;
+    clone.organizationStatus = organization.organizationStatus;
+    clone.classification = organization.classification;
+
+    return clone;
   }
 }

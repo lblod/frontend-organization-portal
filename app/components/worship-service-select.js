@@ -11,6 +11,7 @@ export default class WorshipServiceMultipleSelectComponent extends Component {
 
     const query = {
       sort: 'name',
+      include: 'classification,organization-status',
     };
 
     if (searchParams.trim() !== '') {

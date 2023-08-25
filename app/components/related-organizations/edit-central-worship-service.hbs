@@ -25,37 +25,43 @@
   </:card>
 </EditCard>
 
-<AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
-  Heeft relatie met
-</AuHeading>
 <AuDataTable
-  id="subOrganizations"
-  @content={{@model.subOrganizations}}
+  id="clonedRelatedOrganizations"
+  @content={{@model.clonedRelatedOrganizations}}
   @noDataMessage="Geen bestuur"
   as |t|
 >
   <t.content as |c|>
     <c.header>
+      <AuDataTableThSortable @field="relationType" @label="Type relatie" @currentSorting={{@sort}} />
       <AuDataTableThSortable @field="classification.label" @label="Type organisatie" @currentSorting={{@sort}} />
       <AuDataTableThSortable @field="name" @label="Organisatie" @currentSorting={{@sort}} />
       <AuDataTableThSortable @field="organizationStatus.label" @label="Status" @currentSorting={{@sort}} />
       <th></th>
     </c.header>
-    <c.body as |subOrganization|>
+    <c.body as |organization|>
       <td>
-        {{subOrganization.classification.label}}
+        <RelationTypeSelect
+          @selected={{organization.relationType}}
+          @onChange={{fn @updateRelationType organization}}
+          @administrativeUnit={{@model.administrativeUnit}}
+          id="relation-type"
+        />
+      </td>
+      <td>
+        {{organization.classification.label}}
       </td>
       <td>
         <WorshipServiceSelect
-          @selected={{subOrganization}}
-          @onChange={{fn @updateSubOrganization subOrganization}}
+          @selected={{organization}}
+          @onChange={{fn @updateRelatedOrganization organization}}
           id="related-municipality"
         />
       </td>
       <td>
         <OrganizationStatus
-          @id={{subOrganization.organizationStatus.id}}
-          @label={{subOrganization.organizationStatus.label}}
+          @id={{organization.organizationStatus.id}}
+          @label={{organization.organizationStatus.label}}
         />
       </td>
       <td>
@@ -66,7 +72,7 @@
           @skin="link"
           {{on
             "click"
-            (fn @removeSubOrganization subOrganization)
+            (fn @removeRelatedOrganization organization)
           }}
         >
           Verwijder
@@ -82,7 +88,7 @@
     @width="block"
     @icon="add"
     @iconAlignment="left"
-    {{on "click" @addNewSubOrganization}}
+    {{on "click" @addNewRelatedOrganization}}
   >
     Voeg nieuwe gerelateerde organisatie toe
   </AuButton>

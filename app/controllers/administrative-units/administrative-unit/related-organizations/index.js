@@ -1,14 +1,16 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { action } from '@ember/object';
 
 export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIndexController extends Controller {
-  queryParams = ['sort', 'page', 'size', 'organizationStatus'];
+  queryParams = ['sort', 'page', 'size', 'organizationStatus', 'relationType'];
 
   @tracked sort = 'name';
   @tracked page = 0;
   size = 25;
   @tracked organizationStatus = true;
+  @tracked relationType;
 
   get isWorshipAdministrativeUnit() {
     return this.isWorshipService || this.isCentralWorshipService;
@@ -81,5 +83,10 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
       this.model.administrativeUnit.classification?.get('id') ===
         CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
     );
+  }
+
+  @action
+  setFilterRelationType(type) {
+    this.relationType = type;
   }
 }

@@ -42,18 +42,20 @@
         {{#if this.isCentralWorshipService}}
           <RelatedOrganizations::EditCentralWorshipService
             @model={{@model}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
+            @addNewRelatedOrganization={{this.addNewRelatedOrganization}}
+            @updateRelatedOrganization={{this.updateRelatedOrganization}}
+            @removeRelatedOrganization={{this.removeRelatedOrganization}}
+            @updateRelationType={{this.updateRelationType}}
             @sort={{this.sort}}
           />
         {{/if}}
         {{#if this.isMunicipality}}
           <RelatedOrganizations::EditMunicipality
             @model={{@model}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
+            @addNewRelatedOrganization={{this.addNewRelatedOrganization}}
+            @updateRelatedOrganization={{this.updateRelatedOrganization}}
+            @removeRelatedOrganization={{this.removeRelatedOrganization}}
+            @updateRelationType={{this.updateRelationType}}
             @sort={{this.sort}}
           />
         {{/if}}
@@ -65,9 +67,10 @@
         {{#if this.isProvince}}
           <RelatedOrganizations::EditProvince
             @model={{@model}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
+            @addNewRelatedOrganization={{this.addNewRelatedOrganization}}
+            @updateRelatedOrganization={{this.updateRelatedOrganization}}
+            @removeRelatedOrganization={{this.removeRelatedOrganization}}
+            @updateRelationType={{this.updateRelationType}}
             @sort={{this.sort}}
           />
         {{/if}}
@@ -75,9 +78,6 @@
           <RelatedOrganizations::EditApb
             @model={{@model}}
             @updateRelatedOrg={{this.updateRelatedOrg}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
             @sort={{this.sort}}
           />
         {{/if}}
@@ -85,9 +85,6 @@
           <RelatedOrganizations::EditAgb
             @model={{@model}}
             @updateRelatedOrg={{this.updateRelatedOrg}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
             @sort={{this.sort}}
           />
         {{/if}}
@@ -95,9 +92,10 @@
           <RelatedOrganizations::EditIgs
             @model={{@model}}
             @classificationCodesIgsParticipants={{this.classificationCodesIgsParticipants}}
-            @addNewHasParticipants={{this.addNewHasParticipants}}
-            @updateHasParticipants={{this.updateHasParticipants}}
-            @removeHasParticipants={{this.removeHasParticipants}}
+            @addNewRelatedOrganization={{this.addNewRelatedOrganization}}
+            @updateRelatedOrganization={{this.updateRelatedOrganization}}
+            @removeRelatedOrganization={{this.removeRelatedOrganization}}
+            @updateRelationType={{this.updateRelationType}}
           />
         {{/if}}
       </div>
