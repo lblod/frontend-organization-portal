@@ -33,10 +33,10 @@
 >
   <t.content as |c|>
     <c.header>
-      <AuDataTableThSortable @field="relationType" @label="Type relatie" @currentSorting={{@sort}} />
-      <AuDataTableThSortable @field="classification.label" @label="Type organisatie" @currentSorting={{@sort}} />
-      <AuDataTableThSortable @field="name" @label="Organisatie" @currentSorting={{@sort}} />
-      <AuDataTableThSortable @field="organizationStatus.label" @label="Status" @currentSorting={{@sort}} />
+      <th>Type relatie</th>
+      <th>Type organisatie</th>
+      <th>Organisatie</th>
+      <th>Status</th>
       <th></th>
     </c.header>
     <c.body as |organization|>

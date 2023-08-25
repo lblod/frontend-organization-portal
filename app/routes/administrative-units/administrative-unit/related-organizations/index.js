@@ -77,6 +77,9 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
       }
     }
 
+    // TODO it broke the pagination and sorting of tables because now a table is a groument of models ...
+    // Might get fixable more easily once the model of relationships is unified. Wait for it to see.
+
     return {
       administrativeUnit,
       wasFoundedByOrganization,

@@ -29,22 +29,62 @@
       <RelatedOrganizations::ViewWorshipService @model={{@model}} />
     {{/if}}
     {{#if this.isCentralWorshipService}}
-      <RelatedOrganizations::ViewCentralWorshipService @model={{@model}} @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @organizationStatus={{this.organizationStatus}}/>
+      <RelatedOrganizations::ViewCentralWorshipService
+        @model={{@model}}
+        @sort={{this.sort}}
+        @page={{this.page}}
+        @size={{this.size}}
+        @organizationStatus={{this.organizationStatus}}
+        @selectedRelationType={{this.relationType}}
+        @setFilterRelationType={{this.setFilterRelationType}}
+      />
     {{/if}}
     {{#if this.isDistrict}}
       <RelatedOrganizations::ViewDistrict @model={{@model}} />
     {{/if}}
     {{#if this.isMunicipality}}
-      <RelatedOrganizations::ViewMunicipality @model={{@model}} @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @organizationStatus={{this.organizationStatus}}/>
+      <RelatedOrganizations::ViewMunicipality
+        @model={{@model}}
+        @sort={{this.sort}}
+        @page={{this.page}}
+        @size={{this.size}}
+        @organizationStatus={{this.organizationStatus}}
+        @selectedRelationType={{this.relationType}}
+        @setFilterRelationType={{this.setFilterRelationType}}
+      />
     {{/if}}
     {{#if this.isOCMW}}
-      <RelatedOrganizations::ViewOcmw @model={{@model}} />
+      <RelatedOrganizations::ViewOcmw
+        @model={{@model}}
+        @sort={{this.sort}}
+        @page={{this.page}}
+        @size={{this.size}}
+        @organizationStatus={{this.organizationStatus}}
+        @selectedRelationType={{this.relationType}}
+        @setFilterRelationType={{this.setFilterRelationType}}
+      />
     {{/if}}
     {{#if this.isProvince}}
-      <RelatedOrganizations::ViewProvince @model={{@model}} @sort={{this.sort}} @page={{this.page}} @size={{this.size}} @organizationStatus={{this.organizationStatus}}/>
+      <RelatedOrganizations::ViewProvince
+        @model={{@model}}
+        @sort={{this.sort}}
+        @page={{this.page}}
+        @size={{this.size}}
+        @organizationStatus={{this.organizationStatus}}
+        @selectedRelationType={{this.relationType}}
+        @setFilterRelationType={{this.setFilterRelationType}}
+      />
     {{/if}}
     {{#if this.isAgb}}
-      <RelatedOrganizations::ViewAgb @model={{@model}} />
+      <RelatedOrganizations::ViewAgb
+        @model={{@model}}
+        @sort={{this.sort}}
+        @page={{this.page}}
+        @size={{this.size}}
+        @organizationStatus={{this.organizationStatus}}
+        @selectedRelationType={{this.relationType}}
+        @setFilterRelationType={{this.setFilterRelationType}}
+      />
     {{/if}}
     {{#if this.isApb}}
       <RelatedOrganizations::ViewApb @model={{@model}} />
@@ -53,6 +93,9 @@
       <RelatedOrganizations::ViewIgs
         @model={{@model}}
         @sort={{this.sort}}
+        @page={{this.page}}
+        @size={{this.size}}
+        @organizationStatus={{this.organizationStatus}}
         @selectedRelationType={{this.relationType}}
         @setFilterRelationType={{this.setFilterRelationType}}
       />

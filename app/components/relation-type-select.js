@@ -4,7 +4,7 @@ import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/adminis
 
 export default class RelationTypeSelectComponent extends Component {
   get relationTypes() {
-    if (this.isCentralWorshipService) {
+    if (this.isCentralWorshipService || this.isProvince) {
       return [RELATION_TYPES.HAS_RELATION_WITH];
     } else if (this.isIgs) {
       return [RELATION_TYPES.HAS_PARTICIPANTS];
@@ -22,14 +22,6 @@ export default class RelationTypeSelectComponent extends Component {
       this.args.administrativeUnit &&
       this.args.administrativeUnit.classification.get('id') ===
         CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
-    );
-  }
-
-  get isMunicipality() {
-    return (
-      this.args.administrativeUnit &&
-      this.args.administrativeUnit.classification.get('id') ===
-        CLASSIFICATION_CODE.MUNICIPALITY
     );
   }
 
