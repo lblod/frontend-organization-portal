@@ -115,7 +115,8 @@ export default {
       // );
     }
   ),
-  expectedEndDate: validateConditionally(
+  // Disabling expectedEndDate required until data gets imported
+  /* expectedEndDate: validateConditionally(
     [
       validatePresence({
         presence: true,
@@ -127,7 +128,7 @@ export default {
     function (changes, content) {
       return isIGS(changes, content);
     }
-  ),
+  ), */
 };
 
 export function getStructuredIdentifierKBOValidations(store) {
@@ -222,7 +223,7 @@ function validateKBO(store) {
   };
 }
 
-function validateFutureDate(_key, newValue) {
+/* function validateFutureDate(_key, newValue) {
   const newValueDate = new Date(newValue);
   const today = new Date();
   if (newValueDate < today) {
@@ -230,4 +231,4 @@ function validateFutureDate(_key, newValue) {
   } else {
     return true;
   }
-}
+} */
