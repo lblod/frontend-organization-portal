@@ -24,14 +24,13 @@
           <Item
             @labelFor="related-central-worship-service"
             @required={{false}}
-            @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
           >
             <:label>Centraal bestuur</:label>
             <:content as |hasError|>
               <CentralWorshipSelect
-                @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                @selected={{@model.membershipHasRelationWith.organization}}
                 @onChange={{fn
-                  (mut @model.administrativeUnit.isSubOrganizationOf)
+                  (mut @model.membershipHasRelationWith.organization)
                 }}
                 @error={{hasError}}
                 @id="related-central-worship-service"

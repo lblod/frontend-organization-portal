@@ -3,12 +3,12 @@
   @loadingMessage="Aan het laden..."
   @noMatchesMessage="Geen resultaten"
   @placeholder="Zoek type relatie"
-  @options={{this.relationTypes}}
+  @options={{this.loadMembershipRolesTask.last}}
   @selected={{@selected}}
   @onChange={{@onChange}}
   @triggerId={{@id}}
   ...attributes
-  as |relationType|
+  as |role|
 >
-  {{relationType}}
+  {{role.opLabel}}
 </PowerSelect>

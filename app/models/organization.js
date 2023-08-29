@@ -6,6 +6,17 @@ export const RELATION_TYPES = {
   HAS_PARTICIPANTS: 'Heeft als participanten',
 };
 
+export const RELATION_TYPES_MAPPING = {
+  '73d5e1cf250d42fab15926771f07505a': {
+    label: 'Is oprichter van', // is founder of
+    inverseLabel: 'Werd opgericht door', // was founded by
+  },
+  '2152eb830b1143bfb97a7dd9596d6c63': {
+    label: 'Participeert in', // participates in
+    inverseLabel: 'Heeft als participanten', // has as participants
+  },
+};
+
 export default class OrganizationModel extends Model {
   @attr name;
   @attr alternativeName;
@@ -53,16 +64,6 @@ export default class OrganizationModel extends Model {
   positions;
 
   @hasMany('organization', {
-    inverse: 'isSubOrganizationOf',
-  })
-  subOrganizations;
-
-  @belongsTo('organization', {
-    inverse: 'subOrganizations',
-  })
-  isSubOrganizationOf;
-
-  @hasMany('organization', {
     inverse: 'isAssociatedWith',
   })
   associatedOrganizations;
@@ -72,23 +73,18 @@ export default class OrganizationModel extends Model {
   })
   isAssociatedWith;
 
-  @hasMany('organization', {
-    inverse: 'wasFoundedByOrganization',
+  @hasMany('membership', {
+    inverse: 'member',
   })
-  foundedOrganizations;
+  membershipsOfOrganization;
 
-  @belongsTo('organization', {
-    inverse: 'foundedOrganizations',
+  @hasMany('membership', {
+    inverse: 'organization',
   })
-  wasFoundedByOrganization;
-
-  @hasMany('organization', {
-    inverse: 'hasParticipants',
-  })
-  participatesIn;
+  memberships;
 
   @hasMany('organization', {
-    inverse: 'participatesIn',
+    inverse: null,
   })
-  hasParticipants;
+  isMemberOf;
 }

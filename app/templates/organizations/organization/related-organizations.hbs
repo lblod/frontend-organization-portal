@@ -12,8 +12,8 @@
     <:subtitle>{{@model.organization.name}}</:subtitle>
   </PageHeader>
 
-  <AuDataTable id="subOrganizations"
-    @content={{this.subOrganizations}}
+  <AuDataTable id="relatedOrganizations"
+    @content={{this.relatedOrganizations}}
     @isLoading={{this.isLoading}}
     @sort={{this.sort}}
     @page={{this.page}}
@@ -35,18 +35,18 @@
         <AuDataTableThSortable @field="name" @currentSorting={{this.sort}} @label="Organisatie" />
         <AuDataTableThSortable @field="organizationStatus.label" @currentSorting={{this.sort}} @label="Status" />
       </c.header>
-      <c.body as |subOrganization|>
+      <c.body as |organization|>
         <td>
-          {{subOrganization.classification.label}}
+          {{organization.classification.label}}
         </td>
         <td>
-          <AuLink @route="administrative-units.administrative-unit" @model={{subOrganization.id}}>
-            {{subOrganization.name}}
+          <AuLink @route="administrative-units.administrative-unit" @model={{organization.id}}>
+            {{organization.name}}
           </AuLink>
         </td>
         <td>
-          <OrganizationStatus @id={{subOrganization.organizationStatus.id}}
-            @label={{subOrganization.organizationStatus.label}} />
+          <OrganizationStatus @id={{organization.organizationStatus.id}}
+            @label={{organization.organizationStatus.label}} />
         </td>
       </c.body>
     </t.content>

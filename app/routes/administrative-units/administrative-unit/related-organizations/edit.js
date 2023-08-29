@@ -26,83 +26,62 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
       'administrative-units.administrative-unit.related-organizations'
     );
 
-    let clonedRelatedOrganizations = A();
+    let relatedMemberships = A();
 
-    const subOrganizations = await this.loadSubOrganizationsTask.perform(
-      administrativeUnit.id,
-      params
-    );
+    // TODO is membershipsAsMemberOf a nonsense for my task ? I think so, when I compare to
+    // https://github.com/lblod/frontend-organization-portal/blob/development/app/routes/administrative-units/administrative-unit/related-organizations/edit.js
 
-    for (const subOrganization of subOrganizations.toArray()) {
-      // Using a cloning subterfuge otherwise the `relationType` gets overridden
-      // if we have multiple times the same admin unit
-      const clone = await this.cloneOrganization(subOrganization);
-      clone.relationType = 'Heeft een relatie met';
+    const membershipsAsMemberOf =
+      await administrativeUnit.membershipsOfOrganization;
 
-      clonedRelatedOrganizations.pushObject(clone);
+    let membershipHasRelationWith = null;
+    if (membershipsAsMemberOf.length) {
+      for (const membership of membershipsAsMemberOf.toArray()) {
+        const role = await membership.role;
+        if (role.hasRelationWith && !membershipHasRelationWith) {
+          membershipHasRelationWith = membership;
+        }
+        if (role.participatesIn) {
+          relatedMemberships.push(membership);
+        }
+      }
     }
 
-    const hasParticipants = await this.loadHasParticipantsTask.perform(
-      administrativeUnit.id,
-      params
-    );
-
-    for (const participant of hasParticipants.toArray()) {
-      // Using a cloning subterfuge otherwise the `relationType` gets overridden
-      // if we have multiple times the same admin unit
-      const clone = await this.cloneOrganization(participant);
-      clone.relationType = 'Heeft als participanten';
-
-      clonedRelatedOrganizations.pushObject(clone);
+    if (!membershipHasRelationWith) {
+      membershipHasRelationWith = this.store.createRecord('membership');
+      membershipHasRelationWith.member = administrativeUnit;
     }
 
-    const participatesIn = await administrativeUnit.participatesIn;
-    for (const participant of participatesIn.toArray()) {
-      // Using a cloning subterfuge otherwise the `relationType` gets overridden
-      // if we have multiple times the same admin unit
-      const clone = await this.cloneOrganization(participant);
-      clone.relationType = 'Participeert in';
+    const membershipsAsOrganization =
+      await this.loadMembershipsAsOrganizationTask.perform(
+        administrativeUnit.id,
+        params
+      );
 
-      clonedRelatedOrganizations.push(clone);
-    }
+    relatedMemberships.push(...membershipsAsOrganization.toArray());
+
+    const membershipRoles = await this.store.query('membership-role', {
+      'filter[has-broader-role][:id:]': '93c48754610c45e6bd9a894d2720a53d',
+    });
 
     return {
       administrativeUnit: createValidatedChangeset(
         administrativeUnit,
         administrativeUnitValidations
       ),
-      clonedRelatedOrganizations,
+      membershipHasRelationWith,
+      relatedMemberships,
+      membershipRoles,
     };
   }
 
   @dropTask({ cancelOn: 'deactivate' })
-  *loadSubOrganizationsTask(id, params) {
-    return yield this.store.query('administrative-unit', {
-      'filter[is-sub-organization-of][:id:]': id,
+  *loadMembershipsAsOrganizationTask(id) {
+    return yield this.store.query('membership', {
+      'filter[:or:][organization][:id:]': id,
+      include: 'organization,member',
       'page[size]': 500,
-      include: 'classification',
-      sort: params.sort,
     });
-  }
-
-  @dropTask({ cancelOn: 'deactivate' })
-  *loadHasParticipantsTask(id, params) {
-    return yield this.store.query('administrative-unit', {
-      'filter[participates-in][:id:]': id,
-      'page[size]': 500,
-      include: 'classification',
-      sort: params.sort,
-    });
-  }
-
-  async cloneOrganization(organization) {
-    const clone = this.store.createRecord('organization');
-
-    clone.opUuid = organization.id;
-    clone.name = organization.name;
-    clone.organizationStatus = await organization.organizationStatus;
-    clone.classification = await organization.classification;
-
-    return clone;
+    // TODO add sorting and pagination
   }
 }

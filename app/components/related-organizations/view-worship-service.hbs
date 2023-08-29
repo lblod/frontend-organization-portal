@@ -24,14 +24,14 @@
             </:content>
           </Item>
         {{/if}}
-        {{#if @model.isSubOrganizationOf}}
+        {{#if @model.membershipHasRelationWith}}
           <Item>
             <:label>
                 Centraal bestuur
             </:label>
             <:content>
-              <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
-                {{@model.isSubOrganizationOf.name}}
+              <AuLink @route="administrative-units.administrative-unit" @model={{@model.membershipHasRelationWith.organization.id}}>
+                {{@model.membershipHasRelationWith.organization.name}}
               </AuLink>
             </:content>
           </Item>

@@ -1,6 +1,6 @@
 <AuDataTable
-  id="clonedRelatedOrganizations"
-  @content={{@model.clonedRelatedOrganizations}}
+  id="relatedMemberships"
+  @content={{@model.relatedMemberships}}
   @noDataMessage="Geen bestuur"
   as |t|
 >
@@ -12,29 +12,29 @@
       <th>Status</th>
       <th></th>
     </c.header>
-    <c.body as |organization|>
+    <c.body as |membership|>
       <td>
         <RelationTypeSelect
-          @selected={{organization.relationType}}
-          @onChange={{fn @updateRelationType organization}}
+          @selected={{membership.role}}
+          @onChange={{fn (mut membership.role)}}
           @administrativeUnit={{@model.administrativeUnit}}
           id="relation-type"
         />
       </td>
       <td>
-        {{organization.classification.label}}
+        {{membership.member.classification.label}}
       </td>
       <td>
         <MunicipalitySelect
-          @selected={{organization}}
-          @onChange={{fn @updateRelatedOrganization organization}}
+          @selected={{membership.member}}
+          @onChange={{fn @updateMembership membership}}
           id="related-municipality"
         />
       </td>
       <td>
         <OrganizationStatus
-          @id={{organization.organizationStatus.id}}
-          @label={{organization.organizationStatus.label}}
+          @id={{membership.member.organizationStatus.id}}
+          @label={{membership.member.organizationStatus.label}}
         />
       </td>
       <td>
@@ -45,7 +45,7 @@
           @skin="link"
           {{on
             "click"
-            (fn @removeRelatedOrganization organization)
+            (fn @removeMembership membership)
           }}
         >
           Verwijder
@@ -61,7 +61,7 @@
     @width="block"
     @icon="add"
     @iconAlignment="left"
-    {{on "click" @addNewRelatedOrganization}}
+    {{on "click" @addNewMembership}}
   >
     Voeg nieuwe gerelateerde organisatie toe
   </AuButton>

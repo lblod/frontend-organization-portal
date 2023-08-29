@@ -42,20 +42,17 @@
         {{#if this.isCentralWorshipService}}
           <RelatedOrganizations::EditCentralWorshipService
             @model={{@model}}
-            @addNewRelatedOrganization={{this.addNewRelatedOrganization}}
-            @updateRelatedOrganization={{this.updateRelatedOrganization}}
-            @removeRelatedOrganization={{this.removeRelatedOrganization}}
-            @updateRelationType={{this.updateRelationType}}
+            @addNewMembership={{this.addNewMembership}}
+            @updateMembership={{this.updateMembership}}
+            @removeMembership={{this.removeMembership}}
             @sort={{this.sort}}
           />
         {{/if}}
         {{#if this.isMunicipality}}
           <RelatedOrganizations::EditMunicipality
             @model={{@model}}
-            @addNewRelatedOrganization={{this.addNewRelatedOrganization}}
-            @updateRelatedOrganization={{this.updateRelatedOrganization}}
-            @removeRelatedOrganization={{this.removeRelatedOrganization}}
-            @updateRelationType={{this.updateRelationType}}
+            @addNewMembership={{this.addNewMembership}}
+            @removeMembership={{this.removeMembership}}
             @sort={{this.sort}}
           />
         {{/if}}
@@ -67,10 +64,9 @@
         {{#if this.isProvince}}
           <RelatedOrganizations::EditProvince
             @model={{@model}}
-            @addNewRelatedOrganization={{this.addNewRelatedOrganization}}
-            @updateRelatedOrganization={{this.updateRelatedOrganization}}
-            @removeRelatedOrganization={{this.removeRelatedOrganization}}
-            @updateRelationType={{this.updateRelationType}}
+            @addNewMembership={{this.addNewMembership}}
+            @updateMembership={{this.updateMembership}}
+            @removeMembership={{this.removeMembership}}
             @sort={{this.sort}}
           />
         {{/if}}
@@ -92,10 +88,9 @@
           <RelatedOrganizations::EditIgs
             @model={{@model}}
             @classificationCodesIgsParticipants={{this.classificationCodesIgsParticipants}}
-            @addNewRelatedOrganization={{this.addNewRelatedOrganization}}
-            @updateRelatedOrganization={{this.updateRelatedOrganization}}
-            @removeRelatedOrganization={{this.removeRelatedOrganization}}
-            @updateRelationType={{this.updateRelationType}}
+            @addNewMembership={{this.addNewMembership}}
+            @updateMembership={{this.updateMembership}}
+            @removeMembership={{this.removeMembership}}
           />
         {{/if}}
       </div>

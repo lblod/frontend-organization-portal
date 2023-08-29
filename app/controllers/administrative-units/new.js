@@ -130,12 +130,9 @@ export default class AdministrativeUnitsNewController extends Controller {
   @action
   setClassification(value) {
     this.model.administrativeUnitChangeset.classification = value;
-    this.model.administrativeUnitChangeset.subOrganizations = [];
-    this.model.administrativeUnitChangeset.foundedOrganizations = [];
     this.model.administrativeUnitChangeset.isAssociatedWith = [];
-    this.model.administrativeUnitChangeset.isSubOrganizationOf = null;
-    this.model.administrativeUnitChangeset.wasFoundedByOrganization = null;
-    this.model.administrativeUnitChangeset.hasParticipants = [];
+    this.model.administrativeUnitChangeset.memberships = [];
+    this.model.administrativeUnitChangeset.isMemberOf = null;
   }
 
   @dropTask
@@ -291,23 +288,9 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
   newAdministrativeUnit.classification = administrativeUnit.classification;
   newAdministrativeUnit.organizationStatus =
     administrativeUnit.organizationStatus;
-  newAdministrativeUnit.wasFoundedByOrganization =
-    administrativeUnit.wasFoundedByOrganization;
-  newAdministrativeUnit.isSubOrganizationOf =
-    administrativeUnit.isSubOrganizationOf;
-  if (
-    administrativeUnit.subOrganizations &&
-    administrativeUnit.subOrganizations.length
-  ) {
-    newAdministrativeUnit.subOrganizations =
-      administrativeUnit.subOrganizations;
-  }
-  if (
-    administrativeUnit.foundedOrganizations &&
-    administrativeUnit.foundedOrganizations.length
-  ) {
-    newAdministrativeUnit.foundedOrganizations =
-      administrativeUnit.foundedOrganizations;
+  newAdministrativeUnit.isMemberOf = administrativeUnit.isMemberOf;
+  if (administrativeUnit.memberships && administrativeUnit.memberships.length) {
+    newAdministrativeUnit.memberships = administrativeUnit.memberships;
   }
   newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
   if (administrativeUnit.scope) {
@@ -316,12 +299,6 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
       newAdministrativeUnit.scope.locatedWithin =
         administrativeUnit.scope.locatedWithin;
     }
-  }
-  if (
-    administrativeUnit.hasParticipants &&
-    administrativeUnit.hasParticipants.length
-  ) {
-    newAdministrativeUnit.hasParticipants = administrativeUnit.hasParticipants;
   }
   if (administrativeUnit.expectedEndDate) {
     newAdministrativeUnit.expectedEndDate = administrativeUnit.expectedEndDate;
