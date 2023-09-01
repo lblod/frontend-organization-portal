@@ -117,11 +117,12 @@ export default {
   ),
   expectedEndDate: validateConditionally(
     [
-      validatePresence({
+      // Disabling expectedEndDate required until data gets imported
+      /* validatePresence({
         presence: true,
         ignoreBlank: true,
         message: 'Vul de datum in',
-      }),
+      }), */
       validateFutureDate,
     ],
     function (changes, content) {
@@ -223,10 +224,14 @@ function validateKBO(store) {
 }
 
 function validateFutureDate(_key, newValue) {
-  const newValueDate = new Date(newValue);
-  const today = new Date();
-  if (newValueDate < today) {
-    return 'De datum mag niet in het verleden liggen';
+  if (newValue) {
+    const newValueDate = new Date(newValue);
+    const today = new Date();
+    if (newValueDate < today) {
+      return 'De datum mag niet in het verleden liggen';
+    } else {
+      return true;
+    }
   } else {
     return true;
   }
