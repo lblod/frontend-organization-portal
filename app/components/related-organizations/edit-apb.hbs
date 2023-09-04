@@ -5,16 +5,14 @@
       <:left as |Item|>
         <Item
           @labelFor="related-provincie"
-          @required={{false}}
+          @required={{true}}
           @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
         >
           <:label>Provincie</:label>
           <:content as |hasError|>
             <ProvinceOrganizationSelect
               @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-
               @onChange={{@updateRelatedOrg}}
-
               @error={{hasError}}
               @id="related-provincie"
             />
@@ -22,7 +20,7 @@
         </Item>
           <Item
           @labelFor="related-gemeente"
-          @required={{false}}
+          @required={{true}}
           @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
         >
           <:label>Gemeente</:label>
