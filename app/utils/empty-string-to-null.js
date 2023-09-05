@@ -5,8 +5,7 @@
  * @returns Ember changeset
  */
 export function setEmptyStringsToNull(changeset) {
-  let properties = Object.keys(changeset.toJSON());
-
+  let properties = Object.keys(changeset.changes);
   for (const property of properties) {
     if (changeset[property] == '') {
       changeset[property] = null;

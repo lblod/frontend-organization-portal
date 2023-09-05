@@ -107,11 +107,13 @@ export default class OrganizationModel extends Model {
 
   @hasMany('organization', {
     inverse: 'hasParticipants',
+    async: true,
   })
   participatesIn;
 
   @hasMany('organization', {
     inverse: 'participatesIn',
+    async: true,
   })
   hasParticipants;
 }

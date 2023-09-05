@@ -141,7 +141,7 @@ export default class AdministrativeUnitsNewController extends Controller {
   @dropTask
   *createAdministrativeUnitTask(event) {
     event.preventDefault();
-
+    console.log('creating')
     let {
       administrativeUnitChangeset,
       administrativeUnit,
@@ -182,28 +182,46 @@ export default class AdministrativeUnitsNewController extends Controller {
       } else {
         newAdministrativeUnit = administrativeUnit;
       }
+      console.log(newAdministrativeUnit)
+      console.log('copying')
       // Copy data entered in the frontend to the new admin unit
       copyAdministrativeUnitData(
         newAdministrativeUnit,
         administrativeUnitChangeset
       );
 
+      console.log(newAdministrativeUnit)
+      
+      console.log(structuredIdentifierKBO)
       structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
-      identifierKBO.structuredIdentifier = structuredIdentifierKBO;
+      console.log(structuredIdentifierKBO)
+      console.log('before')
       yield structuredIdentifierKBO.save();
+      console.log('save')
+      identifierKBO.structuredIdentifier = structuredIdentifierKBO;
+      console.log('structured')
+      console.log(structuredIdentifierKBO)
+      
+      console.log('identifier')
+      console.log(identifierKBO)
       yield identifierKBO.save();
 
+     
       structuredIdentifierSharepoint = setEmptyStringsToNull(
         structuredIdentifierSharepoint
       );
       identifierSharepoint.structuredIdentifier =
         structuredIdentifierSharepoint;
+        console.log(structuredIdentifierSharepoint);
       yield structuredIdentifierSharepoint.save();
+      console.log(identifierSharepoint);
       yield identifierSharepoint.save();
 
+      console.log(contact)
       contact = setEmptyStringsToNull(contact);
       yield contact.save();
 
+      console.log(secondaryContact)
       secondaryContact = setEmptyStringsToNull(secondaryContact);
       yield secondaryContact.save();
 
@@ -212,6 +230,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       }
 
       address.fullAddress = combineFullAddress(address);
+      console.log(address)
       address = setEmptyStringsToNull(address);
       yield address.save();
 
@@ -230,6 +249,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       ]);
       newAdministrativeUnit.primarySite = primarySite;
 
+      console.log(newAdministrativeUnit)
       newAdministrativeUnit = setEmptyStringsToNull(newAdministrativeUnit);
 
       yield newAdministrativeUnit.save();
@@ -262,31 +282,39 @@ export default class AdministrativeUnitsNewController extends Controller {
 
   removeUnsavedChangesetRecords() {
     if (this.model.administrativeUnitChangeset.isNew) {
+      console.log(this.model.administrativeUnitChangeset)
       this.model.administrativeUnitChangeset.destroyRecord();
     }
 
     if (this.model.address.isNew) {
+      console.log(this.model.address)
       this.model.address.destroyRecord();
     }
 
     if (this.model.contact.isNew) {
+      console.log(this.model.contact)
       this.model.contact.destroyRecord();
     }
 
     if (this.model.secondaryContact.isNew) {
+      console.log(this.model.secondaryContact)
       this.model.secondaryContact.destroyRecord();
     }
 
     if (this.model.structuredIdentifierKBO.isNew) {
+      console.log(this.model.structuredIdentifierKBO)
       this.model.structuredIdentifierKBO.destroyRecord();
     }
   }
 }
 
 function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
+  console.log(newAdministrativeUnit);
+  console.log(administrativeUnit)
   newAdministrativeUnit.name = administrativeUnit.name;
   newAdministrativeUnit.recognizedWorshipType =
     administrativeUnit.recognizedWorshipType;
+  console.log(1)
   newAdministrativeUnit.classification = administrativeUnit.classification;
   newAdministrativeUnit.organizationStatus =
     administrativeUnit.organizationStatus;
@@ -294,32 +322,48 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
     administrativeUnit.wasFoundedByOrganization;
   newAdministrativeUnit.isSubOrganizationOf =
     administrativeUnit.isSubOrganizationOf;
+    console.log(2)
   if (
     administrativeUnit.subOrganizations &&
     administrativeUnit.subOrganizations.length
   ) {
     newAdministrativeUnit.subOrganizations =
       administrativeUnit.subOrganizations;
+      
   }
+  console.log(3)
   if (
     administrativeUnit.foundedOrganizations &&
     administrativeUnit.foundedOrganizations.length
   ) {
     newAdministrativeUnit.foundedOrganizations =
       administrativeUnit.foundedOrganizations;
+      
   }
-  newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
+  console.log(4)
+  if(administrativeUnit.isAssociatedWith && administrativeUnit.isAssociatedWith.length) {
+    newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
+  }
+  console.log(4.1)
   if (administrativeUnit.scope) {
+    console.log(4.2)
     newAdministrativeUnit.scope = administrativeUnit.scope;
+    console.log(4.3)
     if (newAdministrativeUnit.scope.locatedWithin) {
+      console.log(4.4)
       newAdministrativeUnit.scope.locatedWithin =
         administrativeUnit.scope.locatedWithin;
+        console.log(4.5)
     }
   }
+  console.log(5)
   if (
     administrativeUnit.hasParticipants &&
     administrativeUnit.hasParticipants.length
   ) {
+    console.log('enters')
     newAdministrativeUnit.hasParticipants = administrativeUnit.hasParticipants;
+    console.log('finishes')
   }
+  console.log('finished copying')
 }

@@ -31,7 +31,7 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
 
     const hasParticipants = (
       await this.loadHasParticipantsTask.perform(administrativeUnit.id, params)
-    ).toArray();
+    ).slice();
 
     return {
       administrativeUnit: createValidatedChangeset(
