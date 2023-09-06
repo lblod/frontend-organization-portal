@@ -53,9 +53,6 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
           CLASSIFICATION_CODE.PROVINCE
       );
 
-    // TODO it broke the pagination and sorting of tables because now a table is a gropument of models ...
-    // Might get fixable more easily once the model of relationships is unified. Wait for it to see.
-
     return {
       administrativeUnit,
       isAssociatedWith,
@@ -68,16 +65,25 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
   @dropTask({ cancelOn: 'deactivate' })
   *loadMembershipsAsOrganizationTask(id, params, isProvince = false) {
     if (isProvince) {
-      // TODO maybe do it in two queries for sub org of sub org ?
-      /*       return yield this.store.query('administrative-unit', {
-        'filter[:or:][is-sub-organization-of][:id:]': id,
-        'filter[:or:][was-founded-by-organization][:id:]': id,
-        'filter[:or:][is-sub-organization-of][is-sub-organization-of][:id:]':
-          id,
-        'filter[organization-status][:id:]': params.organizationStatus
+      return yield this.store.query('membership', {
+        'filter[:or:][organization][:id:]': id,
+        'filter[member][organization-status][:id:]': params.organizationStatus
           ? '63cc561de9188d64ba5840a42ae8f0d6'
           : undefined,
-        include: 'classification',
+        sort: params.sort,
+        page: { size: params.size, number: params.page },
+      });
+
+      // TODO add districts for provinces
+      // Probably something as follows but this returns a 500
+      /*       const districts = yield this.store.query('membership', {
+        'filter[:or:][organization][memberships-of-organization][organization][:id:]':
+          id,
+        'filter[:or:][organization][memberships-of-organization][organization][classification][:id:]':
+          '5ab0e9b8a3b2ca7c5e000003', // district
+        'filter[member][organization-status][:id:]': params.organizationStatus
+          ? '63cc561de9188d64ba5840a42ae8f0d6'
+          : undefined,
         sort: params.sort,
         page: { size: params.size, number: params.page },
       }); */
@@ -87,7 +93,9 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
       'filter[member][organization-status][:id:]': params.organizationStatus
         ? '63cc561de9188d64ba5840a42ae8f0d6'
         : undefined,
+      sort: params.sort,
+      page: { size: params.size, number: params.page },
     });
-    // TODO add sorting and pagination
+    // TODO sorting breaks for type organisatie, I don't get why at first sight
   }
 }

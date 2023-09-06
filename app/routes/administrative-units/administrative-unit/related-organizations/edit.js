@@ -28,9 +28,6 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
 
     let relatedMemberships = A();
 
-    // TODO is membershipsAsMemberOf a nonsense for my task ? I think so, when I compare to
-    // https://github.com/lblod/frontend-organization-portal/blob/development/app/routes/administrative-units/administrative-unit/related-organizations/edit.js
-
     const membershipsAsMemberOf =
       await administrativeUnit.membershipsOfOrganization;
 
@@ -82,6 +79,5 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
       include: 'organization,member',
       'page[size]': 500,
     });
-    // TODO add sorting and pagination
   }
 }

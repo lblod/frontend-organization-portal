@@ -25,14 +25,14 @@ export default class MembershipRoleSelectComponent extends Component {
       );
     } else if (this.isIgs) {
       filteredRoles = roles.filter(
-        (role) => role.id == MEMBERSHIP_ROLES_MAPPING.HAS_PARTICIPANTS.id
+        (role) => role.id == MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id
       );
     } else {
-      // TODO We should also show the relationship "participates in" here, but I'm not sure how as it's like an opposite
+      // TODO We should also show the relationship "has participants" here, but I'm not sure how as it's like an opposite
       filteredRoles = roles.filter(
         (role) =>
           role.id == MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id ||
-          MEMBERSHIP_ROLES_MAPPING.HAS_PARTICIPANTS.id
+          MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id
       );
     }
 

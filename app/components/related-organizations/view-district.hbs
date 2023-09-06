@@ -3,14 +3,14 @@
   <:card as |Card|>
     <Card.Columns>
       <:left as |Item|>
-        {{#if @model.isSubOrganizationOf.name}}
+        {{#if @model.membershipHasRelationWith.organization.name}}
           <Item>
             <:label>
               Gemeente
             </:label>
             <:content>
-              <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
-                {{@model.isSubOrganizationOf.name}}
+              <AuLink @route="administrative-units.administrative-unit" @model={{@model.membershipHasRelationWith.organization.id}}>
+                {{@model.membershipHasRelationWith.organization.name}}
               </AuLink>
             </:content>
           </Item>

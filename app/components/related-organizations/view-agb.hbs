@@ -16,8 +16,8 @@
         <Item>
           <:label>Gemeente</:label>
           <:content>
-            <AuLink @route="administrative-units.administrative-unit.core-data" @model={{@model.isSubOrganizationOf.id}}>
-              {{@model.isSubOrganizationOf.name}}
+            <AuLink @route="administrative-units.administrative-unit.core-data" @model={{@model.membershipHasRelationWith.organization.id}}>
+              {{@model.membershipHasRelationWith.organization.name}}
             </AuLink>
           </:content>
         </Item>
@@ -35,49 +35,59 @@
   </:card>
 </DataCard>
 
-{{#if @model.relatedOrganizations.length}}
+{{#if @model.relatedMemberships.length}}
   <div>
     <AuDataTable 
-      id="relatedOrganizations"
-      @content={{@model.relatedOrganizations}}
+      id="relatedMemberships"
+      @content={{@model.relatedMemberships}}
       @page={{@page}}
       @size={{@size}}
       @noDataMessage="Geen bestuur" as |t|>
       <t.menu as |menu|>
         <menu.general>
-          <div class="au-o-box">
-            <AuToggleSwitch
-              @label="Verberg niet actieve organisaties"
-              @checked={{@organizationStatus}}
-            />
+          <div class="au-o-grid au-u-margin-bottom-tiny">
+            <div class="au-o-grid__item au-u-1-2@medium au-u-1-1@small">
+              <AuToggleSwitch
+                @label="Verberg niet actieve organisaties"
+                @checked={{@organizationStatus}}
+              />
+            </div>
+            <div class="au-o-grid__item au-u-1-2@medium au-u-1-1@small">
+              <MembershipRoleSelect
+                @selected={{@selectedRelationType}}
+                @onChange={{@setFilterRelationType}}
+                @allowClear={{true}}
+                id="relation-type"
+              />
+            </div>
           </div>
         </menu.general>
       </t.menu>
-      <t.content as |c|>
-        <c.header>
-          <AuDataTableThSortable @field="relationType" @label="Type relatie" @currentSorting={{@sort}} />
-          <AuDataTableThSortable @field="classification.label" @label="Type organisatie" @currentSorting={{@sort}} />
-          <AuDataTableThSortable @field="name" @label="Organisatie" @currentSorting={{@sort}} />
-          <AuDataTableThSortable @field="organizationStatus.label" @label="Status" @currentSorting={{@sort}} />
-        </c.header>
-        <c.body as |organization|>
-          <td>
-            {{organization.relationType}}
-          </td>
-          <td>
-            {{organization.classification.label}}
-          </td>
-          <td>
-            <AuLink @route="administrative-units.administrative-unit" @model={{organization.opUuid}}>
-              {{organization.name}}
-            </AuLink>
-          </td>
-          <td>
-            <OrganizationStatus @id={{organization.organizationStatus.id}}
-              @label={{organization.organizationStatus.label}} />
-          </td>
-        </c.body>
-      </t.content>
+        <t.content as |c|>
+          <c.header>
+            <AuDataTableThSortable @field="role.label" @label="Type relatie" @currentSorting={{@sort}} />
+            <AuDataTableThSortable @field="member.classification.label" @label="Type organisatie" @currentSorting={{@sort}} />
+            <AuDataTableThSortable @field="member.name" @label="Organisatie" @currentSorting={{@sort}} />
+            <AuDataTableThSortable @field="member.organizationStatus.label" @label="Status" @currentSorting={{@sort}} />
+          </c.header>
+          <c.body as |membership|>
+            <td>
+              {{membership.role.opLabel}}
+            </td>
+            <td>
+              {{membership.member.classification.label}}
+            </td>
+            <td>
+              <AuLink @route="administrative-units.administrative-unit" @model={{membership.member.id}}>
+                {{membership.member.name}}
+              </AuLink>
+            </td>
+            <td>
+              <OrganizationStatus @id={{membership.member.organizationStatus.id}}
+                @label={{membership.member.organizationStatus.label}} />
+            </td>
+          </c.body>
+        </t.content>
     </AuDataTable>
   </div>
 {{/if}}

@@ -14,7 +14,7 @@
     </c.header>
     <c.body as |membership|>
       <td>
-        <RelationTypeSelect
+        <MembershipRoleSelect
           @selected={{membership.role}}
           @onChange={{fn (mut membership.role)}}
           @administrativeUnit={{@model.administrativeUnit}}

@@ -4,9 +4,9 @@ import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/adminis
 import { action } from '@ember/object';
 
 export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIndexController extends Controller {
-  queryParams = ['sort', 'page', 'size', 'organizationStatus', 'relationType'];
+  queryParams = ['sort', 'page', 'size', 'organizationStatus'];
 
-  @tracked sort = 'name';
+  @tracked sort = 'member.name';
   @tracked page = 0;
   size = 25;
   @tracked organizationStatus = true;

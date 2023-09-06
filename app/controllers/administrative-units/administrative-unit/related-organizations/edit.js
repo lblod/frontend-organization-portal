@@ -121,9 +121,6 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     ];
   }
 
-  // TODO fix table pagination (index page only)
-  // TODO Remove sorting in edit mode ?
-
   @action
   addNewMembership() {
     let membership = this.store.createRecord('membership');

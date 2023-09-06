@@ -65,4 +65,9 @@ export default class MembershipRoleModel extends Model {
     return MEMBERSHIP_ROLES.find((membership) => membership.id == this.id)
       .label;
   }
+
+  get inverseOpLabel() {
+    return MEMBERSHIP_ROLES.find((membership) => membership.id == this.id)
+      .inverseLabel;
+  }
 }

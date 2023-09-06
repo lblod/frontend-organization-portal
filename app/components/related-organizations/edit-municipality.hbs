@@ -31,9 +31,9 @@
   </:card>
 </EditCard>
 
-{{#if @model.clonedRelatedOrganizations.length}}
+{{#if @model.relatedMemberships.length}}
   <div>
-    <AuDataTable id="clonedRelatedOrganizations" @content={{@model.clonedRelatedOrganizations}}
+    <AuDataTable id="relatedMemberships" @content={{@model.relatedMemberships}}
       @noDataMessage="Geen bestuur" as |t|>
       <t.content as |c|>
         <c.header>
@@ -42,21 +42,21 @@
           <th>Organisatie</th>
           <th>Status</th>
         </c.header>
-        <c.body as |organization|>
+        <c.body as |membership|>
           <td>
-            {{organization.relationType}}
+            {{membership.role.opLabel}}
           </td>
           <td>
-            {{organization.classification.label}}
+            {{membership.member.classification.label}}
           </td>
           <td>
-            <AuLink @route="administrative-units.administrative-unit" @model={{organization.id}}>
-              {{organization.name}}
+            <AuLink @route="administrative-units.administrative-unit" @model={{membership.member.id}}>
+              {{membership.member.name}}
             </AuLink>
           </td>
           <td>
-            <OrganizationStatus @id={{organization.organizationStatus.id}}
-              @label={{organization.organizationStatus.label}} />
+            <OrganizationStatus @id={{membership.member.organizationStatus.id}}
+              @label={{membership.member.organizationStatus.label}} />
           </td>
         </c.body>
       </t.content>
