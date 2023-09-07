@@ -9,6 +9,16 @@
 
 
 
+
+## 1.18.1 (2023-09-07)
+
+#### :bug: Bug Fix
+* [#502](https://github.com/lblod/frontend-organization-portal/pull/502) Solve problem with duplication of sites when changing primary one ([@lagartoverde](https://github.com/lagartoverde))
+
+#### Committers: 1
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+
+
 ## 1.18.0 (2023-08-14)
 
 #### :rocket: Enhancement
