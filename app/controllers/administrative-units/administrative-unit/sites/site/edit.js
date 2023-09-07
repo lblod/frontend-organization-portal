@@ -98,7 +98,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
         }
 
         administrativeUnit.primarySite = site;
-        nonPrimarySites.removeObject(site);
+        const oldSite = nonPrimarySites.find(
+          (nonPrimarySite) => nonPrimarySite.id === site.id
+        );
+        nonPrimarySites.removeObject(oldSite);
 
         yield administrativeUnit.save();
       }
