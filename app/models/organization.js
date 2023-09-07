@@ -47,16 +47,6 @@ export default class OrganizationModel extends Model {
   positions;
 
   @hasMany('organization', {
-    inverse: 'isSubOrganizationOf',
-  })
-  subOrganizations;
-
-  @belongsTo('organization', {
-    inverse: 'subOrganizations',
-  })
-  isSubOrganizationOf;
-
-  @hasMany('organization', {
     inverse: 'isAssociatedWith',
   })
   associatedOrganizations;
@@ -66,23 +56,18 @@ export default class OrganizationModel extends Model {
   })
   isAssociatedWith;
 
-  @hasMany('organization', {
-    inverse: 'wasFoundedByOrganization',
+  @hasMany('membership', {
+    inverse: 'member',
   })
-  foundedOrganizations;
+  membershipsOfOrganization;
 
-  @belongsTo('organization', {
-    inverse: 'foundedOrganizations',
+  @hasMany('membership', {
+    inverse: 'organization',
   })
-  wasFoundedByOrganization;
-
-  @hasMany('organization', {
-    inverse: 'hasParticipants',
-  })
-  participatesIn;
+  memberships;
 
   @hasMany('organization', {
-    inverse: 'participatesIn',
+    inverse: null,
   })
-  hasParticipants;
+  isMemberOf;
 }

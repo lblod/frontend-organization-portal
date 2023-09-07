@@ -1,35 +1,40 @@
-
-<AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
-  Heeft relatie met
-</AuHeading>
 <AuDataTable
-  id="subOrganizations"
-  @content={{@model.subOrganizations}}
+  id="relatedMemberships"
+  @content={{@model.relatedMemberships}}
   @noDataMessage="Geen bestuur"
   as |t|
 >
   <t.content as |c|>
     <c.header>
-      <AuDataTableThSortable @field="classification.label" @label="Type organisatie" @currentSorting={{@sort}} />
-      <AuDataTableThSortable @field="name" @label="Organisatie" @currentSorting={{@sort}} />
-      <AuDataTableThSortable @field="organizationStatus.label" @label="Status" @currentSorting={{@sort}} />
+      <th>Type relatie</th>
+      <th>Type organisatie</th>
+      <th>Organisatie</th>
+      <th>Status</th>
       <th></th>
     </c.header>
-    <c.body as |subOrganization|>
+    <c.body as |membership|>
       <td>
-        {{subOrganization.classification.label}}
+        <MembershipRoleSelect
+          @selected={{membership.role}}
+          @onChange={{fn (mut membership.role)}}
+          @administrativeUnit={{@model.administrativeUnit}}
+          id="relation-type"
+        />
+      </td>
+      <td>
+        {{membership.member.classification.label}}
       </td>
       <td>
         <MunicipalitySelect
-          @selected={{subOrganization}}
-          @onChange={{fn @updateSubOrganization subOrganization}}
+          @selected={{membership.member}}
+          @onChange={{fn @updateMembership membership}}
           id="related-municipality"
         />
       </td>
       <td>
         <OrganizationStatus
-          @id={{subOrganization.organizationStatus.id}}
-          @label={{subOrganization.organizationStatus.label}}
+          @id={{membership.member.organizationStatus.id}}
+          @label={{membership.member.organizationStatus.label}}
         />
       </td>
       <td>
@@ -40,7 +45,7 @@
           @skin="link"
           {{on
             "click"
-            (fn @removeSubOrganization subOrganization)
+            (fn @removeMembership membership)
           }}
         >
           Verwijder
@@ -56,7 +61,7 @@
     @width="block"
     @icon="add"
     @iconAlignment="left"
-    {{on "click" @addNewSubOrganization}}
+    {{on "click" @addNewMembership}}
   >
     Voeg nieuwe gerelateerde organisatie toe
   </AuButton>

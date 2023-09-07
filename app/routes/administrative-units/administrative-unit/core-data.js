@@ -13,11 +13,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataRoute extends 
       include: [
         'classification',
         'organization-status',
-        //'recognized-worship-type',
         'identifiers.structured-identifier',
         'primary-site.address',
         'primary-site.contacts',
-        'is-sub-organization-of',
         'is-associated-with',
         'resulted-from',
       ].join(),

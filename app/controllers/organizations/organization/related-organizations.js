@@ -9,13 +9,13 @@ export default class OrganizationsOrganizationRelatedOrganizationsController ext
   @tracked size = 25;
   @tracked organizationStatus = true;
 
-  get subOrganizations() {
-    return this.model.loadSubOrganizationsTaskInstance.isFinished
-      ? this.model.loadSubOrganizationsTaskInstance.value
-      : this.model.subOrganizations;
+  get relatedOrganizations() {
+    return this.model.loadRelatedOrganizationsTaskInstance.isFinished
+      ? this.model.loadRelatedOrganizationsTaskInstance.value
+      : this.model.relatedOrganizations;
   }
 
   get isLoading() {
-    return this.model.loadSubOrganizationsTaskInstance.isRunning;
+    return this.model.loadRelatedOrganizationsTaskInstance.isRunning;
   }
 }

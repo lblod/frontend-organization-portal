@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import administrativeUnitValidations from 'frontend-organization-portal/validations/administrative-unit';
 import { dropTask } from 'ember-concurrency';
+import { A } from '@ember/array';
 
 export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEditRoute extends Route {
   @service currentSession;
@@ -25,41 +26,58 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
       'administrative-units.administrative-unit.related-organizations'
     );
 
-    const subOrganizations = (
-      await this.loadSubOrganizationsTask.perform(administrativeUnit.id, params)
-    ).toArray();
+    let relatedMemberships = A();
 
-    const hasParticipants = (
-      await this.loadHasParticipantsTask.perform(administrativeUnit.id, params)
-    ).toArray();
+    const membershipsAsMemberOf =
+      await administrativeUnit.membershipsOfOrganization;
+
+    let membershipHasRelationWith = null;
+    if (membershipsAsMemberOf.length) {
+      for (const membership of membershipsAsMemberOf.toArray()) {
+        const role = await membership.role;
+        if (role.hasRelationWith && !membershipHasRelationWith) {
+          membershipHasRelationWith = membership;
+        }
+        if (role.participatesIn) {
+          relatedMemberships.push(membership);
+        }
+      }
+    }
+
+    if (!membershipHasRelationWith) {
+      membershipHasRelationWith = this.store.createRecord('membership');
+      membershipHasRelationWith.member = administrativeUnit;
+    }
+
+    const membershipsAsOrganization =
+      await this.loadMembershipsAsOrganizationTask.perform(
+        administrativeUnit.id,
+        params
+      );
+
+    relatedMemberships.push(...membershipsAsOrganization.toArray());
+
+    const membershipRoles = await this.store.query('membership-role', {
+      'filter[has-broader-role][:id:]': '93c48754610c45e6bd9a894d2720a53d',
+    });
 
     return {
       administrativeUnit: createValidatedChangeset(
         administrativeUnit,
         administrativeUnitValidations
       ),
-      subOrganizations,
-      hasParticipants,
+      membershipHasRelationWith,
+      relatedMemberships,
+      membershipRoles,
     };
   }
 
   @dropTask({ cancelOn: 'deactivate' })
-  *loadSubOrganizationsTask(id, params) {
-    return yield this.store.query('administrative-unit', {
-      'filter[is-sub-organization-of][:id:]': id,
+  *loadMembershipsAsOrganizationTask(id) {
+    return yield this.store.query('membership', {
+      'filter[:or:][organization][:id:]': id,
+      include: 'organization,member',
       'page[size]': 500,
-      include: 'classification',
-      sort: params.sort,
-    });
-  }
-
-  @dropTask({ cancelOn: 'deactivate' })
-  *loadHasParticipantsTask(id, params) {
-    return yield this.store.query('administrative-unit', {
-      'filter[participates-in][:id:]': id,
-      'page[size]': 500,
-      include: 'classification',
-      sort: params.sort,
     });
   }
 }
