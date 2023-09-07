@@ -9,6 +9,54 @@
 
 
 
+
+## 1.18.1 (2023-09-07)
+
+#### :bug: Bug Fix
+* [#502](https://github.com/lblod/frontend-organization-portal/pull/502) Solve problem with duplication of sites when changing primary one ([@lagartoverde](https://github.com/lagartoverde))
+
+#### Committers: 1
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+
+
+## 1.18.0 (2023-08-14)
+
+#### :rocket: Enhancement
+
+* [#493](https://github.com/lblod/frontend-organization-portal/pull/493) Added a not active toggle to related organizations ([@lagartoverde](https://github.com/lagartoverde))
+* [#492](https://github.com/lblod/frontend-organization-portal/pull/492) Paginate related organizations page ([@lagartoverde](https://github.com/lagartoverde))
+* [#490](https://github.com/lblod/frontend-organization-portal/pull/490) Show OVO as readonly even for worship services ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#488](https://github.com/lblod/frontend-organization-portal/pull/488) Text improvements regarding roles ([@lagartoverde](https://github.com/lagartoverde))
+* [#483](https://github.com/lblod/frontend-organization-portal/pull/483) Update text from the landing and home pages ([@lagartoverde](https://github.com/lagartoverde))
+* [#481](https://github.com/lblod/frontend-organization-portal/pull/481) Allow agb and apb in personen filters ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#472](https://github.com/lblod/frontend-organization-portal/pull/472) Add country field to addresses ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#473](https://github.com/lblod/frontend-organization-portal/pull/473) Blacklist a RO from dropdown list ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#467](https://github.com/lblod/frontend-organization-portal/pull/467) read only founded by ([@nbittich](https://github.com/nbittich))
+* [#465](https://github.com/lblod/frontend-organization-portal/pull/465) founders ([@nbittich](https://github.com/nbittich))
+* [#464](https://github.com/lblod/frontend-organization-portal/pull/464) Redirect to 404 page when URI contains an unvalid UUID ([@nbittich](https://github.com/nbittich))
+* [#462](https://github.com/lblod/frontend-organization-portal/pull/462) make vestigingen type mandatory ([@nbittich](https://github.com/nbittich))
+* [#455](https://github.com/lblod/frontend-organization-portal/pull/455) onboarding agb apb ([@nbittich](https://github.com/nbittich))
+
+#### :bug: Bug Fix
+* [#489](https://github.com/lblod/frontend-organization-portal/pull/489) Links in contact were not working because of this reset controller ([@lagartoverde](https://github.com/lagartoverde))
+* [#487](https://github.com/lblod/frontend-organization-portal/pull/487) Set regio as read-only for municipalities ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#486](https://github.com/lblod/frontend-organization-portal/pull/486) Fix validations too strict on municipalities ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#474](https://github.com/lblod/frontend-organization-portal/pull/474) Fix sorting in related organizations tab ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#468](https://github.com/lblod/frontend-organization-portal/pull/468) associated with mandatory for apb ([@nbittich](https://github.com/nbittich))
+* [#466](https://github.com/lblod/frontend-organization-portal/pull/466) sort date for change events ([@nbittich](https://github.com/nbittich))
+* HOTFIX: AGB/APB: Related organisations: 'Gemeente' and 'Werd opgericht door' should always be the same
+
+#### :house: Internal
+* [#491](https://github.com/lblod/frontend-organization-portal/pull/491) Bump ember-acmidm-login to v2 ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### Committers: 3
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+
+
+
+
 ## 1.18.0-0 (2023-07-31)
 
 #### :rocket: Enhancement
