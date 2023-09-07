@@ -5,7 +5,7 @@
       <:left as |Item|>
         <Item
           @labelFor="related-gemeente"
-          @required={{false}}
+          @required={{true}}
           @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
         >
           <:label>Gemeente</:label>
@@ -19,7 +19,10 @@
             />
           </:content>
         </Item>
-        <Item @labelFor="related-municipality">
+        <Item
+          @labelFor="related-municipality"
+          @required={{true}}
+        >
           <:label>Provincie</:label>
           <:content>
             {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
