@@ -14,6 +14,8 @@ export const CLASSIFICATION_CODE = {
   OPDRACHTHOUDENDE_VERENIGING: 'cd93f147-3ece-4308-acab-5c5ada3ec63d',
   OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME:
     '4b8450cf-a326-4c66-9e63-b4ec10acc7f6',
+  POLICE_ZONE: 'a3922c6d-425b-474f-9a02-ffb71a436bfc',
+  ASSISTANCE_ZONE: 'ea446861-2c51-45fa-afd3-4e4a37b71562',
 };
 
 export const CLASSIFICATION = {
@@ -64,6 +66,14 @@ export const CLASSIFICATION = {
   OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME: {
     id: '4b8450cf-a326-4c66-9e63-b4ec10acc7f6',
     label: 'Opdrachthoudende vereniging met private deelname',
+  },
+  POLICE_ZONE: {
+    id: 'a3922c6d-425b-474f-9a02-ffb71a436bfc',
+    label: 'Politiezone',
+  },
+  ASSISTANCE_ZONE: {
+    id: 'ea446861-2c51-45fa-afd3-4e4a37b71562',
+    label: 'Hulpverleningszone',
   },
 };
 
