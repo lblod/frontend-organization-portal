@@ -233,7 +233,13 @@ export default class AdministrativeUnitsNewController extends Controller {
 
       primarySite.address = address;
       primarySite.contacts.pushObjects([contact, secondaryContact]);
-      if (this.isNewAgb || this.isNewApb || this.isNewIGS) {
+      if (
+        this.isNewAgb ||
+        this.isNewApb ||
+        this.isNewIGS ||
+        this.isNewPoliceZone ||
+        this.isNewAssistanceZone
+      ) {
         primarySite.siteType = siteTypes.find(
           (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
         );
