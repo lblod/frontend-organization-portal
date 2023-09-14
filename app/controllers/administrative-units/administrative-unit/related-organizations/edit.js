@@ -73,6 +73,20 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     );
   }
 
+  get isPoliceZone() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.POLICE_ZONE
+    );
+  }
+
+  get isAssistanceZone() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.ASSISTANCE_ZONE
+    );
+  }
+
   get isWorshipService() {
     return (
       this.model.administrativeUnit.classification?.get('id') ===
