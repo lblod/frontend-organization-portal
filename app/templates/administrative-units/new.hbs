@@ -294,7 +294,7 @@
           {{else}}
             <Card.Columns>
               <:left as |Item|>
-              {{#if (or this.isNewOCMW this.isNewAgb this.isNewDistrict this.isNewIGS)}}
+              {{#if (or this.isNewOCMW this.isNewAgb this.isNewDistrict this.isNewIGS this.isNewPoliceZone this.isNewAssistanceZone)}}
                 <Item
                   @labelFor="related-gemeente"
                   @required={{(or this.isNewAgb this.isNewIGS)}}
