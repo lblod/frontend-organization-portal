@@ -17,6 +17,7 @@ const SHAREPOINT_LINK_BASE = {
   OCMW: 'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
   AGB: 'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
   APB: 'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
+  IGS: 'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
 };
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexController extends Controller {
@@ -131,6 +132,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
       return SHAREPOINT_LINK_BASE.AGB;
     } else if (this.isApb) {
       return SHAREPOINT_LINK_BASE.APB;
+    } else if (this.isIGS) {
+      return SHAREPOINT_LINK_BASE.IGS;
     }
     return SHAREPOINT_LINK_BASE.CENTRAL_WORSHIP_SERVICE;
   }
