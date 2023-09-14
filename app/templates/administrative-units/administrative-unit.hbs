@@ -30,7 +30,7 @@
             </AuNavigationNestedLink>
           </li>
         {{/if}}
-        {{#if (and (not this.isAgbOrApb) (not this.isIgs))}}
+        {{#if (and (not this.isAgbOrApb) (not this.isIgs) (not this.isPoliceZone) (not this.isAssistanceZone))}}
         <li class="au-c-list-navigation__item">
           <AuNavigationNestedLink
             @route="administrative-units.administrative-unit.governing-bodies"
