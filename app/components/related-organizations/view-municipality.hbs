@@ -77,7 +77,9 @@
     <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
       Participeert in
     </AuHeading>
-    <AuDataTable id="participatesIn" @content={{@model.participatesIn}}
+    <AuDataTable
+      id="participatesIn"
+      @content={{@model.participatesIn}}
       @noDataMessage="Geen bestuur" as |t|>
       <t.content as |c|>
         <c.header>
