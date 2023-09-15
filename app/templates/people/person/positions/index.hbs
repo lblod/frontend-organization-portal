@@ -76,8 +76,9 @@
           </AuLink>
         {{else}}
           {{#each position.administrativeUnits as |administrativeUnit index|}}
-            {{#if (or administrativeUnit.classification.isAgbOrApb administrativeUnit.classification.isIgs)}}
-              {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
+            {{#if administrativeUnit.classification.isIgs}}
+              {{administrativeUnit.name}}
+              ({{administrativeUnit.classification.label}})
             {{else}}
               <AuLink
                 @route="administrative-units.administrative-unit"
