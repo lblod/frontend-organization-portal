@@ -56,4 +56,17 @@ export default class AdministrativeUnitsAdministrativeUnitController extends Con
         CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
     );
   }
+
+  get isPoliceZone() {
+    return (
+      this.model.classification?.get('id') === CLASSIFICATION_CODE.POLICE_ZONE
+    );
+  }
+
+  get isAssistanceZone() {
+    return (
+      this.model.classification?.get('id') ===
+      CLASSIFICATION_CODE.ASSISTANCE_ZONE
+    );
+  }
 }

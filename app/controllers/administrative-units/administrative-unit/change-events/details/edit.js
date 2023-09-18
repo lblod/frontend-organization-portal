@@ -46,6 +46,20 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
     );
   }
 
+  get isPoliceZone() {
+    return (
+      this.model.administrativeUnit.classification.get('id') ===
+      CLASSIFICATION_CODE.POLICE_ZONE
+    );
+  }
+
+  get isAssistanceZone() {
+    return (
+      this.model.administrativeUnit.classification.get('id') ===
+      CLASSIFICATION_CODE.ASSISTANCE_ZONE
+    );
+  }
+
   @action
   validateEndDate(validation) {
     this.endDateValidation = validateDate(validation);

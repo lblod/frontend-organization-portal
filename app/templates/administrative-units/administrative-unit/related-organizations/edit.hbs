@@ -100,6 +100,18 @@
             @removeHasParticipants={{this.removeHasParticipants}}
           />
         {{/if}}
+        {{#if this.isPoliceZone}}
+          <RelatedOrganizations::EditPoliceZone
+            @model={{@model}}
+            @sort={{this.sort}}
+          />
+        {{/if}}
+        {{#if this.isAssistanceZone}}
+          <RelatedOrganizations::EditAssistanceZone
+            @model={{@model}}
+            @sort={{this.sort}}
+          />
+        {{/if}}
       </div>
     </form>
   </div>

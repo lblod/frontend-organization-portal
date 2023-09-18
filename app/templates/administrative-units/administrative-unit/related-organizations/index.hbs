@@ -52,5 +52,11 @@
     {{#if this.isIgs}}
       <RelatedOrganizations::ViewIgs @model={{@model}} @sort={{this.sort}} />
     {{/if}}
+    {{#if this.isPoliceZone}}
+      <RelatedOrganizations::ViewPoliceZone @model={{@model}} @sort={{this.sort}} />
+    {{/if}}
+    {{#if this.isAssistanceZone}}
+      <RelatedOrganizations::ViewAssistanceZone @model={{@model}} @sort={{this.sort}} />
+    {{/if}}
   </div>
 </div>

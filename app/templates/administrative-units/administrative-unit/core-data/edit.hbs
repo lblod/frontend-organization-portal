@@ -252,12 +252,14 @@
                     </:content>
                   </Item>
                 {{/if}}
+                {{#if @model.structuredIdentifierOVO.localId}}
                 <Item @labelFor="ovo-identifier">
                   <:label>{{@model.identifierOVO.idName}}</:label>
                   <:content>
                     {{@model.structuredIdentifierOVO.localId}}
                   </:content>
                 </Item>
+                {{/if}}
               </:right>
             </Card.Columns>
           </:card>
@@ -276,13 +278,16 @@
           <:title>Primaire contactgegevens</:title>
         </Site::ContactEditCard>
 
-        {{#if (and @model.administrativeUnit.classification (or this.isAgb this.isApb this.isIgs))}}
+        {{#if (
+          and @model.administrativeUnit.classification
+          (or this.isAgb this.isApb this.isIgs this.isPoliceZone this.isAssistanceZone)
+        )}}
           <EditCard @containsRequiredFields={{true}}>
             <:title>Gerelateerde organisaties</:title>
             <:card as |Card|>
                 <Card.Columns>
                   <:left as |Item|>
-                  {{#if (or this.isAgb this.isIgs)}}
+                  {{#if (or this.isAgb this.isIgs this.isPoliceZone this.isAssistanceZone)}}
                     <Item
                       @labelFor="related-gemeente"
                       @required={{true}}

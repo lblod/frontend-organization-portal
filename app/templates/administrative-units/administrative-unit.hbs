@@ -30,7 +30,7 @@
             </AuNavigationNestedLink>
           </li>
         {{/if}}
-        {{#if (and (not this.isAgbOrApb) (not this.isIgs))}}
+        {{#if (and (not this.isAgbOrApb) (not this.isIgs) (not this.isPoliceZone) (not this.isAssistanceZone))}}
         <li class="au-c-list-navigation__item">
           <AuNavigationNestedLink
             @route="administrative-units.administrative-unit.governing-bodies"
@@ -48,7 +48,7 @@
             </AuNavigationNestedLink>
           </li>
         {{/if}}
-        {{#if (not (or this.isDistrict this.isWorshipAdministrativeUnit))}}
+        {{#if (not (or this.isDistrict this.isWorshipAdministrativeUnit this.isPoliceZone this.isAssistanceZone))}}
           <li class="au-c-list-navigation__item">
             <AuNavigationNestedLink
               @route="administrative-units.administrative-unit.executives"
