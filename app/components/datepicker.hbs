@@ -1,10 +1,9 @@
-<AuDateInput
+<AuInput
   @disabled={{@disabled}}
   @error={{@error}}
-  @onChange={{this.onChange}}
   {{on 'focusout' this.focusOut}}
   @width={{this.width}}
   @id={{@id}}
-  @value={{@value}}
+  {{au-date-input value=@value onChange=this.onChange}}
   ...attributes
 />
