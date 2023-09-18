@@ -79,7 +79,9 @@ export default {
       return (
         isAgb(changes, content) ||
         isApb(changes, content) ||
-        isIGS(changes, content)
+        isIGS(changes, content) ||
+        isPoliceZone(changes, content) ||
+        isAssistanceZone(changes, content)
       );
 
       //todo this was disabled in OP-1705, as of today, this is not mandatory
@@ -153,6 +155,18 @@ function isIGS(changes, content) {
     CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
   ];
   return hasClassificationId(changes, content, typesThatAreIGS);
+}
+
+function isPoliceZone(changes, content) {
+  return hasClassificationId(changes, content, CLASSIFICATION_CODE.POLICE_ZONE);
+}
+
+function isAssistanceZone(changes, content) {
+  return hasClassificationId(
+    changes,
+    content,
+    CLASSIFICATION_CODE.ASSISTANCE_ZONE
+  );
 }
 
 function isWorshipAdministrativeUnit(changes, content) {

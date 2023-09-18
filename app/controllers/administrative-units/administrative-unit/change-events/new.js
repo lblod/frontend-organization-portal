@@ -23,6 +23,7 @@ const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.SUSPENSION_OF_RECOGNITION]: ORGANIZATION_STATUS.INACTIVE,
   [CHANGE_EVENT_TYPE.SANCTIONED]: ORGANIZATION_STATUS.ACTIVE,
   [CHANGE_EVENT_TYPE.CITY]: ORGANIZATION_STATUS.ACTIVE,
+  [CHANGE_EVENT_TYPE.GEOGRAPHICAL_AREA_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
   // MERGER and FUSIE aren't added here since they have multiple resulting statuses based on the resulting organization
 };
 
@@ -92,6 +93,14 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       this.model.classification.id ===
         CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
     );
+  }
+
+  get isPoliceZone() {
+    return this.model.classification.id === CLASSIFICATION_CODE.POLICE_ZONE;
+  }
+
+  get isAssistanceZone() {
+    return this.model.classification.id === CLASSIFICATION_CODE.ASSISTANCE_ZONE;
   }
 
   @dropTask

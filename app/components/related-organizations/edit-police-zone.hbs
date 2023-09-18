@@ -1,0 +1,35 @@
+<EditCard @containsRequiredFields={{true}}>
+  <:title>Heeft relatie met</:title>
+  <:card as |Card|>
+    <Card.Columns>
+      <:left as |Item|>
+        <Item
+          @labelFor="related-gemeente"
+          @required={{true}}
+          @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+        >
+          <:label>Gemeente</:label>
+          <:content as |hasError|>
+            <MunicipalitySelect
+              @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+              @onChange={{fn
+                (mut @model.administrativeUnit.isSubOrganizationOf)
+              }}
+              @error={{hasError}}
+              @id="related-gemeente"
+            />
+          </:content>
+        </Item>
+        <Item
+          @labelFor="related-municipality"
+          @required={{true}}
+        >
+          <:label>Provincie</:label>
+          <:content>
+            {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
+          </:content>
+        </Item>
+      </:left>
+    </Card.Columns>
+  </:card>
+</EditCard>

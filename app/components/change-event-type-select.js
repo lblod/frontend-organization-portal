@@ -9,6 +9,7 @@ import {
   CHANGE_EVENTS_AGB_APB,
   CHANGE_EVENTS_DISTRICT,
   CHANGE_EVENTS_IGS,
+  CHANGE_EVENTS_PZ_HPZ,
 } from 'frontend-organization-portal/models/change-event-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
@@ -62,6 +63,12 @@ export default class ChangeEventTypeSelectComponent extends Component {
         CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
     ) {
       types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_IGS));
+    }
+    if (
+      classification.id == CLASSIFICATION_CODE.POLICE_ZONE ||
+      classification.id == CLASSIFICATION_CODE.ASSISTANCE_ZONE
+    ) {
+      types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_PZ_HPZ));
     }
 
     return types;

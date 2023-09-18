@@ -93,6 +93,20 @@ export default class AdministrativeUnitsNewController extends Controller {
     );
   }
 
+  get isNewPoliceZone() {
+    return (
+      this.model.administrativeUnitChangeset.classification?.id ===
+      CLASSIFICATION_CODE.POLICE_ZONE
+    );
+  }
+
+  get isNewAssistanceZone() {
+    return (
+      this.model.administrativeUnitChangeset.classification?.id ===
+      CLASSIFICATION_CODE.ASSISTANCE_ZONE
+    );
+  }
+
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
@@ -106,7 +120,9 @@ export default class AdministrativeUnitsNewController extends Controller {
       CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
       CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
       CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-      // TODO when onboarded, add politiezone, hulpverleningzone and companies
+      CLASSIFICATION_CODE.POLICE_ZONE,
+      CLASSIFICATION_CODE.ASSISTANCE_ZONE,
+      // TODO when onboarded, add companies
     ];
   }
 
@@ -217,7 +233,13 @@ export default class AdministrativeUnitsNewController extends Controller {
 
       primarySite.address = address;
       primarySite.contacts.pushObjects([contact, secondaryContact]);
-      if (this.isNewAgb || this.isNewApb || this.isNewIGS) {
+      if (
+        this.isNewAgb ||
+        this.isNewApb ||
+        this.isNewIGS ||
+        this.isNewPoliceZone ||
+        this.isNewAssistanceZone
+      ) {
         primarySite.siteType = siteTypes.find(
           (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
         );

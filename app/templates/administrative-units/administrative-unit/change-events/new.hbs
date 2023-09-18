@@ -85,7 +85,13 @@
             {{/if}}
           </:left>
           <:right as |Item|>
-            {{#if (and (not this.isAgbOrApb) (not this.isIgs) @model.formState.canAddDecisionInformation)}}
+            {{#if (and
+              (not this.isAgbOrApb)
+              (not this.isIgs)
+              (not this.isPoliceZone)
+              (not this.isAssistanceZone)
+              @model.formState.canAddDecisionInformation
+            )}}
               {{#unless @model.formState.isCityChangeEvent}}
                 <Item @labelFor="change-event-decision-activity-date"
                   @errorMessage={{this.endDateValidation.errorMessage}}

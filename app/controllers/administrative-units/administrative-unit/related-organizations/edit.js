@@ -73,6 +73,20 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     );
   }
 
+  get isPoliceZone() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.POLICE_ZONE
+    );
+  }
+
+  get isAssistanceZone() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.ASSISTANCE_ZONE
+    );
+  }
+
   get isWorshipService() {
     return (
       this.model.administrativeUnit.classification?.get('id') ===
@@ -115,7 +129,9 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
       CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
       CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
       CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-      // TODO when onboarded, add politiezone, hulpverleningzone and companies
+      CLASSIFICATION_CODE.POLICE_ZONE,
+      CLASSIFICATION_CODE.ASSISTANCE_ZONE,
+      // TODO when onboarded, add companies
     ];
   }
 

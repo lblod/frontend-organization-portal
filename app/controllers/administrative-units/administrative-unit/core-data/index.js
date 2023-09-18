@@ -18,6 +18,10 @@ const SHAREPOINT_LINK_BASE = {
   AGB: 'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
   APB: 'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
   IGS: 'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
+  POLICE_ZONE:
+    'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
+  ASSISTANCE_ZONE:
+    'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
 };
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexController extends Controller {
@@ -99,12 +103,14 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
       CLASSIFICATION_CODE.AGB
     );
   }
+
   get isApb() {
     return (
       this.model.administrativeUnit.classification?.get('id') ===
       CLASSIFICATION_CODE.APB
     );
   }
+
   get isIGS() {
     const typesThatAreIGS = [
       CLASSIFICATION_CODE.PROJECTVERENIGING,
@@ -114,6 +120,20 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
     ];
     return typesThatAreIGS.includes(
       this.model.administrativeUnit.classification?.get('id')
+    );
+  }
+
+  get isPoliceZone() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.POLICE_ZONE
+    );
+  }
+
+  get isAssistanceZone() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.ASSISTANCE_ZONE
     );
   }
 
@@ -134,9 +154,14 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
       return SHAREPOINT_LINK_BASE.APB;
     } else if (this.isIGS) {
       return SHAREPOINT_LINK_BASE.IGS;
+    } else if (this.isPoliceZone) {
+      return SHAREPOINT_LINK_BASE.POLICE_ZONE;
+    } else if (this.isAssistanceZone) {
+      return SHAREPOINT_LINK_BASE.ASSISTANCE_ZONE;
     }
     return SHAREPOINT_LINK_BASE.CENTRAL_WORSHIP_SERVICE;
   }
+
   get expiredExpectedEndDate() {
     const expectedEndDate = this.model.administrativeUnit.expectedEndDate;
     return expectedEndDate && expectedEndDate < new Date();
