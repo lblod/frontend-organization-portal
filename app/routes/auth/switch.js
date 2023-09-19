@@ -5,12 +5,14 @@ import ENV from 'frontend-organization-portal/config/environment';
 export default class AuthSwitchRoute extends Route {
   @service router;
   @service session;
+  @service role;
 
   async beforeModel(transition) {
     this.session.requireAuthentication(transition, 'login');
 
     try {
       let wasMockLoginSession = this.session.isMockLoginSession;
+      await this.role.destroyActiveRole();
       await this.session.invalidate();
       let logoutUrl = wasMockLoginSession
         ? this.router.urlFor('mock-login')
