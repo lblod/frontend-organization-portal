@@ -197,7 +197,9 @@ function hasClassificationId(changes, content, classificationId) {
 function validateKBO(store) {
   return async (key, newKboNumber, currentKboNumber) => {
     if (isBlank(newKboNumber)) {
-      return true;
+      return {
+        message: 'Vul het KBO nummer in',
+      };
     }
 
     if (newKboNumber.match(/[^$,.\d]/) || newKboNumber.length !== 10) {

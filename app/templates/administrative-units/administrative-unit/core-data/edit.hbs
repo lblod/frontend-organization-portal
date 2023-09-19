@@ -214,6 +214,7 @@
                 <Item
                   @labelFor="kbo-identifier"
                   @errorMessage={{@model.structuredIdentifierKBO.error.localId.validation}}
+                  @required={{true}}
                 >
                   <:label>{{@model.identifierKBO.idName}}</:label>
                   <:content as |hasError|>
