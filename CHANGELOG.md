@@ -11,6 +11,34 @@
 
 
 
+## 1.19.0 (2023-09-19)
+
+#### :rocket: Enhancement
+* [#505](https://github.com/lblod/frontend-organization-portal/pull/505) change: removed option fusie from change events when creating new cha… ([@Dachamelemon](https://github.com/Dachamelemon))
+* [#504](https://github.com/lblod/frontend-organization-portal/pull/504) Add stars to mandatory related orgs of agbs & apbs ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#501](https://github.com/lblod/frontend-organization-portal/pull/501) Disable validation on planned end date ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#498](https://github.com/lblod/frontend-organization-portal/pull/498) Add toggle on org status for ROs ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#500](https://github.com/lblod/frontend-organization-portal/pull/500) Added a warning when the expected end date has expired ([@lagartoverde](https://github.com/lagartoverde))
+* [#484](https://github.com/lblod/frontend-organization-portal/pull/484) Enable IGS positions in Personen module ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#480](https://github.com/lblod/frontend-organization-portal/pull/480) Related organizations - IGS ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#477](https://github.com/lblod/frontend-organization-portal/pull/477) Change events - IGS ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#475](https://github.com/lblod/frontend-organization-portal/pull/475) Feat/igs add new ([@lagartoverde](https://github.com/lagartoverde))
+* [#478](https://github.com/lblod/frontend-organization-portal/pull/478) Hide organen in menu ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### :bug: Bug Fix
+* [#506](https://github.com/lblod/frontend-organization-portal/pull/506) Add sorting on related participants ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#502](https://github.com/lblod/frontend-organization-portal/pull/502) Solve problem with duplication of sites when changing primary one ([@lagartoverde](https://github.com/lagartoverde))
+* [#495](https://github.com/lblod/frontend-organization-portal/pull/495) Fix expected end date not saving on new bestuur ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#496](https://github.com/lblod/frontend-organization-portal/pull/496) Add validations for has participants in IGS ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#499](https://github.com/lblod/frontend-organization-portal/pull/499) purpose and expected end date on new bestuur ([@nbittich](https://github.com/nbittich))
+
+#### Committers: 4
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+- [@Dachamelemon](https://github.com/Dachamelemon)
+
+
 ## 1.19.0-0 (2023-09-14)
 
 #### :rocket: Enhancement
