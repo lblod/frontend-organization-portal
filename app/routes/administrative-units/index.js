@@ -11,6 +11,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     page: { refreshModel: true },
     sort: { refreshModel: true },
     name: { refreshModel: true, replace: true },
+    kboNumber: { refreshModel: true, replace: true },
     municipality: { refreshModel: true, replace: true },
     province: { refreshModel: true, replace: true },
     classificationId: { refreshModel: true, replace: true },
@@ -36,6 +37,11 @@ export default class AdministrativeUnitsIndexRoute extends Route {
       let name = params.name.trim();
 
       filter[`:${filterType}:name`] = name;
+    }
+
+    if (params.kboNumber) {
+      filter[`:phrase_prefix:identifier.notation`] = 'KBO';
+      filter[':phrase_prefix:identifier.value'] = params.kboNumber.trim();
     }
 
     if (params.classificationId) {
