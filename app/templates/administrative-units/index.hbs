@@ -2,15 +2,27 @@
   <:sidebar>
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content au-o-box">
-        <form {{on "reset" this.resetFilters}} class="au-o-grid au-o-grid--small">
+        <form
+          {{on "reset" this.resetFilters}}
+          class="au-o-grid au-o-grid--small"
+        >
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-name">Naam</AuLabel>
-              <AdministrativeUnitSelectByName
-                @id="filter-name"
-                @selected={{this.name}}
-                @onChange={{this.setName}}
-                class="grow"
-              />
+            <AdministrativeUnitSelectByName
+              @id="filter-name"
+              @selected={{this.name}}
+              @onChange={{this.setName}}
+              class="grow"
+            />
+          </div>
+          <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
+            <AuLabel for="filter-kbo-number">KBO nummer</AuLabel>
+            <AdministrativeUnitSelectByKboNumber
+              @id="filter-kbo-number"
+              @selected={{this.kboNumber}}
+              @onChange={{this.setKboNumber}}
+              class="grow"
+            />
           </div>
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-municipality">Gemeente</AuLabel>
