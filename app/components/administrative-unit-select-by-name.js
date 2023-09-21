@@ -22,11 +22,17 @@ export default class AdministrativeUnitSelectByNameComponent extends Component {
     } else {
       filter['classification_id'] = `
         ${CLASSIFICATION.AGB.id},
-         ${CLASSIFICATION.APB.id},
-         ${CLASSIFICATION.MUNICIPALITY.id}
-         ${CLASSIFICATION.PROVINCE.id}
-         ${CLASSIFICATION.OCMW.id}
-         ${CLASSIFICATION.DISTRICT.id}
+        ${CLASSIFICATION.APB.id},
+        ${CLASSIFICATION.MUNICIPALITY.id},
+        ${CLASSIFICATION.PROVINCE.id},
+        ${CLASSIFICATION.OCMW.id},
+        ${CLASSIFICATION.DISTRICT.id},
+        ${CLASSIFICATION.PROJECTVERENIGING.id},
+        ${CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id},
+        ${CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id},
+        ${CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id},
+        ${CLASSIFICATION.POLICE_ZONE.id},
+        ${CLASSIFICATION.ASSISTANCE_ZONE.id},
        `;
     }
 
