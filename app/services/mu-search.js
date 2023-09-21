@@ -85,7 +85,7 @@ export default class MuSearchService extends Service {
     const endpoint = `/search/${index}/search?${params.join('&')}`;
     const { count, data } = await (await fetch(endpoint)).json();
     const pagination = this.getPaginationMetadata(page, size, count);
-    const entries = A(data.map(dataMapping));
+    const entries = A(data.flatMap(dataMapping));
 
     return ArrayProxy.create({
       content: entries,
