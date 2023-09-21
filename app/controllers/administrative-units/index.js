@@ -11,7 +11,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
     'size',
     'sort',
     'name',
-    'kboNumber',
+    'identifier',
     'municipality',
     'province',
     'classificationId',
@@ -23,7 +23,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
   size = 25;
   @tracked sort = 'name';
   @tracked name = '';
-  @tracked kboNumber = '';
+  @tracked identifier = '';
   @tracked municipality = '';
   @tracked province = '';
   @tracked classificationId = '';
@@ -133,9 +133,9 @@ export default class AdministrativeUnitsIndexController extends Controller {
   }
 
   @action
-  setKboNumber(selection) {
+  setIdentifier(selection) {
     this.page = null;
-    this.kboNumber = selection;
+    this.identifier = selection;
   }
 
   @action
@@ -174,7 +174,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @action
   resetFilters() {
     this.name = '';
-    this.kboNumber = '';
+    this.identifier = '';
     this.municipality = '';
     this.province = '';
     this.classificationId = '';
