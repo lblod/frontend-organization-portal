@@ -16,7 +16,7 @@ export default class AdministrativeUnitSelectByNameComponent extends Component {
     }
 
     filter['classification_id'] = getClassificationIds(
-      this.currentSession.hasWorshipRole,
+      this.currentSession.hasWorshipRole
     );
 
     const result = yield this.muSearch.search({

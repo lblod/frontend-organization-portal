@@ -42,7 +42,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
       filter['classification_id'] = params.classificationId;
     } else {
       filter['classification_id'] = getClassificationIds(
-        this.currentSession.hasWorshipRole,
+        this.currentSession.hasWorshipRole
       );
     }
 
