@@ -1,11 +1,12 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
-import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { selectByRole as getClassificationIds } from 'frontend-organization-portal/utils/classification-identifiers';
 
 export default class AdministrativeUnitsIndexRoute extends Route {
   @service muSearch;
   @service currentSession;
+
   queryParams = {
     page: { refreshModel: true },
     sort: { refreshModel: true },
@@ -40,27 +41,9 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     if (params.classificationId) {
       filter['classification_id'] = params.classificationId;
     } else {
-      if (this.currentSession.hasWorshipRole) {
-        filter['classification_id'] = `
-          ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
-          ${CLASSIFICATION.WORSHIP_SERVICE.id},
-        `;
-      } else {
-        filter['classification_id'] = `
-          ${CLASSIFICATION.AGB.id},
-          ${CLASSIFICATION.APB.id},
-          ${CLASSIFICATION.MUNICIPALITY.id},
-          ${CLASSIFICATION.PROVINCE.id},
-          ${CLASSIFICATION.OCMW.id},
-          ${CLASSIFICATION.DISTRICT.id},
-          ${CLASSIFICATION.PROJECTVERENIGING.id},
-          ${CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id},
-          ${CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id},
-          ${CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id},
-          ${CLASSIFICATION.POLICE_ZONE.id},
-          ${CLASSIFICATION.ASSISTANCE_ZONE.id},
-        `;
-      }
+      filter['classification_id'] = getClassificationIds(
+        this.currentSession.hasWorshipRole
+      );
     }
 
     if (params.municipality) {
