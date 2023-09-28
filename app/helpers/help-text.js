@@ -1,4 +1,3 @@
-import { helper } from '@ember/component/helper';
 import { assert } from '@ember/debug';
 
 const HELP_TEXT = {
@@ -10,10 +9,10 @@ const HELP_TEXT = {
   email: 'Bijvoorbeeld: mail@adres.com',
 };
 
-export default helper(function helpText([key]) {
+export default function helpText(key) {
   assert(
     `{{help-text}}: No help text value found for "${key}"`,
     Boolean(HELP_TEXT[key])
   );
   return HELP_TEXT[key];
-});
+}

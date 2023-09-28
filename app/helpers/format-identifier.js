@@ -1,7 +1,3 @@
-import { helper } from '@ember/component/helper';
-
-export function formatIdentifier([identifier]) {
+export default function formatIdentifier(identifier) {
   return identifier.replace(/[^\w]/gi, '');
 }
-
-export default helper(formatIdentifier);

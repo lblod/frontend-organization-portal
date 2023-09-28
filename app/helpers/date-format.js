@@ -1,6 +1,4 @@
-import { helper } from '@ember/component/helper';
-
-export default helper(function DateFormat([date]) {
+export default function DateFormat(date) {
   if (!(date instanceof Date)) {
     return '';
   } else {
@@ -10,4 +8,4 @@ export default helper(function DateFormat([date]) {
 
     return day + '-' + month + '-' + year;
   }
-});
+}

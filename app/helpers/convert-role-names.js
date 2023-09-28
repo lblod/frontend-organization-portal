@@ -1,6 +1,4 @@
-import { helper } from '@ember/component/helper';
-
-export default helper(function convertRoleNames([role] /*, named*/) {
+export default function convertRoleNames(role) {
   switch (role) {
     case 'ABBOrganisatiePortaalGebruiker-editeerder':
       return 'Editeerder';
@@ -11,4 +9,4 @@ export default helper(function convertRoleNames([role] /*, named*/) {
     case 'ABBOrganisatiePortaalErediensten-lezer':
       return 'Erediensten - Lezer';
   }
-});
+}
