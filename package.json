@@ -99,7 +99,7 @@
     "@lblod/ember-rdfa-editor": "^6.1.0"
   },
   "engines": {
-    "node": "12.* || 14.* || >= 16"
+    "node": "14.* || 16.* || >= 18"
   },
   "ember": {
     "edition": "octane"
@@ -114,7 +114,7 @@
     "*.hbs": "ember-template-lint --fix"
   },
   "volta": {
-    "node": "16.13.2",
-    "npm": "8.3.1"
+    "node": "18.16.0",
+    "npm": "9.6.7"
   }
 }
