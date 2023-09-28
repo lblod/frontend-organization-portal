@@ -1,9 +1,11 @@
 {{#if @searchEnabled}}
   <div class="ember-power-select-search">
-    {{!template-lint-disable no-down-event-binding}}
-    <input type="search" autocomplete="off"
-      autocorrect="off" autocapitalize="off"
-      spellcheck={{false}} role="combobox"
+    <input
+      type="search"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck={{false}}
       class="ember-power-select-movable-cursor"
       value={{@addressSuggestion.fullAddress}}
       aria-label="Search text input"
@@ -16,6 +18,7 @@
       {{on "blur" @onBlur}}
       {{on "keydown" this.handleKeydown}}
       {{did-insert this.focusInput}}
-      {{will-destroy this.clearSearch}}>
+      {{will-destroy this.clearSearch}}
+    />
   </div>
 {{/if}}

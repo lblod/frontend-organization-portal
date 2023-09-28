@@ -36,7 +36,7 @@
               <Item>
                 <:content>
                   <AuHelpText @skin="tertiary">Gewijzigd op
-                    {{date-format @model.representativeBody.resultedFrom.firstObject.date}}
+                    {{date-format (get @model.representativeBody.resultedFrom "0.date")}}
                     </AuHelpText>
                 </:content>
               </Item>
@@ -72,12 +72,12 @@
               </:content>
             </Item>
             {{#if
-              @model.representativeBody.primarySite.contacts.firstObject.telephone
+              (get @model.representativeBody.primarySite.contacts "0.telephone")
             }}
               <Item>
                 <:label>Telefoonnummer</:label>
                 <:content>
-                  {{@model.representativeBody.primarySite.contacts.firstObject.telephone}}
+                  {{get @model.representativeBody.primarySite.contacts "0.telephone"}}
                 </:content>
               </Item>
             {{/if}}
@@ -90,17 +90,17 @@
               </:content>
             </Item>
             {{#if
-              @model.representativeBody.primarySite.contacts.firstObject.website
+              (get @model.representativeBody.primarySite.contacts "0.website")
             }}
               <Item>
                 <:label>Website</:label>
                 <:content>
                   <a
-                    href={{@model.representativeBody.primarySite.contacts.firstObject.website}}
+                    href={{get @model.representativeBody.primarySite.contacts "0.website"}}
                     class="au-c-link"
                     target="_blank"
                     rel="noopener noreferrer"
-                  >{{@model.representativeBody.primarySite.contacts.firstObject.website}} (externe link)</a>
+                  >{{get @model.representativeBody.primarySite.contacts "0.website"}} (externe link)</a>
                 </:content>
               </Item>
             {{/if}}
