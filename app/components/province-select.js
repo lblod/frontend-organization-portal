@@ -62,12 +62,12 @@ export default class ProvinceSelectComponent extends Component {
 
     if (provinces.slice().length === 1) {
       this.previousMunicipality = this.args.selectedMunicipality;
-      this.previousProvince = provinces.mapBy('name').slice()[0];
+      this.previousProvince = provinces.map(({ name }) => name).slice()[0];
       this.args.onChange(this.previousProvince);
     } else {
       this.previousMunicipality = null;
       this.previousProvince = null;
     }
-    return provinces.mapBy('name');
+    return provinces.map(({ name }) => name);
   }
 }
