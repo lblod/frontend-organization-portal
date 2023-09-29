@@ -22,7 +22,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
 
   get hasValidationErrors() {
     let areSomeLocalInvolvementsInvalid = this.model.involvements
-      .toArray()
+      .slice()
       .some((involvement) => involvement.isInvalid);
 
     return (
@@ -167,7 +167,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     yield Promise.all(validationPromises);
 
     let areSomeLocalInvolvementsInvalid = involvements
-      .toArray()
+      .slice()
       .some((involvement) => involvement.isInvalid);
 
     if (!this.isValidTotalFinancingPercentage) {

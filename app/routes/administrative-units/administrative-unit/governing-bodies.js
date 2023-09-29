@@ -23,7 +23,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
     let untimedGoverningBodies = await administrativeUnit.governingBodies;
     let governingBodies = [];
 
-    for (let governingBody of untimedGoverningBodies.toArray()) {
+    for (let governingBody of untimedGoverningBodies.slice()) {
       const governingBodyClassification = await governingBody.classification;
       if (
         !EXECUTIVE_ORGANEN.find((id) => id === governingBodyClassification.id)
@@ -32,7 +32,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
           ? await governingBody.hasTimeSpecializations
           : [];
 
-        const arrayTimedGoverningBodies = timedGoverningBodies.toArray();
+        const arrayTimedGoverningBodies = timedGoverningBodies.slice();
 
         governingBodies.push(...arrayTimedGoverningBodies);
       }

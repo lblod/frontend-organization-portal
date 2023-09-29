@@ -10,7 +10,7 @@ export default class PeoplePersonPositionsAgentIndexRoute extends Route {
 
     let governingBodies = [];
     let administrativeUnits = [];
-    for (const governingBodyInTime of governingBodiesInTime.toArray()) {
+    for (const governingBodyInTime of governingBodiesInTime.slice()) {
       const isTimeSpecializationOf =
         await governingBodyInTime.isTimeSpecializationOf;
       governingBodies.push(isTimeSpecializationOf);

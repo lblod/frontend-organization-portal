@@ -44,7 +44,7 @@ export default class PeopleNewPositionController extends Controller {
     const governingBodies = await this.selectedOrganization?.governingBodies;
     if (governingBodies) {
       const classifications = [];
-      for (let governingBody of governingBodies.toArray()) {
+      for (let governingBody of governingBodies.slice()) {
         const classification = await governingBody.classification;
         if (!classifications.includes(classification)) {
           classifications.push(classification);
@@ -59,11 +59,11 @@ export default class PeopleNewPositionController extends Controller {
     if (this.selectedClassification) {
       const governingBodies = await this.selectedOrganization?.governingBodies;
       const filteredGoverningBodies = [];
-      for (let governingBody of governingBodies.toArray()) {
+      for (let governingBody of governingBodies.slice()) {
         const classification = await governingBody.classification;
         if (classification.id === this.selectedClassification.id) {
           const specializations = await governingBody?.hasTimeSpecializations;
-          let bodies = specializations.toArray();
+          let bodies = specializations.slice();
           filteredGoverningBodies.push(...bodies);
         }
       }

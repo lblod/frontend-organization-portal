@@ -61,7 +61,7 @@ export default class PeopleIndexRoute extends Route {
       },
     });
 
-    for (const person of page.toArray()) {
+    for (const person of page.slice()) {
       // TODO
       // another option would be to reindex everything & keeping the type instead
       // but this seems too much just to allow opening the link in a new tab...
