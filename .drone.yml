@@ -4,20 +4,20 @@ type: docker
 name: verify-pr
 steps:
 - name: install
-  image: danlynn/ember-cli:3.28.5 # Replace this with madnificent/ember once it includes a browser
+  image: danlynn/ember-cli:4.12.1-node_18.16 # Replace this with madnificent/ember once it includes a browser
   commands:
   - npm ci
 - name: lint
-  image: danlynn/ember-cli:3.28.5 # Replace this with madnificent/ember once it includes a browser
+  image: danlynn/ember-cli:4.12.1-node_18.16 # Replace this with madnificent/ember once it includes a browser
   commands:
   - npm run lint
 - name: dependency-lint
-  image: danlynn/ember-cli:3.28.5 # Replace this with madnificent/ember once it includes a browser
+  image: danlynn/ember-cli:4.12.1-node_18.16 # Replace this with madnificent/ember once it includes a browser
   failure: ignore
   commands:
   - npx ember dependency-lint
 - name: test
-  image: danlynn/ember-cli:3.28.5 # Replace this with madnificent/ember once it includes a browser
+  image: danlynn/ember-cli:4.12.1-node_18.16 # Replace this with madnificent/ember once it includes a browser
   failure: ignore
   commands:
   - npm run test:ember
