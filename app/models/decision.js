@@ -6,6 +6,7 @@ export default class DecisionModel extends Model {
 
   @belongsTo('decision-activity', {
     inverse: 'givesCauseTo',
+    async: true,
   })
   hasDecisionActivity;
 }

@@ -5,16 +5,19 @@ export default class AgentInPositionModel extends Model {
 
   @belongsTo('post', {
     inverse: 'agentsInPosition',
+    async: true,
   })
   position;
 
   @belongsTo('person', {
     inverse: 'agentsInPosition',
+    async: true,
   })
   person;
 
   @hasMany('contact-point', {
     inverse: null,
+    async: true,
   })
   contacts;
 }
