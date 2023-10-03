@@ -56,6 +56,18 @@ export default class RichTextEditorComponent extends Component {
     };
   };
 
+  get config() {
+    if (!this.args.config) {
+      return {
+        bold: true,
+        italic: true,
+        list: true,
+        link: true,
+      };
+    }
+    return this.args.config;
+  }
+
   schema = new Schema({
     nodes: {
       doc,
@@ -124,13 +136,6 @@ export default class RichTextEditorComponent extends Component {
       if (this.value !== editorValue) {
         this.args.onChange(editorValue);
       }
-    }
-  }
-
-  loadProvidedValue() {
-    if (this.value == null) {
-      // The editor returns an empty string if it contains no content, so we default to that to make the value comparison check works as expected.
-      this.value = '';
     }
   }
 

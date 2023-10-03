@@ -9,7 +9,7 @@
     as |Menu|
   >
     {{#each this.menuItems as |item|}}
-      <RdfFormFields::RichTextEditor::Mark
+      <RichTextEditor::Mark
         @mark={{item.mark}}
         @controller={{@controller}}
         as |mark|
@@ -22,7 +22,7 @@
           <AuIcon @icon={{item.icon}} @alignment="left" @ariaHidden={{true}} />
           {{item.label}}
         </Menu.Item>
-      </RdfFormFields::RichTextEditor::Mark>
+      </RichTextEditor::Mark>
     {{/each}}
   </Toolbar::Dropdown>
 {{/if}}
