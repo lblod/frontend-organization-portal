@@ -1,7 +1,8 @@
 <div class={{if @error "ember-power-select--error"}}>
   <PowerSelect
     @disabled={{if @disabled true false}}
-    @allowClear={{true}}
+    @allowClear={{(not @selectedMinicipality)}}
+    @renderInPlace={{true}}
     @loadingMessage="Aan het laden..."
     @noMatchesMessage="Geen resultaten"
     @searchMessage="Typ om te zoeken"

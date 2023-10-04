@@ -377,7 +377,6 @@
                       </Item>
                     {{/if}}
                   {{else}}
-<<<<<<< HEAD
                       <Item
                         @labelFor="related-provincie"
                         @required={{true}}
@@ -394,23 +393,6 @@
                           />
                         </:content>
                       </Item>
-=======
-                    <Item
-                      @labelFor="related-provincie"
-                      @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-                    >
-                      <:label>Provincie</:label>
-                      <:content as |hasError|>
-                        <ProvinceOrganizationSelect
-                          @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                          @onChange={{this.setRelation}}
-                          @error={{hasError}}
-                          @id="related-provincie"
-                        />
-                      </:content>
-                    </Item>
->>>>>>> 7677518 (Feature: show error message underneath save button when a form contains errors)
                     <Item
                       @labelFor="related-gemeente"
                       @required={{true}}
