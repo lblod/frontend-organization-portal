@@ -121,7 +121,7 @@ export default class RichTextEditorComponent extends Component {
   @action
   updateValue(e) {
     if (e && typeof e.preventDefault === 'function') e.preventDefault();
-
+    if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
     //rdfaEditor setup is async, updateValue may be called before it is set
     if (this.editorController) {
       this.hasBeenFocused = true;
@@ -130,11 +130,10 @@ export default class RichTextEditorComponent extends Component {
         this.editorController.mainEditorState.doc.textContent
       );
       const editorValue = hasTextContent ? stripNbspEntities(htmlContent) : '';
-
       // Only trigger an update if the value actually changed.
       // This prevents that the form observer is triggered even though no editor content was changed.
       if (this.value !== editorValue) {
-        this.args.onChange(editorValue);
+        requestAnimationFrame(() => this.args.onChange(editorValue));
       }
     }
   }

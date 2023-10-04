@@ -95,7 +95,8 @@
     "release-it": "^14.12.4",
     "release-it-lerna-changelog": "^4.0.1",
     "sass": "^1.49.7",
-    "webpack": "^5.69.0"
+    "webpack": "^5.69.0",
+    "@lblod/ember-rdfa-editor": "^6.1.0"
   },
   "engines": {
     "node": "12.* || 14.* || >= 16"
@@ -115,8 +116,5 @@
   "volta": {
     "node": "16.13.2",
     "npm": "8.3.1"
-  },
-  "dependencies": {
-    "@lblod/ember-rdfa-editor": "^6.1.0"
   }
 }
