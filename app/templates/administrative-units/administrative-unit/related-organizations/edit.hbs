@@ -2,9 +2,10 @@
   <div class="au-o-box">
     <PageHeader class="au-u-margin-bottom-large">
       <:title>Bewerk gerelateerde organisaties</:title>
-      <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
+      <:subtitle>{{@model.administrativeUnit.name}}
+        ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
-        <div>
+        <div class="au-u-text-right">
           <AuButtonGroup class="au-c-button-group--align-right">
             <AuLink
               @route="administrative-units.administrative-unit.related-organizations"
@@ -22,6 +23,7 @@
             </AuButton>
           </AuButtonGroup>
           <ReportWrongData />
+          <Error::Save @showSaveError={{this.hasValidationErrors}} />
         </div>
       </:action>
     </PageHeader>
@@ -58,9 +60,7 @@
           />
         {{/if}}
         {{#if this.isOCMW}}
-          <RelatedOrganizations::EditOcmw
-            @model={{@model}}
-          />
+          <RelatedOrganizations::EditOcmw @model={{@model}} />
         {{/if}}
         {{#if this.isProvince}}
           <RelatedOrganizations::EditProvince

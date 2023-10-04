@@ -10,6 +10,10 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   @service router;
   @service store;
 
+  get hasValidationErrors() {
+    return this.model.administrativeUnit.isInvalid;
+  }
+
   queryParams = ['sort'];
 
   @tracked sort = 'name';

@@ -2,9 +2,10 @@
   <div class="au-o-box">
     <PageHeader class="au-u-margin-bottom-large">
       <:title>Bewerk kerngegevens</:title>
-      <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
+      <:subtitle>{{@model.administrativeUnit.name}}
+        ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
-        <div>
+        <div class="au-u-text-right">
           <AuButtonGroup class="au-c-button-group--align-right">
             <AuLink
               @route="administrative-units.administrative-unit.core-data"
@@ -21,6 +22,7 @@
               Opslaan
             </AuButton>
           </AuButtonGroup>
+          <Error::Save @showSaveError={{this.hasValidationErrors}} />
           <ReportWrongData />
         </div>
       </:action>
@@ -52,9 +54,11 @@
                       @error={{hasError}}
                       id="worship-service-name"
                     />
-                      {{#if (or this.isProvince this.isMunicipality)}}
+                    {{#if (or this.isProvince this.isMunicipality)}}
                       <AuHelpText>
-        De naam van een gemeente en provincie kan voorlopig niet langer aangepast worden. Indien toch een aanpassing nodig, gelieve deze via de helpdesk aan te vragen.
+                        De naam van een gemeente en provincie kan voorlopig niet
+                        langer aangepast worden. Indien toch een aanpassing
+                        nodig, gelieve deze via de helpdesk aan te vragen.
                       </AuHelpText>
                     {{/if}}
                   </:content>
@@ -102,7 +106,9 @@
                       <TrimInput
                         @width="block"
                         @value={{@model.administrativeUnit.denomination}}
-                        @onUpdate={{fn (mut @model.administrativeUnit.denomination)}}
+                        @onUpdate={{fn
+                          (mut @model.administrativeUnit.denomination)
+                        }}
                         id="denomination"
                       />
                     </:content>
@@ -152,7 +158,7 @@
                   </Item>
                 {{/if}}
                 {{#if this.isIgs}}
-                  <Item @labelFor="igs-regio" >
+                  <Item @labelFor="igs-regio">
                     <:label>Regio</:label>
                     <:content>
                       <TrimInput
@@ -163,13 +169,13 @@
                       />
                     </:content>
                   </Item>
-                  <Item 
-                    @labelFor="expectedEndDate" 
+                  <Item
+                    @labelFor="expectedEndDate"
                     @errorMessage={{@model.administrativeUnit.error.expectedEndDate.validation}}
                   >
                     <:label>Geplande einddatum</:label>
-                    <:content  as |hasError|>
-                      <Datepicker 
+                    <:content as |hasError|>
+                      <Datepicker
                         @onChange={{fn
                           (mut @model.administrativeUnit.expectedEndDate)
                         }}
@@ -183,9 +189,7 @@
                     <:content>
                       <AuTextarea
                         @width="block"
-                        @onChange={{fn
-                          (mut @model.administrativeUnit.purpose)
-                        }}
+                        @onChange={{fn (mut @model.administrativeUnit.purpose)}}
                         @value={{@model.administrativeUnit.purpose}}
                       />
                     </:content>
@@ -240,7 +244,9 @@
                     <TrimInput
                       @width="block"
                       @value={{@model.structuredIdentifierSharepoint.localId}}
-                      @onUpdate={{fn (mut @model.structuredIdentifierSharepoint.localId)}}
+                      @onUpdate={{fn
+                        (mut @model.structuredIdentifierSharepoint.localId)
+                      }}
                       id="sharepoint-identifier"
                     />
                   </:content>
@@ -254,12 +260,12 @@
                   </Item>
                 {{/if}}
                 {{#if @model.structuredIdentifierOVO.localId}}
-                <Item @labelFor="ovo-identifier">
-                  <:label>{{@model.identifierOVO.idName}}</:label>
-                  <:content>
-                    {{@model.structuredIdentifierOVO.localId}}
-                  </:content>
-                </Item>
+                  <Item @labelFor="ovo-identifier">
+                    <:label>{{@model.identifierOVO.idName}}</:label>
+                    <:content>
+                      {{@model.structuredIdentifierOVO.localId}}
+                    </:content>
+                  </Item>
                 {{/if}}
               </:right>
             </Card.Columns>
@@ -279,16 +285,31 @@
           <:title>Primaire contactgegevens</:title>
         </Site::ContactEditCard>
 
-        {{#if (
-          and @model.administrativeUnit.classification
-          (or this.isAgb this.isApb this.isIgs this.isPoliceZone this.isAssistanceZone)
-        )}}
+        {{#if
+          (and
+            @model.administrativeUnit.classification
+            (or
+              this.isAgb
+              this.isApb
+              this.isIgs
+              this.isPoliceZone
+              this.isAssistanceZone
+            )
+          )
+        }}
           <EditCard @containsRequiredFields={{true}}>
             <:title>Gerelateerde organisaties</:title>
             <:card as |Card|>
-                <Card.Columns>
-                  <:left as |Item|>
-                  {{#if (or this.isAgb this.isIgs this.isPoliceZone this.isAssistanceZone)}}
+              <Card.Columns>
+                <:left as |Item|>
+                  {{#if
+                    (or
+                      this.isAgb
+                      this.isIgs
+                      this.isPoliceZone
+                      this.isAssistanceZone
+                    )
+                  }}
                     <Item
                       @labelFor="related-gemeente"
                       @required={{true}}
@@ -325,14 +346,14 @@
                       >
                         <:label>Werd opgericht door</:label>
                         <:content as |hasError|>
-                        <AdministrativeUnitSelect
-                          @disabled={{true}}
-                          @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
-                          @onChange={{this.setRelation}}
-                          @classificationCodes={{this.classificationCodes}}
-                          @error={{hasError}}
-                          @id="oprichting-gemeente"
-                        />
+                          <AdministrativeUnitSelect
+                            @disabled={{true}}
+                            @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
+                            @onChange={{this.setRelation}}
+                            @classificationCodes={{this.classificationCodes}}
+                            @error={{hasError}}
+                            @id="oprichting-gemeente"
+                          />
                         </:content>
                       </Item>
                     {{/if}}
@@ -345,17 +366,18 @@
                       >
                         <:label>Heeft als participanten</:label>
                         <:content as |hasError|>
-                        <AdministrativeUnitMultipleSelect
-                          @selected={{@model.administrativeUnit.hasParticipants}}
-                          @onChange={{this.setHasParticipants}}
-                          @classificationCodes={{this.classificationCodesIgsParticipants}}
-                          @error={{hasError}}
-                          @id="has-participants"
-                        />
+                          <AdministrativeUnitMultipleSelect
+                            @selected={{@model.administrativeUnit.hasParticipants}}
+                            @onChange={{this.setHasParticipants}}
+                            @classificationCodes={{this.classificationCodesIgsParticipants}}
+                            @error={{hasError}}
+                            @id="has-participants"
+                          />
                         </:content>
                       </Item>
                     {{/if}}
                   {{else}}
+<<<<<<< HEAD
                       <Item
                         @labelFor="related-provincie"
                         @required={{true}}
@@ -372,6 +394,23 @@
                           />
                         </:content>
                       </Item>
+=======
+                    <Item
+                      @labelFor="related-provincie"
+                      @required={{true}}
+                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                    >
+                      <:label>Provincie</:label>
+                      <:content as |hasError|>
+                        <ProvinceOrganizationSelect
+                          @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                          @onChange={{this.setRelation}}
+                          @error={{hasError}}
+                          @id="related-provincie"
+                        />
+                      </:content>
+                    </Item>
+>>>>>>> 7677518 (Feature: show error message underneath save button when a form contains errors)
                     <Item
                       @labelFor="related-gemeente"
                       @required={{true}}
@@ -389,27 +428,26 @@
                         />
                       </:content>
                     </Item>
-                      <Item
-                        @labelFor="opregicht-provincie"
-                        @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
-                      >
-                        <:label>Werd opgericht door</:label>
-                        <:content as |hasError|>
-                          <ProvinceOrganizationSelect
+                    <Item
+                      @labelFor="opregicht-provincie"
+                      @required={{true}}
+                      @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
+                    >
+                      <:label>Werd opgericht door</:label>
+                      <:content as |hasError|>
+                        <ProvinceOrganizationSelect
                           @disabled={{true}}
-                            @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
-                            @onChange={{this.setRelation
-                            }}
-                            @error={{hasError}}
-                            @id="opregicht-provincie"
-                          />
-                        </:content>
-                      </Item>
+                          @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
+                          @onChange={{this.setRelation}}
+                          @error={{hasError}}
+                          @id="opregicht-provincie"
+                        />
+                      </:content>
+                    </Item>
 
-                    {{/if}}
-                  </:left>
-                </Card.Columns>
+                  {{/if}}
+                </:left>
+              </Card.Columns>
             </:card>
           </EditCard>
         {{/if}}

@@ -13,7 +13,7 @@
             @skin="button-secondary"
           >
             Annuleer
-          </AuLink>          
+          </AuLink>
           <AuButton
             @icon="add"
             @iconAlignment="left"
@@ -43,11 +43,16 @@
       {{on "submit" (perform this.createMandatoryPositionTask)}}
     >
 
-    {{#if this.targetPersonError}}
-      <AuAlert @alertIcon="alert-triangle" @alertTitle="Er is een onverwachte fout opgetreden." @alertSkin="error">
-        <p>Probeer de persoon opnieuw aan de positie toe te voegen. Als het niet lukt, neem dan contact met ons op.</p>
-      </AuAlert>
-    {{/if}}
+      {{#if this.targetPersonError}}
+        <AuAlert
+          @alertIcon="alert-triangle"
+          @alertTitle="Er is een onverwachte fout opgetreden."
+          @alertSkin="error"
+        >
+          <p>Probeer de persoon opnieuw aan de positie toe te voegen. Als het
+            niet lukt, neem dan contact met ons op.</p>
+        </AuAlert>
+      {{/if}}
 
       <DataCard>
         <:title>Persoonlijke gegevens</:title>
@@ -145,7 +150,7 @@
                 @labelFor="start-date"
                 @required={{true}}
                 @errorMessage={{this.startDateErrorMessage}}
-               >
+              >
                 <:label>Start mandaat</:label>
                 <:content as |errorMessage|>
                   <Datepicker
@@ -158,7 +163,10 @@
                 </:content>
               </Item>
               {{#if this.isWorshipAdministrativeUnit}}
-                <Item @labelFor="expected-end-date" @errorMessage={{this.expectedEndDateErrorMessage}}>
+                <Item
+                  @labelFor="expected-end-date"
+                  @errorMessage={{this.expectedEndDateErrorMessage}}
+                >
                   <:label>Geplande einddatum</:label>
                   <:content as |errorMessage|>
                     <Datepicker

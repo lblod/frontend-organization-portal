@@ -17,6 +17,15 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     this.startDateValidation = { valid: true };
     this.endDateValidation = { valid: true };
   }
+
+  get hasValidationErrors() {
+    return (
+      this.model.governingBody.isInvalid ||
+      !this.endDateValidation.valid ||
+      !this.startDateValidation.valid
+    );
+  }
+
   @action
   async validateStartDate(validation) {
     this.resetValidation();
@@ -43,11 +52,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     event.preventDefault();
     yield this.model.governingBody.validate();
 
-    if (
-      this.model.governingBody.isValid &&
-      this.endDateValidation.valid &&
-      this.startDateValidation.valid
-    ) {
+    if (!this.hasValidationErrors) {
       yield this.model.governingBody.save();
 
       this.router.transitionTo(

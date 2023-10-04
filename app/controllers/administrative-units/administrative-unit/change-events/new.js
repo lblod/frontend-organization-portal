@@ -33,10 +33,23 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
   @tracked
   endDateValidation = { valid: true };
+
   @tracked
   publicationEndDateValidation = { valid: true };
+
   @tracked
   dateValidation = { valid: true };
+
+  get hasValidationErrors() {
+    return (
+      !this.dateValidation ||
+      !this.publicationEndDateValidation ||
+      !this.endDateValidation ||
+      this.model.decision.isInvalid ||
+      this.model.formState.isInvalid ||
+      this.model.changeEvent.isInvalid
+    );
+  }
 
   get isCentralWorshipService() {
     return this.model.formState.isCentralWorshipService;

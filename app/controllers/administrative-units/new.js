@@ -12,6 +12,16 @@ export default class AdministrativeUnitsNewController extends Controller {
   @service router;
   @service store;
 
+  get hasValidationErrors() {
+    return (
+      this.model.administrativeUnitChangeset.isInvalid ||
+      this.model.address.isInvalid ||
+      this.model.contact.isInvalid ||
+      this.model.secondaryContact.isInvalid ||
+      this.model.structuredIdentifierKBO.isInvalid
+    );
+  }
+
   get isNewOCMW() {
     return (
       this.model.administrativeUnitChangeset.classification?.id ===
@@ -181,13 +191,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       structuredIdentifierKBO.validate(),
     ]);
 
-    if (
-      administrativeUnitChangeset.isValid &&
-      address.isValid &&
-      contact.isValid &&
-      secondaryContact.isValid &&
-      structuredIdentifierKBO.isValid
-    ) {
+    if (!this.hasValidationErrors) {
       const siteTypes = yield this.store.findAll('site-type');
       let newAdministrativeUnit;
       // Set the proper type to the new admin unit

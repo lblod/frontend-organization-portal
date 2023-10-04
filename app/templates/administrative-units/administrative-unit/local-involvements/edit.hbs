@@ -4,7 +4,7 @@
     <:title>Bewerk betrokken lokale besturen</:title>
     <:subtitle>{{@model.worshipAdministrativeUnit.name}}</:subtitle>
     <:action>
-      <div>
+      <div class="au-u-text-right">
         <AuButtonGroup class="au-c-button-group--align-right">
           <AuLink
             @route="administrative-units.administrative-unit.local-involvements"
@@ -21,6 +21,7 @@
             Opslaan
           </AuButton>
         </AuButtonGroup>
+        <Error::Save @showSaveError={{this.hasValidationErrors}} />
         <ReportWrongData />
       </div>
     </:action>
