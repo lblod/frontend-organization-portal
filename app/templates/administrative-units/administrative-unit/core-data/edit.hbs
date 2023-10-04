@@ -359,8 +359,8 @@
                         <:content as |hasError|>
                           <ProvinceOrganizationSelect
                             @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                            @onChange={{this.setRelation
-                            }}
+                            @onChange={{this.setRelation}}
+                            @selectedMunicipality={{this.selectedMunicipality}}
                             @error={{hasError}}
                             @id="related-provincie"
                           />
@@ -375,9 +375,8 @@
                       <:content as |hasError|>
                         <AdministrativeUnitSelect
                           @selected={{@model.administrativeUnit.isAssociatedWith}}
-                          @onChange={{fn
-                            (mut @model.administrativeUnit.isAssociatedWith)
-                          }}
+                          @onChange={{this.setMunicipality}}
+                          @selectedProvince={{this.selectedProvince}}
                           @classificationCodes={{this.classificationCodes}}
                           @error={{hasError}}
                           @id="related-gemeente"

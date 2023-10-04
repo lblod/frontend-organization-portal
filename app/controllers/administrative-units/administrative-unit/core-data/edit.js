@@ -5,9 +5,12 @@ import { combineFullAddress } from 'frontend-organization-portal/models/address'
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { tracked } from '@glimmer/tracking';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
+  @tracked selectedMunicipality;
+  @tracked selectedProvince;
 
   get isWorshipAdministrativeUnit() {
     return this.isWorshipService || this.isCentralWorshipService;
@@ -95,11 +98,23 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     this.model.administrativeUnit.isSubOrganizationOf = unit;
     if (this.isAgb || this.isApb)
       this.model.administrativeUnit.wasFoundedByOrganization = unit;
+
+    this.selectedProvince = unit.serialize().data.attributes.name;
+    console.log(this.selectedProvince);
+    return this.selectedProvince;
   }
 
   @action
   setHasParticipants(units) {
     this.model.administrativeUnit.hasParticipants = units;
+  }
+
+  @action
+  setMunicipality(municipality) {
+    this.model.administrativeUnit.isAssociatedWith = municipality;
+    this.selectedMunicipality = municipality.serialize().data.attributes.name;
+    console.log(this.selectedMunicipality);
+    return this.selectedMunicipality;
   }
 
   @dropTask

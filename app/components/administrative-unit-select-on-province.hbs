@@ -1,0 +1,36 @@
+<div class={{if @error "ember-power-select--error"}} ...attributes>
+  <PowerSelect
+    @disabled={{if @disabled true false}}
+    @allowClear={{not @selectedProvince}}
+    @searchEnabled={{true}}
+    @loadingMessage="Aan het laden..."
+    @noMatchesMessage="Geen resultaten"
+    @searchMessage="Typ om te zoeken"
+    @searchField="name"
+    @search={{perform this.loadAdministrativeUnitsTask}}
+    @selected={{this.selectedAdministrativeUnit}}
+    @onChange={{this.triggerChange}}
+    as |administrativeUnit|
+  >
+    {{administrativeUnit.name}}
+
+    {{#if
+      (and
+        (not
+          (or
+            (eq
+              administrativeUnit.classification.label
+              "Centraal bestuur van de eredienst"
+            )
+            (eq
+              administrativeUnit.classification.label "Bestuur van de eredienst"
+            )
+          )
+        )
+        administrativeUnit.classification
+      )
+    }}
+      ({{administrativeUnit.classification.label}})
+    {{/if}}
+  </PowerSelect>
+</div>
