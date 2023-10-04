@@ -8,7 +8,7 @@
         ({{@model.administrativeUnit.classification.label}})
       </:subtitle>
       <:action>
-        <div>
+        <div class="au-u-text-right">
           <AuButtonGroup class="au-c-button-group--align-right">
             <AuButton {{on "click" this.cancel}} @skin="secondary">
               Annuleer
@@ -22,6 +22,7 @@
               Opslaan
             </AuButton>
           </AuButtonGroup>
+          <Error::Save @showSaveError={{this.hasValidationErrors}} />
           <ReportWrongData />
         </div>
       </:action>

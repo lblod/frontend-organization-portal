@@ -3,24 +3,27 @@
     <PageHeader>
       <:title>Voeg vestiging toe</:title>
       <:action>
-        <AuButtonGroup class="au-c-button-group--align-right">
-          <AuLink
-            @route="administrative-units.administrative-unit.sites"
-            @skin="button-secondary"
-          >
-            Annuleer
-          </AuLink>
-          <AuButton
-            @loading={{this.createSiteTask.isRunning}}
-            @disabled={{this.createSiteTask.isRunning}}
-            @icon="add"
-            @iconAlignment="left"
-            type="submit"
-            form="new-vestiging-form"
-          >
-            Voeg toe
-          </AuButton>
-        </AuButtonGroup>
+        <div class="au-u-test-right">
+          <AuButtonGroup class="au-c-button-group--align-right">
+            <AuLink
+              @route="administrative-units.administrative-unit.sites"
+              @skin="button-secondary"
+            >
+              Annuleer
+            </AuLink>
+            <AuButton
+              @loading={{this.createSiteTask.isRunning}}
+              @disabled={{this.createSiteTask.isRunning}}
+              @icon="add"
+              @iconAlignment="left"
+              type="submit"
+              form="new-vestiging-form"
+            >
+              Voeg toe
+            </AuButton>
+          </AuButtonGroup>
+          <Error::Save @showSaveError={{this.hasValidationErrors}} />
+        </div>
       </:action>
     </PageHeader>
 
@@ -31,19 +34,19 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <Item @labelFor="site-type"
-                              @required={{true}}
-
-                      @errorMessage={{@model.site.error.siteType.validation}}>
+                <Item
+                  @labelFor="site-type"
+                  @required={{true}}
+                  @errorMessage={{@model.site.error.siteType.validation}}
+                >
                   <:label>Type vestiging</:label>
-                  <:content  as |hasError|>
+                  <:content as |hasError|>
                     <SiteTypeSelect
                       @selected={{@model.site.siteType}}
                       @onChange={{fn (mut @model.site.siteType)}}
                       @administrativeUnitClassification={{this.model.administrativeUnit.classification}}
                       @id="site-type"
                       @error={{hasError}}
-
                     />
                   </:content>
                 </Item>

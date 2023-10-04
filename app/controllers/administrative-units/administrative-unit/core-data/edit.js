@@ -9,6 +9,16 @@ import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/adminis
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
 
+  get hasValidationErrors() {
+    return (
+      this.model.administrativeUnit.isInvalid ||
+      this.model.address.isInvalid ||
+      this.model.contact.isInvalid ||
+      this.model.secondaryContact.isInvalid ||
+      this.model.structuredIdentifierKBO.isInvalid
+    );
+  }
+
   get isWorshipAdministrativeUnit() {
     return this.isWorshipService || this.isCentralWorshipService;
   }
@@ -121,6 +131,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   @dropTask
   *save(event) {
     event.preventDefault();
+
     let {
       administrativeUnit,
       address,
@@ -140,13 +151,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       structuredIdentifierKBO.validate(),
     ]);
 
-    if (
-      administrativeUnit.isValid &&
-      address.isValid &&
-      contact.isValid &&
-      secondaryContact.isValid &&
-      structuredIdentifierKBO.isValid
-    ) {
+    if (!this.hasValidationErrors) {
       let primarySite = yield administrativeUnit.primarySite;
 
       // TODO : "if" not needed when the data of all administrative units will be correct
