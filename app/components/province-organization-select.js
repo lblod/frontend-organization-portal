@@ -16,16 +16,17 @@ export default class ProvinceOrganizationSelectComponent extends Component {
 
   @task
   *loadProvincesTask() {
-    console.log(this.selectedMunicipality);
+    console.log(
+      'selected municipality from provincie select',
+      this.args.selectedMunicipality
+    );
     // Trick used to avoid infinite loop
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
     yield Promise.resolve();
 
     let provinces = [];
-    if (
-      this.args.selectedMunicipality &&
-      this.args.selectedMunicipality.length
-    ) {
+
+    if (this.args.selectedMunicipality) {
       if (
         this.previousMunicipality &&
         this.args.selectedMunicipality === this.previousMunicipality
@@ -40,12 +41,13 @@ export default class ProvinceOrganizationSelectComponent extends Component {
       provinces = yield this.store.query('administrative-unit', {
         filter: {
           'sub-organizations': {
-            ':exact:name': this.args.selectedMunicipality,
+            id: this.args.selectedMunicipality.id,
           },
           classification: {
             id: CLASSIFICATION_CODE.PROVINCE,
           },
         },
+        sort: 'name',
       });
     } else {
       // Else load all the provinces
@@ -58,6 +60,17 @@ export default class ProvinceOrganizationSelectComponent extends Component {
         sort: 'name',
       });
     }
+
+    // Auto-selects the province when there is only once choice
+    if (provinces.toArray().length === 1) {
+      this.previousMunicipality = this.args.selectedMunicipality;
+      this.previousProvince = provinces.toArray()[0];
+      this.args.onChange(this.previousProvince);
+    } else {
+      this.previousMunicipality = null;
+      this.previousProvince = null;
+    }
+
     return provinces;
   }
 }

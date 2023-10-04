@@ -96,12 +96,11 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   @action
   setRelation(unit) {
     this.model.administrativeUnit.isSubOrganizationOf = unit;
+
     if (this.isAgb || this.isApb)
       this.model.administrativeUnit.wasFoundedByOrganization = unit;
 
-    this.selectedProvince = unit.serialize().data.attributes.name;
-    console.log(this.selectedProvince);
-    return this.selectedProvince;
+    this.selectedProvince = unit;
   }
 
   @action
@@ -112,7 +111,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   @action
   setMunicipality(municipality) {
     this.model.administrativeUnit.isAssociatedWith = municipality;
-    this.selectedMunicipality = municipality.serialize().data.attributes.name;
+    this.selectedMunicipality = municipality;
     console.log(this.selectedMunicipality);
     return this.selectedMunicipality;
   }
