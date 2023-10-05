@@ -112,7 +112,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   setMunicipality(municipality) {
     this.model.administrativeUnit.isAssociatedWith = municipality;
     this.selectedMunicipality = municipality;
-    console.log(this.selectedMunicipality);
+
     return this.selectedMunicipality;
   }
 

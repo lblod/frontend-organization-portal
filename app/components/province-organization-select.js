@@ -16,10 +16,6 @@ export default class ProvinceOrganizationSelectComponent extends Component {
 
   @task
   *loadProvincesTask() {
-    console.log(
-      'selected municipality from provincie select',
-      this.args.selectedMunicipality
-    );
     // Trick used to avoid infinite loop
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
     yield Promise.resolve();
