@@ -8,6 +8,7 @@ import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/adminis
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
+  @service store;
 
   get hasValidationErrors() {
     return (
