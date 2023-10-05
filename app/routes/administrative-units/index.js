@@ -11,6 +11,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     page: { refreshModel: true },
     sort: { refreshModel: true },
     name: { refreshModel: true, replace: true },
+    identifier: { refreshModel: true, replace: true },
     municipality: { refreshModel: true, replace: true },
     province: { refreshModel: true, replace: true },
     classificationId: { refreshModel: true, replace: true },
@@ -30,12 +31,16 @@ export default class AdministrativeUnitsIndexRoute extends Route {
   @keepLatestTask({ cancelOn: 'deactivate' })
   *loadAdministrativeUnitsTask(params) {
     const filter = {};
-
     if (params.name) {
       let filterType = 'phrase_prefix';
       let name = params.name.trim();
 
       filter[`:${filterType}:name`] = name;
+    }
+
+    if (params.identifier) {
+      // Note: toLowerCase is needed to properly match OVO numbers
+      filter[':prefix:identifier'] = params.identifier.toLowerCase().trim();
     }
 
     if (params.classificationId) {
@@ -63,6 +68,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     } else {
       filter[':query:status_id'] = `(_exists_:status_id)`;
     }
+
     return yield this.muSearch.search({
       index: 'units',
       page: params.page,
