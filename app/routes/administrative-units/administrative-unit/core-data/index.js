@@ -69,7 +69,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
             },
           },
         })
-      ).firstObject;
+      )[0];
       const scope = await municipalityUnit.scope;
       igsRegio = await scope.locatedWithin;
     }

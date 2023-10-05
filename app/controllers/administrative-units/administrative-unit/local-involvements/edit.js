@@ -139,7 +139,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     } else {
       involvement = this.store.createRecord('local-involvement', {
         worshipAdministrativeUnit: this.model.worshipAdministrativeUnit,
-        involvementType: this.model.involvementTypes.firstObject,
+        involvementType: this.model.involvementTypes[0],
         percentage: 100,
       });
     }

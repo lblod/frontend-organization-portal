@@ -50,7 +50,7 @@ export default class PositionSelectComponent extends Component {
           'filter[:id:]': selectedAdministrativeUnitId,
           include: 'classification',
         }
-      )).firstObject;
+      ))[0];
 
       const classification = yield administrativeUnit.classification;
 

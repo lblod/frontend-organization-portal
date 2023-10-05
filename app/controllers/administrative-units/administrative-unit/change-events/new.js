@@ -340,7 +340,7 @@ async function findMostRecentChangeEvent(store, organization) {
   });
 
   if (mostRecentChangeEventResults.length > 0) {
-    return await mostRecentChangeEventResults.firstObject.resultFrom;
+    return await mostRecentChangeEventResults[0].resultFrom;
   } else {
     return null;
   }
