@@ -78,8 +78,6 @@ export default class AdministrativeUnitSelectComponent extends Component {
       allowedClassificationCodes = classificationCodes;
     }
 
-    selectedProvince = null;
-
     if (selectedProvince && selectedProvince.length) {
       // If a province is selected, load the municipalities in it
       query = {
@@ -116,7 +114,6 @@ export default class AdministrativeUnitSelectComponent extends Component {
     }
 
     searchResults = yield this.store.query('administrative-unit', query);
-    console.log(searchResults);
 
     if (typeof this.args.filter === 'function') {
       return this.args.filter(searchResults);
