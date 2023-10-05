@@ -32,8 +32,8 @@ export default class AdministrativeUnitSelectByIdentifierComponent extends Compo
       dataMapping: (data) => {
         const entry = data.attributes.identifier;
 
-        // Note: Dev contains data for which the resulting identifiers is not
-        // an array, might need be needed in cleaned up data
+        // Note: if-then-else needed as some units contain only one identifier,
+        // which does not result in array being returned
         if (Array.isArray(entry)) {
           return entry.filter((id) =>
             id.toLowerCase().startsWith(searchParams.toLowerCase())
