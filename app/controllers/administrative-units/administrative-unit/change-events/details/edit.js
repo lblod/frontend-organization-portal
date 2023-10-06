@@ -17,6 +17,14 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
   @tracked
   publicationDateValidation = { valid: true };
 
+  get hasValidationErrors() {
+    return (
+      !this.endDateValidation.valid ||
+      !this.publicationDateValidation.valid ||
+      this.model.changeEvent.isInvalid
+    );
+  }
+
   get isCityChangeEvent() {
     return (
       this.model.changeEvent.type &&
