@@ -30,7 +30,6 @@ export default class AdministrativeUnitSelectComponent extends Component {
     let classificationCodes = this.args.classificationCodes;
     let allowedClassificationCodes = [];
     let searchResults = [];
-    let selectedProvince = this.args.selectedProvince.id;
     let query = '';
 
     const selectedPositionId = this.args.selectedPosition;
@@ -78,7 +77,7 @@ export default class AdministrativeUnitSelectComponent extends Component {
       allowedClassificationCodes = classificationCodes;
     }
 
-    if (selectedProvince && selectedProvince.length) {
+    if (this.args.selectedProvince && this.args.selectedProvince.id.length) {
       // If a province is selected, load the municipalities in it
       query = {
         filter: {
@@ -99,7 +98,6 @@ export default class AdministrativeUnitSelectComponent extends Component {
         sort: 'name',
         include: 'classification',
       };
-
       if (allowedClassificationCodes.length) {
         query.filter = {
           classification: {
