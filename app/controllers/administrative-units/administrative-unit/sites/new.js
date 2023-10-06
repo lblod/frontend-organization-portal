@@ -48,7 +48,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
       yield address.save();
 
       site.address = address;
-      site.contacts.pushObjects([contact, secondaryContact]);
+      site.contacts.push(contact, secondaryContact);
       yield site.save();
 
       let nonPrimarySites = yield administrativeUnit.sites;
@@ -57,12 +57,12 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
         let previousPrimarySite = yield administrativeUnit.primarySite;
 
         if (previousPrimarySite) {
-          nonPrimarySites.pushObject(previousPrimarySite);
+          nonPrimarySites.push(previousPrimarySite);
         }
 
         administrativeUnit.primarySite = site;
       } else {
-        nonPrimarySites.pushObject(site);
+        nonPrimarySites.push(site);
       }
 
       yield administrativeUnit.save();

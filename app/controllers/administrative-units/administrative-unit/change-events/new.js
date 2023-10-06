@@ -161,7 +161,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
       if (canChangeMultipleOrganizations(changeEventType)) {
         let allOriginalOrganizations = formState.allOriginalOrganizations;
-        changeEvent.originalOrganizations.pushObjects(allOriginalOrganizations);
+        changeEvent.originalOrganizations.push(...allOriginalOrganizations);
 
         let createChangeEventResultsPromises = [];
 
@@ -200,7 +200,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
           changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
           changeEventType.id === CHANGE_EVENT_TYPE.FUSIE
         ) {
-          changeEvent.resultingOrganizations.pushObject(
+          changeEvent.resultingOrganizations.push(
             formState.resultingOrganization
           );
 
@@ -217,15 +217,13 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
             );
           }
         } else {
-          changeEvent.resultingOrganizations.pushObjects(
-            allOriginalOrganizations
-          );
+          changeEvent.resultingOrganizations.push(...allOriginalOrganizations);
         }
 
         yield Promise.all(createChangeEventResultsPromises);
       } else {
         if (changeEventType.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED) {
-          changeEvent.originalOrganizations.pushObject(currentOrganization);
+          changeEvent.originalOrganizations.push(currentOrganization);
         }
 
         if (
@@ -234,7 +232,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
             CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED,
           ].includes(changeEventType.id)
         ) {
-          changeEvent.resultingOrganizations.pushObject(currentOrganization);
+          changeEvent.resultingOrganizations.push(currentOrganization);
         }
         yield createChangeEventResult({
           resultingStatusId:
@@ -381,12 +379,12 @@ async function mergeAssociated(ctx) {
 
   for (const org of changeEvent.originalOrganizations.slice()) {
     const unit = await org.isAssociatedWith;
-    associatedChangeEvent.originalOrganizations.pushObject(unit);
+    associatedChangeEvent.originalOrganizations.push(unit);
   }
 
   for (const org of changeEvent.resultingOrganizations.slice()) {
     const unit = await org.isAssociatedWith;
-    associatedChangeEvent.resultingOrganizations.pushObject(unit);
+    associatedChangeEvent.resultingOrganizations.push(unit);
   }
 
   const createChangeEventResults = [];

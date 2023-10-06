@@ -113,7 +113,7 @@ export default class PeoplePersonPositionsMinisterEditController extends Control
             yield secondaryContact.save();
           }
           minister.contacts.clear();
-          minister.contacts.pushObjects([primaryContact, secondaryContact]);
+          minister.contacts.push(primaryContact, secondaryContact);
           primaryContactId = primaryContact.id;
         }
       }

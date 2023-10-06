@@ -70,7 +70,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
 
       if (contact.isDirty) {
         if (contact.isNew) {
-          site.contacts.pushObject(contact);
+          site.contacts.push(contact);
         }
         contact = setEmptyStringsToNull(contact);
 
@@ -79,7 +79,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
 
       if (secondaryContact.isDirty) {
         if (secondaryContact.isNew) {
-          site.contacts.pushObject(secondaryContact);
+          site.contacts.push(secondaryContact);
         }
         secondaryContact = setEmptyStringsToNull(secondaryContact);
 
@@ -91,7 +91,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
       let nonPrimarySites = yield administrativeUnit.sites;
 
       if (this.isCurrentPrimarySite && !this.isPrimarySite) {
-        nonPrimarySites.pushObject(site);
+        nonPrimarySites.push(site);
         administrativeUnit.primarySite = null;
         yield administrativeUnit.save();
       } else if (this.isPrimarySite && !this.isCurrentPrimarySite) {

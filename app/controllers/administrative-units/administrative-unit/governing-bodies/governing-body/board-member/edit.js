@@ -130,7 +130,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
             yield secondaryContact.save();
           }
           mandatory.contacts.clear();
-          mandatory.contacts.pushObjects([primaryContact, secondaryContact]);
+          mandatory.contacts.push(primaryContact, secondaryContact);
           primaryContactId = primaryContact.id;
         }
       }

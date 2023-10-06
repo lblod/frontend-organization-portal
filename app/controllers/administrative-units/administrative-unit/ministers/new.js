@@ -135,7 +135,7 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersNewController
             yield secondaryContact.save();
           }
           minister.contacts.clear();
-          minister.contacts.pushObjects([primaryContact, secondaryContact]);
+          minister.contacts.push(primaryContact, secondaryContact);
         }
       }
       if (contactValid) {

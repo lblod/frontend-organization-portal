@@ -21,7 +21,7 @@ export default class PropagateContactDetailsUpdateComponent extends Component {
     for (const computedPosition of this.selectedPositions) {
       let { position } = computedPosition;
       position.contacts.clear();
-      position.contacts.pushObjects([primaryContact, secondaryContact]);
+      position.contacts.push(primaryContact, secondaryContact);
       yield position.save();
     }
     this.args.onSave();

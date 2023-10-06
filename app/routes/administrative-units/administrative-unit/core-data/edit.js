@@ -62,7 +62,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
 
     let identifiers = await administrativeUnit.identifiers;
     let missingIdentifiers = this.createMissingIdentifiers(identifiers);
-    identifiers.pushObjects(missingIdentifiers);
+    identifiers.push(...missingIdentifiers);
 
     let identifierKBO = identifiers.find(
       ({ idName }) => idName === ID_NAME.KBO

@@ -144,7 +144,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
       });
     }
 
-    this.model.involvements.pushObject(
+    this.model.involvements.push(
       createValidatedChangeset(involvement, localInvolvementValidations)
     );
   }

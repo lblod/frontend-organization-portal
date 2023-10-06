@@ -90,12 +90,12 @@ export default class ContactDetailsComponent extends Component {
       contact;
     if (!primaryContact) {
       const pc = createPrimaryContact(this.store);
-      position.contacts.pushObject(pc);
+      position.contacts.push(pc);
       primaryContact = createValidatedChangeset(pc, contactValidations);
     }
     if (!secondaryContact) {
       const sc = createSecondaryContact(this.store);
-      position.contacts.pushObject(sc);
+      position.contacts.push(sc);
       secondaryContact = createValidatedChangeset(
         sc,
         secondaryContactValidations
@@ -167,8 +167,8 @@ export default class ContactDetailsComponent extends Component {
     yield primaryContact.validate();
     yield address.validate();
 
-    position.contacts.pushObject(primaryContact);
-    position.contacts.pushObject(secondaryContact);
+    position.contacts.push(primaryContact);
+    position.contacts.push(secondaryContact);
     const copied = {
       position,
       title,
