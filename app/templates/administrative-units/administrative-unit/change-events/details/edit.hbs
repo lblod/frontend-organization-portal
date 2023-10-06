@@ -15,24 +15,28 @@
         Bewerk veranderingsgebeurtenis:
         {{@model.changeEvent.type.label}}
       </:title>
-      <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
+      <:subtitle>{{@model.administrativeUnit.name}}
+        ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
-        <AuButtonGroup>
-          <AuLink
-            @route="administrative-units.administrative-unit.change-events.details"
-            @model={{@model.changeEvent.id}}
-            @skin="button-secondary"
-          >
-            Annuleer
-          </AuLink>
-          <AuButton
-            @loading={{this.save.isRunning}}
-            @disabled={{this.save.isRunning}}
-            type="submit"
-          >
-            Opslaan
-          </AuButton>
-        </AuButtonGroup>
+        <div class="au-u-text-right">
+          <AuButtonGroup class="au-c-button-group--align-right">
+            <AuLink
+              @route="administrative-units.administrative-unit.change-events.details"
+              @model={{@model.changeEvent.id}}
+              @skin="button-secondary"
+            >
+              Annuleer
+            </AuLink>
+            <AuButton
+              @loading={{this.save.isRunning}}
+              @disabled={{this.save.isRunning}}
+              type="submit"
+            >
+              Opslaan
+            </AuButton>
+          </AuButtonGroup>
+          <Error::Save @showSaveError={{this.hasValidationErrors}} />
+        </div>
       </:action>
     </PageHeader>
 
@@ -77,15 +81,18 @@
             {{/if}}
           </:left>
           <:right as |Item|>
-            {{#if (and
-              (not this.isAgbOrApb)
-              (not this.isIgs)
-              (not this.isPoliceZone)
-              (not this.isAssistanceZone)
-              @model.canAddDecisionInformation
-            )}}
+            {{#if
+              (and
+                (not this.isAgbOrApb)
+                (not this.isIgs)
+                (not this.isPoliceZone)
+                (not this.isAssistanceZone)
+                @model.canAddDecisionInformation
+              )
+            }}
               {{#unless this.isCityChangeEvent}}
-                <Item @labelFor="change-event-decision-activity-date"
+                <Item
+                  @labelFor="change-event-decision-activity-date"
                   @errorMessage={{this.endDateValidation.errorMessage}}
                 >
                   <:label>Datum ministerieel besluit</:label>
@@ -100,7 +107,8 @@
                   </:content>
                 </Item>
               {{/unless}}
-              <Item @labelFor="change-event-decision-publication-date"
+              <Item
+                @labelFor="change-event-decision-publication-date"
                 @errorMessage={{this.publicationDateValidation.errorMessage}}
               >
                 <:label>

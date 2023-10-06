@@ -10,6 +10,15 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
   @service store;
   @tracked isPrimarySite = false;
 
+  get hasValidationErrors() {
+    return (
+      this.model.site.isInvalid ||
+      this.model.address.isInvalid ||
+      this.model.contact.isInvalid ||
+      this.model.secondaryContact.isInvalid
+    );
+  }
+
   @dropTask
   *createSiteTask(event) {
     event.preventDefault();
@@ -22,12 +31,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
     yield contact.validate();
     yield secondaryContact.validate();
 
-    if (
-      site.isValid &&
-      address.isValid &&
-      contact.isValid &&
-      secondaryContact.isValid
-    ) {
+    if (!this.hasValidationErrors) {
       contact = setEmptyStringsToNull(contact);
       yield contact.save();
 

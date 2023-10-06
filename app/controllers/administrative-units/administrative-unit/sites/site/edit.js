@@ -19,6 +19,15 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     this.isPrimarySite = this.isCurrentPrimarySite;
   }
 
+  get hasValidationErrors() {
+    return (
+      this.model.site.isInvalid ||
+      this.model.address.isInvalid ||
+      this.model.contact.isInvalid ||
+      this.model.secondaryContact.isInvalid
+    );
+  }
+
   @action
   updateIsPrimarySite(isPrimarySite) {
     this.isPrimarySite = isPrimarySite;
@@ -48,12 +57,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     yield contact.validate();
     yield secondaryContact.validate();
 
-    if (
-      site.isValid &&
-      address.isValid &&
-      contact.isValid &&
-      secondaryContact.isValid
-    ) {
+    if (!this.hasValidationErrors) {
       if (address.isDirty) {
         if (address.country != 'België') {
           address.province = '';

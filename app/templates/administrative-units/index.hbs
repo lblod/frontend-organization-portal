@@ -2,15 +2,27 @@
   <:sidebar>
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content au-o-box">
-        <form {{on "reset" this.resetFilters}} class="au-o-grid au-o-grid--small">
+        <form
+          {{on "reset" this.resetFilters}}
+          class="au-o-grid au-o-grid--small"
+        >
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-name">Naam</AuLabel>
-              <AdministrativeUnitSelectByName
-                @id="filter-name"
-                @selected={{this.name}}
-                @onChange={{this.setName}}
-                class="grow"
-              />
+            <AdministrativeUnitSelectByName
+              @id="filter-name"
+              @selected={{this.name}}
+              @onChange={{this.setName}}
+              class="grow"
+            />
+          </div>
+          <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
+            <AuLabel for="filter-identifier">Identificator</AuLabel>
+            <AdministrativeUnitSelectByIdentifier
+              @id="filter-identifier"
+              @selected={{this.identifier}}
+              @onChange={{this.setIdentifier}}
+              class="grow"
+            />
           </div>
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-municipality">Gemeente</AuLabel>
@@ -62,11 +74,9 @@
             />
           </div>
           <div class="au-o-grid__item">
-            <AuButton
-              @skin="tertiary"
-              type="reset"
-            >
-              <AuIcon @icon="cross" @alignment="left" /> Herstel alle filters
+            <AuButton @skin="tertiary" type="reset">
+              <AuIcon @icon="cross" @alignment="left" />
+              Herstel alle filters
             </AuButton>
           </div>
         </form>
@@ -147,7 +157,7 @@
               meldt dit aan
               <a
                 class="au-c-link"
-                href="mailto:{{config "contactEmail"}}"
+                href="mailto:{{config 'contactEmail'}}"
               >{{config "contactEmail"}}</a>
               of
               <AuLink @route="administrative-units.new">maak een organisatie
@@ -173,7 +183,10 @@
             <td>{{adminUnit.municipality}}</td>
             <td>
               {{#if adminUnit.status}}
-                <OrganizationStatus  @id={{adminUnit.status_id}} @label={{adminUnit.status}}/>
+                <OrganizationStatus
+                  @id={{adminUnit.status_id}}
+                  @label={{adminUnit.status}}
+                />
               {{/if}}
             </td>
           </c.body>

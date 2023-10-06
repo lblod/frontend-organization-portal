@@ -6,12 +6,27 @@ import { hbs } from 'ember-cli-htmlbars';
 module('Integration | Helper | kbo-format', function (hooks) {
   setupRenderingTest(hooks);
 
-  // TODO: Replace this with your real tests.
-  test('it renders', async function (assert) {
-    this.set('inputValue', '1234');
+  test('It correctly formats KBO number', async function (assert) {
+    this.set('inputValue', '0123456789');
 
     await render(hbs`{{kbo-format inputValue}}`);
 
-    assert.equal(this.element.textContent.trim(), '1234');
+    assert.equal(this.element.textContent.trim(), '0123.456.789');
+  });
+
+  test('Returns an empty string for an input that is too short', async function (assert) {
+    this.set('inputValue', '012345');
+
+    await render(hbs`{{kbo-format inputValue}}`);
+
+    assert.equal(this.element.textContent.trim(), '');
+  });
+
+  test('Returns an empty string for an input that is too long', async function (assert) {
+    this.set('inputValue', '01234567891011');
+
+    await render(hbs`{{kbo-format inputValue}}`);
+
+    assert.equal(this.element.textContent.trim(), '');
   });
 });

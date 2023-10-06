@@ -20,6 +20,18 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     CLASSIFICATION_CODE.PROVINCE,
   ];
 
+  get hasValidationErrors() {
+    let areSomeLocalInvolvementsInvalid = this.model.involvements
+      .toArray()
+      .some((involvement) => involvement.isInvalid);
+
+    return (
+      areSomeLocalInvolvementsInvalid ||
+      !this.isValidTotalFinancingPercentage ||
+      !this.isOneOrLessFinancialLocalInvolvement
+    );
+  }
+
   get isWorshipService() {
     return (
       this.model.worshipAdministrativeUnit.classification?.get('id') ===

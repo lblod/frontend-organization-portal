@@ -7,7 +7,7 @@
         {{this.model.administrativeUnit.name}}
       </:subtitle>
       <:action>
-        <div>
+        <div class="au-u-text-right">
           <AuButtonGroup class="au-c-button-group--align-right">
             <AuLink
               @route="administrative-units.administrative-unit.sites.site"
@@ -24,6 +24,7 @@
               Opslaan
             </AuButton>
           </AuButtonGroup>
+          <Error::Save @showSaveError={{this.hasValidationErrors}} />
           <ReportWrongData />
         </div>
       </:action>
@@ -40,12 +41,13 @@
           <:card as |Card|>
             <Card.Columns>
               <:left as |Item|>
-                <Item @labelFor="site-type"
+                <Item
+                  @labelFor="site-type"
                   @required={{true}}
                   @errorMessage={{this.model.site.error.siteType.validation}}
                 >
                   <:label>Type vestiging</:label>
-                  <:content  as |hasError|>
+                  <:content as |hasError|>
                     <SiteTypeSelect
                       @selected={{this.model.site.siteType}}
                       @onChange={{fn (mut this.model.site.siteType)}}
@@ -57,9 +59,7 @@
                 </Item>
               </:left>
               <:right as |Item|>
-                <Item
-                  @errorMessage={{this.isNoPrimarySiteErrorMessage}}
-                >
+                <Item @errorMessage={{this.isNoPrimarySiteErrorMessage}}>
                   <:label>Primair correspondentieadres</:label>
                   <:content>
                     <ul class="au-c-list-inline">
@@ -96,7 +96,9 @@
           @primaryContact={{this.model.contact}}
           @secondaryContact={{this.model.secondaryContact}}
           @isAddressSearchEnabledInitially={{if
-              (or (not this.model.address.id) this.model.address.addressRegisterUri)
+            (or
+              (not this.model.address.id) this.model.address.addressRegisterUri
+            )
             true
             false
           }}
