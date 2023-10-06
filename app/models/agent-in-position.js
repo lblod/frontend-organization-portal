@@ -6,12 +6,16 @@ export default class AgentInPositionModel extends Model {
   @belongsTo('post', {
     inverse: 'agentsInPosition',
     async: true,
+    polymorphic: true,
+    as: 'agent-in-position',
   })
   position;
 
   @belongsTo('person', {
     inverse: 'agentsInPosition',
     async: true,
+    polymorphic: true,
+    as: 'agent-in-position',
   })
   person;
 

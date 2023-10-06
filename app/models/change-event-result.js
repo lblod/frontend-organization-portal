@@ -16,6 +16,8 @@ export default class ChangeEventResultModel extends Model {
   @belongsTo('organization', {
     inverse: 'changeEventResults',
     async: true,
+    polymorphic: true,
+    as: 'change-event-result',
   })
   resultingOrganization;
 }

@@ -20,12 +20,16 @@ export default class MandatoryModel extends AgentInPositionModel {
   @belongsTo('person', {
     inverse: 'mandatories',
     async: true,
+    polymorphic: true,
+    as: 'mandatory',
   })
   governingAlias;
 
   @belongsTo('mandate', {
     inverse: 'heldBy',
     async: true,
+    polymorphic: true,
+    as: 'mandatory',
   })
   mandate;
 

@@ -18,12 +18,16 @@ export default class ChangeEventModel extends Model {
   @hasMany('organization', {
     inverse: 'resultedFrom',
     async: true,
+    polymorphic: true,
+    as: 'change-event',
   })
   resultingOrganizations;
 
   @hasMany('organization', {
     inverse: 'changedBy',
     async: true,
+    polymorphic: true,
+    as: 'change-event',
   })
   originalOrganizations;
 

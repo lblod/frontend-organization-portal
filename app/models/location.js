@@ -7,6 +7,8 @@ export default class LocationModel extends Model {
   @hasMany('administrative-unit', {
     inverse: 'locatedWithin',
     async: true,
+    polymorphic: true,
+    as: 'location',
   })
   administrativeUnits;
 

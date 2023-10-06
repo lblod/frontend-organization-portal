@@ -12,12 +12,16 @@ export default class LocalInvolvementModel extends Model {
   @belongsTo('worship-administrative-unit', {
     inverse: 'involvements',
     async: true,
+    polymorphic: true,
+    as: 'local-involvement',
   })
   worshipAdministrativeUnit;
 
   @belongsTo('administrative-unit', {
     inverse: 'involvedBoards',
     async: true,
+    polymorphic: true,
+    as: 'local-involvement',
   })
   administrativeUnit;
 }

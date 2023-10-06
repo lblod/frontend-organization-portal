@@ -47,6 +47,8 @@ export default class MinisterPositionModel extends PostModel {
   @belongsTo('worship-administrative-unit', {
     inverse: 'ministerPositions',
     async: true,
+    polymorphic: true,
+    as: 'minister-position',
   })
   worshipService;
 

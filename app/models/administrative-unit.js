@@ -11,12 +11,16 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   @belongsTo('location', {
     inverse: 'administrativeUnits',
     async: true,
+    polymorphic: true,
+    as: 'administrative-unit',
   })
   locatedWithin;
 
   @hasMany('governing-body', {
     inverse: 'administrativeUnit',
     async: true,
+    polymorphic: true,
+    as: 'administrative-unit',
   })
   governingBodies;
 

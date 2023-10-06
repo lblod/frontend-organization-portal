@@ -16,6 +16,8 @@ export default class PostModel extends Model {
   @hasMany('agent-in-position', {
     inverse: 'position',
     async: true,
+    polymorphic: true,
+    as: 'post',
   })
   agentsInPosition;
 }
