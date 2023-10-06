@@ -217,6 +217,12 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         yield administrativeUnit.save();
       }
 
+      const syncOvoNumberEndpoint = `/sync-ovo-number/${structuredIdentifierKBO.id}`;
+      yield fetch(syncOvoNumberEndpoint, {
+        method: 'POST',
+      });
+
+      this.router.refresh();
       this.router.transitionTo(
         'administrative-units.administrative-unit.core-data',
         administrativeUnit.id
