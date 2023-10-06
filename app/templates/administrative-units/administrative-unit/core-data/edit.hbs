@@ -187,9 +187,10 @@
                   <Item @labelFor="purpose">
                     <:label>Doel</:label>
                     <:content>
-                      <AuTextarea
-                        @width="block"
-                        @onChange={{fn (mut @model.administrativeUnit.purpose)}}
+                      <RichTextEditor
+                        @onChange={{fn
+                          (mut @model.administrativeUnit.purpose)
+                        }}
                         @value={{@model.administrativeUnit.purpose}}
                       />
                     </:content>
