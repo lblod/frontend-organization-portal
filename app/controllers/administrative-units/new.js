@@ -265,6 +265,11 @@ export default class AdministrativeUnitsNewController extends Controller {
         method: 'POST',
       });
 
+      const syncOvoNumberEndpoint = `/sync-ovo-number/${structuredIdentifierKBO.id}`;
+      yield fetch(syncOvoNumberEndpoint, {
+        method: 'POST',
+      });
+
       this.router.replaceWith(
         'administrative-units.administrative-unit',
         newAdministrativeUnit.id

@@ -1,0 +1,57 @@
+{{#if @show}}
+  <AuContent @skin="tiny" class="rich-text-editor-content">
+    {{! template-lint-disable no-triple-curlies}}
+    {{{this.value}}}
+  </AuContent>
+{{else}}
+  <div class="rich-text-editor" {{on "focusout" this.updateValue}}>
+    <EditorContainer>
+      <:top>
+        <Toolbar as |Tb|>
+          {{#if this.config.heading}}
+            <Tb.Group>
+              <Plugins::Heading::HeadingMenu
+                @controller={{this.editorController}}
+              />
+            </Tb.Group>
+          {{/if}}
+          <Tb.Group>
+            {{#if this.config.bold}}
+              <Plugins::TextStyle::Bold @controller={{this.editorController}} />
+            {{/if}}
+            {{#if this.config.italic}}
+              <Plugins::TextStyle::Italic @controller={{this.editorController}} />
+            {{/if}}
+            {{#if this.config.extraFormatting}}
+              <RichTextEditor::ExtraFormattingOptions
+                @controller={{this.editorController}}
+              />
+            {{/if}}
+          </Tb.Group>
+          {{#if this.config.list}}
+            <Tb.Group>
+              <Plugins::List::Unordered @controller={{this.editorController}} />
+              <Plugins::List::Ordered @controller={{this.editorController}} />
+            </Tb.Group>
+          {{/if}}
+          <Tb.Group>
+            {{#if this.config.link}}
+              <Plugins::Link::LinkMenu @controller={{this.editorController}} />
+            {{/if}}
+            {{#if this.config.table}}
+              <Plugins::Table::TableMenu @controller={{this.editorController}} />
+            {{/if}}
+          </Tb.Group>
+        </Toolbar>
+      </:top>
+      <:default>
+        <Editor
+          @schema={{this.schema}}
+          @rdfaEditorInit={{this.handleRdfaEditorInit}}
+          @plugins={{this.plugins}}
+          @nodeViews={{this.nodeViews}}
+        />
+      </:default>
+    </EditorContainer>
+  </div>
+{{/if}}
