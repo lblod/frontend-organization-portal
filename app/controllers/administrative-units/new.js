@@ -5,6 +5,7 @@ import { combineFullAddress } from 'frontend-organization-portal/models/address'
 import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { action } from '@ember/object';
+import { destroyOrRollbackChangeset } from 'frontend-organization-portal/utils/changeset';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import fetch from 'fetch';
 
@@ -283,34 +284,25 @@ export default class AdministrativeUnitsNewController extends Controller {
 
   removeUnsavedRecords() {
     this.removeUnsavedChangesetRecords();
-    this.model.primarySite.rollbackAttributes();
-    this.model.identifierSharepoint.rollbackAttributes();
-    this.model.identifierKBO.rollbackAttributes();
-    this.model.structuredIdentifierSharepoint.rollbackAttributes();
-    this.model.structuredIdentifierKBO.rollbackAttributes();
-    this.model.administrativeUnitChangeset.rollbackAttributes();
+    this.rollbackModelRecords();
   }
 
   removeUnsavedChangesetRecords() {
-    if (this.model.administrativeUnitChangeset.isNew) {
-      this.model.administrativeUnitChangeset.destroyRecord();
-    }
+    destroyOrRollbackChangeset(this.model.address);
+    destroyOrRollbackChangeset(this.model.administrativeUnitChangeset);
+    destroyOrRollbackChangeset(this.model.contact);
+    destroyOrRollbackChangeset(this.model.secondaryContact);
+    destroyOrRollbackChangeset(this.model.structuredIdentifierKBO);
+  }
 
-    if (this.model.address.isNew) {
-      this.model.address.destroyRecord();
-    }
-
-    if (this.model.contact.isNew) {
-      this.model.contact.destroyRecord();
-    }
-
-    if (this.model.secondaryContact.isNew) {
-      this.model.secondaryContact.destroyRecord();
-    }
-
-    if (this.model.structuredIdentifierKBO.isNew) {
-      this.model.structuredIdentifierKBO.destroyRecord();
-    }
+  rollbackModelRecords() {
+    this.model.administrativeUnit.rollbackAttributes();
+    this.model.centralWorshipService.rollbackAttributes();
+    this.model.identifierKBO.rollbackAttributes();
+    this.model.identifierSharepoint.rollbackAttributes();
+    this.model.primarySite.rollbackAttributes();
+    this.model.structuredIdentifierSharepoint.rollbackAttributes();
+    this.model.worshipService.rollbackAttributes();
   }
 }
 

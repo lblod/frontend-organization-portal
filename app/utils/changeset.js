@@ -6,3 +6,13 @@ export function createValidatedChangeset(obj, validations) {
     skipValidate: true,
   });
 }
+
+export function destroyOrRollbackChangeset(changeset) {
+  if (changeset.isNew) {
+    changeset.data.destroyRecord();
+  } else {
+    changeset.data.rollbackAttributes();
+  }
+
+  return changeset;
+}

@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
+import { destroyOrRollbackChangeset } from 'frontend-organization-portal/utils/changeset';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditController extends Controller {
@@ -125,14 +126,8 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
   }
 
   removeUnsavedRecords() {
-    let { contact, secondaryContact } = this.model;
-    if (contact.isNew) {
-      contact.destroyRecord();
-    }
-
-    if (secondaryContact.isNew) {
-      secondaryContact.destroyRecord();
-    }
+    destroyOrRollbackChangeset(this.model.contact);
+    destroyOrRollbackChangeset(this.model.secondaryContact);
     this.isNoPrimarySiteErrorMessage = null;
   }
 }

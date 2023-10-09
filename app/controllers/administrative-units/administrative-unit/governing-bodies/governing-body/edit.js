@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
 import { tracked } from '@glimmer/tracking';
+import { destroyOrRollbackChangeset } from 'frontend-organization-portal/utils/changeset';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyEditController extends Controller {
   @service router;
@@ -41,7 +42,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   @action
   cancel() {
     this.resetValidation();
-    this.model.governingBody.rollbackAttributes();
+    destroyOrRollbackChangeset(this.model.governingBody);
 
     this.router.transitionTo(
       'administrative-units.administrative-unit.governing-bodies.governing-body'
