@@ -15,8 +15,11 @@ export default class AdministrativeUnitSelectByIdentifierComponent extends Compo
     searchParams = formatIdentifier([searchParams]);
 
     if (searchParams.trim() !== '') {
-      // Note: toLowerCase is needed to properly match OVO numbers
-      filter[`:prefix:identifier`] = searchParams.toLowerCase();
+      // Notes:
+      // - toLowerCase is needed to properly match OVO numbers
+      // - use index field that only contains alphanumeric characters
+      //   (cf. mu-search configuration)
+      filter[`:prefix:identifier.index`] = searchParams.toLowerCase();
     }
 
     filter['classification_id'] = getClassificationIds(
@@ -36,7 +39,9 @@ export default class AdministrativeUnitSelectByIdentifierComponent extends Compo
         // which does not result in array being returned
         if (Array.isArray(entry)) {
           return entry.filter((id) =>
-            id.toLowerCase().startsWith(searchParams.toLowerCase())
+            formatIdentifier([id.toLowerCase()]).startsWith(
+              searchParams.toLowerCase()
+            )
           );
         } else {
           return entry;

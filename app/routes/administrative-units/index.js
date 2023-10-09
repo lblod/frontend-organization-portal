@@ -39,8 +39,13 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     }
 
     if (params.identifier) {
-      // Note: toLowerCase is needed to properly match OVO numbers
-      filter[':prefix:identifier'] = params.identifier.toLowerCase().trim();
+      // Notes:
+      // - toLowerCase is needed to properly match OVO numbers
+      // - use index field that only contains alphanumeric characters
+      //   (cf. mu-search configuration)
+      filter[':prefix:identifier.index'] = params.identifier
+        .toLowerCase()
+        .trim();
     }
 
     if (params.classificationId) {
