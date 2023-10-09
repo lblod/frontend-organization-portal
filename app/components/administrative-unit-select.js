@@ -10,7 +10,7 @@ export default class AdministrativeUnitSelectComponent extends Component {
   @service store;
   @tracked loadedRecord;
 
-  munipalities = trackedTask(this, this.loadAdministrativeUnitsTask, () => [
+  municipalities = trackedTask(this, this.loadAdministrativeUnitsTask, () => [
     this.args.selectedProvince,
   ]);
 
@@ -77,7 +77,11 @@ export default class AdministrativeUnitSelectComponent extends Component {
       allowedClassificationCodes = classificationCodes;
     }
 
-    if (this.args.selectedProvince && this.args.selectedProvince.id.length) {
+    if (
+      this.args.selectedProvince &&
+      this.args.selectedProvince.id &&
+      this.args.selectedProvince.id.length
+    ) {
       // If a province is selected, load the municipalities in it
       query = {
         filter: {

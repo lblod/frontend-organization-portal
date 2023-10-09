@@ -1,7 +1,7 @@
 <div class={{if @error "ember-power-select--error"}} ...attributes>
   <PowerSelect
     @disabled={{if @disabled true false}}
-    @allowClear={{not @selectedProvince}}
+    @allowClear={{@allowClear}}
     @searchEnabled={{true}}
     @loadingMessage="Aan het laden..."
     @noMatchesMessage="Geen resultaten"

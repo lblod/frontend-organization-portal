@@ -13,6 +13,7 @@
             <ProvinceOrganizationSelect
               @selected={{@model.administrativeUnit.isSubOrganizationOf}}
               @onChange={{@updateRelatedOrg}}
+              @selectedMunicipality={{@model.administrativeUnit.isAssociatedWith}}
               @error={{hasError}}
               @id="related-provincie"
             />
@@ -27,6 +28,7 @@
           <:content as |hasError|>
             <MunicipalitySelect
               @selected={{@model.administrativeUnit.isAssociatedWith}}
+              @selectedProvince={{@model.administrativeUnit.isSubOrganizationOf}}
               @onChange={{fn
                 (mut @model.administrativeUnit.isAssociatedWith)
               }}
