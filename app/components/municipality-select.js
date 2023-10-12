@@ -3,9 +3,13 @@ import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
+import { tracked } from '@glimmer/tracking';
 
 export default class MunicipalitySelectComponent extends Component {
   @service store;
+
+  @tracked previousMunicipality;
+  @tracked previousProvince;
 
   municipalities = trackedTask(this, this.loadMunicipalitiesTask, () => [
     this.args.selectedProvince,

@@ -7,9 +7,9 @@
     @noMatchesMessage="Geen resultaten"
     @searchMessage="Typ om te zoeken"
     @searchField="name"
+    @onChange={{this.triggerChange}}
     @search={{perform this.loadAdministrativeUnitsTask}}
     @selected={{this.selectedAdministrativeUnit}}
-    @onChange={{this.triggerChange}}
     as |administrativeUnit|
   >
     {{administrativeUnit.name}}

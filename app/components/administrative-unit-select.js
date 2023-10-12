@@ -77,38 +77,31 @@ export default class AdministrativeUnitSelectComponent extends Component {
       allowedClassificationCodes = classificationCodes;
     }
 
+    let code = CLASSIFICATION_CODE.MUNICIPALITY;
+
+    if (classificationCodes && classificationCodes.length) {
+      code = classificationCodes.join();
+    }
+
+    query = {
+      filter: {
+        classification: {
+          id: code,
+        },
+      },
+      sort: 'name',
+      include: 'classification',
+    };
+
+    // If a province is selected, load the municipalities in it
     if (
       this.args.selectedProvince &&
       this.args.selectedProvince.id &&
       this.args.selectedProvince.id.length
     ) {
-      // If a province is selected, load the municipalities in it
-      query = {
-        filter: {
-          'is-sub-organization-of': {
-            id: this.args.selectedProvince.id,
-          },
-          classification: {
-            id: CLASSIFICATION_CODE.MUNICIPALITY,
-          },
-        },
-        sort: 'name',
-        page: {
-          size: 400,
-        },
+      query.filter['is-sub-organization-of'] = {
+        id: this.args.selectedProvince.id,
       };
-    } else {
-      query = {
-        sort: 'name',
-        include: 'classification',
-      };
-      if (allowedClassificationCodes.length) {
-        query.filter = {
-          classification: {
-            id: allowedClassificationCodes.join(),
-          },
-        };
-      }
     }
 
     if (searchParams.trim() !== '') {

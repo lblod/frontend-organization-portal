@@ -13,25 +13,25 @@
             <ProvinceOrganizationSelect
               @selected={{@model.administrativeUnit.isSubOrganizationOf}}
               @onChange={{@updateRelatedOrg}}
-              @selectedMunicipality={{@model.administrativeUnit.isAssociatedWith}}
+              @allowClear={{true}}
+              @selectedMunicipality={{this.relatedMunicipality}}
               @error={{hasError}}
               @id="related-provincie"
             />
           </:content>
         </Item>
-          <Item
+        <Item
           @labelFor="related-gemeente"
           @required={{true}}
           @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
         >
           <:label>Gemeente</:label>
           <:content as |hasError|>
-            <MunicipalitySelect
+            <AdministrativeUnitSelect
               @selected={{@model.administrativeUnit.isAssociatedWith}}
               @selectedProvince={{@model.administrativeUnit.isSubOrganizationOf}}
-              @onChange={{fn
-                (mut @model.administrativeUnit.isAssociatedWith)
-              }}
+              @onChange={{@updateMunicipality}}
+              @allowClear={{true}}
               @error={{hasError}}
               @id="related-gemeente"
             />
@@ -47,26 +47,47 @@
     <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
       Heeft relatie met
     </AuHeading>
-    <AuDataTable id="subOrganizations" @content={{@model.subOrganizations}}
-      @noDataMessage="Geen bestuur" as |t|>
+    <AuDataTable
+      id="subOrganizations"
+      @content={{@model.subOrganizations}}
+      @noDataMessage="Geen bestuur"
+      as |t|
+    >
       <t.content as |c|>
         <c.header>
-          <AuDataTableThSortable @field="classification.label" @label="Type organisatie" @currentSorting={{@sort}} />
-          <AuDataTableThSortable @field="name" @label="Organisatie" @currentSorting={{@sort}} />
-          <AuDataTableThSortable @field="organizationStatus.label" @label="Status" @currentSorting={{@sort}} />
+          <AuDataTableThSortable
+            @field="classification.label"
+            @label="Type organisatie"
+            @currentSorting={{@sort}}
+          />
+          <AuDataTableThSortable
+            @field="name"
+            @label="Organisatie"
+            @currentSorting={{@sort}}
+          />
+          <AuDataTableThSortable
+            @field="organizationStatus.label"
+            @label="Status"
+            @currentSorting={{@sort}}
+          />
         </c.header>
         <c.body as |subOrganization|>
           <td>
             {{subOrganization.classification.label}}
           </td>
           <td>
-            <AuLink @route="administrative-units.administrative-unit" @model={{subOrganization.id}}>
+            <AuLink
+              @route="administrative-units.administrative-unit"
+              @model={{subOrganization.id}}
+            >
               {{subOrganization.name}}
             </AuLink>
           </td>
           <td>
-            <OrganizationStatus @id={{subOrganization.organizationStatus.id}}
-              @label={{subOrganization.organizationStatus.label}} />
+            <OrganizationStatus
+              @id={{subOrganization.organizationStatus.id}}
+              @label={{subOrganization.organizationStatus.label}}
+            />
           </td>
         </c.body>
       </t.content>
