@@ -30,7 +30,7 @@
             <AdministrativeUnitSelect
               @selected={{@model.administrativeUnit.isAssociatedWith}}
               @selectedProvince={{@model.administrativeUnit.isSubOrganizationOf}}
-              @onChange={{@updateMunicipality}}
+              @onChange={{this.updateMunicipality}}
               @allowClear={{true}}
               @error={{hasError}}
               @id="related-gemeente"

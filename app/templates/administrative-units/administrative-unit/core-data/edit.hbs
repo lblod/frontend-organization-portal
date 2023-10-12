@@ -387,6 +387,7 @@
                           <ProvinceOrganizationSelect
                             @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                             @onChange={{this.setRelation}}
+                            @allowClear={{true}}
                             @selectedMunicipality={{this.selectedMunicipality}}
                             @error={{hasError}}
                             @id="related-provincie"
@@ -403,6 +404,7 @@
                         <AdministrativeUnitSelect
                           @selected={{@model.administrativeUnit.isAssociatedWith}}
                           @onChange={{this.setMunicipality}}
+                          @allowClear={{true}}
                           @selectedProvince={{this.selectedProvince}}
                           @classificationCodes={{this.classificationCodes}}
                           @error={{hasError}}
