@@ -24,8 +24,7 @@ export default class ProvinceSelectComponent extends Component {
     let provinces = [];
     if (
       this.args.selectedMunicipality &&
-      this.args.selectedMunicipality.id &&
-      this.args.selectedMunicipality.id.length
+      this.args.selectedMunicipality.length
     ) {
       if (
         this.previousMunicipality &&
