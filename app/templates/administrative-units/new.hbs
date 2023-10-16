@@ -163,8 +163,7 @@
               <Item @labelFor="purpose">
                 <:label>Doel</:label>
                 <:content>
-                  <RichTextEditor
-                    @width="block"
+                 <RichTextEditor
                     @onChange={{fn
                       (mut @model.administrativeUnitChangeset.purpose)
                     }}
