@@ -163,7 +163,7 @@
               <Item @labelFor="purpose">
                 <:label>Doel</:label>
                 <:content>
-                  <RichTextEditor
+                 <RichTextEditor
                     @onChange={{fn
                       (mut @model.administrativeUnitChangeset.purpose)
                     }}
@@ -398,6 +398,8 @@
                     <:content as |hasError|>
                       <ProvinceOrganizationSelect
                         @selected={{@model.administrativeUnitChangeset.isSubOrganizationOf}}
+                        @selectedMunicipality={{@model.administrativeUnitChangeset.isAssociatedWith}}
+                        @allowClear={{(not @model.administrativeUnitChangeset.isAssociatedWith)}}
                         @onChange={{this.setRelation}}
                         @error={{hasError}}
                         @id="related-provincie"
@@ -414,6 +416,8 @@
                       <:content as |hasError|>
                         <AdministrativeUnitSelect
                           @selected={{@model.administrativeUnitChangeset.isAssociatedWith}}
+                          @selectedProvince={{@model.administrativeUnitChangeset.isSubOrganizationOf}}
+                          @allowClear={{true}}
                           @onChange={{fn
                             (mut
                               @model.administrativeUnitChangeset.isAssociatedWith

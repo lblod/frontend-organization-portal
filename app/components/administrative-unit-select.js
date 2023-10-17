@@ -1,18 +1,18 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { restartableTask, timeout, task } from 'ember-concurrency';
+import { timeout, task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { trackedTask } from 'ember-resources/util/ember-concurrency';
 
 import { action } from '@ember/object';
 export default class AdministrativeUnitSelectComponent extends Component {
   @service store;
   @tracked loadedRecord;
 
-  constructor() {
-    super(...arguments);
-    this.loadRecord.perform();
-  }
+  municipalities = trackedTask(this, this.loadAdministrativeUnitsTask, () => [
+    this.args.selectedProvince,
+  ]);
 
   @action
   triggerChange(event) {
@@ -22,12 +22,15 @@ export default class AdministrativeUnitSelectComponent extends Component {
     }
   }
 
-  @restartableTask
+  @task
   *loadAdministrativeUnitsTask(searchParams = '') {
+    yield Promise.resolve();
     yield timeout(500);
 
     let classificationCodes = this.args.classificationCodes;
     let allowedClassificationCodes = [];
+    let searchResults = [];
+    let query = '';
 
     const selectedPositionId = this.args.selectedPosition;
 
@@ -74,16 +77,30 @@ export default class AdministrativeUnitSelectComponent extends Component {
       allowedClassificationCodes = classificationCodes;
     }
 
-    const query = {
+    let code = CLASSIFICATION_CODE.MUNICIPALITY;
+
+    if (classificationCodes && classificationCodes.length) {
+      code = classificationCodes.join();
+    }
+
+    query = {
+      filter: {
+        classification: {
+          id: code,
+        },
+      },
       sort: 'name',
       include: 'classification',
     };
 
-    if (allowedClassificationCodes.length) {
-      query.filter = {
-        classification: {
-          ':id:': allowedClassificationCodes.join(),
-        },
+    // If a province is selected, load the municipalities in it
+    if (
+      this.args.selectedProvince &&
+      this.args.selectedProvince.id &&
+      this.args.selectedProvince.id.length
+    ) {
+      query.filter['is-sub-organization-of'] = {
+        id: this.args.selectedProvince.id,
       };
     }
 
@@ -91,7 +108,7 @@ export default class AdministrativeUnitSelectComponent extends Component {
       query['filter[name]'] = searchParams;
     }
 
-    let searchResults = yield this.store.query('administrative-unit', query);
+    searchResults = yield this.store.query('administrative-unit', query);
 
     if (typeof this.args.filter === 'function') {
       return this.args.filter(searchResults);
