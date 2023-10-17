@@ -26,7 +26,8 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked identifier = '';
   @tracked municipality = '';
   @tracked province = '';
-  @tracked classificationIds = '';
+  @tracked classificationId = '';
+  @tracked selections = '';
   @tracked recognizedWorshipTypeId = '';
   @tracked organizationStatus = '';
 
@@ -114,7 +115,13 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @action
   setClassificationId(selection) {
     this.page = null;
-    this.classificationIds = selection;
+    this.selections = selection;
+
+    this.classificationId = selection.map(
+      (classification) => classification.id
+    );
+
+    this, this.classificationId;
     if (!this.isWorshipAdministrativeUnit) {
       this.recognizedWorshipTypeId = '';
     }
