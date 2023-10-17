@@ -1,0 +1,17 @@
+<div class={{if @error "ember-power-select--error"}}>
+  <PowerSelectMultiple
+    @searchEnabled={{true}}
+    @allowClear={{@allowClear}}
+    @searchField="label"
+    @loadingMessage="Aan het laden..."
+    @noMatchesMessage="Geen resultaten"
+    @searchMessage="Typ om te zoeken"
+    @options={{this.classifications.value}}
+    @selected={{this.selectedClassifications}}
+    @onChange={{@onChange}}
+    @triggerId={{@id}}
+    as |classification|
+  >
+    {{classification.label}}
+  </PowerSelectMultiple>
+</div>
