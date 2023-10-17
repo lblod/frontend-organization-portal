@@ -17,8 +17,6 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   queryParams = ['sort'];
 
   @tracked sort = 'name';
-  @tracked relatedOrg = '';
-  @tracked relatedSubOrg = '';
 
   get isWorshipAdministrativeUnit() {
     return this.isWorshipService || this.isCentralWorshipService;

@@ -9,8 +9,6 @@ export default class ProvinceOrganizationSelectComponent extends Component {
   @service store;
   @tracked previousMunicipality;
   @tracked previousProvince;
-  @tracked previousMunicipality;
-  @tracked previousProvince;
 
   provinces = trackedTask(this, this.loadProvincesTask, () => [
     this.args.selectedMunicipality,
