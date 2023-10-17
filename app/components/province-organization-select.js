@@ -63,7 +63,7 @@ export default class ProvinceOrganizationSelectComponent extends Component {
     }
 
     // Auto-selects the province when there is only once choice
-    if (provinces.toArray().length === 1) {
+    if (!this.args.selected && provinces.toArray().length === 1) {
       this.previousMunicipality = this.args.selectedMunicipality;
       this.previousProvince = provinces.toArray()[0];
       this.args.onChange(this.previousProvince);
