@@ -13,8 +13,8 @@
             <ProvinceOrganizationSelect
               @selected={{@model.administrativeUnit.isSubOrganizationOf}}
               @onChange={{@updateRelatedOrg}}
-              @allowClear={{true}}
-              @selectedMunicipality={{this.relatedMunicipality}}
+              @allowClear={{(not @model.administrativeUnit.isAssociatedWith)}}
+              @selectedMunicipality={{@model.administrativeUnit.isAssociatedWith}}
               @error={{hasError}}
               @id="related-provincie"
             />
@@ -30,7 +30,7 @@
             <AdministrativeUnitSelect
               @selected={{@model.administrativeUnit.isAssociatedWith}}
               @selectedProvince={{@model.administrativeUnit.isSubOrganizationOf}}
-              @onChange={{@updateMunicipality}}
+              @onChange={{@updateRelatedSubOrg}}
               @allowClear={{true}}
               @error={{hasError}}
               @id="related-gemeente"

@@ -17,6 +17,8 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   queryParams = ['sort'];
 
   @tracked sort = 'name';
+  @tracked relatedOrg = '';
+  @tracked relatedSubOrg = '';
 
   get isWorshipAdministrativeUnit() {
     return this.isWorshipService || this.isCentralWorshipService;
@@ -162,9 +164,8 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   }
 
   @action
-  updateMunicipality(municipality) {
-    this.model.administrativeUnit.isAssociatedWith = municipality;
-    this.relatedMunicipality = municipality;
+  updateRelatedSubOrg(subOrg) {
+    this.model.administrativeUnit.isAssociatedWith = subOrg;
   }
 
   @action
