@@ -24,6 +24,7 @@ export default class ProvinceOrganizationSelectComponent extends Component {
 
     if (
       this.args.selectedMunicipality &&
+      this.args.selectedMunicipality.id &&
       this.args.selectedMunicipality.id.length
     ) {
       if (
