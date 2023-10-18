@@ -103,7 +103,10 @@ export default class ClassificationSelectComponent extends Component {
     );
 
     // Auto-selects the type if there is only one option
-    if (codes && codes.toArray().length === 1) {
+    if (
+      codes.toArray().length === 1 &&
+      codes.toArray()[0] != this.args.selected
+    ) {
       this.args.onChange(codes.toArray()[0]);
     }
 
