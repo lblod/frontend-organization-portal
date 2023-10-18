@@ -5,7 +5,7 @@ import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
-export default class ClassificationMultiSelectComponent extends Component {
+export default class ClassificationMultipleSelectComponent extends Component {
   @service store;
   @service currentSession;
   classifications = trackedTask(this, this.loadClassificationsTask, () => [
@@ -44,20 +44,6 @@ export default class ClassificationMultiSelectComponent extends Component {
       this.isIdInBlacklist(selectedRecognizedWorshipTypeId)
     ) {
       allowedIds = [CLASSIFICATION_CODE.WORSHIP_SERVICE];
-    } else if (this.args.restrictForNewBestuursenheden) {
-      allowedIds = [
-        CLASSIFICATION_CODE.WORSHIP_SERVICE,
-        CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
-        CLASSIFICATION_CODE.DISTRICT,
-        CLASSIFICATION_CODE.AGB,
-        CLASSIFICATION_CODE.APB,
-        CLASSIFICATION_CODE.PROJECTVERENIGING,
-        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-        CLASSIFICATION_CODE.POLICE_ZONE,
-        CLASSIFICATION_CODE.ASSISTANCE_ZONE,
-      ];
     } else {
       allowedIds = [
         CLASSIFICATION_CODE.WORSHIP_SERVICE,

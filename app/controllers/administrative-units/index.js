@@ -27,7 +27,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked municipality = '';
   @tracked province = '';
   @tracked classificationId = '';
-  @tracked selections = '';
+  @tracked selectionArray = '';
   @tracked recognizedWorshipTypeId = '';
   @tracked organizationStatus = '';
 
@@ -115,13 +115,11 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @action
   setClassificationId(selection) {
     this.page = null;
-    this.selections = selection;
+    this.selectionArray = selection;
 
     this.classificationId = selection.map(
       (classification) => classification.id
     );
-
-    this, this.classificationId;
     if (!this.isWorshipAdministrativeUnit) {
       this.recognizedWorshipTypeId = '';
     }
@@ -184,6 +182,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
     this.identifier = '';
     this.municipality = '';
     this.province = '';
+    this.selectionArray = '';
     this.classificationId = '';
     this.recognizedWorshipTypeId = '';
     this.organizationStatus = '';
