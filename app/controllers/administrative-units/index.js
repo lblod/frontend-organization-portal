@@ -27,7 +27,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked municipality = '';
   @tracked province = '';
   @tracked classificationId = '';
-  @tracked selectionArray = '';
+  @tracked classificationIdArray = '';
   @tracked recognizedWorshipTypeId = '';
   @tracked organizationStatus = '';
 
@@ -76,31 +76,6 @@ export default class AdministrativeUnitsIndexController extends Controller {
     return false;
   }
 
-  get isWorshipAdministrativeUnit() {
-    return this.isWorshipService || this.isCentralWorshipService;
-  }
-
-  // get isAgbOrApb() {
-  //   return this.isAgb || this.isApb;
-  // }
-  // get isAgb() {
-  //   return this.classificationId === CLASSIFICATION_CODE.AGB;
-  // }
-
-  // get isApb() {
-  //   return this.classificationId === CLASSIFICATION_CODE.APB;
-  // }
-
-  get isWorshipService() {
-    return this.classificationId.includes(CLASSIFICATION_CODE.WORSHIP_SERVICE);
-  }
-
-  get isCentralWorshipService() {
-    return this.classificationId.includes(
-      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
-    );
-  }
-
   @action
   search(event) {
     event.preventDefault();
@@ -116,7 +91,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @action
   setClassificationId(selection) {
     this.page = null;
-    this.selectionArray = selection;
+    this.classificationIdArray = selection;
 
     this.classificationId = selection.map(
       (classification) => classification.id
