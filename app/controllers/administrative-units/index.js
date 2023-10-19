@@ -80,23 +80,24 @@ export default class AdministrativeUnitsIndexController extends Controller {
     return this.isWorshipService || this.isCentralWorshipService;
   }
 
-  get isAgbOrApb() {
-    return this.isAgb || this.isApb;
-  }
-  get isAgb() {
-    return this.classificationId === CLASSIFICATION_CODE.AGB;
-  }
+  // get isAgbOrApb() {
+  //   return this.isAgb || this.isApb;
+  // }
+  // get isAgb() {
+  //   return this.classificationId === CLASSIFICATION_CODE.AGB;
+  // }
 
-  get isApb() {
-    return this.classificationId === CLASSIFICATION_CODE.APB;
-  }
+  // get isApb() {
+  //   return this.classificationId === CLASSIFICATION_CODE.APB;
+  // }
+
   get isWorshipService() {
-    return this.classificationId === CLASSIFICATION_CODE.WORSHIP_SERVICE;
+    return this.classificationId.includes(CLASSIFICATION_CODE.WORSHIP_SERVICE);
   }
 
   get isCentralWorshipService() {
-    return (
-      this.classificationId === CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+    return this.classificationId.includes(
+      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
     );
   }
 
@@ -120,9 +121,6 @@ export default class AdministrativeUnitsIndexController extends Controller {
     this.classificationId = selection.map(
       (classification) => classification.id
     );
-    if (!this.isWorshipAdministrativeUnit) {
-      this.recognizedWorshipTypeId = '';
-    }
   }
 
   @action

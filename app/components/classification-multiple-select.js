@@ -5,12 +5,17 @@ import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
+import { tracked } from '@glimmer/tracking';
+
 export default class ClassificationMultipleSelectComponent extends Component {
   @service store;
   @service currentSession;
   classifications = trackedTask(this, this.loadClassificationsTask, () => [
     this.args.selectedRecognizedWorshipTypeId,
   ]);
+
+  @tracked oldId;
+  @tracked newId;
 
   get selectedClassifications() {
     if (typeof this.args.selected === 'string') {
@@ -72,16 +77,34 @@ export default class ClassificationMultipleSelectComponent extends Component {
           ].includes(id)
       );
     } else {
-      allowedIds = [
-        CLASSIFICATION_CODE.WORSHIP_SERVICE,
-        CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
-      ];
+      allowedIds = allowedIds.filter((id) =>
+        [
+          CLASSIFICATION_CODE.WORSHIP_SERVICE,
+          CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+        ].includes(id)
+      );
     }
 
-    return yield this.store.query('administrative-unit-classification-code', {
-      'filter[:id:]': allowedIds.join(),
-      sort: 'label',
-    });
+    const codes = yield this.store.query(
+      'administrative-unit-classification-code',
+      {
+        'filter[:id:]': allowedIds.join(),
+        sort: 'label',
+      }
+    );
+
+    // Auto-selects the type if there is only one option
+    this.newId = selectedRecognizedWorshipTypeId;
+    if (
+      this.newId &&
+      !codes.toArray().includes(this.args.selected) &&
+      this.newId != this.oldId
+    ) {
+      this.oldId = this.newId;
+      this.args.onChange(codes.toArray());
+    }
+
+    return codes;
   }
 
   isIdInBlacklist(id) {
