@@ -95,14 +95,17 @@ export default class ClassificationMultipleSelectComponent extends Component {
 
     // Auto-selects the type if there is only one option
     this.newId = selectedRecognizedWorshipTypeId;
+
+    console.log(selectedRecognizedWorshipTypeId);
+
     if (
       this.newId &&
       !codes.toArray().includes(this.args.selected) &&
       this.newId != this.oldId
     ) {
-      this.oldId = this.newId;
       this.args.onChange(codes.toArray());
     }
+    this.oldId = this.newId;
 
     return codes;
   }
