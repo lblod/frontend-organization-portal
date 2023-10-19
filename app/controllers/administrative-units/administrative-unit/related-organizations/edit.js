@@ -162,6 +162,11 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   }
 
   @action
+  updateRelatedSubOrg(subOrg) {
+    this.model.administrativeUnit.isAssociatedWith = subOrg;
+  }
+
+  @action
   addNewHasParticipants() {
     let organization = this.store.createRecord('organization');
     this.model.hasParticipants.pushObject(organization);

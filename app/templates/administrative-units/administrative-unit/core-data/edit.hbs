@@ -187,7 +187,7 @@
                   <Item @labelFor="purpose">
                     <:label>Doel</:label>
                     <:content>
-                      <RichTextEditor
+                     <RichTextEditor
                         @onChange={{fn
                           (mut @model.administrativeUnit.purpose)
                         }}
@@ -378,21 +378,23 @@
                       </Item>
                     {{/if}}
                   {{else}}
-                    <Item
-                      @labelFor="related-provincie"
-                      @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-                    >
-                      <:label>Provincie</:label>
-                      <:content as |hasError|>
-                        <ProvinceOrganizationSelect
-                          @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                          @onChange={{this.setRelation}}
-                          @error={{hasError}}
-                          @id="related-provincie"
-                        />
-                      </:content>
-                    </Item>
+                      <Item
+                        @labelFor="related-provincie"
+                        @required={{true}}
+                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                      >
+                        <:label>Provincie</:label>
+                        <:content as |hasError|>
+                          <ProvinceOrganizationSelect
+                            @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                            @onChange={{this.setRelation}}
+                            @allowClear={{(not @model.administrativeUnit.isAssociatedWith)}}
+                            @selectedMunicipality={{this.selectedMunicipality}}
+                            @error={{hasError}}
+                            @id="related-provincie"
+                          />
+                        </:content>
+                      </Item>
                     <Item
                       @labelFor="related-gemeente"
                       @required={{true}}
@@ -402,9 +404,9 @@
                       <:content as |hasError|>
                         <AdministrativeUnitSelect
                           @selected={{@model.administrativeUnit.isAssociatedWith}}
-                          @onChange={{fn
-                            (mut @model.administrativeUnit.isAssociatedWith)
-                          }}
+                          @onChange={{this.setMunicipality}}
+                          @allowClear={{true}}
+                          @selectedProvince={{this.selectedProvince}}
                           @classificationCodes={{this.classificationCodes}}
                           @error={{hasError}}
                           @id="related-gemeente"

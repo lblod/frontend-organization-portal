@@ -86,16 +86,31 @@ export default class ClassificationSelectComponent extends Component {
           ].includes(id)
       );
     } else {
-      allowedIds = [
-        CLASSIFICATION_CODE.WORSHIP_SERVICE,
-        CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
-      ];
+      allowedIds = allowedIds.filter((id) =>
+        [
+          CLASSIFICATION_CODE.WORSHIP_SERVICE,
+          CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+        ].includes(id)
+      );
     }
 
-    return yield this.store.query('administrative-unit-classification-code', {
-      'filter[:id:]': allowedIds.join(),
-      sort: 'label',
-    });
+    const codes = yield this.store.query(
+      'administrative-unit-classification-code',
+      {
+        'filter[:id:]': allowedIds.join(),
+        sort: 'label',
+      }
+    );
+
+    // Auto-selects the type if there is only one option
+    if (
+      codes.toArray().length === 1 &&
+      codes.toArray()[0] != this.args.selected
+    ) {
+      this.args.onChange(codes.toArray()[0]);
+    }
+
+    return codes;
   }
 
   isIdInBlacklist(id) {
