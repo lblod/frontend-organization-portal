@@ -18,10 +18,16 @@ export default class ClassificationMultipleSelectComponent extends Component {
   @tracked newId;
 
   get selectedClassifications() {
-    if (typeof this.args.selected === 'string') {
-      return this.findClassificationById(this.args.selected);
-    }
+    let selectionArray = [];
 
+    console.log(this.args.selected);
+    if (typeof this.args.selected === 'string' && this.args.selected.length) {
+      let ids = this.args.selected.split(',');
+      ids.forEach((id) => selectionArray.push(this.findClassificationById(id)));
+    }
+    if (selectionArray.length) {
+      return selectionArray;
+    }
     return this.args.selected;
   }
 
