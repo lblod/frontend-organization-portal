@@ -4,30 +4,31 @@ import { task } from 'ember-concurrency';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-
 import { tracked } from '@glimmer/tracking';
 
 export default class ClassificationMultipleSelectComponent extends Component {
   @service store;
   @service currentSession;
-  classifications = trackedTask(this, this.loadClassificationsTask, () => [
-    this.args.selectedRecognizedWorshipTypeId,
-  ]);
 
   @tracked oldId;
   @tracked newId;
 
+  classifications = trackedTask(this, this.loadClassificationsTask, () => [
+    this.args.selectedRecognizedWorshipTypeId,
+  ]);
+
   get selectedClassifications() {
     let selectionArray = [];
 
-    console.log(this.args.selected);
     if (typeof this.args.selected === 'string' && this.args.selected.length) {
       let ids = this.args.selected.split(',');
       ids.forEach((id) => selectionArray.push(this.findClassificationById(id)));
     }
+
     if (selectionArray.length) {
       return selectionArray;
     }
+
     return this.args.selected;
   }
 
