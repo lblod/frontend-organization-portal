@@ -14,7 +14,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
     'identifier',
     'municipality',
     'province',
-    'classificationId',
+    'classificationIds',
     'recognizedWorshipTypeId',
     'organizationStatus',
   ];
@@ -26,7 +26,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
   @tracked identifier = '';
   @tracked municipality = '';
   @tracked province = '';
-  @tracked classificationId = '';
+  @tracked classificationIds = '';
   @tracked recognizedWorshipTypeId = '';
   @tracked organizationStatus = '';
 
@@ -75,30 +75,6 @@ export default class AdministrativeUnitsIndexController extends Controller {
     return false;
   }
 
-  get isWorshipAdministrativeUnit() {
-    return this.isWorshipService || this.isCentralWorshipService;
-  }
-
-  get isAgbOrApb() {
-    return this.isAgb || this.isApb;
-  }
-  get isAgb() {
-    return this.classificationId === CLASSIFICATION_CODE.AGB;
-  }
-
-  get isApb() {
-    return this.classificationId === CLASSIFICATION_CODE.APB;
-  }
-  get isWorshipService() {
-    return this.classificationId === CLASSIFICATION_CODE.WORSHIP_SERVICE;
-  }
-
-  get isCentralWorshipService() {
-    return (
-      this.classificationId === CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
-    );
-  }
-
   @action
   search(event) {
     event.preventDefault();
@@ -112,12 +88,12 @@ export default class AdministrativeUnitsIndexController extends Controller {
   }
 
   @action
-  setClassificationId(selection) {
+  setClassificationIds(selection) {
     this.page = null;
-    this.classificationId = selection?.id;
-    if (!this.isWorshipAdministrativeUnit) {
-      this.recognizedWorshipTypeId = '';
-    }
+
+    this.classificationIds = selection.map(
+      (classification) => classification.id
+    );
   }
 
   @action
@@ -177,7 +153,7 @@ export default class AdministrativeUnitsIndexController extends Controller {
     this.identifier = '';
     this.municipality = '';
     this.province = '';
-    this.classificationId = '';
+    this.classificationIds = '';
     this.recognizedWorshipTypeId = '';
     this.organizationStatus = '';
     this.page = 0;

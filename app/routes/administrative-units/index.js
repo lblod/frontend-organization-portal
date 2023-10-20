@@ -14,7 +14,7 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     identifier: { refreshModel: true, replace: true },
     municipality: { refreshModel: true, replace: true },
     province: { refreshModel: true, replace: true },
-    classificationId: { refreshModel: true, replace: true },
+    classificationIds: { refreshModel: true, replace: true },
     recognizedWorshipTypeId: { refreshModel: true, replace: true },
     organizationStatus: { refreshModel: true, replace: true },
   };
@@ -48,8 +48,8 @@ export default class AdministrativeUnitsIndexRoute extends Route {
         .trim();
     }
 
-    if (params.classificationId) {
-      filter['classification_id'] = params.classificationId;
+    if (params.classificationIds) {
+      filter['classification_id'] = params.classificationIds;
     } else {
       filter['classification_id'] = getClassificationIds(
         this.currentSession.hasWorshipRole
