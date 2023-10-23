@@ -63,6 +63,7 @@ async function isFinancialInvolvementType(changes, content) {
 function isInvolvementTypeRecord(maybeRecord) {
   return maybeRecord?.constructor?.modelName === 'involvement-type';
 }
+
 async function isProvince(changes, content) {
   let unit = await changes.administrativeUnit;
 
@@ -70,7 +71,7 @@ async function isProvince(changes, content) {
     unit = await content.administrativeUnit;
   }
 
-  const classification = await unit.classification;
+  const classification = await unit?.classification;
   if (classification) {
     return classification.id === CLASSIFICATION_CODE.PROVINCE;
   } else {
