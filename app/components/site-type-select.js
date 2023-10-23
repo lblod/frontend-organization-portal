@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { task } from 'ember-concurrency';
+import { task, timeout } from 'ember-concurrency';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class SiteTypeSelectComponent extends Component {
@@ -80,6 +80,8 @@ export default class SiteTypeSelectComponent extends Component {
 
   @task
   *loadSiteTypesTask() {
+    yield timeout(500);
+
     let allTypes = yield this.store.findAll('site-type', { reload: true });
     let filteredTypes = [];
 
