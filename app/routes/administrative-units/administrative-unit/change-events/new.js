@@ -149,8 +149,9 @@ class FormState {
 
   get shouldSelectMultipleOriginalOrganizations() {
     return (
-      this.changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
-      this.changeEventType.id === CHANGE_EVENT_TYPE.FUSIE
+      this.changeEventType &&
+      (this.changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
+        this.changeEventType.id === CHANGE_EVENT_TYPE.FUSIE)
     );
   }
 
