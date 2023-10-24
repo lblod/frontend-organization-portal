@@ -16,7 +16,13 @@ export const CLASSIFICATION_CODE = {
     '4b8450cf-a326-4c66-9e63-b4ec10acc7f6',
   POLICE_ZONE: 'a3922c6d-425b-474f-9a02-ffb71a436bfc',
   ASSISTANCE_ZONE: 'ea446861-2c51-45fa-afd3-4e4a37b71562',
+  REPRESENTATIVE_ORGAN: '89a00b5a-024f-4630-a722-65a5e68967e5', // FIXME, this is not an administrative unit
 };
+
+// fixme generalize and rename this file
+export function isNonAdministrativeUnit(id) {
+  return id === CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN;
+}
 
 export const CLASSIFICATION = {
   MUNICIPALITY: {
@@ -74,6 +80,11 @@ export const CLASSIFICATION = {
   ASSISTANCE_ZONE: {
     id: 'ea446861-2c51-45fa-afd3-4e4a37b71562',
     label: 'Hulpverleningszone',
+  },
+  REPRESENTATIVE_ORGAN: {
+    // fixme this is not an administrative unit
+    id: '89a00b5a-024f-4630-a722-65a5e68967e5',
+    label: 'Representatief orgaan',
   },
 };
 
