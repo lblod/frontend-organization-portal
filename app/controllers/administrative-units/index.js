@@ -91,9 +91,9 @@ export default class AdministrativeUnitsIndexController extends Controller {
   setClassificationIds(selection) {
     this.page = null;
 
-    this.classificationIds = selection.map(
-      (classification) => classification.id
-    );
+    this.classificationIds = selection
+      .map((classification) => classification.id)
+      .join(',');
   }
 
   @action
