@@ -31,12 +31,12 @@
   </:card>
 </EditCard>
 
-{{#if @model.subOrganizations.length}}
+{{#if @model.administrativeUnit.foundedOrganizations.length}}
   <div>
     <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
       Heeft relatie met
     </AuHeading>
-    <AuDataTable id="subOrganizations" @content={{@model.subOrganizations}}
+    <AuDataTable id="foundedOrganizations" @content={{@model.administrativeUnit.foundedOrganizations}}
       @noDataMessage="Geen bestuur" as |t|>
       <t.content as |c|>
         <c.header>
