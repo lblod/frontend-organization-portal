@@ -101,7 +101,6 @@ export default class ClassificationMultipleSelectComponent extends Component {
       sort: 'label',
     });
 
-    console.log(codes);
     // Auto-selects the type if there is only one option
     this.newId = selectedRecognizedWorshipTypeId;
 
