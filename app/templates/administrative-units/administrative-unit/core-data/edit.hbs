@@ -389,7 +389,7 @@
                             @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                             @onChange={{this.setRelation}}
                             @allowClear={{(not @model.administrativeUnit.isAssociatedWith)}}
-                            @selectedMunicipality={{this.selectedMunicipality}}
+                            @selectedMunicipality={{@model.administrativeUnit.isAssociatedWith}}
                             @error={{hasError}}
                             @id="related-provincie"
                           />
@@ -406,7 +406,7 @@
                           @selected={{@model.administrativeUnit.isAssociatedWith}}
                           @onChange={{this.setMunicipality}}
                           @allowClear={{true}}
-                          @selectedProvince={{this.selectedProvince}}
+                          @selectedProvince={{@model.administrativeUnit.wasFoundedByOrganization}}
                           @classificationCodes={{this.classificationCodes}}
                           @error={{hasError}}
                           @id="related-gemeente"
