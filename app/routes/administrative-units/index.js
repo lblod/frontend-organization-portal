@@ -49,7 +49,12 @@ export default class AdministrativeUnitsIndexRoute extends Route {
     }
 
     if (params.classificationIds) {
-      filter['classification_id'] = params.classificationIds;
+      const queryIds = params.classificationIds
+        .split(',')
+        .map((id) => `(classification_id:${id})`)
+        .join(' OR ');
+
+      filter[':query:classification_id'] = queryIds;
     } else {
       filter['classification_id'] = getClassificationIds(
         this.currentSession.hasWorshipRole
