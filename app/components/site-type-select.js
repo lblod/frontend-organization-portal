@@ -78,6 +78,13 @@ export default class SiteTypeSelectComponent extends Component {
     );
   }
 
+  get isPoliceZone() {
+    return (
+      this.args.administrativeUnitClassification.get('id') ===
+      CLASSIFICATION_CODE.POLICE_ZONE
+    );
+  }
+
   @task
   *loadSiteTypesTask() {
     yield timeout(500);
@@ -104,7 +111,7 @@ export default class SiteTypeSelectComponent extends Component {
       filteredTypes.push(
         allTypes.find(
           (type) => type.id == 'dcc01338-842c-4fbd-ba68-3ca6f3af975c'
-        ) // CorrespondentieAddres
+        ) // Andere vestiging
       );
     } else if (this.isProvince) {
       filteredTypes.push(
@@ -113,6 +120,12 @@ export default class SiteTypeSelectComponent extends Component {
     } else if (this.isDistrict) {
       filteredTypes.push(
         allTypes.find((type) => type.id == 'db13a289b78e42d19d8d1d269b61b18f') // Districtshuis
+      );
+    } else if (this.isPoliceZone) {
+      filteredTypes.push(
+        allTypes.find(
+          (type) => type.id == '0ed15289-1f3d-4172-8c46-0506de5aa2a3'
+        ) // Hoofdcommissariaat
       );
     }
 
