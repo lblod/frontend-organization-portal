@@ -94,7 +94,7 @@
       <t.menu as |menu|>
         <menu.general>
           <PageHeader class="au-o-box">
-            <:title>Bestuurseenheden</:title>
+            <:title>Organisaties</:title>
             <:action>
               <SecuredArea>
                 <:edit>
@@ -172,13 +172,7 @@
                 {{adminUnit.name}}
 
               </AuLink>
-              {{! <LinkTo }}
-              {{!   class="au-c-link" }}
-              {{!--   @model={{adminUnit.id}} --}}
-              {{!--   @route="{{(fn getOrgRoute adminUnit)}}" --}}
-              {{! > }}
-              {{!--   {{adminUnit.name}} --}}
-              {{! </LinkTo> }}
+
             </td>
             <td>{{adminUnit.classification_name}}</td>
             {{#if this.modelHasOnlyWorshipAdministrativeUnits}}
