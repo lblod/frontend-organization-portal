@@ -1,11 +1,11 @@
-{{#if @model.subOrganizations.length}}
+{{#if @model.administrativeUnit.foundedOrganizations.length}}
   <div>
     <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
       Heeft relatie met
     </AuHeading>
     <AuDataTable 
-      id="subOrganizations" 
-      @content={{@model.subOrganizations}}
+      id="foundedOrganizations" 
+      @content={{@model.administrativeUnit.foundedOrganizations}}
       @page={{@page}}
       @size={{@size}}
       @noDataMessage="Geen bestuur" as |t|>
