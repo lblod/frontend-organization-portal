@@ -5,7 +5,7 @@
       <:subtitle>{{@model.administrativeUnit.name}}
         ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
-        {{#unless this.isDistrict}}
+        {{#if (not (or this.isDistrict this.isProvince))}}
           <SecuredArea>
             <:edit>
               <AuLink
@@ -21,7 +21,7 @@
               <ReportWrongData />
             </:readOnly>
           </SecuredArea>
-        {{/unless}}
+        {{/if}}
       </:action>
     </PageHeader>
 
