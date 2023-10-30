@@ -72,6 +72,7 @@ export default class ClassificationMultipleSelectComponent extends Component {
         CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
         CLASSIFICATION_CODE.POLICE_ZONE,
         CLASSIFICATION_CODE.ASSISTANCE_ZONE,
+        CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN,
       ];
     }
 
@@ -81,24 +82,24 @@ export default class ClassificationMultipleSelectComponent extends Component {
           ![
             CLASSIFICATION_CODE.WORSHIP_SERVICE,
             CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+            CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN,
           ].includes(id)
       );
     } else {
       allowedIds = allowedIds.filter((id) =>
         [
           CLASSIFICATION_CODE.WORSHIP_SERVICE,
+          CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN,
           CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
         ].includes(id)
       );
     }
 
-    const codes = yield this.store.query(
-      'administrative-unit-classification-code',
-      {
-        'filter[:id:]': allowedIds.join(),
-        sort: 'label',
-      }
-    );
+    // fixme rename file and make it more generic
+    const codes = yield this.store.query('organization-classification-code', {
+      'filter[:id:]': allowedIds.join(),
+      sort: 'label',
+    });
 
     // Auto-selects the type if there is only one option
     this.newId = selectedRecognizedWorshipTypeId;

@@ -43,7 +43,7 @@
             />
           </div>
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
-            <AuLabel for="classification">Type bestuur</AuLabel>
+            <AuLabel for="classification">Type</AuLabel>
             <ClassificationMultipleSelect
               @selected={{this.classificationIds}}
               @onChange={{this.setClassificationIds}}
@@ -94,7 +94,7 @@
       <t.menu as |menu|>
         <menu.general>
           <PageHeader class="au-o-box">
-            <:title>Bestuurseenheden</:title>
+            <:title>Organisaties</:title>
             <:action>
               <SecuredArea>
                 <:edit>
@@ -122,7 +122,7 @@
           <AuDataTableThSortable
             @field="classification_name"
             @currentSorting={{this.sort}}
-            @label="Type bestuur"
+            @label="Type"
           />
           {{#if this.modelHasOnlyWorshipAdministrativeUnits}}
             <AuDataTableThSortable
@@ -167,13 +167,12 @@
         {{else}}
           <c.body as |adminUnit|>
             <td>
-              <LinkTo
-                class="au-c-link"
-                @model={{adminUnit.id}}
-                @route="administrative-units.administrative-unit.index"
-              >
+              <AuLink {{on "click" (fn this.getOrgRoute adminUnit)}}>
+
                 {{adminUnit.name}}
-              </LinkTo>
+
+              </AuLink>
+
             </td>
             <td>{{adminUnit.classification_name}}</td>
             {{#if this.modelHasOnlyWorshipAdministrativeUnits}}
