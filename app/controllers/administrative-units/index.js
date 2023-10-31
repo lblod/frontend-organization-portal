@@ -41,14 +41,15 @@ export default class AdministrativeUnitsIndexController extends Controller {
 
   @action
   getOrgRoute(org) {
+    this.router.refresh();
     if (isNonAdministrativeUnit(org.classification_id)) {
-      this.router.transitionTo('organizations.organization.index', org.id);
-      return;
+      this.router.replaceWith('organizations.organization.index', org.id);
+    } else {
+      this.router.replaceWith(
+        'administrative-units.administrative-unit.index',
+        org.id
+      );
     }
-    this.router.transitionTo(
-      'administrative-units.administrative-unit.index',
-      org.id
-    );
   }
   get isLoading() {
     return this.model.loadAdministrativeUnitsTaskInstance.isRunning;
