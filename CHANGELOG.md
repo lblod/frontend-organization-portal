@@ -11,6 +11,54 @@
 
 
 
+
+## 1.20.0-0 (2023-10-31)
+
+#### :rocket: Enhancement
+* [#534](https://github.com/lblod/frontend-organization-portal/pull/534) allow open org in new tab ([@nbittich](https://github.com/nbittich))
+* [#531](https://github.com/lblod/frontend-organization-portal/pull/531) Update visible data in some related orgs tables ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#530](https://github.com/lblod/frontend-organization-portal/pull/530) generic orgs ([@nbittich](https://github.com/nbittich))
+* [#532](https://github.com/lblod/frontend-organization-portal/pull/532) Add Hoofdcommissariaat site type to PZ ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#523](https://github.com/lblod/frontend-organization-portal/pull/523) Feature/organisationtype multiselect filter ([@Dachamelemon](https://github.com/Dachamelemon))
+* [#521](https://github.com/lblod/frontend-organization-portal/pull/521) Feature/apb province municipality select filter ([@Dachamelemon](https://github.com/Dachamelemon))
+* [#516](https://github.com/lblod/frontend-organization-portal/pull/516) Feat/implement rich text editor ([@lagartoverde](https://github.com/lagartoverde))
+* [#515](https://github.com/lblod/frontend-organization-portal/pull/515) Call ovo sync service on KBO update ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#507](https://github.com/lblod/frontend-organization-portal/pull/507) Onboarding PZ/HPZ ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#520](https://github.com/lblod/frontend-organization-portal/pull/520) Feature: show error message underneath save button when a form contains errors ([@mirdono](https://github.com/mirdono))
+* [#519](https://github.com/lblod/frontend-organization-portal/pull/519) Allow underscores in identifier search field ([@mirdono](https://github.com/mirdono))
+* [#517](https://github.com/lblod/frontend-organization-portal/pull/517) Feature: filter administrative units based on identifier ([@mirdono](https://github.com/mirdono))
+* [#511](https://github.com/lblod/frontend-organization-portal/pull/511) Make kbo number required ([@lagartoverde](https://github.com/lagartoverde))
+* [#507](https://github.com/lblod/frontend-organization-portal/pull/507) Onboarding PZ/HPZ ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#509](https://github.com/lblod/frontend-organization-portal/pull/509) Hide calendar icon in datepicker ([@lagartoverde](https://github.com/lagartoverde))
+* [#508](https://github.com/lblod/frontend-organization-portal/pull/508) AGB/APB: make organisation clickable in module personen ([@mirdono](https://github.com/mirdono))
+
+#### :bug: Bug Fix
+* [#533](https://github.com/lblod/frontend-organization-portal/pull/533) transition to broken ([@nbittich](https://github.com/nbittich))
+* [#529](https://github.com/lblod/frontend-organization-portal/pull/529) Rewrite search query for multiple classification ids ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#528](https://github.com/lblod/frontend-organization-portal/pull/528) Fix selected province and municipality in core data related orgs ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#526](https://github.com/lblod/frontend-organization-portal/pull/526) Fix type errors when saving ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#527](https://github.com/lblod/frontend-organization-portal/pull/527) Add timeout when loading site types ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#525](https://github.com/lblod/frontend-organization-portal/pull/525) fix dependency worship filter ([@Dachamelemon](https://github.com/Dachamelemon))
+* [#524](https://github.com/lblod/frontend-organization-portal/pull/524) Fix type bestuur not updating when soort erediesnt is updated ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#522](https://github.com/lblod/frontend-organization-portal/pull/522) Fix: use only alphanumeric characters to match identifiers ([@mirdono](https://github.com/mirdono))
+* [#518](https://github.com/lblod/frontend-organization-portal/pull/518) Fix sorting for bestuursleden ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#510](https://github.com/lblod/frontend-organization-portal/pull/510) Destroy active role on switch or logout ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#506](https://github.com/lblod/frontend-organization-portal/pull/506) Add sorting on related participants ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#518](https://github.com/lblod/frontend-organization-portal/pull/518) Fix sorting for bestuursleden ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#512](https://github.com/lblod/frontend-organization-portal/pull/512) Added new classification identifiers to select by name ([@mirdono](https://github.com/mirdono))
+* [#510](https://github.com/lblod/frontend-organization-portal/pull/510) Destroy active role on switch or logout ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### :house: Internal
+* [#513](https://github.com/lblod/frontend-organization-portal/pull/513) Moved duplicate classification identifier selection to util ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 5
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Nordine Bittich ([@nbittich](https://github.com/nbittich))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+- [@Dachamelemon](https://github.com/Dachamelemon)
+
+
 ## 1.19.0 (2023-09-19)
 
 #### :rocket: Enhancement
