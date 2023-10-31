@@ -167,7 +167,7 @@
         {{else}}
           <c.body as |adminUnit|>
             <td>
-              <AuLink {{on "click" (fn this.getOrgRoute adminUnit)}}>
+              <AuLink @route={{adminUnit.route}} @model={{adminUnit.id}}>
 
                 {{adminUnit.name}}
 
