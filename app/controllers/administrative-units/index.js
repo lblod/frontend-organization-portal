@@ -2,10 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import {
-  CLASSIFICATION_CODE,
-  isNonAdministrativeUnit,
-} from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsIndexController extends Controller {
   @service router;
@@ -39,18 +36,6 @@ export default class AdministrativeUnitsIndexController extends Controller {
       : this.model.loadedAdministrativeUnits;
   }
 
-  @action
-  getOrgRoute(org) {
-    this.router.refresh();
-    if (isNonAdministrativeUnit(org.classification_id)) {
-      this.router.replaceWith('organizations.organization.index', org.id);
-    } else {
-      this.router.replaceWith(
-        'administrative-units.administrative-unit.index',
-        org.id
-      );
-    }
-  }
   get isLoading() {
     return this.model.loadAdministrativeUnitsTaskInstance.isRunning;
   }
