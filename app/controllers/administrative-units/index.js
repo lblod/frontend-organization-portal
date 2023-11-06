@@ -62,13 +62,15 @@ export default class AdministrativeUnitsIndexController extends Controller {
     return this.model.loadAdministrativeUnitsTaskInstance.isError;
   }
 
-  get modelHasOnlyWorshipAdministrativeUnits() {
+  get modelHasOnlyWorshipOrganizations() {
     if (this.administrativeUnits && this.administrativeUnits.length) {
       return !this.administrativeUnits.toArray().some((adminUnit) => {
         return (
           adminUnit.classification_id !== CLASSIFICATION_CODE.WORSHIP_SERVICE &&
           adminUnit.classification_id !==
-            CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+            CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE &&
+          adminUnit.classification_id !==
+            CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN
         );
       });
     }
