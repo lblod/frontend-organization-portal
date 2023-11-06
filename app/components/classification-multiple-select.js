@@ -21,8 +21,13 @@ export default class ClassificationMultipleSelectComponent extends Component {
     let selectionArray = [];
 
     if (typeof this.args.selected === 'string' && this.args.selected.length) {
-      let ids = this.args.selected.split(',');
-      ids.forEach((id) => selectionArray.push(this.findClassificationById(id)));
+      const ids = this.args.selected.split(',');
+      ids.forEach((id) => {
+        const classification = this.findClassificationById(id);
+        if (classification) {
+          selectionArray.push(classification);
+        }
+      });
     }
 
     if (selectionArray.length) {
@@ -108,6 +113,7 @@ export default class ClassificationMultipleSelectComponent extends Component {
     this.newId = selectedRecognizedWorshipTypeId;
 
     if (
+      !this.selectedClassifications.length &&
       this.newId &&
       !codes.toArray().includes(this.args.selected) &&
       this.newId != this.oldId
