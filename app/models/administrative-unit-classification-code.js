@@ -1,5 +1,6 @@
 import { attr } from '@ember-data/model';
 import OrganizationClassificationCodeModel from './organization-classification-code';
+
 export const CLASSIFICATION_CODE = {
   MUNICIPALITY: '5ab0e9b8a3b2ca7c5e000001',
   PROVINCE: '5ab0e9b8a3b2ca7c5e000000',

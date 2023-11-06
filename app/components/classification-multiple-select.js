@@ -55,7 +55,10 @@ export default class ClassificationMultipleSelectComponent extends Component {
       selectedRecognizedWorshipTypeId &&
       this.isIdInBlacklist(selectedRecognizedWorshipTypeId)
     ) {
-      allowedIds = [CLASSIFICATION_CODE.WORSHIP_SERVICE];
+      allowedIds = [
+        CLASSIFICATION_CODE.WORSHIP_SERVICE,
+        CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN,
+      ];
     } else {
       allowedIds = [
         CLASSIFICATION_CODE.WORSHIP_SERVICE,
