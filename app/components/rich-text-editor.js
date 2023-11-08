@@ -129,7 +129,9 @@ export default class RichTextEditorComponent extends Component {
       const hasTextContent = Boolean(
         this.editorController.mainEditorState.doc.textContent
       );
-      const editorValue = hasTextContent ? postProccessLinks(stripNbspEntities(htmlContent)) : '';
+      const editorValue = hasTextContent
+        ? postProccessLinks(stripNbspEntities(htmlContent))
+        : '';
       // Only trigger an update if the value actually changed.
       // This prevents that the form observer is triggered even though no editor content was changed.
       if (this.value !== editorValue) {
