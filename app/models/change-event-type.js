@@ -66,7 +66,6 @@ export const CHANGE_EVENTS_IGS = [
 export const CHANGE_EVENTS_PZ_HPZ = [
   CHANGE_EVENT_TYPE.OPRICHTING,
   CHANGE_EVENT_TYPE.NAME_CHANGE,
-  CHANGE_EVENT_TYPE.GEOGRAPHICAL_AREA_CHANGE,
 ];
 
 export default class ChangeEventTypeModel extends Model {
