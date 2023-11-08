@@ -12,6 +12,19 @@
 
 
 
+
+## 1.20.0-1 (2023-11-08)
+
+#### :rocket: Enhancement
+* [#538](https://github.com/lblod/frontend-organization-portal/pull/538) Hide change event area change until geo card refactoring ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### :bug: Bug Fix
+* [#535](https://github.com/lblod/frontend-organization-portal/pull/535) Include ROs to religion filter ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### Committers: 1
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+
+
 ## 1.20.0-0 (2023-10-31)
 
 #### :rocket: Enhancement
