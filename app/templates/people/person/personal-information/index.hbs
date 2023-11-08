@@ -170,18 +170,13 @@
                       position.administrativeUnits
                       as |administrativeUnit index|
                     }}
-                      {{#if administrativeUnit.classification.isIgs}}
+                      <AuLink
+                        @model={{administrativeUnit.id}}
+                        @route="administrative-units.administrative-unit"
+                      >
                         {{administrativeUnit.name}}
                         ({{administrativeUnit.classification.label}})
-                      {{else}}
-                        <AuLink
-                          @model={{administrativeUnit.id}}
-                          @route="administrative-units.administrative-unit"
-                        >
-                          {{administrativeUnit.name}}
-                          ({{administrativeUnit.classification.label}})
-                        </AuLink>
-                      {{/if}}
+                      </AuLink>
                       {{#if (gt position.administrativeUnits.length 1)}}
                         {{unless index "/"}}
                       {{/if}}
