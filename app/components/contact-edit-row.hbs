@@ -226,6 +226,7 @@
         @requiredLabel="*"
         @error={{@primaryContact.error.telephone.validation}}
         class={{@labelClass}}
+        
       >
         Primair telefoonnummer
       </AuLabel>
@@ -235,6 +236,7 @@
       @value={{@primaryContact.telephone}}
       @error={{@primaryContact.error.telephone.validation}}
       id="{{id}}-contact-telephone"
+      {{inputmask-tel}}
     />
     <AuHelpText  @skin="tertiary">
       {{help-text "phone-number"}}
