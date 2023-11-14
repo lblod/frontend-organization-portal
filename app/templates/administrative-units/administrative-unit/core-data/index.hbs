@@ -93,24 +93,28 @@
                   {{@model.igsRegio.label}}
                 </:content>
               </Item>
-              <Item>
-                <:label>Geplande einddatum</:label>
-                <:content>
-                  {{date-format @model.administrativeUnit.expectedEndDate}}
-                  {{#if this.expiredExpectedEndDate}}
-                    <AuPill @skin="error">De geplande einddatum is overschreden</AuPill>
-                  {{/if}}
-                </:content>
-              </Item>
-              <Item>
-                <:label>Doel</:label>
-                <:content>
-                  <RichTextEditor
-                    @show="true"
-                    @value={{@model.administrativeUnit.purpose}}
-                  />
-                </:content>
-              </Item>
+              {{#if @model.administrativeUnit.expectedEndDate}}
+                <Item>
+                  <:label>Geplande einddatum</:label>
+                  <:content>
+                    {{date-format @model.administrativeUnit.expectedEndDate}}
+                    {{#if this.expiredExpectedEndDate}}
+                      <AuPill @skin="error">De geplande einddatum is overschreden</AuPill>
+                    {{/if}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if @model.administrativeUnit.purpose}}
+                <Item>
+                  <:label>Doel</:label>
+                  <:content>
+                    <RichTextEditor
+                      @show="true"
+                      @value={{@model.administrativeUnit.purpose}}
+                    />
+                  </:content>
+                </Item>
+              {{/if}}
             {{/if}}
           </:left>
           <:right as |Item|>
