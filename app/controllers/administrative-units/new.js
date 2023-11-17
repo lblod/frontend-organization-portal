@@ -222,13 +222,14 @@ export default class AdministrativeUnitsNewController extends Controller {
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
 
-      transformPhoneNumbers(contact.telephone);
-      transformPhoneNumbers(secondaryContact.telephone);
-
       contact = setEmptyStringsToNull(contact);
+      contact.telephone = transformPhoneNumbers(contact.telephone);
       yield contact.save();
 
       secondaryContact = setEmptyStringsToNull(secondaryContact);
+      secondaryContact.telephone = transformPhoneNumbers(
+        secondaryContact.telephone
+      );
       yield secondaryContact.save();
 
       if (address.country != 'België') {

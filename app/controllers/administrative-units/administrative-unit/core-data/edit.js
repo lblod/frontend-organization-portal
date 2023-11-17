@@ -180,12 +180,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
       let siteContacts = yield primarySite.contacts;
 
-      transformPhoneNumbers(contact.telephone);
-      transformPhoneNumbers(secondaryContact.telephone);
-
       if (contact.isDirty) {
         let isNewContact = contact.isNew;
 
+        contact.telephone = transformPhoneNumbers(contact.telephone);
         contact = setEmptyStringsToNull(contact);
         yield contact.save();
 
@@ -198,6 +196,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       if (secondaryContact.isDirty) {
         let isNewContact = secondaryContact.isNew;
 
+        secondaryContact.telephone = transformPhoneNumbers(
+          secondaryContact.telephone
+        );
         secondaryContact = setEmptyStringsToNull(secondaryContact);
         yield secondaryContact.save();
 
