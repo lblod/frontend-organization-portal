@@ -233,7 +233,7 @@
     {{/unless}}
     <AuInput
       @width="block"
-      @value={{@primaryContact.telephone}}
+      @value={{tel-format @primaryContact.telephone}}
       @error={{@primaryContact.error.telephone.validation}}
       id="{{id}}-contact-telephone"
       {{inputmask-tel}}
@@ -261,7 +261,7 @@
     {{/unless}}
     <AuInput
       @width="block"
-      @value={{@secondaryContact.telephone}}
+      @value={{tel-format @secondaryContact.telephone}}
       @error={{@secondaryContact.error.telephone.validation}}
       id="{{id}}-secondary-contact-telephone"
     />

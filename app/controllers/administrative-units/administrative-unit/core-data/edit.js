@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
@@ -178,6 +179,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       }
 
       let siteContacts = yield primarySite.contacts;
+
+      transformPhoneNumbers(contact.telephone);
+      transformPhoneNumbers(secondaryContact.telephone);
 
       if (contact.isDirty) {
         let isNewContact = contact.isNew;

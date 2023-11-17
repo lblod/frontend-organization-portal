@@ -77,7 +77,7 @@
               <Item>
                 <:label>Telefoonnummer</:label>
                 <:content>
-                  {{@model.representativeBody.primarySite.contacts.firstObject.telephone}}
+                  {{tel-format @model.representativeBody.primarySite.contacts.firstObject.telephone}}
                 </:content>
               </Item>
             {{/if}}

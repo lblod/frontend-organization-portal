@@ -7,6 +7,7 @@ import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/adminis
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import fetch from 'fetch';
+import { transformPhoneNumbers } from '../../utils/transform-phone-numbers';
 
 export default class AdministrativeUnitsNewController extends Controller {
   @service router;
@@ -220,6 +221,9 @@ export default class AdministrativeUnitsNewController extends Controller {
         structuredIdentifierSharepoint;
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
+
+      transformPhoneNumbers(contact.telephone);
+      transformPhoneNumbers(secondaryContact.telephone);
 
       contact = setEmptyStringsToNull(contact);
       yield contact.save();
