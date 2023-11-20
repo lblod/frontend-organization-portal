@@ -31,6 +31,7 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
       const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
       const administrativeUnit =
         await isTimeSpecializationOf.administrativeUnit;
+
       positions.push({
         role: role.label,
         type: 'mandatory',
@@ -72,7 +73,7 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
     }
 
     for (let minister of ministers) {
-      const position = await minister.position;
+      const position = await minister.ministerPosition;
       const role = await position.function;
       const administrativeUnit = await position.worshipService;
 
