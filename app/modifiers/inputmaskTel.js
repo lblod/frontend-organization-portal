@@ -3,7 +3,7 @@ import Inputmask from 'inputmask';
 
 export default modifier(function inputmaskTel(element) {
   new Inputmask({
-    regex: '(\\+)\\d{6}\\d*',
+    regex: '(\\+)\\d{10}\\d*',
     lazy: true,
   }).mask(element);
 });
