@@ -8,11 +8,12 @@
 
 <PageHeader class="au-o-box">
   <:title>Leidinggevenden</:title>
-  <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
+  <:subtitle>{{@model.administrativeUnit.name}}
+    ({{@model.administrativeUnit.classification.label}})</:subtitle>
 </PageHeader>
 
 <AuDataTable
-  @content={{@model.agents}}
+  @content={{@model.functionaries}}
   @noDataMessage="Geen functionarissen"
   as |t|
 >
@@ -27,17 +28,17 @@
         @field="governing-alias.family-name"
         @currentSorting={{this.sort}}
         @label="Achternaam"
-      />     
+      />
       <AuDataTableThSortable
         @field="board-position.role-board.label"
         @currentSorting={{this.sort}}
         @label="Rol"
-      />            
+      />
       <AuDataTableThSortable
         @field="status.label"
         @currentSorting={{this.sort}}
         @label="Status"
-      />             
+      />
       <AuDataTableThSortable
         @field="start-date"
         @currentSorting={{this.sort}}
@@ -47,36 +48,36 @@
         @field="end-date"
         @currentSorting={{this.sort}}
         @label="Einde periode"
-      />   
+      />
     </c.header>
-    <c.body as |agent|>
-        <td>
-          <AuLink @route="people.person" @model={{agent.governingAlias.id}}>
-            {{agent.governingAlias.givenName}}
-          </AuLink>
-        </td>
-        <td>
-          <AuLink @route="people.person" @model={{agent.governingAlias.id}}>
-            {{agent.governingAlias.familyName}}
-          </AuLink>
-        </td>
-        <td>
-          <AuLink
-            @route="people.person.positions.agent"
-            @models={{array agent.governingAlias.id agent.id}}
-          >
-            {{agent.boardPosition.roleBoard.label}}
-          </AuLink>
-        </td>
-        <td>
-          {{agent.status.label}}
-        </td>
-        <td>
-           {{date-format agent.startDate}}
-        </td>
-        <td>          
-            {{date-format agent.endDate}}
-        </td>
+    <c.body as |functionary|>
+      <td>
+        <AuLink @route="people.person" @model={{functionary.governingAlias.id}}>
+          {{functionary.governingAlias.givenName}}
+        </AuLink>
+      </td>
+      <td>
+        <AuLink @route="people.person" @model={{functionary.governingAlias.id}}>
+          {{functionary.governingAlias.familyName}}
+        </AuLink>
+      </td>
+      <td>
+        <AuLink
+          @route="people.person.positions.functionary"
+          @models={{array functionary.governingAlias.id functionary.id}}
+        >
+          {{functionary.boardPosition.roleBoard.label}}
+        </AuLink>
+      </td>
+      <td>
+        {{functionary.status.label}}
+      </td>
+      <td>
+        {{date-format functionary.startDate}}
+      </td>
+      <td>
+        {{date-format functionary.endDate}}
+      </td>
     </c.body>
   </t.content>
 </AuDataTable>

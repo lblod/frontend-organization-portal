@@ -72,7 +72,7 @@ export default class PeopleIndexRoute extends Route {
       } else if (person.uri.includes('/mandatarissen/')) {
         person.positionRoute = 'people.person.positions.mandatory';
       } else if (person.uri.includes('/functionarissen/')) {
-        person.positionRoute = 'people.person.positions.agent';
+        person.positionRoute = 'people.person.positions.functionary';
       }
 
       // In the case of functionarissen, a bestuursfunctie is linked to multiple units (OCMW and Gemeente)

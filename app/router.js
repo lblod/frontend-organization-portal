@@ -41,9 +41,13 @@ Router.map(function () {
             this.route('edit');
           }
         );
-        this.route('agent', { path: '/functionaris/:agentId/' }, function () {
-          this.route('edit');
-        });
+        this.route(
+          'functionary',
+          { path: '/functionaris/:functionaryId/' },
+          function () {
+            this.route('edit');
+          }
+        );
       });
     });
     this.route('new', { path: '/nieuw' });

@@ -20,7 +20,7 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
     let positions = [];
 
     const mandatories = (await person.mandatories).toArray(); // mandatarissen
-    const agents = (await person.agents).toArray(); // leidinggevenden
+    const functionaries = (await person.functionaries).toArray(); // leidinggevenden
     const ministers = (await person.agentsInPosition).toArray(); // bedienaren
 
     for (let mandatory of mandatories) {
@@ -42,28 +42,31 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
       });
     }
 
-    for (let agent of agents) {
-      const status = await agent.status;
-      const boardPosition = await agent.boardPosition;
+    for (let functionary of functionaries) {
+      const status = await functionary.status;
+      const boardPosition = await functionary.boardPosition;
       const role = await boardPosition.roleBoard;
       const governingBodies = await boardPosition.governingBodies;
 
       let administrativeUnits = [];
+
       for (const governingBody of governingBodies.toArray()) {
         const isTimeSpecializationOf =
           await governingBody.isTimeSpecializationOf;
+
         const administrativeUnit =
           await isTimeSpecializationOf.administrativeUnit;
+
         administrativeUnits.push(administrativeUnit);
       }
 
       positions.push({
         role: role.label,
-        type: 'agent',
-        id: agent.id,
+        type: 'functionary',
+        id: functionary.id,
         status,
-        startDate: agent.startDate,
-        endDate: agent.endDate,
+        startDate: functionary.startDate,
+        endDate: functionary.endDate,
         administrativeUnits,
       });
     }
@@ -72,6 +75,7 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
       const position = await minister.position;
       const role = await position.function;
       const administrativeUnit = await position.worshipService;
+
       positions.push({
         role: role.label,
         type: 'minister',
@@ -82,9 +86,8 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
       });
     }
 
-    // We have to sort manually instead of directly in the backend request because we are merging
-    // ressources from different types in this route
-
+    // We have to sort manually instead of directly in the backend request
+    // because we are merging ressources from different types in this route
     if (params.sort.length) {
       if (params.sort == 'position.status') {
         positions = positions.sort(function (a, b) {
