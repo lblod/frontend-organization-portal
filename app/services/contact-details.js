@@ -122,7 +122,7 @@ export default class ContactDetailsService extends Service {
 
     const mandatories = (await person.mandatories).toArray(); // mandatarissen
     const agents = (await person.agents).toArray(); // leidinggevenden
-    const ministers = (await person.agentsInPosition).toArray(); // bedinaren
+    const ministers = (await person.agentsInPosition).toArray(); // bedienaren
 
     for (let mandatory of mandatories) {
       const position = await this.mandatoryToPosition(mandatory);
