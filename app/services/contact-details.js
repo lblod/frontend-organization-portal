@@ -33,12 +33,13 @@ export default class ContactDetailsService extends Service {
     if (onlyActivePosition && !isActivePosition(minister.agentEndDate)) {
       return null;
     }
-    const position = await minister.position;
+    const position = await minister.ministerPosition;
     const role = await position.function;
     const administrativeUnit = await position.worshipService;
     const mContacts = await minister.contacts;
     const primaryContact = findPrimaryContact(mContacts);
     const secondaryContact = findSecondaryContact(mContacts);
+
     return {
       position: minister,
       title: `${role.label}, ${administrativeUnit.name}`,

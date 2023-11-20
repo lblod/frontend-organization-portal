@@ -1,4 +1,4 @@
-import Model, { belongsTo, hasMany } from '@ember-data/model';
+import Model, { belongsTo } from '@ember-data/model';
 
 export default class PostModel extends Model {
   @belongsTo('role', {
@@ -11,8 +11,8 @@ export default class PostModel extends Model {
   })
   organization;
 
-  @hasMany('agent-in-position', {
-    inverse: 'position',
+  @belongsTo('agent', {
+    inverse: null,
   })
-  agentsInPosition;
+  agent;
 }
