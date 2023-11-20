@@ -21,7 +21,7 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
 
     const mandatories = (await person.mandatories).toArray(); // mandatarissen
     const agents = (await person.agents).toArray(); // leidinggevenden
-    const ministers = (await person.agentsInPosition).toArray(); // bedinaren
+    const ministers = (await person.agentsInPosition).toArray(); // bedienaren
 
     for (let mandatory of mandatories) {
       const mandate = await mandatory.mandate;
