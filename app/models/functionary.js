@@ -1,7 +1,7 @@
 import { attr, belongsTo } from '@ember-data/model';
 import AgentInPositionModel from './agent-in-position';
 
-export default class AgentModel extends AgentInPositionModel {
+export default class FunctionaryModel extends AgentInPositionModel {
   @attr('date') startDate;
   @attr('date') endDate;
 
@@ -11,7 +11,7 @@ export default class AgentModel extends AgentInPositionModel {
   status;
 
   @belongsTo('person', {
-    inverse: 'agents',
+    inverse: 'functionaries',
   })
   governingAlias;
 

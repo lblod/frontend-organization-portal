@@ -19,7 +19,7 @@ export default class AdministrativeUnitsAdministrativeUnitExecutivesRoute extend
       administrativeUnitId
     );
 
-    let agents = await this.store.query('agent', {
+    let functionaries = await this.store.query('functionary', {
       'filter[board-position][governing-bodies][is-time-specialization-of][administrative-unit][:id:]':
         administrativeUnitId,
       sort: params.sort,
@@ -28,7 +28,7 @@ export default class AdministrativeUnitsAdministrativeUnitExecutivesRoute extend
 
     return {
       administrativeUnit,
-      agents,
+      functionaries,
     };
   }
 }
