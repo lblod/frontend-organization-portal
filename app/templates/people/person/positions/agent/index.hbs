@@ -40,23 +40,13 @@
                   @model.administrativeUnits
                   as |administrativeUnit index|
                 }}
-                  {{#if
-                    (or
-                      administrativeUnit.classification.isAgbOrApb
-                      administrativeUnit.classification.isIgs
-                    )
-                  }}
+                  <AuLink
+                    @route="administrative-units.administrative-unit"
+                    @model={{administrativeUnit.id}}
+                  >
                     {{administrativeUnit.name}}
                     ({{administrativeUnit.classification.label}})
-                  {{else}}
-                    <AuLink
-                      @route="administrative-units.administrative-unit"
-                      @model={{administrativeUnit.id}}
-                    >
-                      {{administrativeUnit.name}}
-                      ({{administrativeUnit.classification.label}})
-                    </AuLink>
-                  {{/if}}
+                  </AuLink>
                   {{#if (gt @model.administrativeUnits.length 1)}}
                     {{unless index "/"}}
                   {{/if}}
