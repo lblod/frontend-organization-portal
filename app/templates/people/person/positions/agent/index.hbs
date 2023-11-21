@@ -1,113 +1,112 @@
-
-  <div class="au-c-body-container au-c-body-container--scroll">
-    <div class="au-o-box au-o-flow au-o-flow--large">
-      <PageHeader>
-        <:title>
-          Positie:
-          {{@model.agent.boardPosition.roleBoard.label}},
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <PageHeader>
+      <:title>
+        Positie:
+        {{@model.agent.boardPosition.roleBoard.label}},
+        <br />
+        {{#each @model.governingBodies as |governingBody|}}
+          {{governingBody.administrativeUnit.classification.label}}
+          {{governingBody.administrativeUnit.name}}
           <br />
-          {{#each @model.governingBodies as |governingBody|}}
-            {{governingBody.administrativeUnit.classification.label}}
-            {{governingBody.administrativeUnit.name}}
-            <br />
-          {{/each}}
-        </:title>
-        <:subtitle>
-          {{@model.person.givenName}}
-          {{@model.person.familyName}}
-        </:subtitle>
-      </PageHeader>
+        {{/each}}
+      </:title>
+      <:subtitle>
+        {{@model.person.givenName}}
+        {{@model.person.familyName}}
+      </:subtitle>
+    </PageHeader>
 
-      <DataCard>
-        <:title>Positie</:title>
-        <:card as |Card|>
-          <Card.Columns>
-            <:left as |Item|>
+    <DataCard>
+      <:title>Positie</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Type</:label>
+              <:content>Functionaris</:content>
+            </Item>
+            <Item>
+              <:label>Bestuursfunctie</:label>
+              <:content
+              >{{@model.agent.boardPosition.roleBoard.label}}</:content>
+            </Item>
+          </:left>
+          <:right as |Item|>
+            <Item>
+              <:label>Naam bestuur</:label>
+              <:content>
+                {{#each
+                  @model.administrativeUnits
+                  as |administrativeUnit index|
+                }}
+                  <AuLink
+                    @route="administrative-units.administrative-unit"
+                    @model={{administrativeUnit.id}}
+                  >
+                    {{administrativeUnit.name}}
+                    ({{administrativeUnit.classification.label}})
+                  </AuLink>
+                  {{#if (gt @model.administrativeUnits.length 1)}}
+                    {{unless index "/"}}
+                  {{/if}}
+                {{/each}}
+              </:content>
+            </Item>
+          </:right>
+        </Card.Columns>
+      </:card>
+    </DataCard>
+
+    <Position::ContactDataCard
+      @address={{@model.address}}
+      @primaryContact={{@model.contact}}
+      @secondaryContact={{@model.secondaryContact}}
+    />
+
+    <DataCard>
+      <:title>Aanstelling</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            {{#if @model.agent.startDate}}
               <Item>
-                <:label>Type</:label>
-                <:content>Functionaris</:content>
-              </Item>
-              <Item>
-                <:label>Bestuursfunctie</:label>
-                <:content
-                >{{@model.agent.boardPosition.roleBoard.label}}</:content>
-              </Item>
-            </:left>
-            <:right as |Item|>
-              <Item>
-                <:label>Naam bestuur</:label>
+                <:label>Start mandaat</:label>
                 <:content>
-                  {{#each @model.administrativeUnits as |administrativeUnit index|}}
-                    {{#if (or administrativeUnit.classification.isAgbOrApb administrativeUnit.classification.isIgs)}}
-                      {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
-                    {{else}}
-                      <AuLink
-                        @route="administrative-units.administrative-unit"
-                        @model={{administrativeUnit.id}}
-                      >
-                        {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
-                      </AuLink>
-                    {{/if}}
-                    {{#if (gt @model.administrativeUnits.length 1)}}
-                      {{unless index "/"}}
-                    {{/if}}
-                  {{/each}}
+                  {{date-format @model.agent.startDate}}
                 </:content>
               </Item>
-            </:right>
-          </Card.Columns>
-        </:card>
-      </DataCard>
-
-      <Position::ContactDataCard
-        @address={{@model.address}}
-        @primaryContact={{@model.contact}}
-        @secondaryContact={{@model.secondaryContact}}
-      />
-
-      <DataCard>
-        <:title>Aanstelling</:title>
-        <:card as |Card|>
-          <Card.Columns>
-            <:left as |Item|>
-              {{#if @model.agent.startDate}}
-                <Item>
-                  <:label>Start mandaat</:label>
-                  <:content>
-                    {{date-format @model.agent.startDate}}
-                  </:content>
-                </Item>
-              {{/if}}
-              {{#if @model.agent.expectedEndDate}}
-                <Item>
-                  <:label>Geplande einddatum</:label>
-                  <:content>
-                    {{date-format @model.agent.expectedEndDate}}
-                  </:content>
-                </Item>
-              {{/if}}
-            </:left>
-            <:right as |Item|>
-              {{#each @model.governingBodiesInTime as |governingBodyInTime|}}
-                <Item>
-                  <:label>
-                    Bestuursperiode
-                    {{governingBodyInTime.isTimeSpecializationOf.administrativeUnit.classification.label}}
-                  </:label>
-                  <:content>
-                    {{governingBodyInTime.period}}
-                  </:content>
-                </Item>
-              {{/each}}
-              {{#if @model.agent.endDate}}
-                <Item>
-                  <:label>Einddatum</:label>
-                  <:content>{{date-format @model.agent.endDate}}</:content>
-                </Item>
-              {{/if}}
-            </:right>
-          </Card.Columns>
-        </:card>
-      </DataCard>
-    </div>
+            {{/if}}
+            {{#if @model.agent.expectedEndDate}}
+              <Item>
+                <:label>Geplande einddatum</:label>
+                <:content>
+                  {{date-format @model.agent.expectedEndDate}}
+                </:content>
+              </Item>
+            {{/if}}
+          </:left>
+          <:right as |Item|>
+            {{#each @model.governingBodiesInTime as |governingBodyInTime|}}
+              <Item>
+                <:label>
+                  Bestuursperiode
+                  {{governingBodyInTime.isTimeSpecializationOf.administrativeUnit.classification.label}}
+                </:label>
+                <:content>
+                  {{governingBodyInTime.period}}
+                </:content>
+              </Item>
+            {{/each}}
+            {{#if @model.agent.endDate}}
+              <Item>
+                <:label>Einddatum</:label>
+                <:content>{{date-format @model.agent.endDate}}</:content>
+              </Item>
+            {{/if}}
+          </:right>
+        </Card.Columns>
+      </:card>
+    </DataCard>
   </div>
+</div>
