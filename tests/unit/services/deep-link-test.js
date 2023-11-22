@@ -18,8 +18,8 @@ module('Unit | Service | deep-link', function (hooks) {
       'redirect-handler:test',
       class extends RedirectHandler {
         redirect(uuid, resourceUri) {
-          assert.equal(uuid, '12345');
-          assert.equal(resourceUri, 'http://data.test/12345');
+          assert.strictEqual(uuid, '12345');
+          assert.strictEqual(resourceUri, 'http://data.test/12345');
         }
       }
     );
