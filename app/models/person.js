@@ -1,22 +1,23 @@
-import Model, { attr, hasMany } from '@ember-data/model';
+import { attr, hasMany } from '@ember-data/model';
+import AgentModel from './agent';
 
-export default class PersonModel extends Model {
+export default class PersonModel extends AgentModel {
   @attr givenName;
   @attr familyName;
   @attr firstNameUsed;
+
+  @hasMany('agent-in-position', {
+    inverse: 'person',
+  })
+  agentsInPosition;
 
   @hasMany('mandatory', {
     inverse: 'governingAlias',
   })
   mandatories;
 
-  @hasMany('mandatory', {
+  @hasMany('functionary', {
     inverse: 'governingAlias',
   })
-  agents;
-
-  @hasMany('agent-in-position', {
-    inverse: 'person',
-  })
-  agentsInPosition;
+  functionaries;
 }

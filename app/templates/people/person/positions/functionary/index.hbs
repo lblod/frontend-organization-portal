@@ -3,7 +3,7 @@
     <PageHeader>
       <:title>
         Positie:
-        {{@model.agent.boardPosition.roleBoard.label}},
+        {{@model.functionary.boardPosition.roleBoard.label}},
         <br />
         {{#each @model.governingBodies as |governingBody|}}
           {{governingBody.administrativeUnit.classification.label}}
@@ -29,7 +29,7 @@
             <Item>
               <:label>Bestuursfunctie</:label>
               <:content
-              >{{@model.agent.boardPosition.roleBoard.label}}</:content>
+              >{{@model.functionary.boardPosition.roleBoard.label}}</:content>
             </Item>
           </:left>
           <:right as |Item|>
@@ -69,19 +69,19 @@
       <:card as |Card|>
         <Card.Columns>
           <:left as |Item|>
-            {{#if @model.agent.startDate}}
+            {{#if @model.functionary.startDate}}
               <Item>
                 <:label>Start mandaat</:label>
                 <:content>
-                  {{date-format @model.agent.startDate}}
+                  {{date-format @model.functionary.startDate}}
                 </:content>
               </Item>
             {{/if}}
-            {{#if @model.agent.expectedEndDate}}
+            {{#if @model.functionary.expectedEndDate}}
               <Item>
                 <:label>Geplande einddatum</:label>
                 <:content>
-                  {{date-format @model.agent.expectedEndDate}}
+                  {{date-format @model.functionary.expectedEndDate}}
                 </:content>
               </Item>
             {{/if}}
@@ -98,10 +98,10 @@
                 </:content>
               </Item>
             {{/each}}
-            {{#if @model.agent.endDate}}
+            {{#if @model.functionary.endDate}}
               <Item>
                 <:label>Einddatum</:label>
-                <:content>{{date-format @model.agent.endDate}}</:content>
+                <:content>{{date-format @model.functionary.endDate}}</:content>
               </Item>
             {{/if}}
           </:right>
