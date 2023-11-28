@@ -63,7 +63,7 @@
                   @selected={{@model.administrativeUnitChangeset.classification}}
                   @selectedRecognizedWorshipTypeId={{@model.administrativeUnitChangeset.recognizedWorshipType.id}}
                   @onChange={{this.setClassification}}
-                  @restrictForNewBestuursenheden={{true}}
+                  @restrictForNewBestuurseenheden={{true}}
                   @error={{hasError}}
                   @id="classification-select"
                 />
@@ -400,7 +400,9 @@
                       <ProvinceOrganizationSelect
                         @selected={{@model.administrativeUnitChangeset.isSubOrganizationOf}}
                         @selectedMunicipality={{@model.administrativeUnitChangeset.isAssociatedWith}}
-                        @allowClear={{(not @model.administrativeUnitChangeset.isAssociatedWith)}}
+                        @allowClear={{(not
+                          @model.administrativeUnitChangeset.isAssociatedWith
+                        )}}
                         @onChange={{this.setRelation}}
                         @error={{hasError}}
                         @id="related-provincie"

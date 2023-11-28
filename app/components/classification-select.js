@@ -44,7 +44,7 @@ export default class ClassificationSelectComponent extends Component {
       this.isIdInBlacklist(selectedRecognizedWorshipTypeId)
     ) {
       allowedIds = [CLASSIFICATION_CODE.WORSHIP_SERVICE];
-    } else if (this.args.restrictForNewBestuursenheden) {
+    } else if (this.args.restrictForNewBestuurseenheden) {
       allowedIds = [
         CLASSIFICATION_CODE.WORSHIP_SERVICE,
         CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
