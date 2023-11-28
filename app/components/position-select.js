@@ -80,6 +80,8 @@ export default class PositionSelectComponent extends Component {
           CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
           CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
           CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+          CLASSIFICATION_CODE.OCMW_VERENIGING,
+          CLASSIFICATION_CODE.WELZIJNSVERENIGING,
         ];
       } else {
         allowedIds = [
@@ -87,10 +89,12 @@ export default class PositionSelectComponent extends Component {
           CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
         ];
       }
+
       boardPositionCodes = yield this.store.query('board-position-code', {
         'filter[applies-to][applies-within][:id:]': allowedIds.join(),
         page: { size: 100 },
       });
+
       if (this.currentSession.hasWorshipRole) {
         ministerPositions = yield this.store.query(
           'minister-position-function',

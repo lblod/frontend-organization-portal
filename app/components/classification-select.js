@@ -57,6 +57,9 @@ export default class ClassificationSelectComponent extends Component {
         CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
         CLASSIFICATION_CODE.POLICE_ZONE,
         CLASSIFICATION_CODE.ASSISTANCE_ZONE,
+        // TODO: check whether OP can create these new types of units
+        CLASSIFICATION_CODE.OCMW_VERENIGING,
+        CLASSIFICATION_CODE.WELZIJNSVERENIGING,
       ];
     } else {
       allowedIds = [
@@ -74,6 +77,8 @@ export default class ClassificationSelectComponent extends Component {
         CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
         CLASSIFICATION_CODE.POLICE_ZONE,
         CLASSIFICATION_CODE.ASSISTANCE_ZONE,
+        CLASSIFICATION_CODE.OCMW_VERENIGING,
+        CLASSIFICATION_CODE.WELZIJNSVERENIGING,
       ];
     }
 

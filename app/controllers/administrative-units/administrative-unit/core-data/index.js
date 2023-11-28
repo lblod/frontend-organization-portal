@@ -22,6 +22,9 @@ const SHAREPOINT_LINK_BASE = {
     'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
   ASSISTANCE_ZONE:
     'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
+  // TODO: add URL for new the following two new types
+  OCMW_VERENIGING: '',
+  WELZIJNSVERENIGING: '',
 };
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexController extends Controller {
@@ -159,6 +162,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
     } else if (this.isAssistanceZone) {
       return SHAREPOINT_LINK_BASE.ASSISTANCE_ZONE;
     }
+    // TODO: add option for OCMW verenigingen and Welzijnsverenigingen
     return SHAREPOINT_LINK_BASE.CENTRAL_WORSHIP_SERVICE;
   }
 

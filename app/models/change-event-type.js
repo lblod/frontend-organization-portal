@@ -68,6 +68,10 @@ export const CHANGE_EVENTS_PZ_HPZ = [
   CHANGE_EVENT_TYPE.NAME_CHANGE,
 ];
 
+export const CHANGE_EVENTS_OCMW_VERENIGINGEN = [
+  // TODO: add required event types based on FP
+];
+
 export default class ChangeEventTypeModel extends Model {
   @attr label;
 }

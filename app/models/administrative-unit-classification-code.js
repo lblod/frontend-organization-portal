@@ -18,6 +18,8 @@ export const CLASSIFICATION_CODE = {
   POLICE_ZONE: 'a3922c6d-425b-474f-9a02-ffb71a436bfc',
   ASSISTANCE_ZONE: 'ea446861-2c51-45fa-afd3-4e4a37b71562',
   REPRESENTATIVE_ORGAN: '89a00b5a-024f-4630-a722-65a5e68967e5', // FIXME, this is not an administrative unit
+  OCMW_VERENIGING: 'cc4e2d67-603b-4784-9b61-e50bac1ec089',
+  WELZIJNSVERENIGING: 'e8294b73-87c9-4fa2-9441-1937350763c9',
 };
 
 // fixme generalize and rename this file
@@ -86,6 +88,14 @@ export const CLASSIFICATION = {
     // fixme this is not an administrative unit
     id: '89a00b5a-024f-4630-a722-65a5e68967e5',
     label: 'Representatief orgaan',
+  },
+  OCMW_VERENIGING: {
+    id: 'cc4e2d67-603b-4784-9b61-e50bac1ec089',
+    label: 'OCMW vereniging',
+  },
+  WELZIJNSVERENIGING: {
+    id: 'e8294b73-87c9-4fa2-9441-1937350763c9',
+    label: 'Welzijnsvereniging',
   },
 };
 

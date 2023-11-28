@@ -20,6 +20,8 @@ export function selectByRole(hasWorshipRole) {
           ${CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id},
           ${CLASSIFICATION.POLICE_ZONE.id},
           ${CLASSIFICATION.ASSISTANCE_ZONE.id},
+          ${CLASSIFICATION.OCMW_VERENIGING.id},
+          ${CLASSIFICATION.WELZIJNSVERENIGING.id}
         `;
   }
 }

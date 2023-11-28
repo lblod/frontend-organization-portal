@@ -12,6 +12,7 @@ import {
   CHANGE_EVENTS_PZ_HPZ,
 } from 'frontend-organization-portal/models/change-event-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CHANGE_EVENTS_OCMW_VERENIGINGEN } from '../models/change-event-type';
 
 export default class ChangeEventTypeSelectComponent extends Component {
   @service store;
@@ -69,6 +70,14 @@ export default class ChangeEventTypeSelectComponent extends Component {
       classification.id == CLASSIFICATION_CODE.ASSISTANCE_ZONE
     ) {
       types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_PZ_HPZ));
+    }
+    if (
+      classification.id == CLASSIFICATION_CODE.OCMW_VERENIGING ||
+      classification.id == CLASSIFICATION_CODE.WELZIJNSVERENIGING
+    ) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_OCMW_VERENIGINGEN)
+      );
     }
 
     return types;
