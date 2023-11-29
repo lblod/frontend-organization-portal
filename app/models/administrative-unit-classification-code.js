@@ -18,11 +18,18 @@ export const CLASSIFICATION_CODE = {
   POLICE_ZONE: 'a3922c6d-425b-474f-9a02-ffb71a436bfc',
   ASSISTANCE_ZONE: 'ea446861-2c51-45fa-afd3-4e4a37b71562',
   REPRESENTATIVE_ORGAN: '89a00b5a-024f-4630-a722-65a5e68967e5', // FIXME, this is not an administrative unit
-  OCMW_VERENIGING: 'cc4e2d67-603b-4784-9b61-e50bac1ec089',
+  // OCMW_VERENIGING: 'cc4e2d67-603b-4784-9b61-e50bac1ec089', // Currently not used, split in 5 subtypes below
   WELZIJNSVERENIGING: 'e8294b73-87c9-4fa2-9441-1937350763c9',
+  AUTONOME_VERZORGINGSINSTELLING: '34b5af85-dc9f-468f-9e03-ef89b174c267',
+  ZIEKENHUISVERENIGING: '82250452-83a0-48f4-89cc-b430320493ce', // FIXME this is not an administrative unit
+  VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING:
+    '35833ba2-7371-400b-8df2-2912f66fb153', // FIXME this is not an administrative unit
+  WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP:
+    '82fd21dc-e8bb-4d13-a010-f4a12358ef10', // FIXME this is not an administrative unit
 };
 
-// fixme generalize and rename this file
+// FIXME generalize and rename this file
+// TODO: add non-admin unit OCMW verenigingen
 export function isNonAdministrativeUnit(id) {
   return id === CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN;
 }
@@ -85,17 +92,37 @@ export const CLASSIFICATION = {
     label: 'Hulpverleningszone',
   },
   REPRESENTATIVE_ORGAN: {
-    // fixme this is not an administrative unit
+    // FIXME this is not an administrative unit
     id: '89a00b5a-024f-4630-a722-65a5e68967e5',
     label: 'Representatief orgaan',
   },
-  OCMW_VERENIGING: {
-    id: 'cc4e2d67-603b-4784-9b61-e50bac1ec089',
-    label: 'OCMW vereniging',
-  },
+  // Currently not used, split in 5 subtypes below
+  // OCMW_VERENIGING: {
+  //   id: 'cc4e2d67-603b-4784-9b61-e50bac1ec089',
+  //   label: 'OCMW vereniging',
+  // },
   WELZIJNSVERENIGING: {
     id: 'e8294b73-87c9-4fa2-9441-1937350763c9',
     label: 'Welzijnsvereniging',
+  },
+  AUTONOME_VERZORGINGSINSTELLING: {
+    id: '34b5af85-dc9f-468f-9e03-ef89b174c267',
+    label: 'Autonome verzorgingsinstelling',
+  },
+  ZIEKENHUISVERENIGING: {
+    // FIXME this is not an administrative unit
+    id: '82250452-83a0-48f4-89cc-b430320493ce',
+    label: 'Ziekenhuisvereniging',
+  },
+  VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING: {
+    // FIXME this is not an administrative unit
+    id: '35833ba2-7371-400b-8df2-2912f66fb153',
+    label: 'Vereniging of vennootschap voor sociale dienstverlening',
+  },
+  WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP: {
+    // FIXME this is not an administrative unit
+    id: '82fd21dc-e8bb-4d13-a010-f4a12358ef10',
+    label: 'Woonzorgvereniging of woonzorgvennootschap',
   },
 };
 
@@ -115,6 +142,17 @@ export default class AdministrativeUnitClassificationCodeModel extends Organizat
       this.id === CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
       this.id ===
         CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
+    );
+  }
+
+  get isOcmwAssociation() {
+    return (
+      this.id === CLASSIFICATION_CODE.WELZIJNSVERENIGING ||
+      this.id === CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING ||
+      this.id === CLASSIFICATION_CODE.ZIEKENHUISVERENIGING ||
+      this.id ===
+        CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING ||
+      this.id === CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
     );
   }
 }

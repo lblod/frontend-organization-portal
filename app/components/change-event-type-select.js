@@ -10,9 +10,9 @@ import {
   CHANGE_EVENTS_DISTRICT,
   CHANGE_EVENTS_IGS,
   CHANGE_EVENTS_PZ_HPZ,
+  CHANGE_EVENTS_OCMW_ASSOCIATION,
 } from 'frontend-organization-portal/models/change-event-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import { CHANGE_EVENTS_OCMW_VERENIGINGEN } from '../models/change-event-type';
 
 export default class ChangeEventTypeSelectComponent extends Component {
   @service store;
@@ -72,11 +72,16 @@ export default class ChangeEventTypeSelectComponent extends Component {
       types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_PZ_HPZ));
     }
     if (
-      classification.id == CLASSIFICATION_CODE.OCMW_VERENIGING ||
-      classification.id == CLASSIFICATION_CODE.WELZIJNSVERENIGING
+      classification.id == CLASSIFICATION_CODE.WELZIJNSVERENIGING ||
+      classification.id == CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING ||
+      classification.id == CLASSIFICATION_CODE.ZIEKENHUISVERENIGING ||
+      classification.id ==
+        CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING ||
+      classification.id ==
+        CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
     ) {
       types = types.filter((t) =>
-        this.isIdInList(t.id, CHANGE_EVENTS_OCMW_VERENIGINGEN)
+        this.isIdInList(t.id, CHANGE_EVENTS_OCMW_ASSOCIATION)
       );
     }
 

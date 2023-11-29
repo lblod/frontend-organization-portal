@@ -68,7 +68,7 @@ export const CHANGE_EVENTS_PZ_HPZ = [
   CHANGE_EVENT_TYPE.NAME_CHANGE,
 ];
 
-export const CHANGE_EVENTS_OCMW_VERENIGINGEN = [
+export const CHANGE_EVENTS_OCMW_ASSOCIATION = [
   // TODO: add required event types based on FP
 ];
 

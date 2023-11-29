@@ -22,9 +22,8 @@ const SHAREPOINT_LINK_BASE = {
     'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
   ASSISTANCE_ZONE:
     'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
-  // TODO: add URL for new the following two new types
-  OCMW_VERENIGING: '',
-  WELZIJNSVERENIGING: '',
+  // TODO: add URL for new the following new type
+  OCMW_ASSOCIATION: '',
 };
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexController extends Controller {
@@ -140,6 +139,20 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
     );
   }
 
+  get isOcmwAssoctiation() {
+    const ocmwAssociationTypes = [
+      CLASSIFICATION_CODE.WELZIJNSVERENIGING,
+      CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
+      CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
+      CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+      CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
+    ];
+
+    return ocmwAssociationTypes.includes(
+      this.model.administrativeUnit.classification?.get('id')
+    );
+  }
+
   get sharePointLinkBase() {
     if (this.isWorshipService) {
       return SHAREPOINT_LINK_BASE.WORSHIP_SERVICE;
@@ -161,8 +174,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
       return SHAREPOINT_LINK_BASE.POLICE_ZONE;
     } else if (this.isAssistanceZone) {
       return SHAREPOINT_LINK_BASE.ASSISTANCE_ZONE;
+    } else if (this.isOcmwAssoctiation) {
+      return SHAREPOINT_LINK_BASE.OCMW_ASSOCIATION;
     }
-    // TODO: add option for OCMW verenigingen and Welzijnsverenigingen
     return SHAREPOINT_LINK_BASE.CENTRAL_WORSHIP_SERVICE;
   }
 
