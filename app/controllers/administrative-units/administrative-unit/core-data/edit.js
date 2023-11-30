@@ -150,6 +150,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       structuredIdentifierKBO,
     } = this.model;
 
+    yield Promise.all([contact]);
+
+    console.log(contact.telephone);
+
     yield Promise.all([
       administrativeUnit.validate(),
       address.validate(),
