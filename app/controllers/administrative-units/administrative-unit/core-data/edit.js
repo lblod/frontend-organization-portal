@@ -12,7 +12,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
   get hasValidationErrors() {
     return (
-      this.model.administrativeUnit.isInvalid ||
+      this.model.administrativeUnit.error ||
       this.model.address.isInvalid ||
       this.model.contact.isInvalid ||
       this.model.secondaryContact.isInvalid ||
@@ -21,76 +21,43 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   }
 
   get isWorshipAdministrativeUnit() {
-    return this.isWorshipService || this.isCentralWorshipService;
+    return this.model.administrativeUnit.isWorshipAdministrativeUnit;
   }
 
   get isWorshipService() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.WORSHIP_SERVICE
-    );
+    return this.model.administrativeUnit.isWorshipService;
   }
 
   get isCentralWorshipService() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
-    );
+    return this.model.administrativeUnit.isCentralWorshipService;
   }
 
   get isMunicipality() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.MUNICIPALITY
-    );
+    return this.model.administrativeUnit.isMunicipality;
   }
 
   get isProvince() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.PROVINCE
-    );
+    return this.model.administrativeUnit.isProvince;
   }
 
   get isAgb() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.AGB
-    );
+    return this.model.administrativeUnit.isAgb;
   }
 
   get isApb() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.APB
-    );
+    return this.model.administrativeUnit.isApb;
   }
 
   get isIgs() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-        CLASSIFICATION_CODE.PROJECTVERENIGING ||
-      this.model.administrativeUnit.classification?.get('id') ===
-        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
-      this.model.administrativeUnit.classification?.get('id') ===
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
-      this.model.administrativeUnit.classification?.get('id') ===
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
-    );
+    return this.model.administrativeUnit.isIgs;
   }
 
   get isPoliceZone() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.POLICE_ZONE
-    );
+    return this.model.administrativeUnit.isPoliceZone;
   }
 
   get isAssistanceZone() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.ASSISTANCE_ZONE
-    );
+    return this.model.administrativeUnit.isAssistanceZone;
   }
 
   get classificationCodes() {
@@ -239,5 +206,13 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         administrativeUnit.id
       );
     }
+  }
+
+  removeUnsavedRecords() {
+    this.model.administrativeUnit.reset();
+  }
+
+  reset() {
+    this.removeUnsavedRecords();
   }
 }

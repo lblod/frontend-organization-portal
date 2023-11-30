@@ -15,7 +15,7 @@ export default class AdministrativeUnitsNewController extends Controller {
 
   get hasValidationErrors() {
     return (
-      this.model.administrativeUnitChangeset.isInvalid ||
+      this.model.administrativeUnit.error ||
       this.model.address.isInvalid ||
       this.model.contact.isInvalid ||
       this.model.secondaryContact.isInvalid ||
@@ -24,55 +24,34 @@ export default class AdministrativeUnitsNewController extends Controller {
   }
 
   get isNewOCMW() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.OCMW
-    );
+    return this.model.administrativeUnit.isOCMW;
   }
 
   get isNewAgb() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.AGB
-    );
+    return this.model.administrativeUnit.isAgb;
   }
   get isNewApb() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.APB
-    );
+    return this.model.administrativeUnit.isApb;
   }
 
   get isNewDistrict() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.DISTRICT
-    );
+    return this.model.administrativeUnit.isDistrict;
   }
 
   get isNewMunicipality() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.MUNICIPALITY
-    );
+    return this.model.administrativeUnit.isMunicipality;
   }
 
   get isNewWorshipService() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.WORSHIP_SERVICE
-    );
+    return this.model.administrativeUnit.isWorshipService;
   }
 
   get isNewCentralWorshipService() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
-    );
+    return this.model.administrativeUnit.isCentralWorshipService;
   }
 
   get isNewWorshipAdministrativeUnit() {
-    return this.isNewWorshipService || this.isNewCentralWorshipService;
+    return this.model.administrativeUnit.isWorshipAdministrativeUnit;
   }
 
   get hasCentralWorshipService() {
@@ -85,37 +64,21 @@ export default class AdministrativeUnitsNewController extends Controller {
     return (
       this.isNewWorshipService &&
       typesThatHaveACentralWorshipService.find(
-        (id) =>
-          id == this.model.administrativeUnitChangeset.recognizedWorshipType?.id
+        (id) => id == this.model.administrativeUnit.recognizedWorshipType?.id
       )
     );
   }
 
   get isNewIGS() {
-    const typesThatAreIGS = [
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-    ];
-
-    return typesThatAreIGS.find(
-      (id) => id == this.model.administrativeUnitChangeset.classification?.id
-    );
+    return this.model.administrativeUnit.isIGS;
   }
 
   get isNewPoliceZone() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.POLICE_ZONE
-    );
+    return this.model.administrativeUnit.isPoliceZone;
   }
 
   get isNewAssistanceZone() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.ASSISTANCE_ZONE
-    );
+    return this.model.administrativeUnit.isAssistanceZone;
   }
 
   get classificationCodes() {
@@ -139,14 +102,14 @@ export default class AdministrativeUnitsNewController extends Controller {
 
   @action
   setRelation(unit) {
-    this.model.administrativeUnitChangeset.isSubOrganizationOf = unit;
+    this.model.administrativeUnit.isSubOrganizationOf = unit;
     if (this.isNewAgb || this.isNewApb)
-      this.model.administrativeUnitChangeset.wasFoundedByOrganization = unit;
+      this.model.administrativeUnit.wasFoundedByOrganization = unit;
   }
 
   @action
   setHasParticipants(units) {
-    this.model.administrativeUnitChangeset.hasParticipants = units;
+    this.model.administrativeUnit.hasParticipants = units;
   }
 
   @action
@@ -156,13 +119,13 @@ export default class AdministrativeUnitsNewController extends Controller {
 
   @action
   setClassification(value) {
-    this.model.administrativeUnitChangeset.classification = value;
-    this.model.administrativeUnitChangeset.subOrganizations = [];
-    this.model.administrativeUnitChangeset.foundedOrganizations = [];
-    this.model.administrativeUnitChangeset.isAssociatedWith = [];
-    this.model.administrativeUnitChangeset.isSubOrganizationOf = null;
-    this.model.administrativeUnitChangeset.wasFoundedByOrganization = null;
-    this.model.administrativeUnitChangeset.hasParticipants = [];
+    this.model.administrativeUnit.classification = value;
+    this.model.administrativeUnit.subOrganizations = [];
+    this.model.administrativeUnit.foundedOrganizations = [];
+    this.model.administrativeUnit.isAssociatedWith = [];
+    this.model.administrativeUnit.isSubOrganizationOf = null;
+    this.model.administrativeUnit.wasFoundedByOrganization = null;
+    this.model.administrativeUnit.hasParticipants = [];
   }
 
   @dropTask
@@ -170,7 +133,6 @@ export default class AdministrativeUnitsNewController extends Controller {
     event.preventDefault();
 
     let {
-      administrativeUnitChangeset,
       administrativeUnit,
       centralWorshipService,
       worshipService,
@@ -185,7 +147,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     } = this.model;
 
     yield Promise.all([
-      administrativeUnitChangeset.validate(),
+      administrativeUnit.validate(),
       address.validate(),
       contact.validate(),
       secondaryContact.validate(),
@@ -204,10 +166,7 @@ export default class AdministrativeUnitsNewController extends Controller {
         newAdministrativeUnit = administrativeUnit;
       }
       // Copy data entered in the frontend to the new admin unit
-      copyAdministrativeUnitData(
-        newAdministrativeUnit,
-        administrativeUnitChangeset
-      );
+      copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
       structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
       identifierKBO.structuredIdentifier = structuredIdentifierKBO;
@@ -293,12 +252,12 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.identifierKBO.rollbackAttributes();
     this.model.structuredIdentifierSharepoint.rollbackAttributes();
     this.model.structuredIdentifierKBO.rollbackAttributes();
-    this.model.administrativeUnitChangeset.rollbackAttributes();
+    this.model.administrativeUnit.reset();
   }
 
   removeUnsavedChangesetRecords() {
-    if (this.model.administrativeUnitChangeset.isNew) {
-      this.model.administrativeUnitChangeset.destroyRecord();
+    if (this.model.administrativeUnit.isNew) {
+      this.model.administrativeUnit.destroyRecord();
     }
 
     if (this.model.address.isNew) {

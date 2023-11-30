@@ -1,6 +1,8 @@
-import Model, { hasMany } from '@ember-data/model';
+import { hasMany } from '@ember-data/model';
+import { object } from 'yup';
+import AbstractValidationModel from './abstract-validation-model';
 
-export default class AgentModel extends Model {
+export default class AgentModel extends AbstractValidationModel {
   @hasMany('post', {
     inverse: null,
   })
@@ -10,4 +12,8 @@ export default class AgentModel extends Model {
     inverse: null,
   })
   contacts;
+
+  get validationSchema() {
+    return object().shape({});
+  }
 }

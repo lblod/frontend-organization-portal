@@ -1,4 +1,6 @@
-import Model, { attr } from '@ember-data/model';
+import { attr } from '@ember-data/model';
+import AbstractValidationModel from './abstract-validation-model';
+import { object } from 'yup';
 
 export const RECOGNIZED_WORSHIP_TYPE = {
   ROMAN_CATHOLIC: 'b13d1d623626bc1ee75c7d20bc60e3c0',
@@ -15,6 +17,10 @@ export const CENTRAL_WORSHIP_SERVICE_BLACKLIST = [
   'e8cba1540b35a32e9cb45126c38c03c6', // Protestants
 ];
 
-export default class RecognizedWorshipTypeModel extends Model {
+export default class RecognizedWorshipTypeModel extends AbstractValidationModel {
   @attr label;
+
+  get validationSchema() {
+    return object().shape({});
+  }
 }

@@ -42,7 +42,7 @@
                 <Item
                   @labelFor="worship-service-name"
                   @required={{true}}
-                  @errorMessage={{@model.administrativeUnit.error.name.validation}}
+                  @errorMessage={{@model.administrativeUnit.error.name}}
                 >
                   <:label>Naam</:label>
                   <:content as |hasError|>
@@ -83,7 +83,7 @@
                   <Item
                     @labelFor="recognized-worship-type-select"
                     @required={{true}}
-                    @errorMessage={{@model.administrativeUnit.error.recognizedWorshipType.validation}}
+                    @errorMessage={{@model.administrativeUnit.error.recognizedWorshipType}}
                   >
                     <:label>Soort eredienst</:label>
                     <:content as |hasError|>
@@ -171,7 +171,7 @@
                   </Item>
                   <Item
                     @labelFor="expectedEndDate"
-                    @errorMessage={{@model.administrativeUnit.error.expectedEndDate.validation}}
+                    @errorMessage={{@model.administrativeUnit.error.expectedEndDate}}
                   >
                     <:label>Geplande einddatum</:label>
                     <:content as |hasError|>
@@ -314,7 +314,7 @@
                     <Item
                       @labelFor="related-gemeente"
                       @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf}}
                     >
                       <:label>Gemeente</:label>
                       <:content as |hasError|>
@@ -343,7 +343,7 @@
                       <Item
                         @labelFor="oprichting-gemeente"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
+                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization}}
                       >
                         <:label>Werd opgericht door</:label>
                         <:content as |hasError|>
@@ -363,7 +363,7 @@
                       <Item
                         @labelFor="has-participants"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.hasParticipants.validation}}
+                        @errorMessage={{@model.administrativeUnit.error.hasParticipants}}
                       >
                         <:label>Heeft als participanten</:label>
                         <:content as |hasError|>
@@ -381,7 +381,7 @@
                       <Item
                         @labelFor="related-provincie"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf}}
                       >
                         <:label>Provincie</:label>
                         <:content as |hasError|>
@@ -398,7 +398,7 @@
                     <Item
                       @labelFor="related-gemeente"
                       @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
+                      @errorMessage={{@model.administrativeUnit.error.isAssociatedWith}}
                     >
                       <:label>Gemeente</:label>
                       <:content as |hasError|>
@@ -416,7 +416,7 @@
                     <Item
                       @labelFor="opregicht-provincie"
                       @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
+                      @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization}}
                     >
                       <:label>Werd opgericht door</:label>
                       <:content as |hasError|>

@@ -8,9 +8,7 @@ import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import { getAddressValidations } from 'frontend-organization-portal/validations/address';
 import contactValidations from 'frontend-organization-portal/validations/contact-point';
-import administrativeUnitValidations, {
-  getStructuredIdentifierKBOValidations,
-} from 'frontend-organization-portal/validations/administrative-unit';
+import { getStructuredIdentifierKBOValidations } from 'frontend-organization-portal/validations/administrative-unit';
 import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
 
 export default class AdministrativeUnitsNewRoute extends Route {
@@ -31,10 +29,6 @@ export default class AdministrativeUnitsNewRoute extends Route {
     address.country = 'België';
 
     return {
-      administrativeUnitChangeset: createValidatedChangeset(
-        this.store.createRecord('administrative-unit'),
-        administrativeUnitValidations
-      ),
       administrativeUnit: this.store.createRecord('administrative-unit'),
       centralWorshipService: this.store.createRecord('central-worship-service'),
       worshipService: this.store.createRecord('worship-service'),

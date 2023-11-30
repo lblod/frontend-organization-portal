@@ -1,5 +1,6 @@
 import { attr, hasMany, belongsTo } from '@ember-data/model';
 import AgentModel from './agent';
+import { string } from 'yup';
 
 export default class OrganizationModel extends AgentModel {
   @attr name;
@@ -86,4 +87,10 @@ export default class OrganizationModel extends AgentModel {
     inverse: 'participatesIn',
   })
   hasParticipants;
+
+  get validationSchema() {
+    return super.validationSchema.shape({
+      name: string().required('Vul de naam in'),
+    });
+  }
 }

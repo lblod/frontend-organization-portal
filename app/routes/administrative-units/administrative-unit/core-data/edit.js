@@ -11,9 +11,7 @@ import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import { getAddressValidations } from 'frontend-organization-portal/validations/address';
 import contactValidations from 'frontend-organization-portal/validations/contact-point';
-import administrativeUnitValidations, {
-  getStructuredIdentifierKBOValidations,
-} from 'frontend-organization-portal/validations/administrative-unit';
+import { getStructuredIdentifierKBOValidations } from 'frontend-organization-portal/validations/administrative-unit';
 import { A } from '@ember/array';
 import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
@@ -107,10 +105,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     }
 
     return {
-      administrativeUnit: createValidatedChangeset(
-        administrativeUnit,
-        administrativeUnitValidations
-      ),
+      administrativeUnit,
       address: createValidatedChangeset(address, getAddressValidations(true)),
       contact: createValidatedChangeset(primaryContact, contactValidations),
       secondaryContact: createValidatedChangeset(
@@ -158,5 +153,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
 
       return missingIdentifiers;
     }, []);
+  }
+
+  resetController(controller) {
+    super.resetController(...arguments);
+    controller.reset();
   }
 }
