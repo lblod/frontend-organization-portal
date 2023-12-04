@@ -2,10 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import {
-  CLASSIFICATION_CODE,
-  isNonAdministrativeUnit,
-} from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsIndexController extends Controller {
   @service router;
@@ -39,17 +36,6 @@ export default class AdministrativeUnitsIndexController extends Controller {
       : this.model.loadedAdministrativeUnits;
   }
 
-  @action
-  getOrgRoute(org) {
-    if (isNonAdministrativeUnit(org.classification_id)) {
-      this.router.transitionTo('organizations.organization.index', org.id);
-      return;
-    }
-    this.router.transitionTo(
-      'administrative-units.administrative-unit.index',
-      org.id
-    );
-  }
   get isLoading() {
     return this.model.loadAdministrativeUnitsTaskInstance.isRunning;
   }
@@ -76,13 +62,15 @@ export default class AdministrativeUnitsIndexController extends Controller {
     return this.model.loadAdministrativeUnitsTaskInstance.isError;
   }
 
-  get modelHasOnlyWorshipAdministrativeUnits() {
+  get modelHasOnlyWorshipOrganizations() {
     if (this.administrativeUnits && this.administrativeUnits.length) {
       return !this.administrativeUnits.toArray().some((adminUnit) => {
         return (
           adminUnit.classification_id !== CLASSIFICATION_CODE.WORSHIP_SERVICE &&
           adminUnit.classification_id !==
-            CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+            CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE &&
+          adminUnit.classification_id !==
+            CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN
         );
       });
     }

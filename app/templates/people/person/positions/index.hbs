@@ -58,7 +58,7 @@
           </AuLink>
         {{else}}
           <AuLink
-            @route="people.person.positions.agent"
+            @route="people.person.positions.functionary"
             @models={{array @model.person.id position.id}}
           >
             {{position.role}}
@@ -76,18 +76,13 @@
           </AuLink>
         {{else}}
           {{#each position.administrativeUnits as |administrativeUnit index|}}
-            {{#if administrativeUnit.classification.isIgs}}
+            <AuLink
+              @route="administrative-units.administrative-unit"
+              @model={{administrativeUnit.id}}
+            >
               {{administrativeUnit.name}}
               ({{administrativeUnit.classification.label}})
-            {{else}}
-              <AuLink
-                @route="administrative-units.administrative-unit"
-                @model={{administrativeUnit.id}}
-              >
-                {{administrativeUnit.name}}
-                ({{administrativeUnit.classification.label}})
-              </AuLink>
-            {{/if}}
+            </AuLink>
             {{#if (gt position.administrativeUnits.length 1)}}
               {{unless index "/"}}
             {{/if}}

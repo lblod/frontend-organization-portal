@@ -1,6 +1,7 @@
-import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
+import { attr, hasMany, belongsTo } from '@ember-data/model';
+import AgentModel from './agent';
 
-export default class OrganizationModel extends Model {
+export default class OrganizationModel extends AgentModel {
   @attr name;
   @attr alternativeName;
   @attr('date') expectedEndDate;

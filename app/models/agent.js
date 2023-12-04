@@ -1,22 +1,13 @@
-import { attr, belongsTo } from '@ember-data/model';
-import AgentInPositionModel from './agent-in-position';
+import Model, { hasMany } from '@ember-data/model';
 
-export default class AgentModel extends AgentInPositionModel {
-  @attr('date') startDate;
-  @attr('date') endDate;
-
-  @belongsTo('agent-status-code', {
+export default class AgentModel extends Model {
+  @hasMany('post', {
     inverse: null,
   })
-  status;
+  positions;
 
-  @belongsTo('person', {
-    inverse: 'agents',
-  })
-  governingAlias;
-
-  @belongsTo('board-position', {
+  @hasMany('contact-point', {
     inverse: null,
   })
-  boardPosition;
+  contacts;
 }

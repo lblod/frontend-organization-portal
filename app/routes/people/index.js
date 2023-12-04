@@ -72,46 +72,27 @@ export default class PeopleIndexRoute extends Route {
       } else if (person.uri.includes('/mandatarissen/')) {
         person.positionRoute = 'people.person.positions.mandatory';
       } else if (person.uri.includes('/functionarissen/')) {
-        person.positionRoute = 'people.person.positions.agent';
+        person.positionRoute = 'people.person.positions.functionary';
       }
 
       // In the case of functionarissen, a bestuursfunctie is linked to multiple units (OCMW and Gemeente)
       person.organizations = [];
       if (Array.isArray(person.organization_id)) {
         for (let [index, id] of person.organization_id.entries()) {
-          const displayLinkToOrgaan = !this.isClassificationAgbOrApbOrIgs(
-            person.organization_classification[index]
-          );
           person.organizations.push({
             id,
             classification: person.organization_classification[index],
-            displayLinkToOrgaan,
           });
         }
       } else {
-        const displayLinkToOrgaan = !this.isClassificationAgbOrApbOrIgs(
-          person.organization_classification
-        );
         person.organizations = [
           {
             id: person.organization_id,
             classification: person.organization_classification,
-            displayLinkToOrgaan,
           },
         ];
       }
     }
     return page;
-  }
-
-  isClassificationAgbOrApbOrIgs(classification) {
-    return (
-      classification === 'Autonoom gemeentebedrijf' ||
-      classification === 'Autonoom provinciebedrijf' ||
-      classification === 'Projectvereniging' ||
-      classification === 'Dienstverlenende vereniging' ||
-      classification === 'Opdrachthoudende vereniging' ||
-      classification === 'Opdrachthoudende vereniging met private deelname'
-    );
   }
 }

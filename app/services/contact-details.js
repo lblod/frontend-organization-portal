@@ -33,12 +33,13 @@ export default class ContactDetailsService extends Service {
     if (onlyActivePosition && !isActivePosition(minister.agentEndDate)) {
       return null;
     }
-    const position = await minister.position;
+    const position = await minister.ministerPosition;
     const role = await position.function;
     const administrativeUnit = await position.worshipService;
     const mContacts = await minister.contacts;
     const primaryContact = findPrimaryContact(mContacts);
     const secondaryContact = findSecondaryContact(mContacts);
+
     return {
       position: minister,
       title: `${role.label}, ${administrativeUnit.name}`,
@@ -81,13 +82,15 @@ export default class ContactDetailsService extends Service {
     };
   }
 
-  async agentToPosition(agent, onlyActivePosition = true) {
-    const boardPosition = await agent.boardPosition;
-    if (onlyActivePosition && !isActivePosition(agent.endDate)) {
+  async functionaryToPosition(functionary, onlyActivePosition = true) {
+    const boardPosition = await functionary.boardPosition;
+
+    if (onlyActivePosition && !isActivePosition(functionary.endDate)) {
       return null;
     }
+
     const role = await boardPosition.roleBoard;
-    const status = await agent.status;
+    const status = await functionary.status;
     const governingBodies = await boardPosition.governingBodies;
 
     let administrativeUnits = [];
@@ -95,19 +98,20 @@ export default class ContactDetailsService extends Service {
       const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
       const administrativeUnit =
         await isTimeSpecializationOf.administrativeUnit;
+
       administrativeUnits.push(administrativeUnit);
     }
 
     const primaryContact = await boardPosition.contactPoint;
 
     return {
-      position: agent,
+      position: functionary,
       title: `${role.label}, ${administrativeUnits[0].name}`,
       role: role.label,
-      type: 'agent',
-      id: agent.id,
-      startDate: agent.startDate,
-      endDate: agent.endDate,
+      type: 'functionary',
+      id: functionary.id,
+      startDate: functionary.startDate,
+      endDate: functionary.endDate,
       administrativeUnits,
       status,
       primaryContact,
@@ -121,8 +125,8 @@ export default class ContactDetailsService extends Service {
     const positions = [];
 
     const mandatories = (await person.mandatories).toArray(); // mandatarissen
-    const agents = (await person.agents).toArray(); // leidinggevenden
-    const ministers = (await person.agentsInPosition).toArray(); // bedinaren
+    const functionaries = (await person.functionaries).toArray(); // leidinggevenden
+    const ministers = (await person.agentsInPosition).toArray(); // bedienaren
 
     for (let mandatory of mandatories) {
       const position = await this.mandatoryToPosition(mandatory);
@@ -131,8 +135,8 @@ export default class ContactDetailsService extends Service {
       }
     }
 
-    for (let agent of agents) {
-      const position = await this.agentToPosition(agent);
+    for (let functionary of functionaries) {
+      const position = await this.functionaryToPosition(functionary);
       if (position) {
         positions.push(position);
       }

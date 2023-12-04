@@ -129,7 +129,9 @@ export default class RichTextEditorComponent extends Component {
       const hasTextContent = Boolean(
         this.editorController.mainEditorState.doc.textContent
       );
-      const editorValue = hasTextContent ? stripNbspEntities(htmlContent) : '';
+      const editorValue = hasTextContent
+        ? postProccessLinks(stripNbspEntities(htmlContent))
+        : '';
       // Only trigger an update if the value actually changed.
       // This prevents that the form observer is triggered even though no editor content was changed.
       if (this.value !== editorValue) {
@@ -168,4 +170,8 @@ export default class RichTextEditorComponent extends Component {
 // https://github.com/kanselarij-vlaanderen/frontend-kaleidos/blob/6489a2dec8d58f2cc981f0c45267821169061cc7/app/components/news-item/edit-panel.js#L84-L100
 function stripNbspEntities(htmlContent) {
   return htmlContent.replaceAll(/&nbsp;/gm, ' ');
+}
+
+function postProccessLinks(htmlContent) {
+  return htmlContent.replaceAll('<a ', '<a target="_blank" ');
 }

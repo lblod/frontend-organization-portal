@@ -1,21 +1,27 @@
 import Route from '@ember/routing/route';
 
-export default class PeoplePersonPositionsAgentIndexRoute extends Route {
+export default class PeoplePersonPositionsFunctionaryIndexRoute extends Route {
   async model() {
-    let { person, agent } = this.modelFor('people.person.positions.agent');
+    let { person, functionary } = this.modelFor(
+      'people.person.positions.functionary'
+    );
 
-    let boardPosition = await agent.boardPosition;
+    let boardPosition = await functionary.boardPosition;
 
     const governingBodiesInTime = await boardPosition.governingBodies;
 
     let governingBodies = [];
     let administrativeUnits = [];
+
     for (const governingBodyInTime of governingBodiesInTime.toArray()) {
       const isTimeSpecializationOf =
         await governingBodyInTime.isTimeSpecializationOf;
+
       governingBodies.push(isTimeSpecializationOf);
+
       const administrativeUnit =
         await isTimeSpecializationOf.administrativeUnit;
+
       administrativeUnits.push(administrativeUnit);
     }
 
@@ -24,7 +30,7 @@ export default class PeoplePersonPositionsAgentIndexRoute extends Route {
 
     return {
       person,
-      agent,
+      functionary,
       address,
       contact,
       governingBodiesInTime,
