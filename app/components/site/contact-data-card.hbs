@@ -25,7 +25,7 @@
           <Item>
             <:label>Primair telefoonnummer</:label>
             <:content>
-              {{@primaryContact.telephone}}
+              {{tel-format @primaryContact.telephone}}
             </:content>
           </Item>
         {{/if}}
@@ -33,7 +33,7 @@
           <Item>
             <:label>Secundair telefoonnummer</:label>
             <:content>
-              {{@secondaryContact.telephone}}
+              {{tel-format @secondaryContact.telephone}}
             </:content>
           </Item>
         {{/if}}

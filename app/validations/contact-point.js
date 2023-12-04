@@ -4,7 +4,7 @@ import { validateUrl } from 'frontend-organization-portal/validators/url';
 export default {
   telephone: validateFormat({
     allowBlank: true,
-    regex: /^\+?[0-9]*$/,
+    regex: /^(tel:)?\+?[0-9]*$/,
     message: 'Enkel een plusteken en cijfers zijn toegelaten',
   }),
   website: validateUrl(),

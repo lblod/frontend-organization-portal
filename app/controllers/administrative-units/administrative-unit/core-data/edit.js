@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
@@ -182,6 +183,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       if (contact.isDirty) {
         let isNewContact = contact.isNew;
 
+        contact.telephone = transformPhoneNumbers(contact.telephone);
         contact = setEmptyStringsToNull(contact);
         yield contact.save();
 
@@ -194,6 +196,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       if (secondaryContact.isDirty) {
         let isNewContact = secondaryContact.isNew;
 
+        secondaryContact.telephone = transformPhoneNumbers(
+          secondaryContact.telephone
+        );
         secondaryContact = setEmptyStringsToNull(secondaryContact);
         yield secondaryContact.save();
 

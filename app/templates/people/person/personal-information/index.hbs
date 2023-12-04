@@ -252,7 +252,7 @@
                 <Item>
                   <:label>Primair telefoonnummer</:label>
                   <:content>
-                    {{position.primaryContact.telephone}}
+                    {{tel-format position.primaryContact.telephone}}
                   </:content>
                 </Item>
               {{/if}}
@@ -260,7 +260,7 @@
                 <Item>
                   <:label>Secundair telefoonnummer</:label>
                   <:content>
-                    {{position.secondaryContact.telephone}}
+                    {{tel-format position.secondaryContact.telephone}}
                   </:content>
                 </Item>
               {{/if}}
