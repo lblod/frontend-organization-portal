@@ -7,9 +7,7 @@ import {
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import { getAddressValidations } from 'frontend-organization-portal/validations/address';
-import contactValidations from 'frontend-organization-portal/validations/contact-point';
 import { getStructuredIdentifierKBOValidations } from 'frontend-organization-portal/validations/administrative-unit';
-import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
 
 export default class AdministrativeUnitsNewRoute extends Route {
   @service store;
@@ -34,14 +32,8 @@ export default class AdministrativeUnitsNewRoute extends Route {
       worshipService: this.store.createRecord('worship-service'),
       primarySite: this.store.createRecord('site'),
       address: createValidatedChangeset(address, getAddressValidations(true)),
-      contact: createValidatedChangeset(
-        createPrimaryContact(this.store),
-        contactValidations
-      ),
-      secondaryContact: createValidatedChangeset(
-        createSecondaryContact(this.store),
-        secondaryContactValidations
-      ),
+      contact: createPrimaryContact(this.store),
+      secondaryContact: createSecondaryContact(this.store),
       identifierKBO: this.store.createRecord('identifier', {
         idName: ID_NAME.KBO,
       }),

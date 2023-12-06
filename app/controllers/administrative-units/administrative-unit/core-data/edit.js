@@ -14,8 +14,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     return (
       this.model.administrativeUnit.error ||
       this.model.address.isInvalid ||
-      this.model.contact.isInvalid ||
-      this.model.secondaryContact.isInvalid ||
+      this.model.contact.error ||
+      this.model.secondaryContact.error ||
       this.model.structuredIdentifierKBO.isInvalid
     );
   }
@@ -125,6 +125,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       structuredIdentifierKBO.validate(),
     ]);
 
+    console.log('hasValidationErrors', this.hasValidationErrors);
+
     if (!this.hasValidationErrors) {
       let primarySite = yield administrativeUnit.primarySite;
 
@@ -210,6 +212,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
   removeUnsavedRecords() {
     this.model.administrativeUnit.reset();
+    this.model.contact.reset();
+    this.model.secondaryContact.reset();
   }
 
   reset() {

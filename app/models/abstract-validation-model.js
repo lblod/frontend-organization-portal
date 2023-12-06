@@ -1,6 +1,6 @@
 import Model from '@ember-data/model';
 import { tracked } from '@glimmer/tracking';
-import { object, array, addMethod, ValidationError } from 'yup';
+import { object, array, addMethod, ValidationError, string } from 'yup';
 
 /**
  * Ember Data Model with Yup-based Validation
@@ -121,3 +121,17 @@ const validateRelationship = async (relationship, options) => {
 
   throw new ValidationError(relationship.error, relationship, options.path);
 };
+
+// Add custom Yup method to validate phone number
+addMethod(string, 'phone', function (message) {
+  return this.test('phone', message, function (value) {
+    console.log('value', value);
+    if (!value) {
+      return true;
+    }
+
+    const isValid = /^(tel:)?\+?[0-9]*$/.test(value);
+    console.log('isValid', isValid);
+    return isValid;
+  });
+});

@@ -17,8 +17,8 @@ export default class AdministrativeUnitsNewController extends Controller {
     return (
       this.model.administrativeUnit.error ||
       this.model.address.isInvalid ||
-      this.model.contact.isInvalid ||
-      this.model.secondaryContact.isInvalid ||
+      this.model.contact.error ||
+      this.model.secondaryContact.error ||
       this.model.structuredIdentifierKBO.isInvalid
     );
   }
@@ -253,6 +253,8 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.structuredIdentifierSharepoint.rollbackAttributes();
     this.model.structuredIdentifierKBO.rollbackAttributes();
     this.model.administrativeUnit.reset();
+    this.model.contact.reset();
+    this.model.secondaryContact.reset();
   }
 
   removeUnsavedChangesetRecords() {

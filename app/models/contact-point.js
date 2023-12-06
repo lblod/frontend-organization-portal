@@ -1,11 +1,13 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import { attr, belongsTo } from '@ember-data/model';
+import AbstractValidationModel from './abstract-validation-model';
+import { object, string } from 'yup';
 
 export const CONTACT_TYPE = {
   PRIMARY: 'Primary',
   SECONDARY: 'Secondary',
 };
 
-export default class ContactPointModel extends Model {
+export default class ContactPointModel extends AbstractValidationModel {
   @attr email;
   @attr telephone;
   @attr fax;
@@ -16,6 +18,14 @@ export default class ContactPointModel extends Model {
     inverse: null,
   })
   contactAddress;
+
+  get validationSchema() {
+    return object().shape({
+      email: string().email('Geef een geldig e-mailadres in'),
+      telephone: string().phone(),
+      website: string().url(),
+    });
+  }
 }
 
 export function createPrimaryContact(store) {

@@ -148,7 +148,7 @@
       <:right as |Item|>
         <Item
           @labelFor="site-contact-phone-number"
-          @errorMessage={{@primaryContact.error.telephone.validation}}
+          @errorMessage={{@primaryContact.error.telephone}}
         >
           <:label>Primair telefoonnummer</:label>
           <:content as |hasError|>
@@ -169,7 +169,7 @@
 
         <Item
           @labelFor="site-contact-secondary-phone-number"
-          @errorMessage={{@secondaryContact.error.telephone.validation}}
+          @errorMessage={{@secondaryContact.error.telephone}}
         >
           <:label>Secundair telefoonnummer</:label>
           <:content as |hasError|>
@@ -189,7 +189,7 @@
         </Item>
         <Item
           @labelFor="site-contact-email"
-          @errorMessage={{@primaryContact.error.email.validation}}
+          @errorMessage={{@primaryContact.error.email}}
         >
           <:label>E-mail</:label>
           <:content as |errorMessage|>
@@ -207,7 +207,7 @@
         </Item>
         <Item
           @labelFor="site-contact-website"
-          @errorMessage={{@primaryContact.error.website.validation}}
+          @errorMessage={{@primaryContact.error.website}}
         >
           <:label>Website</:label>
           <:content as |hasError|>

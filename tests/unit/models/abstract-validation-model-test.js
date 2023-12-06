@@ -109,6 +109,44 @@ module('Unit | Model | abstract validation model', function (hooks) {
       });
     });
   });
+
+  module('phone validation', function () {
+    test('it returns true when phone is empty', async function (assert) {
+      this.owner.register('model:test-validation-model', PhoneValidationModel);
+      const model = this.store().createRecord('test-validation-model', {});
+
+      const isValid = await model.validate();
+
+      assert.true(isValid);
+      assert.deepEqual(model.error, null);
+    });
+
+    test('it returns true when phone is valid', async function (assert) {
+      this.owner.register('model:test-validation-model', PhoneValidationModel);
+      const model = this.store().createRecord('test-validation-model', {
+        phone: '+32412345678',
+      });
+
+      const isValid = await model.validate();
+
+      assert.true(isValid);
+      assert.deepEqual(model.error, null);
+    });
+
+    test('it returns error when phone number is wrong', async function (assert) {
+      this.owner.register('model:test-validation-model', PhoneValidationModel);
+      const model = this.store().createRecord('test-validation-model', {
+        phone: ':32477',
+      });
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.deepEqual(model.error, {
+        phone: 'Phone is wrong',
+      });
+    });
+  });
 });
 
 class BasicValidationModel extends AbstractValidationModel {
@@ -161,6 +199,16 @@ class HasManyValidationModel extends AbstractValidationModel {
         message: 'Selecteer een optie',
       }),
       manyOptional: array().relationship(),
+    });
+  }
+}
+
+class PhoneValidationModel extends AbstractValidationModel {
+  @attr phone;
+
+  get validationSchema() {
+    return object().shape({
+      phone: string().phone('Phone is wrong'),
     });
   }
 }
