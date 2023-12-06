@@ -8,13 +8,13 @@
           @itemComponent={{Item}}
           @isSearchEnabledInitially={{@isAddressSearchEnabledInitially}}
           @required={{true}}
-          @error={{@address.isInvalid}}
+          @error={{@address.error}}
         >
           <:manualAddressInputBeforeButton>
             <Item
               @labelFor="site-address-country"
               @required={{true}}
-              @errorMessage={{@address.error.country.validation}}
+              @errorMessage={{@address.error.country}}
             >
               <:label>Land</:label>
               <:content as |hasError|>
@@ -29,7 +29,7 @@
             <Item
               @labelFor="site-address-street-name"
               @required={{true}}
-              @errorMessage={{@address.error.street.validation}}
+              @errorMessage={{@address.error.street}}
             >
               <:label>Straat</:label>
               <:content as |hasError|>
@@ -47,7 +47,7 @@
             <Item
               @labelFor="site-address-house-number"
               @required={{true}}
-              @errorMessage={{@address.error.number.validation}}
+              @errorMessage={{@address.error.number}}
             >
               <:label>Huisnummer</:label>
               <:content as |hasError|>
@@ -74,7 +74,7 @@
             <Item
               @labelFor="site-address-postal-code"
               @required={{true}}
-              @errorMessage={{@address.error.postcode.validation}}
+              @errorMessage={{@address.error.postcode}}
             >
               <:label>Postcode</:label>
               <:content as |hasError|>
@@ -87,11 +87,11 @@
                 />
               </:content>
             </Item>
-            {{#if this.isCountryBelgium}}
+            {{#if @address.isCountryBelgium}}
               <Item
                 @labelFor="site-address-municipality"
                 @required={{true}}
-                @errorMessage={{@address.error.municipality.validation}}
+                @errorMessage={{@address.error.municipality}}
               >
                 <:label>Gemeente</:label>
                 <:content as |hasError|>
@@ -108,7 +108,7 @@
               <Item
                 @labelFor="site-address-municipality"
                 @required={{true}}
-                @errorMessage={{@address.error.municipality.validation}}
+                @errorMessage={{@address.error.municipality}}
               >
                 <:label>Gemeente</:label>
                 <:content as |hasError|>
@@ -124,11 +124,11 @@
             {{/if}}
           </:manualAddressInput>
           <:commonInput>
-            {{#if this.isCountryBelgium}}
+            {{#if @address.isCountryBelgium}}
               <Item
                 @labelFor="site-address-province"
                 @required={{true}}
-                @errorMessage={{@address.error.province.validation}}
+                @errorMessage={{@address.error.province}}
               >
                 <:label>Provincie</:label>
                 <:content as |hasError|>

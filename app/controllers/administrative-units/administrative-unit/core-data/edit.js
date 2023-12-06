@@ -13,7 +13,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   get hasValidationErrors() {
     return (
       this.model.administrativeUnit.error ||
-      this.model.address.isInvalid ||
+      this.model.address.error ||
       this.model.contact.error ||
       this.model.secondaryContact.error ||
       this.model.structuredIdentifierKBO.isInvalid
@@ -139,7 +139,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       }
 
       if (address.isDirty) {
-        if (address.country != 'België') {
+        if (!address.isCountryBelgium) {
           address.province = '';
         }
         address.fullAddress = combineFullAddress(address);
@@ -214,6 +214,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     this.model.administrativeUnit.reset();
     this.model.contact.reset();
     this.model.secondaryContact.reset();
+    this.model.address.reset();
   }
 
   reset() {

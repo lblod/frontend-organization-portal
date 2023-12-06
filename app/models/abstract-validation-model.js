@@ -124,14 +124,21 @@ const validateRelationship = async (relationship, options) => {
 
 // Add custom Yup method to validate phone number
 addMethod(string, 'phone', function (message) {
-  return this.test('phone', message, function (value) {
-    console.log('value', value);
+  return this.test('phone', message || '${path} is wrong', function (value) {
     if (!value) {
       return true;
     }
 
     const isValid = /^(tel:)?\+?[0-9]*$/.test(value);
-    console.log('isValid', isValid);
+
     return isValid;
+  });
+});
+
+// Add custom Yup method validates that the current field is required when all dependent fields are truthy
+addMethod(string, 'requiredWhenAll', function (dependentFields, message) {
+  return this.when(dependentFields, {
+    is: (...fields) => fields.every((field) => !!field),
+    then: (schema) => schema.required(message || '${path} is required'),
   });
 });

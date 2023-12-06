@@ -9,7 +9,6 @@ import {
 import { createAddress } from 'frontend-organization-portal/models/address';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
-import { getAddressValidations } from 'frontend-organization-portal/validations/address';
 import { getStructuredIdentifierKBOValidations } from 'frontend-organization-portal/validations/administrative-unit';
 import { A } from '@ember/array';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
@@ -104,9 +103,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
 
     return {
       administrativeUnit,
-      address: createValidatedChangeset(address, getAddressValidations(true)),
+      address,
       contact: primaryContact,
-      secondaryContact: secondaryContact,
+      secondaryContact,
       identifierKBO,
       identifierSharepoint,
       identifierNIS,

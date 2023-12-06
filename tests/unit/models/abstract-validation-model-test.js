@@ -147,6 +147,49 @@ module('Unit | Model | abstract validation model', function (hooks) {
       });
     });
   });
+
+  module('required when all', function () {
+    test('it returns true when all required attributes are filled in', async function (assert) {
+      this.owner.register('model:test-validation-model', RequireWhenAllModel);
+      const model = this.store().createRecord('test-validation-model', {
+        one: 'one',
+        two: 'two',
+        three: 'three',
+      });
+
+      const isValid = await model.validate();
+
+      assert.true(isValid);
+      assert.deepEqual(model.error, null);
+    });
+
+    test('It returns true when one is not filled in', async function (assert) {
+      this.owner.register('model:test-validation-model', RequireWhenAllModel);
+      const model = this.store().createRecord('test-validation-model', {
+        one: 'one',
+      });
+
+      const isValid = await model.validate();
+
+      assert.true(isValid);
+      assert.deepEqual(model.error, null);
+    });
+
+    test('it returns error when dependcies are filled and required is missing', async function (assert) {
+      this.owner.register('model:test-validation-model', RequireWhenAllModel);
+      const model = this.store().createRecord('test-validation-model', {
+        one: 'one',
+        three: 'three',
+      });
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.deepEqual(model.error, {
+        two: 'two is required',
+      });
+    });
+  });
 });
 
 class BasicValidationModel extends AbstractValidationModel {
@@ -209,6 +252,18 @@ class PhoneValidationModel extends AbstractValidationModel {
   get validationSchema() {
     return object().shape({
       phone: string().phone('Phone is wrong'),
+    });
+  }
+}
+
+class RequireWhenAllModel extends AbstractValidationModel {
+  @attr one;
+  @attr two;
+  @attr three;
+
+  get validationSchema() {
+    return object().shape({
+      two: string().requiredWhenAll(['one', 'three']),
     });
   }
 }

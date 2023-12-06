@@ -16,7 +16,7 @@ export default class AdministrativeUnitsNewController extends Controller {
   get hasValidationErrors() {
     return (
       this.model.administrativeUnit.error ||
-      this.model.address.isInvalid ||
+      this.model.address.error ||
       this.model.contact.error ||
       this.model.secondaryContact.error ||
       this.model.structuredIdentifierKBO.isInvalid
@@ -154,6 +154,18 @@ export default class AdministrativeUnitsNewController extends Controller {
       structuredIdentifierKBO.validate(),
     ]);
 
+    console.log(
+      'this.model.administrativeUnit.error',
+      this.model.administrativeUnit.error
+    );
+    console.log('this.model.address', this.model.address);
+    console.log('this.model.address.error', this.model.address.error);
+    console.log('this.model.contact.error', this.model.contact.error);
+    console.log(
+      'this.model.secondaryContact.error',
+      this.model.secondaryContact.error
+    );
+
     if (!this.hasValidationErrors) {
       const siteTypes = yield this.store.findAll('site-type');
       let newAdministrativeUnit;
@@ -191,7 +203,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       );
       yield secondaryContact.save();
 
-      if (address.country != 'België') {
+      if (!address.isCountryBelgium) {
         address.province = '';
       }
 
@@ -255,6 +267,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.administrativeUnit.reset();
     this.model.contact.reset();
     this.model.secondaryContact.reset();
+    this.model.address.reset();
   }
 
   removeUnsavedChangesetRecords() {
