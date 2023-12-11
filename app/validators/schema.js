@@ -50,6 +50,17 @@ export const validatePhone = (message = 'Invalid phone number format.') => {
 };
 
 /**
+ * Validate and require a string as an email address.
+ * @param {string} [message] - Custom error message for validation failure.
+ * @returns {Joi.StringSchema<string>} - Joi schema for validating email addresses.
+ */
+export const validateEmail = (message = 'Invalid email format.') => {
+  return Joi.string()
+    .email({ tlds: false })
+    .messages({ 'string.email': message });
+};
+
+/**
  * Require when all fields are present
  * @param {Array<string>} fields - Array of field names to check for existence.
  * @param {string} [message] - Custom error message for validation failure.

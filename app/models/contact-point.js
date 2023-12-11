@@ -1,7 +1,11 @@
 import { attr, belongsTo } from '@ember-data/model';
 import AbstractValidationModel from './abstract-validation-model';
 import Joi from 'joi';
-import { validateBelongToOptional, validatePhone } from '../validators/schema';
+import {
+  validateBelongToOptional,
+  validateEmail,
+  validatePhone,
+} from '../validators/schema';
 
 export const CONTACT_TYPE = {
   PRIMARY: 'Primary',
@@ -22,9 +26,7 @@ export default class ContactPointModel extends AbstractValidationModel {
 
   get validationSchema() {
     return Joi.object({
-      email: Joi.string()
-        .email({ tlds: false })
-        .messages({ 'string.email': 'Geef een geldig e-mailadres in' }),
+      email: validateEmail('Geef een geldig e-mailadres in'),
       telephone: validatePhone(
         'Enkel een plusteken en cijfers zijn toegelaten'
       ),
