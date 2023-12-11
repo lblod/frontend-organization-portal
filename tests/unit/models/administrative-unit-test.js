@@ -37,8 +37,8 @@ module('Unit | Model | administrative unit', function (hooks) {
       assert.false(isValid);
       assert.deepEqual(model.error, {
         name: 'Vul de naam in',
-        'is-sub-organization-of': 'Selecteer een optie',
-        'was-founded-by-organization': 'Selecteer een optie',
+        isSubOrganizationOf: 'Selecteer een optie',
+        wasFoundedByOrganization: 'Selecteer een optie',
       });
     });
 
@@ -56,9 +56,9 @@ module('Unit | Model | administrative unit', function (hooks) {
       assert.false(isValid);
       assert.deepEqual(model.error, {
         name: 'Vul de naam in',
-        'expected-end-date': 'De datum mag niet in het verleden liggen',
-        'has-participants': 'Selecteer een optie',
-        'is-sub-organization-of': 'Selecteer een optie',
+        expectedEndDate: 'De datum mag niet in het verleden liggen',
+        hasParticipants: 'Selecteer een optie',
+        isSubOrganizationOf: 'Selecteer een optie',
       });
     });
   });

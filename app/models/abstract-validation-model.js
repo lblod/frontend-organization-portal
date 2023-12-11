@@ -50,22 +50,36 @@ export default class AbstractValidationModel extends Model {
 
   #serializeAll() {
     const { data } = this.serialize({ includeId: true });
+    const snakeCaseData = this.#convertAttributesKeysToSnakeCase(data);
 
     const relationships = {};
     this.eachRelationship((name, meta) => {
-      // kebab-case the relationship name
-      const nameKebabed = name
-        .replace(/([a-z])([A-Z])/g, '$1-$2')
-        .toLowerCase();
-      relationships[nameKebabed] = this.#serializeRelationship(
-        this[name],
-        meta
-      );
+      relationships[name] = this.#serializeRelationship(this[name], meta);
     });
 
     return {
-      ...data,
+      ...snakeCaseData,
       relationships,
+    };
+  }
+
+  #convertAttributesKeysToSnakeCase(data) {
+    if (!data?.attributes) {
+      return data;
+    }
+
+    const { attributes, ...rest } = data;
+
+    const attributesKeysSnakeCased = Object.fromEntries(
+      Object.entries(attributes).map(([key, value]) => [
+        key.replace(/-([a-z])/g, (_match, letter) => letter.toUpperCase()),
+        value,
+      ])
+    );
+
+    return {
+      ...rest,
+      attributes: attributesKeysSnakeCased,
     };
   }
 

@@ -24,11 +24,11 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
 
   get validationSchema() {
     return super.validationSchema.append({
-      'recognized-worship-type': validateRequiredWhenClassificationId(
+      recognizedWorshipType: validateRequiredWhenClassificationId(
         WorshipServiceCodeList,
         'Selecteer een optie'
       ),
-      'minister-positions': validateHasManyOptional(),
+      ministerPositions: validateHasManyOptional(),
       involvements: validateHasManyOptional(),
     });
   }

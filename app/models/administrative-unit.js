@@ -56,24 +56,24 @@ export default class AdministrativeUnitModel extends OrganizationModel {
     const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({
       classification: validateBelongToRequired(REQUIRED_MESSAGE),
-      'located-within': validateBelongToOptional(),
-      'governing-bodies': validateHasManyOptional(),
-      'involved-boards': validateHasManyOptional(),
-      'exact-match': validateBelongToOptional(),
+      locatedWithin: validateBelongToOptional(),
+      governingBodies: validateHasManyOptional(),
+      involvedBoards: validateHasManyOptional(),
+      exactMatch: validateBelongToOptional(),
       scope: validateBelongToOptional(),
-      'is-associated-with': validateRequiredWhenClassificationId(
+      isAssociatedWith: validateRequiredWhenClassificationId(
         [...WorshipServiceCodeList, ...CentralWorshipServiceCodeList],
         REQUIRED_MESSAGE
       ),
-      'has-participants': validateRequiredWhenClassificationId(
+      hasParticipants: validateRequiredWhenClassificationId(
         IGSCodeList,
         REQUIRED_MESSAGE
       ),
-      'was-founded-by-organization': validateRequiredWhenClassificationId(
+      wasFoundedByOrganization: validateRequiredWhenClassificationId(
         [...AgbCodeList, ...ApbCodeList],
         REQUIRED_MESSAGE
       ),
-      'is-sub-organization-of': validateRequiredWhenClassificationId(
+      isSubOrganizationOf: validateRequiredWhenClassificationId(
         [
           ...AgbCodeList,
           ...ApbCodeList,
@@ -85,7 +85,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
         ],
         REQUIRED_MESSAGE
       ),
-      'expected-end-date': Joi.when('classification.id', {
+      expectedEndDate: Joi.when('classification.id', {
         is: Joi.exist().valid(...IGSCodeList),
         then: Joi.date()
           .min(new Date())

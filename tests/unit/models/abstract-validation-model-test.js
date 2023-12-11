@@ -56,7 +56,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
 
       assert.false(isValid);
       assert.deepEqual(model.error, {
-        'one-required': 'Selecteer een optie',
+        oneRequired: 'Selecteer een optie',
       });
     });
 
@@ -89,7 +89,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
 
       assert.false(isValid);
       assert.deepEqual(model.error, {
-        'many-required': 'Selecteer een optie',
+        manyRequired: 'Selecteer een optie',
       });
     });
 
@@ -186,8 +186,8 @@ class BelongToValidationModel extends AbstractValidationModel {
 
   get validationSchema() {
     return Joi.object({
-      'one-required': validateBelongToRequired('Selecteer een optie'),
-      'one-optional': validateBelongToOptional(),
+      oneRequired: validateBelongToRequired('Selecteer een optie'),
+      oneOptional: validateBelongToOptional(),
     });
   }
 }
@@ -205,8 +205,8 @@ class HasManyValidationModel extends AbstractValidationModel {
 
   get validationSchema() {
     return Joi.object({
-      'many-required': validateHasManyRequired('Selecteer een optie'),
-      'many-optional': validateHasManyOptional(),
+      manyRequired: validateHasManyRequired('Selecteer een optie'),
+      manyOptional: validateHasManyOptional(),
     });
   }
 }
