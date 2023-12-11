@@ -1,7 +1,10 @@
 import { attr, hasMany, belongsTo } from '@ember-data/model';
 import AgentModel from './agent';
 import Joi from 'joi';
-import { belongToOptional, hasManyOptional } from '../validators/schema';
+import {
+  validateBelongToOptional,
+  validateHasManyOptional,
+} from '../validators/schema';
 
 export default class OrganizationModel extends AgentModel {
   @attr name;
@@ -97,22 +100,22 @@ export default class OrganizationModel extends AgentModel {
       'alternative-name': Joi.string(),
       'expected-end-date': Joi.date().allow(null),
       purpose: Joi.string(),
-      'primary-site': belongToOptional(),
-      'organization-status': belongToOptional(),
-      identifiers: hasManyOptional(),
-      sites: hasManyOptional(),
-      'changed-by': hasManyOptional(),
-      'resulted-from': hasManyOptional(),
-      'change-event-results': hasManyOptional(),
-      positions: hasManyOptional(),
-      'sub-organizations': hasManyOptional(),
-      'is-sub-organization-of': belongToOptional(),
-      'associated-organizations': hasManyOptional(),
-      'is-associated-with': belongToOptional(),
-      'founded-organizations': hasManyOptional(),
-      'was-founded-by-organization': belongToOptional(),
-      'participates-in': hasManyOptional(),
-      'has-participants': hasManyOptional(),
+      'primary-site': validateBelongToOptional(),
+      'organization-status': validateBelongToOptional(),
+      identifiers: validateHasManyOptional(),
+      sites: validateHasManyOptional(),
+      'changed-by': validateHasManyOptional(),
+      'resulted-from': validateHasManyOptional(),
+      'change-event-results': validateHasManyOptional(),
+      positions: validateHasManyOptional(),
+      'sub-organizations': validateHasManyOptional(),
+      'is-sub-organization-of': validateBelongToOptional(),
+      'associated-organizations': validateHasManyOptional(),
+      'is-associated-with': validateBelongToOptional(),
+      'founded-organizations': validateHasManyOptional(),
+      'was-founded-by-organization': validateBelongToOptional(),
+      'participates-in': validateHasManyOptional(),
+      'has-participants': validateHasManyOptional(),
     });
   }
 }

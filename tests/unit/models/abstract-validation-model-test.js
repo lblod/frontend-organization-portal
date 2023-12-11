@@ -4,11 +4,11 @@ import { attr, hasMany, belongsTo } from '@ember-data/model';
 import Joi from 'joi';
 import AbstractValidationModel from 'frontend-organization-portal/models/abstract-validation-model';
 import {
-  belongToOptional,
-  belongToRequired,
-  hasManyOptional,
-  hasManyRequired,
-  requiredWhenAll,
+  validateBelongToOptional,
+  validateBelongToRequired,
+  validateHasManyOptional,
+  validateHasManyRequired,
+  validateRequiredWhenAll,
 } from 'frontend-organization-portal/validators/schema';
 
 module('Unit | Model | abstract validation model', function (hooks) {
@@ -186,8 +186,8 @@ class BelongToValidationModel extends AbstractValidationModel {
 
   get validationSchema() {
     return Joi.object({
-      'one-required': belongToRequired('Selecteer een optie'),
-      'one-optional': belongToOptional(),
+      'one-required': validateBelongToRequired('Selecteer een optie'),
+      'one-optional': validateBelongToOptional(),
     });
   }
 }
@@ -205,8 +205,8 @@ class HasManyValidationModel extends AbstractValidationModel {
 
   get validationSchema() {
     return Joi.object({
-      'many-required': hasManyRequired('Selecteer een optie'),
-      'many-optional': hasManyOptional(),
+      'many-required': validateHasManyRequired('Selecteer een optie'),
+      'many-optional': validateHasManyOptional(),
     });
   }
 }
@@ -219,7 +219,7 @@ class RequireWhenAllModel extends AbstractValidationModel {
   get validationSchema() {
     return Joi.object({
       one: Joi.string(),
-      two: requiredWhenAll(['one', 'three'], 'two is required'),
+      two: validateRequiredWhenAll(['one', 'three'], 'two is required'),
       three: Joi.string(),
     });
   }

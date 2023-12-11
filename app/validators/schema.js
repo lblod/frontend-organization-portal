@@ -1,58 +1,64 @@
 import Joi from 'joi';
 
 /**
- * Define a validator for required "belong to" relationships.
- * @param {string} message - Custom error message for validation failure.
+ * Validate and require an object for "belong to" relationships.
+ * @param {string} [message] - Custom error message for validation failure.
  * @returns {Joi.ObjectSchema} - Joi schema for required "belong to" relationships.
  */
-export const belongToRequired = (message) => {
+export const validateBelongToRequired = (
+  message = 'This field is required.'
+) => {
   return Joi.object().required().messages({ 'any.required': message });
 };
 
 /**
- * Define a validator for optional "belong to" relationships.
+ * Validate an object for optional "belong to" relationships.
  * @returns {Joi.ObjectSchema} - Joi schema for optional "belong to" relationships.
  */
-export const belongToOptional = () => {
+export const validateBelongToOptional = () => {
   return Joi.object();
 };
 
 /**
- * Define a validator for required "has many" relationships.
- * @param {string} message - Custom error message for validation failure.
+ * Validate and require an array for "has many" relationships.
+ * @param {string} [message] - Custom error message for validation failure.
  * @returns {Joi.ArraySchema} - Joi schema for required "has many" relationships.
  */
-export const hasManyRequired = (message) => {
+export const validateHasManyRequired = (
+  message = 'This field is required.'
+) => {
   return Joi.array().required().messages({ 'any.required': message });
 };
 
 /**
- * Define a validator for optional "has many" relationships.
+ * Validate an array for optional "has many" relationships.
  * @returns {Joi.ArraySchema} - Joi schema for optional "has many" relationships.
  */
-export const hasManyOptional = () => {
+export const validateHasManyOptional = () => {
   return Joi.array();
 };
 
 /**
- * Define a validator for phone numbers.
- * @param {string} message - Custom error message for validation failure.
+ * Validate and require a string as a phone number.
+ * @param {string} [message] - Custom error message for validation failure.
  * @returns {Joi.StringSchema<string>} - Joi schema for validating phone numbers.
  */
-export const phone = (message) => {
+export const validatePhone = (message = 'Invalid phone number format.') => {
   return Joi.string()
     .regex(/^(tel:)?\+?[0-9]*$/)
     .messages({ 'string.pattern.base': message });
 };
 
 /**
- * Define a validator for conditional required fields based on the existence of multiple fields.
+ * Require when all fields are present
  * @param {Array<string>} fields - Array of field names to check for existence.
- * @param {string} message - Custom error message for validation failure.
+ * @param {string} [message] - Custom error message for validation failure.
  * @returns {Joi.ObjectSchema} - Joi schema for conditional required fields.
  */
-
-export const requiredWhenAll = (fields, message) => {
+export const validateRequiredWhenAll = (
+  fields,
+  message = 'This field is required.'
+) => {
   const conditions = fields.reduce((acc, field) => {
     return acc === null
       ? Joi.when(field, {
@@ -71,14 +77,17 @@ export const requiredWhenAll = (fields, message) => {
 };
 
 /**
- * Define a validator for conditional required field based on the classification ID.
+ * Require when classification ID is one of the classification codes in the list.
  * @param {Array<string>} classificationCodeList - Array of valid classification codes.
  * @returns {Joi.ObjectSchema} - Joi schema for conditional required classification ID.
  */
-export const requiredWhenClassificationId = (classificationCodeList) => {
+export const validateRequiredWhenClassificationId = (
+  classificationCodeList,
+  message = 'This field is required.'
+) => {
   return Joi.when('classification.id', {
     is: Joi.exist().valid(...classificationCodeList),
     then: Joi.required(),
     otherwise: Joi.optional(),
-  }).messages({ 'any.required': 'Selecteer een optie' });
+  }).messages({ 'any.required': message });
 };

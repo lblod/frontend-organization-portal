@@ -2,10 +2,10 @@ import { hasMany, belongsTo } from '@ember-data/model';
 import OrganizationModel from './organization';
 import Joi from 'joi';
 import {
-  belongToOptional,
-  belongToRequired,
-  hasManyOptional,
-  requiredWhenClassificationId,
+  validateBelongToOptional,
+  validateBelongToRequired,
+  validateHasManyOptional,
+  validateRequiredWhenClassificationId,
 } from '../validators/schema';
 import {
   AgbCodeList,
@@ -53,31 +53,38 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   scope;
 
   get validationSchema() {
+    const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({
-      classification: belongToRequired('Selecteer een optie'),
-      'located-within': belongToOptional(),
-      'governing-bodies': hasManyOptional(),
-      'involved-boards': hasManyOptional(),
-      'exact-match': belongToOptional(),
-      scope: belongToOptional(),
-      'is-associated-with': requiredWhenClassificationId([
-        ...WorshipServiceCodeList,
-        ...CentralWorshipServiceCodeList,
-      ]),
-      'has-participants': requiredWhenClassificationId(IGSCodeList),
-      'was-founded-by-organization': requiredWhenClassificationId([
-        ...AgbCodeList,
-        ...ApbCodeList,
-      ]),
-      'is-sub-organization-of': requiredWhenClassificationId([
-        ...AgbCodeList,
-        ...ApbCodeList,
-        ...IGSCodeList,
-        ...PoliceZoneCodeList,
-        ...AssistanceZoneCodeList,
-        ...WorshipServiceCodeList,
-        ...CentralWorshipServiceCodeList,
-      ]),
+      classification: validateBelongToRequired(REQUIRED_MESSAGE),
+      'located-within': validateBelongToOptional(),
+      'governing-bodies': validateHasManyOptional(),
+      'involved-boards': validateHasManyOptional(),
+      'exact-match': validateBelongToOptional(),
+      scope: validateBelongToOptional(),
+      'is-associated-with': validateRequiredWhenClassificationId(
+        [...WorshipServiceCodeList, ...CentralWorshipServiceCodeList],
+        REQUIRED_MESSAGE
+      ),
+      'has-participants': validateRequiredWhenClassificationId(
+        IGSCodeList,
+        REQUIRED_MESSAGE
+      ),
+      'was-founded-by-organization': validateRequiredWhenClassificationId(
+        [...AgbCodeList, ...ApbCodeList],
+        REQUIRED_MESSAGE
+      ),
+      'is-sub-organization-of': validateRequiredWhenClassificationId(
+        [
+          ...AgbCodeList,
+          ...ApbCodeList,
+          ...IGSCodeList,
+          ...PoliceZoneCodeList,
+          ...AssistanceZoneCodeList,
+          ...WorshipServiceCodeList,
+          ...CentralWorshipServiceCodeList,
+        ],
+        REQUIRED_MESSAGE
+      ),
       'expected-end-date': Joi.when('classification.id', {
         is: Joi.exist().valid(...IGSCodeList),
         then: Joi.date()

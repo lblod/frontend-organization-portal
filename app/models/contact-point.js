@@ -1,7 +1,7 @@
 import { attr, belongsTo } from '@ember-data/model';
 import AbstractValidationModel from './abstract-validation-model';
 import Joi from 'joi';
-import { belongToOptional, phone } from '../validators/schema';
+import { validateBelongToOptional, validatePhone } from '../validators/schema';
 
 export const CONTACT_TYPE = {
   PRIMARY: 'Primary',
@@ -25,11 +25,13 @@ export default class ContactPointModel extends AbstractValidationModel {
       email: Joi.string()
         .email({ tlds: false })
         .messages({ 'string.email': 'Geef een geldig e-mailadres in' }),
-      telephone: phone('Enkel een plusteken en cijfers zijn toegelaten'),
-      fax: phone('Enkel een plusteken en cijfers zijn toegelaten'),
+      telephone: validatePhone(
+        'Enkel een plusteken en cijfers zijn toegelaten'
+      ),
+      fax: validatePhone('Enkel een plusteken en cijfers zijn toegelaten'),
       website: Joi.string().uri(),
       type: Joi.string(),
-      'contact-address': belongToOptional(),
+      'contact-address': validateBelongToOptional(),
     });
   }
 }

@@ -1,7 +1,7 @@
 import { attr, belongsTo } from '@ember-data/model';
 import AbstractValidationModel from './abstract-validation-model';
 import Joi from 'joi';
-import { requiredWhenAll } from '../validators/schema';
+import { validateRequiredWhenAll } from '../validators/schema';
 
 export default class AddressModel extends AbstractValidationModel {
   @attr number;
@@ -26,23 +26,23 @@ export default class AddressModel extends AbstractValidationModel {
   get validationSchema() {
     const REQUIRED_MESSAGE = 'Vul het volledige adres in';
     return Joi.object({
-      street: requiredWhenAll(
+      street: validateRequiredWhenAll(
         ['number', 'postcode', 'municipality', 'province', 'country'],
         REQUIRED_MESSAGE
       ),
-      number: requiredWhenAll(
+      number: validateRequiredWhenAll(
         ['street', 'postcode', 'municipality', 'province', 'country'],
         REQUIRED_MESSAGE
       ),
-      postcode: requiredWhenAll(
+      postcode: validateRequiredWhenAll(
         ['street', 'number', 'municipality', 'province', 'country'],
         REQUIRED_MESSAGE
       ),
-      municipality: requiredWhenAll(
+      municipality: validateRequiredWhenAll(
         ['street', 'number', 'postcode', 'province', 'country'],
         REQUIRED_MESSAGE
       ),
-      country: requiredWhenAll(
+      country: validateRequiredWhenAll(
         ['street', 'number', 'postcode', 'municipality', 'province'],
         REQUIRED_MESSAGE
       ),
