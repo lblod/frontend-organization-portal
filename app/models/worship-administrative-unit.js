@@ -1,6 +1,10 @@
 import { belongsTo, hasMany } from '@ember-data/model';
 import AdministrativeUnitModel from './administrative-unit';
-import { object } from 'yup';
+import {
+  hasManyOptional,
+  requiredWhenClassificationId,
+} from '../validators/schema';
+import { WorshipServiceCodeList } from '../constants/Classification';
 
 export default class WorshipAdministrativeUnitModel extends AdministrativeUnitModel {
   @belongsTo('recognized-worship-type', {
@@ -19,15 +23,12 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
   involvements;
 
   get validationSchema() {
-    return super.validationSchema.shape({
-      recognizedWorshipType: object().when(['isWorshipAdministrativeUnit'], {
-        is: true,
-        then: (schema) =>
-          schema.relationship({
-            isRequired: true,
-            message: 'Selecteer een optie',
-          }),
-      }),
+    return super.validationSchema.append({
+      'recognized-worship-type': requiredWhenClassificationId(
+        WorshipServiceCodeList
+      ),
+      'minister-positions': hasManyOptional(),
+      involvements: hasManyOptional(),
     });
   }
 }

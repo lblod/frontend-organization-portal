@@ -1,8 +1,16 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { attr, hasMany, belongsTo } from '@ember-data/model';
-import { array, object, string } from 'yup';
+import Joi from 'joi';
 import AbstractValidationModel from 'frontend-organization-portal/models/abstract-validation-model';
+import {
+  belongToOptional,
+  belongToRequired,
+  hasManyOptional,
+  hasManyRequired,
+  phone,
+  requiredWhenAll,
+} from 'frontend-organization-portal/validators/schema';
 
 module('Unit | Model | abstract validation model', function (hooks) {
   setupTest(hooks);
@@ -32,7 +40,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
 
       assert.false(isValid);
       assert.deepEqual(model.error, {
-        name: 'name is a required field',
+        name: '"name" is required',
       });
     });
   });
@@ -49,11 +57,11 @@ module('Unit | Model | abstract validation model', function (hooks) {
 
       assert.false(isValid);
       assert.deepEqual(model.error, {
-        oneRequired: 'Selecteer een optie',
+        'one-required': 'Selecteer een optie',
       });
     });
 
-    test('it returns error when belongTo has error', async function (assert) {
+    test('it returns no error when require belongTo is fulfilled', async function (assert) {
       this.owner.register(
         'model:test-validation-model',
         BelongToValidationModel
@@ -65,12 +73,8 @@ module('Unit | Model | abstract validation model', function (hooks) {
 
       const isValid = await model.validate();
 
-      assert.false(isValid);
-      assert.deepEqual(model.error, {
-        oneRequired: {
-          oneRequired: 'Selecteer een optie',
-        },
-      });
+      assert.true(isValid);
+      assert.deepEqual(model.error, null);
     });
   });
 
@@ -86,11 +90,11 @@ module('Unit | Model | abstract validation model', function (hooks) {
 
       assert.false(isValid);
       assert.deepEqual(model.error, {
-        manyRequired: 'Selecteer een optie',
+        'many-required': 'Selecteer een optie',
       });
     });
 
-    test('it returns error when required hasMany has error', async function (assert) {
+    test('it returns no error when required hasMany is fulfilled', async function (assert) {
       this.owner.register(
         'model:test-validation-model',
         HasManyValidationModel
@@ -101,12 +105,8 @@ module('Unit | Model | abstract validation model', function (hooks) {
 
       const isValid = await model.validate();
 
-      assert.false(isValid);
-      assert.deepEqual(model.error, {
-        manyRequired: {
-          manyRequired: 'Selecteer een optie',
-        },
-      });
+      assert.true(isValid);
+      assert.deepEqual(model.error, null);
     });
   });
 
@@ -124,7 +124,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
     test('it returns true when phone is valid', async function (assert) {
       this.owner.register('model:test-validation-model', PhoneValidationModel);
       const model = this.store().createRecord('test-validation-model', {
-        phone: '+32412345678',
+        phoneNumber: '+32412345678',
       });
 
       const isValid = await model.validate();
@@ -136,14 +136,14 @@ module('Unit | Model | abstract validation model', function (hooks) {
     test('it returns error when phone number is wrong', async function (assert) {
       this.owner.register('model:test-validation-model', PhoneValidationModel);
       const model = this.store().createRecord('test-validation-model', {
-        phone: ':32477',
+        phoneNumber: ':32477',
       });
 
       const isValid = await model.validate();
 
       assert.false(isValid);
       assert.deepEqual(model.error, {
-        phone: 'Phone is wrong',
+        'phone-number': 'Phone is wrong',
       });
     });
   });
@@ -175,6 +175,16 @@ module('Unit | Model | abstract validation model', function (hooks) {
       assert.deepEqual(model.error, null);
     });
 
+    test('It returns true when all are missing', async function (assert) {
+      this.owner.register('model:test-validation-model', RequireWhenAllModel);
+      const model = this.store().createRecord('test-validation-model', {});
+
+      const isValid = await model.validate();
+
+      assert.true(isValid);
+      assert.deepEqual(model.error, null);
+    });
+
     test('it returns error when dependcies are filled and required is missing', async function (assert) {
       this.owner.register('model:test-validation-model', RequireWhenAllModel);
       const model = this.store().createRecord('test-validation-model', {
@@ -196,8 +206,8 @@ class BasicValidationModel extends AbstractValidationModel {
   @attr name;
 
   get validationSchema() {
-    return object().shape({
-      name: string().required(),
+    return Joi.object({
+      name: Joi.string().required(),
     });
   }
 }
@@ -214,12 +224,9 @@ class BelongToValidationModel extends AbstractValidationModel {
   oneOptional;
 
   get validationSchema() {
-    return object().shape({
-      oneRequired: object().relationship({
-        isRequired: true,
-        message: 'Selecteer een optie',
-      }),
-      oneOptional: object().relationship(),
+    return Joi.object({
+      'one-required': belongToRequired('Selecteer een optie'),
+      'one-optional': belongToOptional(),
     });
   }
 }
@@ -236,22 +243,19 @@ class HasManyValidationModel extends AbstractValidationModel {
   manyOptional;
 
   get validationSchema() {
-    return object().shape({
-      manyRequired: array().relationship({
-        isRequired: true,
-        message: 'Selecteer een optie',
-      }),
-      manyOptional: array().relationship(),
+    return Joi.object({
+      'many-required': hasManyRequired('Selecteer een optie'),
+      'many-optional': hasManyOptional(),
     });
   }
 }
 
 class PhoneValidationModel extends AbstractValidationModel {
-  @attr phone;
+  @attr phoneNumber;
 
   get validationSchema() {
-    return object().shape({
-      phone: string().phone('Phone is wrong'),
+    return Joi.object({
+      'phone-number': phone('Phone is wrong'),
     });
   }
 }
@@ -262,8 +266,10 @@ class RequireWhenAllModel extends AbstractValidationModel {
   @attr three;
 
   get validationSchema() {
-    return object().shape({
-      two: string().requiredWhenAll(['one', 'three']),
+    return Joi.object({
+      one: Joi.string(),
+      two: requiredWhenAll(['one', 'three'], 'two is required'),
+      three: Joi.string(),
     });
   }
 }

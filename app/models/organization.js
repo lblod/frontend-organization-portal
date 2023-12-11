@@ -1,6 +1,7 @@
 import { attr, hasMany, belongsTo } from '@ember-data/model';
 import AgentModel from './agent';
-import { string } from 'yup';
+import Joi from 'joi';
+import { belongToOptional, hasManyOptional } from '../validators/schema';
 
 export default class OrganizationModel extends AgentModel {
   @attr name;
@@ -89,8 +90,29 @@ export default class OrganizationModel extends AgentModel {
   hasParticipants;
 
   get validationSchema() {
-    return super.validationSchema.shape({
-      name: string().required('Vul de naam in'),
+    return super.validationSchema.append({
+      name: Joi.string()
+        .required()
+        .messages({ 'any.required': 'Vul de naam in' }),
+      'alternative-name': Joi.string(),
+      'expected-end-date': Joi.date().allow(null),
+      purpose: Joi.string(),
+      'primary-site': belongToOptional(),
+      'organization-status': belongToOptional(),
+      identifiers: hasManyOptional(),
+      sites: hasManyOptional(),
+      'changed-by': hasManyOptional(),
+      'resulted-from': hasManyOptional(),
+      'change-event-results': hasManyOptional(),
+      positions: hasManyOptional(),
+      'sub-organizations': hasManyOptional(),
+      'is-sub-organization-of': belongToOptional(),
+      'associated-organizations': hasManyOptional(),
+      'is-associated-with': belongToOptional(),
+      'founded-organizations': hasManyOptional(),
+      'was-founded-by-organization': belongToOptional(),
+      'participates-in': hasManyOptional(),
+      'has-participants': hasManyOptional(),
     });
   }
 }

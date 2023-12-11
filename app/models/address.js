@@ -1,6 +1,7 @@
 import { attr, belongsTo } from '@ember-data/model';
 import AbstractValidationModel from './abstract-validation-model';
-import { object, string, lazy } from 'yup';
+import Joi from 'joi';
+import { requiredWhenAll } from '../validators/schema';
 
 export default class AddressModel extends AbstractValidationModel {
   @attr number;
@@ -24,45 +25,38 @@ export default class AddressModel extends AbstractValidationModel {
 
   get validationSchema() {
     const REQUIRED_MESSAGE = 'Vul het volledige adres in';
-    // lazy it's used to avoid Cyclic dependency errors : https://github.com/jquense/yup/issues/1576#issuecomment-1026827272
-    return object().shape({
-      street: lazy(() =>
-        string().requiredWhenAll(
-          ['number', 'postcode', 'municipality', 'province', 'country'],
-          REQUIRED_MESSAGE
-        )
+    return Joi.object({
+      street: requiredWhenAll(
+        ['number', 'postcode', 'municipality', 'province', 'country'],
+        REQUIRED_MESSAGE
       ),
-      number: lazy(() =>
-        string().requiredWhenAll(
-          ['street', 'postcode', 'municipality', 'province', 'country'],
-          REQUIRED_MESSAGE
-        )
+      number: requiredWhenAll(
+        ['street', 'postcode', 'municipality', 'province', 'country'],
+        REQUIRED_MESSAGE
       ),
-      postcode: lazy(() =>
-        string().requiredWhenAll(
-          ['street', 'number', 'municipality', 'province', 'country'],
-          REQUIRED_MESSAGE
-        )
+      postcode: requiredWhenAll(
+        ['street', 'number', 'municipality', 'province', 'country'],
+        REQUIRED_MESSAGE
       ),
-      municipality: lazy(() =>
-        string().requiredWhenAll(
-          ['street', 'number', 'postcode', 'province', 'country'],
-          REQUIRED_MESSAGE
-        )
+      municipality: requiredWhenAll(
+        ['street', 'number', 'postcode', 'province', 'country'],
+        REQUIRED_MESSAGE
       ),
-      country: lazy(() =>
-        string().requiredWhenAll(
-          ['street', 'number', 'postcode', 'municipality', 'province'],
-          REQUIRED_MESSAGE
-        )
+      country: requiredWhenAll(
+        ['street', 'number', 'postcode', 'municipality', 'province'],
+        REQUIRED_MESSAGE
       ),
-      province: string().when(['country'], {
-        is: (country) => {
-          console.log('country is: ', country);
-          return country === 'België';
-        },
-        then: (schema) => schema.required(REQUIRED_MESSAGE),
+      // The `external` method is used here as a workaround for a circular dependency error with `when`.
+      province: Joi.string().external((value, helpers) => {
+        if (this.isCountryBelgium && !value) {
+          return helpers.message(REQUIRED_MESSAGE);
+        }
+        return value;
       }),
+      'box-number': Joi.string(),
+      'full-address': Joi.string(),
+      'address-register-uri': Joi.string(),
+      source: Joi.object(),
     });
   }
 }

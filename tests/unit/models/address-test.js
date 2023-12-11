@@ -35,5 +35,18 @@ module('Unit | Model | address', function (hooks) {
         street: 'Vul het volledige adres in',
       });
     });
+
+    test('it returns error when België and province is missing', async function (assert) {
+      const model = this.store().createRecord('address', {
+        country: 'België',
+      });
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.deepEqual(model.error, {
+        province: 'Vul het volledige adres in',
+      });
+    });
   });
 });

@@ -23,6 +23,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     );
   }
 
+  //TODO: remove following getters and use the model directly in the template
   get isNewOCMW() {
     return this.model.administrativeUnit.isOCMW;
   }

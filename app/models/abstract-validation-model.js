@@ -1,16 +1,15 @@
-import Model from '@ember-data/model';
 import { tracked } from '@glimmer/tracking';
-import { object, array, addMethod, ValidationError, string } from 'yup';
+import Model from '@ember-data/model';
 
 /**
- * Ember Data Model with Yup-based Validation
- * Inspired by https://mainmatter.com/blog/2021/12/08/validations-in-ember-apps/
+ * Ember Data Model with Joi-based Validation
  */
 export default class AbstractValidationModel extends Model {
   @tracked _validationError = null;
+
   /**
    * Get the validation schema for the model. Should be overridden in subclasses.
-   * @returns {object} - The Yup validation schema.
+   * @returns {object} - The Joi validation schema.
    */
   get validationSchema() {
     throw new Error('validationSchema should be overridden');
@@ -28,22 +27,76 @@ export default class AbstractValidationModel extends Model {
    * Validate the model using the validation schema.
    * @returns {Promise<boolean>} - Whether the model is valid.
    */
-  validate() {
-    return this.validationSchema
-      .validate(this, { abortEarly: false })
-      .then(() => true)
-      .catch((error) => {
-        if (!error.inner) {
-          throw error;
-        }
-
-        this._validationError = error.inner.reduce((acc, err) => {
-          acc[err.path] = err.message;
-          return acc;
-        }, {});
-
-        return false;
+  async validate() {
+    const { attributes, relationships } = this.#serializeAll();
+    const value = { ...attributes, ...relationships };
+    console.log('value', value);
+    try {
+      await this.validationSchema.validateAsync(value, {
+        abortEarly: false,
       });
+    } catch (error) {
+      console.log('error', JSON.stringify(error), error);
+      this._validationError = error.details?.reduce((acc, err) => {
+        acc[err.path[0]] = err.message;
+        return acc;
+      }, {});
+
+      return false;
+    }
+
+    return true;
+  }
+
+  #serializeAll() {
+    const { data } = this.serialize({ includeId: true });
+
+    const relationships = {};
+    this.eachRelationship((name, meta) => {
+      // kebab-case the relationship name
+      const nameKebabed = name
+        .replace(/([a-z])([A-Z])/g, '$1-$2')
+        .toLowerCase();
+      relationships[nameKebabed] = this.#serializeRelationship(
+        this[name],
+        meta
+      );
+    });
+
+    return {
+      ...data,
+      relationships,
+    };
+  }
+
+  #serializeRelationship(relationshipValue, { kind }) {
+    if (kind === 'belongsTo') {
+      return this.#serializeSingleRelationship(relationshipValue);
+    } else if (kind === 'hasMany') {
+      return this.#serializeManyRelationship(relationshipValue);
+    }
+
+    return null;
+  }
+
+  #serializeSingleRelationship(relationshipValue) {
+    if (relationshipValue.isTruthy) {
+      const { data } = relationshipValue.content.serialize({ includeId: true });
+
+      return data;
+    }
+
+    return undefined;
+  }
+
+  #serializeManyRelationship(relationshipValue) {
+    console.log('relationshipValue', relationshipValue.length);
+    console.log('relationshipValue.toArray()', relationshipValue.toArray());
+    return relationshipValue.length > 0
+      ? relationshipValue
+          .toArray()
+          .map((item) => item.serialize({ includeId: true }))
+      : undefined;
   }
 
   /**
@@ -56,89 +109,3 @@ export default class AbstractValidationModel extends Model {
     this.rollbackAttributes();
   }
 }
-
-// Add custom Yup method for validating belongsTo relationships
-addMethod(
-  object,
-  'relationship',
-  function ({ isRequired = false, message } = {}) {
-    return this.test(async (value, { path, options }) => {
-      const content = value?.content;
-      if (!content) {
-        if (isRequired)
-          throw new ValidationError(
-            message || `${path} is a required field`,
-            content,
-            path
-          );
-
-        return true;
-      }
-
-      const isValid = await validateRelationship(content, options);
-
-      return isValid === true;
-    });
-  }
-);
-
-// Add custom Yup method for validating hasMany relationships
-addMethod(
-  array,
-  'relationship',
-  function ({ isRequired = false, message } = {}) {
-    return this.transform((_value, originalValue) => {
-      return originalValue?.toArray() || [];
-    }).test(async (value, { path, options }) => {
-      if (!value.length && isRequired) {
-        throw new ValidationError(
-          message || `${path} is a required field`,
-          value,
-          path
-        );
-      }
-
-      const validationsPassed = await Promise.all(
-        value.map((item) => {
-          return validateRelationship(item, options);
-        })
-      );
-
-      return validationsPassed.every((validation) => validation === true);
-    });
-  }
-);
-
-const validateRelationship = async (relationship, options) => {
-  if (!relationship.validate) {
-    throw new Error(`${options.path} should extend AbstractValidationModel.`);
-  }
-  const isValid = await relationship.validate();
-
-  if (isValid) {
-    return true;
-  }
-
-  throw new ValidationError(relationship.error, relationship, options.path);
-};
-
-// Add custom Yup method to validate phone number
-addMethod(string, 'phone', function (message) {
-  return this.test('phone', message || '${path} is wrong', function (value) {
-    if (!value) {
-      return true;
-    }
-
-    const isValid = /^(tel:)?\+?[0-9]*$/.test(value);
-
-    return isValid;
-  });
-});
-
-// Add custom Yup method validates that the current field is required when all dependent fields are truthy
-addMethod(string, 'requiredWhenAll', function (dependentFields, message) {
-  return this.when(dependentFields, {
-    is: (...fields) => fields.every((field) => !!field),
-    then: (schema) => schema.required(message || '${path} is required'),
-  });
-});

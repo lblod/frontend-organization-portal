@@ -1,6 +1,7 @@
 import { hasMany } from '@ember-data/model';
-import { object } from 'yup';
 import AbstractValidationModel from './abstract-validation-model';
+import Joi from 'joi';
+import { hasManyOptional } from '../validators/schema';
 
 export default class AgentModel extends AbstractValidationModel {
   @hasMany('post', {
@@ -14,6 +15,9 @@ export default class AgentModel extends AbstractValidationModel {
   contacts;
 
   get validationSchema() {
-    return object().shape({});
+    return Joi.object({
+      positions: hasManyOptional(),
+      contacts: hasManyOptional(),
+    });
   }
 }

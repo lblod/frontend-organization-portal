@@ -1,7 +1,25 @@
 import { hasMany, belongsTo } from '@ember-data/model';
 import OrganizationModel from './organization';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import { date, object } from 'yup';
+import Joi from 'joi';
+import {
+  belongToOptional,
+  belongToRequired,
+  hasManyOptional,
+  requiredWhenClassificationId,
+} from '../validators/schema';
+import {
+  AgbCodeList,
+  ApbCodeList,
+  AssistanceZoneCodeList,
+  CentralWorshipServiceCodeList,
+  DistrictCodeList,
+  IGSCodeList,
+  MunicipalityCodeList,
+  OCMWCodeList,
+  PoliceZoneCodeList,
+  ProvinceCodeList,
+  WorshipServiceCodeList,
+} from '../constants/Classification';
 
 export default class AdministrativeUnitModel extends OrganizationModel {
   @belongsTo('administrative-unit-classification-code', {
@@ -35,91 +53,67 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   scope;
 
   get validationSchema() {
-    return super.validationSchema.shape({
-      classification: object().relationship({
-        isRequired: true,
-        message: 'Selecteer een optie',
-      }),
-      isAssociatedWith: object().when(
-        ['isWorshipAdministrativeUnit', 'isApb'],
-        {
-          is: (isWorshipAdministrativeUnit, isApb) =>
-            isWorshipAdministrativeUnit || isApb,
-          then: (schema) =>
-            schema.relationship({
-              isRequired: true,
-              message: 'Selecteer een optie',
-            }),
-        }
-      ),
-      // array().when throw "TypeError: cyclic object value".
-      // hasParticipants: array().when(['isIGS'], {
-      //   is: true,
-      //   then: (schema) =>
-      //     schema.relationship({
-      //       isRequired: true,
-      //       message: 'Selecteer een optie',
-      //     }),
-      // }),
-      wasFoundedByOrganization: object().when(['isAgb', 'isApb'], {
-        is: (isAgb, isApb) => isAgb || isApb,
-        then: (schema) =>
-          schema.relationship({
-            isRequired: true,
-            message: 'Selecteer een optie',
-          }),
-      }),
-      isSubOrganizationOf: object().when(
-        ['isAgb', 'isApb', 'isIGS', 'isPoliceZone', 'isAssistanceZone'],
-        {
-          is: (isAgb, isApb, isIGS, isPoliceZone, isAssistanceZone) =>
-            isAgb || isApb || isIGS || isPoliceZone || isAssistanceZone,
-          then: (schema) =>
-            schema.relationship({
-              isRequired: true,
-              message: 'Selecteer een optie',
-            }),
-        }
-      ),
-      expectedEndDate: date().when('isIGS', {
-        is: true,
-        then: (schema) =>
-          schema.min(new Date(), 'De datum mag niet in het verleden liggen'),
+    return super.validationSchema.append({
+      classification: belongToRequired('Selecteer een optie'),
+      'located-within': belongToOptional(),
+      'governing-bodies': hasManyOptional(),
+      'involved-boards': hasManyOptional(),
+      'exact-match': belongToOptional(),
+      scope: belongToOptional(),
+      'is-associated-with': requiredWhenClassificationId([
+        ...WorshipServiceCodeList,
+        ...CentralWorshipServiceCodeList,
+      ]),
+      'has-participants': requiredWhenClassificationId(IGSCodeList),
+      'was-founded-by-organization': requiredWhenClassificationId([
+        ...AgbCodeList,
+        ...ApbCodeList,
+      ]),
+      'is-sub-organization-of': requiredWhenClassificationId([
+        ...AgbCodeList,
+        ...ApbCodeList,
+        ...IGSCodeList,
+        ...PoliceZoneCodeList,
+        ...AssistanceZoneCodeList,
+        ...WorshipServiceCodeList,
+        ...CentralWorshipServiceCodeList,
+      ]),
+      'expected-end-date': Joi.when('classification.id', {
+        is: Joi.exist().valid(...IGSCodeList),
+        then: Joi.date()
+          .min(new Date())
+          .messages({ '*': 'De datum mag niet in het verleden liggen' }),
+        otherwise: Joi.optional(),
       }),
     });
   }
 
   get isMunicipality() {
-    return this.hasClassificationId(CLASSIFICATION_CODE.MUNICIPALITY);
+    return this.hasClassificationId(MunicipalityCodeList);
   }
 
   get isProvince() {
-    return this.hasClassificationId(CLASSIFICATION_CODE.PROVINCE);
+    return this.hasClassificationId(ProvinceCodeList);
   }
 
   get isAgb() {
-    return this.hasClassificationId(CLASSIFICATION_CODE.AGB);
+    return this.hasClassificationId(AgbCodeList);
   }
 
   get isApb() {
-    return this.hasClassificationId(CLASSIFICATION_CODE.APB);
+    return this.hasClassificationId(ApbCodeList);
   }
 
   get isIGS() {
-    return this.hasClassificationId([
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-    ]);
+    return this.hasClassificationId(IGSCodeList);
   }
 
   get isPoliceZone() {
-    return this.hasClassificationId(CLASSIFICATION_CODE.POLICE_ZONE);
+    return this.hasClassificationId(PoliceZoneCodeList);
   }
 
   get isAssistanceZone() {
-    return this.hasClassificationId(CLASSIFICATION_CODE.ASSISTANCE_ZONE);
+    return this.hasClassificationId(AssistanceZoneCodeList);
   }
 
   get isWorshipAdministrativeUnit() {
@@ -127,21 +121,19 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   }
 
   get isWorshipService() {
-    return this.hasClassificationId(CLASSIFICATION_CODE.WORSHIP_SERVICE);
+    return this.hasClassificationId(WorshipServiceCodeList);
   }
 
   get isCentralWorshipService() {
-    return this.hasClassificationId(
-      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
-    );
+    return this.hasClassificationId(CentralWorshipServiceCodeList);
   }
 
   get isOCMW() {
-    return this.hasClassificationId(CLASSIFICATION_CODE.OCMW);
+    return this.hasClassificationId(OCMWCodeList);
   }
 
   get isDistrict() {
-    return this.hasClassificationId(CLASSIFICATION_CODE.DISTRICT);
+    return this.hasClassificationId(DistrictCodeList);
   }
 
   hasClassificationId(classificationId) {
