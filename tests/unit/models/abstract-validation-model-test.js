@@ -8,7 +8,6 @@ import {
   belongToRequired,
   hasManyOptional,
   hasManyRequired,
-  phone,
   requiredWhenAll,
 } from 'frontend-organization-portal/validators/schema';
 
@@ -110,44 +109,6 @@ module('Unit | Model | abstract validation model', function (hooks) {
     });
   });
 
-  module('phone validation', function () {
-    test('it returns true when phone is empty', async function (assert) {
-      this.owner.register('model:test-validation-model', PhoneValidationModel);
-      const model = this.store().createRecord('test-validation-model', {});
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.deepEqual(model.error, null);
-    });
-
-    test('it returns true when phone is valid', async function (assert) {
-      this.owner.register('model:test-validation-model', PhoneValidationModel);
-      const model = this.store().createRecord('test-validation-model', {
-        phoneNumber: '+32412345678',
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.deepEqual(model.error, null);
-    });
-
-    test('it returns error when phone number is wrong', async function (assert) {
-      this.owner.register('model:test-validation-model', PhoneValidationModel);
-      const model = this.store().createRecord('test-validation-model', {
-        phoneNumber: ':32477',
-      });
-
-      const isValid = await model.validate();
-
-      assert.false(isValid);
-      assert.deepEqual(model.error, {
-        'phone-number': 'Phone is wrong',
-      });
-    });
-  });
-
   module('required when all', function () {
     test('it returns true when all required attributes are filled in', async function (assert) {
       this.owner.register('model:test-validation-model', RequireWhenAllModel);
@@ -246,16 +207,6 @@ class HasManyValidationModel extends AbstractValidationModel {
     return Joi.object({
       'many-required': hasManyRequired('Selecteer een optie'),
       'many-optional': hasManyOptional(),
-    });
-  }
-}
-
-class PhoneValidationModel extends AbstractValidationModel {
-  @attr phoneNumber;
-
-  get validationSchema() {
-    return Joi.object({
-      'phone-number': phone('Phone is wrong'),
     });
   }
 }
