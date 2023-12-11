@@ -3,19 +3,20 @@ import { setupTest } from 'ember-qunit';
 import {
   validatePhone,
   validateEmail,
+  validateUrl,
 } from 'frontend-organization-portal/validators/schema';
 
 module('Unit | Validator | schema', function (hooks) {
   setupTest(hooks);
 
-  module('validatePhone validation', function () {
-    test('it returns true when phone is empty', function (assert) {
+  module('validatePhone', function () {
+    test('it returns no error when phone is empty', function (assert) {
       const { error } = validatePhone().validate();
 
       assert.strictEqual(error, undefined);
     });
 
-    test('it returns true when phone is valid', function (assert) {
+    test('it returns no error when phone is valid', function (assert) {
       const { error } = validatePhone().validate('+32412345678');
 
       assert.strictEqual(error, undefined);
@@ -28,14 +29,14 @@ module('Unit | Validator | schema', function (hooks) {
     });
   });
 
-  module('validateEmail validation', function () {
-    test('it returns true when email is empty', function (assert) {
+  module('validateEmail', function () {
+    test('it returns no error when email is empty', function (assert) {
       const { error } = validateEmail().validate();
 
       assert.strictEqual(error, undefined);
     });
 
-    test('it returns true when email is valid', function (assert) {
+    test('it returns no error when email is valid', function (assert) {
       const { error } = validateEmail().validate('test@test.com');
 
       assert.strictEqual(error, undefined);
@@ -45,6 +46,26 @@ module('Unit | Validator | schema', function (hooks) {
       const { error } = validateEmail('Email is wrong').validate('test@test');
 
       assert.strictEqual(error.details[0].message, 'Email is wrong');
+    });
+  });
+
+  module('validateUrl', function () {
+    test('it returns no error when url is empty', function (assert) {
+      const { error } = validateUrl().validate();
+
+      assert.strictEqual(error, undefined);
+    });
+
+    test('it returns no error when url is valid', function (assert) {
+      const { error } = validateUrl().validate('https://www.vlaanderen.be/');
+
+      assert.strictEqual(error, undefined);
+    });
+
+    test('it returns error when url is wrong', function (assert) {
+      const { error } = validateUrl('URL is wrong').validate('test@test');
+
+      assert.strictEqual(error.details[0].message, 'URL is wrong');
     });
   });
 });

@@ -39,7 +39,7 @@ export const validateHasManyOptional = () => {
 };
 
 /**
- * Validate and require a string as a phone number.
+ * Validate a string as a phone number.
  * @param {string} [message] - Custom error message for validation failure.
  * @returns {Joi.StringSchema<string>} - Joi schema for validating phone numbers.
  */
@@ -50,7 +50,7 @@ export const validatePhone = (message = 'Invalid phone number format.') => {
 };
 
 /**
- * Validate and require a string as an email address.
+ * Validate a string as an email address.
  * @param {string} [message] - Custom error message for validation failure.
  * @returns {Joi.StringSchema<string>} - Joi schema for validating email addresses.
  */
@@ -58,6 +58,15 @@ export const validateEmail = (message = 'Invalid email format.') => {
   return Joi.string()
     .email({ tlds: false })
     .messages({ 'string.email': message });
+};
+
+/**
+ * Validate a string as a URL.
+ * @param {string} [message] - Custom error message for validation failure.
+ * @returns {Joi.StringSchema<string>} - Joi schema for validating URLs.
+ */
+export const validateUrl = (message = 'Invalid URL format.') => {
+  return Joi.string().uri().messages({ 'string.uri': message });
 };
 
 /**
@@ -88,7 +97,7 @@ export const validateRequiredWhenAll = (
 };
 
 /**
- * Require when classification ID is one of the classification codes in the list.
+ * Require when `classification.id` is one of the classification codes in the list.
  * @param {Array<string>} classificationCodeList - Array of valid classification codes.
  * @returns {Joi.ObjectSchema} - Joi schema for conditional required classification ID.
  */

@@ -5,6 +5,7 @@ import {
   validateBelongToOptional,
   validateEmail,
   validatePhone,
+  validateUrl,
 } from '../validators/schema';
 
 export const CONTACT_TYPE = {
@@ -31,7 +32,7 @@ export default class ContactPointModel extends AbstractValidationModel {
         'Enkel een plusteken en cijfers zijn toegelaten'
       ),
       fax: validatePhone('Enkel een plusteken en cijfers zijn toegelaten'),
-      website: Joi.string().uri(),
+      website: validateUrl('Geef een geldig internetadres in'),
       type: Joi.string(),
       contactAddress: validateBelongToOptional(),
     });
