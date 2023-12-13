@@ -5,8 +5,6 @@ import {
   createSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
-import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
-import { getStructuredIdentifierKBOValidations } from 'frontend-organization-portal/validations/administrative-unit';
 
 export default class AdministrativeUnitsNewRoute extends Route {
   @service store;
@@ -35,10 +33,7 @@ export default class AdministrativeUnitsNewRoute extends Route {
       identifierKBO: this.store.createRecord('identifier', {
         idName: ID_NAME.KBO,
       }),
-      structuredIdentifierKBO: createValidatedChangeset(
-        this.store.createRecord('structured-identifier'),
-        getStructuredIdentifierKBOValidations(this.store)
-      ),
+      structuredIdentifierKBO: this.store.createRecord('structured-identifier'),
       identifierSharepoint: this.store.createRecord('identifier', {
         idName: ID_NAME.SHAREPOINT,
       }),

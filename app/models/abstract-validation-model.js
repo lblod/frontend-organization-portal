@@ -30,10 +30,13 @@ export default class AbstractValidationModel extends Model {
   async validate() {
     const { attributes, relationships } = this.#serializeAll();
     const value = { ...attributes, ...relationships };
-    console.log('value', value);
+
     try {
       await this.validationSchema.validateAsync(value, {
         abortEarly: false,
+        context: {
+          changedAttributes: this.changedAttributes(),
+        },
       });
     } catch (error) {
       console.log('error', JSON.stringify(error), error);
@@ -104,8 +107,6 @@ export default class AbstractValidationModel extends Model {
   }
 
   #serializeManyRelationship(relationshipValue) {
-    console.log('relationshipValue', relationshipValue.length);
-    console.log('relationshipValue.toArray()', relationshipValue.toArray());
     return relationshipValue.length > 0
       ? relationshipValue
           .toArray()

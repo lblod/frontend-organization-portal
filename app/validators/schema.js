@@ -1,5 +1,7 @@
 import Joi from 'joi';
 
+//TODO Split this file up into multiple files, one for each function.
+
 /**
  * Validate and require an object for "belong to" relationships.
  * @param {string} [message] - Custom error message for validation failure.
@@ -67,6 +69,20 @@ export const validateEmail = (message = 'Invalid email format.') => {
  */
 export const validateUrl = (message = 'Invalid URL format.') => {
   return Joi.string().uri().messages({ 'string.uri': message });
+};
+
+/**
+ * Validate a string as a KBO number.
+ * @returns {Joi.StringSchema<string>} - Joi schema for validating KBO numbers.
+ */
+export const validateKBO = () => {
+  return Joi.string()
+    .required()
+    .pattern(/^\d{10}$/) // 10 digits
+    .messages({
+      'any.required': 'Vul het KBO nummer in',
+      'string.pattern.base': 'Vul het (tiencijferige) KBO nummer in.',
+    });
 };
 
 /**

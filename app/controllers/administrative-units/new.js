@@ -19,7 +19,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       this.model.address.error ||
       this.model.contact.error ||
       this.model.secondaryContact.error ||
-      this.model.structuredIdentifierKBO.isInvalid
+      this.model.structuredIdentifierKBO.error
     );
   }
 
@@ -159,12 +159,15 @@ export default class AdministrativeUnitsNewController extends Controller {
       'this.model.administrativeUnit.error',
       this.model.administrativeUnit.error
     );
-    console.log('this.model.address', this.model.address);
     console.log('this.model.address.error', this.model.address.error);
     console.log('this.model.contact.error', this.model.contact.error);
     console.log(
       'this.model.secondaryContact.error',
       this.model.secondaryContact.error
+    );
+    console.log(
+      'this.model.structuredIdentifierKBO.error',
+      this.model.structuredIdentifierKBO.error
     );
 
     if (!this.hasValidationErrors) {
@@ -264,7 +267,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.identifierSharepoint.rollbackAttributes();
     this.model.identifierKBO.rollbackAttributes();
     this.model.structuredIdentifierSharepoint.rollbackAttributes();
-    this.model.structuredIdentifierKBO.rollbackAttributes();
+    this.model.structuredIdentifierKBO.reset();
     this.model.administrativeUnit.reset();
     this.model.contact.reset();
     this.model.secondaryContact.reset();

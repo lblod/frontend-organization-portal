@@ -8,8 +8,6 @@ import {
 } from 'frontend-organization-portal/models/contact-point';
 import { createAddress } from 'frontend-organization-portal/models/address';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
-import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
-import { getStructuredIdentifierKBOValidations } from 'frontend-organization-portal/validations/administrative-unit';
 import { A } from '@ember/array';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
@@ -110,10 +108,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
       identifierSharepoint,
       identifierNIS,
       identifierOVO,
-      structuredIdentifierKBO: createValidatedChangeset(
-        structuredIdentifierKBO,
-        getStructuredIdentifierKBOValidations(this.store)
-      ),
+      structuredIdentifierKBO,
       structuredIdentifierSharepoint,
       structuredIdentifierNIS,
       structuredIdentifierOVO,

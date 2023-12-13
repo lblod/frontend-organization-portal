@@ -16,7 +16,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       this.model.address.error ||
       this.model.contact.error ||
       this.model.secondaryContact.error ||
-      this.model.structuredIdentifierKBO.isInvalid
+      this.model.structuredIdentifierKBO.error
     );
   }
 
@@ -215,6 +215,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     this.model.contact.reset();
     this.model.secondaryContact.reset();
     this.model.address.reset();
+    this.model.structuredIdentifierKBO.reset();
   }
 
   reset() {
