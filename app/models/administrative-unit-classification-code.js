@@ -151,6 +151,7 @@ export default class AdministrativeUnitClassificationCodeModel extends Organizat
     return (
       this.id === CLASSIFICATION_CODE.WELZIJNSVERENIGING ||
       this.id === CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING
+      // TODO: add private OCMW associations when they are oboarded
     );
   }
 }
