@@ -22,8 +22,9 @@ const SHAREPOINT_LINK_BASE = {
     'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
   ASSISTANCE_ZONE:
     'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
-  // TODO: add URL for new the following new type
-  OCMW_ASSOCIATION: '',
+  // TODO: check whether URL is correct (copied from above instances)
+  OCMW_ASSOCIATION:
+    'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
 };
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexController extends Controller {
@@ -139,13 +140,14 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
     );
   }
 
-  get isOcmwAssoctiation() {
+  get isOcmwAssociation() {
     const ocmwAssociationTypes = [
       CLASSIFICATION_CODE.WELZIJNSVERENIGING,
       CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
-      CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
-      CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
-      CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
+      // TODO: uncomment when onboarding private OCMW associations
+      // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
+      // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+      // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
     ];
 
     return ocmwAssociationTypes.includes(
