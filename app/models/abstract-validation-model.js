@@ -28,9 +28,10 @@ export default class AbstractValidationModel extends Model {
    * @returns {Promise<boolean>} - Whether the model is valid.
    */
   async validate() {
+    this._validationError = null;
     const { attributes, relationships } = this.#serializeAll();
     const value = { ...attributes, ...relationships };
-
+    console.log('value', value);
     try {
       await this.validationSchema.validateAsync(value, {
         abortEarly: false,
@@ -39,7 +40,7 @@ export default class AbstractValidationModel extends Model {
         },
       });
     } catch (error) {
-      console.log('error', JSON.stringify(error), error);
+      console.error('error', JSON.stringify(error), error);
       this._validationError = error.details?.reduce((acc, err) => {
         acc[err.path[0]] = err.message;
         return acc;

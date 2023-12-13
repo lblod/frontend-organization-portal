@@ -42,6 +42,24 @@ module('Unit | Model | abstract validation model', function (hooks) {
         name: '"name" is required',
       });
     });
+
+    test('it reset error when attribute is filled in', async function (assert) {
+      this.owner.register('model:test-validation-model', BasicValidationModel);
+      const model = this.store().createRecord('test-validation-model');
+      await model.validate();
+      assert.deepEqual(
+        model.error,
+        {
+          name: '"name" is required',
+        },
+        'error is set'
+      );
+
+      model.name = 'test';
+      await model.validate();
+
+      assert.strictEqual(model.error, null, 'error is reset');
+    });
   });
 
   module('belongTo validation', function () {

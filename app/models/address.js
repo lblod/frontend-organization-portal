@@ -56,7 +56,7 @@ export default class AddressModel extends AbstractValidationModel {
         }
         return value;
       }),
-      boxNumber: Joi.string(),
+      boxNumber: Joi.string().allow(null),
       fullAddress: Joi.string(),
       addressRegisterUri: Joi.string(),
       source: validateBelongToOptional(),
