@@ -16,9 +16,9 @@ module('Unit | Model | worship administrative unit', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.deepEqual(model.error, {
-        classification: 'Selecteer een optie',
-        name: 'Vul de naam in',
+      assert.propContains(model.error, {
+        classification: { message: 'Selecteer een optie' },
+        name: { message: 'Vul de naam in' },
       });
     });
   });

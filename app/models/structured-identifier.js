@@ -25,7 +25,9 @@ export default class StructuredIdentifierModel extends AbstractValidationModel {
           });
 
           if (records.length > 0) {
-            return helpers.message('Dit KBO nummer is al in gebruik.');
+            return helpers.message('Dit KBO nummer is al in gebruik.', {
+              administrativeUnit: records.firstObject,
+            });
           }
         }
 

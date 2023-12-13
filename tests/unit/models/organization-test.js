@@ -16,9 +16,7 @@ module('Unit | Model | organization', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.deepEqual(model.error, {
-        name: 'Vul de naam in',
-      });
+      assert.strictEqual(model.error.name.message, 'Vul de naam in');
     });
   });
 });

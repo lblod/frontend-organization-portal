@@ -17,10 +17,11 @@ module('Unit | Model | administrative unit', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.deepEqual(model.error, {
-        name: 'Vul de naam in',
-        classification: 'Selecteer een optie',
-      });
+      assert.strictEqual(model.error.name.message, 'Vul de naam in');
+      assert.strictEqual(
+        model.error.classification.message,
+        'Selecteer een optie'
+      );
     });
 
     test('tt', async function (assert) {
@@ -35,10 +36,10 @@ module('Unit | Model | administrative unit', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.deepEqual(model.error, {
-        name: 'Vul de naam in',
-        isSubOrganizationOf: 'Selecteer een optie',
-        wasFoundedByOrganization: 'Selecteer een optie',
+      assert.propContains(model.error, {
+        name: { message: 'Vul de naam in' },
+        wasFoundedByOrganization: { message: 'Selecteer een optie' },
+        isSubOrganizationOf: { message: 'Selecteer een optie' },
       });
     });
 
@@ -54,11 +55,14 @@ module('Unit | Model | administrative unit', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.deepEqual(model.error, {
-        name: 'Vul de naam in',
-        expectedEndDate: 'De datum mag niet in het verleden liggen',
-        hasParticipants: 'Selecteer een optie',
-        isSubOrganizationOf: 'Selecteer een optie',
+      console.log(model.error);
+      assert.propContains(model.error, {
+        name: { message: 'Vul de naam in' },
+        expectedEndDate: {
+          message: 'De datum mag niet in het verleden liggen',
+        },
+        hasParticipants: { message: 'Selecteer een optie' },
+        isSubOrganizationOf: { message: 'Selecteer een optie' },
       });
     });
   });

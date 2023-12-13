@@ -42,7 +42,7 @@ export default class AbstractValidationModel extends Model {
     } catch (error) {
       console.error('error', JSON.stringify(error), error);
       this._validationError = error.details?.reduce((acc, err) => {
-        acc[err.path[0]] = err.message;
+        acc[err.context.key] = err;
         return acc;
       }, {});
 

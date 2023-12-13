@@ -14,7 +14,7 @@
             <Item
               @labelFor="site-address-country"
               @required={{true}}
-              @errorMessage={{@address.error.country}}
+              @errorMessage={{@address.error.country.message}}
             >
               <:label>Land</:label>
               <:content as |hasError|>
@@ -29,7 +29,7 @@
             <Item
               @labelFor="site-address-street-name"
               @required={{true}}
-              @errorMessage={{@address.error.street}}
+              @errorMessage={{@address.error.street.message}}
             >
               <:label>Straat</:label>
               <:content as |hasError|>
@@ -47,7 +47,7 @@
             <Item
               @labelFor="site-address-house-number"
               @required={{true}}
-              @errorMessage={{@address.error.number}}
+              @errorMessage={{@address.error.number.message}}
             >
               <:label>Huisnummer</:label>
               <:content as |hasError|>
@@ -74,7 +74,7 @@
             <Item
               @labelFor="site-address-postal-code"
               @required={{true}}
-              @errorMessage={{@address.error.postcode}}
+              @errorMessage={{@address.error.postcode.message}}
             >
               <:label>Postcode</:label>
               <:content as |hasError|>
@@ -91,7 +91,7 @@
               <Item
                 @labelFor="site-address-municipality"
                 @required={{true}}
-                @errorMessage={{@address.error.municipality}}
+                @errorMessage={{@address.error.municipality.message}}
               >
                 <:label>Gemeente</:label>
                 <:content as |hasError|>
@@ -108,7 +108,7 @@
               <Item
                 @labelFor="site-address-municipality"
                 @required={{true}}
-                @errorMessage={{@address.error.municipality}}
+                @errorMessage={{@address.error.municipality.message}}
               >
                 <:label>Gemeente</:label>
                 <:content as |hasError|>
@@ -128,7 +128,7 @@
               <Item
                 @labelFor="site-address-province"
                 @required={{true}}
-                @errorMessage={{@address.error.province}}
+                @errorMessage={{@address.error.province.message}}
               >
                 <:label>Provincie</:label>
                 <:content as |hasError|>
@@ -148,7 +148,7 @@
       <:right as |Item|>
         <Item
           @labelFor="site-contact-phone-number"
-          @errorMessage={{@primaryContact.error.telephone}}
+          @errorMessage={{@primaryContact.error.telephone.message}}
         >
           <:label>Primair telefoonnummer</:label>
           <:content as |hasError|>
@@ -169,7 +169,7 @@
 
         <Item
           @labelFor="site-contact-secondary-phone-number"
-          @errorMessage={{@secondaryContact.error.telephone}}
+          @errorMessage={{@secondaryContact.error.telephone.message}}
         >
           <:label>Secundair telefoonnummer</:label>
           <:content as |hasError|>
@@ -189,7 +189,7 @@
         </Item>
         <Item
           @labelFor="site-contact-email"
-          @errorMessage={{@primaryContact.error.email}}
+          @errorMessage={{@primaryContact.error.email.message}}
         >
           <:label>E-mail</:label>
           <:content as |errorMessage|>
@@ -207,7 +207,7 @@
         </Item>
         <Item
           @labelFor="site-contact-website"
-          @errorMessage={{@primaryContact.error.website}}
+          @errorMessage={{@primaryContact.error.website.message}}
         >
           <:label>Website</:label>
           <:content as |hasError|>

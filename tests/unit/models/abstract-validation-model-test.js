@@ -38,20 +38,16 @@ module('Unit | Model | abstract validation model', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.deepEqual(model.error, {
-        name: '"name" is required',
-      });
+      assert.strictEqual(model.error.name.message, '"name" is required');
     });
 
     test('it reset error when attribute is filled in', async function (assert) {
       this.owner.register('model:test-validation-model', BasicValidationModel);
       const model = this.store().createRecord('test-validation-model');
       await model.validate();
-      assert.deepEqual(
-        model.error,
-        {
-          name: '"name" is required',
-        },
+      assert.strictEqual(
+        model.error.name.message,
+        '"name" is required',
         'error is set'
       );
 
@@ -73,9 +69,10 @@ module('Unit | Model | abstract validation model', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.deepEqual(model.error, {
-        oneRequired: 'Selecteer een optie',
-      });
+      assert.strictEqual(
+        model.error.oneRequired.message,
+        'Selecteer een optie'
+      );
     });
 
     test('it returns no error when require belongTo is fulfilled', async function (assert) {
@@ -91,7 +88,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
       const isValid = await model.validate();
 
       assert.true(isValid);
-      assert.deepEqual(model.error, null);
+      assert.strictEqual(model.error, null);
     });
   });
 
@@ -106,9 +103,10 @@ module('Unit | Model | abstract validation model', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.deepEqual(model.error, {
-        manyRequired: 'Selecteer een optie',
-      });
+      assert.strictEqual(
+        model.error.manyRequired.message,
+        'Selecteer een optie'
+      );
     });
 
     test('it returns no error when required hasMany is fulfilled', async function (assert) {
@@ -123,7 +121,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
       const isValid = await model.validate();
 
       assert.true(isValid);
-      assert.deepEqual(model.error, null);
+      assert.strictEqual(model.error, null);
     });
   });
 
@@ -139,7 +137,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
       const isValid = await model.validate();
 
       assert.true(isValid);
-      assert.deepEqual(model.error, null);
+      assert.strictEqual(model.error, null);
     });
 
     test('It returns true when one is not filled in', async function (assert) {
@@ -151,7 +149,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
       const isValid = await model.validate();
 
       assert.true(isValid);
-      assert.deepEqual(model.error, null);
+      assert.strictEqual(model.error, null);
     });
 
     test('It returns true when all are missing', async function (assert) {
@@ -161,7 +159,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
       const isValid = await model.validate();
 
       assert.true(isValid);
-      assert.deepEqual(model.error, null);
+      assert.strictEqual(model.error, null);
     });
 
     test('it returns error when dependcies are filled and required is missing', async function (assert) {
@@ -174,9 +172,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.deepEqual(model.error, {
-        two: 'two is required',
-      });
+      assert.strictEqual(model.error.two.message, 'two is required');
     });
   });
 });

@@ -16,7 +16,7 @@ module('Unit | Model | address', function (hooks) {
       const isValid = await model.validate();
 
       assert.true(isValid);
-      assert.deepEqual(model.error, null);
+      assert.strictEqual(model.error, null);
     });
 
     test('it returns error when street is undefined, but dependency fulfilled', async function (assert) {
@@ -31,9 +31,10 @@ module('Unit | Model | address', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.deepEqual(model.error, {
-        street: 'Vul het volledige adres in',
-      });
+      assert.strictEqual(
+        model.error.street.message,
+        'Vul het volledige adres in'
+      );
     });
 
     test('it returns error when België and province is missing', async function (assert) {
@@ -44,9 +45,10 @@ module('Unit | Model | address', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.deepEqual(model.error, {
-        province: 'Vul het volledige adres in',
-      });
+      assert.strictEqual(
+        model.error.province.message,
+        'Vul het volledige adres in'
+      );
     });
   });
 });

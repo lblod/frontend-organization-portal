@@ -42,7 +42,7 @@
                 <Item
                   @labelFor="worship-service-name"
                   @required={{true}}
-                  @errorMessage={{@model.administrativeUnit.error.name}}
+                  @errorMessage={{@model.administrativeUnit.error.name.message}}
                 >
                   <:label>Naam</:label>
                   <:content as |hasError|>
@@ -83,7 +83,7 @@
                   <Item
                     @labelFor="recognized-worship-type-select"
                     @required={{true}}
-                    @errorMessage={{@model.administrativeUnit.error.recognizedWorshipType}}
+                    @errorMessage={{@model.administrativeUnit.error.recognizedWorshipType.message}}
                   >
                     <:label>Soort eredienst</:label>
                     <:content as |hasError|>
@@ -171,7 +171,7 @@
                   </Item>
                   <Item
                     @labelFor="expectedEndDate"
-                    @errorMessage={{@model.administrativeUnit.error.expectedEndDate}}
+                    @errorMessage={{@model.administrativeUnit.error.expectedEndDate.message}}
                   >
                     <:label>Geplande einddatum</:label>
                     <:content as |hasError|>
@@ -314,7 +314,7 @@
                     <Item
                       @labelFor="related-gemeente"
                       @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf}}
+                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.message}}
                     >
                       <:label>Gemeente</:label>
                       <:content as |hasError|>
@@ -343,7 +343,7 @@
                       <Item
                         @labelFor="oprichting-gemeente"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization}}
+                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.message}}
                       >
                         <:label>Werd opgericht door</:label>
                         <:content as |hasError|>
@@ -363,7 +363,7 @@
                       <Item
                         @labelFor="has-participants"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.hasParticipants}}
+                        @errorMessage={{@model.administrativeUnit.error.hasParticipants.message}}
                       >
                         <:label>Heeft als participanten</:label>
                         <:content as |hasError|>
@@ -381,7 +381,7 @@
                       <Item
                         @labelFor="related-provincie"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf}}
+                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.message}}
                       >
                         <:label>Provincie</:label>
                         <:content as |hasError|>
@@ -398,7 +398,7 @@
                     <Item
                       @labelFor="related-gemeente"
                       @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.isAssociatedWith}}
+                      @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.message}}
                     >
                       <:label>Gemeente</:label>
                       <:content as |hasError|>
@@ -416,7 +416,7 @@
                     <Item
                       @labelFor="opregicht-provincie"
                       @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization}}
+                      @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.message}}
                     >
                       <:label>Werd opgericht door</:label>
                       <:content as |hasError|>
