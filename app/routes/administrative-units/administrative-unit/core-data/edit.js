@@ -71,17 +71,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     let structuredIdentifierOVO = await identifierOVO.structuredIdentifier;
 
     let igsRegio;
-    const typesThatAreIGS = [
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-    ];
-    const isIGS = typesThatAreIGS.includes(
-      administrativeUnit.classification?.get('id')
-    );
 
-    if (isIGS) {
+    if (administrativeUnit.isIgs) {
       const primarySite = await administrativeUnit.primarySite;
       const address = await primarySite.address;
       const municipalityString = address.municipality;

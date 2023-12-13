@@ -23,38 +23,6 @@ export default class AdministrativeUnitsNewController extends Controller {
     );
   }
 
-  //TODO: remove following getters and use the model directly in the template
-  get isNewOCMW() {
-    return this.model.administrativeUnit.isOCMW;
-  }
-
-  get isNewAgb() {
-    return this.model.administrativeUnit.isAgb;
-  }
-  get isNewApb() {
-    return this.model.administrativeUnit.isApb;
-  }
-
-  get isNewDistrict() {
-    return this.model.administrativeUnit.isDistrict;
-  }
-
-  get isNewMunicipality() {
-    return this.model.administrativeUnit.isMunicipality;
-  }
-
-  get isNewWorshipService() {
-    return this.model.administrativeUnit.isWorshipService;
-  }
-
-  get isNewCentralWorshipService() {
-    return this.model.administrativeUnit.isCentralWorshipService;
-  }
-
-  get isNewWorshipAdministrativeUnit() {
-    return this.model.administrativeUnit.isWorshipAdministrativeUnit;
-  }
-
   get hasCentralWorshipService() {
     const typesThatHaveACentralWorshipService = [
       RECOGNIZED_WORSHIP_TYPE.ISLAMIC,
@@ -63,23 +31,11 @@ export default class AdministrativeUnitsNewController extends Controller {
     ];
 
     return (
-      this.isNewWorshipService &&
+      this.model.administrativeUnit.isWorshipService &&
       typesThatHaveACentralWorshipService.find(
         (id) => id == this.model.administrativeUnit.recognizedWorshipType?.id
       )
     );
-  }
-
-  get isNewIGS() {
-    return this.model.administrativeUnit.isIGS;
-  }
-
-  get isNewPoliceZone() {
-    return this.model.administrativeUnit.isPoliceZone;
-  }
-
-  get isNewAssistanceZone() {
-    return this.model.administrativeUnit.isAssistanceZone;
   }
 
   get classificationCodes() {
@@ -104,7 +60,10 @@ export default class AdministrativeUnitsNewController extends Controller {
   @action
   setRelation(unit) {
     this.model.administrativeUnit.isSubOrganizationOf = unit;
-    if (this.isNewAgb || this.isNewApb)
+    if (
+      this.model.administrativeUnit.isAgb ||
+      this.model.administrativeUnit.isApb
+    )
       this.model.administrativeUnit.wasFoundedByOrganization = unit;
   }
 
@@ -174,9 +133,9 @@ export default class AdministrativeUnitsNewController extends Controller {
       const siteTypes = yield this.store.findAll('site-type');
       let newAdministrativeUnit;
       // Set the proper type to the new admin unit
-      if (this.isNewCentralWorshipService) {
+      if (administrativeUnit.isCentralWorshipService) {
         newAdministrativeUnit = centralWorshipService;
-      } else if (this.isNewWorshipService) {
+      } else if (administrativeUnit.isWorshipService) {
         newAdministrativeUnit = worshipService;
       } else {
         newAdministrativeUnit = administrativeUnit;
@@ -218,11 +177,11 @@ export default class AdministrativeUnitsNewController extends Controller {
       primarySite.address = address;
       primarySite.contacts.pushObjects([contact, secondaryContact]);
       if (
-        this.isNewAgb ||
-        this.isNewApb ||
-        this.isNewIGS ||
-        this.isNewPoliceZone ||
-        this.isNewAssistanceZone
+        administrativeUnit.isAgb ||
+        administrativeUnit.isApb ||
+        administrativeUnit.isIGS ||
+        administrativeUnit.isPoliceZone ||
+        administrativeUnit.isAssistanceZone
       ) {
         primarySite.siteType = siteTypes.find(
           (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'

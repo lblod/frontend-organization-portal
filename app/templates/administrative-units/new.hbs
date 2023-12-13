@@ -69,7 +69,7 @@
                 />
               </:content>
             </Item>
-            {{#if this.isNewWorshipAdministrativeUnit}}
+            {{#if @model.administrativeUnit.isWorshipAdministrativeUnit}}
               <Item
                 @labelFor="recognized-worship-type-select"
                 @required={{true}}
@@ -92,7 +92,7 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if this.isNewWorshipService}}
+            {{#if @model.administrativeUnit.isWorshipService}}
               <Item @labelFor="denomination">
                 <:label>Strekking</:label>
                 <:content>
@@ -138,7 +138,7 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if this.isNewMunicipality}}
+            {{#if @model.administrativeUnit.isMunicipality}}
               <Item @labelFor="regio">
                 <:label>Regio</:label>
                 <:content>
@@ -146,7 +146,7 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if this.isNewIGS}}
+            {{#if @model.administrativeUnit.isIgs}}
               <Item
                 @labelFor="expectedEndDate"
                 @errorMessage={{@model.administrativeUnit.error.expectedEndDate}}
@@ -245,10 +245,10 @@
       <EditCard @containsRequiredFields={{true}}>
         <:title>Gerelateerde organisaties</:title>
         <:card as |Card|>
-          {{#if this.isNewWorshipAdministrativeUnit}}
+          {{#if @model.administrativeUnit.isWorshipAdministrativeUnit}}
             <Card.Columns>
               <:left as |Item|>
-                {{#if this.isNewCentralWorshipService}}
+                {{#if @model.administrativeUnit.isCentralWorshipService}}
                   <Item @labelFor="related-worship-service">
                     <:label>Bestuur van de eredienst</:label>
                     <:content>
@@ -310,21 +310,21 @@
               <:left as |Item|>
                 {{#if
                   (or
-                    this.isNewOCMW
-                    this.isNewAgb
-                    this.isNewDistrict
-                    this.isNewIGS
-                    this.isNewPoliceZone
-                    this.isNewAssistanceZone
+                    @model.administrativeUnit.isOCMW
+                    @model.administrativeUnit.isAgb
+                    @model.administrativeUnit.isDistrict
+                    @model.administrativeUnit.isIgs
+                    @model.administrativeUnit.isPoliceZone
+                    @model.administrativeUnit.isAssistanceZone
                   )
                 }}
                   <Item
                     @labelFor="related-gemeente"
                     @required={{(or
-                      this.isNewAgb
-                      this.isNewIGS
-                      this.isNewPoliceZone
-                      this.isNewAssistanceZone
+                      @model.administrativeUnit.isAgb
+                      @model.administrativeUnit.isIgs
+                      @model.administrativeUnit.isPoliceZone
+                      @model.administrativeUnit.isAssistanceZone
                     )}}
                     @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf}}
                   >
@@ -351,7 +351,7 @@
                     </Item>
                   {{/if}}
 
-                  {{#if this.isNewAgb}}
+                  {{#if @model.administrativeUnit.isAgb}}
                     <Item
                       @labelFor="oprichting-gemeente"
                       @required={{true}}
@@ -371,7 +371,7 @@
                     </Item>
                   {{/if}}
 
-                  {{#if this.isNewIGS}}
+                  {{#if @model.administrativeUnit.isIgs}}
                     <Item
                       @labelFor="has-participants"
                       @required={{true}}
@@ -392,7 +392,7 @@
                 {{else}}
                   <Item
                     @labelFor="related-provincie"
-                    @required={{this.isNewApb}}
+                    @required={{@model.administrativeUnit.isApb}}
                     @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf}}
                   >
                     <:label>Provincie</:label>
@@ -407,7 +407,7 @@
                       />
                     </:content>
                   </Item>
-                  {{#if this.isNewApb}}
+                  {{#if @model.administrativeUnit.isApb}}
                     <Item
                       @labelFor="related-gemeente"
                       @required={{true}}

@@ -20,46 +20,6 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     );
   }
 
-  get isWorshipAdministrativeUnit() {
-    return this.model.administrativeUnit.isWorshipAdministrativeUnit;
-  }
-
-  get isWorshipService() {
-    return this.model.administrativeUnit.isWorshipService;
-  }
-
-  get isCentralWorshipService() {
-    return this.model.administrativeUnit.isCentralWorshipService;
-  }
-
-  get isMunicipality() {
-    return this.model.administrativeUnit.isMunicipality;
-  }
-
-  get isProvince() {
-    return this.model.administrativeUnit.isProvince;
-  }
-
-  get isAgb() {
-    return this.model.administrativeUnit.isAgb;
-  }
-
-  get isApb() {
-    return this.model.administrativeUnit.isApb;
-  }
-
-  get isIgs() {
-    return this.model.administrativeUnit.isIgs;
-  }
-
-  get isPoliceZone() {
-    return this.model.administrativeUnit.isPoliceZone;
-  }
-
-  get isAssistanceZone() {
-    return this.model.administrativeUnit.isAssistanceZone;
-  }
-
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
@@ -88,7 +48,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   setRelation(unit) {
     this.model.administrativeUnit.isSubOrganizationOf = unit;
 
-    if (this.isAgb || this.isApb)
+    if (
+      this.model.administrativeUnit.isAgb ||
+      this.model.administrativeUnit.isApb
+    )
       this.model.administrativeUnit.wasFoundedByOrganization = unit;
   }
 
@@ -188,7 +151,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       yield identifierSharepoint.save();
 
       administrativeUnit = setEmptyStringsToNull(administrativeUnit);
-      if (this.isProvince || this.isMunicipality) {
+      if (
+        this.model.administrativeUnit.isProvince ||
+        this.model.administrativeUnit.isMunicipality
+      ) {
         // set province or municipality name to null as data are already in the shared graph
         administrativeUnit.name = null;
         yield administrativeUnit.save();

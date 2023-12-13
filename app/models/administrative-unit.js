@@ -96,31 +96,31 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   }
 
   get isMunicipality() {
-    return this.hasClassificationId(MunicipalityCodeList);
+    return this.#hasClassificationId(MunicipalityCodeList);
   }
 
   get isProvince() {
-    return this.hasClassificationId(ProvinceCodeList);
+    return this.#hasClassificationId(ProvinceCodeList);
   }
 
   get isAgb() {
-    return this.hasClassificationId(AgbCodeList);
+    return this.#hasClassificationId(AgbCodeList);
   }
 
   get isApb() {
-    return this.hasClassificationId(ApbCodeList);
+    return this.#hasClassificationId(ApbCodeList);
   }
 
-  get isIGS() {
-    return this.hasClassificationId(IGSCodeList);
+  get isIgs() {
+    return this.#hasClassificationId(IGSCodeList);
   }
 
   get isPoliceZone() {
-    return this.hasClassificationId(PoliceZoneCodeList);
+    return this.#hasClassificationId(PoliceZoneCodeList);
   }
 
   get isAssistanceZone() {
-    return this.hasClassificationId(AssistanceZoneCodeList);
+    return this.#hasClassificationId(AssistanceZoneCodeList);
   }
 
   get isWorshipAdministrativeUnit() {
@@ -128,26 +128,22 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   }
 
   get isWorshipService() {
-    return this.hasClassificationId(WorshipServiceCodeList);
+    return this.#hasClassificationId(WorshipServiceCodeList);
   }
 
   get isCentralWorshipService() {
-    return this.hasClassificationId(CentralWorshipServiceCodeList);
+    return this.#hasClassificationId(CentralWorshipServiceCodeList);
   }
 
   get isOCMW() {
-    return this.hasClassificationId(OCMWCodeList);
+    return this.#hasClassificationId(OCMWCodeList);
   }
 
   get isDistrict() {
-    return this.hasClassificationId(DistrictCodeList);
+    return this.#hasClassificationId(DistrictCodeList);
   }
 
-  hasClassificationId(classificationId) {
-    if (Array.isArray(classificationId)) {
-      return classificationId.includes(this.classification?.get('id'));
-    } else {
-      return this.classification?.get('id') === classificationId;
-    }
+  #hasClassificationId(classificationIds) {
+    return classificationIds.includes(this.classification?.get('id'));
   }
 }

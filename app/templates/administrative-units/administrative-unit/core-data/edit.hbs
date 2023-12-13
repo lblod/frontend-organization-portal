@@ -48,13 +48,13 @@
                   <:content as |hasError|>
                     <TrimInput
                       @width="block"
-                      @disabled={{or this.isProvince this.isMunicipality}}
+                      @disabled={{or @model.administrativeUnit.isProvince @model.administrativeUnit.isMunicipality}}
                       @value={{@model.administrativeUnit.name}}
                       @onUpdate={{fn (mut @model.administrativeUnit.name)}}
                       @error={{hasError}}
                       id="worship-service-name"
                     />
-                    {{#if (or this.isProvince this.isMunicipality)}}
+                    {{#if (or @model.administrativeUnit.isProvince @model.administrativeUnit.isMunicipality)}}
                       <AuHelpText>
                         De naam van een gemeente en provincie kan voorlopig niet
                         langer aangepast worden. Indien toch een aanpassing
@@ -79,7 +79,7 @@
                     </PowerSelect>
                   </:content>
                 </Item>
-                {{#if this.isWorshipAdministrativeUnit}}
+                {{#if @model.administrativeUnit.isWorshipAdministrativeUnit}}
                   <Item
                     @labelFor="recognized-worship-type-select"
                     @required={{true}}
@@ -99,7 +99,7 @@
                     </:content>
                   </Item>
                 {{/if}}
-                {{#if this.isWorshipService}}
+                {{#if @model.administrativeUnit.isWorshipService}}
                   <Item @labelFor="denomination">
                     <:label>Strekking</:label>
                     <:content>
@@ -149,7 +149,7 @@
                     </:content>
                   </Item>
                 {{/if}}
-                {{#if this.isMunicipality}}
+                {{#if @model.administrativeUnit.isMunicipality}}
                   <Item @labelFor="regio">
                     <:label>Regio</:label>
                     <:content>
@@ -157,7 +157,7 @@
                     </:content>
                   </Item>
                 {{/if}}
-                {{#if this.isIgs}}
+                {{#if @model.administrativeUnit.isIgs}}
                   <Item @labelFor="igs-regio">
                     <:label>Regio</:label>
                     <:content>
@@ -252,7 +252,7 @@
                     />
                   </:content>
                 </Item>
-                {{#if (or this.isMunicipality this.isProvince)}}
+                {{#if (or @model.administrativeUnit.isMunicipality @model.administrativeUnit.isProvince)}}
                   <Item @labelFor="nis-identifier">
                     <:label>{{@model.identifierNIS.idName}}</:label>
                     <:content>
@@ -290,11 +290,11 @@
           (and
             @model.administrativeUnit.classification
             (or
-              this.isAgb
-              this.isApb
-              this.isIgs
-              this.isPoliceZone
-              this.isAssistanceZone
+              @model.administrativeUnit.isAgb
+              @model.administrativeUnit.isApb
+              @model.administrativeUnit.isIgs
+              @model.administrativeUnit.isPoliceZone
+              @model.administrativeUnit.isAssistanceZone
             )
           )
         }}
@@ -305,10 +305,10 @@
                 <:left as |Item|>
                   {{#if
                     (or
-                      this.isAgb
-                      this.isIgs
-                      this.isPoliceZone
-                      this.isAssistanceZone
+                      @model.administrativeUnit.isAgb
+                      @model.administrativeUnit.isIgs
+                      @model.administrativeUnit.isPoliceZone
+                      @model.administrativeUnit.isAssistanceZone
                     )
                   }}
                     <Item
@@ -339,7 +339,7 @@
                       </Item>
                     {{/if}}
 
-                    {{#if this.isAgb}}
+                    {{#if @model.administrativeUnit.isAgb}}
                       <Item
                         @labelFor="oprichting-gemeente"
                         @required={{true}}
@@ -359,7 +359,7 @@
                       </Item>
                     {{/if}}
 
-                    {{#if this.isIgs}}
+                    {{#if @model.administrativeUnit.isIgs}}
                       <Item
                         @labelFor="has-participants"
                         @required={{true}}
