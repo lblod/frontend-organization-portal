@@ -69,4 +69,24 @@ export default class AdministrativeUnitsAdministrativeUnitController extends Con
       CLASSIFICATION_CODE.ASSISTANCE_ZONE
     );
   }
+
+  get isOcmwAssociation() {
+    return (
+      this.model.classification?.get('id') ===
+        CLASSIFICATION_CODE.WELZIJNSVERENIGING ||
+      this.model.classification?.get('id') ===
+        CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING
+      // TODO add private OCMW associations
+    );
+  }
+
+  get requiresGoverningBodies() {
+    return !(
+      this.isAgbOrApb ||
+      this.isIgs ||
+      this.isPoliceZone ||
+      this.isAssistanceZone ||
+      this.isOcmwAssociation
+    );
+  }
 }

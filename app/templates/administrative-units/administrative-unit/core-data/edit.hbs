@@ -157,7 +157,7 @@
                     </:content>
                   </Item>
                 {{/if}}
-                {{#if this.isIgs}}
+                {{#if (or this.isIgs this.isOcmwAssociation)}}
                   <Item @labelFor="igs-regio">
                     <:label>Regio</:label>
                     <:content>
@@ -169,6 +169,8 @@
                       />
                     </:content>
                   </Item>
+                {{/if}}
+                {{#if this.isIgs}}
                   <Item
                     @labelFor="expectedEndDate"
                     @errorMessage={{@model.administrativeUnit.error.expectedEndDate.validation}}
@@ -188,9 +190,7 @@
                     <:label>Doel</:label>
                     <:content>
                       <RichTextEditor
-                        @onChange={{fn
-                          (mut @model.administrativeUnit.purpose)
-                        }}
+                        @onChange={{fn (mut @model.administrativeUnit.purpose)}}
                         @value={{@model.administrativeUnit.purpose}}
                       />
                     </:content>
@@ -378,23 +378,25 @@
                       </Item>
                     {{/if}}
                   {{else}}
-                      <Item
-                        @labelFor="related-provincie"
-                        @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-                      >
-                        <:label>Provincie</:label>
-                        <:content as |hasError|>
-                          <ProvinceOrganizationSelect
-                            @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                            @onChange={{this.setRelation}}
-                            @allowClear={{(not @model.administrativeUnit.isAssociatedWith)}}
-                            @selectedMunicipality={{@model.administrativeUnit.isAssociatedWith}}
-                            @error={{hasError}}
-                            @id="related-provincie"
-                          />
-                        </:content>
-                      </Item>
+                    <Item
+                      @labelFor="related-provincie"
+                      @required={{true}}
+                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                    >
+                      <:label>Provincie</:label>
+                      <:content as |hasError|>
+                        <ProvinceOrganizationSelect
+                          @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                          @onChange={{this.setRelation}}
+                          @allowClear={{(not
+                            @model.administrativeUnit.isAssociatedWith
+                          )}}
+                          @selectedMunicipality={{@model.administrativeUnit.isAssociatedWith}}
+                          @error={{hasError}}
+                          @id="related-provincie"
+                        />
+                      </:content>
+                    </Item>
                     <Item
                       @labelFor="related-gemeente"
                       @required={{true}}

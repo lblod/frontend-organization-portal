@@ -9,6 +9,7 @@ import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/adminis
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute extends Route {
   @service store;
+
   async model() {
     let administrativeUnit = this.modelFor(
       'administrative-units.administrative-unit.core-data'
@@ -45,7 +46,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
         isCity = true;
       }
     }
-    let igsRegio;
+
+    let region;
     const typesThatAreIGS = [
       CLASSIFICATION_CODE.PROJECTVERENIGING,
       CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
@@ -56,7 +58,17 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       administrativeUnit.classification?.get('id')
     );
 
-    if (isIGS) {
+    const ocmwAssociationTypes = [
+      CLASSIFICATION_CODE.WELZIJNSVERENIGING,
+      CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
+      // TODO add private OCMW associations
+    ];
+
+    const isOcmwAssociation = ocmwAssociationTypes.includes(
+      administrativeUnit.classification?.get('id')
+    );
+
+    if (isIGS || isOcmwAssociation) {
       const primarySite = await administrativeUnit.primarySite;
       const address = await primarySite.address;
       const municipalityString = address.municipality;
@@ -71,7 +83,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
         })
       ).firstObject;
       const scope = await municipalityUnit.scope;
-      igsRegio = await scope.locatedWithin;
+      region = await scope.locatedWithin;
     }
 
     return {
@@ -80,7 +92,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       isCity,
       primaryContact: findPrimaryContact(contacts),
       secondaryContact: findSecondaryContact(contacts),
-      igsRegio,
+      region,
     };
   }
 }
