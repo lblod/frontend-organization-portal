@@ -29,6 +29,15 @@ export const CLASSIFICATION_CODE = {
   //   '82fd21dc-e8bb-4d13-a010-f4a12358ef10', // FIXME this is not an administrative units
 };
 
+export const OCMW_ASSOCIATION_CLASSIFICATION_CODES = [
+  CLASSIFICATION_CODE.WELZIJNSVERENIGING,
+  CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
+  // TODO: uncomment when onboarding private OCMW associations
+  // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
+  // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+  // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
+];
+
 // FIXME generalize and rename this file
 // TODO: add non-admin unit OCMW verenigingen
 export function isNonAdministrativeUnit(id) {
@@ -148,10 +157,6 @@ export default class AdministrativeUnitClassificationCodeModel extends Organizat
   }
 
   get isOcmwAssociation() {
-    return (
-      this.id === CLASSIFICATION_CODE.WELZIJNSVERENIGING ||
-      this.id === CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING
-      // TODO: add private OCMW associations when they are onboarded
-    );
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(this.id);
   }
 }

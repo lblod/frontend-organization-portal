@@ -1,5 +1,8 @@
 import Controller from '@ember/controller';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitController extends Controller {
   get isWorshipAdministrativeUnit() {
@@ -71,12 +74,8 @@ export default class AdministrativeUnitsAdministrativeUnitController extends Con
   }
 
   get isOcmwAssociation() {
-    return (
-      this.model.classification?.get('id') ===
-        CLASSIFICATION_CODE.WELZIJNSVERENIGING ||
-      this.model.classification?.get('id') ===
-        CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING
-      // TODO add private OCMW associations
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
+      this.model.classification?.get('id')
     );
   }
 

@@ -5,7 +5,10 @@ import {
 } from 'frontend-organization-portal/models/contact-point';
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute extends Route {
   @service store;
@@ -58,13 +61,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       administrativeUnit.classification?.get('id')
     );
 
-    const ocmwAssociationTypes = [
-      CLASSIFICATION_CODE.WELZIJNSVERENIGING,
-      CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
-      // TODO add private OCMW associations
-    ];
-
-    const isOcmwAssociation = ocmwAssociationTypes.includes(
+    const isOcmwAssociation = OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
       administrativeUnit.classification?.get('id')
     );
 

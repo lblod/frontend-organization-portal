@@ -1,7 +1,10 @@
 import Controller from '@ember/controller';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import WorshipServiceModel from 'frontend-organization-portal/models/worship-service';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 const SHAREPOINT_LINK_BASE = {
   WORSHIP_SERVICE:
@@ -141,16 +144,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
   }
 
   get isOcmwAssociation() {
-    const ocmwAssociationTypes = [
-      CLASSIFICATION_CODE.WELZIJNSVERENIGING,
-      CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
-      // TODO: uncomment when onboarding private OCMW associations
-      // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
-      // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
-      // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
-    ];
-
-    return ocmwAssociationTypes.includes(
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
       this.model.administrativeUnit.classification?.get('id')
     );
   }

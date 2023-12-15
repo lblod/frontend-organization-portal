@@ -2,7 +2,10 @@ import { isBlank } from '@ember/utils';
 import { validatePresence } from 'ember-changeset-validations/validators';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { validateConditionally } from 'frontend-organization-portal/validators/validate-conditionally';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default {
   name: validatePresence({
@@ -181,16 +184,11 @@ function isWorshipAdministrativeUnit(changes, content) {
 }
 
 function isOcmwAssociation(changes, content) {
-  const typesThatAreOcmwAssociations = [
-    CLASSIFICATION_CODE.WELZIJNSVERENIGING,
-    CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
-    // TODO: uncomment when onboarding private OCMW associations
-    // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
-    // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
-    // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
-  ];
-
-  return hasClassificationId(changes, content, typesThatAreOcmwAssociations);
+  return hasClassificationId(
+    changes,
+    content,
+    OCMW_ASSOCIATION_CLASSIFICATION_CODES
+  );
 }
 
 function hasClassificationId(changes, content, classificationId) {

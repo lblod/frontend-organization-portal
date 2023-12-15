@@ -16,7 +16,10 @@ import administrativeUnitValidations, {
 } from 'frontend-organization-portal/validations/administrative-unit';
 import { A } from '@ember/array';
 import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute extends Route {
   @service store;
@@ -88,13 +91,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
       administrativeUnit.classification?.get('id')
     );
 
-    const ocmwAssociationTypes = [
-      CLASSIFICATION_CODE.WELZIJNSVERENIGING,
-      CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
-      // TODO add private OCMW associations
-    ];
-
-    const isOcmwAssociation = ocmwAssociationTypes.includes(
+    const isOcmwAssociation = OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
       administrativeUnit.classification?.get('id')
     );
 

@@ -3,7 +3,10 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import fetch from 'fetch';
@@ -118,16 +121,7 @@ export default class AdministrativeUnitsNewController extends Controller {
   }
 
   get isNewOcmwAssociation() {
-    const ocmwAssociationTypes = [
-      CLASSIFICATION_CODE.WELZIJNSVERENIGING,
-      CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
-      // TODO: uncomment when onboarding private OCMW associations
-      // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
-      // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
-      // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
-    ];
-
-    return ocmwAssociationTypes.includes(
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
       this.model.administrativeUnitChangeset.classification?.get('id')
     );
   }
@@ -157,16 +151,10 @@ export default class AdministrativeUnitsNewController extends Controller {
   }
 
   get classificationCodesOcmwAssociationParticipants() {
-    return [
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
       CLASSIFICATION_CODE.MUNICIPALITY,
       CLASSIFICATION_CODE.OCMW,
-      CLASSIFICATION_CODE.WELZIJNSVERENIGING,
-      CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
-      // TODO: uncomment when onboarding private OCMW associations
-      // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
-      // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
-      // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
-    ];
+    ]);
   }
 
   @action
