@@ -113,6 +113,15 @@
             @sort={{this.sort}}
           />
         {{/if}}
+        {{#if this.isOcmwAssociation}}
+          <RelatedOrganizations::EditOcmwAssociation
+            @model={{@model}}
+            @classificationCodesOcmwAssociations={{this.classificationCodesOcmwAssociationParticipants}}
+            @addNewHasParticipants={{this.addNewHasParticipants}}
+            @updateHasParticipants={{this.updateHasParticipants}}
+            @removeHasParticipants={{this.removeHasParticipants}}
+          />
+        {{/if}}
       </div>
     </form>
   </div>

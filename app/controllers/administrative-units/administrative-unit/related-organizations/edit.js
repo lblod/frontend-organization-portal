@@ -120,6 +120,21 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     );
   }
 
+  get isOcmwAssociation() {
+    const ocmwAssociationTypes = [
+      CLASSIFICATION_CODE.WELZIJNSVERENIGING,
+      CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
+      // TODO: uncomment when onboarding private OCMW associations
+      // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
+      // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+      // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
+    ];
+
+    return ocmwAssociationTypes.includes(
+      this.model.administrativeUnit.classification?.get('id')
+    );
+  }
+
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
@@ -136,6 +151,19 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
       CLASSIFICATION_CODE.POLICE_ZONE,
       CLASSIFICATION_CODE.ASSISTANCE_ZONE,
       // TODO when onboarded, add companies
+    ];
+  }
+
+  get classificationCodesOcmwAssociationParticipants() {
+    return [
+      CLASSIFICATION_CODE.MUNICIPALITY,
+      CLASSIFICATION_CODE.OCMW,
+      CLASSIFICATION_CODE.WELZIJNSVERENIGING,
+      CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
+      // TODO: uncomment when onboarding private OCMW associations
+      // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
+      // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+      // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
     ];
   }
 

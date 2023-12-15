@@ -48,7 +48,7 @@ export default {
       message: 'Selecteer een optie',
     }),
     function (changes, content) {
-      return isIGS(changes, content);
+      return isIGS(changes, content) || isOcmwAssociation(changes, content);
     }
   ),
 
@@ -178,6 +178,19 @@ function isWorshipAdministrativeUnit(changes, content) {
     ) ||
     hasClassificationId(changes, content, CLASSIFICATION_CODE.WORSHIP_SERVICE)
   );
+}
+
+function isOcmwAssociation(changes, content) {
+  const typesThatAreOcmwAssociations = [
+    CLASSIFICATION_CODE.WELZIJNSVERENIGING,
+    CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
+    // TODO: uncomment when onboarding private OCMW associations
+    // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
+    // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+    // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
+  ];
+
+  return hasClassificationId(changes, content, typesThatAreOcmwAssociations);
 }
 
 function hasClassificationId(changes, content, classificationId) {

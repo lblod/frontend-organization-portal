@@ -117,6 +117,21 @@ export default class AdministrativeUnitsNewController extends Controller {
     );
   }
 
+  get isNewOcmwAssociation() {
+    const ocmwAssociationTypes = [
+      CLASSIFICATION_CODE.WELZIJNSVERENIGING,
+      CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
+      // TODO: uncomment when onboarding private OCMW associations
+      // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
+      // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+      // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
+    ];
+
+    return ocmwAssociationTypes.includes(
+      this.model.administrativeUnitChangeset.classification?.get('id')
+    );
+  }
+
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
@@ -136,10 +151,28 @@ export default class AdministrativeUnitsNewController extends Controller {
     ];
   }
 
+  // TODO: add optional founding organisations classifications
+  get classificationCodesOcmwAssociationFounders() {
+    return [CLASSIFICATION_CODE.OCMW];
+  }
+
+  get classificationCodesOcmwAssociationParticipants() {
+    return [
+      CLASSIFICATION_CODE.MUNICIPALITY,
+      CLASSIFICATION_CODE.OCMW,
+      CLASSIFICATION_CODE.WELZIJNSVERENIGING,
+      CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
+      // TODO: uncomment when onboarding private OCMW associations
+      // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
+      // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+      // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
+    ];
+  }
+
   @action
   setRelation(unit) {
     this.model.administrativeUnitChangeset.isSubOrganizationOf = unit;
-    if (this.isNewAgb || this.isNewApb)
+    if (this.isNewAgb || this.isNewApb || this.isNewOcmwAssociation)
       this.model.administrativeUnitChangeset.wasFoundedByOrganization = unit;
   }
 

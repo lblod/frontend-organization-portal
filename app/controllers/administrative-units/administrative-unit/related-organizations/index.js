@@ -96,4 +96,19 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
       CLASSIFICATION_CODE.ASSISTANCE_ZONE
     );
   }
+
+  get isOcmwAssociation() {
+    const ocmwAssociationTypes = [
+      CLASSIFICATION_CODE.WELZIJNSVERENIGING,
+      CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
+      // TODO: uncomment when onboarding private OCMW associations
+      // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
+      // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+      // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
+    ];
+
+    return ocmwAssociationTypes.includes(
+      this.model.administrativeUnit.classification?.get('id')
+    );
+  }
 }
