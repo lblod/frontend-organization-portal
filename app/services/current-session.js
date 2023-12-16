@@ -35,6 +35,7 @@ export default class CurrentSessionService extends Service {
   @tracked user;
   @tracked group;
   @tracked roles;
+
   async load() {
     if (this.session.isAuthenticated) {
       let sessionData = this.session.data.authenticated.relationships;
@@ -53,6 +54,7 @@ export default class CurrentSessionService extends Service {
       //this.group = await this.store.findRecord('group', groupId);
     }
   }
+
   get hasWorshipRole() {
     return WORSHIP_ROLES.includes(this.role.activeRole);
   }
