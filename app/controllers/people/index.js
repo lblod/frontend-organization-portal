@@ -2,7 +2,10 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  listClassificationCodes,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class PeopleIndexController extends Controller {
   @service router;
@@ -110,35 +113,13 @@ export default class PeopleIndexController extends Controller {
   }
 
   get classificationCodes() {
-    let allowedIds = [
-      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
-      CLASSIFICATION_CODE.WORSHIP_SERVICE,
-      CLASSIFICATION_CODE.MUNICIPALITY,
-      CLASSIFICATION_CODE.OCMW,
-      CLASSIFICATION_CODE.DISTRICT,
-      CLASSIFICATION_CODE.PROVINCE,
-      CLASSIFICATION_CODE.AGB,
-      CLASSIFICATION_CODE.APB,
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-    ];
-
-    if (this.currentSession.hasUnitRole) {
-      allowedIds = allowedIds.filter(
-        (id) =>
-          ![
-            CLASSIFICATION_CODE.WORSHIP_SERVICE,
-            CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
-          ].includes(id)
-      );
-    } else {
-      allowedIds = [
-        CLASSIFICATION_CODE.WORSHIP_SERVICE,
-        CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
-      ];
-    }
-    return allowedIds;
+    return listClassificationCodes(this.currentSession.hasWorshipRole).filter(
+      (code) =>
+        ![
+          CLASSIFICATION_CODE.POLICE_ZONE,
+          CLASSIFICATION_CODE.ASSISTANCE_ZONE,
+          CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN,
+        ].includes(code)
+    );
   }
 }

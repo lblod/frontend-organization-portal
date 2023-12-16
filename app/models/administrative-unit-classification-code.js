@@ -45,10 +45,12 @@ export const CLASSIFICATION = {
   WORSHIP_SERVICE: {
     id: '66ec74fd-8cfc-4e16-99c6-350b35012e86',
     label: 'Bestuur van de eredienst',
+    worship: true,
   },
   CENTRAL_WORSHIP_SERVICE: {
     id: 'f9cac08a-13c1-49da-9bcb-f650b0604054',
     label: 'Centraal bestuur van de eredienst',
+    worship: true,
   },
   AGB: {
     id: '36a82ba0-7ff1-4697-a9dd-2e94df73b721',
@@ -86,8 +88,25 @@ export const CLASSIFICATION = {
     // fixme this is not an administrative unit
     id: '89a00b5a-024f-4630-a722-65a5e68967e5',
     label: 'Representatief orgaan',
+    worship: true,
   },
 };
+
+/**
+ * Get a list of classification code identifiers.
+ *
+ * @param {bool} worship - true indicates that the classification codes for
+ *                         worship organisations are required
+ * @return {array} - an array containing the identifiers for all relevant
+ *                   classification codes
+ */
+export function listClassificationCodes(worship) {
+  return Object.keys(CLASSIFICATION)
+    .filter((cl) =>
+      worship ? CLASSIFICATION[cl].worship : !CLASSIFICATION[cl].worship
+    )
+    .map((cl) => CLASSIFICATION[cl].id);
+}
 
 export default class AdministrativeUnitClassificationCodeModel extends OrganizationClassificationCodeModel {
   @attr label;
