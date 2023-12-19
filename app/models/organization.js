@@ -68,14 +68,14 @@ export default class OrganizationModel extends AgentModel {
   isAssociatedWith;
 
   @hasMany('organization', {
-    inverse: 'wasFoundedByOrganization',
+    inverse: 'wasFoundedByOrganizations',
   })
   foundedOrganizations;
 
   @hasMany('organization', {
     inverse: 'foundedOrganizations',
   })
-  wasFoundedByOrganization; // TODO: change to plural
+  wasFoundedByOrganizations;
 
   @hasMany('organization', {
     inverse: 'hasParticipants',

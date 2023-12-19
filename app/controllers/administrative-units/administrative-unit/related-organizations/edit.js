@@ -173,9 +173,14 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   }
 
   @action
-  updateRelatedOrg(org) {
-    this.model.administrativeUnit.isSubOrganizationOf = org;
-    this.model.administrativeUnit.wasFoundedByOrganization = org;
+  updateRelatedOrg(orgs) {
+    if (Array.isArray(orgs)) {
+      this.model.administrativeUnit.isSubOrganizationOf = orgs[0];
+      this.model.administrativeUnit.wasFoundedByOrganizations = orgs;
+    } else {
+      this.model.administrativeUnit.isSubOrganizationOf = orgs;
+      this.model.administrativeUnit.wasFoundedByOrganizations = new Array(orgs);
+    }
   }
 
   @action

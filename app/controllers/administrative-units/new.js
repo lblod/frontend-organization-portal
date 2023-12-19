@@ -169,9 +169,9 @@ export default class AdministrativeUnitsNewController extends Controller {
 
     if (this.isNewAgb || this.isNewApb || this.isNewOcmwAssociation)
       if (Array.isArray(unit)) {
-        this.model.administrativeUnitChangeset.wasFoundedByOrganization = unit;
+        this.model.administrativeUnitChangeset.wasFoundedByOrganizations = unit;
       } else {
-        this.model.administrativeUnitChangeset.wasFoundedByOrganization =
+        this.model.administrativeUnitChangeset.wasFoundedByOrganizations =
           new Array(unit);
       }
   }
@@ -193,7 +193,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.administrativeUnitChangeset.foundedOrganizations = [];
     this.model.administrativeUnitChangeset.isAssociatedWith = [];
     this.model.administrativeUnitChangeset.isSubOrganizationOf = null;
-    this.model.administrativeUnitChangeset.wasFoundedByOrganization = [];
+    this.model.administrativeUnitChangeset.wasFoundedByOrganizations = [];
     this.model.administrativeUnitChangeset.hasParticipants = [];
   }
 
@@ -356,8 +356,8 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
   newAdministrativeUnit.classification = administrativeUnit.classification;
   newAdministrativeUnit.organizationStatus =
     administrativeUnit.organizationStatus;
-  newAdministrativeUnit.wasFoundedByOrganization =
-    administrativeUnit.wasFoundedByOrganization;
+  newAdministrativeUnit.wasFoundedByOrganizations =
+    administrativeUnit.wasFoundedByOrganizations;
   newAdministrativeUnit.isSubOrganizationOf =
     administrativeUnit.isSubOrganizationOf;
   if (

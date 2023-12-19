@@ -20,7 +20,7 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
     const isAssociatedWith = await administrativeUnit.isAssociatedWith;
     const isSubOrganizationOf = await administrativeUnit.isSubOrganizationOf;
 
-    const wasFoundedByOrganization =
+    const wasFoundedByOrganizations =
       await this.loadFoundedOrganizationsTask.perform(
         administrativeUnit.id,
         params
@@ -45,7 +45,7 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
 
     return {
       administrativeUnit,
-      wasFoundedByOrganization,
+      wasFoundedByOrganizations,
       isAssociatedWith,
       isSubOrganizationOf,
       subOrganizations,
@@ -59,7 +59,7 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
     if (isProvince) {
       return yield this.store.query('administrative-unit', {
         'filter[:or:][is-sub-organization-of][:id:]': id,
-        'filter[:or:][was-founded-by-organization][:id:]': id,
+        'filter[:or:][was-founded-by-organizations][:id:]': id,
         'filter[:or:][is-sub-organization-of][is-sub-organization-of][:id:]':
           id,
         'filter[organization-status][:id:]': params.organizationStatus
@@ -73,7 +73,7 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
 
     return yield this.store.query('administrative-unit', {
       'filter[:or:][is-sub-organization-of][:id:]': id,
-      'filter[:or:][was-founded-by-organization][:id:]': id,
+      'filter[:or:][was-founded-by-organizations][:id:]': id,
       'filter[organization-status][:id:]': params.organizationStatus
         ? '63cc561de9188d64ba5840a42ae8f0d6'
         : undefined,

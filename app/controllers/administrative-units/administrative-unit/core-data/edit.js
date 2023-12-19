@@ -142,17 +142,18 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   @action
   setRelation(units) {
     if (Array.isArray(units)) {
-      this.model.administrativeUnitChangeset.isSubOrganizationOf = units[0];
+      this.model.administrativeUnit.isSubOrganizationOf = units[0];
     } else {
-      this.model.administrativeUnitChangeset.isSubOrganizationOf = units;
+      this.model.administrativeUnit.isSubOrganizationOf = units;
     }
 
     if (this.isNewAgb || this.isNewApb || this.isNewOcmwAssociation)
       if (Array.isArray(units)) {
-        this.model.administrativeUnitChangeset.wasFoundedByOrganization = units;
+        this.model.administrativeUnit.wasFoundedByOrganizations = units;
       } else {
-        this.model.administrativeUnitChangeset.wasFoundedByOrganization =
-          new Array(units);
+        this.model.administrativeUnit.wasFoundedByOrganizations = new Array(
+          units
+        );
       }
   }
 

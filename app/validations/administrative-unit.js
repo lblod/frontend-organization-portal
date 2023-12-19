@@ -51,7 +51,7 @@ export default {
       message: 'Selecteer een optie',
     }),
     function (changes, content) {
-      return isIGS(changes, content); // TODO: add ocmwAssociations if participants are mandatory
+      return isIGS(changes, content);
     }
   ),
 
@@ -61,7 +61,7 @@ export default {
     message: 'Selecteer een optie',
   }),
 
-  wasFoundedByOrganization: validateConditionally(
+  wasFoundedByOrganizations: validateConditionally(
     validatePresence({
       presence: true,
       ignoreBlank: true,

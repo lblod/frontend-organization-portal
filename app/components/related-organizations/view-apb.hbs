@@ -31,10 +31,10 @@
           <:label>Werd opgericht door</:label>
           <:content>
             {{! Note: this is somewhat of a hacky way to deal the many
-                multiplicity for `wasFoundedByOrganization` since APBs should
+                multiplicity for `wasFoundedByOrganizations` since APBs should
                 always have a single founder}}
             <AuList @direction="horizontal" as |Item|>
-              {{#each @model.wasFoundedByOrganization as |org|}}
+              {{#each @model.wasFoundedByOrganizations as |org|}}
                 <Item>
                   <AuLink
                     @route="administrative-units.administrative-unit.core-data"

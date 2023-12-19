@@ -355,7 +355,7 @@
                     <Item
                       @labelFor="oprichting-gemeente"
                       @required={{true}}
-                      @errorMessage={{@model.administrativeUnitChangeset.error.wasFoundedByOrganization.validation}}
+                      @errorMessage={{@model.administrativeUnitChangeset.error.wasFoundedByOrganizations.validation}}
                     >
                       <:label>Werd opgericht door</:label>
                       <:content as |hasError|>
@@ -394,12 +394,12 @@
                     <Item
                       @labelFor="oprichting-ocmw-association"
                       @required={{true}}
-                      @errorMessage={{@model.administrativeUnitChangeset.error.wasFoundedByOrganization.validation}}
+                      @errorMessage={{@model.administrativeUnitChangeset.error.wasFoundedByOrganizations.validation}}
                     >
                       <:label>Werd opgericht door</:label>
                       <:content as |hasError|>
                         <AdministrativeUnitMultipleSelect
-                          @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
+                          @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganizations}}
                           @onChange={{this.setRelation}}
                           @classificationCodes={{this.classificationCodesOcmwAssociationFounders}}
                           @error={{hasError}}
@@ -470,7 +470,7 @@
                       <Item
                         @labelFor="opgericht-provincie"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnitChangeset.error.wasFoundedByOrganization.validation}}
+                        @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
                       >
                         <:label>Werd opgericht door</:label>
                         <:content as |hasError|>

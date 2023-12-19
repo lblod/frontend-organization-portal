@@ -344,13 +344,13 @@
                       <Item
                         @labelFor="oprichting-gemeente"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
+                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
                       >
                         <:label>Werd opgericht door</:label>
                         <:content as |hasError|>
                           <AdministrativeUnitSelect
                             @disabled={{true}}
-                            @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
+                            @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                             @onChange={{this.setRelation}}
                             @classificationCodes={{this.classificationCodes}}
                             @error={{hasError}}
@@ -384,13 +384,13 @@
                       <Item
                         @labelFor="oprichting-ocmw-association"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
+                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganizations.validation}}
                       >
                         <:label>Werd opgericht door</:label>
                         <:content as |hasError|>
                           <AdministrativeUnitMultipleSelect
                             @disabled={{true}}
-                            @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
+                            @selected={{@model.administrativeUnit.wasFoundedByOrganizations}}
                             @onChange={{this.setRelation}}
                             @classificationCodes={{this.classificationCodesOcmwAssociationFounders}}
                             @error={{hasError}}
@@ -416,6 +416,7 @@
                         </:content>
                       </Item>
                     {{else}}
+                      {{! Currently only APBs remain}}
                       <Item
                         @labelFor="related-provincie"
                         @required={{true}}
@@ -446,7 +447,7 @@
                             @selected={{@model.administrativeUnit.isAssociatedWith}}
                             @onChange={{this.setMunicipality}}
                             @allowClear={{true}}
-                            @selectedProvince={{@model.administrativeUnit.wasFoundedByOrganization}}
+                            @selectedProvince={{@model.administrativeUnit.wasFoundedByOrganizations}}
                             @classificationCodes={{this.classificationCodes}}
                             @error={{hasError}}
                             @id="related-gemeente"
@@ -454,18 +455,18 @@
                         </:content>
                       </Item>
                       <Item
-                        @labelFor="opregicht-provincie"
+                        @labelFor="opgericht-provincie"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
+                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
                       >
                         <:label>Werd opgericht door</:label>
                         <:content as |hasError|>
                           <ProvinceOrganizationSelect
                             @disabled={{true}}
-                            @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
+                            @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                             @onChange={{this.setRelation}}
                             @error={{hasError}}
-                            @id="opregicht-provincie"
+                            @id="opgericht-provincie"
                           />
                         </:content>
                       </Item>
