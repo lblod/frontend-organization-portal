@@ -1,5 +1,6 @@
 <div class={{if @error "ember-power-select--error"}} ...attributes>
   <PowerSelectMultiple
+    @disabled={{if @disabled true false}}
     @allowClear={{true}}
     @searchEnabled={{true}}
     @loadingMessage="Aan het laden..."
@@ -12,6 +13,7 @@
     @triggerId={{@id}}
     as |administrativeUnit|
   >
-    {{administrativeUnit.name}} ({{administrativeUnit.classification.label}})
+    {{administrativeUnit.name}}
+    ({{administrativeUnit.classification.label}})
   </PowerSelectMultiple>
 </div>
