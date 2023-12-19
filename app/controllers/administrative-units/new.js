@@ -161,22 +161,19 @@ export default class AdministrativeUnitsNewController extends Controller {
 
   @action
   setRelation(unit) {
-    this.model.administrativeUnitChangeset.isSubOrganizationOf = unit;
+    if (Array.isArray(unit)) {
+      this.model.administrativeUnitChangeset.isSubOrganizationOf = unit[0];
+    } else {
+      this.model.administrativeUnitChangeset.isSubOrganizationOf = unit;
+    }
 
-    // TODO: unit should become a list
-    if (this.isNewAgb || this.isNewApb)
+    if (this.isNewAgb || this.isNewApb || this.isNewOcmwAssociation)
       if (Array.isArray(unit)) {
         this.model.administrativeUnitChangeset.wasFoundedByOrganization = unit;
       } else {
         this.model.administrativeUnitChangeset.wasFoundedByOrganization =
           new Array(unit);
       }
-  }
-
-  // Integrate with above setRelation
-  @action
-  setWasFoundedByOrganizations(units) {
-    this.model.administrativeUnitChangeset.wasFoundedByOrganization = units;
   }
 
   @action

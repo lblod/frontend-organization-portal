@@ -400,8 +400,7 @@
                       <:content as |hasError|>
                         <AdministrativeUnitMultipleSelect
                           @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
-                          {{! TODO: Replace by setRelation once it can propertly deal with multiple inputs  }}
-                          @onChange={{this.setWasFoundedByOrganizations}}
+                          @onChange={{this.setRelation}}
                           @classificationCodes={{this.classificationCodesOcmwAssociationFounders}}
                           @error={{hasError}}
                           @id="oprichting-ocmw-association"
