@@ -19,8 +19,13 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
 
     const isAssociatedWith = await administrativeUnit.isAssociatedWith;
     const isSubOrganizationOf = await administrativeUnit.isSubOrganizationOf;
+
     const wasFoundedByOrganization =
-      await administrativeUnit.wasFoundedByOrganization;
+      await this.loadFoundedOrganizationsTask.perform(
+        administrativeUnit.id,
+        params
+      );
+
     const subOrganizations = await this.loadSubOrganizationsTask.perform(
       administrativeUnit.id,
       params,
@@ -65,6 +70,7 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
         page: { size: params.size, number: params.page },
       });
     }
+
     return yield this.store.query('administrative-unit', {
       'filter[:or:][is-sub-organization-of][:id:]': id,
       'filter[:or:][was-founded-by-organization][:id:]': id,
@@ -91,6 +97,16 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
   *loadHasParticipantsTask(id, params) {
     return yield this.store.query('administrative-unit', {
       'filter[participates-in][:id:]': id,
+      'page[size]': 500,
+      include: 'classification',
+      sort: params.sort,
+    });
+  }
+
+  @dropTask({ cancelOn: 'deactivate' })
+  *loadFoundedOrganizationsTask(id, params) {
+    return yield this.store.query('administrative-unit', {
+      'filter[founded-organizations][:id:]': id,
       'page[size]': 500,
       include: 'classification',
       sort: params.sort,

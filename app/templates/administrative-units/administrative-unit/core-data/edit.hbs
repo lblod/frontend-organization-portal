@@ -382,19 +382,19 @@
                   {{else}}
                     {{#if this.isOcmwAssociation}}
                       <Item
-                        @labelFor="oprichting-gemeente"
+                        @labelFor="oprichting-ocmw-association"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
+                        @errorMessage={{@model.administrativeUnitChangeset.error.wasFoundedByOrganization.validation}}
                       >
                         <:label>Werd opgericht door</:label>
                         <:content as |hasError|>
-                          <AdministrativeUnitSelect
+                          <AdministrativeUnitMultipleSelect
                             @disabled={{true}}
-                            @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
-                            @onChange={{this.setRelation}}
-                            @classificationCodes={{this.classificationCodes}}
+                            @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
+                            @onChange={{this.setWasFoundedByOrganizations}}
+                            @classificationCodes={{this.classificationCodesOcmwAssociationFounders}}
                             @error={{hasError}}
-                            @id="oprichting-gemeente"
+                            @id="oprichting-ocmw-association"
                           />
                         </:content>
                       </Item>

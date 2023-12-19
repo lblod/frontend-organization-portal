@@ -136,8 +136,14 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   setRelation(unit) {
     this.model.administrativeUnit.isSubOrganizationOf = unit;
 
+    // TODO: unit should become a list
     if (this.isAgb || this.isApb)
       this.model.administrativeUnit.wasFoundedByOrganization = unit;
+  }
+
+  @action
+  setWasFoundedByOrganizations(units) {
+    this.model.administrativeUnitChangeset.wasFoundedByOrganization = units;
   }
 
   @action

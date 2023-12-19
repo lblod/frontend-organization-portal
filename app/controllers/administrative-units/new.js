@@ -145,9 +145,11 @@ export default class AdministrativeUnitsNewController extends Controller {
     ];
   }
 
-  // TODO: add optional founding organisations classifications
   get classificationCodesOcmwAssociationFounders() {
-    return [CLASSIFICATION_CODE.OCMW];
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
+      CLASSIFICATION_CODE.OCMW,
+      CLASSIFICATION_CODE.MUNICIPALITY,
+    ]);
   }
 
   get classificationCodesOcmwAssociationParticipants() {
@@ -160,8 +162,21 @@ export default class AdministrativeUnitsNewController extends Controller {
   @action
   setRelation(unit) {
     this.model.administrativeUnitChangeset.isSubOrganizationOf = unit;
-    if (this.isNewAgb || this.isNewApb || this.isNewOcmwAssociation)
-      this.model.administrativeUnitChangeset.wasFoundedByOrganization = unit;
+
+    // TODO: unit should become a list
+    if (this.isNewAgb || this.isNewApb)
+      if (Array.isArray(unit)) {
+        this.model.administrativeUnitChangeset.wasFoundedByOrganization = unit;
+      } else {
+        this.model.administrativeUnitChangeset.wasFoundedByOrganization =
+          new Array(unit);
+      }
+  }
+
+  // Integrate with above setRelation
+  @action
+  setWasFoundedByOrganizations(units) {
+    this.model.administrativeUnitChangeset.wasFoundedByOrganization = units;
   }
 
   @action
@@ -181,7 +196,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.administrativeUnitChangeset.foundedOrganizations = [];
     this.model.administrativeUnitChangeset.isAssociatedWith = [];
     this.model.administrativeUnitChangeset.isSubOrganizationOf = null;
-    this.model.administrativeUnitChangeset.wasFoundedByOrganization = null;
+    this.model.administrativeUnitChangeset.wasFoundedByOrganization = [];
     this.model.administrativeUnitChangeset.hasParticipants = [];
   }
 

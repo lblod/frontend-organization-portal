@@ -1,24 +1,53 @@
-<DataCard>
-  {{! TODO: Can have multiple founders }}
-  <:title>Heeft relatie met</:title>
-  <:card as |Card|>
-    <Card.Columns>
-      <:left as |Item|>
-        <Item>
-          <:label>Werd opgericht door:</:label>
-          <:content>
-            <AuLink
-              @route="administrative-units.administrative-unit.core-data"
-              @model={{@model.wasFoundedByOrganization.id}}
-            >
-              {{@model.wasFoundedByOrganization.name}}
-            </AuLink>
-          </:content>
-        </Item>
-      </:left>
-    </Card.Columns>
-  </:card>
-</DataCard>
+<div>
+  <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
+    Werd opericht door
+  </AuHeading>
+  <AuDataTable
+    id="wasFoundedBy"
+    @content={{@model.wasFoundedByOrganization}}
+    @noDataMessage="Geen bestuur"
+    as |t|
+  >
+    <t.content as |c|>
+      <c.header>
+        <AuDataTableThSortable
+          @field="classification.label"
+          @label="Type organisatie"
+          @currentSorting={{@sort}}
+        />
+        <AuDataTableThSortable
+          @field="name"
+          @label="Organisatie"
+          @currentSorting={{@sort}}
+        />
+        <AuDataTableThSortable
+          @field="organizationStatus.label"
+          @label="Status"
+          @currentSorting={{@sort}}
+        />
+      </c.header>
+      <c.body as |organization|>
+        <td>
+          {{organization.classification.label}}
+        </td>
+        <td>
+          <AuLink
+            @route="administrative-units.administrative-unit"
+            @model={{organization.id}}
+          >
+            {{organization.name}}
+          </AuLink>
+        </td>
+        <td>
+          <OrganizationStatus
+            @id={{organization.organizationStatus.id}}
+            @label={{organization.organizationStatus.label}}
+          />
+        </td>
+      </c.body>
+    </t.content>
+  </AuDataTable>
+</div>
 
 {{#if @model.administrativeUnit.foundedOrganizations.length}}
   <div>

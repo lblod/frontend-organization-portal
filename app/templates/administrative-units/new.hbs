@@ -359,7 +359,8 @@
                     >
                       <:label>Werd opgericht door</:label>
                       <:content as |hasError|>
-                        <AdministrativeUnitSelect
+                        {{! TODO: should not be a multiple select, using multiple select is a quick fix to show founder despite that relation being a many-to-many  }}
+                        <AdministrativeUnitMultipleSelect
                           @disabled={{true}}
                           @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
                           @onChange={{this.setRelation}}
@@ -391,7 +392,6 @@
                   {{/if}}
                 {{else}}
                   {{#if this.isNewOcmwAssociation}}
-                    {{! TODO: deal with additional, optional founding organisations }}
                     <Item
                       @labelFor="oprichting-ocmw-association"
                       @required={{true}}
@@ -399,9 +399,10 @@
                     >
                       <:label>Werd opgericht door</:label>
                       <:content as |hasError|>
-                        <AdministrativeUnitSelect
+                        <AdministrativeUnitMultipleSelect
                           @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
-                          @onChange={{this.setRelation}}
+                          {{! TODO: Replace by setRelation once it can propertly deal with multiple inputs  }}
+                          @onChange={{this.setWasFoundedByOrganizations}}
                           @classificationCodes={{this.classificationCodesOcmwAssociationFounders}}
                           @error={{hasError}}
                           @id="oprichting-ocmw-association"
@@ -475,6 +476,7 @@
                       >
                         <:label>Werd opgericht door</:label>
                         <:content as |hasError|>
+                          {{! TODO: no longer displays the province correctly due to changing the wasFoundedByOrganization relation to many cardinality  }}
                           <ProvinceOrganizationSelect
                             @disabled={{true}}
                             @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}

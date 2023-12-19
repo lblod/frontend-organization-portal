@@ -51,7 +51,7 @@ export default {
       message: 'Selecteer een optie',
     }),
     function (changes, content) {
-      return isIGS(changes, content) || isOcmwAssociation(changes, content);
+      return isIGS(changes, content); // TODO: add ocmwAssociations if participants are mandatory
     }
   ),
 
@@ -68,7 +68,11 @@ export default {
       message: 'Selecteer een optie',
     }),
     function (changes, content) {
-      return isAgb(changes, content) || isApb(changes, content);
+      return (
+        isAgb(changes, content) ||
+        isApb(changes, content) ||
+        isOcmwAssociation(changes, content)
+      );
     }
   ),
 
@@ -85,6 +89,7 @@ export default {
         isIGS(changes, content) ||
         isPoliceZone(changes, content) ||
         isAssistanceZone(changes, content)
+        // TODO: add OCMW associations?
       );
 
       //todo this was disabled in OP-1705, as of today, this is not mandatory
