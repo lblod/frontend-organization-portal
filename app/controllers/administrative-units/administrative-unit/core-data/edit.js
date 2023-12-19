@@ -127,23 +127,33 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     ]);
   }
 
+  get classificationCodesOcmwAssociationFounders() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
+      CLASSIFICATION_CODE.MUNICIPALITY,
+      CLASSIFICATION_CODE.OCMW,
+    ]);
+  }
+
   @action
   setKbo(value) {
     this.model.structuredIdentifierKBO.localId = value;
   }
 
   @action
-  setRelation(unit) {
-    this.model.administrativeUnit.isSubOrganizationOf = unit;
+  setRelation(units) {
+    if (Array.isArray(units)) {
+      this.model.administrativeUnitChangeset.isSubOrganizationOf = units[0];
+    } else {
+      this.model.administrativeUnitChangeset.isSubOrganizationOf = units;
+    }
 
-    // TODO: unit should become a list
-    if (this.isAgb || this.isApb)
-      this.model.administrativeUnit.wasFoundedByOrganization = unit;
-  }
-
-  @action
-  setWasFoundedByOrganizations(units) {
-    this.model.administrativeUnitChangeset.wasFoundedByOrganization = units;
+    if (this.isNewAgb || this.isNewApb || this.isNewOcmwAssociation)
+      if (Array.isArray(units)) {
+        this.model.administrativeUnitChangeset.wasFoundedByOrganization = units;
+      } else {
+        this.model.administrativeUnitChangeset.wasFoundedByOrganization =
+          new Array(units);
+      }
   }
 
   @action

@@ -384,14 +384,14 @@
                       <Item
                         @labelFor="oprichting-ocmw-association"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnitChangeset.error.wasFoundedByOrganization.validation}}
+                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
                       >
                         <:label>Werd opgericht door</:label>
                         <:content as |hasError|>
                           <AdministrativeUnitMultipleSelect
                             @disabled={{true}}
-                            @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
-                            @onChange={{this.setWasFoundedByOrganizations}}
+                            @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
+                            @onChange={{this.setRelation}}
                             @classificationCodes={{this.classificationCodesOcmwAssociationFounders}}
                             @error={{hasError}}
                             @id="oprichting-ocmw-association"
