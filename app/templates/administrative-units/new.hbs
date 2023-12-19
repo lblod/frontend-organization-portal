@@ -359,10 +359,9 @@
                     >
                       <:label>Werd opgericht door</:label>
                       <:content as |hasError|>
-                        {{! TODO: should not be a multiple select, using multiple select is a quick fix to show founder despite that relation being a many-to-many  }}
-                        <AdministrativeUnitMultipleSelect
+                        <AdministrativeUnitSelect
                           @disabled={{true}}
-                          @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
+                          @selected={{@model.administrativeUnitChangeset.isSubOrganizationOf}}
                           @onChange={{this.setRelation}}
                           @classificationCodes={{this.classificationCodes}}
                           @error={{hasError}}
@@ -476,10 +475,9 @@
                       >
                         <:label>Werd opgericht door</:label>
                         <:content as |hasError|>
-                          {{! TODO: no longer displays the province correctly due to changing the wasFoundedByOrganization relation to many cardinality  }}
                           <ProvinceOrganizationSelect
                             @disabled={{true}}
-                            @selected={{@model.administrativeUnitChangeset.wasFoundedByOrganization}}
+                            @selected={{@model.administrativeUnitChangeset.isSubOrganizationOf}}
                             @onChange={{this.setRelation}}
                             @error={{hasError}}
                             @id="opgericht-provincie"
