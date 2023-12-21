@@ -135,7 +135,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
       structuredIdentifierSharepoint,
       structuredIdentifierNIS,
       structuredIdentifierOVO,
-      igsRegio: region,
+      region,
     };
   }
 
