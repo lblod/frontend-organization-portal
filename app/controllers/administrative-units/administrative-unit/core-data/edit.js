@@ -176,7 +176,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     }
   }
 
-  removeUnsavedRecords() {
+  resetUnsavedRecords() {
     this.model.administrativeUnit.reset();
     this.model.contact.reset();
     this.model.secondaryContact.reset();
@@ -185,6 +185,6 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   }
 
   reset() {
-    this.removeUnsavedRecords();
+    this.resetUnsavedRecords();
   }
 }
