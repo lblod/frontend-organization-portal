@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditController extends Controller {
   @service router;
@@ -69,6 +70,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
       }
 
       if (contact.isDirty) {
+        contact.telephone = transformPhoneNumbers(contact.telephone);
         if (contact.isNew) {
           site.contacts.pushObject(contact);
         }
@@ -78,6 +80,9 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
       }
 
       if (secondaryContact.isDirty) {
+        secondaryContact.telephone = transformPhoneNumbers(
+          secondaryContact.telephone
+        );
         if (secondaryContact.isNew) {
           site.contacts.pushObject(secondaryContact);
         }

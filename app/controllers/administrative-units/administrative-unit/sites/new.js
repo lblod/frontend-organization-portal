@@ -4,6 +4,7 @@ import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { tracked } from '@glimmer/tracking';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
+import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesNewController extends Controller {
   @service router;
@@ -33,9 +34,13 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
 
     if (!this.hasValidationErrors) {
       contact = setEmptyStringsToNull(contact);
+      contact.telephone = transformPhoneNumbers(contact.telephone);
       yield contact.save();
 
       secondaryContact = setEmptyStringsToNull(secondaryContact);
+      secondaryContact.telephone = transformPhoneNumbers(
+        secondaryContact.telephone
+      );
       yield secondaryContact.save();
 
       if (address.country != 'België') {
@@ -48,6 +53,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
       yield address.save();
 
       site.address = address;
+
       site.contacts.pushObjects([contact, secondaryContact]);
       yield site.save();
 

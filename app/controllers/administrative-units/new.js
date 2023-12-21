@@ -10,6 +10,7 @@ import {
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import fetch from 'fetch';
+import { transformPhoneNumbers } from '../../utils/transform-phone-numbers';
 
 export default class AdministrativeUnitsNewController extends Controller {
   @service router;
@@ -255,9 +256,13 @@ export default class AdministrativeUnitsNewController extends Controller {
       yield identifierSharepoint.save();
 
       contact = setEmptyStringsToNull(contact);
+      contact.telephone = transformPhoneNumbers(contact.telephone);
       yield contact.save();
 
       secondaryContact = setEmptyStringsToNull(secondaryContact);
+      secondaryContact.telephone = transformPhoneNumbers(
+        secondaryContact.telephone
+      );
       yield secondaryContact.save();
 
       if (address.country != 'België') {
