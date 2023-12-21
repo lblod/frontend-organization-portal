@@ -25,7 +25,6 @@ const SHAREPOINT_LINK_BASE = {
     'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
   ASSISTANCE_ZONE:
     'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
-  // TODO: check whether URL is correct (copied from above instances)
   OCMW_ASSOCIATION:
     'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
 };

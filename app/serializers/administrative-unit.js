@@ -3,6 +3,5 @@ export default class AdministrativeUnitSerializer extends ApplicationSerializer 
   attrs = {
     subOrganizations: { serialize: true },
     hasParticipants: { serialize: true },
-    // TODO: add serialisation for wasFoundedByOrganizations?
   };
 }

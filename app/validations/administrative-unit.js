@@ -89,7 +89,6 @@ export default {
         isIGS(changes, content) ||
         isPoliceZone(changes, content) ||
         isAssistanceZone(changes, content)
-        // TODO: add OCMW associations?
       );
 
       //todo this was disabled in OP-1705, as of today, this is not mandatory

@@ -57,8 +57,6 @@ export default class ClassificationSelectComponent extends Component {
         CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
         CLASSIFICATION_CODE.POLICE_ZONE,
         CLASSIFICATION_CODE.ASSISTANCE_ZONE,
-        // TODO: check whether OP is responsible for creating instances of these
-        // new types
         CLASSIFICATION_CODE.WELZIJNSVERENIGING,
         CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
         // TODO: uncomment when onboarding private OCMW associations
