@@ -2,6 +2,8 @@ import Controller from '@ember/controller';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import WorshipServiceModel from 'frontend-organization-portal/models/worship-service';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 
 const SHAREPOINT_LINK_BASE = {
   WORSHIP_SERVICE:
@@ -25,6 +27,8 @@ const SHAREPOINT_LINK_BASE = {
 };
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexController extends Controller {
+  @tracked showAbbData = true;
+
   isSharePointIdentifier(identifier) {
     return identifier?.idName === ID_NAME.SHAREPOINT;
   }
@@ -165,5 +169,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
   get expiredExpectedEndDate() {
     const expectedEndDate = this.model.administrativeUnit.expectedEndDate;
     return expectedEndDate && expectedEndDate < new Date();
+  }
+
+  @action
+  setShowAbbData(value) {
+    this.showAbbData = value;
   }
 }
