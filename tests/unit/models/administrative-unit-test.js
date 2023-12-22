@@ -55,7 +55,6 @@ module('Unit | Model | administrative unit', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      console.log(model.error);
       assert.propContains(model.error, {
         name: { message: 'Vul de naam in' },
         expectedEndDate: {
