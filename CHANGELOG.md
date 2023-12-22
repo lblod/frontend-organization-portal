@@ -14,6 +14,32 @@
 
 
 
+## 1.21.0 (2023-12-19)
+
+#### :rocket: Enhancement
+* [#548](https://github.com/lblod/frontend-organization-portal/pull/548) Avoid scrolling in multiple select on classifcation ([@lagartoverde](https://github.com/lagartoverde))
+* [#540](https://github.com/lblod/frontend-organization-portal/pull/540) Feat/phonenumber convention sync ([@Dachamelemon](https://github.com/Dachamelemon))
+* [#541](https://github.com/lblod/frontend-organization-portal/pull/541) Refactor: Introduce generic Agent resource ([@mirdono](https://github.com/mirdono))
+* [#542](https://github.com/lblod/frontend-organization-portal/pull/542) Fix: make names of AGB, APB, and IGS clickable on positions page ([@mirdono](https://github.com/mirdono))
+* [#539](https://github.com/lblod/frontend-organization-portal/pull/539) Hide purpose and planned end date when not filled in ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#537](https://github.com/lblod/frontend-organization-portal/pull/537) post processing to open editor links in a new tab ([@lagartoverde](https://github.com/lagartoverde))
+* [#536](https://github.com/lblod/frontend-organization-portal/pull/536) Make all organizations clickable in persons module ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### :bug: Bug Fix
+* [#547](https://github.com/lblod/frontend-organization-portal/pull/547) Fixed secondary number validation ([@Dachamelemon](https://github.com/Dachamelemon))
+
+#### :house: Internal
+* [#544](https://github.com/lblod/frontend-organization-portal/pull/544) Use woodpecker ci instead of drone - follow up ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#543](https://github.com/lblod/frontend-organization-portal/pull/543) Tests fix and cleaning ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 5
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+- [@Dachamelemon](https://github.com/Dachamelemon)
+
+
 ## 1.21.0-0 (2023-12-14)
 
 #### :rocket: Enhancement
