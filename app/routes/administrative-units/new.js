@@ -10,6 +10,7 @@ import { getAddressValidations } from 'frontend-organization-portal/validations/
 import contactValidations from 'frontend-organization-portal/validations/contact-point';
 import administrativeUnitValidations, {
   getStructuredIdentifierKBOValidations,
+  getStructuredIdentifierSharepointValidations
 } from 'frontend-organization-portal/validations/administrative-unit';
 import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
 
@@ -58,8 +59,9 @@ export default class AdministrativeUnitsNewRoute extends Route {
       identifierSharepoint: this.store.createRecord('identifier', {
         idName: ID_NAME.SHAREPOINT,
       }),
-      structuredIdentifierSharepoint: this.store.createRecord(
-        'structured-identifier'
+      structuredIdentifierSharepoint: createValidatedChangeset(
+        this.store.createRecord('structured-identifier'),
+        getStructuredIdentifierSharepointValidations()
       ),
     };
   }

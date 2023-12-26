@@ -13,6 +13,7 @@ import { getAddressValidations } from 'frontend-organization-portal/validations/
 import contactValidations from 'frontend-organization-portal/validations/contact-point';
 import administrativeUnitValidations, {
   getStructuredIdentifierKBOValidations,
+  getStructuredIdentifierSharepointValidations
 } from 'frontend-organization-portal/validations/administrative-unit';
 import { A } from '@ember/array';
 import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
@@ -125,7 +126,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
         structuredIdentifierKBO,
         getStructuredIdentifierKBOValidations(this.store)
       ),
-      structuredIdentifierSharepoint,
+      structuredIdentifierSharepoint: createValidatedChangeset(
+        structuredIdentifierSharepoint,
+        getStructuredIdentifierSharepointValidations()
+      ),
       structuredIdentifierNIS,
       structuredIdentifierOVO,
       igsRegio,

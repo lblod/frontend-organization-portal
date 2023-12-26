@@ -1,5 +1,5 @@
 import { isBlank } from '@ember/utils';
-import { validatePresence } from 'ember-changeset-validations/validators';
+import { validatePresence, validateNumber } from 'ember-changeset-validations/validators';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { validateConditionally } from 'frontend-organization-portal/validators/validate-conditionally';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
@@ -136,6 +136,16 @@ export default {
 export function getStructuredIdentifierKBOValidations(store) {
   return {
     localId: validateKBO(store),
+  };
+}
+
+export function getStructuredIdentifierSharepointValidations() {
+  return {
+    localId: validateNumber({
+      allowBlank: true, 
+      allowString: true,
+      message: 'SharePoint moet numeriek zijn',
+    }),
   };
 }
 
