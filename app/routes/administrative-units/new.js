@@ -10,7 +10,7 @@ import { getAddressValidations } from 'frontend-organization-portal/validations/
 import contactValidations from 'frontend-organization-portal/validations/contact-point';
 import administrativeUnitValidations, {
   getStructuredIdentifierKBOValidations,
-  getStructuredIdentifierSharepointValidations
+  getStructuredIdentifierSharepointValidations,
 } from 'frontend-organization-portal/validations/administrative-unit';
 import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
 
