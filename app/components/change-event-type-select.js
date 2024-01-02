@@ -74,6 +74,7 @@ export default class ChangeEventTypeSelectComponent extends Component {
     if (
       classification.id == CLASSIFICATION_CODE.WELZIJNSVERENIGING ||
       classification.id == CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING
+      // TODO: uncomment when onboarding private OCMW associations
       // ||
       // classification.id == CLASSIFICATION_CODE.ZIEKENHUISVERENIGING ||
       // classification.id ==
