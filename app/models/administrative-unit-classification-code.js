@@ -63,11 +63,6 @@ export const CLASSIFICATION = {
     id: '89a00b5a-024f-4630-a722-65a5e68967e5',
     label: 'Representatief orgaan',
   },
-  // Currently not used, split in 5 subtypes below
-  // OCMW_VERENIGING: {
-  //   id: 'cc4e2d67-603b-4784-9b61-e50bac1ec089',
-  //   label: 'OCMW vereniging',
-  // },
   WELZIJNSVERENIGING: {
     id: 'e8294b73-87c9-4fa2-9441-1937350763c9',
     label: 'Welzijnsvereniging',
@@ -111,7 +106,6 @@ export const CLASSIFICATION_CODE = {
   POLICE_ZONE: CLASSIFICATION.POLICE_ZONE.id,
   ASSISTANCE_ZONE: CLASSIFICATION.ASSISTANCE_ZONE.id,
   REPRESENTATIVE_ORGAN: CLASSIFICATION.REPRESENTATIVE_ORGAN.id, // FIXME: this is not an administrative unit
-  // OCMW_VERENIGING: 'cc4e2d67-603b-4784-9b61-e50bac1ec089', // Currently not used, split in 5 subtypes below
   WELZIJNSVERENIGING: CLASSIFICATION.WELZIJNSVERENIGING.id,
   AUTONOME_VERZORGINGSINSTELLING:
     CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
