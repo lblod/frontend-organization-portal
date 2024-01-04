@@ -25,11 +25,29 @@
 
     <AuTabs as |Tab|>
       <Tab class="au-u-1-1">
-        <AuLink @skin="naked" @width="block" class={{if this.showAbbData "active tab-link-align-left" "tab-link-align-left"}} {{on "click" (fn this.setShowAbbData true) }}>ABB Gegevens</AuLink>
+        <AuLink
+          @skin="naked"
+          @width="block"
+          class={{if
+            this.showAbbData
+            "active tab-link-align-left"
+            "tab-link-align-left"
+          }}
+          {{on "click" (fn this.setShowAbbData true)}}
+        >ABB Gegevens</AuLink>
       </Tab>
 
-      <Tab  class="au-u-1-1">
-        <AuLink @skin="naked"  @width="block" class={{if this.showAbbData "tab-link-align-left" "active tab-link-align-left"}}  {{on "click" (fn this.setShowAbbData false)}}>KBO Gegevens</AuLink>
+      <Tab class="au-u-1-1">
+        <AuLink
+          @skin="naked"
+          @width="block"
+          class={{if
+            this.showAbbData
+            "tab-link-align-left"
+            "active tab-link-align-left"
+          }}
+          {{on "click" (fn this.setShowAbbData false)}}
+        >KBO Gegevens</AuLink>
       </Tab>
 
     </AuTabs>
@@ -114,9 +132,7 @@
                   <Item>
                     <:label>Geplande einddatum</:label>
                     <:content>
-                      {{date-format
-                        @model.administrativeUnit.expectedEndDate
-                      }}
+                      {{date-format @model.administrativeUnit.expectedEndDate}}
                       {{#if this.expiredExpectedEndDate}}
                         <AuPill @skin="error">De geplande einddatum is
                           overschreden</AuPill>
@@ -216,7 +232,7 @@
         </:title>
       </Site::ContactDataCard>
     {{else}}
-        <DataCard>
+      <DataCard>
         <:title>Bestuurseenheid</:title>
         <:card as |Card|>
           <Card.Columns>
@@ -256,23 +272,20 @@
                   />
                 </:content>
               </Item>
-              
-            
-              
-              
-                <Item>
-                  <:label>Begindatum</:label>
-                  <:content>
-                    01-01-1990
-                  </:content>
-                </Item>
-              
-                <Item>
-                  <:label>Ondernemingsnummer</:label>
-                  <:content>
-                    1274.374.678
-                  </:content>
-                </Item>
+
+              <Item>
+                <:label>Begindatum</:label>
+                <:content>
+                  01-01-1990
+                </:content>
+              </Item>
+
+              <Item>
+                <:label>Ondernemingsnummer</:label>
+                <:content>
+                  1274.374.678
+                </:content>
+              </Item>
             </:right>
           </Card.Columns>
         </:card>
