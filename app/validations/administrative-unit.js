@@ -5,7 +5,10 @@ import {
 } from 'ember-changeset-validations/validators';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { validateConditionally } from 'frontend-organization-portal/validators/validate-conditionally';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default {
   name: validatePresence({
@@ -61,14 +64,18 @@ export default {
     message: 'Selecteer een optie',
   }),
 
-  wasFoundedByOrganization: validateConditionally(
+  wasFoundedByOrganizations: validateConditionally(
     validatePresence({
       presence: true,
       ignoreBlank: true,
       message: 'Selecteer een optie',
     }),
     function (changes, content) {
-      return isAgb(changes, content) || isApb(changes, content);
+      return (
+        isAgb(changes, content) ||
+        isApb(changes, content) ||
+        isOcmwAssociation(changes, content)
+      );
     }
   ),
 
@@ -190,6 +197,14 @@ function isWorshipAdministrativeUnit(changes, content) {
       CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
     ) ||
     hasClassificationId(changes, content, CLASSIFICATION_CODE.WORSHIP_SERVICE)
+  );
+}
+
+function isOcmwAssociation(changes, content) {
+  return hasClassificationId(
+    changes,
+    content,
+    OCMW_ASSOCIATION_CLASSIFICATION_CODES
   );
 }
 

@@ -3,7 +3,10 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import fetch from 'fetch';
@@ -119,6 +122,12 @@ export default class AdministrativeUnitsNewController extends Controller {
     );
   }
 
+  get isNewOcmwAssociation() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
+      this.model.administrativeUnitChangeset.classification?.get('id')
+    );
+  }
+
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
@@ -138,11 +147,35 @@ export default class AdministrativeUnitsNewController extends Controller {
     ];
   }
 
+  get classificationCodesOcmwAssociationFounders() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
+      CLASSIFICATION_CODE.OCMW,
+      CLASSIFICATION_CODE.MUNICIPALITY,
+    ]);
+  }
+
+  get classificationCodesOcmwAssociationParticipants() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
+      CLASSIFICATION_CODE.MUNICIPALITY,
+      CLASSIFICATION_CODE.OCMW,
+    ]);
+  }
+
   @action
   setRelation(unit) {
-    this.model.administrativeUnitChangeset.isSubOrganizationOf = unit;
-    if (this.isNewAgb || this.isNewApb)
-      this.model.administrativeUnitChangeset.wasFoundedByOrganization = unit;
+    if (Array.isArray(unit)) {
+      this.model.administrativeUnitChangeset.isSubOrganizationOf = unit[0];
+    } else {
+      this.model.administrativeUnitChangeset.isSubOrganizationOf = unit;
+    }
+
+    if (this.isNewAgb || this.isNewApb || this.isNewOcmwAssociation)
+      if (Array.isArray(unit)) {
+        this.model.administrativeUnitChangeset.wasFoundedByOrganizations = unit;
+      } else {
+        this.model.administrativeUnitChangeset.wasFoundedByOrganizations =
+          new Array(unit);
+      }
   }
 
   @action
@@ -162,7 +195,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.administrativeUnitChangeset.foundedOrganizations = [];
     this.model.administrativeUnitChangeset.isAssociatedWith = [];
     this.model.administrativeUnitChangeset.isSubOrganizationOf = null;
-    this.model.administrativeUnitChangeset.wasFoundedByOrganization = null;
+    this.model.administrativeUnitChangeset.wasFoundedByOrganizations = [];
     this.model.administrativeUnitChangeset.hasParticipants = [];
   }
 
@@ -249,7 +282,8 @@ export default class AdministrativeUnitsNewController extends Controller {
         this.isNewApb ||
         this.isNewIGS ||
         this.isNewPoliceZone ||
-        this.isNewAssistanceZone
+        this.isNewAssistanceZone ||
+        this.isNewOcmwAssociation
       ) {
         primarySite.siteType = siteTypes.find(
           (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
@@ -329,8 +363,8 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
   newAdministrativeUnit.classification = administrativeUnit.classification;
   newAdministrativeUnit.organizationStatus =
     administrativeUnit.organizationStatus;
-  newAdministrativeUnit.wasFoundedByOrganization =
-    administrativeUnit.wasFoundedByOrganization;
+  newAdministrativeUnit.wasFoundedByOrganizations =
+    administrativeUnit.wasFoundedByOrganizations;
   newAdministrativeUnit.isSubOrganizationOf =
     administrativeUnit.isSubOrganizationOf;
   if (

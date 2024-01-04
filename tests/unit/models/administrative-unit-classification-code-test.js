@@ -137,5 +137,23 @@ module(
         CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN
       );
     });
+
+    test('Welzijnsvereniging', function (assert) {
+      assert.ok(CLASSIFICATION_CODE.WELZIJNSVERENIGING);
+
+      assert.strictEqual(
+        CLASSIFICATION.WELZIJNSVERENIGING.id,
+        CLASSIFICATION_CODE.WELZIJNSVERENIGING
+      );
+    });
+
+    test('Autonome verzorgingsinstelling', function (assert) {
+      assert.ok(CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING);
+
+      assert.strictEqual(
+        CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
+        CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING
+      );
+    });
   }
 );

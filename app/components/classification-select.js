@@ -44,7 +44,7 @@ export default class ClassificationSelectComponent extends Component {
       this.isIdInBlacklist(selectedRecognizedWorshipTypeId)
     ) {
       allowedIds = [CLASSIFICATION_CODE.WORSHIP_SERVICE];
-    } else if (this.args.restrictForNewBestuursenheden) {
+    } else if (this.args.restrictForNewBestuurseenheden) {
       allowedIds = [
         CLASSIFICATION_CODE.WORSHIP_SERVICE,
         CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
@@ -57,6 +57,12 @@ export default class ClassificationSelectComponent extends Component {
         CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
         CLASSIFICATION_CODE.POLICE_ZONE,
         CLASSIFICATION_CODE.ASSISTANCE_ZONE,
+        CLASSIFICATION_CODE.WELZIJNSVERENIGING,
+        CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
+        // TODO: uncomment when onboarding private OCMW associations
+        // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
+        // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+        // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
       ];
     } else {
       allowedIds = [
@@ -74,6 +80,12 @@ export default class ClassificationSelectComponent extends Component {
         CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
         CLASSIFICATION_CODE.POLICE_ZONE,
         CLASSIFICATION_CODE.ASSISTANCE_ZONE,
+        CLASSIFICATION_CODE.WELZIJNSVERENIGING,
+        CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
+        // TODO: uncomment when onboarding private OCMW associations
+        // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
+        // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+        // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
       ];
     }
 
