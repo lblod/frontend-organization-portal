@@ -1,5 +1,8 @@
 import { isBlank } from '@ember/utils';
-import { validatePresence } from 'ember-changeset-validations/validators';
+import {
+  validatePresence,
+  validateNumber,
+} from 'ember-changeset-validations/validators';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { validateConditionally } from 'frontend-organization-portal/validators/validate-conditionally';
 import {
@@ -146,6 +149,16 @@ export function getStructuredIdentifierKBOValidations(store) {
   };
 }
 
+export function getStructuredIdentifierSharepointValidations() {
+  return {
+    localId: validateNumber({
+      allowBlank: true,
+      allowString: true,
+      message: 'De SharePoint identificator mag enkel cijfers bevatten',
+    }),
+  };
+}
+
 function isAgb(changes, content) {
   return hasClassificationId(changes, content, CLASSIFICATION_CODE.AGB);
 }
@@ -219,7 +232,7 @@ function validateKBO(store) {
 
     if (newKboNumber.match(/[^$,.\d]/) || newKboNumber.length !== 10) {
       return {
-        message: 'Vul het (tiencijferige) KBO nummer in.',
+        message: 'Vul het (tiencijferige) KBO nummer in',
       };
     }
 

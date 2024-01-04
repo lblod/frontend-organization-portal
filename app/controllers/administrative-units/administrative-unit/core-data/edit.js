@@ -20,7 +20,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       this.model.address.isInvalid ||
       this.model.contact.isInvalid ||
       this.model.secondaryContact.isInvalid ||
-      this.model.structuredIdentifierKBO.isInvalid
+      this.model.structuredIdentifierKBO.isInvalid ||
+      this.model.structuredIdentifierSharepoint.isInvalid
     );
   }
 
@@ -190,6 +191,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       contact.validate(),
       secondaryContact.validate(),
       structuredIdentifierKBO.validate(),
+      structuredIdentifierSharepoint.validate(),
     ]);
 
     if (!this.hasValidationErrors) {

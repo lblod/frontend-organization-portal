@@ -22,7 +22,8 @@ export default class AdministrativeUnitsNewController extends Controller {
       this.model.address.isInvalid ||
       this.model.contact.isInvalid ||
       this.model.secondaryContact.isInvalid ||
-      this.model.structuredIdentifierKBO.isInvalid
+      this.model.structuredIdentifierKBO.isInvalid ||
+      this.model.structuredIdentifierSharepoint.isInvalid
     );
   }
 
@@ -223,6 +224,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       contact.validate(),
       secondaryContact.validate(),
       structuredIdentifierKBO.validate(),
+      structuredIdentifierSharepoint.validate(),
     ]);
 
     if (!this.hasValidationErrors) {
