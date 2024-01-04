@@ -147,7 +147,7 @@ export function getStructuredIdentifierSharepointValidations() {
     localId: validateNumber({
       allowBlank: true,
       allowString: true,
-      message: 'SharePoint moet numeriek zijn',
+      message: 'De SharePoint identificator mag enkel cijfers bevatten',
     }),
   };
 }
@@ -217,7 +217,7 @@ function validateKBO(store) {
 
     if (newKboNumber.match(/[^$,.\d]/) || newKboNumber.length !== 10) {
       return {
-        message: 'Vul het (tiencijferige) KBO nummer in.',
+        message: 'Vul het (tiencijferige) KBO nummer in',
       };
     }
 
