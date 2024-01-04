@@ -215,15 +215,19 @@
                 <Error::KboNumber @error={{error}} />
               </:error>
             </Item>
-            <Item @labelFor="sharepoint-identifier">
+            <Item 
+              @labelFor="sharepoint-identifier"
+              @errorMessage={{@model.structuredIdentifierSharepoint.error.localId.validation}}  
+            >
               <:label>{{@model.identifierSharepoint.idName}}</:label>
-              <:content>
+              <:content as |hasError|>
                 <TrimInput
                   @width="block"
                   @value={{@model.structuredIdentifierSharepoint.localId}}
                   @onUpdate={{fn
                     (mut @model.structuredIdentifierSharepoint.localId)
                   }}
+                  @error={{hasError}}
                   id="sharepoint-identifier"
                 />
               </:content>
