@@ -90,6 +90,25 @@ module('Unit | Model | abstract validation model', function (hooks) {
       assert.true(isValid);
       assert.strictEqual(model.error, null);
     });
+
+    test('it returns no error when an optional belongsTo is provided', async function (assert) {
+      this.owner.register(
+        'model:test-validation-model',
+        BelongsToValidationModel
+      );
+
+      const oneRequired = this.store().createRecord('test-validation-model');
+      const oneOptional = this.store().createRecord('test-validation-model');
+      const model = this.store().createRecord('test-validation-model', {
+        oneRequired,
+        oneOptional,
+      });
+
+      const isValid = await model.validate();
+
+      assert.true(isValid);
+      assert.strictEqual(model.error, null);
+    });
   });
 
   module('hasMany validation', function () {
@@ -117,6 +136,23 @@ module('Unit | Model | abstract validation model', function (hooks) {
       const manyRequired = this.store().createRecord('test-validation-model');
       const model = this.store().createRecord('test-validation-model');
       model.manyRequired.pushObject(manyRequired);
+
+      const isValid = await model.validate();
+
+      assert.true(isValid);
+      assert.strictEqual(model.error, null);
+    });
+
+    test('it returns no error when an optional hasMany is fulfilled', async function (assert) {
+      this.owner.register(
+        'model:test-validation-model',
+        HasManyValidationModel
+      );
+      const manyRequired = this.store().createRecord('test-validation-model');
+      const manyOptional = this.store().createRecord('test-validation-model');
+      const model = this.store().createRecord('test-validation-model');
+      model.manyRequired.pushObject(manyRequired);
+      model.manyRequired.pushObject(manyOptional);
 
       const isValid = await model.validate();
 
