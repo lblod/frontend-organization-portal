@@ -62,7 +62,11 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       exactMatch: validateBelongsToOptional(),
       scope: validateBelongsToOptional(),
       isAssociatedWith: validateRequiredWhenClassificationId(
-        [...WorshipServiceCodeList, ...CentralWorshipServiceCodeList],
+        [
+          ...WorshipServiceCodeList,
+          ...CentralWorshipServiceCodeList,
+          ...ApbCodeList,
+        ],
         REQUIRED_MESSAGE
       ),
       hasParticipants: validateRequiredWhenClassificationId(
