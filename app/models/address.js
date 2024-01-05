@@ -2,7 +2,7 @@ import { attr, belongsTo } from '@ember-data/model';
 import AbstractValidationModel from './abstract-validation-model';
 import Joi from 'joi';
 import {
-  validateBelongToOptional,
+  validateBelongsToOptional,
   validateRequiredWhenAll,
 } from '../validators/schema';
 
@@ -59,7 +59,7 @@ export default class AddressModel extends AbstractValidationModel {
       boxNumber: Joi.string().allow(null),
       fullAddress: Joi.string(),
       addressRegisterUri: Joi.string(),
-      source: validateBelongToOptional(),
+      source: validateBelongsToOptional(),
     });
   }
 }

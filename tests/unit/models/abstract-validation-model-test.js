@@ -4,8 +4,8 @@ import { attr, hasMany, belongsTo } from '@ember-data/model';
 import Joi from 'joi';
 import AbstractValidationModel from 'frontend-organization-portal/models/abstract-validation-model';
 import {
-  validateBelongToOptional,
-  validateBelongToRequired,
+  validateBelongsToOptional,
+  validateBelongsToRequired,
   validateHasManyOptional,
   validateHasManyRequired,
   validateRequiredWhenAll,
@@ -58,11 +58,11 @@ module('Unit | Model | abstract validation model', function (hooks) {
     });
   });
 
-  module('belongTo validation', function () {
-    test('it returns error when required belongTo is missing', async function (assert) {
+  module('belongsTo validation', function () {
+    test('it returns an error when required belongsTo is missing', async function (assert) {
       this.owner.register(
         'model:test-validation-model',
-        BelongToValidationModel
+        BelongsToValidationModel
       );
       const model = this.store().createRecord('test-validation-model');
 
@@ -75,10 +75,10 @@ module('Unit | Model | abstract validation model', function (hooks) {
       );
     });
 
-    test('it returns no error when require belongTo is fulfilled', async function (assert) {
+    test('it returns no error when required belongsTo is fulfilled', async function (assert) {
       this.owner.register(
         'model:test-validation-model',
-        BelongToValidationModel
+        BelongsToValidationModel
       );
       const oneRequired = this.store().createRecord('test-validation-model');
       const model = this.store().createRecord('test-validation-model', {
@@ -187,7 +187,7 @@ class BasicValidationModel extends AbstractValidationModel {
   }
 }
 
-class BelongToValidationModel extends AbstractValidationModel {
+class BelongsToValidationModel extends AbstractValidationModel {
   @belongsTo('test-validation-model', {
     inverse: null,
   })
@@ -200,8 +200,8 @@ class BelongToValidationModel extends AbstractValidationModel {
 
   get validationSchema() {
     return Joi.object({
-      oneRequired: validateBelongToRequired('Selecteer een optie'),
-      oneOptional: validateBelongToOptional(),
+      oneRequired: validateBelongsToRequired('Selecteer een optie'),
+      oneOptional: validateBelongsToOptional(),
     });
   }
 }

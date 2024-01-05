@@ -7,7 +7,7 @@ import Joi from 'joi';
  * @param {string} [message] - Custom error message for validation failure.
  * @returns {Joi.ObjectSchema} - Joi schema for required "belong to" relationships.
  */
-export const validateBelongToRequired = (
+export const validateBelongsToRequired = (
   message = 'This field is required.'
 ) => {
   return Joi.object().required().messages({ 'any.required': message });
@@ -17,7 +17,7 @@ export const validateBelongToRequired = (
  * Validate an object for optional "belong to" relationships.
  * @returns {Joi.ObjectSchema} - Joi schema for optional "belong to" relationships.
  */
-export const validateBelongToOptional = () => {
+export const validateBelongsToOptional = () => {
   return Joi.object();
 };
 

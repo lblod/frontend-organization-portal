@@ -2,7 +2,7 @@ import { attr, belongsTo } from '@ember-data/model';
 import AbstractValidationModel from './abstract-validation-model';
 import Joi from 'joi';
 import {
-  validateBelongToOptional,
+  validateBelongsToOptional,
   validateEmail,
   validatePhone,
   validateUrl,
@@ -34,7 +34,7 @@ export default class ContactPointModel extends AbstractValidationModel {
       fax: validatePhone('Enkel een plusteken en cijfers zijn toegelaten'),
       website: validateUrl('Geef een geldig internetadres in'),
       type: Joi.string(),
-      contactAddress: validateBelongToOptional(),
+      contactAddress: validateBelongsToOptional(),
     });
   }
 }

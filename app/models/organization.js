@@ -2,7 +2,7 @@ import { attr, hasMany, belongsTo } from '@ember-data/model';
 import AgentModel from './agent';
 import Joi from 'joi';
 import {
-  validateBelongToOptional,
+  validateBelongsToOptional,
   validateHasManyOptional,
 } from '../validators/schema';
 
@@ -101,8 +101,8 @@ export default class OrganizationModel extends AgentModel {
       alternativeName: Joi.string(),
       expectedEndDate: Joi.date().allow(null),
       purpose: Joi.string(),
-      primarySite: validateBelongToOptional(),
-      organizationStatus: validateBelongToOptional(),
+      primarySite: validateBelongsToOptional(),
+      organizationStatus: validateBelongsToOptional(),
       identifiers: validateHasManyOptional(),
       sites: validateHasManyOptional(),
       changedBy: validateHasManyOptional(),
@@ -110,11 +110,11 @@ export default class OrganizationModel extends AgentModel {
       changeEventResults: validateHasManyOptional(),
       positions: validateHasManyOptional(),
       subOrganizations: validateHasManyOptional(),
-      isSubOrganizationOf: validateBelongToOptional(),
+      isSubOrganizationOf: validateBelongsToOptional(),
       associatedOrganizations: validateHasManyOptional(),
-      isAssociatedWith: validateBelongToOptional(),
+      isAssociatedWith: validateBelongsToOptional(),
       foundedOrganizations: validateHasManyOptional(),
-      wasFoundedByOrganization: validateBelongToOptional(),
+      wasFoundedByOrganization: validateBelongsToOptional(),
       participatesIn: validateHasManyOptional(),
       hasParticipants: validateHasManyOptional(),
     });

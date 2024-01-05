@@ -2,8 +2,8 @@ import { hasMany, belongsTo } from '@ember-data/model';
 import OrganizationModel from './organization';
 import Joi from 'joi';
 import {
-  validateBelongToOptional,
-  validateBelongToRequired,
+  validateBelongsToOptional,
+  validateBelongsToRequired,
   validateHasManyOptional,
   validateRequiredWhenClassificationId,
 } from '../validators/schema';
@@ -55,12 +55,12 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   get validationSchema() {
     const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({
-      classification: validateBelongToRequired(REQUIRED_MESSAGE),
-      locatedWithin: validateBelongToOptional(),
+      classification: validateBelongsToRequired(REQUIRED_MESSAGE),
+      locatedWithin: validateBelongsToOptional(),
       governingBodies: validateHasManyOptional(),
       involvedBoards: validateHasManyOptional(),
-      exactMatch: validateBelongToOptional(),
-      scope: validateBelongToOptional(),
+      exactMatch: validateBelongsToOptional(),
+      scope: validateBelongsToOptional(),
       isAssociatedWith: validateRequiredWhenClassificationId(
         [...WorshipServiceCodeList, ...CentralWorshipServiceCodeList],
         REQUIRED_MESSAGE

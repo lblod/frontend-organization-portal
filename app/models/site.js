@@ -2,8 +2,8 @@ import { hasMany, belongsTo } from '@ember-data/model';
 import AbstractValidationModel from './abstract-validation-model';
 import Joi from 'joi';
 import {
-  validateBelongToOptional,
-  validateBelongToRequired,
+  validateBelongsToOptional,
+  validateBelongsToRequired,
   validateHasManyOptional,
 } from '../validators/schema';
 
@@ -25,9 +25,9 @@ export default class SiteModel extends AbstractValidationModel {
 
   get validationSchema() {
     return Joi.object({
-      address: validateBelongToOptional(),
+      address: validateBelongsToOptional(),
       contacts: validateHasManyOptional(),
-      siteType: validateBelongToRequired('Voeg een type vestiging toe'),
+      siteType: validateBelongsToRequired('Voeg een type vestiging toe'),
     });
   }
 }
