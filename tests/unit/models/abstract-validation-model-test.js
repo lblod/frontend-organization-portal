@@ -140,7 +140,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
       assert.strictEqual(model.error, null);
     });
 
-    test('It returns true when one is not filled in', async function (assert) {
+    test('it returns true when three is not filled in', async function (assert) {
       this.owner.register('model:test-validation-model', RequireWhenAllModel);
       const model = this.store().createRecord('test-validation-model', {
         one: 'one',
@@ -152,7 +152,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
       assert.strictEqual(model.error, null);
     });
 
-    test('It returns true when all are missing', async function (assert) {
+    test('it returns true when all are missing', async function (assert) {
       this.owner.register('model:test-validation-model', RequireWhenAllModel);
       const model = this.store().createRecord('test-validation-model', {});
 
@@ -162,7 +162,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
       assert.strictEqual(model.error, null);
     });
 
-    test('it returns error when dependcies are filled and required is missing', async function (assert) {
+    test('it returns error when dependencies are filled and required is missing', async function (assert) {
       this.owner.register('model:test-validation-model', RequireWhenAllModel);
       const model = this.store().createRecord('test-validation-model', {
         one: 'one',
