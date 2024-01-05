@@ -3,6 +3,7 @@ import AgentModel from './agent';
 import Joi from 'joi';
 import {
   validateBelongsToOptional,
+  validateBelongsToRequired,
   validateHasManyOptional,
 } from '../validators/schema';
 
@@ -102,7 +103,7 @@ export default class OrganizationModel extends AgentModel {
       expectedEndDate: Joi.date().allow(null),
       purpose: Joi.string(),
       primarySite: validateBelongsToOptional(),
-      organizationStatus: validateBelongsToOptional(),
+      organizationStatus: validateBelongsToRequired(),
       identifiers: validateHasManyOptional(),
       sites: validateHasManyOptional(),
       changedBy: validateHasManyOptional(),
