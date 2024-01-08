@@ -170,7 +170,7 @@
                     </:content>
                   </Item>
                 {{/if}}
-                {{#if this.isIgs}}
+                {{#if @model.administrativeUnit.isIgs}}
                   <Item
                     @labelFor="expectedEndDate"
                     @errorMessage={{@model.administrativeUnit.error.expectedEndDate.message}}
@@ -384,7 +384,7 @@
                     {{/if}}
 
                   {{else}}
-                    {{#if this.isOcmwAssociation}}
+                    {{#if @model.administrativeUnit.isOcmwAssociation}}
                       <Item
                         @labelFor="oprichting-ocmw-association"
                         @required={{true}}
