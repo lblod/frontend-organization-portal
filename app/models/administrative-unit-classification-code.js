@@ -87,6 +87,14 @@ export const CLASSIFICATION = {
   //   id: '82fd21dc-e8bb-4d13-a010-f4a12358ef10',
   //   label: 'Woonzorgvereniging of woonzorgvennootschap',
   // },
+  PEVA_MUNICIPALITY: {
+    id: '2ad46df5-5c79-4d67-84d5-604c1377231e',
+    label: 'PEVA gemeente',
+  },
+  PEVA_PROVINCE: {
+    id: '088784b6-e188-48bf-b94f-94665f9e1f53',
+    label: 'PEVA provincie',
+  },
 };
 
 export const CLASSIFICATION_CODE = {
@@ -115,6 +123,8 @@ export const CLASSIFICATION_CODE = {
   //   '35833ba2-7371-400b-8df2-2912f66fb153', // FIXME this is not an administrative unit
   // WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP:
   //   '82fd21dc-e8bb-4d13-a010-f4a12358ef10', // FIXME this is not an administrative unit
+  PEVA_MUNICIPALITY: CLASSIFICATION.PEVA_MUNICIPALITY,
+  PEVA_PROVINCE: CLASSIFICATION.PEVA_PROVINCE,
 };
 
 export const OCMW_ASSOCIATION_CLASSIFICATION_CODES = [
