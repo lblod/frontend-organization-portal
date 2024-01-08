@@ -74,7 +74,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
         IGSCodeList,
         REQUIRED_MESSAGE
       ),
-      wasFoundedByOrganization: validateRequiredWhenClassificationId(
+      wasFoundedByOrganizations: validateRequiredWhenClassificationId(
         [...AgbCodeList, ...ApbCodeList, ...OcmwAssociationCodeList],
         REQUIRED_MESSAGE
       ),

@@ -114,7 +114,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.administrativeUnit.foundedOrganizations = [];
     this.model.administrativeUnit.isAssociatedWith = [];
     this.model.administrativeUnit.isSubOrganizationOf = null;
-    this.model.administrativeUnit.wasFoundedByOrganization = [];
+    this.model.administrativeUnit.wasFoundedByOrganizations = [];
     this.model.administrativeUnit.hasParticipants = [];
   }
 

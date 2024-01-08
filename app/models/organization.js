@@ -115,7 +115,7 @@ export default class OrganizationModel extends AgentModel {
       associatedOrganizations: validateHasManyOptional(),
       isAssociatedWith: validateBelongsToOptional(),
       foundedOrganizations: validateHasManyOptional(),
-      wasFoundedByOrganization: validateBelongsToOptional(),
+      wasFoundedByOrganizations: validateHasManyOptional(),
       participatesIn: validateHasManyOptional(),
       hasParticipants: validateHasManyOptional(),
     });
