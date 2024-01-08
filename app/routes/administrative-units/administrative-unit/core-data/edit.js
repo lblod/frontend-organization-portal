@@ -70,9 +70,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     let identifierOVO = identifiers.findBy('idName', ID_NAME.OVO);
     let structuredIdentifierOVO = await identifierOVO.structuredIdentifier;
 
-    let igsRegio;
+    let region;
 
-    if (administrativeUnit.isIgs) {
+    if (administrativeUnit.isIgs || administrativeUnit.isOcmwAssociation) {
       const primarySite = await administrativeUnit.primarySite;
       const address = await primarySite.address;
       const municipalityString = address.municipality;
@@ -87,7 +87,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
         })
       ).firstObject;
       const scope = await municipalityUnit.scope;
-      igsRegio = await scope.locatedWithin;
+      region = await scope.locatedWithin;
     }
 
     return {
@@ -103,7 +103,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
       structuredIdentifierSharepoint,
       structuredIdentifierNIS,
       structuredIdentifierOVO,
-      igsRegio,
+      region,
     };
   }
 

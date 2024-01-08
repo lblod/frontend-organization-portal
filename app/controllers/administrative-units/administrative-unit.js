@@ -1,5 +1,8 @@
 import Controller from '@ember/controller';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitController extends Controller {
   get isWorshipAdministrativeUnit() {
@@ -67,6 +70,22 @@ export default class AdministrativeUnitsAdministrativeUnitController extends Con
     return (
       this.model.classification?.get('id') ===
       CLASSIFICATION_CODE.ASSISTANCE_ZONE
+    );
+  }
+
+  get isOcmwAssociation() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
+      this.model.classification?.get('id')
+    );
+  }
+
+  get requiresGoverningBodies() {
+    return !(
+      this.isAgbOrApb ||
+      this.isIgs ||
+      this.isPoliceZone ||
+      this.isAssistanceZone ||
+      this.isOcmwAssociation
     );
   }
 }

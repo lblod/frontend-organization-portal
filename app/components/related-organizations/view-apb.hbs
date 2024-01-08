@@ -8,7 +8,10 @@
             Provincie
           </:label>
           <:content>
-            <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
+            <AuLink
+              @route="administrative-units.administrative-unit"
+              @model={{@model.isSubOrganizationOf.id}}
+            >
               {{@model.isSubOrganizationOf.name}}
             </AuLink>
           </:content>
@@ -16,7 +19,10 @@
         <Item>
           <:label>Gemeente</:label>
           <:content>
-            <AuLink @route="administrative-units.administrative-unit.core-data" @model={{@model.isAssociatedWith.id}}>
+            <AuLink
+              @route="administrative-units.administrative-unit.core-data"
+              @model={{@model.isAssociatedWith.id}}
+            >
               {{@model.isAssociatedWith.name}}
             </AuLink>
           </:content>
@@ -24,9 +30,19 @@
         <Item>
           <:label>Werd opgericht door</:label>
           <:content>
-            <AuLink @route="administrative-units.administrative-unit.core-data" @model={{@model.wasFoundedByOrganization.id}}>
-              {{@model.wasFoundedByOrganization.name}}
-            </AuLink>
+            {{! Note: this is somewhat of a hacky way to deal the many
+                multiplicity for `wasFoundedByOrganizations` since APBs should
+                always have a single founder}}
+            <AuList @direction="horizontal" as |Item|>
+              {{#each @model.wasFoundedByOrganizations as |org|}}
+                <Item>
+                  <AuLink
+                    @route="administrative-units.administrative-unit.core-data"
+                    @model={{@model.id}}
+                  >{{org.name}}</AuLink>
+                </Item>
+              {{/each}}
+            </AuList>
           </:content>
         </Item>
 

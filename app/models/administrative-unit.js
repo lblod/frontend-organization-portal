@@ -15,6 +15,7 @@ import {
   DistrictCodeList,
   IGSCodeList,
   MunicipalityCodeList,
+  OcmwAssociationCodeList,
   OCMWCodeList,
   PoliceZoneCodeList,
   ProvinceCodeList,
@@ -74,7 +75,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
         REQUIRED_MESSAGE
       ),
       wasFoundedByOrganization: validateRequiredWhenClassificationId(
-        [...AgbCodeList, ...ApbCodeList],
+        [...AgbCodeList, ...ApbCodeList, ...OcmwAssociationCodeList],
         REQUIRED_MESSAGE
       ),
       isSubOrganizationOf: validateRequiredWhenClassificationId(
@@ -139,6 +140,10 @@ export default class AdministrativeUnitModel extends OrganizationModel {
 
   get isOCMW() {
     return this.#hasClassificationId(OCMWCodeList);
+  }
+
+  get isOcmwAssociation() {
+    return this.#hasClassificationId(OcmwAssociationCodeList);
   }
 
   get isDistrict() {

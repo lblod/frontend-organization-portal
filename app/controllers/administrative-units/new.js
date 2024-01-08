@@ -3,7 +3,10 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import fetch from 'fetch';
@@ -19,7 +22,8 @@ export default class AdministrativeUnitsNewController extends Controller {
       this.model.address.error ||
       this.model.contact.error ||
       this.model.secondaryContact.error ||
-      this.model.structuredIdentifierKBO.error
+      this.model.structuredIdentifierKBO.error ||
+      this.model.structuredIdentifierSharepoint.error
     );
   }
 
@@ -57,14 +61,40 @@ export default class AdministrativeUnitsNewController extends Controller {
     ];
   }
 
+  get classificationCodesOcmwAssociationFounders() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
+      CLASSIFICATION_CODE.OCMW,
+      CLASSIFICATION_CODE.MUNICIPALITY,
+    ]);
+  }
+
+  get classificationCodesOcmwAssociationParticipants() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
+      CLASSIFICATION_CODE.MUNICIPALITY,
+      CLASSIFICATION_CODE.OCMW,
+    ]);
+  }
+
   @action
   setRelation(unit) {
-    this.model.administrativeUnit.isSubOrganizationOf = unit;
+    if (Array.isArray(unit)) {
+      this.model.administrativeUnit.isSubOrganizationOf = unit[0];
+    } else {
+      this.model.administrativeUnit.isSubOrganizationOf = unit;
+    }
+
     if (
       this.model.administrativeUnit.isAgb ||
-      this.model.administrativeUnit.isApb
+      this.model.administrativeUnit.isApb ||
+      this.model.administrativeUnit.isOcmwAssociation
     )
-      this.model.administrativeUnit.wasFoundedByOrganization = unit;
+      if (Array.isArray(unit)) {
+        this.model.administrativeUnit.wasFoundedByOrganizations = unit;
+      } else {
+        this.model.administrativeUnit.wasFoundedByOrganizations = new Array(
+          unit
+        );
+      }
   }
 
   @action
@@ -84,7 +114,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.administrativeUnit.foundedOrganizations = [];
     this.model.administrativeUnit.isAssociatedWith = [];
     this.model.administrativeUnit.isSubOrganizationOf = null;
-    this.model.administrativeUnit.wasFoundedByOrganization = null;
+    this.model.administrativeUnit.wasFoundedByOrganization = [];
     this.model.administrativeUnit.hasParticipants = [];
   }
 
@@ -112,6 +142,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       contact.validate(),
       secondaryContact.validate(),
       structuredIdentifierKBO.validate(),
+      structuredIdentifierSharepoint.validate(),
     ]);
 
     console.log(
@@ -181,7 +212,8 @@ export default class AdministrativeUnitsNewController extends Controller {
         administrativeUnit.isApb ||
         administrativeUnit.isIGS ||
         administrativeUnit.isPoliceZone ||
-        administrativeUnit.isAssistanceZone
+        administrativeUnit.isAssistanceZone ||
+        administrativeUnit.isOcmwAssociation
       ) {
         primarySite.siteType = siteTypes.find(
           (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
@@ -264,8 +296,8 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
   newAdministrativeUnit.classification = administrativeUnit.classification;
   newAdministrativeUnit.organizationStatus =
     administrativeUnit.organizationStatus;
-  newAdministrativeUnit.wasFoundedByOrganization =
-    administrativeUnit.wasFoundedByOrganization;
+  newAdministrativeUnit.wasFoundedByOrganizations =
+    administrativeUnit.wasFoundedByOrganizations;
   newAdministrativeUnit.isSubOrganizationOf =
     administrativeUnit.isSubOrganizationOf;
   if (

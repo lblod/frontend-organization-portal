@@ -1,5 +1,8 @@
 //TODO: Move CLASSIFICATION_CODE to constants
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export const MunicipalityCodeList = [CLASSIFICATION_CODE.MUNICIPALITY];
 
@@ -27,5 +30,6 @@ export const CentralWorshipServiceCodeList = [
 ];
 
 export const OCMWCodeList = [CLASSIFICATION_CODE.OCMW];
+export const OcmwAssociationCodeList = OCMW_ASSOCIATION_CLASSIFICATION_CODES;
 
 export const DistrictCodeList = [CLASSIFICATION_CODE.DISTRICT];

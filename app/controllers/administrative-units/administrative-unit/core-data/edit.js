@@ -5,7 +5,10 @@ import { combineFullAddress } from 'frontend-organization-portal/models/address'
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
@@ -16,7 +19,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       this.model.address.error ||
       this.model.contact.error ||
       this.model.secondaryContact.error ||
-      this.model.structuredIdentifierKBO.error
+      this.model.structuredIdentifierKBO.error ||
+      this.model.structuredIdentifierSharepoint.error
     );
   }
 
@@ -39,20 +43,51 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     ];
   }
 
+  get isOcmwAssociation() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
+      this.model.administrativeUnit.classification?.get('id')
+    );
+  }
+
+  get classificationCodesOcmwAssociationParticipants() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
+      CLASSIFICATION_CODE.MUNICIPALITY,
+      CLASSIFICATION_CODE.OCMW,
+    ]);
+  }
+
+  get classificationCodesOcmwAssociationFounders() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
+      CLASSIFICATION_CODE.MUNICIPALITY,
+      CLASSIFICATION_CODE.OCMW,
+    ]);
+  }
+
   @action
   setKbo(value) {
     this.model.structuredIdentifierKBO.localId = value;
   }
 
   @action
-  setRelation(unit) {
-    this.model.administrativeUnit.isSubOrganizationOf = unit;
+  setRelation(units) {
+    if (Array.isArray(units)) {
+      this.model.administrativeUnit.isSubOrganizationOf = units[0];
+    } else {
+      this.model.administrativeUnit.isSubOrganizationOf = units;
+    }
 
     if (
       this.model.administrativeUnit.isAgb ||
-      this.model.administrativeUnit.isApb
+      this.model.administrativeUnit.isApb ||
+      this.model.administrativeUnit.isOcmwAssociation
     )
-      this.model.administrativeUnit.wasFoundedByOrganization = unit;
+      if (Array.isArray(units)) {
+        this.model.administrativeUnit.wasFoundedByOrganizations = units;
+      } else {
+        this.model.administrativeUnit.wasFoundedByOrganizations = new Array(
+          units
+        );
+      }
   }
 
   @action
@@ -86,6 +121,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       contact.validate(),
       secondaryContact.validate(),
       structuredIdentifierKBO.validate(),
+      structuredIdentifierSharepoint.validate(),
     ]);
 
     console.log('hasValidationErrors', this.hasValidationErrors);

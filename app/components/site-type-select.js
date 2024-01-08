@@ -1,7 +1,10 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class SiteTypeSelectComponent extends Component {
   @service store;
@@ -85,6 +88,12 @@ export default class SiteTypeSelectComponent extends Component {
     );
   }
 
+  get isOcmwAssociation() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
+      this.args.administrativeUnitClassification.get('id')
+    );
+  }
+
   @task
   *loadSiteTypesTask() {
     yield timeout(500);
@@ -107,7 +116,12 @@ export default class SiteTypeSelectComponent extends Component {
       filteredTypes.push(
         allTypes.find((type) => type.id == 'fbec5e94aba343b0a7361aca8a0c7d79') // Ander administratief adres
       );
-    } else if (this.isAgb || this.isApb || this.isIGS) {
+    } else if (
+      this.isAgb ||
+      this.isApb ||
+      this.isIGS ||
+      this.isOcmwAssociation
+    ) {
       filteredTypes.push(
         allTypes.find(
           (type) => type.id == 'dcc01338-842c-4fbd-ba68-3ca6f3af975c'

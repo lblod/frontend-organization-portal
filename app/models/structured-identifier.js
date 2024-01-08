@@ -9,6 +9,7 @@ export default class StructuredIdentifierModel extends AbstractValidationModel {
 
   get validationSchema() {
     return Joi.object({
+      //TODO: Move validation in IdentifierModel and add SharepointValidation
       localId: validateKBO().external(async (value, helpers) => {
         const changedAttributes = helpers?.prefs?.context?.changedAttributes;
         if (changedAttributes?.localId) {

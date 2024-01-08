@@ -1,8 +1,14 @@
 import { isBlank } from '@ember/utils';
-import { validatePresence } from 'ember-changeset-validations/validators';
+import {
+  validatePresence,
+  validateNumber,
+} from 'ember-changeset-validations/validators';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { validateConditionally } from 'frontend-organization-portal/validators/validate-conditionally';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default {
   name: validatePresence({
@@ -58,14 +64,18 @@ export default {
     message: 'Selecteer een optie',
   }),
 
-  wasFoundedByOrganization: validateConditionally(
+  wasFoundedByOrganizations: validateConditionally(
     validatePresence({
       presence: true,
       ignoreBlank: true,
       message: 'Selecteer een optie',
     }),
     function (changes, content) {
-      return isAgb(changes, content) || isApb(changes, content);
+      return (
+        isAgb(changes, content) ||
+        isApb(changes, content) ||
+        isOcmwAssociation(changes, content)
+      );
     }
   ),
 
@@ -139,6 +149,16 @@ export function getStructuredIdentifierKBOValidations(store) {
   };
 }
 
+export function getStructuredIdentifierSharepointValidations() {
+  return {
+    localId: validateNumber({
+      allowBlank: true,
+      allowString: true,
+      message: 'De SharePoint identificator mag enkel cijfers bevatten',
+    }),
+  };
+}
+
 function isAgb(changes, content) {
   return hasClassificationId(changes, content, CLASSIFICATION_CODE.AGB);
 }
@@ -180,6 +200,14 @@ function isWorshipAdministrativeUnit(changes, content) {
   );
 }
 
+function isOcmwAssociation(changes, content) {
+  return hasClassificationId(
+    changes,
+    content,
+    OCMW_ASSOCIATION_CLASSIFICATION_CODES
+  );
+}
+
 function hasClassificationId(changes, content, classificationId) {
   let unit = null;
   if (changes.classification?.id) {
@@ -204,7 +232,7 @@ function validateKBO(store) {
 
     if (newKboNumber.match(/[^$,.\d]/) || newKboNumber.length !== 10) {
       return {
-        message: 'Vul het (tiencijferige) KBO nummer in.',
+        message: 'Vul het (tiencijferige) KBO nummer in',
       };
     }
 
