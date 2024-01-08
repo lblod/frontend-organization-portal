@@ -5,21 +5,30 @@
       <:subtitle>{{@model.administrativeUnit.name}}
         ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
-        <SecuredArea>
-          <:edit>
-            <AuLink
-              @route="administrative-units.administrative-unit.core-data.edit"
-              @skin="button-secondary"
-              @icon="pencil"
-              @iconAlignment="left"
-            >
-              Bewerk
-            </AuLink>
-          </:edit>
-          <:readOnly>
+        {{#if this.showAbbData}}
+          <SecuredArea>
+            <:edit>
+              <div class="au-u-flex--column">
+                <AuLink
+                  @route="administrative-units.administrative-unit.core-data.edit"
+                  @skin="button-secondary"
+                  @icon="pencil"
+                  @iconAlignment="left"
+                >
+                  Bewerk
+                </AuLink>
+                <ReportWrongData />
+              </div>
+            </:edit>
+          </SecuredArea>
+        {{else}}
+          <div class="au-u-flex--column">
+            <AuPill @icon="clock-rewind">
+              Laatst Gewijzigd op (Datum)
+            </AuPill>
             <ReportWrongData />
-          </:readOnly>
-        </SecuredArea>
+          </div>
+        {{/if}}
       </:action>
     </PageHeader>
 
@@ -284,6 +293,16 @@
                 <:label>Ondernemingsnummer</:label>
                 <:content>
                   1274.374.678
+                </:content>
+              </Item>
+              <Item>
+                <:label>KBO website</:label>
+                <:content>
+                  <AuLinkExternal
+                    href="https://kbopub.economie.fgov.be/kbopub/zoeknummerform.html?nummer=0207437468"
+                  >
+                    KBO website (externe link)
+                  </AuLinkExternal>
                 </:content>
               </Item>
             </:right>
