@@ -128,6 +128,20 @@ export default class AdministrativeUnitsNewController extends Controller {
     );
   }
 
+  get isNewPevaMunicipality() {
+    return (
+      this.model.administrativeUnitChangeset.classification?.id ===
+      CLASSIFICATION_CODE.PEVA_MUNICIPALITY
+    );
+  }
+
+  get isNewPevaProvince() {
+    return (
+      this.model.administrativeUnitChangeset.classification?.id ===
+      CLASSIFICATION_CODE.PEVA_PROVINCE
+    );
+  }
+
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
@@ -143,6 +157,8 @@ export default class AdministrativeUnitsNewController extends Controller {
       CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
       CLASSIFICATION_CODE.POLICE_ZONE,
       CLASSIFICATION_CODE.ASSISTANCE_ZONE,
+      // TODO: confirm PEVA municipality are valid participants
+      CLASSIFICATION_CODE.PEVA_MUNICIPALITY,
       // TODO when onboarded, add companies
     ];
   }
@@ -169,7 +185,13 @@ export default class AdministrativeUnitsNewController extends Controller {
       this.model.administrativeUnitChangeset.isSubOrganizationOf = unit;
     }
 
-    if (this.isNewAgb || this.isNewApb || this.isNewOcmwAssociation)
+    if (
+      this.isNewAgb ||
+      this.isNewApb ||
+      this.isNewOcmwAssociation ||
+      this.isNewPevaMunicipalitt ||
+      this.isNewPevaProvince
+    )
       if (Array.isArray(unit)) {
         this.model.administrativeUnitChangeset.wasFoundedByOrganizations = unit;
       } else {
@@ -283,7 +305,9 @@ export default class AdministrativeUnitsNewController extends Controller {
         this.isNewIGS ||
         this.isNewPoliceZone ||
         this.isNewAssistanceZone ||
-        this.isNewOcmwAssociation
+        this.isNewOcmwAssociation ||
+        this.isNewPevaMunicipality ||
+        this.isNewPevaProvince
       ) {
         primarySite.siteType = siteTypes.find(
           (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'

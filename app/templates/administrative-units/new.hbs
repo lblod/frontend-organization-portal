@@ -215,9 +215,9 @@
                 <Error::KboNumber @error={{error}} />
               </:error>
             </Item>
-            <Item 
+            <Item
               @labelFor="sharepoint-identifier"
-              @errorMessage={{@model.structuredIdentifierSharepoint.error.localId.validation}}  
+              @errorMessage={{@model.structuredIdentifierSharepoint.error.localId.validation}}
             >
               <:label>{{@model.identifierSharepoint.idName}}</:label>
               <:content as |hasError|>
@@ -320,6 +320,7 @@
                     this.isNewIGS
                     this.isNewPoliceZone
                     this.isNewAssistanceZone
+                    this.isNewPevaMunicipality
                   )
                 }}
                   <Item
@@ -329,6 +330,7 @@
                       this.isNewIGS
                       this.isNewPoliceZone
                       this.isNewAssistanceZone
+                      this.isNewPevaMunicipality
                     )}}
                     @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
                   >
@@ -355,7 +357,7 @@
                     </Item>
                   {{/if}}
 
-                  {{#if this.isNewAgb}}
+                  {{#if (or this.isNewAgb this.isNewPevaMunicipality)}}
                     <Item
                       @labelFor="oprichting-gemeente"
                       @required={{true}}
@@ -430,7 +432,7 @@
                   {{else}}
                     <Item
                       @labelFor="related-provincie"
-                      @required={{this.isNewApb}}
+                      @required={{(or this.isNewApb this.isNewPevaProvince)}}
                       @errorMessage={{@model.administrativeUnitChangeset.error.isSubOrganizationOf.validation}}
                     >
                       <:label>Provincie</:label>
@@ -448,7 +450,7 @@
                       </:content>
                     </Item>
 
-                    {{#if this.isNewApb}}
+                    {{#if (or this.isNewApb this.isNewPevaProvince)}}
                       <Item
                         @labelFor="related-gemeente"
                         @required={{true}}
