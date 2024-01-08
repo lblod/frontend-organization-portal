@@ -20,6 +20,20 @@ export default class AdministrativeUnitsNewRoute extends Route {
   }
 
   model() {
+    const structuredIdentifierKBO = this.store.createRecord(
+      'structured-identifier'
+    );
+    const identifierKBO = this.store.createRecord('identifier', {
+      idName: ID_NAME.KBO,
+      structuredIdentifier: structuredIdentifierKBO,
+    });
+    const structuredIdentifierSharepoint = this.store.createRecord(
+      'structured-identifier'
+    );
+    const identifierSharepoint = this.store.createRecord('identifier', {
+      idName: ID_NAME.SHAREPOINT,
+      structuredIdentifier: structuredIdentifierSharepoint,
+    });
     return {
       administrativeUnit: this.store.createRecord('administrative-unit'),
       centralWorshipService: this.store.createRecord('central-worship-service'),
@@ -30,16 +44,10 @@ export default class AdministrativeUnitsNewRoute extends Route {
       }),
       contact: createPrimaryContact(this.store),
       secondaryContact: createSecondaryContact(this.store),
-      identifierKBO: this.store.createRecord('identifier', {
-        idName: ID_NAME.KBO,
-      }),
-      structuredIdentifierKBO: this.store.createRecord('structured-identifier'),
-      identifierSharepoint: this.store.createRecord('identifier', {
-        idName: ID_NAME.SHAREPOINT,
-      }),
-      structuredIdentifierSharepoint: this.store.createRecord(
-        'structured-identifier'
-      ),
+      identifierKBO,
+      structuredIdentifierKBO,
+      identifierSharepoint,
+      structuredIdentifierSharepoint,
     };
   }
 

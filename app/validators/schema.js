@@ -72,20 +72,6 @@ export const validateUrl = (message = 'Invalid URL format.') => {
 };
 
 /**
- * Validate a string as a KBO number.
- * @returns {Joi.StringSchema<string>} - Joi schema for validating KBO numbers.
- */
-export const validateKBO = () => {
-  return Joi.string()
-    .required()
-    .pattern(/^\d{10}$/) // 10 digits
-    .messages({
-      'any.required': 'Vul het KBO nummer in',
-      'string.pattern.base': 'Vul het (tiencijferige) KBO nummer in.',
-    });
-};
-
-/**
  * Require when all fields are present
  * @param {Array<string>} fields - Array of field names to check for existence.
  * @param {string} [message] - Custom error message for validation failure.

@@ -4,7 +4,6 @@ import {
   validatePhone,
   validateEmail,
   validateUrl,
-  validateKBO,
 } from 'frontend-organization-portal/validators/schema';
 
 module('Unit | Validator | schema', function (hooks) {
@@ -67,31 +66,6 @@ module('Unit | Validator | schema', function (hooks) {
       const { error } = validateUrl('URL is wrong').validate('test@test');
 
       assert.strictEqual(error.details[0].message, 'URL is wrong');
-    });
-  });
-
-  module('validateKBO', function () {
-    test('it returns an error when kbo is empty', async function (assert) {
-      const { error } = await validateKBO().validate();
-
-      assert.strictEqual(error.details[0].message, 'Vul het KBO nummer in');
-    });
-
-    test('it returns no error when url kbo valid', async function (assert) {
-      const { error } = await validateKBO().validate('1234567890');
-
-      assert.strictEqual(error, undefined);
-    });
-
-    test('it returns error when kbo is wrong', async function (assert) {
-      const { error } = await validateKBO('URL is wrong').validate(
-        '0123456.789'
-      );
-
-      assert.strictEqual(
-        error.details[0].message,
-        'Vul het (tiencijferige) KBO nummer in.'
-      );
     });
   });
 });

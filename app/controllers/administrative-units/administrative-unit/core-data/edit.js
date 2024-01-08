@@ -120,8 +120,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       address.validate(),
       contact.validate(),
       secondaryContact.validate(),
-      structuredIdentifierKBO.validate(),
-      structuredIdentifierSharepoint.validate(),
+      identifierKBO.validate(),
+      identifierSharepoint.validate(),
     ]);
 
     console.log('hasValidationErrors', this.hasValidationErrors);
@@ -217,7 +217,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     this.model.contact.reset();
     this.model.secondaryContact.reset();
     this.model.address.reset();
-    this.model.structuredIdentifierKBO.reset();
+    this.model.identifierKBO.reset();
+    this.model.identifierSharepoint.reset();
   }
 
   reset() {

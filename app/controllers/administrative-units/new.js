@@ -141,8 +141,8 @@ export default class AdministrativeUnitsNewController extends Controller {
       address.validate(),
       contact.validate(),
       secondaryContact.validate(),
-      structuredIdentifierKBO.validate(),
-      structuredIdentifierSharepoint.validate(),
+      identifierKBO.validate(),
+      identifierSharepoint.validate(),
     ]);
 
     console.log(
@@ -156,8 +156,12 @@ export default class AdministrativeUnitsNewController extends Controller {
       this.model.secondaryContact.error
     );
     console.log(
-      'this.model.structuredIdentifierKBO.error',
-      this.model.structuredIdentifierKBO.error
+      'this.model.identifierKBO.error',
+      this.model.identifierKBO.error
+    );
+    console.log(
+      'this.model.identifierSharepoint.error',
+      this.model.identifierSharepoint.error
     );
 
     if (!this.hasValidationErrors) {
@@ -175,15 +179,12 @@ export default class AdministrativeUnitsNewController extends Controller {
       copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
       structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
-      identifierKBO.structuredIdentifier = structuredIdentifierKBO;
       yield structuredIdentifierKBO.save();
       yield identifierKBO.save();
 
       structuredIdentifierSharepoint = setEmptyStringsToNull(
         structuredIdentifierSharepoint
       );
-      identifierSharepoint.structuredIdentifier =
-        structuredIdentifierSharepoint;
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
 
@@ -255,10 +256,10 @@ export default class AdministrativeUnitsNewController extends Controller {
   removeUnsavedRecords() {
     this.removeUnsavedChangesetRecords();
     this.model.primarySite.rollbackAttributes();
-    this.model.identifierSharepoint.rollbackAttributes();
-    this.model.identifierKBO.rollbackAttributes();
+    this.model.identifierSharepoint.reset();
+    this.model.identifierKBO.reset();
     this.model.structuredIdentifierSharepoint.rollbackAttributes();
-    this.model.structuredIdentifierKBO.reset();
+    this.model.structuredIdentifierKBO.rollbackAttributes();
     this.model.administrativeUnit.reset();
     this.model.contact.reset();
     this.model.secondaryContact.reset();

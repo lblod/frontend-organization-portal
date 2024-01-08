@@ -218,7 +218,7 @@
                 </Item>
                 <Item
                   @labelFor="kbo-identifier"
-                  @errorMessage={{@model.structuredIdentifierKBO.error.localId}}
+                  @errorMessage={{@model.identifierKBO.error.structuredIdentifier}}
                   @required={{true}}
                 >
                   <:label>{{@model.identifierKBO.idName}}</:label>
@@ -241,7 +241,7 @@
                 </Item>
                 <Item 
                   @labelFor="sharepoint-identifier"
-                  @errorMessage={{@model.structuredIdentifierSharepoint.error.localId.message}}
+                  @errorMessage={{@model.identifierSharepoint.error.structuredIdentifier.message}}
                 >
                   <:label>{{@model.identifierSharepoint.idName}}</:label>
                   <:content as |hasError|>

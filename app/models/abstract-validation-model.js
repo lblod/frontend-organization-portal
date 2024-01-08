@@ -54,7 +54,7 @@ export default class AbstractValidationModel extends Model {
 
   #serializeAll() {
     const { data } = this.serialize({ includeId: true });
-    const snakeCaseData = this.#convertAttributesKeysToSnakeCase(data);
+    const snakeCaseData = this.convertAttributesKeysToSnakeCase(data);
 
     const relationships = {};
     this.eachRelationship((name, meta) => {
@@ -67,7 +67,7 @@ export default class AbstractValidationModel extends Model {
     };
   }
 
-  #convertAttributesKeysToSnakeCase(data) {
+  convertAttributesKeysToSnakeCase(data) {
     if (!data?.attributes) {
       return data;
     }
