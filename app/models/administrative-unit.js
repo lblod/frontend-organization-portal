@@ -84,8 +84,6 @@ export default class AdministrativeUnitModel extends OrganizationModel {
           ...IGSCodeList,
           ...PoliceZoneCodeList,
           ...AssistanceZoneCodeList,
-          ...WorshipServiceCodeList,
-          ...CentralWorshipServiceCodeList,
         ],
         REQUIRED_MESSAGE
       ),
