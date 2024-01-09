@@ -98,6 +98,20 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     );
   }
 
+  get isPevaMunicipality() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.PEVA_MUNICIPALITY
+    );
+  }
+
+  get isPevaProvince() {
+    return (
+      this.model.administrativeUnit.classification?.get('id') ===
+      CLASSIFICATION_CODE.PEVA_PROVINCE
+    );
+  }
+
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
@@ -113,6 +127,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
       CLASSIFICATION_CODE.POLICE_ZONE,
       CLASSIFICATION_CODE.ASSISTANCE_ZONE,
+      // TODO: confirm PEVA municipality are valid participants
+      CLASSIFICATION_CODE.PEVA_MUNICIPALITY,
       // TODO when onboarded, add companies
     ];
   }

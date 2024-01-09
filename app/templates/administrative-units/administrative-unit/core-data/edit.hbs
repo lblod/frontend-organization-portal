@@ -239,7 +239,7 @@
                     <Error::KboNumber @error={{error}} />
                   </:error>
                 </Item>
-                <Item 
+                <Item
                   @labelFor="sharepoint-identifier"
                   @errorMessage={{@model.structuredIdentifierSharepoint.error.localId.validation}}
                 >
@@ -300,6 +300,8 @@
               this.isPoliceZone
               this.isAssistanceZone
               this.isOcmwAssociation
+              this.isPevaMunicipality
+              this.isPevaProvince
             )
           )
         }}
@@ -314,6 +316,8 @@
                       this.isIgs
                       this.isPoliceZone
                       this.isAssistanceZone
+                      this.isPevaMunicipality
+                      this.isPevaProvince
                     )
                   }}
                     <Item
@@ -344,7 +348,7 @@
                       </Item>
                     {{/if}}
 
-                    {{#if this.isAgb}}
+                    {{#if (or this.isAgb this.isPevaMunicipality)}}
                       <Item
                         @labelFor="oprichting-gemeente"
                         @required={{true}}
@@ -420,7 +424,7 @@
                         </:content>
                       </Item>
                     {{else}}
-                      {{! Currently only APBs remain}}
+                      {{! Currently only APBs and PEVAs remain}}
                       <Item
                         @labelFor="related-provincie"
                         @required={{true}}
