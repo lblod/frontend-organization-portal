@@ -79,13 +79,41 @@ export default class AdministrativeUnitsAdministrativeUnitController extends Con
     );
   }
 
+  get isPevaMunicipality() {
+    return (
+      this.model.classification?.get('id') ===
+      CLASSIFICATION_CODE.PEVA_MUNICIPALITY
+    );
+  }
+
+  get isPevaProvince() {
+    return (
+      this.model.classification?.get('id') === CLASSIFICATION_CODE.PEVA_PROVINCE
+    );
+  }
+
+  get isPeva() {
+    return this.isPevaMunicipality || this.isPevaProvince;
+  }
+
   get requiresGoverningBodies() {
     return !(
       this.isAgbOrApb ||
       this.isIgs ||
       this.isPoliceZone ||
       this.isAssistanceZone ||
-      this.isOcmwAssociation
+      this.isOcmwAssociation ||
+      this.isPeva
+    );
+  }
+
+  get requiresFunctionaries() {
+    return !(
+      this.isDistrict ||
+      this.isWorshipAdministrativeUnit ||
+      this.isPoliceZone ||
+      this.isAssistanceZone ||
+      this.isPeva
     );
   }
 }
