@@ -25,19 +25,21 @@
         </li>
         {{#if this.isWorshipAdministrativeUnit}}
           <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink @route="administrative-units.administrative-unit.local-involvements">
+            <AuNavigationNestedLink
+              @route="administrative-units.administrative-unit.local-involvements"
+            >
               Betrokken lokale besturen
             </AuNavigationNestedLink>
           </li>
         {{/if}}
-        {{#if (and (not this.isAgbOrApb) (not this.isIgs) (not this.isPoliceZone) (not this.isAssistanceZone))}}
-        <li class="au-c-list-navigation__item">
-          <AuNavigationNestedLink
-            @route="administrative-units.administrative-unit.governing-bodies"
-          >
-            Bestuursorganen
-          </AuNavigationNestedLink>
-        </li>
+        {{#if this.requiresGoverningBodies}}
+          <li class="au-c-list-navigation__item">
+            <AuNavigationNestedLink
+              @route="administrative-units.administrative-unit.governing-bodies"
+            >
+              Bestuursorganen
+            </AuNavigationNestedLink>
+          </li>
         {{/if}}
         {{#if (eq @model.constructor.modelName "worship-service")}}
           <li class="au-c-list-navigation__item">
@@ -48,7 +50,16 @@
             </AuNavigationNestedLink>
           </li>
         {{/if}}
-        {{#if (not (or this.isDistrict this.isWorshipAdministrativeUnit this.isPoliceZone this.isAssistanceZone))}}
+        {{#if
+          (not
+            (or
+              this.isDistrict
+              this.isWorshipAdministrativeUnit
+              this.isPoliceZone
+              this.isAssistanceZone
+            )
+          )
+        }}
           <li class="au-c-list-navigation__item">
             <AuNavigationNestedLink
               @route="administrative-units.administrative-unit.executives"
@@ -66,7 +77,7 @@
             </AuNavigationNestedLink>
           </li>
         {{/unless}}
-        {{!--         Links temporarily hidden until page is completed
+        {{!         Links temporarily hidden until page is completed
         <li class="au-c-list-navigation__item">
           <AuNavigationNestedLink>
             Documenten
@@ -76,7 +87,7 @@
           <AuNavigationNestedLink>
             Dossiers
           </AuNavigationNestedLink>
-        </li> --}}
+        </li> }}
         <li class="au-c-list-navigation__item">
           <AuNavigationNestedLink
             @route="administrative-units.administrative-unit.related-organizations"

@@ -13,10 +13,14 @@ import { getAddressValidations } from 'frontend-organization-portal/validations/
 import contactValidations from 'frontend-organization-portal/validations/contact-point';
 import administrativeUnitValidations, {
   getStructuredIdentifierKBOValidations,
+  getStructuredIdentifierSharepointValidations,
 } from 'frontend-organization-portal/validations/administrative-unit';
 import { A } from '@ember/array';
 import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute extends Route {
   @service store;
@@ -77,7 +81,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     let identifierOVO = identifiers.findBy('idName', ID_NAME.OVO);
     let structuredIdentifierOVO = await identifierOVO.structuredIdentifier;
 
-    let igsRegio;
+    let region;
     const typesThatAreIGS = [
       CLASSIFICATION_CODE.PROJECTVERENIGING,
       CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
@@ -88,7 +92,11 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
       administrativeUnit.classification?.get('id')
     );
 
-    if (isIGS) {
+    const isOcmwAssociation = OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
+      administrativeUnit.classification?.get('id')
+    );
+
+    if (isIGS || isOcmwAssociation) {
       const primarySite = await administrativeUnit.primarySite;
       const address = await primarySite.address;
       const municipalityString = address.municipality;
@@ -103,7 +111,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
         })
       ).firstObject;
       const scope = await municipalityUnit.scope;
-      igsRegio = await scope.locatedWithin;
+      region = await scope.locatedWithin;
     }
 
     return {
@@ -125,10 +133,13 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
         structuredIdentifierKBO,
         getStructuredIdentifierKBOValidations(this.store)
       ),
-      structuredIdentifierSharepoint,
+      structuredIdentifierSharepoint: createValidatedChangeset(
+        structuredIdentifierSharepoint,
+        getStructuredIdentifierSharepointValidations()
+      ),
       structuredIdentifierNIS,
       structuredIdentifierOVO,
-      igsRegio,
+      region,
     };
   }
 

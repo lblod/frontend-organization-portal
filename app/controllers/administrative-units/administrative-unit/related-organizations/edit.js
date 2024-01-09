@@ -3,7 +3,10 @@ import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { tracked } from '@glimmer/tracking';
 
 export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEditController extends Controller {
@@ -120,6 +123,12 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     );
   }
 
+  get isOcmwAssociation() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
+      this.model.administrativeUnit.classification?.get('id')
+    );
+  }
+
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
@@ -139,6 +148,13 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     ];
   }
 
+  get classificationCodesOcmwAssociationParticipants() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
+      CLASSIFICATION_CODE.MUNICIPALITY,
+      CLASSIFICATION_CODE.OCMW,
+    ]);
+  }
+
   @action
   addNewSubOrganization() {
     let subOrganization = this.store.createRecord('organization');
@@ -155,10 +171,16 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   removeSubOrganization(organization) {
     this.model.subOrganizations.removeObject(organization);
   }
+
   @action
-  updateRelatedOrg(org) {
-    this.model.administrativeUnit.isSubOrganizationOf = org;
-    this.model.administrativeUnit.wasFoundedByOrganization = org;
+  updateRelatedOrg(orgs) {
+    if (Array.isArray(orgs)) {
+      this.model.administrativeUnit.isSubOrganizationOf = orgs[0];
+      this.model.administrativeUnit.wasFoundedByOrganizations = orgs;
+    } else {
+      this.model.administrativeUnit.isSubOrganizationOf = orgs;
+      this.model.administrativeUnit.wasFoundedByOrganizations = new Array(orgs);
+    }
   }
 
   @action

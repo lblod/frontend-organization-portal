@@ -1,6 +1,9 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIndexController extends Controller {
   queryParams = ['sort', 'page', 'size', 'organizationStatus'];
@@ -94,6 +97,12 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
     return (
       this.model.administrativeUnit.classification?.get('id') ===
       CLASSIFICATION_CODE.ASSISTANCE_ZONE
+    );
+  }
+
+  get isOcmwAssociation() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
+      this.model.administrativeUnit.classification?.get('id')
     );
   }
 }

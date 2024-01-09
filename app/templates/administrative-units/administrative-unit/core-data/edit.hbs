@@ -157,18 +157,20 @@
                     </:content>
                   </Item>
                 {{/if}}
-                {{#if this.isIgs}}
+                {{#if (or this.isIgs this.isOcmwAssociation)}}
                   <Item @labelFor="igs-regio">
                     <:label>Regio</:label>
                     <:content>
                       <TrimInput
                         @width="block"
-                        @value={{@model.igsRegio.label}}
+                        @value={{@model.region.label}}
                         @disabled="true"
                         id="igs-regio"
                       />
                     </:content>
                   </Item>
+                {{/if}}
+                {{#if this.isIgs}}
                   <Item
                     @labelFor="expectedEndDate"
                     @errorMessage={{@model.administrativeUnit.error.expectedEndDate.validation}}
@@ -188,9 +190,7 @@
                     <:label>Doel</:label>
                     <:content>
                       <RichTextEditor
-                        @onChange={{fn
-                          (mut @model.administrativeUnit.purpose)
-                        }}
+                        @onChange={{fn (mut @model.administrativeUnit.purpose)}}
                         @value={{@model.administrativeUnit.purpose}}
                       />
                     </:content>
@@ -239,15 +239,19 @@
                     <Error::KboNumber @error={{error}} />
                   </:error>
                 </Item>
-                <Item @labelFor="sharepoint-identifier">
+                <Item 
+                  @labelFor="sharepoint-identifier"
+                  @errorMessage={{@model.structuredIdentifierSharepoint.error.localId.validation}}
+                >
                   <:label>{{@model.identifierSharepoint.idName}}</:label>
-                  <:content>
+                  <:content as |hasError|>
                     <TrimInput
                       @width="block"
                       @value={{@model.structuredIdentifierSharepoint.localId}}
                       @onUpdate={{fn
                         (mut @model.structuredIdentifierSharepoint.localId)
                       }}
+                      @error={{hasError}}
                       id="sharepoint-identifier"
                     />
                   </:content>
@@ -295,6 +299,7 @@
               this.isIgs
               this.isPoliceZone
               this.isAssistanceZone
+              this.isOcmwAssociation
             )
           )
         }}
@@ -343,13 +348,13 @@
                       <Item
                         @labelFor="oprichting-gemeente"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
+                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
                       >
                         <:label>Werd opgericht door</:label>
                         <:content as |hasError|>
                           <AdministrativeUnitSelect
                             @disabled={{true}}
-                            @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
+                            @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                             @onChange={{this.setRelation}}
                             @classificationCodes={{this.classificationCodes}}
                             @error={{hasError}}
@@ -377,7 +382,45 @@
                         </:content>
                       </Item>
                     {{/if}}
+
                   {{else}}
+                    {{#if this.isOcmwAssociation}}
+                      <Item
+                        @labelFor="oprichting-ocmw-association"
+                        @required={{true}}
+                        @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganizations.validation}}
+                      >
+                        <:label>Werd opgericht door</:label>
+                        <:content as |hasError|>
+                          <AdministrativeUnitMultipleSelect
+                            @disabled={{true}}
+                            @selected={{@model.administrativeUnit.wasFoundedByOrganizations}}
+                            @onChange={{this.setRelation}}
+                            @classificationCodes={{this.classificationCodesOcmwAssociationFounders}}
+                            @error={{hasError}}
+                            @id="oprichting-ocmw-association"
+                          />
+                        </:content>
+                      </Item>
+
+                      <Item
+                        @labelFor="has-participants"
+                        @required={{false}}
+                        @errorMessage={{@model.administrativeUnit.error.hasParticipants.validation}}
+                      >
+                        <:label>Heeft als participanten</:label>
+                        <:content as |hasError|>
+                          <AdministrativeUnitMultipleSelect
+                            @selected={{@model.administrativeUnit.hasParticipants}}
+                            @onChange={{this.setHasParticipants}}
+                            @classificationCodes={{this.classificationCodesOcmwAssociationParticipants}}
+                            @error={{hasError}}
+                            @id="has-participants"
+                          />
+                        </:content>
+                      </Item>
+                    {{else}}
+                      {{! Currently only APBs remain}}
                       <Item
                         @labelFor="related-provincie"
                         @required={{true}}
@@ -388,48 +431,50 @@
                           <ProvinceOrganizationSelect
                             @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                             @onChange={{this.setRelation}}
-                            @allowClear={{(not @model.administrativeUnit.isAssociatedWith)}}
+                            @allowClear={{(not
+                              @model.administrativeUnit.isAssociatedWith
+                            )}}
                             @selectedMunicipality={{@model.administrativeUnit.isAssociatedWith}}
                             @error={{hasError}}
                             @id="related-provincie"
                           />
                         </:content>
                       </Item>
-                    <Item
-                      @labelFor="related-gemeente"
-                      @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
-                    >
-                      <:label>Gemeente</:label>
-                      <:content as |hasError|>
-                        <AdministrativeUnitSelect
-                          @selected={{@model.administrativeUnit.isAssociatedWith}}
-                          @onChange={{this.setMunicipality}}
-                          @allowClear={{true}}
-                          @selectedProvince={{@model.administrativeUnit.wasFoundedByOrganization}}
-                          @classificationCodes={{this.classificationCodes}}
-                          @error={{hasError}}
-                          @id="related-gemeente"
-                        />
-                      </:content>
-                    </Item>
-                    <Item
-                      @labelFor="opregicht-provincie"
-                      @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganization.validation}}
-                    >
-                      <:label>Werd opgericht door</:label>
-                      <:content as |hasError|>
-                        <ProvinceOrganizationSelect
-                          @disabled={{true}}
-                          @selected={{@model.administrativeUnit.wasFoundedByOrganization}}
-                          @onChange={{this.setRelation}}
-                          @error={{hasError}}
-                          @id="opregicht-provincie"
-                        />
-                      </:content>
-                    </Item>
-
+                      <Item
+                        @labelFor="related-gemeente"
+                        @required={{true}}
+                        @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
+                      >
+                        <:label>Gemeente</:label>
+                        <:content as |hasError|>
+                          <AdministrativeUnitSelect
+                            @selected={{@model.administrativeUnit.isAssociatedWith}}
+                            @onChange={{this.setMunicipality}}
+                            @allowClear={{true}}
+                            @selectedProvince={{@model.administrativeUnit.wasFoundedByOrganizations}}
+                            @classificationCodes={{this.classificationCodes}}
+                            @error={{hasError}}
+                            @id="related-gemeente"
+                          />
+                        </:content>
+                      </Item>
+                      <Item
+                        @labelFor="opgericht-provincie"
+                        @required={{true}}
+                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                      >
+                        <:label>Werd opgericht door</:label>
+                        <:content as |hasError|>
+                          <ProvinceOrganizationSelect
+                            @disabled={{true}}
+                            @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                            @onChange={{this.setRelation}}
+                            @error={{hasError}}
+                            @id="opgericht-provincie"
+                          />
+                        </:content>
+                      </Item>
+                    {{/if}}
                   {{/if}}
                 </:left>
               </Card.Columns>

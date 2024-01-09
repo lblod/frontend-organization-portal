@@ -1,9 +1,12 @@
 import Controller from '@ember/controller';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import WorshipServiceModel from 'frontend-organization-portal/models/worship-service';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import {
+  CLASSIFICATION_CODE,
+  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
+} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 const SHAREPOINT_LINK_BASE = {
   WORSHIP_SERVICE:
@@ -23,6 +26,8 @@ const SHAREPOINT_LINK_BASE = {
   POLICE_ZONE:
     'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
   ASSISTANCE_ZONE:
+    'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
+  OCMW_ASSOCIATION:
     'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
 };
 
@@ -141,6 +146,12 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
     );
   }
 
+  get isOcmwAssociation() {
+    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
+      this.model.administrativeUnit.classification?.get('id')
+    );
+  }
+
   get sharePointLinkBase() {
     if (this.isWorshipService) {
       return SHAREPOINT_LINK_BASE.WORSHIP_SERVICE;
@@ -162,6 +173,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
       return SHAREPOINT_LINK_BASE.POLICE_ZONE;
     } else if (this.isAssistanceZone) {
       return SHAREPOINT_LINK_BASE.ASSISTANCE_ZONE;
+    } else if (this.isOcmwAssoctiation) {
+      return SHAREPOINT_LINK_BASE.OCMW_ASSOCIATION;
     }
     return SHAREPOINT_LINK_BASE.CENTRAL_WORSHIP_SERVICE;
   }
