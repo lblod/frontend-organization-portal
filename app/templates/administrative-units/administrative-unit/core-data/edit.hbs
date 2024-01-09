@@ -316,8 +316,6 @@
                       this.isIgs
                       this.isPoliceZone
                       this.isAssistanceZone
-                      this.isPevaMunicipality
-                      this.isPevaProvince
                     )
                   }}
                     <Item
@@ -424,60 +422,99 @@
                         </:content>
                       </Item>
                     {{else}}
-                      {{! Currently only APBs and PEVAs remain}}
-                      <Item
-                        @labelFor="related-provincie"
-                        @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-                      >
-                        <:label>Provincie</:label>
-                        <:content as |hasError|>
-                          <ProvinceOrganizationSelect
-                            @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                            @onChange={{this.setRelation}}
-                            @allowClear={{(not
-                              @model.administrativeUnit.isAssociatedWith
-                            )}}
-                            @selectedMunicipality={{@model.administrativeUnit.isAssociatedWith}}
-                            @error={{hasError}}
-                            @id="related-provincie"
-                          />
-                        </:content>
-                      </Item>
-                      <Item
-                        @labelFor="related-gemeente"
-                        @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
-                      >
-                        <:label>Gemeente</:label>
-                        <:content as |hasError|>
-                          <AdministrativeUnitSelect
-                            @selected={{@model.administrativeUnit.isAssociatedWith}}
-                            @onChange={{this.setMunicipality}}
-                            @allowClear={{true}}
-                            @selectedProvince={{@model.administrativeUnit.wasFoundedByOrganizations}}
-                            @classificationCodes={{this.classificationCodes}}
-                            @error={{hasError}}
-                            @id="related-gemeente"
-                          />
-                        </:content>
-                      </Item>
-                      <Item
-                        @labelFor="opgericht-provincie"
-                        @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
-                      >
-                        <:label>Werd opgericht door</:label>
-                        <:content as |hasError|>
-                          <ProvinceOrganizationSelect
-                            @disabled={{true}}
-                            @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                            @onChange={{this.setRelation}}
-                            @error={{hasError}}
-                            @id="opgericht-provincie"
-                          />
-                        </:content>
-                      </Item>
+                      {{#if (or this.isPevaMunicipality this.isPevaProvince)}}
+                        <Item
+                          @labelFor="oprichting-peva"
+                          @required={{true}}
+                          @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganizations.validation}}
+                        >
+                          <:label>Werd opgericht door</:label>
+                          <:content as |hasError|>
+                            {{! TODO: set proper value for @classificationCodes}}
+                            <AdministrativeUnitMultipleSelect
+                              @disabled={{true}}
+                              @selected={{@model.administrativeUnit.wasFoundedByOrganizations}}
+                              @onChange={{this.setRelation}}
+                              @classificationCodes={{this.classificationCodes}}
+                              @error={{hasError}}
+                              @id="oprichting-peva"
+                            />
+                          </:content>
+                        </Item>
+
+                        <Item
+                          @labelFor="has-participants"
+                          @required={{false}}
+                          @errorMessage={{@model.administrativeUnit.error.hasParticipants.validation}}
+                        >
+                          <:label>Heeft als participanten</:label>
+                          <:content as |hasError|>
+                            {{! TODO: set proper value for @classificationCodes}}
+                            <AdministrativeUnitMultipleSelect
+                              @selected={{@model.administrativeUnit.hasParticipants}}
+                              @onChange={{this.setHasParticipants}}
+                              @classificationCodes={{this.classificationCodes}}
+                              @error={{hasError}}
+                              @id="has-participants"
+                            />
+                          </:content>
+                        </Item>
+                      {{else}}
+                        {{! Currently only APBs remain}}
+                        <Item
+                          @labelFor="related-provincie"
+                          @required={{true}}
+                          @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                        >
+                          <:label>Provincie</:label>
+                          <:content as |hasError|>
+                            <ProvinceOrganizationSelect
+                              @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                              @onChange={{this.setRelation}}
+                              @allowClear={{(not
+                                @model.administrativeUnit.isAssociatedWith
+                              )}}
+                              @selectedMunicipality={{@model.administrativeUnit.isAssociatedWith}}
+                              @error={{hasError}}
+                              @id="related-provincie"
+                            />
+                          </:content>
+                        </Item>
+                        <Item
+                          @labelFor="related-gemeente"
+                          @required={{true}}
+                          @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
+                        >
+                          <:label>Gemeente</:label>
+                          <:content as |hasError|>
+                            <AdministrativeUnitSelect
+                              @selected={{@model.administrativeUnit.isAssociatedWith}}
+                              @onChange={{this.setMunicipality}}
+                              @allowClear={{true}}
+                              @selectedProvince={{@model.administrativeUnit.wasFoundedByOrganizations}}
+                              @classificationCodes={{this.classificationCodes}}
+                              @error={{hasError}}
+                              @id="related-gemeente"
+                            />
+                          </:content>
+                        </Item>
+                        <Item
+                          @labelFor="opgericht-provincie"
+                          @required={{true}}
+                          @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+                        >
+                          <:label>Werd opgericht door</:label>
+                          <:content as |hasError|>
+                            <ProvinceOrganizationSelect
+                              @disabled={{true}}
+                              @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                              @onChange={{this.setRelation}}
+                              @error={{hasError}}
+                              @id="opgericht-provincie"
+                            />
+                          </:content>
+                        </Item>
+                      {{/if}}
                     {{/if}}
                   {{/if}}
                 </:left>

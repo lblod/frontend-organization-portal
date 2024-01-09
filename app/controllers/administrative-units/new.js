@@ -157,8 +157,8 @@ export default class AdministrativeUnitsNewController extends Controller {
       CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
       CLASSIFICATION_CODE.POLICE_ZONE,
       CLASSIFICATION_CODE.ASSISTANCE_ZONE,
-      // TODO: confirm PEVA municipality are valid participants
       CLASSIFICATION_CODE.PEVA_MUNICIPALITY,
+      CLASSIFICATION_CODE.PEVA_PROVINCE,
       // TODO when onboarded, add companies
     ];
   }
