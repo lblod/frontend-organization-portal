@@ -65,7 +65,15 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       administrativeUnit.classification?.get('id')
     );
 
-    if (isIGS || isOcmwAssociation) {
+    const typesThatArePeva = [
+      CLASSIFICATION_CODE.PEVA_MUNICIPALITY,
+      CLASSIFICATION_CODE.PEVA_PROVINCE,
+    ];
+    const isPeva = typesThatArePeva.includes(
+      administrativeUnit.classification?.get('id')
+    );
+
+    if (isIGS || isOcmwAssociation || isPeva) {
       const primarySite = await administrativeUnit.primarySite;
       const address = await primarySite.address;
       const municipalityString = address.municipality;
