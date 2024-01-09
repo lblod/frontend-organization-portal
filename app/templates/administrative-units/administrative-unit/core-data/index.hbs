@@ -230,7 +230,6 @@
           </Card.Columns>
         </:card>
       </DataCard>
-
       <Site::ContactDataCard
         @address={{@model.administrativeUnit.primarySite.address}}
         @primaryContact={{@model.primaryContact}}
@@ -296,12 +295,12 @@
                 </:content>
               </Item>
               <Item>
-                <:label>KBO website</:label>
+                <:label>Website KBO</:label>
                 <:content>
                   <AuLinkExternal
-                    href="https://kbopub.economie.fgov.be/kbopub/zoeknummerform.html?nummer=0207437468"
+                    href="https://kbopub.economie.fgov.be/kbopub/zoeknummerform.html?nummer={{this.kboIdentifier.structuredIdentifier.localId}}"
                   >
-                    KBO website (externe link)
+                    Link to page (externe link)
                   </AuLinkExternal>
                 </:content>
               </Item>
