@@ -94,6 +94,20 @@ export default class SiteTypeSelectComponent extends Component {
     );
   }
 
+  get isPevaMunicipality() {
+    return (
+      this.args.administrativeUnitClassification.get('id') ===
+      CLASSIFICATION_CODE.PEVA_MUNICIPALITY
+    );
+  }
+
+  get isPevaProvince() {
+    return (
+      this.args.administrativeUnitClassification.get('id') ===
+      CLASSIFICATION_CODE.PEVA_PROVINCE
+    );
+  }
+
   @task
   *loadSiteTypesTask() {
     yield timeout(500);
@@ -120,7 +134,9 @@ export default class SiteTypeSelectComponent extends Component {
       this.isAgb ||
       this.isApb ||
       this.isIGS ||
-      this.isOcmwAssociation
+      this.isOcmwAssociation ||
+      this.isPevaMunicipality ||
+      this.isPevaProvince
     ) {
       filteredTypes.push(
         allTypes.find(
