@@ -74,33 +74,6 @@ export const validateUrl = (message = 'Invalid URL format.') => {
 };
 
 /**
- * Require when all fields are present
- * @param {Array<string>} fields - Array of field names to check for existence.
- * @param {string} [message] - Custom error message for validation failure.
- * @returns {Joi.ObjectSchema} - Joi schema for conditional required fields.
- */
-export const validateRequiredWhenAll = (
-  fields,
-  message = 'This field is required.'
-) => {
-  const conditions = fields.reduce((acc, field) => {
-    return acc === null
-      ? Joi.when(field, {
-          is: Joi.exist(),
-          then: Joi.required(),
-          otherwise: Joi.optional(),
-        })
-      : Joi.when(field, {
-          is: Joi.exist(),
-          then: acc,
-          otherwise: Joi.optional(),
-        });
-  }, null);
-
-  return conditions.messages({ 'any.required': message });
-};
-
-/**
  * Require when `classification.id` is one of the classification codes in the list.
  * @param {Array<string>} classificationCodeList - Array of valid classification codes.
  * @returns {Joi.ObjectSchema} - Joi schema for conditional required classification ID.

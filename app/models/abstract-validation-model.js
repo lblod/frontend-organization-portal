@@ -5,7 +5,7 @@ import Model from '@ember-data/model';
  * Ember Data Model with Joi-based Validation
  */
 export default class AbstractValidationModel extends Model {
-  @tracked _validationError = null;
+  @tracked _validationError;
 
   /**
    * Get the validation schema for the model. Should be overridden in subclasses.
@@ -28,7 +28,7 @@ export default class AbstractValidationModel extends Model {
    * @returns {Promise<boolean>} - Whether the model is valid.
    */
   async validate() {
-    this._validationError = null;
+    this._validationError = undefined;
     const { attributes, relationships } = this.#serializeAll();
     const value = { ...attributes, ...relationships };
     console.log('value', value);
@@ -121,7 +121,7 @@ export default class AbstractValidationModel extends Model {
    * @see https://guides.emberjs.com/release/models/#toc_rolling-back-attributes
    */
   reset() {
-    this._validationError = null;
+    this._validationError = undefined;
     this.rollbackAttributes();
   }
 }

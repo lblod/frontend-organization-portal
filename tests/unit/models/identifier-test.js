@@ -97,7 +97,7 @@ module('Unit | Model | identifier', function (hooks) {
         stub.restore();
 
         assert.true(isValid);
-        assert.strictEqual(model.error, null);
+        assert.strictEqual(model.error, undefined);
       });
 
       test('it checks if already exist when value have changed', async function (assert) {
@@ -120,7 +120,7 @@ module('Unit | Model | identifier', function (hooks) {
         const isValid = await model.validate();
 
         assert.true(isValid);
-        assert.strictEqual(model.error, null);
+        assert.strictEqual(model.error, undefined);
 
         queryStub.restore();
       });

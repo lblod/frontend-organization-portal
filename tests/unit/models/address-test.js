@@ -10,16 +10,7 @@ module('Unit | Model | address', function (hooks) {
 
   module('validate', function () {
     // smoke test on required attributes
-    test('it returns no error when model is empty', async function (assert) {
-      const model = this.store().createRecord('address');
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.strictEqual(model.error, null);
-    });
-
-    test('it returns error when street is undefined, but dependency fulfilled', async function (assert) {
+    test('it returns error when street is missing', async function (assert) {
       const model = this.store().createRecord('address', {
         number: '1',
         postcode: '1000',
@@ -37,8 +28,27 @@ module('Unit | Model | address', function (hooks) {
       );
     });
 
-    test('it returns error when België and province is missing', async function (assert) {
+    test('it returns no error when country in Frans and province is missing', async function (assert) {
       const model = this.store().createRecord('address', {
+        number: '5',
+        street: 'Rue des Messageries',
+        postcode: '75010',
+        municipality: 'Paris',
+        country: 'Frankrijk',
+      });
+
+      const isValid = await model.validate();
+
+      assert.true(isValid);
+      assert.strictEqual(model.error, undefined);
+    });
+
+    test('it returns error when country is België and province is missing', async function (assert) {
+      const model = this.store().createRecord('address', {
+        number: '1',
+        street: 'Wetstraat',
+        postcode: '1000',
+        municipality: 'Brussel',
         country: 'België',
       });
 

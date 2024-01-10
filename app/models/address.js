@@ -1,10 +1,9 @@
 import { attr, belongsTo } from '@ember-data/model';
 import AbstractValidationModel from './abstract-validation-model';
 import Joi from 'joi';
-import {
-  validateBelongsToOptional,
-  validateRequiredWhenAll,
-} from '../validators/schema';
+import { validateBelongsToOptional } from '../validators/schema';
+
+const BELGIUM = 'België';
 
 export default class AddressModel extends AbstractValidationModel {
   @attr number;
@@ -23,39 +22,39 @@ export default class AddressModel extends AbstractValidationModel {
   source;
 
   get isCountryBelgium() {
-    return this.country === 'België';
+    return this.country === BELGIUM;
   }
 
   get validationSchema() {
     const REQUIRED_MESSAGE = 'Vul het volledige adres in';
     return Joi.object({
-      street: validateRequiredWhenAll(
-        ['number', 'postcode', 'municipality', 'province', 'country'],
-        REQUIRED_MESSAGE
-      ),
-      number: validateRequiredWhenAll(
-        ['street', 'postcode', 'municipality', 'province', 'country'],
-        REQUIRED_MESSAGE
-      ),
-      postcode: validateRequiredWhenAll(
-        ['street', 'number', 'municipality', 'province', 'country'],
-        REQUIRED_MESSAGE
-      ),
-      municipality: validateRequiredWhenAll(
-        ['street', 'number', 'postcode', 'province', 'country'],
-        REQUIRED_MESSAGE
-      ),
-      country: validateRequiredWhenAll(
-        ['street', 'number', 'postcode', 'municipality', 'province'],
-        REQUIRED_MESSAGE
-      ),
-      // The `external` method is used here as a workaround for a circular dependency error with `when`.
-      province: Joi.string().external((value, helpers) => {
-        if (this.isCountryBelgium && !value) {
-          return helpers.message(REQUIRED_MESSAGE);
-        }
-        return value;
-      }),
+      street: Joi.string()
+        .empty('')
+        .required()
+        .messages({ '*': REQUIRED_MESSAGE }),
+      number: Joi.string()
+        .empty('')
+        .required()
+        .messages({ '*': REQUIRED_MESSAGE }),
+      postcode: Joi.string()
+        .empty('')
+        .required()
+        .messages({ '*': REQUIRED_MESSAGE }),
+      municipality: Joi.string()
+        .empty('')
+        .required()
+        .messages({ '*': REQUIRED_MESSAGE }),
+      country: Joi.string()
+        .empty('')
+        .required()
+        .messages({ '*': REQUIRED_MESSAGE }),
+      province: Joi.string()
+        .empty('')
+        .when('country', {
+          is: Joi.valid(BELGIUM),
+          then: Joi.string().required().messages({ '*': REQUIRED_MESSAGE }),
+          otherwise: Joi.string().empty('').allow(null),
+        }),
       boxNumber: Joi.string().empty('').allow(null),
       fullAddress: Joi.string().empty(''),
       addressRegisterUri: Joi.string().empty(''),

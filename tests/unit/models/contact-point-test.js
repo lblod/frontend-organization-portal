@@ -16,7 +16,7 @@ module('Unit | Model | contact point', function (hooks) {
       const isValid = await model.validate();
 
       assert.true(isValid);
-      assert.deepEqual(model.error, null);
+      assert.deepEqual(model.error, undefined);
     });
   });
 });
