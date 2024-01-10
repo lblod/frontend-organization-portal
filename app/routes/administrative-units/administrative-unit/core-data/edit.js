@@ -8,19 +8,8 @@ import {
 } from 'frontend-organization-portal/models/contact-point';
 import { createAddress } from 'frontend-organization-portal/models/address';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
-import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
-import { getAddressValidations } from 'frontend-organization-portal/validations/address';
-import contactValidations from 'frontend-organization-portal/validations/contact-point';
-import administrativeUnitValidations, {
-  getStructuredIdentifierKBOValidations,
-  getStructuredIdentifierSharepointValidations,
-} from 'frontend-organization-portal/validations/administrative-unit';
 import { A } from '@ember/array';
-import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
-import {
-  CLASSIFICATION_CODE,
-  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
-} from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute extends Route {
   @service store;
@@ -82,21 +71,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     let structuredIdentifierOVO = await identifierOVO.structuredIdentifier;
 
     let region;
-    const typesThatAreIGS = [
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-    ];
-    const isIGS = typesThatAreIGS.includes(
-      administrativeUnit.classification?.get('id')
-    );
 
-    const isOcmwAssociation = OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
-      administrativeUnit.classification?.get('id')
-    );
-
-    if (isIGS || isOcmwAssociation) {
+    if (administrativeUnit.isIgs || administrativeUnit.isOcmwAssociation) {
       const primarySite = await administrativeUnit.primarySite;
       const address = await primarySite.address;
       const municipalityString = address.municipality;
@@ -115,28 +91,16 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     }
 
     return {
-      administrativeUnit: createValidatedChangeset(
-        administrativeUnit,
-        administrativeUnitValidations
-      ),
-      address: createValidatedChangeset(address, getAddressValidations(true)),
-      contact: createValidatedChangeset(primaryContact, contactValidations),
-      secondaryContact: createValidatedChangeset(
-        secondaryContact,
-        secondaryContactValidations
-      ),
+      administrativeUnit,
+      address,
+      contact: primaryContact,
+      secondaryContact,
       identifierKBO,
       identifierSharepoint,
       identifierNIS,
       identifierOVO,
-      structuredIdentifierKBO: createValidatedChangeset(
-        structuredIdentifierKBO,
-        getStructuredIdentifierKBOValidations(this.store)
-      ),
-      structuredIdentifierSharepoint: createValidatedChangeset(
-        structuredIdentifierSharepoint,
-        getStructuredIdentifierSharepointValidations()
-      ),
+      structuredIdentifierKBO,
+      structuredIdentifierSharepoint,
       structuredIdentifierNIS,
       structuredIdentifierOVO,
       region,
@@ -169,5 +133,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
 
       return missingIdentifiers;
     }, []);
+  }
+
+  resetController(controller) {
+    super.resetController(...arguments);
+    controller.reset();
   }
 }

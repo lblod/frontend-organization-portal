@@ -5,14 +5,6 @@ import {
   createSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
-import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
-import { getAddressValidations } from 'frontend-organization-portal/validations/address';
-import contactValidations from 'frontend-organization-portal/validations/contact-point';
-import administrativeUnitValidations, {
-  getStructuredIdentifierKBOValidations,
-  getStructuredIdentifierSharepointValidations,
-} from 'frontend-organization-portal/validations/administrative-unit';
-import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
 
 export default class AdministrativeUnitsNewRoute extends Route {
   @service store;
@@ -28,41 +20,34 @@ export default class AdministrativeUnitsNewRoute extends Route {
   }
 
   model() {
-    const address = this.store.createRecord('address');
-    address.country = 'België';
-
+    const structuredIdentifierKBO = this.store.createRecord(
+      'structured-identifier'
+    );
+    const identifierKBO = this.store.createRecord('identifier', {
+      idName: ID_NAME.KBO,
+      structuredIdentifier: structuredIdentifierKBO,
+    });
+    const structuredIdentifierSharepoint = this.store.createRecord(
+      'structured-identifier'
+    );
+    const identifierSharepoint = this.store.createRecord('identifier', {
+      idName: ID_NAME.SHAREPOINT,
+      structuredIdentifier: structuredIdentifierSharepoint,
+    });
     return {
-      administrativeUnitChangeset: createValidatedChangeset(
-        this.store.createRecord('administrative-unit'),
-        administrativeUnitValidations
-      ),
       administrativeUnit: this.store.createRecord('administrative-unit'),
       centralWorshipService: this.store.createRecord('central-worship-service'),
       worshipService: this.store.createRecord('worship-service'),
       primarySite: this.store.createRecord('site'),
-      address: createValidatedChangeset(address, getAddressValidations(true)),
-      contact: createValidatedChangeset(
-        createPrimaryContact(this.store),
-        contactValidations
-      ),
-      secondaryContact: createValidatedChangeset(
-        createSecondaryContact(this.store),
-        secondaryContactValidations
-      ),
-      identifierKBO: this.store.createRecord('identifier', {
-        idName: ID_NAME.KBO,
+      address: this.store.createRecord('address', {
+        country: 'België',
       }),
-      structuredIdentifierKBO: createValidatedChangeset(
-        this.store.createRecord('structured-identifier'),
-        getStructuredIdentifierKBOValidations(this.store)
-      ),
-      identifierSharepoint: this.store.createRecord('identifier', {
-        idName: ID_NAME.SHAREPOINT,
-      }),
-      structuredIdentifierSharepoint: createValidatedChangeset(
-        this.store.createRecord('structured-identifier'),
-        getStructuredIdentifierSharepointValidations()
-      ),
+      contact: createPrimaryContact(this.store),
+      secondaryContact: createSecondaryContact(this.store),
+      identifierKBO,
+      structuredIdentifierKBO,
+      identifierSharepoint,
+      structuredIdentifierSharepoint,
     };
   }
 
