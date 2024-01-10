@@ -102,7 +102,7 @@ export default class OrganizationModel extends AgentModel {
       expectedEndDate: Joi.date().allow(null),
       purpose: Joi.string().empty(''),
       primarySite: validateBelongsToOptional(),
-      organizationStatus: validateBelongsToRequired(),
+      organizationStatus: validateBelongsToRequired('Selecteer een optie'),
       identifiers: validateHasManyOptional(),
       sites: validateHasManyOptional(),
       changedBy: validateHasManyOptional(),
