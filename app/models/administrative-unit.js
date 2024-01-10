@@ -159,7 +159,6 @@ export default class AdministrativeUnitModel extends OrganizationModel {
     return this.#hasClassificationId(DistrictCodeList);
   }
 
-  // TODO: do we need separate functions for the two PEVAs?
   get isPevaMunicipality() {
     return this.#hasClassificationId(PevaMunicipalityCodeList);
   }
