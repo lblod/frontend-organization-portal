@@ -10,8 +10,14 @@ module('Unit | Validator | schema', function (hooks) {
   setupTest(hooks);
 
   module('validatePhone', function () {
-    test('it returns no error when phone is empty', function (assert) {
+    test('it returns no error when phone is undefined', function (assert) {
       const { error } = validatePhone().validate();
+
+      assert.strictEqual(error, undefined);
+    });
+
+    test('it returns no error when phone is empty string', function (assert) {
+      const { error } = validatePhone().validate('');
 
       assert.strictEqual(error, undefined);
     });
@@ -30,8 +36,14 @@ module('Unit | Validator | schema', function (hooks) {
   });
 
   module('validateEmail', function () {
-    test('it returns no error when email is empty', function (assert) {
+    test('it returns no error when email is undefined', function (assert) {
       const { error } = validateEmail().validate();
+
+      assert.strictEqual(error, undefined);
+    });
+
+    test('it returns no error when email is empty string', function (assert) {
+      const { error } = validateEmail().validate('');
 
       assert.strictEqual(error, undefined);
     });
@@ -50,8 +62,14 @@ module('Unit | Validator | schema', function (hooks) {
   });
 
   module('validateUrl', function () {
-    test('it returns no error when url is empty', function (assert) {
+    test('it returns no error when url is undefined', function (assert) {
       const { error } = validateUrl().validate();
+
+      assert.strictEqual(error, undefined);
+    });
+
+    test('it returns no error when url is empty string', function (assert) {
+      const { error } = validateUrl().validate('');
 
       assert.strictEqual(error, undefined);
     });

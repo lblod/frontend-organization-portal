@@ -47,6 +47,7 @@ export const validateHasManyOptional = () => {
  */
 export const validatePhone = (message = 'Invalid phone number format.') => {
   return Joi.string()
+    .empty('')
     .regex(/^(tel:)?\+?[0-9]*$/)
     .messages({ 'string.pattern.base': message });
 };
@@ -58,6 +59,7 @@ export const validatePhone = (message = 'Invalid phone number format.') => {
  */
 export const validateEmail = (message = 'Invalid email format.') => {
   return Joi.string()
+    .empty('')
     .email({ tlds: false })
     .messages({ 'string.email': message });
 };
@@ -68,7 +70,7 @@ export const validateEmail = (message = 'Invalid email format.') => {
  * @returns {Joi.StringSchema<string>} - Joi schema for validating URLs.
  */
 export const validateUrl = (message = 'Invalid URL format.') => {
-  return Joi.string().uri().messages({ 'string.uri': message });
+  return Joi.string().empty('').uri().messages({ 'string.uri': message });
 };
 
 /**

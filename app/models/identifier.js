@@ -21,6 +21,7 @@ export default class IdentifierModel extends AbstractValidationModel {
   get validationSchema() {
     return Joi.object({
       idName: Joi.string()
+        .empty('')
         .valid(...Object.values(ID_NAME))
         .required(),
       structuredIdentifier: Joi.object()

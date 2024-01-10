@@ -95,13 +95,12 @@ export default class OrganizationModel extends AgentModel {
 
   get validationSchema() {
     return super.validationSchema.append({
-      name: Joi.string().required().messages({
+      name: Joi.string().empty('').required().messages({
         'any.required': 'Vul de naam in',
-        'string.empty': 'Vul de naam in',
       }),
-      alternativeName: Joi.string(),
+      alternativeName: Joi.string().empty(''),
       expectedEndDate: Joi.date().allow(null),
-      purpose: Joi.string(),
+      purpose: Joi.string().empty(''),
       primarySite: validateBelongsToOptional(),
       organizationStatus: validateBelongsToRequired(),
       identifiers: validateHasManyOptional(),

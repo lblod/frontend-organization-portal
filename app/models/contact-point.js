@@ -33,7 +33,7 @@ export default class ContactPointModel extends AbstractValidationModel {
       ),
       fax: validatePhone('Enkel een plusteken en cijfers zijn toegelaten'),
       website: validateUrl('Geef een geldig internetadres in'),
-      type: Joi.string(),
+      type: Joi.string().empty(''),
       contactAddress: validateBelongsToOptional(),
     });
   }

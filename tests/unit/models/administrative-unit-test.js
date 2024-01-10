@@ -24,25 +24,6 @@ module('Unit | Model | administrative unit', function (hooks) {
       );
     });
 
-    test('tt', async function (assert) {
-      const classification = this.store().createRecord(
-        'administrative-unit-classification-code',
-        CLASSIFICATION.AGB
-      );
-      const model = this.store().createRecord('administrative-unit', {
-        classification,
-      });
-
-      const isValid = await model.validate();
-
-      assert.false(isValid);
-      assert.propContains(model.error, {
-        name: { message: 'Vul de naam in' },
-        wasFoundedByOrganization: { message: 'Selecteer een optie' },
-        isSubOrganizationOf: { message: 'Selecteer een optie' },
-      });
-    });
-
     test('date', async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
