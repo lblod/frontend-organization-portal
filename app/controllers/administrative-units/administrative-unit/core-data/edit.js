@@ -124,8 +124,6 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       identifierSharepoint.validate(),
     ]);
 
-    console.log('hasValidationErrors', this.hasValidationErrors);
-
     if (!this.hasValidationErrors) {
       let primarySite = yield administrativeUnit.primarySite;
 

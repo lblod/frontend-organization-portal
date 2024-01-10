@@ -145,25 +145,6 @@ export default class AdministrativeUnitsNewController extends Controller {
       identifierSharepoint.validate(),
     ]);
 
-    console.log(
-      'this.model.administrativeUnit.error',
-      this.model.administrativeUnit.error
-    );
-    console.log('this.model.address.error', this.model.address.error);
-    console.log('this.model.contact.error', this.model.contact.error);
-    console.log(
-      'this.model.secondaryContact.error',
-      this.model.secondaryContact.error
-    );
-    console.log(
-      'this.model.identifierKBO.error',
-      this.model.identifierKBO.error
-    );
-    console.log(
-      'this.model.identifierSharepoint.error',
-      this.model.identifierSharepoint.error
-    );
-
     if (!this.hasValidationErrors) {
       const siteTypes = yield this.store.findAll('site-type');
       let newAdministrativeUnit;
