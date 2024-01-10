@@ -449,11 +449,10 @@
                         >
                           <:label>Heeft als participanten</:label>
                           <:content as |hasError|>
-                            {{! TODO: set proper value for @classificationCodes}}
                             <AdministrativeUnitMultipleSelect
                               @selected={{@model.administrativeUnit.hasParticipants}}
                               @onChange={{this.setHasParticipants}}
-                              @classificationCodes={{this.classificationCodes}}
+                              @classificationCodes={{this.classificationCodesPevaParticipants}}
                               @error={{hasError}}
                               @id="has-participants"
                             />

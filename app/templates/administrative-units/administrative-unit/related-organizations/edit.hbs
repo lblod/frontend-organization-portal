@@ -125,8 +125,7 @@
         {{#if this.isPevaMunicipality}}
           <RelatedOrganizations::EditPevaMunicipality
             @model={{@model}}
-            {{!  TODO: replace by correct classification codes }}
-            @classificationCodesParticipants={{this.classificationCodesIgsParticipants}}
+            @classificationCodesParticipants={{this.classificationCodesPevaParticipants}}
             @addNewHasParticipants={{this.addNewHasParticipants}}
             @updateHasParticipants={{this.updateHasParticipants}}
             @removeHasParticipants={{this.removeHasParticipants}}
@@ -135,8 +134,7 @@
         {{#if this.isPevaProvince}}
           <RelatedOrganizations::EditPevaProvince
             @model={{@model}}
-            {{!  TODO: replace by correct classification codes }}
-            @classificationCodesParticipants={{this.classificationCodesIgsParticipants}}
+            @classificationCodesParticipants={{this.classificationCodesPevaParticipants}}
             @addNewHasParticipants={{this.addNewHasParticipants}}
             @updateHasParticipants={{this.updateHasParticipants}}
             @removeHasParticipants={{this.removeHasParticipants}}

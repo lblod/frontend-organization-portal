@@ -431,6 +431,7 @@
                     {{#if
                       (or this.isNewPevaMunicipality this.isNewPevaProvince)
                     }}
+                      {{! TODO: set proper value for @classificationCodes}}
                       <Item
                         @labelFor="oprichting-peva"
                         @required={{true}}
@@ -447,8 +448,6 @@
                           />
                         </:content>
                       </Item>
-
-                      {{! TODO: set allowed participants properly, cf. @classificationCodes }}
                       <Item
                         @labelFor="has-participants-peva"
                         @errorMessage={{@model.administrativeUnitChangeset.error.hasParticipants.validation}}
@@ -458,7 +457,7 @@
                           <AdministrativeUnitMultipleSelect
                             @selected={{@model.administrativeUnitChangeset.hasParticipants}}
                             @onChange={{this.setHasParticipants}}
-                            @classificationCodes={{this.classificationCodes}}
+                            @classificationCodes={{this.classificationCodesPevaParticipants}}
                             @error={{hasError}}
                             @id="has-participants-peva"
                           />
