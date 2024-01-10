@@ -18,65 +18,13 @@ export default class AdministrativeUnitsNewController extends Controller {
 
   get hasValidationErrors() {
     return (
-      this.model.administrativeUnitChangeset.isInvalid ||
-      this.model.address.isInvalid ||
-      this.model.contact.isInvalid ||
-      this.model.secondaryContact.isInvalid ||
-      this.model.structuredIdentifierKBO.isInvalid ||
-      this.model.structuredIdentifierSharepoint.isInvalid
+      this.model.administrativeUnit.error ||
+      this.model.address.error ||
+      this.model.contact.error ||
+      this.model.secondaryContact.error ||
+      this.model.structuredIdentifierKBO.error ||
+      this.model.structuredIdentifierSharepoint.error
     );
-  }
-
-  get isNewOCMW() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.OCMW
-    );
-  }
-
-  get isNewAgb() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.AGB
-    );
-  }
-  get isNewApb() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.APB
-    );
-  }
-
-  get isNewDistrict() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.DISTRICT
-    );
-  }
-
-  get isNewMunicipality() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.MUNICIPALITY
-    );
-  }
-
-  get isNewWorshipService() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.WORSHIP_SERVICE
-    );
-  }
-
-  get isNewCentralWorshipService() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
-    );
-  }
-
-  get isNewWorshipAdministrativeUnit() {
-    return this.isNewWorshipService || this.isNewCentralWorshipService;
   }
 
   get hasCentralWorshipService() {
@@ -87,44 +35,10 @@ export default class AdministrativeUnitsNewController extends Controller {
     ];
 
     return (
-      this.isNewWorshipService &&
+      this.model.administrativeUnit.isWorshipService &&
       typesThatHaveACentralWorshipService.find(
-        (id) =>
-          id == this.model.administrativeUnitChangeset.recognizedWorshipType?.id
+        (id) => id == this.model.administrativeUnit.recognizedWorshipType?.id
       )
-    );
-  }
-
-  get isNewIGS() {
-    const typesThatAreIGS = [
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-    ];
-
-    return typesThatAreIGS.find(
-      (id) => id == this.model.administrativeUnitChangeset.classification?.id
-    );
-  }
-
-  get isNewPoliceZone() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.POLICE_ZONE
-    );
-  }
-
-  get isNewAssistanceZone() {
-    return (
-      this.model.administrativeUnitChangeset.classification?.id ===
-      CLASSIFICATION_CODE.ASSISTANCE_ZONE
-    );
-  }
-
-  get isNewOcmwAssociation() {
-    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
-      this.model.administrativeUnitChangeset.classification?.get('id')
     );
   }
 
@@ -164,23 +78,28 @@ export default class AdministrativeUnitsNewController extends Controller {
   @action
   setRelation(unit) {
     if (Array.isArray(unit)) {
-      this.model.administrativeUnitChangeset.isSubOrganizationOf = unit[0];
+      this.model.administrativeUnit.isSubOrganizationOf = unit[0];
     } else {
-      this.model.administrativeUnitChangeset.isSubOrganizationOf = unit;
+      this.model.administrativeUnit.isSubOrganizationOf = unit;
     }
 
-    if (this.isNewAgb || this.isNewApb || this.isNewOcmwAssociation)
+    if (
+      this.model.administrativeUnit.isAgb ||
+      this.model.administrativeUnit.isApb ||
+      this.model.administrativeUnit.isOcmwAssociation
+    )
       if (Array.isArray(unit)) {
-        this.model.administrativeUnitChangeset.wasFoundedByOrganizations = unit;
+        this.model.administrativeUnit.wasFoundedByOrganizations = unit;
       } else {
-        this.model.administrativeUnitChangeset.wasFoundedByOrganizations =
-          new Array(unit);
+        this.model.administrativeUnit.wasFoundedByOrganizations = new Array(
+          unit
+        );
       }
   }
 
   @action
   setHasParticipants(units) {
-    this.model.administrativeUnitChangeset.hasParticipants = units;
+    this.model.administrativeUnit.hasParticipants = units;
   }
 
   @action
@@ -190,13 +109,13 @@ export default class AdministrativeUnitsNewController extends Controller {
 
   @action
   setClassification(value) {
-    this.model.administrativeUnitChangeset.classification = value;
-    this.model.administrativeUnitChangeset.subOrganizations = [];
-    this.model.administrativeUnitChangeset.foundedOrganizations = [];
-    this.model.administrativeUnitChangeset.isAssociatedWith = [];
-    this.model.administrativeUnitChangeset.isSubOrganizationOf = null;
-    this.model.administrativeUnitChangeset.wasFoundedByOrganizations = [];
-    this.model.administrativeUnitChangeset.hasParticipants = [];
+    this.model.administrativeUnit.classification = value;
+    this.model.administrativeUnit.subOrganizations = [];
+    this.model.administrativeUnit.foundedOrganizations = [];
+    this.model.administrativeUnit.isAssociatedWith = [];
+    this.model.administrativeUnit.isSubOrganizationOf = null;
+    this.model.administrativeUnit.wasFoundedByOrganizations = [];
+    this.model.administrativeUnit.hasParticipants = [];
   }
 
   @dropTask
@@ -204,7 +123,6 @@ export default class AdministrativeUnitsNewController extends Controller {
     event.preventDefault();
 
     let {
-      administrativeUnitChangeset,
       administrativeUnit,
       centralWorshipService,
       worshipService,
@@ -219,41 +137,35 @@ export default class AdministrativeUnitsNewController extends Controller {
     } = this.model;
 
     yield Promise.all([
-      administrativeUnitChangeset.validate(),
+      administrativeUnit.validate(),
       address.validate(),
       contact.validate(),
       secondaryContact.validate(),
-      structuredIdentifierKBO.validate(),
-      structuredIdentifierSharepoint.validate(),
+      identifierKBO.validate(),
+      identifierSharepoint.validate(),
     ]);
 
     if (!this.hasValidationErrors) {
       const siteTypes = yield this.store.findAll('site-type');
       let newAdministrativeUnit;
       // Set the proper type to the new admin unit
-      if (this.isNewCentralWorshipService) {
+      if (administrativeUnit.isCentralWorshipService) {
         newAdministrativeUnit = centralWorshipService;
-      } else if (this.isNewWorshipService) {
+      } else if (administrativeUnit.isWorshipService) {
         newAdministrativeUnit = worshipService;
       } else {
         newAdministrativeUnit = administrativeUnit;
       }
       // Copy data entered in the frontend to the new admin unit
-      copyAdministrativeUnitData(
-        newAdministrativeUnit,
-        administrativeUnitChangeset
-      );
+      copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
       structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
-      identifierKBO.structuredIdentifier = structuredIdentifierKBO;
       yield structuredIdentifierKBO.save();
       yield identifierKBO.save();
 
       structuredIdentifierSharepoint = setEmptyStringsToNull(
         structuredIdentifierSharepoint
       );
-      identifierSharepoint.structuredIdentifier =
-        structuredIdentifierSharepoint;
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
 
@@ -267,7 +179,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       );
       yield secondaryContact.save();
 
-      if (address.country != 'België') {
+      if (!address.isCountryBelgium) {
         address.province = '';
       }
 
@@ -278,12 +190,12 @@ export default class AdministrativeUnitsNewController extends Controller {
       primarySite.address = address;
       primarySite.contacts.pushObjects([contact, secondaryContact]);
       if (
-        this.isNewAgb ||
-        this.isNewApb ||
-        this.isNewIGS ||
-        this.isNewPoliceZone ||
-        this.isNewAssistanceZone ||
-        this.isNewOcmwAssociation
+        administrativeUnit.isAgb ||
+        administrativeUnit.isApb ||
+        administrativeUnit.isIGS ||
+        administrativeUnit.isPoliceZone ||
+        administrativeUnit.isAssistanceZone ||
+        administrativeUnit.isOcmwAssociation
       ) {
         primarySite.siteType = siteTypes.find(
           (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
@@ -325,16 +237,19 @@ export default class AdministrativeUnitsNewController extends Controller {
   removeUnsavedRecords() {
     this.removeUnsavedChangesetRecords();
     this.model.primarySite.rollbackAttributes();
-    this.model.identifierSharepoint.rollbackAttributes();
-    this.model.identifierKBO.rollbackAttributes();
+    this.model.identifierSharepoint.reset();
+    this.model.identifierKBO.reset();
     this.model.structuredIdentifierSharepoint.rollbackAttributes();
     this.model.structuredIdentifierKBO.rollbackAttributes();
-    this.model.administrativeUnitChangeset.rollbackAttributes();
+    this.model.administrativeUnit.reset();
+    this.model.contact.reset();
+    this.model.secondaryContact.reset();
+    this.model.address.reset();
   }
 
   removeUnsavedChangesetRecords() {
-    if (this.model.administrativeUnitChangeset.isNew) {
-      this.model.administrativeUnitChangeset.destroyRecord();
+    if (this.model.administrativeUnit.isNew) {
+      this.model.administrativeUnit.destroyRecord();
     }
 
     if (this.model.address.isNew) {

@@ -1,6 +1,11 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import { attr, belongsTo } from '@ember-data/model';
+import AbstractValidationModel from './abstract-validation-model';
+import Joi from 'joi';
+import { validateBelongsToOptional } from '../validators/schema';
 
-export default class AddressModel extends Model {
+const BELGIUM = 'België';
+
+export default class AddressModel extends AbstractValidationModel {
   @attr number;
   @attr boxNumber;
   @attr street;
@@ -15,6 +20,47 @@ export default class AddressModel extends Model {
     inverse: null,
   })
   source;
+
+  get isCountryBelgium() {
+    return this.country === BELGIUM;
+  }
+
+  get validationSchema() {
+    const REQUIRED_MESSAGE = 'Vul het volledige adres in';
+    return Joi.object({
+      street: Joi.string()
+        .empty('')
+        .required()
+        .messages({ '*': REQUIRED_MESSAGE }),
+      number: Joi.string()
+        .empty('')
+        .required()
+        .messages({ '*': REQUIRED_MESSAGE }),
+      postcode: Joi.string()
+        .empty('')
+        .required()
+        .messages({ '*': REQUIRED_MESSAGE }),
+      municipality: Joi.string()
+        .empty('')
+        .required()
+        .messages({ '*': REQUIRED_MESSAGE }),
+      country: Joi.string()
+        .empty('')
+        .required()
+        .messages({ '*': REQUIRED_MESSAGE }),
+      province: Joi.string()
+        .empty('')
+        .when('country', {
+          is: Joi.valid(BELGIUM),
+          then: Joi.string().required().messages({ '*': REQUIRED_MESSAGE }),
+          otherwise: Joi.string().empty('').allow(null),
+        }),
+      boxNumber: Joi.string().empty('').allow(null),
+      fullAddress: Joi.string().empty(''),
+      addressRegisterUri: Joi.string().empty(''),
+      source: validateBelongsToOptional(),
+    });
+  }
 }
 
 export function combineFullAddress(address) {

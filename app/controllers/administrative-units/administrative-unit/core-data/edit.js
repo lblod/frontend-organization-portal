@@ -4,7 +4,6 @@ import { inject as service } from '@ember/service';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
-
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
 import {
   CLASSIFICATION_CODE,
@@ -16,85 +15,12 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
   get hasValidationErrors() {
     return (
-      this.model.administrativeUnit.isInvalid ||
-      this.model.address.isInvalid ||
-      this.model.contact.isInvalid ||
-      this.model.secondaryContact.isInvalid ||
-      this.model.structuredIdentifierKBO.isInvalid ||
-      this.model.structuredIdentifierSharepoint.isInvalid
-    );
-  }
-
-  get isWorshipAdministrativeUnit() {
-    return this.isWorshipService || this.isCentralWorshipService;
-  }
-
-  get isWorshipService() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.WORSHIP_SERVICE
-    );
-  }
-
-  get isCentralWorshipService() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
-    );
-  }
-
-  get isMunicipality() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.MUNICIPALITY
-    );
-  }
-
-  get isProvince() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.PROVINCE
-    );
-  }
-
-  get isAgb() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.AGB
-    );
-  }
-
-  get isApb() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.APB
-    );
-  }
-
-  get isIgs() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-        CLASSIFICATION_CODE.PROJECTVERENIGING ||
-      this.model.administrativeUnit.classification?.get('id') ===
-        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
-      this.model.administrativeUnit.classification?.get('id') ===
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
-      this.model.administrativeUnit.classification?.get('id') ===
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
-    );
-  }
-
-  get isPoliceZone() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.POLICE_ZONE
-    );
-  }
-
-  get isAssistanceZone() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.ASSISTANCE_ZONE
+      this.model.administrativeUnit.error ||
+      this.model.address.error ||
+      this.model.contact.error ||
+      this.model.secondaryContact.error ||
+      this.model.structuredIdentifierKBO.error ||
+      this.model.structuredIdentifierSharepoint.error
     );
   }
 
@@ -150,7 +76,11 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       this.model.administrativeUnit.isSubOrganizationOf = units;
     }
 
-    if (this.isNewAgb || this.isNewApb || this.isNewOcmwAssociation)
+    if (
+      this.model.administrativeUnit.isAgb ||
+      this.model.administrativeUnit.isApb ||
+      this.model.administrativeUnit.isOcmwAssociation
+    )
       if (Array.isArray(units)) {
         this.model.administrativeUnit.wasFoundedByOrganizations = units;
       } else {
@@ -190,8 +120,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       address.validate(),
       contact.validate(),
       secondaryContact.validate(),
-      structuredIdentifierKBO.validate(),
-      structuredIdentifierSharepoint.validate(),
+      identifierKBO.validate(),
+      identifierSharepoint.validate(),
     ]);
 
     if (!this.hasValidationErrors) {
@@ -206,7 +136,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       }
 
       if (address.isDirty) {
-        if (address.country != 'België') {
+        if (!address.isCountryBelgium) {
           address.province = '';
         }
         address.fullAddress = combineFullAddress(address);
@@ -255,7 +185,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       yield identifierSharepoint.save();
 
       administrativeUnit = setEmptyStringsToNull(administrativeUnit);
-      if (this.isProvince || this.isMunicipality) {
+      if (
+        this.model.administrativeUnit.isProvince ||
+        this.model.administrativeUnit.isMunicipality
+      ) {
         // set province or municipality name to null as data are already in the shared graph
         administrativeUnit.name = null;
         yield administrativeUnit.save();
@@ -275,5 +208,18 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         administrativeUnit.id
       );
     }
+  }
+
+  resetUnsavedRecords() {
+    this.model.administrativeUnit.reset();
+    this.model.contact.reset();
+    this.model.secondaryContact.reset();
+    this.model.address.reset();
+    this.model.identifierKBO.reset();
+    this.model.identifierSharepoint.reset();
+  }
+
+  reset() {
+    this.resetUnsavedRecords();
   }
 }

@@ -22,10 +22,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
 
   get hasValidationErrors() {
     return (
-      this.model.site.isInvalid ||
-      this.model.address.isInvalid ||
-      this.model.contact.isInvalid ||
-      this.model.secondaryContact.isInvalid
+      this.model.site.error ||
+      this.model.address.error ||
+      this.model.contact.error ||
+      this.model.secondaryContact.error
     );
   }
 
@@ -43,10 +43,6 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     }
   }
 
-  reset() {
-    this.removeUnsavedRecords();
-  }
-
   @dropTask
   *save(event) {
     event.preventDefault();
@@ -60,7 +56,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
 
     if (!this.hasValidationErrors) {
       if (address.isDirty) {
-        if (address.country != 'België') {
+        if (!address.isCountryBelgium) {
           address.province = '';
         }
         address.fullAddress = combineFullAddress(address);
@@ -127,6 +123,19 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
         site.id
       );
     }
+  }
+
+  reset() {
+    this.resetUnsavedRecords();
+    this.removeUnsavedRecords();
+  }
+
+  resetUnsavedRecords() {
+    this.model.address.reset();
+    this.model.administrativeUnit.reset();
+    this.model.contact.reset();
+    this.model.secondaryContact.reset();
+    this.model.site.reset();
   }
 
   removeUnsavedRecords() {

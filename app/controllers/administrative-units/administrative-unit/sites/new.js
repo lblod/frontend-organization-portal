@@ -13,10 +13,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
 
   get hasValidationErrors() {
     return (
-      this.model.site.isInvalid ||
-      this.model.address.isInvalid ||
-      this.model.contact.isInvalid ||
-      this.model.secondaryContact.isInvalid
+      this.model.site.error ||
+      this.model.address.error ||
+      this.model.contact.error ||
+      this.model.secondaryContact.error
     );
   }
 
@@ -43,7 +43,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
       );
       yield secondaryContact.save();
 
-      if (address.country != 'België') {
+      if (!address.isCountryBelgium) {
         address.province = '';
       }
 
