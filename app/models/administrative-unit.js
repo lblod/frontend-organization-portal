@@ -91,6 +91,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       expectedEndDate: Joi.when('classification.id', {
         is: Joi.exist().valid(...IGSCodeList),
         then: Joi.date()
+          .allow(null)
           .min(new Date())
           .messages({ '*': 'De datum mag niet in het verleden liggen' }),
         otherwise: Joi.optional(),

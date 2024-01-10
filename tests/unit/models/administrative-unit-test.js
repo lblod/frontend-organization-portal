@@ -17,25 +17,36 @@ module('Unit | Model | administrative unit', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(model.error.name.message, 'Vul de naam in');
       assert.strictEqual(
-        model.error.classification.message,
-        'Selecteer een optie'
+        Object.keys(model.error).length,
+        3,
+        'returns 3 errors'
       );
+      assert.propContains(model.error, {
+        name: { message: 'Vul de naam in' },
+        classification: { message: 'Selecteer een optie' },
+        organizationStatus: { message: 'Selecteer een optie' },
+      });
     });
 
-    test('date', async function (assert) {
+    test("it returns more error when it's PROJECTVERENIGING and expectedEndDate erlier than now", async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
         CLASSIFICATION.PROJECTVERENIGING
       );
       const model = this.store().createRecord('administrative-unit', {
         classification,
+        expectedEndDate: new Date('2020-01-01'),
       });
 
       const isValid = await model.validate();
 
       assert.false(isValid);
+      assert.strictEqual(
+        Object.keys(model.error).length,
+        5,
+        'returns 5 errors'
+      );
       assert.propContains(model.error, {
         name: { message: 'Vul de naam in' },
         expectedEndDate: {
@@ -43,6 +54,7 @@ module('Unit | Model | administrative unit', function (hooks) {
         },
         hasParticipants: { message: 'Selecteer een optie' },
         isSubOrganizationOf: { message: 'Selecteer een optie' },
+        organizationStatus: { message: 'Selecteer een optie' },
       });
     });
   });
