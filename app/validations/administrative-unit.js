@@ -42,9 +42,7 @@ export default {
     }),
     function (changes, content) {
       return (
-        isWorshipAdministrativeUnit(changes, content) ||
-        isApb(changes, content) ||
-        isPevaProvince(changes, content)
+        isWorshipAdministrativeUnit(changes, content) || isApb(changes, content)
       );
     }
   ),
@@ -56,7 +54,11 @@ export default {
       message: 'Selecteer een optie',
     }),
     function (changes, content) {
-      return isIGS(changes, content);
+      return (
+        isIGS(changes, content) ||
+        isPevaMunicipality(changes, content) ||
+        isPevaProvince(changes, content)
+      );
     }
   ),
 

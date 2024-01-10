@@ -198,7 +198,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       this.isNewAgb ||
       this.isNewApb ||
       this.isNewOcmwAssociation ||
-      this.isNewPevaMunicipalitt ||
+      this.isNewPevaMunicipality ||
       this.isNewPevaProvince
     )
       if (Array.isArray(unit)) {
