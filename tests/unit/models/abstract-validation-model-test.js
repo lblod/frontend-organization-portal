@@ -37,6 +37,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
       assert.strictEqual(model.error.name.message, '"name" is required');
     });
 
@@ -68,6 +69,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
       assert.strictEqual(
         model.error.oneRequired.message,
         'Selecteer een optie'
@@ -121,6 +123,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
       assert.strictEqual(
         model.error.manyRequired.message,
         'Selecteer een optie'

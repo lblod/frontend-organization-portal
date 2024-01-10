@@ -17,11 +17,11 @@ module('Unit | Model | identifier', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(model.error.idName.message, '"idName" is required');
-      assert.strictEqual(
-        model.error.structuredIdentifier.message,
-        '"structuredIdentifier" is required'
-      );
+      assert.strictEqual(Object.keys(model.error).length, 2);
+      assert.propContains(model.error, {
+        idName: { message: '"idName" is required' },
+        structuredIdentifier: { message: '"structuredIdentifier" is required' },
+      });
     });
 
     test('it returns error when idName is not valid', async function (assert) {
@@ -32,10 +32,14 @@ module('Unit | Model | identifier', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(
-        model.error.idName.message,
-        '"idName" must be one of [KBO nummer, SharePoint identificator, Rijksregisternummer, NIS code, OVO-nummer]'
-      );
+      assert.strictEqual(Object.keys(model.error).length, 2);
+      assert.propContains(model.error, {
+        idName: {
+          message:
+            '"idName" must be one of [KBO nummer, SharePoint identificator, Rijksregisternummer, NIS code, OVO-nummer]',
+        },
+        structuredIdentifier: { message: '"structuredIdentifier" is required' },
+      });
     });
 
     module('KBO nummer', function () {
@@ -51,6 +55,7 @@ module('Unit | Model | identifier', function (hooks) {
         const isValid = await model.validate();
 
         assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 1);
         assert.strictEqual(
           model.error.structuredIdentifier.message,
           'Vul het KBO nummer in'
@@ -72,6 +77,7 @@ module('Unit | Model | identifier', function (hooks) {
         const isValid = await model.validate();
 
         assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 1);
         assert.strictEqual(
           model.error.structuredIdentifier.message,
           'Vul het (tiencijferige) KBO nummer in.'
@@ -152,6 +158,7 @@ module('Unit | Model | identifier', function (hooks) {
         const isValid = await model.validate();
 
         assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 1);
         assert.strictEqual(
           model.error.structuredIdentifier.message,
           'Dit KBO nummer is al in gebruik.'
@@ -195,6 +202,7 @@ module('Unit | Model | identifier', function (hooks) {
         const isValid = await model.validate();
 
         assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 1);
         assert.strictEqual(
           model.error.structuredIdentifier.message,
           'De SharePoint identificator mag enkel cijfers bevatten'

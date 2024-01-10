@@ -22,6 +22,7 @@ module('Unit | Model | address', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
       assert.strictEqual(
         model.error.street.message,
         'Vul het volledige adres in'
@@ -55,6 +56,7 @@ module('Unit | Model | address', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
       assert.strictEqual(
         model.error.province.message,
         'Vul het volledige adres in'

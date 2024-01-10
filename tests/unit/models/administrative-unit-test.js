@@ -17,11 +17,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(
-        Object.keys(model.error).length,
-        3,
-        'returns 3 errors'
-      );
+      assert.strictEqual(Object.keys(model.error).length, 3);
       assert.propContains(model.error, {
         name: { message: 'Vul de naam in' },
         classification: { message: 'Selecteer een optie' },
@@ -42,11 +38,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(
-        Object.keys(model.error).length,
-        5,
-        'returns 5 errors'
-      );
+      assert.strictEqual(Object.keys(model.error).length, 5);
       assert.propContains(model.error, {
         name: { message: 'Vul de naam in' },
         expectedEndDate: {

@@ -16,7 +16,11 @@ module('Unit | Model | organization', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(model.error.name.message, 'Vul de naam in');
+      assert.strictEqual(Object.keys(model.error).length, 2);
+      assert.propContains(model.error, {
+        name: { message: 'Vul de naam in' },
+        organizationStatus: { message: 'Selecteer een optie' },
+      });
     });
   });
 });
