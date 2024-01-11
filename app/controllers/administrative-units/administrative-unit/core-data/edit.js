@@ -24,20 +24,6 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     );
   }
 
-  get isPevaMunicipality() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.PEVA_MUNICIPALITY
-    );
-  }
-
-  get isPevaProvince() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.PEVA_PROVINCE
-    );
-  }
-
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
@@ -57,12 +43,6 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       CLASSIFICATION_CODE.PEVA_PROVINCE,
       // TODO when onboarded, add companies
     ];
-  }
-
-  get isOcmwAssociation() {
-    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
-      this.model.administrativeUnit.classification?.get('id')
-    );
   }
 
   get classificationCodesOcmwAssociationParticipants() {
