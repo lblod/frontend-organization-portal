@@ -105,18 +105,4 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsIn
       this.model.administrativeUnit.classification?.get('id')
     );
   }
-
-  get isPevaMunicipality() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.PEVA_MUNICIPALITY
-    );
-  }
-
-  get isPevaProvince() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.PEVA_PROVINCE
-    );
-  }
 }

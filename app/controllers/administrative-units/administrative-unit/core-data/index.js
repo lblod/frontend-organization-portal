@@ -152,20 +152,6 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
     );
   }
 
-  get isPevaMunicipality() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.PEVA_MUNICIPALITY
-    );
-  }
-
-  get isPevaProvince() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.PEVA_PROVINCE
-    );
-  }
-
   get sharePointLinkBase() {
     if (this.isWorshipService) {
       return SHAREPOINT_LINK_BASE.WORSHIP_SERVICE;
@@ -189,9 +175,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
       return SHAREPOINT_LINK_BASE.ASSISTANCE_ZONE;
     } else if (this.isOcmwAssoctiation) {
       return SHAREPOINT_LINK_BASE.OCMW_ASSOCIATION;
-    } else if (this.isPevaMunicipality) {
+    } else if (this.model.administrativeUnit.isPevaMunicipality) {
       return SHAREPOINT_LINK_BASE.PEVA_MUNICIPALITY;
-    } else if (this.isPevaProvince) {
+    } else if (this.model.administrativeUnit.isPevaProvince) {
       return SHAREPOINT_LINK_BASE.PEVA_PROVINCE;
     }
     return SHAREPOINT_LINK_BASE.CENTRAL_WORSHIP_SERVICE;

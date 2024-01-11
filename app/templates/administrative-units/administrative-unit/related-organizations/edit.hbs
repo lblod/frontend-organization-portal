@@ -122,7 +122,7 @@
             @removeHasParticipants={{this.removeHasParticipants}}
           />
         {{/if}}
-        {{#if this.isPevaMunicipality}}
+        {{#if @model.administrativeUnit.isPevaMunicipality}}
           <RelatedOrganizations::EditPevaMunicipality
             @model={{@model}}
             @classificationCodesParticipants={{this.classificationCodesPevaParticipants}}
@@ -131,7 +131,7 @@
             @removeHasParticipants={{this.removeHasParticipants}}
           />
         {{/if}}
-        {{#if this.isPevaProvince}}
+        {{#if @model.administrativeUnit.isPevaProvince}}
           <RelatedOrganizations::EditPevaProvince
             @model={{@model}}
             @classificationCodesParticipants={{this.classificationCodesPevaParticipants}}
