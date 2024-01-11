@@ -67,6 +67,10 @@ module.exports = function (environment) {
           'https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/modules/personen',
       },
     },
+
+    features: {
+      // define feature flags here
+    },
   };
 
   if (environment === 'development') {
