@@ -65,7 +65,12 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       administrativeUnit.classification?.get('id')
     );
 
-    if (isIGS || isOcmwAssociation) {
+    if (
+      isIGS ||
+      isOcmwAssociation ||
+      administrativeUnit.isPevaProvince ||
+      administrativeUnit.isPevaMunicipality
+    ) {
       const primarySite = await administrativeUnit.primarySite;
       const address = await primarySite.address;
       const municipalityString = address.municipality;

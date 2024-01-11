@@ -20,6 +20,8 @@ import {
   PoliceZoneCodeList,
   ProvinceCodeList,
   WorshipServiceCodeList,
+  PevaMunicipalityCodeList,
+  PevaProvinceCodeList,
 } from '../constants/Classification';
 
 export default class AdministrativeUnitModel extends OrganizationModel {
@@ -75,7 +77,13 @@ export default class AdministrativeUnitModel extends OrganizationModel {
         REQUIRED_MESSAGE
       ),
       wasFoundedByOrganizations: validateRequiredWhenClassificationId(
-        [...AgbCodeList, ...ApbCodeList, ...OcmwAssociationCodeList],
+        [
+          ...AgbCodeList,
+          ...ApbCodeList,
+          ...OcmwAssociationCodeList,
+          ...PevaMunicipalityCodeList,
+          ...PevaProvinceCodeList,
+        ],
         REQUIRED_MESSAGE
       ),
       isSubOrganizationOf: validateRequiredWhenClassificationId(
@@ -149,6 +157,14 @@ export default class AdministrativeUnitModel extends OrganizationModel {
 
   get isDistrict() {
     return this.#hasClassificationId(DistrictCodeList);
+  }
+
+  get isPevaMunicipality() {
+    return this.#hasClassificationId(PevaMunicipalityCodeList);
+  }
+
+  get isPevaProvince() {
+    return this.#hasClassificationId(PevaProvinceCodeList);
   }
 
   #hasClassificationId(classificationIds) {

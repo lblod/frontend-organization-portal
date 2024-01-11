@@ -57,6 +57,8 @@ export default class AdministrativeUnitsNewController extends Controller {
       CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
       CLASSIFICATION_CODE.POLICE_ZONE,
       CLASSIFICATION_CODE.ASSISTANCE_ZONE,
+      CLASSIFICATION_CODE.PEVA_MUNICIPALITY,
+      CLASSIFICATION_CODE.PEVA_PROVINCE,
       // TODO when onboarded, add companies
     ];
   }
@@ -75,6 +77,15 @@ export default class AdministrativeUnitsNewController extends Controller {
     ]);
   }
 
+  get classificationCodesPevaParticipants() {
+    return [
+      CLASSIFICATION_CODE.PROJECTVERENIGING,
+      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+    ];
+  }
+
   @action
   setRelation(unit) {
     if (Array.isArray(unit)) {
@@ -86,7 +97,9 @@ export default class AdministrativeUnitsNewController extends Controller {
     if (
       this.model.administrativeUnit.isAgb ||
       this.model.administrativeUnit.isApb ||
-      this.model.administrativeUnit.isOcmwAssociation
+      this.model.administrativeUnit.isOcmwAssociation ||
+      this.model.administrativeUnit.isPevaMunicipality ||
+      this.model.administrativeUnit.isPevaProvince
     )
       if (Array.isArray(unit)) {
         this.model.administrativeUnit.wasFoundedByOrganizations = unit;
@@ -195,7 +208,9 @@ export default class AdministrativeUnitsNewController extends Controller {
         administrativeUnit.isIGS ||
         administrativeUnit.isPoliceZone ||
         administrativeUnit.isAssistanceZone ||
-        administrativeUnit.isOcmwAssociation
+        administrativeUnit.isOcmwAssociation ||
+        administrativeUnit.isPevaMunicipality ||
+        administrativeUnit.isPevaProvince
       ) {
         primarySite.siteType = siteTypes.find(
           (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'

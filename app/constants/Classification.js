@@ -33,3 +33,6 @@ export const OCMWCodeList = [CLASSIFICATION_CODE.OCMW];
 export const OcmwAssociationCodeList = OCMW_ASSOCIATION_CLASSIFICATION_CODES;
 
 export const DistrictCodeList = [CLASSIFICATION_CODE.DISTRICT];
+
+export const PevaMunicipalityCodeList = [CLASSIFICATION_CODE.PEVA_MUNICIPALITY];
+export const PevaProvinceCodeList = [CLASSIFICATION_CODE.PEVA_PROVINCE];

@@ -91,7 +91,14 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if (or this.isIGS this.isOcmwAssociation)}}
+            {{#if
+              (or
+                this.isIGS
+                this.isOcmwAssociation
+                @model.administrativeUnit.isPevaMunicipality
+                @model.administrativeUnit.isPevaProvince
+              )
+            }}
               <Item>
                 <:label>Regio</:label>
                 <:content>
