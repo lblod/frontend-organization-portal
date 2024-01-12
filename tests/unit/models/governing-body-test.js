@@ -34,6 +34,11 @@ module('Unit | Model | governing body', function (hooks) {
       assert.propContains(model.error, {
         startDate: { message: 'Vul de startdatum in' },
       });
+      assert.notPropContains(model.error, {
+        endDate: {
+          message: 'Kies een einddatum die na de startdatum plaatsvindt',
+        },
+      });
     });
 
     test('it returns a single error when the end date is missing', async function (assert) {
@@ -47,6 +52,11 @@ module('Unit | Model | governing body', function (hooks) {
       assert.strictEqual(Object.keys(model.error).length, 1);
       assert.propContains(model.error, {
         endDate: { message: 'Vul de einddatum in' },
+      });
+      assert.notPropContains(model.error, {
+        startDate: {
+          message: 'Kies een startdatum die vóór de einddatum plaatsvindt',
+        },
       });
     });
 
@@ -96,18 +106,27 @@ module('Unit | Model | governing body', function (hooks) {
     });
 
     test('it returns an error when dates overlap with another governing body', async function (assert) {
-      // const model = this.store().createRecord('governing-body', {
-      //   startDate: new Date('2024-01-01'),
-      //   endDate: new Date('2025-01-01'),
-      // });
+      const unit = this.store().createRecord('administrative-unit');
+
+      const model = this.store().createRecord('governing-body', {
+        startDate: new Date('2024-01-01'),
+        endDate: new Date('2025-01-01'),
+        administrativeUnit: unit,
+      });
 
       // const otherModel = this.store().createRecord('governing-body', {
       //   startDate: new Date('2024-06-01'),
       //   endDate: new Date('2026-01-01'),
+      //   administrativeUnit: unit,
       // });
 
-      // TODO: how to validate?
-      assert.true(false);
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.propContains(model.error, {
+        message: 'Geen overlap',
+      });
     });
   });
 });
