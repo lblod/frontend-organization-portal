@@ -8,6 +8,7 @@ import { tracked } from '@glimmer/tracking';
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyEditController extends Controller {
   @service router;
 
+  // TODO: remove deprecated validation stuff
   @tracked
   startDateValidation = { valid: true };
   @tracked
@@ -19,11 +20,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   }
 
   get hasValidationErrors() {
-    return (
-      this.model.governingBody.isInvalid ||
-      !this.endDateValidation.valid ||
-      !this.startDateValidation.valid
-    );
+    return this.model.governingBody.error;
   }
 
   @action
@@ -47,9 +44,11 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       'administrative-units.administrative-unit.governing-bodies.governing-body'
     );
   }
+
   @dropTask
   *save(event) {
     event.preventDefault();
+
     yield this.model.governingBody.validate();
 
     if (!this.hasValidationErrors) {
@@ -59,23 +58,29 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         'administrative-units.administrative-unit.governing-bodies.governing-body',
         this.model.governingBody.id
       );
-    } else {
-      // TODO this isn't ideal. Worth to refactor the entire datepicker validation thing
-      const errors = this.model.governingBody.errors;
-      const startDateError = errors?.find((v) => v.key === 'startDate');
-      const endDateError = errors?.find((v) => v.key === 'endDate');
-      if (startDateError?.validation?.length) {
-        this.startDateValidation = {
-          valid: false,
-          errorMessage: startDateError.validation.join('\n'),
-        };
-      }
-      if (endDateError?.validation?.length) {
-        this.endDateValidation = {
-          valid: false,
-          errorMessage: endDateError.validation.join('\n'),
-        };
-      }
     }
+    // TODO: remove commented code
+    // else {
+    //   // TODO this isn't ideal. Worth to refactor the entire datepicker validation thing
+    //   const errors = this.model.governingBody.errors;
+    //   const startDateError = errors?.find((v) => v.key === 'startDate');
+    //   const endDateError = errors?.find((v) => v.key === 'endDate');
+    //   if (startDateError?.validation?.length) {
+    //     this.startDateValidation = {
+    //       valid: false,
+    //       errorMessage: startDateError.validation.join('\n'),
+    //     };
+    //   }
+    //   if (endDateError?.validation?.length) {
+    //     this.endDateValidation = {
+    //       valid: false,
+    //       errorMessage: endDateError.validation.join('\n'),
+    //     };
+    //   }
+    // }
+  }
+
+  reset() {
+    this.model.governingBody.reset();
   }
 }
