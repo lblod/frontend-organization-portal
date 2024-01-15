@@ -11,6 +11,8 @@ import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { A } from '@ember/array';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
+import { action } from '@ember/object';
+
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute extends Route {
   @service store;
   @service currentSession;
@@ -22,6 +24,14 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
         wildcard: 'pagina-niet-gevonden',
       });
     }
+  }
+
+  @action
+  willTransition() {
+    // controller needs to be reset before index model hook is called
+    // willTransition is the first hook called when transitioning to another route
+    // eslint-disable-next-line ember/no-controller-access-in-routes
+    this.controller.reset();
   }
 
   async model() {
@@ -133,10 +143,5 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
 
       return missingIdentifiers;
     }, []);
-  }
-
-  resetController(controller) {
-    super.resetController(...arguments);
-    controller.reset();
   }
 }
