@@ -72,27 +72,6 @@
     <div>
       <AuToolbar class="au-u-margin-bottom-small">
         <AuHeading @level="4" @skin="5">Bestuursleden</AuHeading>
-        {{! Disabling positions editing from 01/02/2022. Don't remove position
-        editing code, we will use it for positions unavailable in Loket }}
-        {{#if
-          (and
-            this.isWorshipAdministrativeUnit
-            (not this.positionsCantBeCreatedOrEdited)
-          )
-        }}
-          <SecuredArea>
-            <:edit>
-              <AuLink
-                @route="administrative-units.administrative-unit.governing-bodies.governing-body.board-member.new"
-                @skin="button"
-                @icon="add"
-                @iconAlignment="left"
-              >
-                Nieuw
-              </AuLink>
-            </:edit>
-          </SecuredArea>
-        {{/if}}
       </AuToolbar>
       <AuDataTable
         @content={{@model.memberMandatories}}
@@ -133,20 +112,6 @@
               @currentSorting={{this.sort}}
               @label="Einde mandaat"
             />
-            {{! Disabling positions editing from 01/02/2022. Don't remove position
-            editing code, we will use it for positions unavailable in Loket }}
-            {{#if
-              (and
-                this.isWorshipAdministrativeUnit
-                (not this.positionsCantBeCreatedOrEdited)
-              )
-            }}
-              <SecuredArea>
-                <:edit>
-                  <th></th>
-                </:edit>
-              </SecuredArea>
-            {{/if}}
           </c.header>
           <c.body as |mandatory|>
             <td>
@@ -188,31 +153,6 @@
                 {{date-format mandatory.expectedEndDate}}
               {{/if}}
             </td>
-            {{! Disabling positions editing from 01/02/2022. Don't remove position
-            editing code, we will use it for positions unavailable in Loket }}
-            {{#if
-              (and
-                this.isWorshipAdministrativeUnit
-                (not this.positionsCantBeCreatedOrEdited)
-              )
-            }}
-              <SecuredArea>
-                <:edit>
-                  <td>
-                    <AuLink
-                      @route="administrative-units.administrative-unit.governing-bodies.governing-body.board-member.edit"
-                      @models={{array
-                        @model.administrativeUnit.id
-                        @model.governingBody.id
-                        mandatory.id
-                      }}
-                    >
-                      Bewerk
-                    </AuLink>
-                  </td>
-                </:edit>
-              </SecuredArea>
-            {{/if}}
           </c.body>
         </t.content>
       </AuDataTable>
@@ -221,27 +161,6 @@
     <div>
       <AuToolbar class="au-u-margin-bottom-small">
         <AuHeading @level="4" @skin="5">Mandatarissen</AuHeading>
-        {{! Disabling positions editing from 01/02/2022. Don't remove position
-        editing code, we will use it for positions unavailable in Loket }}
-        {{#if
-          (and
-            this.isWorshipAdministrativeUnit
-            (not this.positionsCantBeCreatedOrEdited)
-          )
-        }}
-          <SecuredArea>
-            <:edit>
-              <AuLink
-                @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.new"
-                @skin="button"
-                @icon="add"
-                @iconAlignment="left"
-              >
-                Nieuw
-              </AuLink>
-            </:edit>
-          </SecuredArea>
-        {{/if}}
       </AuToolbar>
       <AuDataTable
         @content={{@model.otherMandatories}}
@@ -280,20 +199,6 @@
               @currentSorting={{this.sort}}
               @label="Einde mandaat"
             />
-            {{! Disabling positions editing from 01/02/2022. Don't remove position
-            editing code, we will use it for positions unavailable in Loket }}
-            {{#if
-              (and
-                this.isWorshipAdministrativeUnit
-                (not this.positionsCantBeCreatedOrEdited)
-              )
-            }}
-              <SecuredArea>
-                <:edit>
-                  <th></th>
-                </:edit>
-              </SecuredArea>
-            {{/if}}
           </c.header>
           <c.body as |mandatory|>
             <td>
@@ -335,31 +240,6 @@
                 {{date-format mandatory.expectedEndDate}}
               {{/if}}
             </td>
-            {{! Disabling positions editing from 01/02/2022. Don't remove position
-            editing code, we will use it for positions unavailable in Loket }}
-            {{#if
-              (and
-                this.isWorshipAdministrativeUnit
-                (not this.positionsCantBeCreatedOrEdited)
-              )
-            }}
-              <SecuredArea>
-                <:edit>
-                  <td>
-                    <AuLink
-                      @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
-                      @models={{array
-                        @model.administrativeUnit.id
-                        @model.governingBody.id
-                        mandatory.id
-                      }}
-                    >
-                      Bewerk
-                    </AuLink>
-                  </td>
-                </:edit>
-              </SecuredArea>
-            {{/if}}
           </c.body>
         </t.content>
       </AuDataTable>
