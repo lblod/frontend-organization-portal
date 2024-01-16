@@ -19,20 +19,6 @@
         </:subtitle>
         <:action>
           <SecuredArea>
-            <:edit>
-              {{!-- Disabling positions editing from 01/02/2022. Don't remove position
-              editing code, we will use it for positions unavailable in Loket --}}
-              {{#if (and this.isWorshipAdministrativeUnit (not this.positionsCantBeCreatedOrEdited))}}
-                <Button::Edit
-                  @route="administrative-units.administrative-unit.governing-bodies.governing-body.mandatory.edit"
-                  @models={{array
-                    administrativeUnit.id
-                    @model.mandatory.mandate.governingBody.id
-                    @model.mandatory.id
-                  }}
-                />
-              {{/if}}
-            </:edit>
             <:readOnly>
               <ReportWrongData />
             </:readOnly>

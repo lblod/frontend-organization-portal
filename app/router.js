@@ -74,18 +74,6 @@ Router.map(function () {
               'governing-body',
               { path: '/:governingBodyId/' },
               function () {
-                this.route(
-                  'board-member',
-                  { path: '/bestuurslid' },
-                  function () {
-                    this.route('edit', { path: '/:mandatoryId/' });
-                    this.route('new', { path: '/nieuw' });
-                  }
-                );
-                this.route('mandatory', { path: '/mandataris' }, function () {
-                  this.route('edit', { path: '/:mandatoryId/' });
-                  this.route('new', { path: '/nieuw' });
-                });
                 this.route('edit');
               }
             );
