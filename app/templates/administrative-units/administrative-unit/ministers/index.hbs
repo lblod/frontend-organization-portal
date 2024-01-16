@@ -3,20 +3,6 @@
   <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
   <:action>
     <SecuredArea>
-      <:edit>
-        {{!-- Disabling positions editing from 01/02/2022. Don't remove position
-        editing code, we will use it for positions unavailable in Loket --}}
-        {{#unless this.positionsCantBeCreatedOrEdited}}
-          <AuLink
-            @route="administrative-units.administrative-unit.ministers.new"
-            @icon="add"
-            @iconAlignment="left"
-            @skin="button"
-          >
-            Nieuw
-          </AuLink>
-        {{/unless}}
-      </:edit>
       <:readOnly>
         <ReportWrongData />
       </:readOnly>
@@ -35,15 +21,6 @@
       <th class="au-c-data-table__header-title">Achternaam</th>
       <th class="au-c-data-table__header-title">Rol</th>
       <th class="au-c-data-table__header-title">Status</th>
-      {{!-- Disabling positions editing from 01/02/2022. Don't remove position
-      editing code, we will use it for positions unavailable in Loket --}}
-      {{#unless this.positionsCantBeCreatedOrEdited}}
-        <SecuredArea>
-          <:edit>
-            <th></th>
-          </:edit>
-        </SecuredArea>
-      {{/unless}}
     </c.header>
     <c.body as |minister|>
         <td>
@@ -67,23 +44,6 @@
         <td>
           <PositionStatus @endDate={{minister.agentEndDate}} />
         </td>
-        {{!-- Disabling positions editing from 01/02/2022. Don't remove position
-        editing code, we will use it for positions unavailable in Loket --}}
-        {{#unless this.positionsCantBeCreatedOrEdited}}
-          <SecuredArea>
-            <:edit>
-              <td>
-                <AuLink
-                  @route="people.person.positions.minister.edit"
-                  @models={{array minister.person.id minister.id}}
-                  @query={{hash redirectUrl=this.currentURL}}
-                >
-                  Bewerk
-                </AuLink>
-              </td>
-            </:edit>
-          </SecuredArea>
-        {{/unless}}
     </c.body>
   </t.content>
 </AuDataTable>
