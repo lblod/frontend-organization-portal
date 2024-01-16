@@ -75,7 +75,6 @@ module('Unit | Model | change event', function (hooks) {
 
     const isValid = await model.validate();
 
-    console.log(eventType.id);
     assert.true(isValid);
   });
 
@@ -91,7 +90,6 @@ module('Unit | Model | change event', function (hooks) {
     const isValid = await model.validate();
 
     assert.false(isValid);
-    console.log(model.error);
     assert.strictEqual(Object.keys(model.error).length, 2);
     assert.propContains(model.error, {
       resultingOrganizations: {
