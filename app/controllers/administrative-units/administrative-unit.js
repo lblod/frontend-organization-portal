@@ -85,7 +85,20 @@ export default class AdministrativeUnitsAdministrativeUnitController extends Con
       this.isIgs ||
       this.isPoliceZone ||
       this.isAssistanceZone ||
-      this.isOcmwAssociation
+      this.isOcmwAssociation ||
+      this.model.isPevaMunicipality ||
+      this.model.isPevaProvince
+    );
+  }
+
+  get requiresFunctionaries() {
+    return !(
+      this.isDistrict ||
+      this.isWorshipAdministrativeUnit ||
+      this.isPoliceZone ||
+      this.isAssistanceZone ||
+      this.model.isPevaMunicipality ||
+      this.model.isPevaProvince
     );
   }
 }

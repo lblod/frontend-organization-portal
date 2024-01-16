@@ -54,7 +54,11 @@ export default {
       message: 'Selecteer een optie',
     }),
     function (changes, content) {
-      return isIGS(changes, content);
+      return (
+        isIGS(changes, content) ||
+        isPevaMunicipality(changes, content) ||
+        isPevaProvince(changes, content)
+      );
     }
   ),
 
@@ -74,7 +78,9 @@ export default {
       return (
         isAgb(changes, content) ||
         isApb(changes, content) ||
-        isOcmwAssociation(changes, content)
+        isOcmwAssociation(changes, content) ||
+        isPevaMunicipality(changes, content) ||
+        isPevaProvince(changes, content)
       );
     }
   ),
@@ -91,7 +97,9 @@ export default {
         isApb(changes, content) ||
         isIGS(changes, content) ||
         isPoliceZone(changes, content) ||
-        isAssistanceZone(changes, content)
+        isAssistanceZone(changes, content) ||
+        isPevaMunicipality(changes, content) ||
+        isPevaProvince(changes, content)
       );
 
       //todo this was disabled in OP-1705, as of today, this is not mandatory
@@ -205,6 +213,22 @@ function isOcmwAssociation(changes, content) {
     changes,
     content,
     OCMW_ASSOCIATION_CLASSIFICATION_CODES
+  );
+}
+
+function isPevaMunicipality(changes, content) {
+  return hasClassificationId(
+    changes,
+    content,
+    CLASSIFICATION_CODE.PEVA_MUNICIPALITY
+  );
+}
+
+function isPevaProvince(changes, content) {
+  return hasClassificationId(
+    changes,
+    content,
+    CLASSIFICATION_CODE.PEVA_PROVINCE
   );
 }
 

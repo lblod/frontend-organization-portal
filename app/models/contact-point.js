@@ -1,11 +1,19 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import { attr, belongsTo } from '@ember-data/model';
+import AbstractValidationModel from './abstract-validation-model';
+import Joi from 'joi';
+import {
+  validateBelongsToOptional,
+  validateEmail,
+  validatePhone,
+  validateUrl,
+} from '../validators/schema';
 
 export const CONTACT_TYPE = {
   PRIMARY: 'Primary',
   SECONDARY: 'Secondary',
 };
 
-export default class ContactPointModel extends Model {
+export default class ContactPointModel extends AbstractValidationModel {
   @attr email;
   @attr telephone;
   @attr fax;
@@ -16,6 +24,19 @@ export default class ContactPointModel extends Model {
     inverse: null,
   })
   contactAddress;
+
+  get validationSchema() {
+    return Joi.object({
+      email: validateEmail('Geef een geldig e-mailadres in'),
+      telephone: validatePhone(
+        'Enkel een plusteken en cijfers zijn toegelaten'
+      ),
+      fax: validatePhone('Enkel een plusteken en cijfers zijn toegelaten'),
+      website: validateUrl('Geef een geldig internetadres in'),
+      type: Joi.string().empty(''),
+      contactAddress: validateBelongsToOptional(),
+    });
+  }
 }
 
 export function createPrimaryContact(store) {

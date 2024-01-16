@@ -11,6 +11,7 @@ import {
   CHANGE_EVENTS_IGS,
   CHANGE_EVENTS_PZ_HPZ,
   CHANGE_EVENTS_OCMW_ASSOCIATION,
+  CHANGE_EVENTS_PEVA,
 } from 'frontend-organization-portal/models/change-event-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
@@ -85,6 +86,12 @@ export default class ChangeEventTypeSelectComponent extends Component {
       types = types.filter((t) =>
         this.isIdInList(t.id, CHANGE_EVENTS_OCMW_ASSOCIATION)
       );
+    }
+    if (
+      classification.id == CLASSIFICATION_CODE.PEVA_MUNICIPALITY ||
+      classification.id == CLASSIFICATION_CODE.PEVA_PROVINCE
+    ) {
+      types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_PEVA));
     }
 
     return types;

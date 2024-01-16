@@ -37,6 +37,7 @@
     "@lblod/ember-address-search": "^0.1.0",
     "@lblod/ember-environment-banner": "^0.2.0",
     "@lblod/ember-mock-login": "0.7.0",
+    "@lblod/ember-rdfa-editor": "^6.1.0",
     "@triply/yasgui": "^4.2.20",
     "@zestia/ember-auto-focus": "^4.1.7",
     "babel-eslint": "^10.1.0",
@@ -86,6 +87,7 @@
     "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-qunit": "^6.2.0",
     "husky": "^4.3.8",
+    "joi": "17.11",
     "lint-staged": "^11.2.3",
     "loader.js": "^4.7.0",
     "npm-run-all": "^4.1.5",
@@ -95,8 +97,8 @@
     "release-it": "^14.12.4",
     "release-it-lerna-changelog": "^4.0.1",
     "sass": "^1.49.7",
-    "webpack": "^5.69.0",
-    "@lblod/ember-rdfa-editor": "^6.1.0"
+    "sinon": "^17.0.1",
+    "webpack": "^5.69.0"
   },
   "engines": {
     "node": "12.* || 14.* || >= 16"

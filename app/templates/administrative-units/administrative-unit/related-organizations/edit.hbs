@@ -122,6 +122,24 @@
             @removeHasParticipants={{this.removeHasParticipants}}
           />
         {{/if}}
+        {{#if @model.administrativeUnit.isPevaMunicipality}}
+          <RelatedOrganizations::EditPevaMunicipality
+            @model={{@model}}
+            @classificationCodesParticipants={{this.classificationCodesPevaParticipants}}
+            @addNewHasParticipants={{this.addNewHasParticipants}}
+            @updateHasParticipants={{this.updateHasParticipants}}
+            @removeHasParticipants={{this.removeHasParticipants}}
+          />
+        {{/if}}
+        {{#if @model.administrativeUnit.isPevaProvince}}
+          <RelatedOrganizations::EditPevaProvince
+            @model={{@model}}
+            @classificationCodesParticipants={{this.classificationCodesPevaParticipants}}
+            @addNewHasParticipants={{this.addNewHasParticipants}}
+            @updateHasParticipants={{this.updateHasParticipants}}
+            @removeHasParticipants={{this.removeHasParticipants}}
+          />
+        {{/if}}
       </div>
     </form>
   </div>

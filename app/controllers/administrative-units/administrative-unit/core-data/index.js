@@ -29,6 +29,10 @@ const SHAREPOINT_LINK_BASE = {
     'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
   OCMW_ASSOCIATION:
     'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
+  PEVA_MUNICIPALITY:
+    'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
+  PEVA_PROVINCE:
+    'https://vlaamseoverheid.sharepoint.com/sites/Abb-LokFin/Lists/Organisaties/DispForm.aspx?ID=',
 };
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexController extends Controller {
@@ -175,6 +179,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
       return SHAREPOINT_LINK_BASE.ASSISTANCE_ZONE;
     } else if (this.isOcmwAssoctiation) {
       return SHAREPOINT_LINK_BASE.OCMW_ASSOCIATION;
+    } else if (this.model.administrativeUnit.isPevaMunicipality) {
+      return SHAREPOINT_LINK_BASE.PEVA_MUNICIPALITY;
+    } else if (this.model.administrativeUnit.isPevaProvince) {
+      return SHAREPOINT_LINK_BASE.PEVA_PROVINCE;
     }
     return SHAREPOINT_LINK_BASE.CENTRAL_WORSHIP_SERVICE;
   }

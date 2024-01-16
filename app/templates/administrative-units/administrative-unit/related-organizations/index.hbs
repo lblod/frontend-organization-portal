@@ -88,5 +88,17 @@
         @sort={{this.sort}}
       />
     {{/if}}
+    {{#if @model.administrativeUnit.isPevaMunicipality}}
+      <RelatedOrganizations::ViewPevaMunicipality
+        @model={{@model}}
+        @sort={{this.sort}}
+      />
+    {{/if}}
+    {{#if @model.administrativeUnit.isPevaProvince}}
+      <RelatedOrganizations::ViewPevaProvince
+        @model={{@model}}
+        @sort={{this.sort}}
+      />
+    {{/if}}
   </div>
 </div>
