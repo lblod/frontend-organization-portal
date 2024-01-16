@@ -34,13 +34,7 @@ Router.map(function () {
           function () {}
         );
         this.route('minister', { path: '/bedienaar/:ministerId/' });
-        this.route(
-          'functionary',
-          { path: '/functionaris/:functionaryId/' },
-          function () {
-            this.route('edit');
-          }
-        );
+        this.route('functionary', { path: '/functionaris/:functionaryId/' });
       });
     });
     this.route('new', { path: '/nieuw' });
