@@ -3,7 +3,6 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
-import { isEmpty } from 'frontend-organization-portal/models/decision';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
@@ -58,33 +57,6 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
     return searchResults.filter((organization) => {
       return !selectedOriginalOrganizations.includes(organization);
     });
-  }
-
-  get isAgbOrApb() {
-    return (
-      this.model.classification.id === CLASSIFICATION_CODE.AGB ||
-      this.model.classification.id === CLASSIFICATION_CODE.APB
-    );
-  }
-
-  get isIgs() {
-    return (
-      this.model.classification.id === CLASSIFICATION_CODE.PROJECTVERENIGING ||
-      this.model.classification.id ===
-        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
-      this.model.classification.id ===
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
-      this.model.classification.id ===
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
-    );
-  }
-
-  get isPoliceZone() {
-    return this.model.classification.id === CLASSIFICATION_CODE.POLICE_ZONE;
-  }
-
-  get isAssistanceZone() {
-    return this.model.classification.id === CLASSIFICATION_CODE.ASSISTANCE_ZONE;
   }
 
   @dropTask
@@ -368,7 +340,7 @@ async function mergeAssociated(ctx) {
 
 async function saveDecision(shouldSaveDecision, decision, decisionActivity) {
   if (shouldSaveDecision) {
-    if (!isEmpty(decision) || decisionActivity.endDate) {
+    if (!decision.isEmpty || decisionActivity.endDate) {
       if (decisionActivity.endDate) {
         await decisionActivity.save();
         decision.hasDecisionActivity = decisionActivity;

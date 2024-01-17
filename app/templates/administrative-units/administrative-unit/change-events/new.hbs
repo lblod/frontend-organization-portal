@@ -91,10 +91,11 @@
           <:right as |Item|>
             {{#if
               (and
-                (not this.isAgbOrApb)
-                (not this.isIgs)
-                (not this.isPoliceZone)
-                (not this.isAssistanceZone)
+                (not @model.administrativeUnit.isAgb)
+                (not @model.administrativeUnit.isApb)
+                (not @model.administrativeUnit.isIgs)
+                (not @model.administrativeUnit.isPoliceZone)
+                (not @model.administrativeUnit.isAssistanceZone)
                 @model.formState.canAddDecisionInformation
               )
             }}
@@ -121,7 +122,9 @@
                 <:label>
                   {{#if
                     (and
-                      (not this.isAgbOrApb) @model.formState.isCityChangeEvent
+                      (not @model.administrativeUnit.isAgb)
+                      (not @model.administrativeUnit.isApb)
+                      @model.formState.isCityChangeEvent
                     )
                   }}
                     Datum besluit
