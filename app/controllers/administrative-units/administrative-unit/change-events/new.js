@@ -5,8 +5,6 @@ import { dropTask } from 'ember-concurrency';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import { isEmpty } from 'frontend-organization-portal/models/decision';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
-import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
-import { tracked } from '@glimmer/tracking';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
@@ -31,20 +29,8 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   @service router;
   @service store;
 
-  @tracked
-  endDateValidation = { valid: true };
-
-  @tracked
-  publicationEndDateValidation = { valid: true };
-
-  @tracked
-  dateValidation = { valid: true };
-
   get hasValidationErrors() {
     return (
-      !this.dateValidation ||
-      !this.publicationEndDateValidation ||
-      !this.endDateValidation ||
       this.model.decision.isInvalid ||
       this.model.formState.isInvalid ||
       this.model.changeEvent.isInvalid
@@ -62,21 +48,6 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   // TODO: replace this with a `url-for` helper.
   get administrativeUnitCreationUrl() {
     return this.router.urlFor('administrative-units.new');
-  }
-
-  @action
-  validateEndDate(validation) {
-    this.endDateValidation = validateDate(validation);
-  }
-
-  @action
-  validateDate(validation) {
-    this.dateValidation = validateDate(validation);
-  }
-
-  @action
-  validatePublicationEndDate(validation) {
-    this.publicationEndDateValidation = validateDate(validation);
   }
 
   @action
@@ -139,9 +110,6 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
     }
 
     if (
-      this.dateValidation.valid &&
-      this.endDateValidation.valid &&
-      this.publicationEndDateValidation.valid &&
       formState.isValid &&
       (shouldSaveDecision ? decision.isValid : true) &&
       changeEvent.isValid
@@ -268,17 +236,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
     }
   }
 
-  get dateErrorMessage() {
-    return (
-      this.model.changeEvent?.error?.date?.validation ||
-      this.dateValidation.errorMessage
-    );
-  }
-
   reset() {
-    this.endDateValidation = { valid: true };
-    this.publicationEndDateValidation = { valid: true };
-    this.dateValidation = { valid: true };
     this.removeUnsavedRecords();
   }
 

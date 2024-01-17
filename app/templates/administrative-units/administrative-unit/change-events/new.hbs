@@ -101,7 +101,7 @@
               {{#unless @model.formState.isCityChangeEvent}}
                 <Item
                   @labelFor="change-event-decision-activity-date"
-                  @errorMessage={{this.endDateValidation.errorMessage}}
+                  @errorMessage={{@model.decisionActivity.error.endDate.message}}
                 >
                   <:label>Datum ministerieel besluit</:label>
                   <:content as |hasError|>
@@ -110,14 +110,13 @@
                       @id="change-event-decision-activity-date"
                       @value={{@model.decisionActivity.endDate}}
                       @onChange={{fn (mut @model.decisionActivity.endDate)}}
-                      @onValidate={{this.validateEndDate}}
                     />
                   </:content>
                 </Item>
               {{/unless}}
               <Item
                 @labelFor="change-event-decision-publication-date"
-                @errorMessage={{this.publicationEndDateValidation.errorMessage}}
+                @errorMessage={{@model.decision.error.publicationDate.message}}
               >
                 <:label>
                   {{#if
@@ -136,7 +135,6 @@
                     @id="change-event-decision-publication-date"
                     @value={{@model.decision.publicationDate}}
                     @onChange={{fn (mut @model.decision.publicationDate)}}
-                    @onValidate={{this.validatePublicationEndDate}}
                   />
                 </:content>
               </Item>
@@ -144,7 +142,7 @@
             <Item
               @labelFor="change-event-date"
               @required={{true}}
-              @errorMessage={{this.dateErrorMessage}}
+              @errorMessage={{@model.changeEvent.error.date.message}}
             >
               <:label>Datum veranderingsgebeurtenis</:label>
               <:content as |hasError|>
@@ -153,7 +151,6 @@
                   @value={{@model.changeEvent.date}}
                   @onChange={{fn (mut @model.changeEvent.date)}}
                   @error={{hasError}}
-                  @onValidate={{this.validateDate}}
                 />
               </:content>
             </Item>
