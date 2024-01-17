@@ -7,8 +7,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
   @service router;
 
   get hasValidationErrors() {
-    // TODO: latter part should be conditional on the value of `shouldSaveDecision`
-    return this.model.changeEvent.error || this.model.decision.error;
+    return this.model.changeEvent.error || this.model.decision?.error;
   }
 
   get isCityChangeEvent() {
@@ -59,7 +58,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
         }
       }
 
-      if (changeEvent.isDirty) {
+      if (changeEvent.hasDirtyAttributes) {
         yield changeEvent.save();
       }
 
@@ -73,6 +72,6 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
   reset() {
     this.model.administrativeUnit.reset();
     this.model.changeEvent.reset();
-    this.model.decision.reset();
+    this.model.decision?.reset();
   }
 }
