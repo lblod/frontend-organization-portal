@@ -5,7 +5,8 @@
         Veranderingsgebeurtenis:
         {{@model.changeEvent.type.label}}
       </:title>
-      <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
+      <:subtitle>{{@model.administrativeUnit.name}}
+        ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         <SecuredArea>
           <:edit>
@@ -71,7 +72,7 @@
               {{#if publicationDate}}
                 <Item>
                   <:label>
-                    {{#if this.isCityChangeEvent}}
+                    {{#if @model.changeEvent.isCityChangeEvent}}
                       Datum besluit
                     {{else}}
                       Datum publicatie BS
@@ -94,7 +95,7 @@
       </:card>
     </DataCard>
 
-    {{#if @model.shouldShowExtraInformationCard}}
+    {{#if @model.changeEvent.shouldShowExtraInformationCard}}
       <DataCard>
         <:title>{{@model.changeEvent.type.label}}</:title>
         <:card as |Card|>
@@ -118,7 +119,7 @@
               {{/each}}
             </:left>
             <:right as |Item|>
-              {{#if @model.isMergerChangeEvent}}
+              {{#if @model.changeEvent.isMergerChangeEvent}}
                 <Item>
                   <:label>Resulterende organisatie</:label>
                   <:content>

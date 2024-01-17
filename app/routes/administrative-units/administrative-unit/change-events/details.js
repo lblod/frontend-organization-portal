@@ -1,6 +1,5 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsRoute extends Route {
   @service store;
@@ -34,17 +33,10 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsRou
       changeEvent
     );
 
-    let changeEventType = await changeEvent.type;
-
     return {
       administrativeUnit,
       changeEvent,
       currentChangeEventResult,
-      isMergerChangeEvent:
-        changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
-        changeEventType.id === CHANGE_EVENT_TYPE.FUSIE,
-      shouldShowExtraInformationCard:
-        shouldShowExtraInformationCard(changeEventType),
     };
   }
 }
@@ -58,12 +50,4 @@ async function findCurrentChangeEventResult(organization, changeEvent) {
       return result;
     }
   }
-}
-
-function shouldShowExtraInformationCard(changeEventType) {
-  return (
-    changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
-    changeEventType.id === CHANGE_EVENT_TYPE.FUSIE ||
-    changeEventType.id === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
-  );
 }
