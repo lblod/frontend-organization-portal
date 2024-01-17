@@ -12,6 +12,10 @@ export default class DecisionModel extends AbstractValidationModel {
   })
   hasDecisionActivity;
 
+  get isEmpty() {
+    return !this.publicationDate && !this.documentLink;
+  }
+
   get validationSchema() {
     return Joi.object({
       // TODO: is the date really optional?
@@ -20,8 +24,4 @@ export default class DecisionModel extends AbstractValidationModel {
       hasDecisionActivity: validateBelongsToOptional(),
     });
   }
-}
-
-export function isEmpty(decisionRecord) {
-  return !decisionRecord.publicationDate && !decisionRecord.documentLink;
 }

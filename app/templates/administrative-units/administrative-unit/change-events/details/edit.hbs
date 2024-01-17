@@ -62,7 +62,7 @@
             {{#if @model.canAddDecisionInformation}}
               <Item
                 @labelFor="change-event-decision-link"
-                @errorMessage={{@model.decision.error.documentLink.validation}}
+                @errorMessage={{@model.decision.error.documentLink.message}}
               >
                 <:label>Link naar besluit</:label>
                 <:content as |hasError|>
@@ -83,17 +83,18 @@
           <:right as |Item|>
             {{#if
               (and
-                (not this.isAgbOrApb)
-                (not this.isIgs)
-                (not this.isPoliceZone)
-                (not this.isAssistanceZone)
+                (not @model.administrativeUnit.isAgb)
+                (not @model.administrativeUnit.isApb)
+                (not @model.administrativeUnit.isIgs)
+                (not @model.administrativeUnit.isPoliceZone)
+                (not @model.administrativeUnit.isAssistanceZone)
                 @model.canAddDecisionInformation
               )
             }}
               {{#unless this.isCityChangeEvent}}
                 <Item
                   @labelFor="change-event-decision-activity-date"
-                  @errorMessage={{this.endDateValidation.errorMessage}}
+                  @errorMessage={{@model.decisionActivity.error.endDate.message}}
                 >
                   <:label>Datum ministerieel besluit</:label>
                   <:content as |hasError|>
@@ -101,7 +102,6 @@
                       @id="change-event-decision-activity-date"
                       @value={{@model.decisionActivity.endDate}}
                       @onChange={{fn (mut @model.decisionActivity.endDate)}}
-                      @onValidate={{this.validateEndDate}}
                       @error={{hasError}}
                     />
                   </:content>
@@ -109,7 +109,7 @@
               {{/unless}}
               <Item
                 @labelFor="change-event-decision-publication-date"
-                @errorMessage={{this.publicationDateValidation.errorMessage}}
+                @errorMessage={{@model.decision.error.publicationDate.message}}
               >
                 <:label>
                   {{#if this.isCityChangeEvent}}
@@ -123,7 +123,6 @@
                     @id="change-event-decision-publication-date"
                     @value={{@model.decision.publicationDate}}
                     @onChange={{fn (mut @model.decision.publicationDate)}}
-                    @onValidate={{this.validatePublicationDate}}
                     @error={{hasError}}
                   />
                 </:content>

@@ -1,11 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
-import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
-import {
-  changeEventValidations,
-  decisionValidations,
-} from 'frontend-organization-portal/validations/change-event';
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEditRoute extends Route {
   @service currentSession;
@@ -33,10 +28,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
     let model = {
       administrativeUnit,
       ...detailsPageModel,
-      changeEvent: createValidatedChangeset(
-        changeEvent,
-        changeEventValidations
-      ),
+      changeEvent,
       canAddDecisionInformation,
     };
 
@@ -55,10 +47,15 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
         decisionActivity = this.store.createRecord('decisionActivity');
       }
 
-      model.decision = createValidatedChangeset(decision, decisionValidations);
+      model.decision = decision;
       model.decisionActivity = decisionActivity;
     }
 
     return model;
+  }
+
+  resetController(controller) {
+    super.resetController(...arguments);
+    controller.reset();
   }
 }
