@@ -59,7 +59,7 @@
                 />
               </:content>
             </Item>
-            {{#if @model.canAddDecisionInformation}}
+            {{#if @model.changeEvent.requiresDecisionInformation}}
               <Item
                 @labelFor="change-event-decision-link"
                 @errorMessage={{@model.decision.error.documentLink.message}}
@@ -88,10 +88,10 @@
                 (not @model.administrativeUnit.isIgs)
                 (not @model.administrativeUnit.isPoliceZone)
                 (not @model.administrativeUnit.isAssistanceZone)
-                @model.canAddDecisionInformation
+                @model.changeEvent.requiresDecisionInformation
               )
             }}
-              {{#unless this.isCityChangeEvent}}
+              {{#unless @model.changeEvent.isCityChangeEvent}}
                 <Item
                   @labelFor="change-event-decision-activity-date"
                   @errorMessage={{@model.decisionActivity.error.endDate.message}}
@@ -112,7 +112,7 @@
                 @errorMessage={{@model.decision.error.publicationDate.message}}
               >
                 <:label>
-                  {{#if this.isCityChangeEvent}}
+                  {{#if @model.changeEvent.isCityChangeEvent}}
                     Datum besluit
                   {{else}}
                     Datum publicatie BS
@@ -139,7 +139,7 @@
       </:card>
     </EditCard>
 
-    {{#if @model.shouldShowExtraInformationCard}}
+    {{#if @model.changeEvent.shouldShowExtraInformationCard}}
       <DataCard>
         <:title>{{@model.changeEvent.type.label}}</:title>
         <:card as |Card|>
@@ -158,7 +158,7 @@
               {{/each}}
             </:left>
             <:right as |Item|>
-              {{#if @model.isMergerChangeEvent}}
+              {{#if @model.changeEvent.isMergerChangeEvent}}
                 <Item>
                   <:label>Resulterende organisatie</:label>
                   <:content>

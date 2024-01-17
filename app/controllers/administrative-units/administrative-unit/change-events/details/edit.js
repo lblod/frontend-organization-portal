@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEditController extends Controller {
   @service router;
@@ -10,36 +9,24 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
     return this.model.changeEvent.error || this.model.decision?.error;
   }
 
-  get isCityChangeEvent() {
-    return (
-      this.model.changeEvent.type &&
-      this.model.changeEvent.type.get('id') == CHANGE_EVENT_TYPE.CITY
-    );
-  }
-
   @dropTask
   *save(event) {
     event.preventDefault();
 
-    let {
-      changeEvent,
-      decision,
-      decisionActivity,
-      canAddDecisionInformation: shouldSaveDecision,
-    } = this.model;
+    let { changeEvent, decision, decisionActivity } = this.model;
 
     yield changeEvent.validate();
 
-    if (shouldSaveDecision) {
+    if (changeEvent.requiresDecisionInformation) {
       yield decision.validate();
     }
 
     if (
-      !this.model.changeEvent.error && shouldSaveDecision
+      !changeEvent.error && changeEvent.requiresDecisionInformation
         ? !decision.error
         : true
     ) {
-      if (shouldSaveDecision) {
+      if (changeEvent.requiresDecisionInformation) {
         if (
           decisionActivity.changedAttributes().endDate ||
           (!decision.isEmpty && decision.hasDirtyAttributes)

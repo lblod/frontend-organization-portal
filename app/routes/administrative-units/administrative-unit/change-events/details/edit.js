@@ -29,7 +29,6 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
       administrativeUnit,
       ...detailsPageModel,
       changeEvent,
-      canAddDecisionInformation,
     };
 
     if (canAddDecisionInformation) {

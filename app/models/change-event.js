@@ -69,4 +69,34 @@ export default class ChangeEventModel extends AbstractValidationModel {
       results: validateHasManyOptional(),
     });
   }
+
+  get requiresDecisionInformation() {
+    return (
+      this.type?.get('id') &&
+      this.type.get('id') !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED
+    );
+  }
+
+  get isCityChangeEvent() {
+    return (
+      this.type?.get('id') && this.type.get('id') === CHANGE_EVENT_TYPE.CITY
+    );
+  }
+
+  get isMergerChangeEvent() {
+    return (
+      this.type?.get('id') &&
+      (this.type.get('id') === CHANGE_EVENT_TYPE.MERGER ||
+        this.type.get('id') === CHANGE_EVENT_TYPE.FUSIE)
+    );
+  }
+
+  get shouldShowExtraInformationCard() {
+    let changeEventTypeId = this.type?.get('id');
+    return (
+      changeEventTypeId === CHANGE_EVENT_TYPE.MERGER ||
+      changeEventTypeId === CHANGE_EVENT_TYPE.FUSIE ||
+      changeEventTypeId === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
+    );
+  }
 }
