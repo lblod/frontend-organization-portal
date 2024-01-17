@@ -128,7 +128,9 @@ export default class SiteTypeSelectComponent extends Component {
         allTypes.find((type) => type.id == '57e8e5498ca84056b8a87631a26c90af') // Gemeentehuis
       );
       filteredTypes.push(
-        allTypes.find((type) => type.id == 'dcc01338-842c-4fbd-ba68-3ca6f3af975c') // Andere vestiging
+        allTypes.find(
+          (type) => type.id == 'dcc01338-842c-4fbd-ba68-3ca6f3af975c'
+        ) // Andere vestiging
       );
     } else if (
       this.isAgb ||
