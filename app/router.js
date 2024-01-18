@@ -33,8 +33,16 @@ Router.map(function () {
           { path: '/mandataris/:mandatoryId/' },
           function () {}
         );
-        this.route('minister', { path: '/bedienaar/:ministerId/' });
-        this.route('functionary', { path: '/functionaris/:functionaryId/' });
+        this.route(
+          'minister',
+          { path: '/bedienaar/:ministerId/' },
+          function () {}
+        );
+        this.route(
+          'functionary',
+          { path: '/functionaris/:functionaryId/' },
+          function () {}
+        );
       });
     });
     this.route('new', { path: '/nieuw' });
@@ -66,7 +74,7 @@ Router.map(function () {
             );
           }
         );
-        this.route('ministers', { path: '/bedienaren' });
+        this.route('ministers', { path: '/bedienaren' }, function () {});
         this.route('executives', { path: '/leidinggevenden' });
         this.route(
           'local-involvements',
