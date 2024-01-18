@@ -8,20 +8,6 @@
       </:subtitle>
       <:action>
         <SecuredArea>
-          <:edit>
-            {{! Disabling positions editing from 01/02/2022. Don't remove position
-            editing code, we will use it for positions unavailable in Loket }}
-            {{#unless this.positionsCantBeCreatedOrEdited}}
-              <AuLink
-                @route="people.person.personal-information.edit"
-                @skin="button-secondary"
-                @icon="pencil"
-                @iconAlignment="left"
-              >
-                Bewerk
-              </AuLink>
-            {{/unless}}
-          </:edit>
           <:readOnly>
             <ReportWrongData />
           </:readOnly>

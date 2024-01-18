@@ -50,7 +50,3 @@ export default class BoardPositionCodeModel extends Model {
   @belongsTo('governing-body-classification-code', { inverse: null })
   appliesTo;
 }
-
-export function isWorshipMember(id) {
-  return id === BOARD_POSITION_CODE.WORSHIP_MEMBER;
-}
