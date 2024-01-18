@@ -3,12 +3,12 @@
     Heeft als participanten
   </AuHeading>
 
-  {{@model.administrativeUnit.error.hasParticipants.validation}}
-  {{#if @model.administrativeUnit.error.hasParticipants.validation}}
+  {{@model.administrativeUnit.error.hasParticipants.message}}
+  {{#if @model.administrativeUnit.error.hasParticipants.message}}
     <div>
       <AuHelpText
         @error={{true}}
-      >{{@model.administrativeUnit.error.hasParticipants.validation}}</AuHelpText>
+      >{{@model.administrativeUnit.error.hasParticipants.message}}</AuHelpText>
     </div>
   {{/if}}
 
