@@ -6,7 +6,7 @@
         <Item
           @labelFor="related-gemeente"
           @required={{true}}
-          @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+          @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.message}}
         >
           <:label>Gemeente</:label>
           <:content as |hasError|>
@@ -36,9 +36,9 @@
     Heeft als participanten
   </AuHeading>
 
-  {{#if @model.administrativeUnit.error.hasParticipants.validation}}
+  {{#if @model.administrativeUnit.error.hasParticipants.message}}
     <div>
-      <AuHelpText @error={{true}}>{{@model.administrativeUnit.error.hasParticipants.validation}}</AuHelpText>
+      <AuHelpText @error={{true}}>{{@model.administrativeUnit.error.hasParticipants.message}}</AuHelpText>
     </div>
   {{/if}}
 
