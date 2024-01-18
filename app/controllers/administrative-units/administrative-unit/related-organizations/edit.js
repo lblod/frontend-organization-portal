@@ -131,8 +131,6 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
 
     yield administrativeUnit.validate();
 
-    console.log(this.model.administrativeUnit.error);
-
     if (!this.hasValidationErrors) {
       yield administrativeUnit.save();
 
