@@ -91,6 +91,7 @@ export default class ChangeEventModel extends AbstractValidationModel {
     );
   }
 
+  // TODO: used also in new event form, name is not ideal
   get shouldShowExtraInformationCard() {
     let changeEventTypeId = this.type?.get('id');
     return (

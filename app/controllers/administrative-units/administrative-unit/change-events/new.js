@@ -5,6 +5,7 @@ import { dropTask } from 'ember-concurrency';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { tracked } from '@glimmer/tracking';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.NAME_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
@@ -21,23 +22,23 @@ const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.SANCTIONED]: ORGANIZATION_STATUS.ACTIVE,
   [CHANGE_EVENT_TYPE.CITY]: ORGANIZATION_STATUS.ACTIVE,
   [CHANGE_EVENT_TYPE.GEOGRAPHICAL_AREA_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
-  // MERGER and FUSIE aren't added here since they have multiple resulting statuses based on the resulting organization
+  // MERGER and FUSIE aren't added here since they have multiple resulting
+  // statuses based on the resulting organization
 };
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewController extends Controller {
   @service router;
   @service store;
 
-  get hasValidationErrors() {
-    return (
-      this.model.decision.isInvalid ||
-      this.model.formState.isInvalid ||
-      this.model.changeEvent.isInvalid
-    );
-  }
+  // TODO: try to get rid of these tracked variables
+  @tracked
+  isAddingOriginalOrganizations = true;
 
-  get isCentralWorshipService() {
-    return this.model.formState.isCentralWorshipService;
+  @tracked
+  selectedResultingOrganization;
+
+  get hasValidationErrors() {
+    return this.model.changeEvent.error || this.model.decision?.error;
   }
 
   get classificationCodes() {
@@ -48,15 +49,87 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   get administrativeUnitCreationUrl() {
     return this.router.urlFor('administrative-units.new');
   }
-
   @action
   filterSelectedOriginalOrganizations(searchResults) {
-    let selectedOriginalOrganizations =
-      this.model.formState.allOriginalOrganizations;
+    return searchResults.filter(
+      (organization) =>
+        !this.model.changeEvent.originalOrganizations.includes(organization)
+    );
+  }
 
-    return searchResults.filter((organization) => {
-      return !selectedOriginalOrganizations.includes(organization);
-    });
+  /**
+   * Update the original organisations related to the change event being
+   * created. If only one argument is provided this organisation is added as new
+   * original organisation. Otherwise, ff two arguments are provided the second
+   * one is considered as a replacement of the first, in other words the first
+   * organisation will be removed as related original organisation and
+   * afterwards the second organisation is added.
+   * @param {AdministrativeUnitModel} previousOrganization
+   * @param {AdministrativeUnitModel} organization
+   */
+  @action
+  updateOriginalOrganizations(previousOrganization, organization) {
+    if (organization) {
+      this.removeOriginalOrganization(previousOrganization);
+      this.#addOriginalOrganization(organization);
+    } else {
+      this.#addOriginalOrganization(previousOrganization);
+    }
+    this.isAddingOriginalOrganizations = false;
+
+    // TODO: Would it not be more user-friendly integrate the logic below as a
+    // rule in the validation? Silently altering values in the form seems weird
+
+    // Central worship service mergers must result in a new/different
+    // organisation than the original ones. Therefore reset the value of the
+    // selected resulting organisation if this is the same as the newly selected
+    // original organisation
+    if (this.model.administrativeUnit.isCentralWorshipService) {
+      this.model.changeEvent.resultingOrganizations.removeObjects(
+        previousOrganization,
+        organization
+      );
+      this.selectedResultingOrganization = null;
+    }
+  }
+
+  // TODO: Move to model, model should be responsible for ensuring its data is
+  // consistent
+  /**
+   * Add a new original organisation to the change event under construction. If
+   * the provided organisation is already an original organisation nothing
+   * happens.
+   */
+  #addOriginalOrganization(organization) {
+    if (!this.model.changeEvent.originalOrganizations.includes(organization)) {
+      this.model.changeEvent.originalOrganizations.pushObject(organization);
+    }
+  }
+
+  @action
+  removeOriginalOrganization(organization) {
+    if (organization && this.model.administrativeUnit !== organization) {
+      this.model.changeEvent.originalOrganizations.removeObject(organization);
+    }
+
+    // Merger events for units other than central worship services must have as
+    // result one of its original organisations. Therefore we also automatically
+    // remove the provided organisation as a resulting ones if necessary.
+    if (
+      !this.model.administrativeUnit.isCentralWorshipService &&
+      this.model.changeEvent.resultingOrganizations.includes(organization)
+    ) {
+      this.model.changeEvent.resultingOrganizations.removeObject(organization);
+      this.selectedResultingOrganization = null;
+    }
+  }
+
+  @action
+  updateResultingOrganizations(organization) {
+    // TODO: hacky solution as form currently allows selecting at most one
+    // resulting organisations
+    this.selectedResultingOrganization = organization;
+    this.model.changeEvent.resultingOrganizations = [organization];
   }
 
   @dropTask
@@ -69,61 +142,58 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       changeEvent,
       decision,
       decisionActivity,
-      formState,
     } = this.model;
 
-    let shouldSaveDecision = formState.canAddDecisionInformation;
+    let shouldSaveDecision = this.model.changeEvent.requiresDecisionInformation;
 
-    yield formState.validate();
     yield changeEvent.validate();
 
     if (shouldSaveDecision) {
       yield decision.validate();
     }
 
-    if (
-      formState.isValid &&
-      (shouldSaveDecision ? decision.isValid : true) &&
-      changeEvent.isValid
-    ) {
+    if (!changeEvent.error && (shouldSaveDecision ? !decision.error : true)) {
       changeEvent.decision = yield saveDecision(
         shouldSaveDecision,
         decision,
         decisionActivity
       );
 
-      let changeEventType = formState.changeEventType;
-      changeEvent.type = changeEventType;
+      let changeEventType = changeEvent.type;
 
       // We save the change event already so the backend assigns it an id
       // which is needed when saving the change-event-results
       yield changeEvent.save();
 
-      if (canChangeMultipleOrganizations(changeEventType)) {
-        let allOriginalOrganizations = formState.allOriginalOrganizations;
-        changeEvent.originalOrganizations.pushObjects(allOriginalOrganizations);
+      if (this.model.changeEvent.shouldShowExtraInformationCard) {
+        // TODO: superfluous variable?
+        let allOriginalOrganizations =
+          changeEvent.originalOrganizations.toArray();
 
         let createChangeEventResultsPromises = [];
 
-        // We create change event results for all organizations that are affected by the new change event
+        // We create change event results for all organizations that are
+        // affected by the new change event
         for (let organization of allOriginalOrganizations) {
           let resultingStatusId;
 
           if (
-            changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
-            changeEventType.id === CHANGE_EVENT_TYPE.FUSIE
+            // TODO: use model method
+            changeEventType.get('id') === CHANGE_EVENT_TYPE.MERGER ||
+            changeEventType.get('id') === CHANGE_EVENT_TYPE.FUSIE
           ) {
-            if (formState.isCentralWorshipService) {
+            if (this.model.administrativeUnit.isCentralWorshipService) {
               resultingStatusId = ORGANIZATION_STATUS.INACTIVE;
             } else {
-              resultingStatusId =
-                organization === formState.resultingOrganization
-                  ? ORGANIZATION_STATUS.ACTIVE
-                  : ORGANIZATION_STATUS.INACTIVE;
+              resultingStatusId = changeEvent.resultingOrganizations.includes(
+                organization
+              )
+                ? ORGANIZATION_STATUS.ACTIVE
+                : ORGANIZATION_STATUS.INACTIVE;
             }
           } else {
             resultingStatusId =
-              RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.id];
+              RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.get('id')];
           }
 
           createChangeEventResultsPromises.push(
@@ -137,20 +207,20 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
         }
 
         if (
-          changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
-          changeEventType.id === CHANGE_EVENT_TYPE.FUSIE
+          // TODO: use model function
+          changeEventType.get('id') === CHANGE_EVENT_TYPE.MERGER ||
+          changeEventType.get('id') === CHANGE_EVENT_TYPE.FUSIE
         ) {
-          changeEvent.resultingOrganizations.pushObject(
-            formState.resultingOrganization
-          );
-
-          if (formState.isCentralWorshipService) {
-            // Central worship services should always select a new organization as the resulting organization,
-            // so we also create a change event result for that organization
+          if (this.model.administrativeUnit.isCentralWorshipService) {
+            // Central worship services should always select a *new*
+            // organization as the resulting organization, so we also create a
+            // change event result for that organization
             createChangeEventResultsPromises.push(
               createChangeEventResult({
                 resultingStatusId: ORGANIZATION_STATUS.ACTIVE,
-                resultingOrganization: formState.resultingOrganization,
+                // TODO: assumed here that there is only one resulting organization
+                resultingOrganization:
+                  changeEvent.resultingOrganizations.toArray()[0],
                 changeEvent,
                 store: this.store,
               })
@@ -164,7 +234,9 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
         yield Promise.all(createChangeEventResultsPromises);
       } else {
-        if (changeEventType.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED) {
+        if (
+          changeEventType.get('id') !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED
+        ) {
           changeEvent.originalOrganizations.pushObject(currentOrganization);
         }
 
@@ -172,25 +244,31 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
           ![
             CHANGE_EVENT_TYPE.RECOGNITION_LIFTED,
             CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED,
-          ].includes(changeEventType.id)
+          ].includes(changeEventType.get('id'))
         ) {
           changeEvent.resultingOrganizations.pushObject(currentOrganization);
         }
+        // TODO: is this necessary for some reason or a leftover from debugging?
+        console.log(
+          'Resulting status id: ' +
+            RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.get('id')]
+        );
         yield createChangeEventResult({
           resultingStatusId:
-            RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.id],
+            RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.get('id')],
           resultingOrganization: currentOrganization,
           changeEvent,
           store: this.store,
         });
       }
 
-      yield changeEvent.save(); // persist the original and resulting organization information
+      // Persist the original and resulting organization information
+      yield changeEvent.save();
 
       if (
         (classification.id === CLASSIFICATION_CODE.MUNICIPALITY ||
           classification.id === CLASSIFICATION_CODE.OCMW) &&
-        changeEventType.id === CHANGE_EVENT_TYPE.FUSIE
+        changeEventType.get('id') === CHANGE_EVENT_TYPE.FUSIE
       ) {
         mergeAssociated({
           store: this.store,
@@ -209,7 +287,10 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   }
 
   reset() {
-    this.removeUnsavedRecords();
+    this.model.changeEvent.reset();
+    this.model.decision?.reset();
+    this.model.decisionActivity.reset();
+    this.model.administrativeUnit.reset();
   }
 
   removeUnsavedRecords() {
@@ -249,14 +330,6 @@ async function createChangeEventResult({
   changeEventResult.resultingOrganization = resultingOrganization;
   changeEventResult.resultFrom = changeEvent;
   await changeEventResult.save();
-}
-
-function canChangeMultipleOrganizations(changeEventType) {
-  return (
-    changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
-    changeEventType.id === CHANGE_EVENT_TYPE.FUSIE ||
-    changeEventType.id === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
-  );
 }
 
 async function findMostRecentChangeEvent(store, organization) {
