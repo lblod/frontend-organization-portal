@@ -45,7 +45,6 @@ Router.map(function () {
         );
       });
     });
-    this.route('new', { path: '/nieuw' });
   });
   this.route(
     'administrative-units',
