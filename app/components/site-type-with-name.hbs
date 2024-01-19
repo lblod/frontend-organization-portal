@@ -1,0 +1,5 @@
+{{#if (and this.isAndereVestigen this.args.site.siteName)}}
+    {{this.args.site.siteType.label}} ({{this.args.site.siteName}})
+{{else}}
+    {{this.args.site.siteType.label}}
+{{/if}}
