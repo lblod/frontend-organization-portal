@@ -20,6 +20,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
     );
   }
 
+  get isAndereVestigen() {
+    return this.model.site.siteType && this.model.site.siteType.get('id') === 'dcc01338-842c-4fbd-ba68-3ca6f3af975c'
+  }
+
   @dropTask
   *createSiteTask(event) {
     event.preventDefault();

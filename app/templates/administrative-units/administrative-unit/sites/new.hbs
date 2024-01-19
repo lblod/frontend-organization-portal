@@ -50,6 +50,22 @@
                     />
                   </:content>
                 </Item>
+                {{#if this.isAndereVestigen}}
+                  <Item
+                    @labelFor="site-type-name"
+                  >
+                    <:label>Name</:label>
+                    <:content as |hasError|>
+                     <AuInput
+                      @selected={{this.model.site.siteTypeName}}
+                      {{on "input" (fn (mut this.model.site.siteTypeName))}}
+                      @value={{@address.street}}
+                      @width="block"
+                      maxlength="50"
+                     />
+                    </:content>
+                  </Item>
+                {{/if}}
               </:left>
               <:right as |Item|>
                 <Item>
