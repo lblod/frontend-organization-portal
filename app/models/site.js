@@ -1,4 +1,4 @@
-import { hasMany, belongsTo } from '@ember-data/model';
+import { hasMany, belongsTo, attr } from '@ember-data/model';
 import AbstractValidationModel from './abstract-validation-model';
 import Joi from 'joi';
 import {
@@ -22,6 +22,8 @@ export default class SiteModel extends AbstractValidationModel {
     inverse: null,
   })
   siteType;
+
+  @attr siteTypeName
 
   get validationSchema() {
     return Joi.object({
