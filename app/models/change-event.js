@@ -53,18 +53,12 @@ export default class ChangeEventModel extends AbstractValidationModel {
       type: validateBelongsToRequired('Selecteer een type'),
       decision: validateBelongsToOptional(),
       resultingOrganizations: Joi.when('type.id', {
-        is: Joi.exist().valid(
-          CHANGE_EVENT_TYPE.FUSIE,
-          CHANGE_EVENT_TYPE.MERGER
-        ),
+        is: Joi.exist().valid(...MergerTypeIdList),
         then: validateHasManyRequired('Selecteer een resulterende organisatie'),
         otherwise: validateHasManyOptional(),
       }),
       originalOrganizations: Joi.when('type.id', {
-        is: Joi.exist().valid(
-          CHANGE_EVENT_TYPE.FUSIE,
-          CHANGE_EVENT_TYPE.MERGER
-        ),
+        is: Joi.exist().valid(...MergerTypeIdList),
         then: Joi.array()
           .required()
           .min(2)
