@@ -58,12 +58,14 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   }
 
   /**
-   * Update the original organisations related to the change event being
-   * created. If only one argument is provided this organisation is added as new
-   * original organisation. Otherwise, ff two arguments are provided the second
-   * one is considered as a replacement of the first, in other words the first
-   * organisation will be removed as related original organisation and
-   * afterwards the second organisation is added.
+   * Update the original organizations related to the change event being
+   * created. If only one argument is provided this organization is added as a
+   * new original organization. Otherwise, if two arguments are provided the
+   * second one is considered as a replacement of the first. In other words the
+   * first organization will be removed as original organisation and the second
+   * organization is added as a new one.
+   * If the change event is being created for a central worship service, the
+   * provided arguments are also removed as possible resulting organizations.
    * @param {AdministrativeUnitModel} previousOrganization
    * @param {AdministrativeUnitModel} organization
    */
@@ -71,9 +73,9 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   updateOriginalOrganizations(previousOrganization, organization) {
     if (organization) {
       this.removeOriginalOrganization(previousOrganization);
-      this.#addOriginalOrganization(organization);
+      this.model.changeEvent.addOriginalOrganization(organization);
     } else {
-      this.#addOriginalOrganization(previousOrganization);
+      this.model.changeEvent.addOriginalOrganization(previousOrganization);
     }
     this.isAddingOriginalOrganizations = false;
 
@@ -85,51 +87,50 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
     // selected resulting organisation if this is the same as the newly selected
     // original organisation
     if (this.model.administrativeUnit.isCentralWorshipService) {
-      this.model.changeEvent.resultingOrganizations.removeObjects(
-        previousOrganization,
-        organization
-      );
+      this.model.changeEvent.removeResultingOrganization(previousOrganization);
+      this.model.changeEvent.removeResultingOrganization(organization);
       this.selectedResultingOrganization = null;
     }
   }
 
-  // TODO: Move to model, model should be responsible for ensuring its data is
-  // consistent
   /**
-   * Add a new original organisation to the change event under construction. If
-   * the provided organisation is already an original organisation nothing
-   * happens.
+   * Remove a previously added organization as original organization for the
+   * change event being created. This has only effect if the provided
+   * organization is not the same as the organization for which this change
+   * event is being created.
+   * If the change event concerns an organization which is *not* a central
+   * worship service the organization is also removed as potential resulting
+   * organization.
+   * @param {AdministrativeUnitModel} organization - the organization that
+   * should be removed as original organization
    */
-  #addOriginalOrganization(organization) {
-    if (!this.model.changeEvent.originalOrganizations.includes(organization)) {
-      this.model.changeEvent.originalOrganizations.pushObject(organization);
-    }
-  }
-
   @action
   removeOriginalOrganization(organization) {
     if (organization && this.model.administrativeUnit !== organization) {
-      this.model.changeEvent.originalOrganizations.removeObject(organization);
-    }
+      this.model.changeEvent.removeOriginalOrganization(organization);
 
-    // Merger events for units other than central worship services must have as
-    // result one of its original organisations. Therefore we also automatically
-    // remove the provided organisation as a resulting ones if necessary.
-    if (
-      !this.model.administrativeUnit.isCentralWorshipService &&
-      this.model.changeEvent.resultingOrganizations.includes(organization)
-    ) {
-      this.model.changeEvent.resultingOrganizations.removeObject(organization);
-      this.selectedResultingOrganization = null;
+      if (
+        !this.model.administrativeUnit.isCentralWorshipService &&
+        this.model.changeEvent.hasAsresultingOrganization(organization)
+      ) {
+        this.model.changeEvent.removeResultingOrganization(organization);
+        this.selectedResultingOrganization = null;
+      }
     }
   }
 
+  /**
+   * Add the provided organization as resulting organization for the change
+   * event being created.
+   * Note this currently means that any previously specified resulting
+   * organization is removed as the form only supports specifying one resulting
+   * organization.
+   * @param {AdministrativeUnitModel} organization - the organization to be
+   * added as resulting organization
+   */
   @action
   updateResultingOrganizations(organization) {
-    // TODO: hacky solution as form currently allows selecting at most one
-    // resulting organisations
-    this.selectedResultingOrganization = organization;
-    this.model.changeEvent.resultingOrganizations = [organization];
+    this.model.changeEvent.addResultinfOrganization(organization);
   }
 
   @dropTask
@@ -265,6 +266,8 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       // Persist the original and resulting organization information
       yield changeEvent.save();
 
+      // TODO: fusion event are currently not supported for municipalities or
+      // OCMW, this can probably be removed
       if (
         (classification.id === CLASSIFICATION_CODE.MUNICIPALITY ||
           classification.id === CLASSIFICATION_CODE.OCMW) &&
@@ -291,11 +294,6 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
     this.model.decision?.reset();
     this.model.decisionActivity.reset();
     this.model.administrativeUnit.reset();
-  }
-
-  removeUnsavedRecords() {
-    this.model.changeEventRecord.rollbackAttributes();
-    this.model.decisionRecord.rollbackAttributes();
   }
 }
 

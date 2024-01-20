@@ -93,11 +93,47 @@ export default class ChangeEventModel extends AbstractValidationModel {
 
   // TODO: used also in new event form, name is not ideal
   get shouldShowExtraInformationCard() {
-    let changeEventTypeId = this.type?.get('id');
+    let typeId = this.type?.get('id');
     return (
-      changeEventTypeId === CHANGE_EVENT_TYPE.MERGER ||
-      changeEventTypeId === CHANGE_EVENT_TYPE.FUSIE ||
-      changeEventTypeId === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
+      typeId === CHANGE_EVENT_TYPE.MERGER ||
+      typeId === CHANGE_EVENT_TYPE.FUSIE ||
+      typeId === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
     );
+  }
+
+  hasAsOriginalOrganization(organization) {
+    return this.originalOrganizations.includes(organization);
+  }
+
+  addOriginalOrganization(organization) {
+    if (organization && !this.hasAsOriginalOrganization(organization)) {
+      this.originalOrganizations.pushObject(organization);
+    }
+  }
+
+  removeOriginalOrganization(organization) {
+    this.originalOrganizations.removeObject(organization);
+  }
+
+  hasAsResultingOrganization(organization) {
+    return this.resultingOrganizations.includes(organization);
+  }
+
+  addResultingOrganization(organization) {
+    if (organization && !this.hasAsResultingOrganization(organization)) {
+      /*
+       * Note: Currently, the new change event form only supports specifying one
+       * resulting organization. Therefore, we first clear any already contained
+       * resulting organizations before adding the new one. If support for
+       * multiple resulting organizations is added at some point, this clear
+       * operation should be removed.
+       */
+      this.resultingOrganizations.clear();
+      this.resultingOrganizations.pushObject(organization);
+    }
+  }
+
+  removeResultingOrganization(organization) {
+    this.resultingOrganizations.removeObject(organization);
   }
 }
