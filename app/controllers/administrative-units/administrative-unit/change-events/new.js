@@ -41,7 +41,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   }
 
   get classificationCodes() {
-    return [this.model.classification.id];
+    return [this.model.administrativeUnit.classification.get('id')];
   }
 
   // TODO: replace this with a `url-for` helper.
@@ -129,7 +129,8 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
    */
   @action
   updateResultingOrganizations(organization) {
-    this.model.changeEvent.addResultinfOrganization(organization);
+    this.model.changeEvent.addResultingOrganization(organization);
+    this.selectedResultingOrganization = organization;
   }
 
   @dropTask
@@ -177,8 +178,8 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
         for (let organization of allOriginalOrganizations) {
           let resultingStatusId;
 
-          if (this.model.isMergerChangeEvent) {
-            if (this.model.administrativeUnit.isCentralWorshipService) {
+          if (changeEvent.isMergerChangeEvent) {
+            if (currentOrganization.isCentralWorshipService) {
               resultingStatusId = ORGANIZATION_STATUS.INACTIVE;
             } else {
               resultingStatusId = changeEvent.resultingOrganizations.includes(
