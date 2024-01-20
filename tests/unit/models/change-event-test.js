@@ -1,6 +1,11 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
+import {
+  CHANGE_EVENT_TYPE,
+  MergerTypeIdList,
+  MultipleOrganizationTypeIdList,
+  RequiresDecisionTypeIdList,
+} from 'frontend-organization-portal/models/change-event-type';
 
 module('Unit | Model | change event', function (hooks) {
   setupTest(hooks);
@@ -638,6 +643,228 @@ module('Unit | Model | change event', function (hooks) {
         this.model.removeResultingOrganization(undefined);
         assert.strictEqual(this.model.resultingOrganizations.length, 1);
       });
+    });
+  });
+
+  module('isMergerChangeEvent', function () {
+    test('it returns falsy for a model without type', function (assert) {
+      const model = this.store().createRecord('change-event');
+
+      assert.notOk(model.isMergerChangeEvent);
+    });
+
+    test('it returns truthy for a MERGER', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: CHANGE_EVENT_TYPE.MERGER,
+      });
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.ok(model.isMergerChangeEvent);
+    });
+
+    test('it returns truthy for a FUSIE', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: CHANGE_EVENT_TYPE.FUSIE,
+      });
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.ok(model.isMergerChangeEvent);
+    });
+
+    test('it returns falsy for other event types', function (assert) {
+      assert.expect(
+        Object.keys(CHANGE_EVENT_TYPE).length - MergerTypeIdList.length
+      );
+      for (const typeId of Object.values(CHANGE_EVENT_TYPE).filter(
+        (id) => !MergerTypeIdList.includes(id)
+      )) {
+        const eventType = this.store().createRecord('change-event-type', {
+          id: typeId,
+        });
+        const model = this.store().createRecord('change-event', {
+          type: eventType,
+        });
+
+        assert.notOk(model.isMergerChangeEvent);
+      }
+    });
+  });
+
+  module('canAffectMultipleOrganizations', function () {
+    test('it returns falsy for a model without type', function (assert) {
+      const model = this.store().createRecord('change-event');
+
+      assert.notOk(model.canAffectMultipleOrganizations);
+    });
+
+    test('it returns truthy for a MERGER', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: CHANGE_EVENT_TYPE.MERGER,
+      });
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.ok(model.canAffectMultipleOrganizations);
+    });
+
+    test('it returns truthy for a FUSIE', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: CHANGE_EVENT_TYPE.FUSIE,
+      });
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.ok(model.canAffectMultipleOrganizations);
+    });
+
+    test('it returns truthy for an area description change', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE,
+      });
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.ok(model.canAffectMultipleOrganizations);
+    });
+
+    test('it returns falsy for other event types', function (assert) {
+      assert.expect(
+        Object.keys(CHANGE_EVENT_TYPE).length -
+          MultipleOrganizationTypeIdList.length
+      );
+      for (let typeId of Object.values(CHANGE_EVENT_TYPE).filter(
+        (id) => !MultipleOrganizationTypeIdList.includes(id)
+      )) {
+        const eventType = this.store().createRecord('change-event-type', {
+          id: typeId,
+        });
+        const model = this.store().createRecord('change-event', {
+          type: eventType,
+        });
+
+        assert.notOk(model.canAffectMultipleOrganizations);
+      }
+    });
+  });
+
+  module('isCityChangeEvent', function () {
+    test('it returns falsy for a model without type', function (assert) {
+      const model = this.store().createRecord('change-event');
+
+      assert.notOk(model.isCityChangeEvent);
+    });
+
+    test('it returns truthy for a city event', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: CHANGE_EVENT_TYPE.CITY,
+      });
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.ok(model.isCityChangeEvent);
+    });
+
+    test('it returns falsy for a fusie event', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: CHANGE_EVENT_TYPE.FUSIE,
+      });
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.notOk(model.isCityChangeEvent);
+    });
+
+    test('it returns falsy for a merger event', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: CHANGE_EVENT_TYPE.MERGER,
+      });
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.notOk(model.isCityChangeEvent);
+    });
+
+    test('it returns falsy for other event types', function (assert) {
+      assert.expect(Object.keys(CHANGE_EVENT_TYPE).length - 1);
+      for (const typeId of Object.values(CHANGE_EVENT_TYPE).filter(
+        (id) => id !== CHANGE_EVENT_TYPE.CITY
+      )) {
+        const eventType = this.store().createRecord('change-event-type', {
+          id: typeId,
+        });
+        const model = this.store().createRecord('change-event', {
+          type: eventType,
+        });
+
+        assert.notOk(model.isCityChangeEvent);
+      }
+    });
+  });
+
+  module('requiresDecisionInformation', function () {
+    test('it returns falsy for a model without type', function (assert) {
+      const model = this.store().createRecord('change-event');
+
+      assert.notOk(model.requiresDecisionInformation);
+    });
+
+    test('it returns falsy for a recognition requested event', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED,
+      });
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.notOk(model.requiresDecisionInformation);
+    });
+
+    test('it returns truthy for a fusie event', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: CHANGE_EVENT_TYPE.FUSIE,
+      });
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.ok(model.requiresDecisionInformation);
+    });
+
+    test('it returns truthy for a merger event', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: CHANGE_EVENT_TYPE.MERGER,
+      });
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.ok(model.requiresDecisionInformation);
+    });
+
+    test('it returns truthy for other event types', function (assert) {
+      assert.expect(RequiresDecisionTypeIdList.length);
+      for (const typeId of Object.values(CHANGE_EVENT_TYPE).filter((id) =>
+        RequiresDecisionTypeIdList.includes(id)
+      )) {
+        const eventType = this.store().createRecord('change-event-type', {
+          id: typeId,
+        });
+        const model = this.store().createRecord('change-event', {
+          type: eventType,
+        });
+
+        assert.ok(model.requiresDecisionInformation);
+      }
     });
   });
 });

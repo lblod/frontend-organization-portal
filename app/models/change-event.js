@@ -7,7 +7,12 @@ import {
   validateHasManyOptional,
   validateHasManyRequired,
 } from '../validators/schema';
-import { CHANGE_EVENT_TYPE } from './change-event-type';
+import {
+  CHANGE_EVENT_TYPE,
+  MergerTypeIdList,
+  MultipleOrganizationTypeIdList,
+  RequiresDecisionTypeIdList,
+} from './change-event-type';
 
 export default class ChangeEventModel extends AbstractValidationModel {
   @attr('date') date;
@@ -71,33 +76,23 @@ export default class ChangeEventModel extends AbstractValidationModel {
   }
 
   get requiresDecisionInformation() {
-    return (
-      this.type?.get('id') &&
-      this.type.get('id') !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED
-    );
+    return this.#hasTypeId(RequiresDecisionTypeIdList);
   }
 
   get isCityChangeEvent() {
-    return (
-      this.type?.get('id') && this.type.get('id') === CHANGE_EVENT_TYPE.CITY
-    );
+    return this.#hasTypeId([CHANGE_EVENT_TYPE.CITY]);
   }
 
   get isMergerChangeEvent() {
-    return (
-      this.type?.get('id') &&
-      (this.type.get('id') === CHANGE_EVENT_TYPE.MERGER ||
-        this.type.get('id') === CHANGE_EVENT_TYPE.FUSIE)
-    );
+    return this.#hasTypeId(MergerTypeIdList);
   }
 
   get canAffectMultipleOrganizations() {
-    let typeId = this.type?.get('id');
-    return (
-      typeId === CHANGE_EVENT_TYPE.MERGER ||
-      typeId === CHANGE_EVENT_TYPE.FUSIE ||
-      typeId === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
-    );
+    return this.#hasTypeId(MultipleOrganizationTypeIdList);
+  }
+
+  #hasTypeId(typeIds) {
+    return typeIds.includes(this.type?.get('id'));
   }
 
   hasAsOriginalOrganization(organization) {
