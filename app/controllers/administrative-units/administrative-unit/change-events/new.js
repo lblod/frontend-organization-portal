@@ -160,13 +160,14 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
         decisionActivity
       );
 
+      // TODO: variable required?
       let changeEventType = changeEvent.type;
 
       // We save the change event already so the backend assigns it an id
       // which is needed when saving the change-event-results
       yield changeEvent.save();
 
-      if (this.model.changeEvent.canAffectMultipleOrganizations()) {
+      if (this.model.changeEvent.canAffectMultipleOrganizations) {
         // TODO: superfluous variable?
         let allOriginalOrganizations =
           changeEvent.originalOrganizations.toArray();
@@ -178,11 +179,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
         for (let organization of allOriginalOrganizations) {
           let resultingStatusId;
 
-          if (
-            // TODO: use model method
-            changeEventType.get('id') === CHANGE_EVENT_TYPE.MERGER ||
-            changeEventType.get('id') === CHANGE_EVENT_TYPE.FUSIE
-          ) {
+          if (this.model.isMergerChangeEvent) {
             if (this.model.administrativeUnit.isCentralWorshipService) {
               resultingStatusId = ORGANIZATION_STATUS.INACTIVE;
             } else {
@@ -207,11 +204,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
           );
         }
 
-        if (
-          // TODO: use model function
-          changeEventType.get('id') === CHANGE_EVENT_TYPE.MERGER ||
-          changeEventType.get('id') === CHANGE_EVENT_TYPE.FUSIE
-        ) {
+        if (this.model.isMergerChangeEvent) {
           if (this.model.administrativeUnit.isCentralWorshipService) {
             // Central worship services should always select a *new*
             // organization as the resulting organization, so we also create a
@@ -249,11 +242,13 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
         ) {
           changeEvent.resultingOrganizations.pushObject(currentOrganization);
         }
+
         // TODO: is this necessary for some reason or a leftover from debugging?
         console.log(
           'Resulting status id: ' +
             RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.get('id')]
         );
+
         yield createChangeEventResult({
           resultingStatusId:
             RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.get('id')],
