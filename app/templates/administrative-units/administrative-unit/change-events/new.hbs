@@ -162,7 +162,7 @@
       </:card>
     </EditCard>
 
-    {{#if @model.changeEvent.shouldShowExtraInformationCard}}
+    {{#if @model.changeEvent.canAffectMultipleOrganizations}}
       <EditCard>
         <:title>{{@model.changeEvent.type.label}}</:title>
         <:card as |Card|>

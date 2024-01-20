@@ -91,8 +91,7 @@ export default class ChangeEventModel extends AbstractValidationModel {
     );
   }
 
-  // TODO: used also in new event form, name is not ideal
-  get shouldShowExtraInformationCard() {
+  get canAffectMultipleOrganizations() {
     let typeId = this.type?.get('id');
     return (
       typeId === CHANGE_EVENT_TYPE.MERGER ||

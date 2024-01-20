@@ -166,7 +166,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       // which is needed when saving the change-event-results
       yield changeEvent.save();
 
-      if (this.model.changeEvent.shouldShowExtraInformationCard) {
+      if (this.model.changeEvent.canAffectMultipleOrganizations()) {
         // TODO: superfluous variable?
         let allOriginalOrganizations =
           changeEvent.originalOrganizations.toArray();
