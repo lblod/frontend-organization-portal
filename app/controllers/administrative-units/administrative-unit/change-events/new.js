@@ -4,7 +4,6 @@ import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { tracked } from '@glimmer/tracking';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
@@ -139,7 +138,6 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
     const {
       administrativeUnit: currentOrganization,
-      classification,
       changeEvent,
       decision,
       decisionActivity,
@@ -261,22 +259,6 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       // Persist the original and resulting organization information
       yield changeEvent.save();
 
-      // TODO: fusion event are currently not supported for municipalities or
-      // OCMW, this can probably be removed
-      if (
-        (classification.id === CLASSIFICATION_CODE.MUNICIPALITY ||
-          classification.id === CLASSIFICATION_CODE.OCMW) &&
-        changeEventType.get('id') === CHANGE_EVENT_TYPE.FUSIE
-      ) {
-        mergeAssociated({
-          store: this.store,
-          changeEvent,
-          shouldSaveDecision,
-          decision,
-          decisionActivity,
-          administrativeUnit: currentOrganization,
-        });
-      }
       this.router.transitionTo(
         'administrative-units.administrative-unit.change-events.details',
         changeEvent.id
@@ -340,68 +322,6 @@ async function findMostRecentChangeEvent(store, organization) {
   } else {
     return null;
   }
-}
-
-async function mergeAssociated(ctx) {
-  let { store, changeEvent, shouldSaveDecision, decision, decisionActivity } =
-    ctx;
-
-  const results = await changeEvent.results;
-
-  decision = await decision;
-  decisionActivity = await decisionActivity;
-
-  let associatedChangeEvent = store.createRecord('change-event');
-  let associatedDecision = store.createRecord('decision');
-  let associatedDecisionActivity = store.createRecord('decisionActivity');
-
-  //copy decision
-  associatedDecision.publicationDate = decision.publicationDate;
-  associatedDecision.documentLink = decision.documentLink;
-
-  associatedDecisionActivity.endDate = decisionActivity.endDate;
-
-  // copy changeEvent
-  associatedChangeEvent.date = changeEvent.date;
-  associatedChangeEvent.description = changeEvent.description;
-
-  associatedChangeEvent.type = changeEvent.type;
-
-  await associatedChangeEvent.save();
-
-  await saveDecision(
-    shouldSaveDecision,
-    associatedDecision,
-    associatedDecisionActivity
-  );
-
-  for (const org of changeEvent.originalOrganizations.toArray()) {
-    const unit = await org.isAssociatedWith;
-    associatedChangeEvent.originalOrganizations.pushObject(unit);
-  }
-
-  for (const org of changeEvent.resultingOrganizations.toArray()) {
-    const unit = await org.isAssociatedWith;
-    associatedChangeEvent.resultingOrganizations.pushObject(unit);
-  }
-
-  const createChangeEventResults = [];
-
-  for (const r of results.toArray()) {
-    const result = await r;
-    const resultingOrganization = await result.resultingOrganization;
-    const associatedOrg = await resultingOrganization.isAssociatedWith;
-    createChangeEventResults.push(
-      createChangeEventResult({
-        resultingStatusId: result.status.get('id'),
-        resultingOrganization: associatedOrg,
-        changeEvent: associatedChangeEvent,
-        store,
-      })
-    );
-  }
-  await Promise.all(createChangeEventResults);
-  await associatedChangeEvent.save();
 }
 
 async function saveDecision(shouldSaveDecision, decision, decisionActivity) {

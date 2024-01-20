@@ -23,14 +23,12 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewRoute e
     });
     let decision = this.store.createRecord('decision');
     let decisionActivity = this.store.createRecord('decisionActivity');
-    let classification = await administrativeUnit.classification;
 
     return {
       administrativeUnit,
       changeEvent,
       decision,
       decisionActivity,
-      classification,
     };
   }
 
