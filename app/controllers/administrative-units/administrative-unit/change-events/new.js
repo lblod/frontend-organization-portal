@@ -29,7 +29,6 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   @service router;
   @service store;
 
-  // TODO: try to get rid of these tracked variables
   @tracked
   isAddingOriginalOrganizations = true;
 
@@ -48,6 +47,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   get administrativeUnitCreationUrl() {
     return this.router.urlFor('administrative-units.new');
   }
+
   @action
   filterSelectedOriginalOrganizations(searchResults) {
     return searchResults.filter(
@@ -78,8 +78,9 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
     }
     this.isAddingOriginalOrganizations = false;
 
-    // TODO: Would it not be more user-friendly integrate the logic below as a
-    // rule in the validation? Silently altering values in the form seems weird
+    // TODO: Would it not be more user-friendly to integrate the logic below as
+    // a rule in the validation? Silently altering values in the form seems
+    // weird
 
     // Central worship service mergers must result in a new/different
     // organisation than the original ones. Therefore reset the value of the
@@ -110,7 +111,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
       if (
         !this.model.administrativeUnit.isCentralWorshipService &&
-        this.model.changeEvent.hasAsresultingOrganization(organization)
+        this.model.changeEvent.hasAsResultingOrganization(organization)
       ) {
         this.model.changeEvent.removeResultingOrganization(organization);
         this.selectedResultingOrganization = null;
@@ -144,7 +145,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       decisionActivity,
     } = this.model;
 
-    let shouldSaveDecision = this.model.changeEvent.requiresDecisionInformation;
+    let shouldSaveDecision = changeEvent.requiresDecisionInformation;
 
     yield changeEvent.validate();
 
@@ -159,15 +160,11 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
         decisionActivity
       );
 
-      // TODO: variable required?
-      let changeEventType = changeEvent.type;
-
       // We save the change event already so the backend assigns it an id
       // which is needed when saving the change-event-results
       yield changeEvent.save();
 
-      if (this.model.changeEvent.canAffectMultipleOrganizations) {
-        // TODO: superfluous variable?
+      if (changeEvent.canAffectMultipleOrganizations) {
         let allOriginalOrganizations =
           changeEvent.originalOrganizations.toArray();
 
@@ -190,7 +187,9 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
             }
           } else {
             resultingStatusId =
-              RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.get('id')];
+              RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[
+                changeEvent.type.get('id')
+              ];
           }
 
           createChangeEventResultsPromises.push(
@@ -203,21 +202,21 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
           );
         }
 
-        if (this.model.isMergerChangeEvent) {
-          if (this.model.administrativeUnit.isCentralWorshipService) {
+        if (changeEvent.isMergerChangeEvent) {
+          if (currentOrganization.isCentralWorshipService) {
             // Central worship services should always select a *new*
             // organization as the resulting organization, so we also create a
             // change event result for that organization
-            createChangeEventResultsPromises.push(
-              createChangeEventResult({
-                resultingStatusId: ORGANIZATION_STATUS.ACTIVE,
-                // TODO: assumed here that there is only one resulting organization
-                resultingOrganization:
-                  changeEvent.resultingOrganizations.toArray()[0],
-                changeEvent,
-                store: this.store,
-              })
-            );
+            for (let organization of changeEvent.resultingOrganizations.toArray()) {
+              createChangeEventResultsPromises.push(
+                createChangeEventResult({
+                  resultingStatusId: ORGANIZATION_STATUS.ACTIVE,
+                  resultingOrganization: organization,
+                  changeEvent,
+                  store: this.store,
+                })
+              );
+            }
           }
         } else {
           changeEvent.resultingOrganizations.pushObjects(
@@ -227,9 +226,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
         yield Promise.all(createChangeEventResultsPromises);
       } else {
-        if (
-          changeEventType.get('id') !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED
-        ) {
+        if (changeEvent.requiresDecisionInformation) {
           changeEvent.originalOrganizations.pushObject(currentOrganization);
         }
 
@@ -237,20 +234,14 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
           ![
             CHANGE_EVENT_TYPE.RECOGNITION_LIFTED,
             CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED,
-          ].includes(changeEventType.get('id'))
+          ].includes(changeEvent.type.get('id'))
         ) {
           changeEvent.resultingOrganizations.pushObject(currentOrganization);
         }
 
-        // TODO: is this necessary for some reason or a leftover from debugging?
-        console.log(
-          'Resulting status id: ' +
-            RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.get('id')]
-        );
-
         yield createChangeEventResult({
           resultingStatusId:
-            RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.get('id')],
+            RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEvent.type.get('id')],
           resultingOrganization: currentOrganization,
           changeEvent,
           store: this.store,
@@ -272,6 +263,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
     this.model.decision?.reset();
     this.model.decisionActivity.reset();
     this.model.administrativeUnit.reset();
+    this.selectedResultingOrganization = null;
   }
 }
 
