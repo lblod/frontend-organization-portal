@@ -14,99 +14,12 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   @service store;
 
   get hasValidationErrors() {
-    return this.model.administrativeUnit.isInvalid;
+    return this.model.administrativeUnit.error;
   }
 
   queryParams = ['sort'];
 
   @tracked sort = 'name';
-
-  get isWorshipAdministrativeUnit() {
-    return this.isWorshipService || this.isCentralWorshipService;
-  }
-
-  get isProvince() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.PROVINCE
-    );
-  }
-
-  get isOCMW() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.OCMW
-    );
-  }
-
-  get isMunicipality() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.MUNICIPALITY
-    );
-  }
-
-  get isAgb() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.AGB
-    );
-  }
-
-  get isApb() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.APB
-    );
-  }
-
-  get isDistrict() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.DISTRICT
-    );
-  }
-
-  get isIgs() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-        CLASSIFICATION_CODE.PROJECTVERENIGING ||
-      this.model.administrativeUnit.classification?.get('id') ===
-        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
-      this.model.administrativeUnit.classification?.get('id') ===
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
-      this.model.administrativeUnit.classification?.get('id') ===
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
-    );
-  }
-
-  get isPoliceZone() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.POLICE_ZONE
-    );
-  }
-
-  get isAssistanceZone() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.ASSISTANCE_ZONE
-    );
-  }
-
-  get isWorshipService() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.WORSHIP_SERVICE
-    );
-  }
-
-  get isCentralWorshipService() {
-    return (
-      this.model.administrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
-    );
-  }
 
   get hasCentralWorshipService() {
     const typesThatHaveACentralWorshipService = [
@@ -116,16 +29,10 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     ];
 
     return (
-      this.isWorshipService &&
+      this.model.administrativeUnit.isWorshipService &&
       typesThatHaveACentralWorshipService.find(
         (id) => id == this.model.administrativeUnit.recognizedWorshipType?.id
       )
-    );
-  }
-
-  get isOcmwAssociation() {
-    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
-      this.model.administrativeUnit.classification?.get('id')
     );
   }
 
@@ -224,7 +131,7 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
 
     yield administrativeUnit.validate();
 
-    if (administrativeUnit.isValid) {
+    if (!this.hasValidationErrors) {
       yield administrativeUnit.save();
 
       this.router.transitionTo(
@@ -232,5 +139,9 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
         administrativeUnit.id
       );
     }
+  }
+
+  reset() {
+    this.model.administrativeUnit.reset();
   }
 }

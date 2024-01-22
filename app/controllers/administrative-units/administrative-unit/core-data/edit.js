@@ -19,8 +19,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       this.model.address.error ||
       this.model.contact.error ||
       this.model.secondaryContact.error ||
-      this.model.structuredIdentifierKBO.error ||
-      this.model.structuredIdentifierSharepoint.error
+      this.model.identifierKBO.error ||
+      this.model.identifierSharepoint.error
     );
   }
 

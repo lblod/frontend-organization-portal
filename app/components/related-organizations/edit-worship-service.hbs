@@ -6,7 +6,7 @@
         <Item
           @labelFor="related-representative-body"
           @required={{true}}
-          @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.validation}}
+          @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.message}}
         >
           <:label>Representatief orgaan</:label>
           <:content as |hasError|>
@@ -24,7 +24,7 @@
           <Item
             @labelFor="related-central-worship-service"
             @required={{false}}
-            @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+            @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.message}}
           >
             <:label>Centraal bestuur</:label>
             <:content as |hasError|>
