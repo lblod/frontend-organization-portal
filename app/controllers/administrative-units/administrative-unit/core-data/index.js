@@ -3,6 +3,7 @@ import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import WorshipServiceModel from 'frontend-organization-portal/models/worship-service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 import {
   CLASSIFICATION_CODE,
   OCMW_ASSOCIATION_CLASSIFICATION_CODES,
@@ -37,6 +38,7 @@ const SHAREPOINT_LINK_BASE = {
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexController extends Controller {
   @tracked showAbbData = true;
+  @service features;
 
   isSharePointIdentifier(identifier) {
     return identifier?.idName === ID_NAME.SHAREPOINT;
