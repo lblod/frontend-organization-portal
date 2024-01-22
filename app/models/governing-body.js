@@ -54,60 +54,40 @@ export default class GoverningBodyModel extends AbstractValidationModel {
   }
 
   get validationSchema() {
-    return (
-      Joi.object({
-        startDate: Joi.date()
-          .empty(null)
-          .required()
-          .when(Joi.ref('endDate'), {
-            is: Joi.date(),
-            then: Joi.date().max(Joi.ref('endDate')),
-          })
-          .messages({
-            'any.required': 'Vul de startdatum in',
-            'date.max': 'Kies een startdatum die vóór de einddatum plaatsvindt',
-          }),
-        endDate: Joi.date()
-          .empty(null)
-          .required()
-          // TODO: results in an undefined model, cannot have cyclic refs?
-          // .when(Joi.ref('startDate'), {
-          //   is: Joi.date(),
-          //   then: Joi.date().min(Joi.ref('startDate')),
-          // })
-          .messages({
-            'any.required': 'Vul de einddatum in',
-            'date.min': 'Kies een einddatum die na de startdatum plaatsvindt',
-          }),
-        // TODO: validate there is no overlap with other governing bodies
-        administrativeUnit: validateBelongsToOptional(),
-        classification: validateBelongsToOptional(),
-        isTimeSpecializationOf: validateBelongsToOptional(),
-        hasTimeSpecializations: validateHasManyOptional(),
-        mandates: validateHasManyOptional(),
-        boardPositions: validateHasManyOptional(),
-      })
-        // .assert(
-        //   '.startDate',
-        //   Joi.when(Joi.ref('..endDate'), {
-        //     is: Joi.date(),
-        //     then: Joi.date().max(Joi.ref('..endDate')),
-        //   }),
-        //   'Kies een startdatum die vóór de einddatum plaatsvindt',
-        // )
-        // TODO: message not displayed
-        .assert(
-          '.endDate',
-          Joi.when(Joi.ref('..startDate'), {
-            is: Joi.date(),
-            then: Joi.date().min(Joi.ref('..startDate')),
-          }),
-          'Kies een einddatum die na de startdatum plaatsvindt'
-        )
+    return Joi.object({
+      startDate: Joi.date()
+        .empty(null)
+        .required()
         .external(async (value, helpers) => {
-          console.log(value);
-          return helpers.message('Error');
+          if (this.endDate && value > this.endDate) {
+            return helpers.message(
+              'Kies een startdatum die vóór de einddatum plaatsvindt'
+            );
+          }
+          return value;
         })
-    );
+        .messages({ 'any.required': 'Vul de startdatum in' }),
+      endDate: Joi.date()
+        .empty(null)
+        .required()
+        .external(async (value, helpers) => {
+          if (this.startDate && value < this.startDate) {
+            return helpers.message(
+              'Kies een einddatum die na de startdatum plaatsvindt'
+            );
+          }
+          return value;
+        })
+        .messages({
+          'any.required': 'Vul de einddatum in',
+        }),
+      // TODO: validate there is no overlap with other governing bodies
+      administrativeUnit: validateBelongsToOptional(),
+      classification: validateBelongsToOptional(),
+      isTimeSpecializationOf: validateBelongsToOptional(),
+      hasTimeSpecializations: validateHasManyOptional(),
+      mandates: validateHasManyOptional(),
+      boardPositions: validateHasManyOptional(),
+    });
   }
 }

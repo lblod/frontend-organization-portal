@@ -16,8 +16,8 @@ module('Unit | Model | governing body', function (hooks) {
 
       assert.false(isValid);
       assert.strictEqual(Object.keys(model.error).length, 2);
+      assert.strictEqual(model.error.startDate.message, 'Vul de startdatum in');
       assert.propContains(model.error, {
-        startDate: { message: 'Vul de startdatum in' },
         endDate: { message: 'Vul de einddatum in' },
       });
     });
@@ -33,6 +33,36 @@ module('Unit | Model | governing body', function (hooks) {
       assert.strictEqual(Object.keys(model.error).length, 1);
       assert.propContains(model.error, {
         startDate: { message: 'Vul de startdatum in' },
+      });
+      assert.notPropContains(model.error, {
+        startDate: {
+          message: 'Kies een startdatum die vóór de einddatum plaatsvindt',
+        },
+      });
+      assert.notPropContains(model.error, {
+        endDate: {
+          message: 'Kies een einddatum die na de startdatum plaatsvindt',
+        },
+      });
+    });
+
+    test('it returns a single error when the given start date is invalid', async function (assert) {
+      const model = this.store().createRecord('governing-body', {
+        startDate: 'Not a date',
+        endDate: new Date('2025-01-01'),
+      });
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.propContains(model.error, {
+        startDate: { message: 'Vul de startdatum in' },
+      });
+      assert.notPropContains(model.error, {
+        startDate: {
+          message: 'Kies een startdatum die vóór de einddatum plaatsvindt',
+        },
       });
       assert.notPropContains(model.error, {
         endDate: {
@@ -58,12 +88,42 @@ module('Unit | Model | governing body', function (hooks) {
           message: 'Kies een startdatum die vóór de einddatum plaatsvindt',
         },
       });
+      assert.notPropContains(model.error, {
+        endDate: {
+          message: 'Kies een einddatum die na de startdatum plaatsvindt',
+        },
+      });
+    });
+
+    test('it returns a single error when the given end date is invalid', async function (assert) {
+      const model = this.store().createRecord('governing-body', {
+        startDate: new Date('2025-01-01'),
+        endDate: 'Not a date',
+      });
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.propContains(model.error, {
+        endDate: { message: 'Vul de einddatum in' },
+      });
+      assert.notPropContains(model.error, {
+        startDate: {
+          message: 'Kies een startdatum die vóór de einddatum plaatsvindt',
+        },
+      });
+      assert.notPropContains(model.error, {
+        endDate: {
+          message: 'Kies een einddatum die na de startdatum plaatsvindt',
+        },
+      });
     });
 
     test('it returns no errors when valid dates are given', async function (assert) {
       const model = this.store().createRecord('governing-body', {
-        startDate: new Date('2024-01-01'),
-        endDate: new Date('2025-01-01'),
+        startDate: new Date('2025-01-01'),
+        endDate: new Date('2026-01-01'),
       });
 
       const isValid = await model.validate();
@@ -71,7 +131,7 @@ module('Unit | Model | governing body', function (hooks) {
       assert.true(isValid);
     });
 
-    test('it returns an error when the start date is after the end date', async function (assert) {
+    test('it returns two errors when the start date is after the end date', async function (assert) {
       const model = this.store().createRecord('governing-body', {
         startDate: new Date('2025-01-01'),
         endDate: new Date('2024-01-01'),
@@ -80,15 +140,18 @@ module('Unit | Model | governing body', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.strictEqual(Object.keys(model.error).length, 2);
       assert.propContains(model.error, {
         startDate: {
           message: 'Kies een startdatum die vóór de einddatum plaatsvindt',
         },
+        endDate: {
+          message: 'Kies een einddatum die na de startdatum plaatsvindt',
+        },
       });
     });
 
-    test('it returns an error when the end date is before the start date', async function (assert) {
+    test('it returns two errors when the end date is before the start date', async function (assert) {
       const model = this.store().createRecord('governing-body', {
         startDate: new Date('2024-01-01'),
         endDate: new Date('2023-01-01'),
@@ -97,8 +160,11 @@ module('Unit | Model | governing body', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.strictEqual(Object.keys(model.error).length, 2);
       assert.propContains(model.error, {
+        startDate: {
+          message: 'Kies een startdatum die vóór de einddatum plaatsvindt',
+        },
         endDate: {
           message: 'Kies een einddatum die na de startdatum plaatsvindt',
         },
