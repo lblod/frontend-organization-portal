@@ -64,6 +64,27 @@ export default class GoverningBodyModel extends AbstractValidationModel {
               'Kies een startdatum die vóór de einddatum plaatsvindt'
             );
           }
+
+          if (this.changedAttributes().startDate) {
+            // TODO: following check is probably unnecessary if data in
+            // triplestore is correct, it does make tests slightly easier
+            if (this.administrativeUnit && this.administrativeUnit.get('id')) {
+              let records = await this.store.query('governing-body', {
+                filter: {
+                  'administrative-unit': {
+                    ':exact:id': this.administrativeUnit.get('id'),
+                  },
+                },
+              });
+
+              for (const body of records.without(this)) {
+                if (inPeriod(this.startDate, body.startDate, body.endDate)) {
+                  return helpers.message('Geen overlap');
+                }
+              }
+            }
+          }
+
           return value;
         })
         .messages({ 'any.required': 'Vul de startdatum in' }),
@@ -76,12 +97,32 @@ export default class GoverningBodyModel extends AbstractValidationModel {
               'Kies een einddatum die na de startdatum plaatsvindt'
             );
           }
+
+          if (this.changedAttributes().endDate) {
+            // TODO: following check is probably unnecessary if data in
+            // triplestore is correct, it does make tests slightly easier
+            if (this.administrativeUnit && this.administrativeUnit.get('id')) {
+              let records = await this.store.query('governing-body', {
+                filter: {
+                  'administrative-unit': {
+                    ':exact:id': this.administrativeUnit.get('id'),
+                  },
+                },
+              });
+
+              for (const body of records.without(this)) {
+                if (inPeriod(this.endDate, body.startDate, body.endDate)) {
+                  return helpers.message('Geen overlap');
+                }
+              }
+            }
+          }
+
           return value;
         })
         .messages({
           'any.required': 'Vul de einddatum in',
         }),
-      // TODO: validate there is no overlap with other governing bodies
       administrativeUnit: validateBelongsToOptional(),
       classification: validateBelongsToOptional(),
       isTimeSpecializationOf: validateBelongsToOptional(),
@@ -90,4 +131,12 @@ export default class GoverningBodyModel extends AbstractValidationModel {
       boardPositions: validateHasManyOptional(),
     });
   }
+}
+
+export function inPeriod(date, start, end) {
+  if (date && start && end) {
+    let time = date.getTime();
+    return start.getTime() <= time && time <= end.getTime();
+  }
+  return false;
 }
