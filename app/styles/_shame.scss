@@ -18,14 +18,6 @@ table.dataTable tbody th {
     max-height: 500px  !important;
 }
 
-.person-search-results {
-  // Hide the pagination until we can make it work without 2-way-binding
-  // https://github.com/mu-semtech/ember-data-table/issues/27
-  .au-c-data-table__actions--bottom {
-    display: none;
-  }
-}
-
 // Data table fixes > @TODO: port to ember-appuniversum
 .au-c-data-table__table.au-c-data-table__table--small {
   th:first-child,
