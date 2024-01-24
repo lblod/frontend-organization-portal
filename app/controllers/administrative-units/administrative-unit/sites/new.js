@@ -5,7 +5,7 @@ import { combineFullAddress } from 'frontend-organization-portal/models/address'
 import { tracked } from '@glimmer/tracking';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
-import { action } from '@ember/object'
+import { action } from '@ember/object';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesNewController extends Controller {
   @service router;
@@ -22,7 +22,11 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
   }
 
   get isAndereVestigen() {
-    return this.model.site.siteType && this.model.site.siteType.get('id') === 'dcc01338-842c-4fbd-ba68-3ca6f3af975c'
+    return (
+      this.model.site.siteType &&
+      this.model.site.siteType.get('id') ===
+        'dcc01338-842c-4fbd-ba68-3ca6f3af975c'
+    );
   }
 
   @dropTask
@@ -36,7 +40,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
     yield address.validate();
     yield contact.validate();
     yield secondaryContact.validate();
-    console.log(this.model.site.error)
+
     if (!this.hasValidationErrors) {
       contact = setEmptyStringsToNull(contact);
       contact.telephone = transformPhoneNumbers(contact.telephone);
@@ -112,6 +116,6 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
 
   @action
   setSiteTypeName(e) {
-    this.model.siteTypeName = e.target.value
+    this.model.site.siteTypeName = e.target.value;
   }
 }

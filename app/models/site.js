@@ -23,14 +23,14 @@ export default class SiteModel extends AbstractValidationModel {
   })
   siteType;
 
-  @attr siteTypeName
+  @attr siteTypeName;
 
   get validationSchema() {
     return Joi.object({
       address: validateBelongsToOptional(),
       contacts: validateHasManyOptional(),
       siteType: validateBelongsToRequired('Voeg een type vestiging toe'),
-      siteTypeName: Joi.string().optional(),
+      siteTypeName: Joi.string().allow('').optional(),
     });
   }
 }

@@ -30,7 +30,11 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
   }
 
   get isAndereVestigen() {
-    return this.model.site.siteType && this.model.site.siteType.get('id') === 'dcc01338-842c-4fbd-ba68-3ca6f3af975c'
+    return (
+      this.model.site.siteType &&
+      this.model.site.siteType.get('id') ===
+        'dcc01338-842c-4fbd-ba68-3ca6f3af975c'
+    );
   }
 
   @action
@@ -156,6 +160,6 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
 
   @action
   setSiteTypeName(e) {
-    this.model.siteTypeName = e.target.value
+    this.model.site.siteTypeName = e.target.value;
   }
 }

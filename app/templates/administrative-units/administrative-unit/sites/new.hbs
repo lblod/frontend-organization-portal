@@ -55,11 +55,11 @@
                     @labelFor="site-type-name"
                   >
                     <:label>Name</:label>
-                    <:content as |hasError|>
+                    <:content>
                      <AuInput
                       @selected={{this.model.site.siteTypeName}}
                       {{on "input" this.setSiteTypeName}}
-                      @value={{@address.street}}
+                      value={{this.model.site.siteTypeName}}
                       @width="block"
                       maxlength="50"
                      />
