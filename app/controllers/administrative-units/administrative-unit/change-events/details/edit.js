@@ -59,5 +59,6 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
     this.model.administrativeUnit.reset();
     this.model.changeEvent.reset();
     this.model.decision?.reset();
+    this.model.decisionActivity?.rollbackAttributes();
   }
 }

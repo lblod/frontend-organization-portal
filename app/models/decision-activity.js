@@ -1,7 +1,6 @@
-import { attr, hasMany } from '@ember-data/model';
-import AbstractValidationModel from './abstract-validation-model';
+import Model, { attr, hasMany } from '@ember-data/model';
 
-export default class DecisionActivityModel extends AbstractValidationModel {
+export default class DecisionActivityModel extends Model {
   @attr('date') endDate;
 
   @hasMany('decision', {

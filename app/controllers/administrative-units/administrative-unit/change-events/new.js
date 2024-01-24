@@ -261,7 +261,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   reset() {
     this.model.changeEvent.reset();
     this.model.decision?.reset();
-    this.model.decisionActivity.reset();
+    this.model.decisionActivity?.rollbackAttributes();
     this.model.administrativeUnit.reset();
     this.selectedResultingOrganization = null;
   }
