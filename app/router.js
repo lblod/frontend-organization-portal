@@ -24,7 +24,6 @@ Router.map(function () {
         'personal-information',
         { path: '/contactgegevens' },
         function () {
-          this.route('edit');
           this.route('request-sensitive-data');
         }
       );
@@ -37,20 +36,15 @@ Router.map(function () {
         this.route(
           'minister',
           { path: '/bedienaar/:ministerId/' },
-          function () {
-            this.route('edit');
-          }
+          function () {}
         );
         this.route(
           'functionary',
           { path: '/functionaris/:functionaryId/' },
-          function () {
-            this.route('edit');
-          }
+          function () {}
         );
       });
     });
-    this.route('new', { path: '/nieuw' });
   });
   this.route(
     'administrative-units',
@@ -79,9 +73,7 @@ Router.map(function () {
             );
           }
         );
-        this.route('ministers', { path: '/bedienaren' }, function () {
-          this.route('new', { path: '/nieuwe-bedienaar' });
-        });
+        this.route('ministers', { path: '/bedienaren' }, function () {});
         this.route('executives', { path: '/leidinggevenden' });
         this.route(
           'local-involvements',

@@ -6,7 +6,7 @@
         <Item
           @labelFor="related-provincie"
           @required={{false}}
-          @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.validation}}
+          @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.message}}
         >
           <:label>Provincie</:label>
           <:content as |hasError|>

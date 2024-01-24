@@ -1,12 +1,6 @@
 import Service from '@ember/service';
-
 import { inject as service } from '@ember/service';
 import { isActivePosition } from 'frontend-organization-portal/utils/position';
-import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
-import contactValidations from 'frontend-organization-portal/validations/contact-point';
-import secondaryContactValidations from 'frontend-organization-portal/validations/secondary-contact-point';
-
-import { getAddressValidations } from 'frontend-organization-portal/validations/address';
 import {
   findPrimaryContact,
   findSecondaryContact,
@@ -14,20 +8,6 @@ import {
 
 export default class ContactDetailsService extends Service {
   @service store;
-
-  isAllFieldsEmpty(contact) {
-    if (!contact) {
-      return true;
-    }
-    let { primaryContact, secondaryContact, address } = contact;
-    return (
-      !address?.street?.length &&
-      !address?.province?.length &&
-      !primaryContact?.email?.length &&
-      !primaryContact?.telephone?.length &&
-      !secondaryContact?.telephone?.length
-    );
-  }
 
   async ministerToPosition(minister, onlyActivePosition = true) {
     if (onlyActivePosition && !isActivePosition(minister.agentEndDate)) {
@@ -155,39 +135,5 @@ export default class ContactDetailsService extends Service {
         return b.startDate - a.startDate;
       }),
     };
-  }
-
-  async positionToEditableContact(computedPosition) {
-    let { primaryContact, secondaryContact, position } = computedPosition;
-
-    let address = await primaryContact?.contactAddress;
-
-    return {
-      position,
-      role: computedPosition.role,
-      administrativeUnit: computedPosition.administrativeUnit,
-
-      title: computedPosition.title,
-      primaryContact: !primaryContact
-        ? null
-        : createValidatedChangeset(primaryContact, contactValidations),
-      address: !address
-        ? null
-        : createValidatedChangeset(address, getAddressValidations()),
-      secondaryContact: !secondaryContact
-        ? null
-        : createValidatedChangeset(
-            secondaryContact,
-            secondaryContactValidations
-          ),
-    };
-  }
-  async positionsToEditableContacts(positions) {
-    const contacts = [];
-    for (let computedPosition of positions) {
-      let changeSet = await this.positionToEditableContact(computedPosition);
-      contacts.push(changeSet);
-    }
-    return contacts;
   }
 }
