@@ -20,6 +20,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataRoute extends 
         'is-sub-organization-of',
         'is-associated-with',
         'resulted-from',
+        'was-founded-by-organizations',
       ].join(),
     });
   }
