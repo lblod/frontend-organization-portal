@@ -1,11 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import {
-  CHANGE_EVENT_TYPE,
-  MergerTypeIdList,
-  MultipleOrganizationTypeIdList,
-  RequiresDecisionTypeIdList,
-} from 'frontend-organization-portal/models/change-event-type';
+import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 
 module('Unit | Model | change event', function (hooks) {
   setupTest(hooks);
@@ -248,200 +243,38 @@ module('Unit | Model | change event', function (hooks) {
       });
     });
 
-    test('it returns no errors when original/resulting organisations are missing for a name change event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.NAME_CHANGE,
+    [
+      [CHANGE_EVENT_TYPE.NAME_CHANGE, 'name change'],
+      [CHANGE_EVENT_TYPE.IN_ONTBINDING, 'dissolution'],
+      [CHANGE_EVENT_TYPE.IN_VEREFFENING, 'liquidation'],
+      [CHANGE_EVENT_TYPE.ONTBONDEN_EN_VEREFFEND, 'dissolution and liquidated'],
+      [CHANGE_EVENT_TYPE.OPRICHTING, 'establishment'],
+      [CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE, 'area description change'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED, 'recognition not granted'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_LIFTED, 'recognition lifted'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED, 'recognition requested'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_GRANTED, 'recognition granted'],
+      [
+        CHANGE_EVENT_TYPE.SUSPENSION_OF_RECOGNITION,
+        'suspension of recognition',
+      ],
+      [CHANGE_EVENT_TYPE.SANCTIONED, 'sanctioned'],
+      [CHANGE_EVENT_TYPE.CITY, 'city'],
+      [CHANGE_EVENT_TYPE.GEOGRAPHICAL_AREA_CHANGE, 'geographical area change'],
+    ].forEach(([id, name]) => {
+      test(`it returns no errors when original/resulting organisations are missing for a ${name} event`, async function (assert) {
+        const eventType = this.store().createRecord('change-event-type', {
+          id,
+        });
+        const model = this.store().createRecord('change-event', {
+          date: new Date('01-01-2024'),
+          type: eventType,
+        });
+
+        const isValid = await model.validate();
+
+        assert.true(isValid);
       });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-    });
-
-    test('it returns no errors when original/resulting organisations are missing for a dissolution event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.IN_ONTBINDING,
-      });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-    });
-
-    test('it returns no errors when original/resulting organisations are missing for a liquidation event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.IN_VEREFFENING,
-      });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-    });
-
-    test('it returns no errors when original/resulting organisations are missing for a dissolution and liquidated event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.ONTBONDEN_EN_VEREFFEND,
-      });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-    });
-
-    test('it returns no errors when original/resulting organisations are missing for an establishment event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.OPRICHTING,
-      });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-    });
-
-    test('it returns no errors when original/resulting organisations are missing for an area description change event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE,
-      });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-    });
-
-    test('it returns no errors when original/resulting organisations are missing for a recognition not granted event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED,
-      });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-    });
-
-    test('it returns no errors when original/resulting organisations are missing for a recognition lifted event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.RECOGNITION_LIFTED,
-      });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-    });
-
-    test('it returns no errors when original/resulting organisations are missing for a recognition requested event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED,
-      });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-    });
-
-    test('it returns no errors when original/resulting organisations are missing for a recognition granted event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.RECOGNITION_GRANTED,
-      });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-    });
-
-    test('it returns no errors when original/resulting organisations are missing for a suspension of recognition event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.SUSPENCION_OF_RECOGNITION,
-      });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-    });
-
-    test('it returns no errors when original/resulting organisations are missing for a sanction event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.SANCTIONED,
-      });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-    });
-
-    test('it returns no errors when original/resulting organisations are missing for a city event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.CITY,
-      });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-    });
-
-    test('it returns no errors when original/resulting organisations are missing for a geographical area change event', async function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.GEOGRAPHICAL_AREA_CHANGE,
-      });
-      const model = this.store().createRecord('change-event', {
-        date: new Date('01-01-2024'),
-        type: eventType,
-      });
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
     });
   });
 
@@ -653,6 +486,18 @@ module('Unit | Model | change event', function (hooks) {
       assert.notOk(model.isMergerChangeEvent);
     });
 
+    test('it returns falsy for a model with an incorrect type', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: 'This is an invalid change event type',
+      });
+
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.notOk(model.isMergerChangeEvent);
+    });
+
     test('it returns truthy for a MERGER', function (assert) {
       const eventType = this.store().createRecord('change-event-type', {
         id: CHANGE_EVENT_TYPE.MERGER,
@@ -675,28 +520,53 @@ module('Unit | Model | change event', function (hooks) {
       assert.ok(model.isMergerChangeEvent);
     });
 
-    test('it returns falsy for other event types', function (assert) {
-      assert.expect(
-        Object.keys(CHANGE_EVENT_TYPE).length - MergerTypeIdList.length
-      );
-      for (const typeId of Object.values(CHANGE_EVENT_TYPE).filter(
-        (id) => !MergerTypeIdList.includes(id)
-      )) {
+    [
+      [CHANGE_EVENT_TYPE.NAME_CHANGE, 'name change'],
+      [CHANGE_EVENT_TYPE.IN_ONTBINDING, 'dissolution'],
+      [CHANGE_EVENT_TYPE.IN_VEREFFENING, 'liquidation'],
+      [CHANGE_EVENT_TYPE.ONTBONDEN_EN_VEREFFEND, 'dissolution and liquidated'],
+      [CHANGE_EVENT_TYPE.OPRICHTING, 'establishment'],
+      [CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE, 'area description change'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED, 'recognition not granted'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_LIFTED, 'recognition lifted'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED, 'recognition requested'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_GRANTED, 'recognition granted'],
+      [
+        CHANGE_EVENT_TYPE.SUSPENSION_OF_RECOGNITION,
+        'suspension of recognition',
+      ],
+      [CHANGE_EVENT_TYPE.SANCTIONED, 'sanctioned'],
+      [CHANGE_EVENT_TYPE.CITY, 'city'],
+      [CHANGE_EVENT_TYPE.GEOGRAPHICAL_AREA_CHANGE, 'geographical area change'],
+    ].forEach(([id, name]) => {
+      test(`it returns falsy for a ${name} event`, async function (assert) {
         const eventType = this.store().createRecord('change-event-type', {
-          id: typeId,
+          id,
         });
         const model = this.store().createRecord('change-event', {
           type: eventType,
         });
 
         assert.notOk(model.isMergerChangeEvent);
-      }
+      });
     });
   });
 
   module('canAffectMultipleOrganizations', function () {
     test('it returns falsy for a model without type', function (assert) {
       const model = this.store().createRecord('change-event');
+
+      assert.notOk(model.canAffectMultipleOrganizations);
+    });
+
+    test('it returns falsy for a model with an incorrect type', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: 'This is an invalid change event type',
+      });
+
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
 
       assert.notOk(model.canAffectMultipleOrganizations);
     });
@@ -734,29 +604,52 @@ module('Unit | Model | change event', function (hooks) {
       assert.ok(model.canAffectMultipleOrganizations);
     });
 
-    test('it returns falsy for other event types', function (assert) {
-      assert.expect(
-        Object.keys(CHANGE_EVENT_TYPE).length -
-          MultipleOrganizationTypeIdList.length
-      );
-      for (let typeId of Object.values(CHANGE_EVENT_TYPE).filter(
-        (id) => !MultipleOrganizationTypeIdList.includes(id)
-      )) {
+    [
+      [CHANGE_EVENT_TYPE.NAME_CHANGE, 'name change'],
+      [CHANGE_EVENT_TYPE.IN_ONTBINDING, 'dissolution'],
+      [CHANGE_EVENT_TYPE.IN_VEREFFENING, 'liquidation'],
+      [CHANGE_EVENT_TYPE.ONTBONDEN_EN_VEREFFEND, 'dissolution and liquidated'],
+      [CHANGE_EVENT_TYPE.OPRICHTING, 'establishment'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED, 'recognition not granted'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_LIFTED, 'recognition lifted'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED, 'recognition requested'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_GRANTED, 'recognition granted'],
+      [
+        CHANGE_EVENT_TYPE.SUSPENSION_OF_RECOGNITION,
+        'suspension of recognition',
+      ],
+      [CHANGE_EVENT_TYPE.SANCTIONED, 'sanctioned'],
+      [CHANGE_EVENT_TYPE.CITY, 'city'],
+      [CHANGE_EVENT_TYPE.GEOGRAPHICAL_AREA_CHANGE, 'geographical area change'],
+    ].forEach(([id, name]) => {
+      test(`it returns falsy for a ${name} event`, async function (assert) {
         const eventType = this.store().createRecord('change-event-type', {
-          id: typeId,
+          id,
         });
         const model = this.store().createRecord('change-event', {
           type: eventType,
         });
 
         assert.notOk(model.canAffectMultipleOrganizations);
-      }
+      });
     });
   });
 
   module('isCityChangeEvent', function () {
     test('it returns falsy for a model without type', function (assert) {
       const model = this.store().createRecord('change-event');
+
+      assert.notOk(model.isCityChangeEvent);
+    });
+
+    test('it returns falsy for a model with an incorrect type', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: 'This is an invalid change event type',
+      });
+
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
 
       assert.notOk(model.isCityChangeEvent);
     });
@@ -772,48 +665,54 @@ module('Unit | Model | change event', function (hooks) {
       assert.ok(model.isCityChangeEvent);
     });
 
-    test('it returns falsy for a fusie event', function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.FUSIE,
-      });
-      const model = this.store().createRecord('change-event', {
-        type: eventType,
-      });
-
-      assert.notOk(model.isCityChangeEvent);
-    });
-
-    test('it returns falsy for a merger event', function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.MERGER,
-      });
-      const model = this.store().createRecord('change-event', {
-        type: eventType,
-      });
-
-      assert.notOk(model.isCityChangeEvent);
-    });
-
-    test('it returns falsy for other event types', function (assert) {
-      assert.expect(Object.keys(CHANGE_EVENT_TYPE).length - 1);
-      for (const typeId of Object.values(CHANGE_EVENT_TYPE).filter(
-        (id) => id !== CHANGE_EVENT_TYPE.CITY
-      )) {
+    [
+      [CHANGE_EVENT_TYPE.NAME_CHANGE, 'name change'],
+      [CHANGE_EVENT_TYPE.IN_ONTBINDING, 'dissolution'],
+      [CHANGE_EVENT_TYPE.IN_VEREFFENING, 'liquidation'],
+      [CHANGE_EVENT_TYPE.ONTBONDEN_EN_VEREFFEND, 'dissolution and liquidated'],
+      [CHANGE_EVENT_TYPE.OPRICHTING, 'establishment'],
+      [CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE, 'area description change'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED, 'recognition not granted'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_LIFTED, 'recognition lifted'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED, 'recognition requested'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_GRANTED, 'recognition granted'],
+      [CHANGE_EVENT_TYPE.MERGER, 'merger'],
+      [CHANGE_EVENT_TYPE.FUSIE, 'fusion'],
+      [
+        CHANGE_EVENT_TYPE.SUSPENSION_OF_RECOGNITION,
+        'suspension of recognition',
+      ],
+      [CHANGE_EVENT_TYPE.SANCTIONED, 'sanctioned'],
+      [CHANGE_EVENT_TYPE.GEOGRAPHICAL_AREA_CHANGE, 'geographical area change'],
+    ].forEach(([id, name]) => {
+      test(`it returns falsy for a ${name} event`, async function (assert) {
         const eventType = this.store().createRecord('change-event-type', {
-          id: typeId,
+          id,
         });
         const model = this.store().createRecord('change-event', {
           type: eventType,
         });
 
         assert.notOk(model.isCityChangeEvent);
-      }
+      });
     });
   });
 
   module('requiresDecisionInformation', function () {
     test('it returns falsy for a model without type', function (assert) {
       const model = this.store().createRecord('change-event');
+
+      assert.notOk(model.requiresDecisionInformation);
+    });
+
+    test('it returns falsy for a model with an incorrect type', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: 'This is an invalid change event type',
+      });
+
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
 
       assert.notOk(model.requiresDecisionInformation);
     });
@@ -829,42 +728,36 @@ module('Unit | Model | change event', function (hooks) {
       assert.notOk(model.requiresDecisionInformation);
     });
 
-    test('it returns truthy for a fusie event', function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.FUSIE,
-      });
-      const model = this.store().createRecord('change-event', {
-        type: eventType,
-      });
-
-      assert.ok(model.requiresDecisionInformation);
-    });
-
-    test('it returns truthy for a merger event', function (assert) {
-      const eventType = this.store().createRecord('change-event-type', {
-        id: CHANGE_EVENT_TYPE.MERGER,
-      });
-      const model = this.store().createRecord('change-event', {
-        type: eventType,
-      });
-
-      assert.ok(model.requiresDecisionInformation);
-    });
-
-    test('it returns truthy for other event types', function (assert) {
-      assert.expect(RequiresDecisionTypeIdList.length);
-      for (const typeId of Object.values(CHANGE_EVENT_TYPE).filter((id) =>
-        RequiresDecisionTypeIdList.includes(id)
-      )) {
+    [
+      [CHANGE_EVENT_TYPE.NAME_CHANGE, 'name change'],
+      [CHANGE_EVENT_TYPE.IN_ONTBINDING, 'dissolution'],
+      [CHANGE_EVENT_TYPE.IN_VEREFFENING, 'liquidation'],
+      [CHANGE_EVENT_TYPE.ONTBONDEN_EN_VEREFFEND, 'dissolution and liquidated'],
+      [CHANGE_EVENT_TYPE.OPRICHTING, 'establishment'],
+      [CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE, 'area description change'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED, 'recognition not granted'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_LIFTED, 'recognition lifted'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_GRANTED, 'recognition granted'],
+      [CHANGE_EVENT_TYPE.MERGER, 'merger'],
+      [CHANGE_EVENT_TYPE.FUSIE, 'fusion'],
+      [
+        CHANGE_EVENT_TYPE.SUSPENSION_OF_RECOGNITION,
+        'suspension of recognition',
+      ],
+      [CHANGE_EVENT_TYPE.SANCTIONED, 'sanctioned'],
+      [CHANGE_EVENT_TYPE.CITY, 'city'],
+      [CHANGE_EVENT_TYPE.GEOGRAPHICAL_AREA_CHANGE, 'geographical area change'],
+    ].forEach(([id, name]) => {
+      test(`it returns truthy for a ${name} event`, async function (assert) {
         const eventType = this.store().createRecord('change-event-type', {
-          id: typeId,
+          id,
         });
         const model = this.store().createRecord('change-event', {
           type: eventType,
         });
 
         assert.ok(model.requiresDecisionInformation);
-      }
+      });
     });
   });
 });
