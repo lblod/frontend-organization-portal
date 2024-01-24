@@ -31,7 +31,6 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
           decisionActivity.changedAttributes().endDate ||
           (!decision.isEmpty && decision.hasDirtyAttributes)
         ) {
-          console.log('endDate isEmpty dirty');
           if (decisionActivity.changedAttributes().endDate) {
             if (decisionActivity.isNew) {
               decision.hasDecisionActivity = decisionActivity;
