@@ -153,4 +153,9 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     }
     this.isNoPrimarySiteErrorMessage = null;
   }
+
+  @action
+  setSiteTypeName(e) {
+    this.model.siteTypeName = e.target.value
+  }
 }

@@ -5,6 +5,7 @@ import { combineFullAddress } from 'frontend-organization-portal/models/address'
 import { tracked } from '@glimmer/tracking';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
+import { action } from '@ember/object'
 
 export default class AdministrativeUnitsAdministrativeUnitSitesNewController extends Controller {
   @service router;
@@ -35,7 +36,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
     yield address.validate();
     yield contact.validate();
     yield secondaryContact.validate();
-
+    console.log(this.model.site.error)
     if (!this.hasValidationErrors) {
       contact = setEmptyStringsToNull(contact);
       contact.telephone = transformPhoneNumbers(contact.telephone);
@@ -107,5 +108,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
     if (secondaryContact.isNew) {
       secondaryContact.destroyRecord();
     }
+  }
+
+  @action
+  setSiteTypeName(e) {
+    this.model.siteTypeName = e.target.value
   }
 }

@@ -65,7 +65,7 @@
                     <:content as |hasError|>
                      <AuInput
                       @selected={{this.model.site.siteTypeName}}
-                      {{on "input" (fn (mut this.model.site.siteTypeName))}}
+                      {{on "input" this.setSiteTypeName}}
                       @value={{@address.street}}
                       @width="block"
                       maxlength="50"
