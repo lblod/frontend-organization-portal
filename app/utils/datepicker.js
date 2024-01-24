@@ -11,6 +11,7 @@ export function formatNl(date) {
   }).format(date);
 }
 
+// TODO: remove when no longer used
 export function validate(validation, allowEmpty = true, errorMessages) {
   if (!validation.valid) {
     switch (validation.error) {

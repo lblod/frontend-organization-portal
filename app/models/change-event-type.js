@@ -85,6 +85,21 @@ export const CHANGE_EVENTS_PEVA = [
   CHANGE_EVENT_TYPE.ONTBONDEN_EN_VEREFFEND,
 ];
 
+export const MergerTypeIdList = [
+  CHANGE_EVENT_TYPE.FUSIE,
+  CHANGE_EVENT_TYPE.MERGER,
+];
+
+export const MultipleOrganizationTypeIdList = [
+  CHANGE_EVENT_TYPE.FUSIE,
+  CHANGE_EVENT_TYPE.MERGER,
+  CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE,
+];
+
+export const RequiresDecisionTypeIdList = Object.values(
+  CHANGE_EVENT_TYPE
+).filter((id) => id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED);
+
 export default class ChangeEventTypeModel extends Model {
   @attr label;
 }

@@ -1,112 +1,35 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import { isEmpty } from 'frontend-organization-portal/models/decision';
-import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
-import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
-import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEditController extends Controller {
   @service router;
 
-  @tracked
-  endDateValidation = { valid: true };
-
-  @tracked
-  publicationDateValidation = { valid: true };
-
   get hasValidationErrors() {
-    return (
-      !this.endDateValidation.valid ||
-      !this.publicationDateValidation.valid ||
-      this.model.changeEvent.isInvalid
-    );
-  }
-
-  get isCityChangeEvent() {
-    return (
-      this.model.changeEvent.type &&
-      this.model.changeEvent.type.get('id') == CHANGE_EVENT_TYPE.CITY
-    );
-  }
-
-  get isAgbOrApb() {
-    return (
-      this.model.administrativeUnit.classification.get('id') ===
-        CLASSIFICATION_CODE.AGB ||
-      this.model.administrativeUnit.classification.get('id') ===
-        CLASSIFICATION_CODE.APB
-    );
-  }
-
-  get isIgs() {
-    return (
-      this.model.administrativeUnit.classification.get('id') ===
-        CLASSIFICATION_CODE.PROJECTVERENIGING ||
-      this.model.administrativeUnit.classification.get('id') ===
-        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
-      this.model.administrativeUnit.classification.get('id') ===
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
-      this.model.administrativeUnit.classification.get('id') ===
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
-    );
-  }
-
-  get isPoliceZone() {
-    return (
-      this.model.administrativeUnit.classification.get('id') ===
-      CLASSIFICATION_CODE.POLICE_ZONE
-    );
-  }
-
-  get isAssistanceZone() {
-    return (
-      this.model.administrativeUnit.classification.get('id') ===
-      CLASSIFICATION_CODE.ASSISTANCE_ZONE
-    );
-  }
-
-  @action
-  validateEndDate(validation) {
-    this.endDateValidation = validateDate(validation);
-  }
-
-  @action
-  validatePublicationDate(validation) {
-    this.publicationDateValidation = validateDate(validation);
+    return this.model.changeEvent.error || this.model.decision?.error;
   }
 
   @dropTask
   *save(event) {
     event.preventDefault();
 
-    let {
-      changeEvent,
-      decision,
-      decisionActivity,
-      canAddDecisionInformation: shouldSaveDecision,
-    } = this.model;
+    let { changeEvent, decision, decisionActivity } = this.model;
 
     yield changeEvent.validate();
 
-    if (shouldSaveDecision) {
+    if (changeEvent.requiresDecisionInformation) {
       yield decision.validate();
     }
 
     if (
-      this.endDateValidation.valid &&
-      this.publicationDateValidation.valid &&
-      changeEvent.isValid &&
-      shouldSaveDecision
-        ? decision.isValid
+      !changeEvent.error && changeEvent.requiresDecisionInformation
+        ? !decision.error
         : true
     ) {
-      if (shouldSaveDecision) {
+      if (changeEvent.requiresDecisionInformation) {
         if (
           decisionActivity.changedAttributes().endDate ||
-          (!isEmpty(decision) && decision.isDirty)
+          (!decision.isEmpty && decision.hasDirtyAttributes)
         ) {
           if (decisionActivity.changedAttributes().endDate) {
             if (decisionActivity.isNew) {
@@ -121,7 +44,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
         }
       }
 
-      if (changeEvent.isDirty) {
+      if (changeEvent.hasDirtyAttributes) {
         yield changeEvent.save();
       }
 
@@ -130,5 +53,12 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
         changeEvent.id
       );
     }
+  }
+
+  reset() {
+    this.model.administrativeUnit.reset();
+    this.model.changeEvent.reset();
+    this.model.decision?.reset();
+    this.model.decisionActivity?.rollbackAttributes();
   }
 }
