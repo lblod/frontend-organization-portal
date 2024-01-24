@@ -199,3 +199,7 @@ $ember-power-select-focus-outline: solid 2px rgb(16, 108, 200) !default;
 .ember-power-select-multiple-options {
   max-height: none;
 }
+
+.tab-link-align-left {
+  justify-content: left; padding-left: 10px;
+}
