@@ -118,9 +118,9 @@ module('Unit | Model | change event', function (hooks) {
       const model = this.store().createRecord('change-event', {
         date: new Date('01-01-2024'),
         type: eventType,
+        resultingOrganizations: [resultingOrganisation],
+        originalOrganizations: [originalOrganisation],
       });
-      model.resultingOrganizations.pushObject(resultingOrganisation);
-      model.originalOrganizations.pushObject(originalOrganisation);
 
       const isValid = await model.validate();
 
@@ -147,9 +147,11 @@ module('Unit | Model | change event', function (hooks) {
       const model = this.store().createRecord('change-event', {
         date: new Date('01-01-2024'),
         type: eventType,
+        originalOrganizations: [
+          originalOrganisationOne,
+          originalOrganisationTwo,
+        ],
       });
-      model.originalOrganizations.pushObject(originalOrganisationOne);
-      model.originalOrganizations.pushObject(originalOrganisationTwo);
 
       const isValid = await model.validate();
 
@@ -199,9 +201,9 @@ module('Unit | Model | change event', function (hooks) {
       const model = this.store().createRecord('change-event', {
         date: new Date('01-01-2024'),
         type: eventType,
+        resultingOrganizations: [resultingOrganisation],
+        originalOrganizations: [originalOrganisation],
       });
-      model.resultingOrganizations.pushObject(resultingOrganisation);
-      model.originalOrganizations.pushObject(originalOrganisation);
 
       const isValid = await model.validate();
 
@@ -228,9 +230,11 @@ module('Unit | Model | change event', function (hooks) {
       const model = this.store().createRecord('change-event', {
         date: new Date('01-01-2024'),
         type: eventType,
+        originalOrganizations: [
+          originalOrganisationOne,
+          originalOrganisationTwo,
+        ],
       });
-      model.originalOrganizations.pushObject(originalOrganisationOne);
-      model.originalOrganizations.pushObject(originalOrganisationTwo);
 
       const isValid = await model.validate();
 
