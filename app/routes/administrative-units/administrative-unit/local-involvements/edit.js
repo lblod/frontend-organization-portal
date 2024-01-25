@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
 import localInvolvementValidations from 'frontend-organization-portal/validations/local-involvement';
+import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditRoute extends Route {
@@ -37,7 +38,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
     if (classification.id == CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE) {
       involvementTypes = await this.store.query('involvement-type', {
         filter: {
-          id: 'ac400cc9f135ac7873fb3e551ec738c1', // Toezichthoundend
+          id: INVOLVEMENT_TYPE.FINANCIAL, // Toezichthoundend
         },
       });
     } else {
@@ -50,7 +51,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
 
     let involvementTypesProvince = involvementTypes
       .toArray()
-      .filter((it) => it.id !== '0f845f00ee76099c89518cbaf6a7b77f'); // Non adviserend
+      .filter((it) => it.id !== INVOLVEMENT_TYPE.ADVISORY); // Non adviserend
 
     return {
       worshipAdministrativeUnit,

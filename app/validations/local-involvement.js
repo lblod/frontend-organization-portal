@@ -86,13 +86,12 @@ async function validateInvolvementType(
   changes,
   content
 ) {
-  const ADVISEREND_TYPE = '0f845f00ee76099c89518cbaf6a7b77f';
   let involvementType = await changes.involvementType;
 
   if (!isInvolvementTypeRecord(involvementType)) {
     involvementType = await content.involvementType;
   }
-  if (involvementType.id === ADVISEREND_TYPE) {
+  if (involvementType.id === INVOLVEMENT_TYPE.ADVISORY) {
     return 'Adviserend is geen geldige keuze voor een provincie';
   }
 
