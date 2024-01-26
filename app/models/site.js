@@ -33,4 +33,12 @@ export default class SiteModel extends AbstractValidationModel {
       siteTypeName: Joi.string().allow('').optional(),
     });
   }
+
+  get isOtherSite() {
+    return (
+      this.siteType &&
+      this.siteType.get('id') ===
+        'dcc01338-842c-4fbd-ba68-3ca6f3af975c'
+    );
+  }
 }

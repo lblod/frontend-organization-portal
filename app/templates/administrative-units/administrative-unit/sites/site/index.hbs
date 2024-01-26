@@ -31,7 +31,7 @@
               <:label>Type vestiging</:label>
               <:content>{{@model.site.siteType.label}}</:content>
             </Item>
-            {{#if this.isAndereVestigen}}
+            {{#if  (and @model.site.isOtherSite @model.site.siteTypeName)}}
               <Item>
                 <:label>Name</:label>
                 <:content>{{@model.site.siteTypeName}}</:content>
