@@ -19,6 +19,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         'administrative-units.administrative-unit.governing-bodies.governing-body'
       );
 
+    // TODO: remove retrieval of other bodies from route
     const bodies = await this.modelFor(
       'administrative-units.administrative-unit.governing-bodies'
     );

@@ -5,6 +5,7 @@ import {
   validateBelongsToOptional,
   validateHasManyOptional,
 } from '../validators/schema';
+import { EXECUTIVE_ORGANEN } from './governing-body-classification-code';
 
 export default class GoverningBodyModel extends AbstractValidationModel {
   @attr('date') startDate;
@@ -66,21 +67,11 @@ export default class GoverningBodyModel extends AbstractValidationModel {
           }
 
           if (this.changedAttributes().startDate) {
-            // TODO: following check is probably unnecessary if data in
-            // triplestore is correct, it does make tests slightly easier
-            if (this.administrativeUnit && this.administrativeUnit.get('id')) {
-              let records = await this.store.query('governing-body', {
-                filter: {
-                  'administrative-unit': {
-                    ':exact:id': this.administrativeUnit.get('id'),
-                  },
-                },
-              });
+            let governingBodies = await this.getOtherTimedGoverningBodies();
 
-              for (const body of records.without(this)) {
-                if (inPeriod(this.startDate, body.startDate, body.endDate)) {
-                  return helpers.message('Geen overlap');
-                }
+            for (const body of governingBodies) {
+              if (inPeriod(body.startDate, this.startDate, this.endDate)) {
+                return helpers.message('Geen overlap');
               }
             }
           }
@@ -99,21 +90,11 @@ export default class GoverningBodyModel extends AbstractValidationModel {
           }
 
           if (this.changedAttributes().endDate) {
-            // TODO: following check is probably unnecessary if data in
-            // triplestore is correct, it does make tests slightly easier
-            if (this.administrativeUnit && this.administrativeUnit.get('id')) {
-              let records = await this.store.query('governing-body', {
-                filter: {
-                  'administrative-unit': {
-                    ':exact:id': this.administrativeUnit.get('id'),
-                  },
-                },
-              });
+            let governingBodies = await this.getOtherTimedGoverningBodies();
 
-              for (const body of records.without(this)) {
-                if (inPeriod(this.endDate, body.startDate, body.endDate)) {
-                  return helpers.message('Geen overlap');
-                }
+            for (const body of governingBodies) {
+              if (inPeriod(body.endDate, this.startDate, this.endDate)) {
+                return helpers.message('Geen overlap');
               }
             }
           }
@@ -131,12 +112,60 @@ export default class GoverningBodyModel extends AbstractValidationModel {
       boardPositions: validateHasManyOptional(),
     });
   }
+
+  async #getAdministrativeUnitId() {
+    let untimedBody = await this.isTimeSpecializationOf;
+    if (untimedBody) {
+      let administrativeUnit = await untimedBody.administrativeUnit;
+      return administrativeUnit.get('id');
+    }
+  }
+
+  async #getUntimedGoverningBodies() {
+    let administrativeUnitId = await this.#getAdministrativeUnitId();
+    let untimedGoverningBodies = await this.store.query('governing-body', {
+      filter: {
+        'administrative-unit': {
+          id: administrativeUnitId,
+        },
+      },
+      include: 'has-time-specializations,classification',
+    });
+    return untimedGoverningBodies;
+  }
+
+  async getOtherTimedGoverningBodies() {
+    let untimedGoverningBodies = (
+      await this.#getUntimedGoverningBodies()
+    ).toArray();
+
+    let governingBodies = [];
+    for (const untimedGoverningBody of untimedGoverningBodies) {
+      let classification = await untimedGoverningBody.classification;
+      if (!EXECUTIVE_ORGANEN.includes(classification.id)) {
+        const timedGoverningBodies = untimedGoverningBody
+          ? await untimedGoverningBody.hasTimeSpecializations
+          : [];
+
+        const arrayTimedGoverningBodies = timedGoverningBodies.toArray();
+
+        governingBodies.push(...arrayTimedGoverningBodies);
+      }
+    }
+
+    // TODO filter based on ids
+    return governingBodies.filter((body) => body !== this);
+  }
 }
 
+/**
+ * Checks whether a given date is strictly between a start and end date. If
+ * either of the arguments are missing it defaults to false.
+ */
 export function inPeriod(date, start, end) {
   if (date && start && end) {
     let time = date.getTime();
-    return start.getTime() <= time && time <= end.getTime();
+    return start.getTime() < time && time < end.getTime();
   }
   return false;
 }
