@@ -1,5 +1,6 @@
 import { validatePresence } from 'ember-changeset-validations/validators';
 
+// TODO: remove validations
 const governingBodyValidations = (governingBodies) => {
   return {
     startDate: [
