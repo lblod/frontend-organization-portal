@@ -30,7 +30,7 @@ export default class SiteModel extends AbstractValidationModel {
       address: validateBelongsToOptional(),
       contacts: validateHasManyOptional(),
       siteType: validateBelongsToRequired('Voeg een type vestiging toe'),
-      siteTypeName: Joi.string().allow('').optional(),
+      siteTypeName: Joi.string().empty(''),
     });
   }
 
