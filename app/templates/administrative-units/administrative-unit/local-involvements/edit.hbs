@@ -63,7 +63,7 @@
         <c.body as |involvement|>
           <td>
             {{#let
-              involvement.error.administrativeUnit.validation
+              involvement.error.administrativeUnit.message
               as |errorMessage|
             }}
               <AdministrativeUnitSelect
@@ -93,7 +93,7 @@
           </td>
           <td>
             {{#let
-              involvement.error.involvementType.validation
+              involvement.error.involvementType.message
               as |errorMessage|
             }}
               <div class={{if errorMessage "ember-power-select--error"}}>
@@ -162,7 +162,7 @@
             <td>
               {{#let
                 (or
-                  involvement.error.percentage.validation
+                  involvement.error.percentage.message
                   (if
                     (and
                       (this.isFinancialInvolvementType involvement)

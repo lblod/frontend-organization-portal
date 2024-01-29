@@ -3,8 +3,6 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
-import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
-import localInvolvementValidations from 'frontend-organization-portal/validations/local-involvement';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 
@@ -23,7 +21,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   get hasValidationErrors() {
     let areSomeLocalInvolvementsInvalid = this.model.involvements
       .toArray()
-      .some((involvement) => involvement.isInvalid);
+      .some((involvement) => involvement.error);
 
     return (
       areSomeLocalInvolvementsInvalid ||
@@ -33,10 +31,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   }
 
   get isWorshipService() {
-    return (
-      this.model.worshipAdministrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.WORSHIP_SERVICE
-    );
+    return this.model.worshipAdministrativeUnit.isWorshipService;
   }
 
   get totalFinancingPercentage() {
@@ -63,9 +58,9 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   }
 
   get isValidTotalFinancingPercentage() {
-    let hasFinancialLocalInvolvements = this.model.involvements.some(
-      (involvement) => isFinancialInvolvementType(involvement)
-    );
+    let hasFinancialLocalInvolvements = this.model.involvements
+      .toArray()
+      .some((involvement) => isFinancialInvolvementType(involvement));
 
     if (hasFinancialLocalInvolvements) {
       return this.totalFinancingPercentage === 100;
@@ -144,9 +139,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
       });
     }
 
-    this.model.involvements.pushObject(
-      createValidatedChangeset(involvement, localInvolvementValidations)
-    );
+    this.model.involvements.pushObject(involvement);
   }
 
   @action
@@ -168,7 +161,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
 
     let areSomeLocalInvolvementsInvalid = involvements
       .toArray()
-      .some((involvement) => involvement.isInvalid);
+      .some((involvement) => involvement.error);
 
     if (!this.isValidTotalFinancingPercentage) {
       this.showTotalFinancingPercentageError = true;
@@ -200,13 +193,10 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   }
 
   isDisabledPercentage(involvement) {
-    return !(
-      involvement.involvementType?.id === INVOLVEMENT_TYPE.FINANCIAL ||
-      involvement.involvementType?.id === INVOLVEMENT_TYPE.MID_FINANCIAL
-    );
+    return !(involvement.isFinancial || involvement.isMidFinancial);
   }
 }
 
 function isFinancialInvolvementType(involvement) {
-  return involvement.involvementType?.id === INVOLVEMENT_TYPE.FINANCIAL;
+  return involvement.isFinancial;
 }
