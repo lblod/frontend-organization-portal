@@ -2,7 +2,6 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import sinon from 'sinon';
 import { A } from '@ember/array';
-import { inPeriod } from 'frontend-organization-portal/models/governing-body';
 import { EXECUTIVE_ORGANEN } from 'frontend-organization-portal/models/governing-body-classification-code';
 
 module('Unit | Model | governing body', function (hooks) {
@@ -615,9 +614,11 @@ module('Unit | Model | governing body', function (hooks) {
       });
 
       const timedBodyOne = this.store().createRecord('governing-body', {
+        id: 1,
         isTimeSpecializationOf: untimedBody,
       });
       const timedBodyTwo = this.store().createRecord('governing-body', {
+        id: 2,
         isTimeSpecializationOf: untimedBody,
       });
       untimedBody.hasTimeSpecializations.pushObjects([
@@ -650,6 +651,7 @@ module('Unit | Model | governing body', function (hooks) {
         administrativeUnit: administrativeUnit,
       });
       const timedBody = this.store().createRecord('governing-body', {
+        id: 1,
         isTimeSpecializationOf: untimedBody,
       });
       untimedBody.hasTimeSpecializations.pushObject(timedBody);
@@ -663,6 +665,7 @@ module('Unit | Model | governing body', function (hooks) {
         administrativeUnit: administrativeUnit,
       });
       const timedBodyOther = this.store().createRecord('governing-body', {
+        id: 2,
         isTimeSpecializationOf: untimedBodyOther,
       });
       untimedBodyOther.hasTimeSpecializations.pushObject(timedBodyOther);
@@ -692,6 +695,7 @@ module('Unit | Model | governing body', function (hooks) {
         administrativeUnit: administrativeUnit,
       });
       const timedBody = this.store().createRecord('governing-body', {
+        id: 1,
         isTimeSpecializationOf: untimedBody,
       });
       untimedBody.hasTimeSpecializations.pushObject(timedBody);
@@ -705,6 +709,7 @@ module('Unit | Model | governing body', function (hooks) {
         administrativeUnit: administrativeUnit,
       });
       const timedBodyOther = this.store().createRecord('governing-body', {
+        id: 2,
         isTimeSpecializationOf: untimedBodyOther,
       });
       untimedBodyOther.hasTimeSpecializations.pushObject(timedBodyOther);
@@ -733,6 +738,7 @@ module('Unit | Model | governing body', function (hooks) {
         administrativeUnit: administrativeUnit,
       });
       const timedBody = this.store().createRecord('governing-body', {
+        id: 1,
         isTimeSpecializationOf: untimedBody,
       });
       untimedBody.hasTimeSpecializations.pushObject(timedBody);
@@ -746,9 +752,11 @@ module('Unit | Model | governing body', function (hooks) {
         administrativeUnit: administrativeUnit,
       });
       const timedBodyOther = this.store().createRecord('governing-body', {
+        id: 2,
         isTimeSpecializationOf: untimedBodyOther,
       });
       const timedBodyOtherTwo = this.store().createRecord('governing-body', {
+        id: 3,
         isTimeSpecializationOf: untimedBodyOther,
       });
       untimedBodyOther.hasTimeSpecializations.pushObjects([
@@ -774,79 +782,10 @@ module('Unit | Model | governing body', function (hooks) {
 
       const governingBodies = await timedBody.getOtherTimedGoverningBodies();
       assert.strictEqual(governingBodies.length, 2);
-      assert.deepEqual(governingBodies, [timedBodyOther, timedBodyOtherTwo]);
+      assert.true(governingBodies.includes(timedBodyOther));
+      assert.true(governingBodies.includes(timedBodyOtherTwo));
 
       queryStub.restore();
-    });
-  });
-
-  module('inPeriod', function () {
-    test('it returns true when date is between start and end', function (assert) {
-      const date = new Date('2024-06-06');
-      const start = new Date('2024-01-01');
-      const end = new Date('2025-01-01');
-
-      assert.true(inPeriod(date, start, end));
-    });
-
-    test('it returns false when date is the same as start', function (assert) {
-      const date = new Date('2024-01-01');
-      const start = new Date('2024-01-01');
-      const end = new Date('2025-01-01');
-
-      assert.false(inPeriod(date, start, end));
-    });
-
-    test('it returns false when date is the same as end', function (assert) {
-      const date = new Date('2025-01-01');
-      const start = new Date('2024-01-01');
-      const end = new Date('2025-01-01');
-
-      assert.false(inPeriod(date, start, end));
-    });
-
-    test('it returns false when date is before start', function (assert) {
-      const date = new Date('2023-01-01');
-      const start = new Date('2024-01-01');
-      const end = new Date('2025-01-01');
-
-      assert.false(inPeriod(date, start, end));
-    });
-
-    test('it returns false when date is after end', function (assert) {
-      const date = new Date('2026-01-01');
-      const start = new Date('2024-01-01');
-      const end = new Date('2025-01-01');
-
-      assert.false(inPeriod(date, start, end));
-    });
-
-    test('it returns false when date is undefined', function (assert) {
-      const start = new Date('2024-01-01');
-      const end = new Date('2025-01-01');
-
-      assert.false(inPeriod(undefined, start, end));
-    });
-
-    test('it returns false when start is undefined', function (assert) {
-      const date = new Date('2024-01-01');
-      const end = new Date('2025-01-01');
-
-      assert.false(inPeriod(date, undefined, end));
-    });
-
-    test('it returns false when end is undefined', function (assert) {
-      const date = new Date('2024-01-01');
-      const start = new Date('2025-01-01');
-
-      assert.false(inPeriod(date, start, undefined));
-    });
-
-    test('it returns false when insufficient arguments', function (assert) {
-      const date = new Date('2024-01-01');
-      const start = new Date('2025-01-01');
-
-      assert.false(inPeriod(date, start));
     });
   });
 });

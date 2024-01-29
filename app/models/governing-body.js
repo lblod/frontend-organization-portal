@@ -5,6 +5,7 @@ import {
   validateBelongsToOptional,
   validateHasManyOptional,
 } from '../validators/schema';
+import { inPeriod } from '../utils/date';
 import { EXECUTIVE_ORGANEN } from './governing-body-classification-code';
 
 export default class GoverningBodyModel extends AbstractValidationModel {
@@ -163,16 +164,6 @@ export default class GoverningBodyModel extends AbstractValidationModel {
       }
     }
 
-    // TODO filter based on ids
-    return governingBodies.filter((body) => body !== this);
+    return governingBodies.filter((body) => body.get('id') !== this.id);
   }
-}
-
-// TODO: function does not belong in this file
-export function inPeriod(date, start, end) {
-  if (date && start && end) {
-    let time = date.getTime();
-    return start.getTime() < time && time < end.getTime();
-  }
-  return false;
 }
