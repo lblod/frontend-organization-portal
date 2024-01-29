@@ -3,11 +3,8 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
-import { isEmpty } from 'frontend-organization-portal/models/decision';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
-import { validate as validateDate } from 'frontend-organization-portal/utils/datepicker';
 import { tracked } from '@glimmer/tracking';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.NAME_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
@@ -24,7 +21,8 @@ const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.SANCTIONED]: ORGANIZATION_STATUS.ACTIVE,
   [CHANGE_EVENT_TYPE.CITY]: ORGANIZATION_STATUS.ACTIVE,
   [CHANGE_EVENT_TYPE.GEOGRAPHICAL_AREA_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
-  // MERGER and FUSIE aren't added here since they have multiple resulting statuses based on the resulting organization
+  // MERGER and FUSIE aren't added here since they have multiple resulting
+  // statuses based on the resulting organization
 };
 
 export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewController extends Controller {
@@ -32,31 +30,17 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   @service store;
 
   @tracked
-  endDateValidation = { valid: true };
+  isAddingOriginalOrganizations = true;
 
   @tracked
-  publicationEndDateValidation = { valid: true };
-
-  @tracked
-  dateValidation = { valid: true };
+  selectedResultingOrganization;
 
   get hasValidationErrors() {
-    return (
-      !this.dateValidation ||
-      !this.publicationEndDateValidation ||
-      !this.endDateValidation ||
-      this.model.decision.isInvalid ||
-      this.model.formState.isInvalid ||
-      this.model.changeEvent.isInvalid
-    );
-  }
-
-  get isCentralWorshipService() {
-    return this.model.formState.isCentralWorshipService;
+    return this.model.changeEvent.error || this.model.decision?.error;
   }
 
   get classificationCodes() {
-    return [this.model.classification.id];
+    return [this.model.administrativeUnit.classification.get('id')];
   }
 
   // TODO: replace this with a `url-for` helper.
@@ -65,55 +49,89 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   }
 
   @action
-  validateEndDate(validation) {
-    this.endDateValidation = validateDate(validation);
-  }
-
-  @action
-  validateDate(validation) {
-    this.dateValidation = validateDate(validation);
-  }
-
-  @action
-  validatePublicationEndDate(validation) {
-    this.publicationEndDateValidation = validateDate(validation);
-  }
-
-  @action
   filterSelectedOriginalOrganizations(searchResults) {
-    let selectedOriginalOrganizations =
-      this.model.formState.allOriginalOrganizations;
-
-    return searchResults.filter((organization) => {
-      return !selectedOriginalOrganizations.includes(organization);
-    });
-  }
-
-  get isAgbOrApb() {
-    return (
-      this.model.classification.id === CLASSIFICATION_CODE.AGB ||
-      this.model.classification.id === CLASSIFICATION_CODE.APB
+    return searchResults.filter(
+      (organization) =>
+        !this.model.changeEvent.originalOrganizations.includes(organization)
     );
   }
 
-  get isIgs() {
-    return (
-      this.model.classification.id === CLASSIFICATION_CODE.PROJECTVERENIGING ||
-      this.model.classification.id ===
-        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
-      this.model.classification.id ===
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
-      this.model.classification.id ===
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
-    );
+  /**
+   * Update the original organizations related to the change event being
+   * created. If only one argument is provided this organization is added as a
+   * new original organization. Otherwise, if two arguments are provided the
+   * second one is considered as a replacement of the first. In other words the
+   * first organization will be removed as original organisation and the second
+   * organization is added as a new one.
+   * If the change event is being created for a central worship service, the
+   * provided arguments are also removed as possible resulting organizations.
+   * @param {AdministrativeUnitModel} previousOrganization
+   * @param {AdministrativeUnitModel} organization
+   */
+  @action
+  updateOriginalOrganizations(previousOrganization, organization) {
+    if (organization) {
+      this.removeOriginalOrganization(previousOrganization);
+      this.model.changeEvent.addOriginalOrganization(organization);
+    } else {
+      this.model.changeEvent.addOriginalOrganization(previousOrganization);
+    }
+    this.isAddingOriginalOrganizations = false;
+
+    // TODO: Would it not be more user-friendly to integrate the logic below as
+    // a rule in the validation? Silently altering values in the form seems
+    // weird
+
+    // Central worship service mergers must result in a new/different
+    // organisation than the original ones. Therefore reset the value of the
+    // selected resulting organisation if this is the same as the newly selected
+    // original organisation
+    if (this.model.administrativeUnit.isCentralWorshipService) {
+      this.model.changeEvent.removeResultingOrganization(previousOrganization);
+      this.model.changeEvent.removeResultingOrganization(organization);
+      this.selectedResultingOrganization = null;
+    }
   }
 
-  get isPoliceZone() {
-    return this.model.classification.id === CLASSIFICATION_CODE.POLICE_ZONE;
+  /**
+   * Remove a previously added organization as original organization for the
+   * change event being created. This has only effect if the provided
+   * organization is not the same as the organization for which this change
+   * event is being created.
+   * If the change event concerns an organization which is *not* a central
+   * worship service the organization is also removed as potential resulting
+   * organization.
+   * @param {AdministrativeUnitModel} organization - the organization that
+   * should be removed as original organization
+   */
+  @action
+  removeOriginalOrganization(organization) {
+    if (organization && this.model.administrativeUnit !== organization) {
+      this.model.changeEvent.removeOriginalOrganization(organization);
+
+      if (
+        !this.model.administrativeUnit.isCentralWorshipService &&
+        this.model.changeEvent.hasAsResultingOrganization(organization)
+      ) {
+        this.model.changeEvent.removeResultingOrganization(organization);
+        this.selectedResultingOrganization = null;
+      }
+    }
   }
 
-  get isAssistanceZone() {
-    return this.model.classification.id === CLASSIFICATION_CODE.ASSISTANCE_ZONE;
+  /**
+   * Add the provided organization as resulting organization for the change
+   * event being created.
+   * Note this currently means that any previously specified resulting
+   * organization is removed as the form only supports specifying one resulting
+   * organization.
+   * @param {AdministrativeUnitModel} organization - the organization to be
+   * added as resulting organization
+   */
+  @action
+  updateResultingOrganizations(organization) {
+    this.model.changeEvent.addResultingOrganization(organization);
+    this.selectedResultingOrganization = organization;
   }
 
   @dropTask
@@ -122,68 +140,56 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
     const {
       administrativeUnit: currentOrganization,
-      classification,
       changeEvent,
       decision,
       decisionActivity,
-      formState,
     } = this.model;
 
-    let shouldSaveDecision = formState.canAddDecisionInformation;
+    let shouldSaveDecision = changeEvent.requiresDecisionInformation;
 
-    yield formState.validate();
     yield changeEvent.validate();
 
     if (shouldSaveDecision) {
       yield decision.validate();
     }
 
-    if (
-      this.dateValidation.valid &&
-      this.endDateValidation.valid &&
-      this.publicationEndDateValidation.valid &&
-      formState.isValid &&
-      (shouldSaveDecision ? decision.isValid : true) &&
-      changeEvent.isValid
-    ) {
+    if (!changeEvent.error && (shouldSaveDecision ? !decision.error : true)) {
       changeEvent.decision = yield saveDecision(
         shouldSaveDecision,
         decision,
         decisionActivity
       );
 
-      let changeEventType = formState.changeEventType;
-      changeEvent.type = changeEventType;
-
       // We save the change event already so the backend assigns it an id
       // which is needed when saving the change-event-results
       yield changeEvent.save();
 
-      if (canChangeMultipleOrganizations(changeEventType)) {
-        let allOriginalOrganizations = formState.allOriginalOrganizations;
-        changeEvent.originalOrganizations.pushObjects(allOriginalOrganizations);
+      if (changeEvent.canAffectMultipleOrganizations) {
+        let allOriginalOrganizations =
+          changeEvent.originalOrganizations.toArray();
 
         let createChangeEventResultsPromises = [];
 
-        // We create change event results for all organizations that are affected by the new change event
+        // We create change event results for all organizations that are
+        // affected by the new change event
         for (let organization of allOriginalOrganizations) {
           let resultingStatusId;
 
-          if (
-            changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
-            changeEventType.id === CHANGE_EVENT_TYPE.FUSIE
-          ) {
-            if (formState.isCentralWorshipService) {
+          if (changeEvent.isMergerChangeEvent) {
+            if (currentOrganization.isCentralWorshipService) {
               resultingStatusId = ORGANIZATION_STATUS.INACTIVE;
             } else {
-              resultingStatusId =
-                organization === formState.resultingOrganization
-                  ? ORGANIZATION_STATUS.ACTIVE
-                  : ORGANIZATION_STATUS.INACTIVE;
+              resultingStatusId = changeEvent.resultingOrganizations.includes(
+                organization
+              )
+                ? ORGANIZATION_STATUS.ACTIVE
+                : ORGANIZATION_STATUS.INACTIVE;
             }
           } else {
             resultingStatusId =
-              RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.id];
+              RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[
+                changeEvent.type.get('id')
+              ];
           }
 
           createChangeEventResultsPromises.push(
@@ -196,25 +202,21 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
           );
         }
 
-        if (
-          changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
-          changeEventType.id === CHANGE_EVENT_TYPE.FUSIE
-        ) {
-          changeEvent.resultingOrganizations.pushObject(
-            formState.resultingOrganization
-          );
-
-          if (formState.isCentralWorshipService) {
-            // Central worship services should always select a new organization as the resulting organization,
-            // so we also create a change event result for that organization
-            createChangeEventResultsPromises.push(
-              createChangeEventResult({
-                resultingStatusId: ORGANIZATION_STATUS.ACTIVE,
-                resultingOrganization: formState.resultingOrganization,
-                changeEvent,
-                store: this.store,
-              })
-            );
+        if (changeEvent.isMergerChangeEvent) {
+          if (currentOrganization.isCentralWorshipService) {
+            // Central worship services should always select a *new*
+            // organization as the resulting organization, so we also create a
+            // change event result for that organization
+            for (let organization of changeEvent.resultingOrganizations.toArray()) {
+              createChangeEventResultsPromises.push(
+                createChangeEventResult({
+                  resultingStatusId: ORGANIZATION_STATUS.ACTIVE,
+                  resultingOrganization: organization,
+                  changeEvent,
+                  store: this.store,
+                })
+              );
+            }
           }
         } else {
           changeEvent.resultingOrganizations.pushObjects(
@@ -224,7 +226,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
         yield Promise.all(createChangeEventResultsPromises);
       } else {
-        if (changeEventType.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED) {
+        if (changeEvent.requiresDecisionInformation) {
           changeEvent.originalOrganizations.pushObject(currentOrganization);
         }
 
@@ -232,35 +234,23 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
           ![
             CHANGE_EVENT_TYPE.RECOGNITION_LIFTED,
             CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED,
-          ].includes(changeEventType.id)
+          ].includes(changeEvent.type.get('id'))
         ) {
           changeEvent.resultingOrganizations.pushObject(currentOrganization);
         }
+
         yield createChangeEventResult({
           resultingStatusId:
-            RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEventType.id],
+            RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEvent.type.get('id')],
           resultingOrganization: currentOrganization,
           changeEvent,
           store: this.store,
         });
       }
 
-      yield changeEvent.save(); // persist the original and resulting organization information
+      // Persist the original and resulting organization information
+      yield changeEvent.save();
 
-      if (
-        (classification.id === CLASSIFICATION_CODE.MUNICIPALITY ||
-          classification.id === CLASSIFICATION_CODE.OCMW) &&
-        changeEventType.id === CHANGE_EVENT_TYPE.FUSIE
-      ) {
-        mergeAssociated({
-          store: this.store,
-          changeEvent,
-          shouldSaveDecision,
-          decision,
-          decisionActivity,
-          administrativeUnit: currentOrganization,
-        });
-      }
       this.router.transitionTo(
         'administrative-units.administrative-unit.change-events.details',
         changeEvent.id
@@ -268,23 +258,12 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
     }
   }
 
-  get dateErrorMessage() {
-    return (
-      this.model.changeEvent?.error?.date?.validation ||
-      this.dateValidation.errorMessage
-    );
-  }
-
   reset() {
-    this.endDateValidation = { valid: true };
-    this.publicationEndDateValidation = { valid: true };
-    this.dateValidation = { valid: true };
-    this.removeUnsavedRecords();
-  }
-
-  removeUnsavedRecords() {
-    this.model.changeEventRecord.rollbackAttributes();
-    this.model.decisionRecord.rollbackAttributes();
+    this.model.changeEvent.reset();
+    this.model.decision?.reset();
+    this.model.decisionActivity?.rollbackAttributes();
+    this.model.administrativeUnit.reset();
+    this.selectedResultingOrganization = null;
   }
 }
 
@@ -321,14 +300,6 @@ async function createChangeEventResult({
   await changeEventResult.save();
 }
 
-function canChangeMultipleOrganizations(changeEventType) {
-  return (
-    changeEventType.id === CHANGE_EVENT_TYPE.MERGER ||
-    changeEventType.id === CHANGE_EVENT_TYPE.FUSIE ||
-    changeEventType.id === CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE
-  );
-}
-
 async function findMostRecentChangeEvent(store, organization) {
   let mostRecentChangeEventResults = await store.query('change-event-result', {
     'filter[resulting-organization][:id:]': organization.id,
@@ -346,71 +317,9 @@ async function findMostRecentChangeEvent(store, organization) {
   }
 }
 
-async function mergeAssociated(ctx) {
-  let { store, changeEvent, shouldSaveDecision, decision, decisionActivity } =
-    ctx;
-
-  const results = await changeEvent.results;
-
-  decision = await decision;
-  decisionActivity = await decisionActivity;
-
-  let associatedChangeEvent = store.createRecord('change-event');
-  let associatedDecision = store.createRecord('decision');
-  let associatedDecisionActivity = store.createRecord('decisionActivity');
-
-  //copy decision
-  associatedDecision.publicationDate = decision.publicationDate;
-  associatedDecision.documentLink = decision.documentLink;
-
-  associatedDecisionActivity.endDate = decisionActivity.endDate;
-
-  // copy changeEvent
-  associatedChangeEvent.date = changeEvent.date;
-  associatedChangeEvent.description = changeEvent.description;
-
-  associatedChangeEvent.type = changeEvent.type;
-
-  await associatedChangeEvent.save();
-
-  await saveDecision(
-    shouldSaveDecision,
-    associatedDecision,
-    associatedDecisionActivity
-  );
-
-  for (const org of changeEvent.originalOrganizations.toArray()) {
-    const unit = await org.isAssociatedWith;
-    associatedChangeEvent.originalOrganizations.pushObject(unit);
-  }
-
-  for (const org of changeEvent.resultingOrganizations.toArray()) {
-    const unit = await org.isAssociatedWith;
-    associatedChangeEvent.resultingOrganizations.pushObject(unit);
-  }
-
-  const createChangeEventResults = [];
-
-  for (const r of results.toArray()) {
-    const result = await r;
-    const resultingOrganization = await result.resultingOrganization;
-    const associatedOrg = await resultingOrganization.isAssociatedWith;
-    createChangeEventResults.push(
-      createChangeEventResult({
-        resultingStatusId: result.status.get('id'),
-        resultingOrganization: associatedOrg,
-        changeEvent: associatedChangeEvent,
-        store,
-      })
-    );
-  }
-  await Promise.all(createChangeEventResults);
-  await associatedChangeEvent.save();
-}
-
 async function saveDecision(shouldSaveDecision, decision, decisionActivity) {
   if (shouldSaveDecision) {
-    if (!isEmpty(decision) || decisionActivity.endDate) {
+    if (!decision.isEmpty || decisionActivity.endDate) {
       if (decisionActivity.endDate) {
         await decisionActivity.save();
         decision.hasDecisionActivity = decisionActivity;

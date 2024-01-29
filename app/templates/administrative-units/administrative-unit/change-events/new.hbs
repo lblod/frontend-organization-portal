@@ -44,15 +44,15 @@
             <Item
               @labelFor="change-event-type"
               @required={{true}}
-              @errorMessage={{@model.formState.error.changeEventType.validation}}
+              @errorMessage={{@model.changeEvent.error.type.message}}
             >
               <:label>Type veranderingsgebeurtenis</:label>
               <:content as |hasError|>
                 <ChangeEventTypeSelect
                   @id="change-event-type"
-                  @selected={{@model.formState.changeEventType}}
-                  @administrativeUnitClassification={{@model.formState.currentOrganization.classification}}
-                  @onChange={{fn (mut @model.formState.changeEventType)}}
+                  @selected={{@model.changeEvent.type}}
+                  @administrativeUnitClassification={{@model.administrativeUnit.classification}}
+                  @onChange={{fn (mut @model.changeEvent.type)}}
                   @error={{hasError}}
                 />
               </:content>
@@ -67,10 +67,10 @@
                 />
               </:content>
             </Item>
-            {{#if @model.formState.canAddDecisionInformation}}
+            {{#if @model.changeEvent.requiresDecisionInformation}}
               <Item
                 @labelFor="change-event-decision-link"
-                @errorMessage={{@model.decision.error.documentLink.validation}}
+                @errorMessage={{@model.decision.error.documentLink.message}}
               >
                 <:label>Link naar besluit</:label>
                 <:content as |hasError|>
@@ -91,17 +91,18 @@
           <:right as |Item|>
             {{#if
               (and
-                (not this.isAgbOrApb)
-                (not this.isIgs)
-                (not this.isPoliceZone)
-                (not this.isAssistanceZone)
-                @model.formState.canAddDecisionInformation
+                (not @model.administrativeUnit.isAgb)
+                (not @model.administrativeUnit.isApb)
+                (not @model.administrativeUnit.isIgs)
+                (not @model.administrativeUnit.isPoliceZone)
+                (not @model.administrativeUnit.isAssistanceZone)
+                @model.changeEvent.requiresDecisionInformation
               )
             }}
-              {{#unless @model.formState.isCityChangeEvent}}
+              {{#unless @model.changeEvent.isCityChangeEvent}}
                 <Item
                   @labelFor="change-event-decision-activity-date"
-                  @errorMessage={{this.endDateValidation.errorMessage}}
+                  @errorMessage={{@model.decisionActivity.error.endDate.message}}
                 >
                   <:label>Datum ministerieel besluit</:label>
                   <:content as |hasError|>
@@ -110,19 +111,20 @@
                       @id="change-event-decision-activity-date"
                       @value={{@model.decisionActivity.endDate}}
                       @onChange={{fn (mut @model.decisionActivity.endDate)}}
-                      @onValidate={{this.validateEndDate}}
                     />
                   </:content>
                 </Item>
               {{/unless}}
               <Item
                 @labelFor="change-event-decision-publication-date"
-                @errorMessage={{this.publicationEndDateValidation.errorMessage}}
+                @errorMessage={{@model.decision.error.publicationDate.message}}
               >
                 <:label>
                   {{#if
                     (and
-                      (not this.isAgbOrApb) @model.formState.isCityChangeEvent
+                      (not @model.administrativeUnit.isAgb)
+                      (not @model.administrativeUnit.isApb)
+                      @model.changeEvent.isCityChangeEvent
                     )
                   }}
                     Datum besluit
@@ -136,7 +138,6 @@
                     @id="change-event-decision-publication-date"
                     @value={{@model.decision.publicationDate}}
                     @onChange={{fn (mut @model.decision.publicationDate)}}
-                    @onValidate={{this.validatePublicationEndDate}}
                   />
                 </:content>
               </Item>
@@ -144,7 +145,7 @@
             <Item
               @labelFor="change-event-date"
               @required={{true}}
-              @errorMessage={{this.dateErrorMessage}}
+              @errorMessage={{@model.changeEvent.error.date.message}}
             >
               <:label>Datum veranderingsgebeurtenis</:label>
               <:content as |hasError|>
@@ -153,7 +154,6 @@
                   @value={{@model.changeEvent.date}}
                   @onChange={{fn (mut @model.changeEvent.date)}}
                   @error={{hasError}}
-                  @onValidate={{this.validateDate}}
                 />
               </:content>
             </Item>
@@ -162,27 +162,28 @@
       </:card>
     </EditCard>
 
-    {{#if @model.formState.shouldShowExtraInformationCard}}
+    {{#if @model.changeEvent.canAffectMultipleOrganizations}}
       <EditCard>
-        <:title>{{@model.formState.changeEventType.label}}</:title>
+        <:title>{{@model.changeEvent.type.label}}</:title>
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>
-              <Item>
-                <:label>Betrokken organisatie</:label>
-                <:content>
-                  {{@model.administrativeUnit.name}}
-                </:content>
-              </Item>
-              {{#each @model.formState.originalOrganizations as |organization|}}
-                <Item>
+              {{#each
+                @model.changeEvent.originalOrganizations
+                as |organization|
+              }}
+                <Item @required={{(eq @model.administrativeUnit organization)}}>
                   <:label>Betrokken organisatie</:label>
                   <:content>
                     <div class="flex items-center">
                       <AdministrativeUnitSelect
+                        @disabled={{eq
+                          this.model.administrativeUnit
+                          organization
+                        }}
                         @selected={{organization}}
                         @onChange={{fn
-                          @model.formState.updateOriginalOrganization
+                          this.updateOriginalOrganizations
                           organization
                         }}
                         @classificationCodes={{this.classificationCodes}}
@@ -190,7 +191,10 @@
                         class="grow"
                       />
                       {{#if
-                        @model.formState.canRemoveSelectedOriginalOrganization
+                        (and
+                          (gt @model.changeEvent.originalOrganizations.length 1)
+                          (not (eq this.model.administrativeUnit organization))
+                        )
                       }}
                         <AuButton
                           @alert={{true}}
@@ -202,10 +206,7 @@
                           type="button"
                           {{on
                             "click"
-                            (fn
-                              @model.formState.removeOriginalOrganization
-                              organization
-                            )
+                            (fn this.removeOriginalOrganization organization)
                           }}
                         >
                           Verwijder
@@ -216,26 +217,31 @@
                 </Item>
               {{/each}}
 
-              {{#if @model.formState.isAddingOriginalOrganization}}
+              {{#if
+                (or
+                  this.isAddingOriginalOrganizations
+                  (lt @model.changeEvent.originalOrganizations.length 2)
+                )
+              }}
                 <Item
-                  @required={{and
-                    @model.formState.shouldSelectMultipleOriginalOrganizations
-                    (eq @model.formState.originalOrganizations.length 0)
-                  }}
-                  @errorMessage={{@model.formState.error.originalOrganizations.validation}}
+                  @required={{(and
+                    @model.changeEvent.isMergerChangeEvent
+                    (lt @model.changeEvent.originalOrganizations.length 2)
+                  )}}
+                  @errorMessage={{@model.changeEvent.error.originalOrganizations.message}}
                 >
                   <:label>Betrokken organisatie</:label>
                   <:content as |hasError|>
                     <div class="flex items-center">
                       <AdministrativeUnitSelect
-                        @onChange={{@model.formState.addOriginalOrganization}}
+                        @onChange={{this.updateOriginalOrganizations}}
                         @classificationCodes={{this.classificationCodes}}
                         @filter={{this.filterSelectedOriginalOrganizations}}
                         @error={{hasError}}
                         class="grow"
                       />
                       {{#if
-                        @model.formState.canCancelSelectingOriginalOrganization
+                        (gt @model.changeEvent.originalOrganizations.length 1)
                       }}
                         <AuButton
                           @alert={{true}}
@@ -246,12 +252,7 @@
                           class="shrink-0"
                           {{on
                             "click"
-                            (fn
-                              (mut
-                                @model.formState.isAddingOriginalOrganization
-                              )
-                              false
-                            )
+                            (fn (mut this.isAddingOriginalOrganizations) false)
                           }}
                         >
                           Verwijder
@@ -267,10 +268,7 @@
                       @skin="link"
                       {{on
                         "click"
-                        (fn
-                          (mut @model.formState.isAddingOriginalOrganization)
-                          true
-                        )
+                        (fn (mut this.isAddingOriginalOrganizations) true)
                       }}
                     >
                       Voeg bijkomende organisatie toe
@@ -279,20 +277,19 @@
                 </Item>
               {{/if}}
             </:left>
+
             <:right as |Item|>
-              {{#if @model.formState.shouldSelectResultingOrganization}}
+              {{#if @model.changeEvent.isMergerChangeEvent}}
                 <Item
                   @required={{true}}
-                  @errorMessage={{@model.formState.error.resultingOrganization.validation}}
+                  @errorMessage={{@model.changeEvent.error.resultingOrganizations.message}}
                 >
                   <:label>Resulterende organisatie</:label>
                   <:content as |hasError|>
-                    {{#if @model.formState.isCentralWorshipService}}
+                    {{#if @model.administrativeUnit.isCentralWorshipService}}
                       <AdministrativeUnitSelect
-                        @selected={{@model.formState.resultingOrganization}}
-                        @onChange={{fn
-                          (mut @model.formState.resultingOrganization)
-                        }}
+                        @selected={{this.selectedResultingOrganization}}
+                        @onChange={{this.updateResultingOrganizations}}
                         @classificationCodes={{this.classificationCodes}}
                         @filter={{this.filterSelectedOriginalOrganizations}}
                         @error={{hasError}}
@@ -308,11 +305,9 @@
                     {{else}}
                       <div class={{if hasError "ember-power-select--error"}}>
                         <PowerSelect
-                          @options={{@model.formState.allOriginalOrganizations}}
-                          @selected={{@model.formState.resultingOrganization}}
-                          @onChange={{fn
-                            (mut @model.formState.resultingOrganization)
-                          }}
+                          @options={{@model.changeEvent.originalOrganizations}}
+                          @selected={{this.selectedResultingOrganization}}
+                          @onChange={{this.updateResultingOrganizations}}
                           as |organization|
                         >
                           {{organization.name}}
