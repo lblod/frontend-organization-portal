@@ -70,7 +70,12 @@ export default class GoverningBodyModel extends AbstractValidationModel {
             let governingBodies = await this.getOtherTimedGoverningBodies();
 
             for (const body of governingBodies) {
-              if (inPeriod(body.startDate, this.startDate, this.endDate)) {
+              // Note: This also checks the endDate of body to replicate the
+              // behaviour of the deprecated changeset-based validation
+              if (
+                inPeriod(body.endDate, this.startDate, this.endDate) ||
+                inPeriod(body.startDate, this.startDate, this.endDate)
+              ) {
                 return helpers.message('Geen overlap');
               }
             }
@@ -93,7 +98,12 @@ export default class GoverningBodyModel extends AbstractValidationModel {
             let governingBodies = await this.getOtherTimedGoverningBodies();
 
             for (const body of governingBodies) {
-              if (inPeriod(body.endDate, this.startDate, this.endDate)) {
+              // Note: This also checks the startDate of body to replicate the
+              // behaviour of the deprecated changeset-based validation
+              if (
+                inPeriod(body.endDate, this.startDate, this.endDate) ||
+                inPeriod(body.startDate, this.startDate, this.endDate)
+              ) {
                 return helpers.message('Geen overlap');
               }
             }
@@ -158,10 +168,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
   }
 }
 
-/**
- * Checks whether a given date is strictly between a start and end date. If
- * either of the arguments are missing it defaults to false.
- */
+// TODO: function does not belong in this file
 export function inPeriod(date, start, end) {
   if (date && start && end) {
     let time = date.getTime();
