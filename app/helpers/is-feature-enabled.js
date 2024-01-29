@@ -10,7 +10,6 @@ export default class IsFeatureEnabledHelper extends Helper {
       'is-feature-enabled expects exactly one argument',
       positional.length === 1
     );
-
     return this.features.isEnabled(positional[0] || '');
   }
 }

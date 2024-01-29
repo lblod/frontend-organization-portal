@@ -69,7 +69,7 @@ module.exports = function (environment) {
     },
 
     features: {
-      // define feature flags here
+      'kbo-data-tab': false,
     },
   };
 
