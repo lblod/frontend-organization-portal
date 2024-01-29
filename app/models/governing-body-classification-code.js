@@ -1,6 +1,5 @@
 import Model, { attr, hasMany } from '@ember-data/model';
 
-// TODO: move to some constants file?
 export const EXECUTIVE_ORGANEN = [
   '39854196-f214-4688-87a1-d6ad12baa2fa', // Algemeen Directeur
   '11f0af9e-016c-4e0b-983a-d8bc73804abc', // Adjunct-Algemeen Directeur

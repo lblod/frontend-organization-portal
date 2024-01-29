@@ -19,20 +19,10 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         'administrative-units.administrative-unit.governing-bodies.governing-body'
       );
 
-    // TODO: remove retrieval of other bodies from route
-    const bodies = await this.modelFor(
-      'administrative-units.administrative-unit.governing-bodies'
-    );
-
-    const otherBodies = bodies.governingBodies.filter(
-      (otherBody) => otherBody.id !== governingBody.id
-    );
-
     return {
       governingBody,
       governingBodyClassification,
       administrativeUnit,
-      otherBodies,
     };
   }
 
