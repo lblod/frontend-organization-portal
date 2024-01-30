@@ -164,6 +164,6 @@ export default class GoverningBodyModel extends AbstractValidationModel {
       }
     }
 
-    return governingBodies.filter((body) => body.get('id') !== this.id);
+    return governingBodies.filter((body) => body.id !== this.id);
   }
 }
