@@ -56,6 +56,9 @@ export default class GoverningBodyModel extends AbstractValidationModel {
         .empty(null)
         .required()
         .external(async (value, helpers) => {
+          // Note, Joi does not handle cyclic references properly. Therefore, we
+          // check whether the start date precedes the end date (if any) in this
+          // external check instead of using Joi.date().max().
           if (this.endDate && value > this.endDate) {
             return helpers.message(
               'Kies een startdatum die vóór de einddatum plaatsvindt'
@@ -66,11 +69,16 @@ export default class GoverningBodyModel extends AbstractValidationModel {
             let governingBodies = await this.getOtherTimedGoverningBodies();
 
             for (const body of governingBodies) {
-              // Note: This also checks the endDate of body to replicate the
-              // behaviour of the deprecated changeset-based validation
+              // Note, this check is written this way to match the behaviour of
+              // the pre-Joi validation. That validation checked whether the
+              // dates of other governing bodies overlap with the period set for
+              // this governing body, not the other way around. Furthermore, the
+              // pre-Joi validation resulted in error messages for both date
+              // form fields, hence the check of the other body's end date here
+              // as well.
               if (
-                inPeriod(body.endDate, this.startDate, this.endDate) ||
-                inPeriod(body.startDate, this.startDate, this.endDate)
+                inPeriod(body.startDate, this.startDate, this.endDate) ||
+                inPeriod(body.endDate, this.startDate, this.endDate)
               ) {
                 return helpers.message('Geen overlap');
               }
@@ -84,6 +92,9 @@ export default class GoverningBodyModel extends AbstractValidationModel {
         .empty(null)
         .required()
         .external(async (value, helpers) => {
+          // Note, Joi does not handle cyclic references properly. Therefore, we
+          // check whether the end is after the start date (if any) in this
+          // external check instead of using Joi.date().min().
           if (this.startDate && value < this.startDate) {
             return helpers.message(
               'Kies een einddatum die na de startdatum plaatsvindt'
@@ -94,8 +105,13 @@ export default class GoverningBodyModel extends AbstractValidationModel {
             let governingBodies = await this.getOtherTimedGoverningBodies();
 
             for (const body of governingBodies) {
-              // Note: This also checks the startDate of body to replicate the
-              // behaviour of the deprecated changeset-based validation
+              // Note, this check is written this way to match the behaviour of
+              // the pre-Joi validation. That validation checked whether the
+              // dates of other governing bodies overlap with the period set for
+              // this governing body, not the other way around. Furthermore, the
+              // pre-Joi validation resulted in error messages for both date
+              // form fields, hence the check of the other body's start date
+              // here as well.
               if (
                 inPeriod(body.endDate, this.startDate, this.endDate) ||
                 inPeriod(body.startDate, this.startDate, this.endDate)
