@@ -788,4 +788,41 @@ module('Unit | Model | governing body', function (hooks) {
       queryStub.restore();
     });
   });
+
+  module('get period', function () {
+    test('it should return a string with start and end year', function (assert) {
+      const model = this.store().createRecord('governing-body', {
+        startDate: new Date('2024-01-01'),
+        endDate: new Date('2025-01-01'),
+      });
+      const period = model.period;
+
+      assert.deepEqual(period, '2024 - 2025');
+    });
+
+    test('it should return a string with only the start year', function (assert) {
+      const model = this.store().createRecord('governing-body', {
+        startDate: new Date('2024-01-01'),
+      });
+      const period = model.period;
+
+      assert.deepEqual(period, '2024 -');
+    });
+
+    test('it should return a string with only the end year', function (assert) {
+      const model = this.store().createRecord('governing-body', {
+        endDate: new Date('2025-01-01'),
+      });
+      const period = model.period;
+
+      assert.deepEqual(period, '- 2025');
+    });
+
+    test('it should return a string containing only a dash', function (assert) {
+      const model = this.store().createRecord('governing-body');
+      const period = model.period;
+
+      assert.deepEqual(period, '-');
+    });
+  });
 });
