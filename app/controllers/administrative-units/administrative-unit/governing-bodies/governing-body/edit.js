@@ -12,7 +12,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
 
   @action
   cancel() {
-    this.model.governingBody.reset();
+    this.reset();
 
     this.router.transitionTo(
       'administrative-units.administrative-unit.governing-bodies.governing-body'

@@ -19,8 +19,8 @@ module('Unit | Model | governing body', function (hooks) {
 
       assert.false(isValid);
       assert.strictEqual(Object.keys(model.error).length, 2);
-      assert.strictEqual(model.error.startDate.message, 'Vul de startdatum in');
       assert.propContains(model.error, {
+        startDate: { message: 'Vul de startdatum in' },
         endDate: { message: 'Vul de einddatum in' },
       });
     });
