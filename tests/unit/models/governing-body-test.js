@@ -493,6 +493,57 @@ module('Unit | Model | governing body', function (hooks) {
       queryStub.restore();
     });
 
+    test('it returns an empty array for a governing body without relations', async function (assert) {
+      const model = this.store().createRecord('governing-body');
+
+      const governingBodies = await model.getOtherTimedGoverningBodies();
+      assert.strictEqual(governingBodies.length, 0);
+    });
+
+    test('it returns an empty array when the model is not a time specialisation of another governing body', async function (assert) {
+      const administrativeUnit = this.store().createRecord(
+        'administrative-unit',
+        { id: '1234' }
+      );
+
+      const model = this.store().createRecord('governing-body', {
+        administrativeUnit: administrativeUnit,
+      });
+
+      const governingBodies = await model.getOtherTimedGoverningBodies();
+      assert.strictEqual(governingBodies.length, 0);
+    });
+
+    test('it returns an empty array when there is no related administrative unit', async function (assert) {
+      const untimedBody = this.store().createRecord('governing-body');
+
+      const timedBody = this.store().createRecord('governing-body', {
+        isTimeSpecializationOf: untimedBody,
+      });
+      untimedBody.hasTimeSpecializations.pushObject(timedBody);
+
+      const governingBodies = await timedBody.getOtherTimedGoverningBodies();
+      assert.strictEqual(governingBodies.length, 0);
+    });
+
+    test('it returns an empty array when the related administrative unit has no identifier', async function (assert) {
+      const administrativeUnit = this.store().createRecord(
+        'administrative-unit'
+      );
+
+      const untimedBody = this.store().createRecord('governing-body', {
+        administrativeUnit: administrativeUnit,
+      });
+
+      const timedBody = this.store().createRecord('governing-body', {
+        isTimeSpecializationOf: untimedBody,
+      });
+      untimedBody.hasTimeSpecializations.pushObject(timedBody);
+
+      const governingBodies = await timedBody.getOtherTimedGoverningBodies();
+      assert.strictEqual(governingBodies.length, 0);
+    });
+
     test('it returns an array containing the other timed governing bodies when there is one of the same classification', async function (assert) {
       const administrativeUnit = this.store().createRecord(
         'administrative-unit',
