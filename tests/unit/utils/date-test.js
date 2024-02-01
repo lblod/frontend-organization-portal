@@ -43,32 +43,28 @@ module('Unit | Utility | date', function () {
       assert.false(inPeriod(date, start, end));
     });
 
-    test('it returns false when date is undefined', function (assert) {
-      const start = new Date('2024-01-01');
-      const end = new Date('2025-01-01');
-
-      assert.false(inPeriod(undefined, start, end));
+    [
+      [undefined, new Date('2024-01-01'), new Date('2025-01-01'), 'date'],
+      [new Date('2024-01-01'), undefined, new Date('2025-01-01'), 'start'],
+      [new Date('2024-01-01'), new Date('2025-01-01'), undefined, 'end'],
+    ].forEach(([date, start, end, undefinedArg]) => {
+      test(`it throws an assertion error when ${undefinedArg} is undefined`, function (assert) {
+        assert.throws(
+          () => inPeriod(date, start, end),
+          'All parameters must be valid Date objects.'
+        );
+      });
     });
 
-    test('it returns false when start is undefined', function (assert) {
-      const date = new Date('2024-01-01');
-      const end = new Date('2025-01-01');
-
-      assert.false(inPeriod(date, undefined, end));
-    });
-
-    test('it returns false when end is undefined', function (assert) {
-      const date = new Date('2024-01-01');
+    test('it throws an assertion error when start is after end', function (assert) {
+      const date = new Date('2023-01-01');
       const start = new Date('2025-01-01');
+      const end = new Date('2024-01-01');
 
-      assert.false(inPeriod(date, start, undefined));
-    });
-
-    test('it returns false when insufficient arguments', function (assert) {
-      const date = new Date('2024-01-01');
-      const start = new Date('2025-01-01');
-
-      assert.false(inPeriod(date, start));
+      assert.throws(
+        () => inPeriod(date, start, end),
+        'Start date must be before end date.'
+      );
     });
   });
 });

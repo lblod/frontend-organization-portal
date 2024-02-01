@@ -1,7 +1,11 @@
+import { assert } from '@ember/debug';
+
 export function inPeriod(date, start, end) {
-  if (date && start && end) {
-    let time = date.getTime();
-    return start.getTime() < time && time < end.getTime();
-  }
-  return false;
+  assert(
+    'All parameters must be valid Date objects.',
+    date instanceof Date && start instanceof Date && end instanceof Date
+  );
+  assert('Start date must be before end date.', start < end);
+
+  return start < date && date < end;
 }
