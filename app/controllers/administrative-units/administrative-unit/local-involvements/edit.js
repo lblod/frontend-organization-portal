@@ -175,13 +175,13 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
       this.isValidTotalFinancingPercentage &&
       this.isOneOrLessFinancialLocalInvolvement
     ) {
-      let localInvolvementsWithUnsavedChanges = involvements.filter(
-        (involvement) => involvement.isDirty
-      );
+      // isDirty was part of ember-changest and is not available in ember-data
+      // TODO: After ember update reimplement a way to check for dirty relationships
+      // let localInvolvementsWithUnsavedChanges = involvements.filter(
+      //   (involvement) => involvement.isDirty
+      // );
 
-      let savePromises = localInvolvementsWithUnsavedChanges.map(
-        (involvement) => involvement.save()
-      );
+      let savePromises = involvements.map((involvement) => involvement.save());
 
       yield Promise.all(savePromises);
 
