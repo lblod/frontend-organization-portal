@@ -37,16 +37,6 @@ module('Unit | Model | governing body', function (hooks) {
       assert.propContains(model.error, {
         startDate: { message: 'Vul de startdatum in' },
       });
-      assert.notPropContains(model.error, {
-        startDate: {
-          message: 'Kies een startdatum die vóór de einddatum plaatsvindt',
-        },
-      });
-      assert.notPropContains(model.error, {
-        endDate: {
-          message: 'Kies een einddatum die na de startdatum plaatsvindt',
-        },
-      });
     });
 
     test('it returns a single error when the given start date is invalid', async function (assert) {
@@ -61,16 +51,6 @@ module('Unit | Model | governing body', function (hooks) {
       assert.strictEqual(Object.keys(model.error).length, 1);
       assert.propContains(model.error, {
         startDate: { message: 'Vul de startdatum in' },
-      });
-      assert.notPropContains(model.error, {
-        startDate: {
-          message: 'Kies een startdatum die vóór de einddatum plaatsvindt',
-        },
-      });
-      assert.notPropContains(model.error, {
-        endDate: {
-          message: 'Kies een einddatum die na de startdatum plaatsvindt',
-        },
       });
     });
 
@@ -91,11 +71,6 @@ module('Unit | Model | governing body', function (hooks) {
           message: 'Kies een startdatum die vóór de einddatum plaatsvindt',
         },
       });
-      assert.notPropContains(model.error, {
-        endDate: {
-          message: 'Kies een einddatum die na de startdatum plaatsvindt',
-        },
-      });
     });
 
     test('it returns a single error when the given end date is invalid', async function (assert) {
@@ -114,11 +89,6 @@ module('Unit | Model | governing body', function (hooks) {
       assert.notPropContains(model.error, {
         startDate: {
           message: 'Kies een startdatum die vóór de einddatum plaatsvindt',
-        },
-      });
-      assert.notPropContains(model.error, {
-        endDate: {
-          message: 'Kies een einddatum die na de startdatum plaatsvindt',
         },
       });
     });
@@ -180,6 +150,108 @@ module('Unit | Model | governing body', function (hooks) {
       });
     });
 
+    [
+      [
+        // model: |------|
+        // other:           |------|
+        '2020-01-01',
+        '2022-01-01',
+        '2024-01-01',
+        '2026-01-01',
+        "period is strictly before another governing body's period",
+      ],
+      [
+        // model:           |------|
+        // other: |------|
+        '2024-01-01',
+        '2026-01-01',
+        '2020-01-01',
+        '2022-01-01',
+        "period is strictly after another governing body's period",
+      ],
+      [
+        // model: |------|
+        // other: |------|
+        '2023-01-01',
+        '2024-01-01',
+        '2023-01-01',
+        '2024-01-01',
+        'start and end date are identical to those of another governing body',
+      ],
+      [
+        // model:   |--|
+        // other: |------|
+        '2023-06-06',
+        '2024-06-06',
+        '2023-01-01',
+        '2025-01-01',
+        'period is strictly within the period of another governing body',
+      ],
+      [
+        // model:    |---|
+        // other: |------|
+        '2023-06-06',
+        '2024-01-01',
+        '2023-01-01',
+        '2024-01-01',
+        'start date is strictly within the period of another governing body and they have the same end date',
+      ],
+      [
+        // model: |---|
+        // other: |------|
+        '2023-01-01',
+        '2023-06-06',
+        '2023-01-01',
+        '2024-01-01',
+        'end date is strictly within the period of another governing body and they have the same start date',
+      ],
+      [
+        // model: |------|
+        // other:        |------|
+        '2023-01-01',
+        '2024-01-01',
+        '2024-01-01',
+        '2025-01-01',
+        'end date is the same as the start date of another governing body',
+      ],
+      [
+        // model:        |------|
+        // other: |------|
+        '2024-01-01',
+        '2025-01-01',
+        '2023-01-01',
+        '2024-01-01',
+        'start date is the same as the end date of another governing body',
+      ],
+    ].forEach(([modelStart, modelEnd, otherStart, otherEnd, description]) => {
+      test(`it returns no errors when the model's ${description}`, async function (assert) {
+        const model = this.store().createRecord('governing-body', {
+          startDate: new Date(modelStart),
+          endDate: new Date(modelEnd),
+        });
+
+        const otherModel = this.store().createRecord('governing-body', {
+          startDate: new Date(otherStart),
+          endDate: new Date(otherEnd),
+        });
+
+        const otherBodiesStub = sinon.stub(
+          model,
+          'getOtherTimedGoverningBodies'
+        );
+        otherBodiesStub.resolves([otherModel]);
+
+        const isValid = await model.validate();
+
+        assert.true(isValid);
+        assert.notOk(model.error, 'model.error should not be undefined');
+
+        otherBodiesStub.restore();
+      });
+    });
+
+    // model: |------|
+    // other:   |--|
     test('it returns two errors when the period of another governing body is strictly within the period of the model', async function (assert) {
       const otherModel = this.store().createRecord('governing-body', {
         startDate: new Date('2023-01-01'),
@@ -211,75 +283,8 @@ module('Unit | Model | governing body', function (hooks) {
       otherBodiesStub.restore();
     });
 
-    test('it returns no error when the start and end dates of two governing bodies are identical', async function (assert) {
-      let start = new Date('2024-01-01');
-      let end = new Date('2025-01-01');
-
-      const otherModel = this.store().createRecord('governing-body', {
-        startDate: start,
-        endDate: end,
-      });
-
-      const model = this.store().createRecord('governing-body', {
-        startDate: start,
-        endDate: end,
-      });
-
-      const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
-      otherBodiesStub.resolves([otherModel]);
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.notOk(model.error, 'model.error should be undefined');
-
-      otherBodiesStub.restore();
-    });
-
-    test("it returns no error when the period of another governing body is strictly after the model's period", async function (assert) {
-      const otherModel = this.store().createRecord('governing-body', {
-        startDate: new Date('2024-01-01'),
-        endDate: new Date('2026-01-01'),
-      });
-
-      const model = this.store().createRecord('governing-body', {
-        startDate: new Date('2020-01-01'),
-        endDate: new Date('2023-01-01'),
-      });
-
-      const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
-      otherBodiesStub.resolves([otherModel]);
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.notOk(model.error, 'model.error should be undefined');
-
-      otherBodiesStub.restore();
-    });
-
-    test("it returns no error when the period of another governing body is strictly before the model's period", async function (assert) {
-      const otherModel = this.store().createRecord('governing-body', {
-        startDate: new Date('2020-01-01'),
-        endDate: new Date('2023-01-01'),
-      });
-
-      const model = this.store().createRecord('governing-body', {
-        startDate: new Date('2024-01-01'),
-        endDate: new Date('2026-01-01'),
-      });
-
-      const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
-      otherBodiesStub.resolves([otherModel]);
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.notOk(model.error, 'model.error should be undefined');
-
-      otherBodiesStub.restore();
-    });
-
+    // model: |------|
+    // other:    |------|
     test("it returns two errors when the start date of another governing body is strictly between the model's start and end date", async function (assert) {
       const otherModel = this.store().createRecord('governing-body', {
         startDate: new Date('2024-06-06'),
@@ -311,15 +316,17 @@ module('Unit | Model | governing body', function (hooks) {
       otherBodiesStub.restore();
     });
 
-    test("it returns no error when the model's period is strictly within the period of another governing body", async function (assert) {
+    // model:    |------|
+    // other: |------|
+    test("it returns two errors when the end date of another governing body is strictly between the model's start and end date", async function (assert) {
       const otherModel = this.store().createRecord('governing-body', {
-        startDate: new Date('2020-01-01'),
-        endDate: new Date('2025-01-01'),
+        startDate: new Date('2023-01-01'),
+        endDate: new Date('2024-06-06'),
       });
 
       const model = this.store().createRecord('governing-body', {
-        startDate: new Date('2023-01-01'),
-        endDate: new Date('2024-01-01'),
+        startDate: new Date('2024-01-01'),
+        endDate: new Date('2025-01-01'),
       });
 
       const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
@@ -327,16 +334,62 @@ module('Unit | Model | governing body', function (hooks) {
 
       const isValid = await model.validate();
 
-      assert.true(isValid);
-      assert.notOk(model.error, 'model.error should not be undefined');
+      assert.false(isValid);
+      assert.ok(model.error, 'model.error should not be undefined');
+      assert.strictEqual(Object.keys(model.error).length, 2);
+      assert.propContains(model.error, {
+        startDate: {
+          message: 'Geen overlap',
+        },
+        endDate: {
+          message: 'Geen overlap',
+        },
+      });
 
       otherBodiesStub.restore();
     });
 
-    test("it returns two errors when the start date of another governing body is strictly between the model's start and end date, and they have same end date", async function (assert) {
-      const unit = this.store().createRecord('administrative-unit', {
-        id: '1234',
+    // model: |------|
+    // other: |---|
+    test("it returns two errors when the end date of another governing body is strictly between the model's start and end date, and they have same start date", async function (assert) {
+      const unit = this.store().createRecord('administrative-unit');
+
+      const otherModel = this.store().createRecord('governing-body', {
+        startDate: new Date('2024-01-01'),
+        endDate: new Date('2024-06-06'),
+        administrativeUnit: unit,
       });
+
+      const model = this.store().createRecord('governing-body', {
+        startDate: new Date('2024-01-01'),
+        endDate: new Date('2025-01-01'),
+        administrativeUnit: unit,
+      });
+
+      const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
+      otherBodiesStub.resolves([otherModel]);
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.ok(model.error, 'model.error should not be undefined');
+      assert.strictEqual(Object.keys(model.error).length, 2);
+      assert.propContains(model.error, {
+        startDate: {
+          message: 'Geen overlap',
+        },
+        endDate: {
+          message: 'Geen overlap',
+        },
+      });
+
+      otherBodiesStub.restore();
+    });
+
+    // model: |------|
+    // other:    |---|
+    test("it returns two errors when the start date of another governing body is strictly between the model's start and end date, and they have same end date", async function (assert) {
+      const unit = this.store().createRecord('administrative-unit');
 
       const otherModel = this.store().createRecord('governing-body', {
         startDate: new Date('2024-06-06'),
@@ -370,168 +423,10 @@ module('Unit | Model | governing body', function (hooks) {
       otherBodiesStub.restore();
     });
 
-    test("it returns two errors when the end date of another governing body is strictly between the model's start and end date", async function (assert) {
-      const otherModel = this.store().createRecord('governing-body', {
-        startDate: new Date('2023-01-01'),
-        endDate: new Date('2024-06-06'),
-      });
-
-      const model = this.store().createRecord('governing-body', {
-        startDate: new Date('2024-01-01'),
-        endDate: new Date('2025-01-01'),
-      });
-
-      const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
-      otherBodiesStub.resolves([otherModel]);
-
-      const isValid = await model.validate();
-
-      assert.false(isValid);
-      assert.ok(model.error, 'model.error should not be undefined');
-      assert.strictEqual(Object.keys(model.error).length, 2);
-      assert.propContains(model.error, {
-        startDate: {
-          message: 'Geen overlap',
-        },
-        endDate: {
-          message: 'Geen overlap',
-        },
-      });
-
-      otherBodiesStub.restore();
-    });
-
-    test("it returns no error when the model's period is strictly within the period of another governing body, and they have the same start date", async function (assert) {
-      const otherModel = this.store().createRecord('governing-body', {
-        startDate: new Date('2023-01-01'),
-        endDate: new Date('2025-01-01'),
-      });
-
-      const model = this.store().createRecord('governing-body', {
-        startDate: new Date('2023-01-01'),
-        endDate: new Date('2024-01-01'),
-      });
-
-      const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
-      otherBodiesStub.resolves([otherModel]);
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.notOk(model.error, 'model.error should not be undefined');
-
-      otherBodiesStub.restore();
-    });
-
-    test("it returns no error when the model's end date is the same as the start date of another governing body", async function (assert) {
-      const otherModel = this.store().createRecord('governing-body', {
-        startDate: new Date('2024-01-01'),
-        endDate: new Date('2025-01-01'),
-      });
-
-      const model = this.store().createRecord('governing-body', {
-        startDate: new Date('2023-01-01'),
-        endDate: new Date('2024-01-01'),
-      });
-
-      const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
-      otherBodiesStub.resolves([otherModel]);
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.notOk(model.error, 'model.error should not be undefined');
-
-      otherBodiesStub.restore();
-    });
-
-    test("it returns no error when the model's start date is the same as the end date of another governing body", async function (assert) {
-      const otherModel = this.store().createRecord('governing-body', {
-        startDate: new Date('2023-01-01'),
-        endDate: new Date('2024-01-01'),
-      });
-
-      const model = this.store().createRecord('governing-body', {
-        startDate: new Date('2024-01-01'),
-        endDate: new Date('2025-01-01'),
-      });
-
-      const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
-      otherBodiesStub.resolves([otherModel]);
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.notOk(model.error, 'model.error should not be undefined');
-
-      otherBodiesStub.restore();
-    });
-
-    test("it returns no errors when the model's start date is strictly within the period of another governing body and they have the same end date", async function (assert) {
-      const otherModel = this.store().createRecord('governing-body', {
-        startDate: new Date('2023-01-01'),
-        endDate: new Date('2024-01-01'),
-      });
-
-      const model = this.store().createRecord('governing-body', {
-        startDate: new Date('2023-06-06'),
-        endDate: new Date('2024-01-01'),
-      });
-
-      const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
-      otherBodiesStub.resolves([otherModel]);
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.notOk(model.error, 'model.error should not be undefined');
-
-      otherBodiesStub.restore();
-    });
-
-    test("it returns no errors when the model's end date is strictly within the period of another governing body and they have the same start date", async function (assert) {
-      const otherModel = this.store().createRecord('governing-body', {
-        startDate: new Date('2023-01-01'),
-        endDate: new Date('2024-01-01'),
-      });
-
-      const model = this.store().createRecord('governing-body', {
-        startDate: new Date('2023-01-01'),
-        endDate: new Date('2023-06-06'),
-      });
-
-      const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
-      otherBodiesStub.resolves([otherModel]);
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.notOk(model.error, 'model.error should not be undefined');
-
-      otherBodiesStub.restore();
-    });
-
-    test('it should not check start date overlap unless it was changed', async function (assert) {
+    test('it should not check period overlap unless dates were changed', async function (assert) {
       const model = this.store().createRecord('governing-body', {
         startDate: new Date('2024-02-01'),
         endDate: new Date('2026-01-01'),
-      });
-
-      const changedStub = sinon.stub(model, 'changedAttributes');
-      changedStub.returns({});
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.notOk(model.error, 'model.error should be undefined');
-
-      changedStub.restore();
-    });
-
-    test('it should not check end date overlap unless it was changed', async function (assert) {
-      const model = this.store().createRecord('governing-body', {
-        startDate: new Date('2023-01-01'),
-        endDate: new Date('2024-02-02'),
       });
 
       const changedStub = sinon.stub(model, 'changedAttributes');
