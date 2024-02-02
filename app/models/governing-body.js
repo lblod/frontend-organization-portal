@@ -67,7 +67,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
 
           if (
             this.changedAttributes().startDate &&
-            (await this.hasOverlapWithOtherGoverningBodies())
+            this.hasOverlapWithOtherGoverningBodies()
           ) {
             return helpers.message('Geen overlap');
           }
@@ -90,7 +90,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
 
           if (
             this.changedAttributes().endDate &&
-            (await this.hasOverlapWithOtherGoverningBodies())
+            this.hasOverlapWithOtherGoverningBodies()
           ) {
             return helpers.message('Geen overlap');
           }

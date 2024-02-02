@@ -735,6 +735,62 @@ module('Unit | Model | governing body', function (hooks) {
     });
   });
 
+  module('hasOverlapWithOtherGoverningBodies', function () {
+    test('it returns falsy when there are no other governing bodies', async function (assert) {
+      const model = this.store().createRecord('governing-body');
+
+      const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
+      otherBodiesStub.resolves([]);
+
+      const hasOverlap = await model.hasOverlapWithOtherGoverningBodies();
+      assert.notOk(hasOverlap);
+
+      otherBodiesStub.restore();
+    });
+
+    test('it returns true when there is an overlapping governing body', async function (assert) {
+      const otherModel = this.store().createRecord('governing-body', {
+        startDate: new Date('2023-01-01'),
+        endDate: new Date('2024-06-06'),
+      });
+
+      const model = this.store().createRecord('governing-body', {
+        startDate: new Date('2024-01-01'),
+        endDate: new Date('2025-01-01'),
+      });
+
+      const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
+      otherBodiesStub.resolves([otherModel]);
+
+      const hasOverlap = await model.hasOverlapWithOtherGoverningBodies();
+
+      assert.true(hasOverlap);
+
+      otherBodiesStub.restore();
+    });
+
+    test('it returns falsy when there is no overlapping governing body', async function (assert) {
+      const otherModel = this.store().createRecord('governing-body', {
+        startDate: new Date('2015-01-01'),
+        endDate: new Date('2016-01-01'),
+      });
+
+      const model = this.store().createRecord('governing-body', {
+        startDate: new Date('2024-01-01'),
+        endDate: new Date('2025-01-01'),
+      });
+
+      const otherBodiesStub = sinon.stub(model, 'getOtherTimedGoverningBodies');
+      otherBodiesStub.resolves([otherModel]);
+
+      const hasOverlap = await model.hasOverlapWithOtherGoverningBodies();
+
+      assert.notOk(hasOverlap);
+
+      otherBodiesStub.restore();
+    });
+  });
+
   module('get period', function () {
     test('it should return a string with start and end year', function (assert) {
       const model = this.store().createRecord('governing-body', {
