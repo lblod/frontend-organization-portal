@@ -1,4 +1,4 @@
-import { hasMany, belongsTo } from '@ember-data/model';
+import { hasMany, belongsTo, attr } from '@ember-data/model';
 import AbstractValidationModel from './abstract-validation-model';
 import Joi from 'joi';
 import {
@@ -23,11 +23,21 @@ export default class SiteModel extends AbstractValidationModel {
   })
   siteType;
 
+  @attr siteTypeName;
+
   get validationSchema() {
     return Joi.object({
       address: validateBelongsToOptional(),
       contacts: validateHasManyOptional(),
       siteType: validateBelongsToRequired('Voeg een type vestiging toe'),
+      siteTypeName: Joi.string().empty(''),
     });
+  }
+
+  get isOtherSite() {
+    return (
+      this.siteType &&
+      this.siteType.get('id') === 'dcc01338-842c-4fbd-ba68-3ca6f3af975c'
+    );
   }
 }

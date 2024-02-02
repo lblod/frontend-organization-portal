@@ -42,7 +42,9 @@
           {{site.address.fullAddress}}
         </AuLink>
       </td>
-      <td>{{site.siteType.label}}</td>
+      <td>
+        <SiteTypeWithName @site={{site}} />
+      </td>
       <td>{{if (eq site.id this.model.primarySite.id) "Ja" "Neen"}}</td>
       <SecuredArea>
         <:edit>
