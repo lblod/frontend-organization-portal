@@ -12,12 +12,4 @@ export default class PeopleNewPositionRoute extends Route {
       });
     }
   }
-  model() {
-    return {};
-  }
-
-  resetController(controller) {
-    super.resetController(...arguments);
-    controller.reset();
-  }
 }
