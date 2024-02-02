@@ -1,7 +1,5 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
-import governingBodyValidations from 'frontend-organization-portal/validations/governing-body';
 
 export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyEditRoute extends Route {
   @service currentSession;
@@ -21,22 +19,15 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
         'administrative-units.administrative-unit.governing-bodies.governing-body'
       );
 
-    const bodies = await this.modelFor(
-      'administrative-units.administrative-unit.governing-bodies'
-    );
-
-    const otherBodies = bodies.governingBodies.filter(
-      (otherBody) => otherBody.id !== governingBody.id
-    );
-
-    const bodyChangeSet = await createValidatedChangeset(
-      governingBody,
-      governingBodyValidations(otherBodies)
-    );
     return {
-      governingBody: bodyChangeSet,
+      governingBody,
       governingBodyClassification,
       administrativeUnit,
     };
+  }
+
+  resetController(controller) {
+    super.resetController(...arguments);
+    controller.reset();
   }
 }
