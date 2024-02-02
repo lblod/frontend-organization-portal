@@ -67,7 +67,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
 
           if (
             this.changedAttributes().startDate &&
-            this.hasOverlapWithOtherGoverningBodies()
+            (await this.hasOverlapWithOtherGoverningBodies())
           ) {
             return helpers.message('Geen overlap');
           }
@@ -90,7 +90,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
 
           if (
             this.changedAttributes().endDate &&
-            this.hasOverlapWithOtherGoverningBodies()
+            (await this.hasOverlapWithOtherGoverningBodies())
           ) {
             return helpers.message('Geen overlap');
           }
@@ -148,7 +148,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
    * administrative unit as this governing body. This excludes any governing
    * bodies that are time specialisations of governing bodies of that have and
    * executive organ classification.
-   * @return {A[GoverningBodyModel]}
+   * @return {Promise<A[GoverningBodyModel]>}
    */
   async getOtherTimedGoverningBodies() {
     let untimedGoverningBodies =
@@ -181,7 +181,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
    * is not considered to be overlapping in order to preserve functional
    * equivalence with the implementation as it was before migrating to Joi for
    * model validations.
-   * @return {Boolean} true if the start or end date of another governing body
+   * @return {Promise<Boolean>} true if the start or end date of another governing body
    * between the start and end date of this this governing body
    */
   async hasOverlapWithOtherGoverningBodies() {
