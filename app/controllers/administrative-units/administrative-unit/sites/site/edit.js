@@ -55,7 +55,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     yield secondaryContact.validate();
 
     if (!this.hasValidationErrors) {
-      if (address.isDirty) {
+      if (address.hasDirtyAttributes) {
         if (!address.isCountryBelgium) {
           address.province = '';
         }
@@ -65,7 +65,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
         yield address.save();
       }
 
-      if (contact.isDirty) {
+      if (contact.hasDirtyAttributes) {
         contact.telephone = transformPhoneNumbers(contact.telephone);
         if (contact.isNew) {
           site.contacts.pushObject(contact);
@@ -75,7 +75,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
         yield contact.save();
       }
 
-      if (secondaryContact.isDirty) {
+      if (secondaryContact.hasDirtyAttributes) {
         secondaryContact.telephone = transformPhoneNumbers(
           secondaryContact.telephone
         );
@@ -148,5 +148,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
       secondaryContact.destroyRecord();
     }
     this.isNoPrimarySiteErrorMessage = null;
+  }
+
+  @action
+  setSiteTypeName(e) {
+    this.model.site.siteTypeName = e.target.value;
   }
 }

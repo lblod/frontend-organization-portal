@@ -62,31 +62,31 @@
               <:right as |Item|>
                 <Item
                   @labelFor="governing-body-start-date"
-                  @errorMessage={{this.startDateValidation.errorMessage}}
+                  @errorMessage={{@model.governingBody.error.startDate.message}}
+                  @required={{true}}
                 >
                   <:label>Startdatum</:label>
                   <:content as |hasError|>
                     <Datepicker
-                      @error={{hasError}}
                       @id="governing-body-start-date"
-                      @onChange={{fn (mut @model.governingBody.startDate)}}
                       @value={{@model.governingBody.startDate}}
-                      @onValidate={{this.validateStartDate}}
+                      @onChange={{fn (mut @model.governingBody.startDate)}}
+                      @error={{hasError}}
                     />
                   </:content>
                 </Item>
                 <Item
                   @labelFor="governing-body-end-date"
-                  @errorMessage={{this.endDateValidation.errorMessage}}
+                  @errorMessage={{@model.governingBody.error.endDate.message}}
+                  @required={{true}}
                 >
                   <:label>Einddatum</:label>
                   <:content as |hasError|>
                     <Datepicker
-                      @error={{hasError}}
                       @id="governing-body-end-date"
-                      @onChange={{fn (mut @model.governingBody.endDate)}}
                       @value={{@model.governingBody.endDate}}
-                      @onValidate={{this.validateEndDate}}
+                      @onChange={{fn (mut @model.governingBody.endDate)}}
+                      @error={{hasError}}
                     />
                   </:content>
                 </Item>

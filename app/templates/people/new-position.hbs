@@ -7,10 +7,13 @@
       <:title>Nieuwe positie</:title>
       <:action>
         <AuButtonGroup class="au-c-button-group--align-right">
-          <AuButton @skin="secondary" {{on "click" this.cancel}}>
+          <AuLink
+              @route="people"
+              @skin="button-secondary"
+            >         
             Annuleer
-          </AuButton>          
-          <AuButton form="person-creation" type="submit" @disabled={{not this.valid}}>
+          </AuLink>
+          <AuButton form="person-creation" type="submit" @disabled={{true}}>
             Volgende
           </AuButton>
         </AuButtonGroup>
