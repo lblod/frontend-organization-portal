@@ -3,8 +3,6 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
-import { createValidatedChangeset } from 'frontend-organization-portal/utils/changeset';
-import localInvolvementValidations from 'frontend-organization-portal/validations/local-involvement';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 
@@ -13,7 +11,6 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   @service store;
   @tracked showTotalFinancingPercentageError = false;
   @tracked showMoreThanOneFinancialTypeError = false;
-  isFinancialInvolvementType = isFinancialInvolvementType;
 
   classificationCodes = [
     CLASSIFICATION_CODE.MUNICIPALITY,
@@ -23,7 +20,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   get hasValidationErrors() {
     let areSomeLocalInvolvementsInvalid = this.model.involvements
       .toArray()
-      .some((involvement) => involvement.isInvalid);
+      .some((involvement) => involvement.error);
 
     return (
       areSomeLocalInvolvementsInvalid ||
@@ -33,10 +30,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   }
 
   get isWorshipService() {
-    return (
-      this.model.worshipAdministrativeUnit.classification?.get('id') ===
-      CLASSIFICATION_CODE.WORSHIP_SERVICE
-    );
+    return this.model.worshipAdministrativeUnit.isWorshipService;
   }
 
   get totalFinancingPercentage() {
@@ -57,15 +51,10 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     return CLASSIFICATION_CODE.MUNICIPALITY;
   }
 
-  @action
-  isFinancial(involvement) {
-    return isFinancialInvolvementType(involvement);
-  }
-
   get isValidTotalFinancingPercentage() {
-    let hasFinancialLocalInvolvements = this.model.involvements.some(
-      (involvement) => isFinancialInvolvementType(involvement)
-    );
+    let hasFinancialLocalInvolvements = this.model.involvements
+      .toArray()
+      .some((involvement) => involvement.isSupervisory);
 
     if (hasFinancialLocalInvolvements) {
       return this.totalFinancingPercentage === 100;
@@ -104,7 +93,10 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   handleInvolvementTypeSelection(involvement, involvementType) {
     involvement.involvementType = involvementType;
 
-    if (!involvementType || involvementType.id !== INVOLVEMENT_TYPE.FINANCIAL) {
+    if (
+      !involvementType ||
+      involvementType.id !== INVOLVEMENT_TYPE.SUPERVISORY
+    ) {
       involvement.percentage = 0;
     }
 
@@ -123,7 +115,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
 
   get isOneOrLessFinancialLocalInvolvement() {
     let hasFinancialLocalInvolvements = this.model.involvements.filter(
-      (involvement) => isFinancialInvolvementType(involvement)
+      (involvement) => involvement.isSupervisory
     );
     return hasFinancialLocalInvolvements.length <= 1;
   }
@@ -144,9 +136,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
       });
     }
 
-    this.model.involvements.pushObject(
-      createValidatedChangeset(involvement, localInvolvementValidations)
-    );
+    this.model.involvements.pushObject(involvement);
   }
 
   @action
@@ -168,7 +158,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
 
     let areSomeLocalInvolvementsInvalid = involvements
       .toArray()
-      .some((involvement) => involvement.isInvalid);
+      .some((involvement) => involvement.error);
 
     if (!this.isValidTotalFinancingPercentage) {
       this.showTotalFinancingPercentageError = true;
@@ -182,13 +172,13 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
       this.isValidTotalFinancingPercentage &&
       this.isOneOrLessFinancialLocalInvolvement
     ) {
-      let localInvolvementsWithUnsavedChanges = involvements.filter(
-        (involvement) => involvement.isDirty
-      );
+      // isDirty was part of ember-changest and is not available in ember-data
+      // TODO: After ember update reimplement a way to check for dirty relationships
+      // let localInvolvementsWithUnsavedChanges = involvements.filter(
+      //   (involvement) => involvement.isDirty
+      // );
 
-      let savePromises = localInvolvementsWithUnsavedChanges.map(
-        (involvement) => involvement.save()
-      );
+      let savePromises = involvements.map((involvement) => involvement.save());
 
       yield Promise.all(savePromises);
 
@@ -200,13 +190,6 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   }
 
   isDisabledPercentage(involvement) {
-    return !(
-      involvement.involvementType?.id === INVOLVEMENT_TYPE.FINANCIAL ||
-      involvement.involvementType?.id === INVOLVEMENT_TYPE.MID_FINANCIAL
-    );
+    return !(involvement.isSupervisory || involvement.isMidFinancial);
   }
-}
-
-function isFinancialInvolvementType(involvement) {
-  return involvement.involvementType?.id === INVOLVEMENT_TYPE.FINANCIAL;
 }
