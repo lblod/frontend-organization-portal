@@ -46,7 +46,7 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
         return value;
       }),
       percentage: Joi.when('involvementType.id', {
-        is: Joi.exist().valid(INVOLVEMENT_TYPE.FINANCIAL),
+        is: Joi.exist().valid(INVOLVEMENT_TYPE.SUPERVISORY),
         then: Joi.number().min(1).max(100).required(),
         otherwise: Joi.number().empty('').allow(null),
       }).messages({
@@ -59,8 +59,8 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
     });
   }
 
-  get isFinancial() {
-    return this.#hasInvolvementTypeId(INVOLVEMENT_TYPE.FINANCIAL);
+  get isSupervisory() {
+    return this.#hasInvolvementTypeId(INVOLVEMENT_TYPE.SUPERVISORY);
   }
 
   get isMidFinancial() {

@@ -149,7 +149,7 @@
               {{/if}}
               {{#if
                 (and
-                  (this.isFinancial involvement)
+                  involvement.isSupervisory
                   this.showMoreThanOneFinancialTypeError
                 )
               }}
@@ -165,7 +165,7 @@
                   involvement.error.percentage.message
                   (if
                     (and
-                      (this.isFinancialInvolvementType involvement)
+                      involvement.isSupervisory
                       this.showTotalFinancingPercentageError
                     )
                     "Het totaal van alle percentages moet gelijk zijn aan 100"

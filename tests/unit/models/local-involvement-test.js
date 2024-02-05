@@ -63,12 +63,12 @@ module('Unit | Model | local involvement', function (hooks) {
       ['', 'Vul het percentage in'],
       [undefined, 'Vul het percentage in'],
     ].forEach(([percentage, errorMessage]) => {
-      test(`it returns error when involvementType is ADVISORY and percent is ${percentage}`, async function (assert) {
+      test(`it returns error when involvementType is SUPERVISORY and percent is ${percentage}`, async function (assert) {
         const administrativeUnit = this.store().createRecord(
           'administrative-unit'
         );
         const involvementType = this.store().createRecord('involvement-type', {
-          id: INVOLVEMENT_TYPE.FINANCIAL,
+          id: INVOLVEMENT_TYPE.SUPERVISORY,
         });
         const model = this.store().createRecord('local-involvement', {
           administrativeUnit,

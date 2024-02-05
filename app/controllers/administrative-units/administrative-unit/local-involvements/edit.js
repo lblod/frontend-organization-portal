@@ -11,7 +11,6 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   @service store;
   @tracked showTotalFinancingPercentageError = false;
   @tracked showMoreThanOneFinancialTypeError = false;
-  isFinancialInvolvementType = isFinancialInvolvementType;
 
   classificationCodes = [
     CLASSIFICATION_CODE.MUNICIPALITY,
@@ -52,15 +51,10 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     return CLASSIFICATION_CODE.MUNICIPALITY;
   }
 
-  @action
-  isFinancial(involvement) {
-    return isFinancialInvolvementType(involvement);
-  }
-
   get isValidTotalFinancingPercentage() {
     let hasFinancialLocalInvolvements = this.model.involvements
       .toArray()
-      .some((involvement) => isFinancialInvolvementType(involvement));
+      .some((involvement) => involvement.isSupervisory);
 
     if (hasFinancialLocalInvolvements) {
       return this.totalFinancingPercentage === 100;
@@ -99,7 +93,10 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   handleInvolvementTypeSelection(involvement, involvementType) {
     involvement.involvementType = involvementType;
 
-    if (!involvementType || involvementType.id !== INVOLVEMENT_TYPE.FINANCIAL) {
+    if (
+      !involvementType ||
+      involvementType.id !== INVOLVEMENT_TYPE.SUPERVISORY
+    ) {
       involvement.percentage = 0;
     }
 
@@ -118,7 +115,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
 
   get isOneOrLessFinancialLocalInvolvement() {
     let hasFinancialLocalInvolvements = this.model.involvements.filter(
-      (involvement) => isFinancialInvolvementType(involvement)
+      (involvement) => involvement.isSupervisory
     );
     return hasFinancialLocalInvolvements.length <= 1;
   }
@@ -193,10 +190,6 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   }
 
   isDisabledPercentage(involvement) {
-    return !(involvement.isFinancial || involvement.isMidFinancial);
+    return !(involvement.isSupervisory || involvement.isMidFinancial);
   }
-}
-
-function isFinancialInvolvementType(involvement) {
-  return involvement.isFinancial;
 }

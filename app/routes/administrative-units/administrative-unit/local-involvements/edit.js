@@ -36,7 +36,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
     if (classification.id == CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE) {
       involvementTypes = await this.store.query('involvement-type', {
         filter: {
-          id: INVOLVEMENT_TYPE.FINANCIAL, // Toezichthoundend
+          id: INVOLVEMENT_TYPE.SUPERVISORY, // Toezichthoundend
         },
       });
     } else {
