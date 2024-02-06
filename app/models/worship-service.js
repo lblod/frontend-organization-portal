@@ -1,5 +1,6 @@
 import { attr } from '@ember-data/model';
 import WorshipAdministrativeUnitModel from './worship-administrative-unit';
+import Joi from 'joi';
 
 export default class WorshipServiceModel extends WorshipAdministrativeUnitModel {
   @attr denomination;
@@ -11,5 +12,12 @@ export default class WorshipServiceModel extends WorshipAdministrativeUnitModel 
     } else {
       return 'Nee';
     }
+  }
+
+  get validationSchema() {
+    return super.validationSchema.append({
+      denomination: Joi.string().empty(''),
+      crossBorder: Joi.boolean(),
+    });
   }
 }
