@@ -9,6 +9,7 @@ import {
   CLASSIFICATION_CODE,
   OCMW_ASSOCIATION_CLASSIFICATION_CODES,
 } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { findKboContact } from '../../../../models/contact-point';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute extends Route {
   @service store;
@@ -88,6 +89,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       region = await scope.locatedWithin;
     }
 
+    let kboAdministrativeUnit = await administrativeUnit.kboAdministrativeUnit;
+    let kboContacts = await kboAdministrativeUnit.contacts;
+
     return {
       administrativeUnit,
       resultedFrom,
@@ -95,6 +99,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       primaryContact: findPrimaryContact(contacts),
       secondaryContact: findSecondaryContact(contacts),
       region,
+      kboContact: findKboContact(kboContacts),
     };
   }
 }

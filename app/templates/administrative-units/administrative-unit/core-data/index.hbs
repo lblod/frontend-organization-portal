@@ -283,7 +283,7 @@
                 <Item>
                   <:label>Afgekorte naam</:label>
                   <:content>
-                    Aalst
+                    
                   </:content>
                 </Item>
 
@@ -308,14 +308,14 @@
                 <Item>
                   <:label>Begindatum</:label>
                   <:content>
-                    01-01-1990
+                    
                   </:content>
                 </Item>
 
                 <Item>
                   <:label>Ondernemingsnummer</:label>
                   <:content>
-                    1274.374.678
+                    
                   </:content>
                 </Item>
                 <Item>
@@ -333,9 +333,7 @@
           </:card>
         </DataCard>
         <Site::ContactDataCard
-          @address={{@model.administrativeUnit.primarySite.address}}
-          @primaryContact={{@model.primaryContact}}
-          @secondaryContact={{@model.secondaryContact}}
+          @primaryContact={{@model.kboContact}}
         >
           <:title>
             Maatschappelijke zetel
