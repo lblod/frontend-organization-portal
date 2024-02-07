@@ -6,10 +6,6 @@ module.exports = function (environment) {
     environment,
     rootURL: '/',
     locationType: 'history',
-    yasgui: {
-      defaultQuery: '{{YASGUI_DEFAULT_QUERY}}',
-      extraPrefixes: '{{YASGUI_EXTRA_PREFIXES}}',
-    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -70,6 +66,11 @@ module.exports = function (environment) {
 
     features: {
       'kbo-data-tab': false,
+    },
+
+    yasgui: {
+      defaultQuery: '{{YASGUI_DEFAULT_QUERY}}',
+      extraPrefixes: '{{YASGUI_EXTRA_PREFIXES}}',
     },
   };
 
