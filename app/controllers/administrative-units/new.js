@@ -247,10 +247,6 @@ export default class AdministrativeUnitsNewController extends Controller {
 
   reset() {
     this.removeUnsavedRecords();
-  }
-
-  removeUnsavedRecords() {
-    this.removeUnsavedChangesetRecords();
     this.model.primarySite.rollbackAttributes();
     this.model.identifierSharepoint.reset();
     this.model.identifierKBO.reset();
@@ -262,7 +258,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.address.reset();
   }
 
-  removeUnsavedChangesetRecords() {
+  removeUnsavedRecords() {
     if (this.model.administrativeUnit.isNew) {
       this.model.administrativeUnit.destroyRecord();
     }

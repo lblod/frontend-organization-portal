@@ -142,7 +142,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         administrativeUnit.primarySite = primarySite;
       }
 
-      if (address.isDirty) {
+      if (address.hasDirtyAttributes) {
         if (!address.isCountryBelgium) {
           address.province = '';
         }
@@ -153,7 +153,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
 
       let siteContacts = yield primarySite.contacts;
 
-      if (contact.isDirty) {
+      if (contact.hasDirtyAttributes) {
         let isNewContact = contact.isNew;
 
         contact.telephone = transformPhoneNumbers(contact.telephone);
@@ -166,7 +166,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         }
       }
 
-      if (secondaryContact.isDirty) {
+      if (secondaryContact.hasDirtyAttributes) {
         let isNewContact = secondaryContact.isNew;
 
         secondaryContact.telephone = transformPhoneNumbers(
