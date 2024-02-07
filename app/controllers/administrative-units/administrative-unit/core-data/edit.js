@@ -209,6 +209,11 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         method: 'POST',
       });
 
+      const getKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
+      yield fetch(getKboData, {
+        method: 'POST',
+      });
+
       this.router.refresh();
       this.router.transitionTo(
         'administrative-units.administrative-unit.core-data',
