@@ -89,8 +89,12 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       region = await scope.locatedWithin;
     }
 
+    let kboContacts = A();
+
     let kboAdministrativeUnit = await administrativeUnit.kboAdministrativeUnit;
-    let kboContacts = await kboAdministrativeUnit.contacts;
+    if (kboAdministrativeUnit) {
+      kboContacts = await kboAdministrativeUnit.contacts;
+    }
 
     return {
       administrativeUnit,
