@@ -2,12 +2,10 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
-import {
-  EMPTY_DATE,
-  INVALID_DATE,
-  MIN_DATE,
-  MAX_DATE,
-} from 'frontend-organization-portal/utils/datepicker';
+const EMPTY_DATE = 'EMPTY_DATE';
+const INVALID_DATE = 'INVALID_DATE';
+const MIN_DATE = 'MIN_DATE';
+const MAX_DATE = 'MAX_DATE';
 
 export default class DatepickerComponent extends Component {
   @tracked
