@@ -15,6 +15,7 @@ export default class IdentifierModel extends AbstractValidationModel {
 
   @belongsTo('structured-identifier', {
     inverse: null,
+    async: true,
   })
   structuredIdentifier;
 

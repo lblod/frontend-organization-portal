@@ -18,6 +18,7 @@ export default class AddressModel extends AbstractValidationModel {
 
   @belongsTo('concept', {
     inverse: null,
+    async: true,
   })
   source;
 

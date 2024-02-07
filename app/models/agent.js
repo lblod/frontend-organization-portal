@@ -6,11 +6,13 @@ import { validateHasManyOptional } from '../validators/schema';
 export default class AgentModel extends AbstractValidationModel {
   @hasMany('post', {
     inverse: null,
+    async: true,
   })
   positions;
 
   @hasMany('contact-point', {
     inverse: null,
+    async: true,
   })
   contacts;
 

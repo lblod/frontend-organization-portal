@@ -20,26 +20,35 @@ export default class ChangeEventModel extends AbstractValidationModel {
 
   @belongsTo('change-event-type', {
     inverse: null,
+    async: true,
   })
   type;
 
   @belongsTo('decision', {
     inverse: null,
+    async: true,
   })
   decision;
 
   @hasMany('organization', {
     inverse: 'resultedFrom',
+    async: true,
+    polymorphic: true,
+    as: 'change-event',
   })
   resultingOrganizations;
 
   @hasMany('organization', {
     inverse: 'changedBy',
+    async: true,
+    polymorphic: true,
+    as: 'change-event',
   })
   originalOrganizations;
 
   @hasMany('change-event-result', {
     inverse: 'resultFrom',
+    async: true,
   })
   results;
 
@@ -108,6 +117,11 @@ export default class ChangeEventModel extends AbstractValidationModel {
   }
 
   addResultingOrganization(organization) {
+    console.log('organization', organization);
+    console.log(
+      'this.hasAsResultingOrganization',
+      this.hasAsResultingOrganization(organization)
+    );
     if (organization && !this.hasAsResultingOrganization(organization)) {
       /*
        * Note: Currently, the new change event form only supports specifying one
@@ -116,8 +130,11 @@ export default class ChangeEventModel extends AbstractValidationModel {
        * multiple resulting organizations is added at some point, this clear
        * operation should be removed.
        */
+      console.log('clearing resulting organizations');
       this.resultingOrganizations.clear();
+      console.log('adding resulting organization');
       this.resultingOrganizations.pushObject(organization);
+      console.log('resulting organizations', this.resultingOrganizations);
     }
   }
 

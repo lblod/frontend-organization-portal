@@ -22,6 +22,7 @@ export default class ContactPointModel extends AbstractValidationModel {
 
   @belongsTo('address', {
     inverse: null,
+    async: true,
   })
   contactAddress;
 

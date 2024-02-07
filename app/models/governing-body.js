@@ -14,31 +14,39 @@ export default class GoverningBodyModel extends AbstractValidationModel {
 
   @belongsTo('administrative-unit', {
     inverse: 'governingBodies',
+    async: true,
+    polymorphic: true,
+    as: 'governingBody',
   })
   administrativeUnit;
 
   @belongsTo('governing-body-classification-code', {
     inverse: null,
+    async: true,
   })
   classification;
 
   @belongsTo('governing-body', {
     inverse: 'hasTimeSpecializations',
+    async: true,
   })
   isTimeSpecializationOf;
 
   @hasMany('governing-body', {
     inverse: 'isTimeSpecializationOf',
+    async: true,
   })
   hasTimeSpecializations;
 
   @hasMany('mandate', {
     inverse: 'governingBody',
+    async: true,
   })
   mandates;
 
   @hasMany('board-position', {
     inverse: 'governingBodies',
+    async: true,
   })
   boardPositions;
 

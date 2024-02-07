@@ -12,16 +12,19 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
 
   @belongsTo('administrative-unit', {
     inverse: 'involvedBoards',
+    async: true,
   })
   administrativeUnit;
 
   @belongsTo('involvement-type', {
     inverse: null,
+    async: true,
   })
   involvementType;
 
   @belongsTo('worship-administrative-unit', {
     inverse: 'involvements',
+    async: true,
   })
   worshipAdministrativeUnit;
 
