@@ -160,7 +160,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
    */
   async getOtherTimedGoverningBodies() {
     let untimedGoverningBodies =
-      (await this.#getUntimedGoverningBodies())?.toArray() ?? [];
+      (await this.#getUntimedGoverningBodies())?.slice() ?? [];
 
     let governingBodies = [];
     for (const untimedGoverningBody of untimedGoverningBodies) {
@@ -170,7 +170,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
           ? await untimedGoverningBody.hasTimeSpecializations
           : [];
 
-        const arrayTimedGoverningBodies = timedGoverningBodies.toArray();
+        const arrayTimedGoverningBodies = timedGoverningBodies.slice();
 
         governingBodies.push(...arrayTimedGoverningBodies);
       }

@@ -50,7 +50,7 @@ export default class PositionSelectComponent extends Component {
           'filter[:id:]': selectedAdministrativeUnitId,
           include: 'classification',
         }
-      )).firstObject;
+      )).at(0);
 
       const classification = yield administrativeUnit.classification;
 
@@ -108,13 +108,13 @@ export default class PositionSelectComponent extends Component {
     let positions;
     if (ministerPositions.length) {
       positions = [
-        ...ministerPositions.toArray(),
-        ...boardPositionCodes.toArray(),
+        ...ministerPositions.slice(),
+        ...boardPositionCodes.slice(),
       ].sort(function (a, b) {
         return a.label.localeCompare(b.label);
       });
     } else {
-      positions = [...boardPositionCodes.toArray()].sort(function (a, b) {
+      positions = [...boardPositionCodes.slice()].sort(function (a, b) {
         return a.label.localeCompare(b.label);
       });
     }

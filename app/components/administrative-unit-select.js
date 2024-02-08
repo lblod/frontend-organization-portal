@@ -59,7 +59,7 @@ export default class AdministrativeUnitSelectComponent extends Component {
           allowedClassificationCodes = [CLASSIFICATION_CODE.WORSHIP_SERVICE];
         }
       } else if (boardPositionCodes.length) {
-        const selectedPosition = boardPositionCodes.firstObject;
+        const selectedPosition = boardPositionCodes.at(0);
         const governingBodyClassification = yield selectedPosition.appliesTo;
         const classificationOptions =
           yield governingBodyClassification.appliesWithin;

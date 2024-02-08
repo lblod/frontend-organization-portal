@@ -201,7 +201,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       yield address.save();
 
       primarySite.address = address;
-      primarySite.contacts.pushObjects([contact, secondaryContact]);
+      primarySite.contacts.push(contact, secondaryContact);
       if (
         administrativeUnit.isAgb ||
         administrativeUnit.isApb ||
@@ -218,10 +218,10 @@ export default class AdministrativeUnitsNewController extends Controller {
       }
       yield primarySite.save();
 
-      newAdministrativeUnit.identifiers.pushObjects([
+      newAdministrativeUnit.identifiers.push(
         identifierKBO,
-        identifierSharepoint,
-      ]);
+        identifierSharepoint
+      );
       newAdministrativeUnit.primarySite = primarySite;
 
       newAdministrativeUnit = setEmptyStringsToNull(newAdministrativeUnit);
@@ -273,10 +273,6 @@ export default class AdministrativeUnitsNewController extends Controller {
 
     if (this.model.secondaryContact.isNew) {
       this.model.secondaryContact.destroyRecord();
-    }
-
-    if (this.model.structuredIdentifierKBO.isNew) {
-      this.model.structuredIdentifierKBO.destroyRecord();
     }
   }
 }

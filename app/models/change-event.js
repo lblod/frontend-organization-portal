@@ -104,7 +104,7 @@ export default class ChangeEventModel extends AbstractValidationModel {
 
   addOriginalOrganization(organization) {
     if (organization && !this.hasAsOriginalOrganization(organization)) {
-      this.originalOrganizations.pushObject(organization);
+      this.originalOrganizations.push(organization);
     }
   }
 
@@ -133,7 +133,7 @@ export default class ChangeEventModel extends AbstractValidationModel {
       console.log('clearing resulting organizations');
       this.resultingOrganizations.clear();
       console.log('adding resulting organization');
-      this.resultingOrganizations.pushObject(organization);
+      this.resultingOrganizations.push(organization);
       console.log('resulting organizations', this.resultingOrganizations);
     }
   }

@@ -162,7 +162,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         yield contact.save();
 
         if (isNewContact) {
-          siteContacts.pushObject(contact);
+          siteContacts.push(contact);
           yield primarySite.save();
         }
       }
@@ -177,7 +177,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         yield secondaryContact.save();
 
         if (isNewContact) {
-          siteContacts.pushObject(secondaryContact);
+          siteContacts.push(secondaryContact);
           yield primarySite.save();
         }
       }

@@ -74,13 +74,13 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   @action
   addNewSubOrganization() {
     let subOrganization = this.store.createRecord('organization');
-    this.model.subOrganizations.pushObject(subOrganization);
+    this.model.subOrganizations.push(subOrganization);
   }
 
   @action
   updateSubOrganization(removedOrganization, addedOrganization) {
     this.model.subOrganizations.removeObject(removedOrganization);
-    this.model.subOrganizations.pushObject(addedOrganization);
+    this.model.subOrganizations.push(addedOrganization);
   }
 
   @action
@@ -107,13 +107,13 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   @action
   addNewHasParticipants() {
     let organization = this.store.createRecord('organization');
-    this.model.hasParticipants.pushObject(organization);
+    this.model.hasParticipants.push(organization);
   }
 
   @action
   updateHasParticipants(removedOrganization, addedOrganization) {
     this.model.hasParticipants.removeObject(removedOrganization);
-    this.model.hasParticipants.pushObject(addedOrganization);
+    this.model.hasParticipants.push(addedOrganization);
   }
 
   @action

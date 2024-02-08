@@ -109,7 +109,7 @@ export default class AbstractValidationModel extends Model {
   #serializeManyRelationship(relationshipValue) {
     return relationshipValue.length > 0
       ? relationshipValue
-          .toArray()
+          .slice()
           .map((item) => item.serialize({ includeId: true }))
       : undefined;
   }

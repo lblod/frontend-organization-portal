@@ -166,7 +166,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
 
       if (changeEvent.canAffectMultipleOrganizations) {
         let allOriginalOrganizations =
-          changeEvent.originalOrganizations.toArray();
+          changeEvent.originalOrganizations.slice();
 
         let createChangeEventResultsPromises = [];
 
@@ -207,7 +207,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
             // Central worship services should always select a *new*
             // organization as the resulting organization, so we also create a
             // change event result for that organization
-            for (let organization of changeEvent.resultingOrganizations.toArray()) {
+            for (let organization of changeEvent.resultingOrganizations.slice()) {
               createChangeEventResultsPromises.push(
                 createChangeEventResult({
                   resultingStatusId: ORGANIZATION_STATUS.ACTIVE,
@@ -219,15 +219,13 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
             }
           }
         } else {
-          changeEvent.resultingOrganizations.pushObjects(
-            allOriginalOrganizations
-          );
+          changeEvent.resultingOrganizations.push(...allOriginalOrganizations);
         }
 
         yield Promise.all(createChangeEventResultsPromises);
       } else {
         if (changeEvent.requiresDecisionInformation) {
-          changeEvent.originalOrganizations.pushObject(currentOrganization);
+          changeEvent.originalOrganizations.push(currentOrganization);
         }
 
         if (
@@ -236,7 +234,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
             CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED,
           ].includes(changeEvent.type.get('id'))
         ) {
-          changeEvent.resultingOrganizations.pushObject(currentOrganization);
+          changeEvent.resultingOrganizations.push(currentOrganization);
         }
 
         yield createChangeEventResult({
@@ -311,7 +309,7 @@ async function findMostRecentChangeEvent(store, organization) {
   });
 
   if (mostRecentChangeEventResults.length > 0) {
-    return await mostRecentChangeEventResults.firstObject.resultFrom;
+    return await mostRecentChangeEventResults.at(0)?.resultFrom;
   } else {
     return null;
   }

@@ -19,9 +19,9 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
 
     let positions = [];
 
-    const mandatories = (await person.mandatories).toArray(); // mandatarissen
-    const functionaries = (await person.functionaries).toArray(); // leidinggevenden
-    const ministers = (await person.agentsInPosition).toArray(); // bedienaren
+    const mandatories = (await person.mandatories).slice(); // mandatarissen
+    const functionaries = (await person.functionaries).slice(); // leidinggevenden
+    const ministers = (await person.agentsInPosition).slice(); // bedienaren
 
     for (let mandatory of mandatories) {
       const mandate = await mandatory.mandate;
@@ -51,7 +51,7 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
 
       let administrativeUnits = [];
 
-      for (const governingBody of governingBodies.toArray()) {
+      for (const governingBody of governingBodies.slice()) {
         const isTimeSpecializationOf =
           await governingBody.isTimeSpecializationOf;
 
