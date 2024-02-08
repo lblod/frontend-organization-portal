@@ -127,7 +127,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
 
   reset() {
     this.resetUnsavedRecords();
-    this.removeUnsavedRecords();
+    this.isNoPrimarySiteErrorMessage = null;
   }
 
   resetUnsavedRecords() {
@@ -136,18 +136,6 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     this.model.contact.reset();
     this.model.secondaryContact.reset();
     this.model.site.reset();
-  }
-
-  removeUnsavedRecords() {
-    let { contact, secondaryContact } = this.model;
-    if (contact.isNew) {
-      contact.destroyRecord();
-    }
-
-    if (secondaryContact.isNew) {
-      secondaryContact.destroyRecord();
-    }
-    this.isNoPrimarySiteErrorMessage = null;
   }
 
   @action

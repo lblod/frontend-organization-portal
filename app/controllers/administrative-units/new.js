@@ -246,7 +246,6 @@ export default class AdministrativeUnitsNewController extends Controller {
   }
 
   reset() {
-    this.removeUnsavedRecords();
     this.model.primarySite.rollbackAttributes();
     this.model.identifierSharepoint.reset();
     this.model.identifierKBO.reset();
@@ -256,24 +255,6 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.contact.reset();
     this.model.secondaryContact.reset();
     this.model.address.reset();
-  }
-
-  removeUnsavedRecords() {
-    if (this.model.administrativeUnit.isNew) {
-      this.model.administrativeUnit.destroyRecord();
-    }
-
-    if (this.model.address.isNew) {
-      this.model.address.destroyRecord();
-    }
-
-    if (this.model.contact.isNew) {
-      this.model.contact.destroyRecord();
-    }
-
-    if (this.model.secondaryContact.isNew) {
-      this.model.secondaryContact.destroyRecord();
-    }
   }
 }
 
