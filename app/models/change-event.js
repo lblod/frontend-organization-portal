@@ -98,31 +98,33 @@ export default class ChangeEventModel extends AbstractValidationModel {
     return typeIds.includes(this.type?.get('id'));
   }
 
-  hasAsOriginalOrganization(organization) {
-    return this.originalOrganizations.includes(organization);
+  async hasAsOriginalOrganization(organization) {
+    return (await this.originalOrganizations).includes(organization);
   }
 
-  addOriginalOrganization(organization) {
-    if (organization && !this.hasAsOriginalOrganization(organization)) {
-      this.originalOrganizations.push(organization);
+  async addOriginalOrganization(organization) {
+    if (organization && !(await this.hasAsOriginalOrganization(organization))) {
+      (await this.originalOrganizations).push(organization);
     }
   }
 
-  removeOriginalOrganization(organization) {
-    this.originalOrganizations.removeObject(organization);
+  async removeOriginalOrganization(organization) {
+    const originalOrganizations = await this.originalOrganizations;
+    const index = originalOrganizations.indexOf(organization);
+    if (index > -1) {
+      originalOrganizations.splice(index, 1);
+    }
   }
 
-  hasAsResultingOrganization(organization) {
-    return this.resultingOrganizations.includes(organization);
+  async hasAsResultingOrganization(organization) {
+    return (await this.resultingOrganizations).includes(organization);
   }
 
-  addResultingOrganization(organization) {
-    console.log('organization', organization);
-    console.log(
-      'this.hasAsResultingOrganization',
-      this.hasAsResultingOrganization(organization)
-    );
-    if (organization && !this.hasAsResultingOrganization(organization)) {
+  async addResultingOrganization(organization) {
+    if (
+      organization &&
+      !(await this.hasAsResultingOrganization(organization))
+    ) {
       /*
        * Note: Currently, the new change event form only supports specifying one
        * resulting organization. Therefore, we first clear any already contained
@@ -130,15 +132,16 @@ export default class ChangeEventModel extends AbstractValidationModel {
        * multiple resulting organizations is added at some point, this clear
        * operation should be removed.
        */
-      console.log('clearing resulting organizations');
-      this.resultingOrganizations.clear();
-      console.log('adding resulting organization');
-      this.resultingOrganizations.push(organization);
-      console.log('resulting organizations', this.resultingOrganizations);
+      (await this.resultingOrganizations).length = 0;
+      (await this.resultingOrganizations).push(organization);
     }
   }
 
-  removeResultingOrganization(organization) {
-    this.resultingOrganizations.removeObject(organization);
+  async removeResultingOrganization(organization) {
+    const resultingOrganizations = await this.resultingOrganizations;
+    const index = resultingOrganizations.indexOf(organization);
+    if (index > -1) {
+      resultingOrganizations.splice(index, 1);
+    }
   }
 }
