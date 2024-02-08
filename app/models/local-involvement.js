@@ -25,6 +25,8 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
   @belongsTo('worship-administrative-unit', {
     inverse: 'involvements',
     async: true,
+    polymorphic: true,
+    as: 'local-involvement',
   })
   worshipAdministrativeUnit;
 

@@ -16,12 +16,16 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
   @hasMany('minister-position', {
     inverse: 'worshipService',
     async: true,
+    polymorphic: true,
+    as: 'worship-administrative-unit',
   })
   ministerPositions;
 
   @hasMany('local-involvement', {
     inverse: 'worshipAdministrativeUnit',
     async: true,
+    polymorphic: true,
+    as: 'worship-administrative-unit',
   })
   involvements;
 
