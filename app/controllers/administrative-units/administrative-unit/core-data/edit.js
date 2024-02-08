@@ -12,6 +12,7 @@ import {
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
+  @service store;
 
   get hasValidationErrors() {
     return (

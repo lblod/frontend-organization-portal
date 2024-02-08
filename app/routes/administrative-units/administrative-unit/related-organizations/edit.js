@@ -5,6 +5,7 @@ import { dropTask } from 'ember-concurrency';
 export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEditRoute extends Route {
   @service currentSession;
   @service router;
+  @service store;
 
   queryParams = {
     sort: { refreshModel: true },
