@@ -24,6 +24,9 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
       'administrative-units.administrative-unit.related-organizations'
     );
 
+    // force `organizationStatus` loading, required for validation
+    await administrativeUnit.organizationStatus;
+
     const subOrganizations = (
       await this.loadSubOrganizationsTask.perform(administrativeUnit.id, params)
     ).slice();
