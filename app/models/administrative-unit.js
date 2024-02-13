@@ -177,6 +177,10 @@ export default class AdministrativeUnitModel extends OrganizationModel {
     return this.#hasClassificationId(PevaProvinceCodeList);
   }
 
+  get hasCentralWorshipService() {
+    return false;
+  }
+
   #hasClassificationId(classificationIds) {
     return classificationIds.includes(this.classification?.get('id'));
   }
