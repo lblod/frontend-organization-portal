@@ -136,25 +136,9 @@ module('Unit | Model | abstract validation model', function (hooks) {
         HasManyValidationModel
       );
       const manyRequired = this.store().createRecord('test-validation-model');
-      const model = this.store().createRecord('test-validation-model');
-      model.manyRequired.pushObject(manyRequired);
-
-      const isValid = await model.validate();
-
-      assert.true(isValid);
-      assert.strictEqual(model.error, undefined);
-    });
-
-    test('it returns no error when an optional hasMany is fulfilled', async function (assert) {
-      this.owner.register(
-        'model:test-validation-model',
-        HasManyValidationModel
-      );
-      const manyRequired = this.store().createRecord('test-validation-model');
-      const manyOptional = this.store().createRecord('test-validation-model');
-      const model = this.store().createRecord('test-validation-model');
-      model.manyRequired.pushObject(manyRequired);
-      model.manyRequired.pushObject(manyOptional);
+      const model = this.store().createRecord('test-validation-model', {
+        manyRequired: [manyRequired],
+      });
 
       const isValid = await model.validate();
 

@@ -27,9 +27,7 @@ export default class IdentifierModel extends AbstractValidationModel {
         .required(),
       structuredIdentifier: Joi.object()
         .external(async (value, helpers) => {
-          const {
-            attributes: { localId },
-          } = this.convertAttributesKeysToSnakeCase(value);
+          const { localId } = value;
           if (this.idName === ID_NAME.KBO) {
             // KBO is required
             if (!localId) {

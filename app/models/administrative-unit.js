@@ -50,6 +50,8 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   @hasMany('local-involvement', {
     inverse: 'administrativeUnit',
     async: true,
+    polymorphic: true,
+    as: 'administrative-unit',
   })
   involvedBoards;
 

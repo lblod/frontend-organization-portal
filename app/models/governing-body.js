@@ -82,7 +82,10 @@ export default class GoverningBodyModel extends AbstractValidationModel {
 
           return value;
         })
-        .messages({ 'any.required': 'Vul de startdatum in' }),
+        .messages({
+          'any.required': 'Vul de startdatum in',
+          'date.base': 'Vul de startdatum in',
+        }),
       endDate: Joi.date()
         .empty(null)
         .required()
@@ -107,6 +110,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
         })
         .messages({
           'any.required': 'Vul de einddatum in',
+          'date.base': 'Vul de einddatum in',
         }),
       administrativeUnit: validateBelongsToOptional(),
       classification: validateBelongsToOptional(),
