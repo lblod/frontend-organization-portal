@@ -21,12 +21,9 @@ export default class ProvinceOrganizationSelectComponent extends Component {
     yield Promise.resolve();
 
     let provinces = [];
+    const selectedMunicipalityId = this.args.selectedMunicipality?.get('id');
 
-    if (
-      this.args.selectedMunicipality &&
-      this.args.selectedMunicipality.id &&
-      this.args.selectedMunicipality.id.length
-    ) {
+    if (selectedMunicipalityId && selectedMunicipalityId.length) {
       if (
         this.previousMunicipality &&
         this.args.selectedMunicipality === this.previousMunicipality
@@ -41,7 +38,7 @@ export default class ProvinceOrganizationSelectComponent extends Component {
       provinces = yield this.store.query('administrative-unit', {
         filter: {
           'sub-organizations': {
-            id: this.args.selectedMunicipality.id,
+            id: selectedMunicipalityId,
           },
           classification: {
             id: CLASSIFICATION_CODE.PROVINCE,
