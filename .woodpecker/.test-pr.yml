@@ -2,7 +2,7 @@ steps:
   install:
     image: danlynn/ember-cli:4.12.1-node_18.16
     commands:
-      - npm ci
+      - npm ci --legacy-peer-deps
   lint:
     image: danlynn/ember-cli:4.12.1-node_18.16
     group: lint

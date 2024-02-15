@@ -7,7 +7,7 @@ ARG SHOW_APP_VERSION_HASH=false
 WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 COPY . .
 RUN ember build -prod
 
