@@ -63,13 +63,16 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
 
   @action
   updateSubOrganization(removedOrganization, addedOrganization) {
-    this.model.subOrganizations.removeObject(removedOrganization);
+    this.removeSubOrganization(removedOrganization);
     this.model.subOrganizations.push(addedOrganization);
   }
 
   @action
   removeSubOrganization(organization) {
-    this.model.subOrganizations.removeObject(organization);
+    const index = this.model.subOrganizations.indexOf(organization);
+    if (index > -1) {
+      this.model.subOrganizations.splice(index, 1);
+    }
   }
 
   @action
@@ -98,13 +101,16 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
 
   @action
   updateHasParticipants(removedOrganization, addedOrganization) {
-    this.model.hasParticipants.removeObject(removedOrganization);
+    this.removeHasParticipants(removedOrganization);
     this.model.hasParticipants.push(addedOrganization);
   }
 
   @action
   removeHasParticipants(organization) {
-    this.model.hasParticipants.removeObject(organization);
+    const index = this.model.hasParticipants.indexOf(organization);
+    if (index > -1) {
+      this.model.hasParticipants.splice(index, 1);
+    }
   }
 
   @dropTask

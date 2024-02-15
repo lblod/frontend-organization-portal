@@ -141,8 +141,11 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
 
   @action
   deleteUnsavedLocalInvolvement(involvement) {
-    this.model.involvements.removeObject(involvement);
-    involvement.destroyRecord();
+    const index = this.model.involvements.indexOf(involvement);
+    if (index > -1) {
+      this.model.involvements.splice(index, 1);
+      involvement.destroyRecord();
+    }
   }
 
   @dropTask
