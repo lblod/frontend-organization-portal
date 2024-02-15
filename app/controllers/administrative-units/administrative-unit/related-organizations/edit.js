@@ -79,7 +79,9 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
       this.model.administrativeUnit.wasFoundedByOrganizations = orgs;
     } else {
       this.model.administrativeUnit.isSubOrganizationOf = orgs;
-      this.model.administrativeUnit.wasFoundedByOrganizations = new Array(orgs);
+      this.model.administrativeUnit.wasFoundedByOrganizations = orgs
+        ? [orgs]
+        : [];
     }
   }
 

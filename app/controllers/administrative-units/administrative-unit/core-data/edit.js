@@ -92,9 +92,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       if (Array.isArray(units)) {
         this.model.administrativeUnit.wasFoundedByOrganizations = units;
       } else {
-        this.model.administrativeUnit.wasFoundedByOrganizations = new Array(
-          units
-        );
+        this.model.administrativeUnit.wasFoundedByOrganizations = units
+          ? [units]
+          : [];
       }
   }
 

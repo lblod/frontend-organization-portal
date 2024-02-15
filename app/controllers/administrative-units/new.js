@@ -88,9 +88,9 @@ export default class AdministrativeUnitsNewController extends Controller {
       if (Array.isArray(unit)) {
         this.model.administrativeUnit.wasFoundedByOrganizations = unit;
       } else {
-        this.model.administrativeUnit.wasFoundedByOrganizations = new Array(
-          unit
-        );
+        this.model.administrativeUnit.wasFoundedByOrganizations = unit
+          ? [unit]
+          : [];
       }
   }
 
@@ -185,7 +185,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       yield address.save();
 
       primarySite.address = address;
-      primarySite.contacts.push(contact, secondaryContact);
+      (yield primarySite.contacts).push(contact, secondaryContact);
       if (
         administrativeUnit.isAgb ||
         administrativeUnit.isApb ||
