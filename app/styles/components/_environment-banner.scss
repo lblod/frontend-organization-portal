@@ -1,103 +1,113 @@
-
-$df-height:  40px;    
-$xs-height:  60px;
+$df-height: 40px;
+$xs-height: 60px;
 $sm-height: 100px;
 $md-height: 140px;
 $lg-height: 160px;
 
 %header-styles {
-    position: fixed; 
-    left: 0; 
-    top: 0;
-    z-index: 3;
-    width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  width: 100%;
 }
 
 .au-c-app--environment {
-    position: relative !important;
+  position: relative !important;
+
+  .au-c-main-container {
+    margin-top: calc($df-height + $md-height); // mobile
+  }
+
+  @media (width >= 1024px) {
     .au-c-main-container {
-        margin-top: calc($df-height + $md-height); // mobile
+      margin-top: calc($df-height + $xs-height); // desktop
     }
-    @media (min-width: 1024px) {
-        .au-c-main-container {
-            margin-top: calc($df-height + $xs-height); // desktop
-        }
-    }
+  }
 }
 
 /* Addon
     ========================================================================== */
 
 .au-c-main-header {
-    @extend %header-styles;
+  @extend %header-styles;
+
+  height: $df-height;
+  top: $md-height;
+
+  .au-c-brand__logo,
+  .au-c-brand__logotype {
     height: $df-height;
-    top: $md-height;
-    .au-c-brand__logo, .au-c-brand__logotype {
-        height: $df-height;
-    }
-    .au-c-main-header__title {
-        overflow: visible;
-    }
+  }
+
+  .au-c-main-header__title {
+    overflow: visible;
+  }
 }
 
 .au-c-alert {
-    &.au-c-app-helpdesk-banner {
-        height: $sm-height !important;
+  &.au-c-app-helpdesk-banner {
+    height: $sm-height !important;
+    position: relative !important;
+  }
+
+  &:not(.au-c-env-announcement) {
+    @extend %header-styles;
+
+    height: $md-height;
+
+    a {
+      font: inherit;
+      color: inherit;
     }
+  }
+}
+
+@media (width >= 500px) {
+  .au-c-alert {
     &:not(.au-c-env-announcement) {
-        @extend %header-styles;
-        height: $md-height;
-        a {
-            font: inherit;
-            color: inherit;
-        }
-    } 
-    &.au-c-app-helpdesk-banner {
-        position: relative !important;
+      height: $md-height;
     }
+  }
 }
 
-@media (min-width: 500px) {
-    .au-c-alert {
-        &:not(.au-c-env-announcement) {
-            height: $md-height;
-        }
+@media (width >= 1024px) {
+  .au-c-alert {
+    &:not(.au-c-env-announcement) {
+      height: $xs-height;
     }
-}
 
-@media (min-width: 1024px) {
-    .au-c-alert {
-        &:not(.au-c-env-announcement) {
-            height: $xs-height;        
-        }
-        .au-c-alert__message {
-            div {
-                flex-direction: row !important;
-            }
-        } 
+    .au-c-alert__message {
+      div {
+        flex-direction: row !important;
+      }
     }
-    .au-c-main-header {
-        top: $xs-height;
-    }
+  }
+
+  .au-c-main-header {
+    top: $xs-height;
+  }
 }
 
 /* Add extra styles for when the Announcement is active
     ========================================================================== */
 
 .au-c-env-announcement {
-    height: $sm-height;
-    margin-top: calc($md-height + $df-height);
-    + .au-c-main-container {
-        height: calc(100vh - $lg-height);
-        margin-top: 0 !important;
-    }
+  height: $sm-height;
+  margin-top: calc($md-height + $df-height);
+
+  + .au-c-main-container {
+    height: calc(100vh - $lg-height);
+    margin-top: 0 !important;
+  }
 }
 
-@media (min-width: 1024px) {
-    .au-c-env-announcement {
-        margin-top: $sm-height;
-        + .au-c-main-container {
-            height: calc(100vh - $lg-height) !important;
-        }
+@media (width >= 1024px) {
+  .au-c-env-announcement {
+    margin-top: $sm-height;
+
+    + .au-c-main-container {
+      height: calc(100vh - $lg-height) !important;
     }
+  }
 }

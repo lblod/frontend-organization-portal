@@ -2,7 +2,6 @@ $default-editor-height: 200px;
 $toolbar-height: 3.2rem; // TODO: we decrease the toolbar size so more icons fit on smaller screens.
 
 .rich-text-editor {
-  
   .say-toolbar {
     border-radius: var(--au-radius) var(--au-radius) 0 0;
     border: 0.1rem solid var(--au-gray-300);
@@ -94,11 +93,14 @@ $toolbar-height: 3.2rem; // TODO: we decrease the toolbar size so more icons fit
   a {
     @extend .au-c-link; /* stylelint-disable-line scss/at-extend-no-missing-placeholder */
   }
-  ol,ul {
+
+  ol,
+  ul {
     list-style: revert;
     padding-left: 3rem;
     margin-left: 0 !important;
   }
+
   p + *,
   div + *,
   span + *,
