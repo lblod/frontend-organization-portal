@@ -202,7 +202,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       }
       yield primarySite.save();
 
-      newAdministrativeUnit.identifiers.push(
+      (yield newAdministrativeUnit.identifiers).push(
         identifierKBO,
         identifierSharepoint
       );

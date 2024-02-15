@@ -55,7 +55,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
 
       site.address = address;
 
-      site.contacts.push(contact, secondaryContact);
+      (yield site.contacts).push(contact, secondaryContact);
       yield site.save();
 
       let nonPrimarySites = yield administrativeUnit.sites;

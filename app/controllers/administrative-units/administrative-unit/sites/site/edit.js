@@ -68,7 +68,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
       if (contact.hasDirtyAttributes) {
         contact.telephone = transformPhoneNumbers(contact.telephone);
         if (contact.isNew) {
-          site.contacts.push(contact);
+          (yield site.contacts).push(contact);
         }
         contact = setEmptyStringsToNull(contact);
 
@@ -80,7 +80,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
           secondaryContact.telephone
         );
         if (secondaryContact.isNew) {
-          site.contacts.push(secondaryContact);
+          (yield site.contacts).push(secondaryContact);
         }
         secondaryContact = setEmptyStringsToNull(secondaryContact);
 
@@ -99,14 +99,17 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
         let previousPrimarySite = this.model.currentPrimarySite;
 
         if (previousPrimarySite) {
-          nonPrimarySites.addObject(previousPrimarySite);
+          nonPrimarySites.push(previousPrimarySite);
         }
 
         administrativeUnit.primarySite = site;
         const oldSite = nonPrimarySites.find(
           (nonPrimarySite) => nonPrimarySite.id === site.id
         );
-        nonPrimarySites.removeObject(oldSite);
+        const oldSiteIndex = nonPrimarySites.indexOf(oldSite);
+        if (oldSiteIndex > -1) {
+          nonPrimarySites.splice(oldSiteIndex, 1);
+        }
 
         yield administrativeUnit.save();
       }
@@ -114,7 +117,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
       // force it to be primary site if there is no primary site
       if (!administrativeUnit.primarySite?.get('id')) {
         administrativeUnit.primarySite = site;
-        nonPrimarySites.removeObject(site);
+        const siteIndex = nonPrimarySites.indexOf(site);
+        if (siteIndex > -1) {
+          nonPrimarySites.splice(siteIndex, 1);
+        }
         yield administrativeUnit.save();
       }
 

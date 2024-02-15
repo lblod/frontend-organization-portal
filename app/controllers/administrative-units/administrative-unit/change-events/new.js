@@ -145,7 +145,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       decisionActivity,
     } = this.model;
 
-    let shouldSaveDecision = changeEvent.requiresDecisionInformation;
+    const shouldSaveDecision = yield changeEvent.requiresDecisionInformation;
 
     yield changeEvent.validate();
 
@@ -165,10 +165,10 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       yield changeEvent.save();
 
       if (changeEvent.canAffectMultipleOrganizations) {
-        let allOriginalOrganizations =
-          changeEvent.originalOrganizations.slice();
+        const allOriginalOrganizations =
+          (yield changeEvent.originalOrganizations).slice();
 
-        let createChangeEventResultsPromises = [];
+        const createChangeEventResultsPromises = [];
 
         // We create change event results for all organizations that are
         // affected by the new change event
@@ -219,13 +219,15 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
             }
           }
         } else {
-          changeEvent.resultingOrganizations.push(...allOriginalOrganizations);
+          (yield changeEvent.resultingOrganizations).push(
+            ...allOriginalOrganizations
+          );
         }
 
         yield Promise.all(createChangeEventResultsPromises);
       } else {
         if (changeEvent.requiresDecisionInformation) {
-          changeEvent.originalOrganizations.push(currentOrganization);
+          (yield changeEvent.originalOrganizations).push(currentOrganization);
         }
 
         if (
@@ -234,7 +236,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
             CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED,
           ].includes(changeEvent.type.get('id'))
         ) {
-          changeEvent.resultingOrganizations.push(currentOrganization);
+          (yield changeEvent.resultingOrganizations).push(currentOrganization);
         }
 
         yield createChangeEventResult({
