@@ -1,21 +1,21 @@
 steps:
   install:
-    image: danlynn/ember-cli:4.8.0
+    image: danlynn/ember-cli:4.12.1-node_18.16
     commands:
       - npm ci
   lint:
-    image: danlynn/ember-cli:4.8.0
+    image: danlynn/ember-cli:4.12.1-node_18.16
     group: lint
     commands:
       - npm run lint
   dependency-lint:
-    image: danlynn/ember-cli:4.8.0
+    image: danlynn/ember-cli:4.12.1-node_18.16
     group: lint
     commands:
       - npx ember dependency-lint
     failure: ignore
   test:
-    image: danlynn/ember-cli:4.8.0
+    image: danlynn/ember-cli:4.12.1-node_18.16
     commands:
       - npm run test:ember
     failure: ignore

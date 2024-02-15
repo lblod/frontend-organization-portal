@@ -116,9 +116,5 @@
   "lint-staged": {
     "*.js": "eslint --cache --fix",
     "*.hbs": "ember-template-lint --fix"
-  },
-  "volta": {
-    "node": "16.13.2",
-    "npm": "8.3.1"
   }
 }
