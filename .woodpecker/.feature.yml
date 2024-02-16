@@ -6,5 +6,6 @@ steps:
       tags: "feature-${CI_COMMIT_BRANCH##feature/}"
     secrets: [ docker_username, docker_password ]
 when:
-  branch: feature/*
+  # TODO: HAVE TO BE REVERT BEFORE MERGE!!!
+  # branch: feature/*
   event: push
