@@ -5,6 +5,7 @@ import {
   validateBelongsToOptional,
   validateEmail,
   validatePhone,
+  validateStringOptional,
   validateUrl,
 } from '../validators/schema';
 
@@ -28,13 +29,15 @@ export default class ContactPointModel extends AbstractValidationModel {
 
   get validationSchema() {
     return Joi.object({
-      email: validateEmail('Geef een geldig e-mailadres in'),
+      email: validateEmail('Geef een geldig e-mailadres in').allow(null),
       telephone: validatePhone(
         'Enkel een plusteken en cijfers zijn toegelaten'
-      ),
-      fax: validatePhone('Enkel een plusteken en cijfers zijn toegelaten'),
-      website: validateUrl('Geef een geldig internetadres in'),
-      type: Joi.string().empty(''),
+      ).allow(null),
+      fax: validatePhone(
+        'Enkel een plusteken en cijfers zijn toegelaten'
+      ).allow(null),
+      website: validateUrl('Geef een geldig internetadres in').allow(null),
+      type: validateStringOptional(),
       contactAddress: validateBelongsToOptional(),
     });
   }

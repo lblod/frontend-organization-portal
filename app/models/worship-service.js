@@ -1,6 +1,7 @@
 import { attr } from '@ember-data/model';
-import WorshipAdministrativeUnitModel from './worship-administrative-unit';
 import Joi from 'joi';
+import WorshipAdministrativeUnitModel from './worship-administrative-unit';
+import { validateStringOptional } from '../validators/schema';
 
 export default class WorshipServiceModel extends WorshipAdministrativeUnitModel {
   @attr denomination;
@@ -16,7 +17,7 @@ export default class WorshipServiceModel extends WorshipAdministrativeUnitModel 
 
   get validationSchema() {
     return super.validationSchema.append({
-      denomination: Joi.string().empty(''),
+      denomination: validateStringOptional(),
       crossBorder: Joi.boolean(),
     });
   }

@@ -5,6 +5,7 @@ import {
   validateBelongsToOptional,
   validateBelongsToRequired,
   validateHasManyOptional,
+  validateStringOptional,
 } from '../validators/schema';
 
 export default class SiteModel extends AbstractValidationModel {
@@ -33,7 +34,7 @@ export default class SiteModel extends AbstractValidationModel {
       address: validateBelongsToOptional(),
       contacts: validateHasManyOptional(),
       siteType: validateBelongsToRequired('Voeg een type vestiging toe'),
-      siteTypeName: Joi.string().empty(''),
+      siteTypeName: validateStringOptional(),
     });
   }
 

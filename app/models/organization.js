@@ -5,6 +5,7 @@ import {
   validateBelongsToOptional,
   validateBelongsToRequired,
   validateHasManyOptional,
+  validateStringOptional,
 } from '../validators/schema';
 
 export default class OrganizationModel extends AgentModel {
@@ -136,9 +137,9 @@ export default class OrganizationModel extends AgentModel {
       name: Joi.string().empty('').required().messages({
         'any.required': 'Vul de naam in',
       }),
-      alternativeName: Joi.string().empty(''),
+      alternativeName: validateStringOptional(),
       expectedEndDate: Joi.date().allow(null),
-      purpose: Joi.string().empty(''),
+      purpose: validateStringOptional(),
       primarySite: validateBelongsToOptional(),
       organizationStatus: validateBelongsToRequired('Selecteer een optie'),
       identifiers: validateHasManyOptional(),

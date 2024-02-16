@@ -1,7 +1,10 @@
 import { attr, belongsTo } from '@ember-data/model';
 import AbstractValidationModel from './abstract-validation-model';
 import Joi from 'joi';
-import { validateBelongsToOptional } from '../validators/schema';
+import {
+  validateBelongsToOptional,
+  validateStringOptional,
+} from '../validators/schema';
 
 const BELGIUM = 'België';
 
@@ -53,12 +56,15 @@ export default class AddressModel extends AbstractValidationModel {
         .empty('')
         .when('country', {
           is: Joi.valid(BELGIUM),
-          then: Joi.string().required().messages({ '*': REQUIRED_MESSAGE }),
-          otherwise: Joi.string().empty('').allow(null),
+          then: Joi.string()
+            .empty('')
+            .required()
+            .messages({ '*': REQUIRED_MESSAGE }),
+          otherwise: validateStringOptional(),
         }),
-      boxNumber: Joi.string().empty('').allow(null),
-      fullAddress: Joi.string().empty(''),
-      addressRegisterUri: Joi.string().empty(''),
+      boxNumber: validateStringOptional(),
+      fullAddress: validateStringOptional(),
+      addressRegisterUri: validateStringOptional(),
       source: validateBelongsToOptional(),
     });
   }

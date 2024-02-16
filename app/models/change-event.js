@@ -6,6 +6,7 @@ import {
   validateBelongsToRequired,
   validateHasManyOptional,
   validateHasManyRequired,
+  validateStringOptional,
 } from '../validators/schema';
 import {
   CHANGE_EVENT_TYPE,
@@ -58,7 +59,7 @@ export default class ChangeEventModel extends AbstractValidationModel {
         .empty(null)
         .required()
         .messages({ 'any.required': 'Vul de datum in' }),
-      description: Joi.string().empty(''),
+      description: validateStringOptional(),
       type: validateBelongsToRequired('Selecteer een type'),
       decision: validateBelongsToOptional(),
       resultingOrganizations: Joi.when('type.id', {
