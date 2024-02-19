@@ -109,7 +109,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.administrativeUnit.classification = value;
     this.model.administrativeUnit.subOrganizations = [];
     this.model.administrativeUnit.foundedOrganizations = [];
-    this.model.administrativeUnit.isAssociatedWith = [];
+    this.model.administrativeUnit.isAssociatedWith = null;
     this.model.administrativeUnit.isSubOrganizationOf = null;
     this.model.administrativeUnit.wasFoundedByOrganizations = [];
     this.model.administrativeUnit.hasParticipants = [];
@@ -244,29 +244,24 @@ export default class AdministrativeUnitsNewController extends Controller {
 
 function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
   newAdministrativeUnit.name = administrativeUnit.name;
-  newAdministrativeUnit.expectedEndDate = administrativeUnit.expectedEndDate;
   newAdministrativeUnit.recognizedWorshipType =
     administrativeUnit.recognizedWorshipType;
   newAdministrativeUnit.classification = administrativeUnit.classification;
   newAdministrativeUnit.organizationStatus =
     administrativeUnit.organizationStatus;
-  newAdministrativeUnit.wasFoundedByOrganizations =
-    administrativeUnit.wasFoundedByOrganizations;
+  if (administrativeUnit.wasFoundedByOrganizations?.length) {
+    newAdministrativeUnit.wasFoundedByOrganizations =
+      administrativeUnit.wasFoundedByOrganizations.slice();
+  }
   newAdministrativeUnit.isSubOrganizationOf =
     administrativeUnit.isSubOrganizationOf;
-  if (
-    administrativeUnit.subOrganizations &&
-    administrativeUnit.subOrganizations.length
-  ) {
+  if (administrativeUnit.subOrganizations?.length) {
     newAdministrativeUnit.subOrganizations =
-      administrativeUnit.subOrganizations;
+      administrativeUnit.subOrganizations.slice();
   }
-  if (
-    administrativeUnit.foundedOrganizations &&
-    administrativeUnit.foundedOrganizations.length
-  ) {
+  if (administrativeUnit.foundedOrganizations?.length) {
     newAdministrativeUnit.foundedOrganizations =
-      administrativeUnit.foundedOrganizations;
+      administrativeUnit.foundedOrganizations.slice();
   }
   newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
   if (administrativeUnit.scope) {
@@ -276,11 +271,9 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
         administrativeUnit.scope.locatedWithin;
     }
   }
-  if (
-    administrativeUnit.hasParticipants &&
-    administrativeUnit.hasParticipants.length
-  ) {
-    newAdministrativeUnit.hasParticipants = administrativeUnit.hasParticipants;
+  if (administrativeUnit.hasParticipants?.length) {
+    newAdministrativeUnit.hasParticipants =
+      administrativeUnit.hasParticipants.slice();
   }
   if (administrativeUnit.expectedEndDate) {
     newAdministrativeUnit.expectedEndDate = administrativeUnit.expectedEndDate;
