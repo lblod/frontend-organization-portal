@@ -68,6 +68,12 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
     );
   }
 
+  get kboIdentifierForKboUnit() {
+    return this.model.kboAdministrativeUnit?.identifiers?.find((id) =>
+      this.isKboIdentifier(id)
+    );
+  }
+
   get nisIdentifier() {
     return this.model.administrativeUnit.identifiers.find((id) =>
       this.isNisCodeIdentifier(id)
@@ -195,7 +201,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
   }
 
   @action
-  setShowAbbData(value) {
+  async setShowAbbData(value) {
     this.showAbbData = value;
   }
 }

@@ -204,12 +204,12 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         yield administrativeUnit.save();
       }
 
-      const syncOvoNumberEndpoint = `/sync-ovo-number/${structuredIdentifierKBO.id}`;
+      const syncOvoNumberEndpoint = `/kbo-data-sync/${structuredIdentifierKBO.id}/ovo`;
       yield fetch(syncOvoNumberEndpoint, {
         method: 'POST',
       });
 
-      const getKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
+      const getKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}/kbo`;
       yield fetch(getKboData, {
         method: 'POST',
       });
