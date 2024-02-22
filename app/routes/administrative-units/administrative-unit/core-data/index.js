@@ -99,7 +99,6 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
         return id.idName === ID_NAME.KBO;
       });
       const structuredIdKBO = await kboIdentifier.structuredIdentifier;
-      console.log(structuredIdKBO);
       const getKboData = `/kbo-data-sync/${structuredIdKBO.id}/kbo`;
       await fetch(getKboData, {
         method: 'POST',

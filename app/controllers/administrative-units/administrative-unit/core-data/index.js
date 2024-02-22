@@ -201,7 +201,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
   }
 
   @action
-  async setShowAbbData(value) {
+  setShowAbbData(value) {
     this.showAbbData = value;
   }
 }
