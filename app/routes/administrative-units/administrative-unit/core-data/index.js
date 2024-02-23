@@ -10,7 +10,6 @@ import {
   CLASSIFICATION_CODE,
   OCMW_ASSOCIATION_CLASSIFICATION_CODES,
 } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import { ID_NAME } from '../../../../models/identifier';
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute extends Route {
   @service store;
@@ -92,24 +91,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
 
     let kboContacts = A();
     let kboAdministrativeUnit = await administrativeUnit.kboAdministrativeUnit;
-
-    if (!kboAdministrativeUnit) {
-      const identifiers = await administrativeUnit.identifiers;
-      const kboIdentifier = identifiers.find((id) => {
-        return id.idName === ID_NAME.KBO;
-      });
-      const structuredIdKBO = await kboIdentifier.structuredIdentifier;
-      const getKboData = `/kbo-data-sync/${structuredIdKBO.id}/kbo`;
-      await fetch(getKboData, {
-        method: 'POST',
-      });
-      kboAdministrativeUnit = await administrativeUnit.kboAdministrativeUnit;
-    }
-
     if (kboAdministrativeUnit) {
       kboContacts = await kboAdministrativeUnit.contacts;
     }
-
     return {
       administrativeUnit,
       kboAdministrativeUnit,
