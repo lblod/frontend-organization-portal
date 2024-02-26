@@ -10,6 +10,7 @@ import {
 
 export default class OrganizationModel extends AgentModel {
   @attr name;
+  @attr legalName;
   @attr alternativeName;
   @attr('date') expectedEndDate;
   @attr purpose;
@@ -134,8 +135,9 @@ export default class OrganizationModel extends AgentModel {
 
   get validationSchema() {
     return super.validationSchema.append({
-      name: Joi.string().empty('').required().messages({
-        'any.required': 'Vul de naam in',
+      name: validateStringOptional(),
+      legalName: Joi.string().empty('').required().messages({
+        'any.required': 'Vul de juridische naam in',
       }),
       alternativeName: validateStringOptional(),
       expectedEndDate: Joi.date().allow(null),
@@ -157,5 +159,15 @@ export default class OrganizationModel extends AgentModel {
       participatesIn: validateHasManyOptional(),
       hasParticipants: validateHasManyOptional(),
     });
+  }
+
+  // TODO: use registered KBO name as fallback
+  get abbName() {
+    return this.legalName ?? this.name;
+  }
+
+  setAbbName(name) {
+    this.name = name;
+    this.legalName = name;
   }
 }

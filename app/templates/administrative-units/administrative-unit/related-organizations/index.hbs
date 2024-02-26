@@ -2,7 +2,7 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Gerelateerde organisaties</:title>
-      <:subtitle>{{@model.administrativeUnit.name}}
+      <:subtitle>{{@model.administrativeUnit.abbName}}
         ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         {{#if (not (or this.isDistrict this.isProvince))}}

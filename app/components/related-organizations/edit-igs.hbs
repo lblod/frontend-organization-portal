@@ -23,7 +23,7 @@
         <Item @labelFor="related-municipality">
           <:label>Provincie</:label>
           <:content>
-            {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
+            {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.abbName}}
           </:content>
         </Item>
       </:left>
@@ -38,7 +38,9 @@
 
   {{#if @model.administrativeUnit.error.hasParticipants.message}}
     <div>
-      <AuHelpText @error={{true}}>{{@model.administrativeUnit.error.hasParticipants.message}}</AuHelpText>
+      <AuHelpText
+        @error={{true}}
+      >{{@model.administrativeUnit.error.hasParticipants.message}}</AuHelpText>
     </div>
   {{/if}}
 
@@ -78,10 +80,7 @@
             @icon="bin"
             @iconAlignment="left"
             @skin="link"
-            {{on
-              "click"
-              (fn @removeHasParticipants organization)
-            }}
+            {{on "click" (fn @removeHasParticipants organization)}}
           >
             Verwijder
           </AuButton>

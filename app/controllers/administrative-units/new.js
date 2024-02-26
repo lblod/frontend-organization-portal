@@ -94,6 +94,11 @@ export default class AdministrativeUnitsNewController extends Controller {
   }
 
   @action
+  setNames(name) {
+    this.model.administrativeUnit.setAbbName(name);
+  }
+
+  @action
   setHasParticipants(units) {
     this.model.administrativeUnit.hasParticipants = units;
   }
@@ -152,7 +157,6 @@ export default class AdministrativeUnitsNewController extends Controller {
       } else {
         newAdministrativeUnit = administrativeUnit;
       }
-      // Copy data entered in the frontend to the new admin unit
       copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
       structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);

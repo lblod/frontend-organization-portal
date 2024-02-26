@@ -12,7 +12,7 @@
               @route="administrative-units.administrative-unit"
               @model={{@model.isSubOrganizationOf.id}}
             >
-              {{@model.isSubOrganizationOf.name}}
+              {{@model.isSubOrganizationOf.abbName}}
             </AuLink>
           </:content>
         </Item>
@@ -23,7 +23,7 @@
               @route="administrative-units.administrative-unit.core-data"
               @model={{@model.isAssociatedWith.id}}
             >
-              {{@model.isAssociatedWith.name}}
+              {{@model.isAssociatedWith.abbName}}
             </AuLink>
           </:content>
         </Item>
@@ -39,7 +39,7 @@
                   <AuLink
                     @route="administrative-units.administrative-unit.core-data"
                     @model={{@model.id}}
-                  >{{org.name}}</AuLink>
+                  >{{org.abbName}}</AuLink>
                 </Item>
               {{/each}}
             </AuList>

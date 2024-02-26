@@ -19,7 +19,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       assert.false(isValid);
       assert.strictEqual(Object.keys(model.error).length, 3);
       assert.propContains(model.error, {
-        name: { message: 'Vul de naam in' },
+        legalName: { message: 'Vul de juridische naam in' },
         classification: { message: 'Selecteer een optie' },
         organizationStatus: { message: 'Selecteer een optie' },
       });
@@ -40,7 +40,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       assert.false(isValid);
       assert.strictEqual(Object.keys(model.error).length, 5);
       assert.propContains(model.error, {
-        name: { message: 'Vul de naam in' },
+        legalName: { message: 'Vul de juridische naam in' },
         expectedEndDate: {
           message: 'De datum mag niet in het verleden liggen',
         },
@@ -70,7 +70,7 @@ module('Unit | Model | administrative unit', function (hooks) {
         assert.false(isValid);
         assert.strictEqual(Object.keys(model.error).length, 3);
         assert.propContains(model.error, {
-          name: { message: 'Vul de naam in' },
+          legalName: { message: 'Vul de juridische naam in' },
           organizationStatus: { message: 'Selecteer een optie' },
           wasFoundedByOrganizations: { message: 'Selecteer een optie' },
         });
@@ -97,7 +97,7 @@ module('Unit | Model | administrative unit', function (hooks) {
         assert.false(isValid);
         assert.strictEqual(Object.keys(model.error).length, 3);
         assert.propContains(model.error, {
-          name: { message: 'Vul de naam in' },
+          legalName: { message: 'Vul de juridische naam in' },
           organizationStatus: { message: 'Selecteer een optie' },
           wasFoundedByOrganizations: { message: 'Selecteer een optie' },
         });
@@ -126,7 +126,7 @@ module('Unit | Model | administrative unit', function (hooks) {
         assert.false(isValid);
         assert.strictEqual(Object.keys(model.error).length, 2);
         assert.propContains(model.error, {
-          name: { message: 'Vul de naam in' },
+          legalName: { message: 'Vul de juridische naam in' },
           organizationStatus: { message: 'Selecteer een optie' },
         });
       });
@@ -148,7 +148,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       assert.false(isValid);
       assert.strictEqual(Object.keys(model.error).length, 3);
       assert.propContains(model.error, {
-        name: { message: 'Vul de naam in' },
+        legalName: { message: 'Vul de juridische naam in' },
         organizationStatus: { message: 'Selecteer een optie' },
         isSubOrganizationOf: { message: 'Selecteer een optie' },
       });
@@ -170,7 +170,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       assert.false(isValid);
       assert.strictEqual(Object.keys(model.error).length, 4);
       assert.propContains(model.error, {
-        name: { message: 'Vul de naam in' },
+        legalName: { message: 'Vul de juridische naam in' },
         organizationStatus: { message: 'Selecteer een optie' },
         isAssociatedWith: { message: 'Selecteer een optie' },
         isSubOrganizationOf: { message: 'Selecteer een optie' },
@@ -199,7 +199,7 @@ module('Unit | Model | administrative unit', function (hooks) {
         assert.false(isValid);
         assert.strictEqual(Object.keys(model.error).length, 2);
         assert.propContains(model.error, {
-          name: { message: 'Vul de naam in' },
+          legalName: { message: 'Vul de juridische naam in' },
           organizationStatus: { message: 'Selecteer een optie' },
         });
       });
@@ -219,7 +219,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       assert.false(isValid);
       assert.strictEqual(Object.keys(model.error).length, 4);
       assert.propContains(model.error, {
-        name: { message: 'Vul de naam in' },
+        legalName: { message: 'Vul de juridische naam in' },
         organizationStatus: { message: 'Selecteer een optie' },
         wasFoundedByOrganizations: { message: 'Selecteer een optie' },
         isSubOrganizationOf: { message: 'Selecteer een optie' },
@@ -240,7 +240,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       assert.false(isValid);
       assert.strictEqual(Object.keys(model.error).length, 5);
       assert.propContains(model.error, {
-        name: { message: 'Vul de naam in' },
+        legalName: { message: 'Vul de juridische naam in' },
         organizationStatus: { message: 'Selecteer een optie' },
         isAssociatedWith: { message: 'Selecteer een optie' },
         wasFoundedByOrganizations: { message: 'Selecteer een optie' },

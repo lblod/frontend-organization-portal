@@ -2,7 +2,7 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <PageHeader class="au-o-box">
     <:title>Bewerk betrokken lokale besturen</:title>
-    <:subtitle>{{@model.worshipAdministrativeUnit.name}}</:subtitle>
+    <:subtitle>{{@model.worshipAdministrativeUnit.abbName}}</:subtitle>
     <:action>
       <div class="au-u-text-right">
         <AuButtonGroup class="au-c-button-group--align-right">
@@ -75,7 +75,7 @@
                 @classificationCodes={{this.classificationCodes}}
                 as |administrativeUnit|
               >
-                {{administrativeUnit.name}}
+                {{administrativeUnit.abbName}}
                 ({{administrativeUnit.classification.label}})
               </AdministrativeUnitSelect>
               {{#if errorMessage}}
@@ -92,10 +92,7 @@
             />
           </td>
           <td>
-            {{#let
-              involvement.error.involvementType.message
-              as |errorMessage|
-            }}
+            {{#let involvement.error.involvementType.message as |errorMessage|}}
               <div class={{if errorMessage "ember-power-select--error"}}>
                 {{#if this.isWorshipService}}
                   {{#if

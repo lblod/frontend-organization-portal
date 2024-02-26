@@ -5,7 +5,7 @@
         Positie:
         {{@model.minister.ministerPosition.function.label}}
         <br />
-        {{@model.minister.ministerPosition.worshipService.name}}
+        {{@model.minister.ministerPosition.worshipService.abbName}}
       </:title>
       <:subtitle>
         {{@model.person.givenName}}
@@ -47,7 +47,7 @@
                     @route="administrative-units.administrative-unit"
                     @model={{administrativeUnit.id}}
                   >
-                    {{administrativeUnit.name}}
+                    {{administrativeUnit.abbName}}
                   </AuLink>
                 {{/let}}
               </:content>
@@ -71,14 +71,18 @@
             <:left as |Item|>
               <Item>
                 <:label>Startdatum</:label>
-                <:content>{{date-format @model.minister.agentStartDate}}</:content>
+                <:content>{{date-format
+                    @model.minister.agentStartDate
+                  }}</:content>
               </Item>
             </:left>
             <:right as |Item|>
               {{#if @model.minister.agentEndDate}}
                 <Item>
                   <:label>Einddatum</:label>
-                  <:content>{{date-format @model.minister.agentEndDate}}</:content>
+                  <:content>{{date-format
+                      @model.minister.agentEndDate
+                    }}</:content>
                 </Item>
               {{/if}}
             </:right>
