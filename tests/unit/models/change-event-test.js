@@ -296,86 +296,91 @@ module('Unit | Model | change event', function (hooks) {
     });
 
     module('addOriginalOrganization', function () {
-      test('it correctly adds multiple different original organizations', function (assert) {
-        this.model.addOriginalOrganization(this.organization);
-        assert.strictEqual(this.model.originalOrganizations.length, 1);
+      test('it correctly adds multiple different original organizations', async function (assert) {
+        await this.model.addOriginalOrganization(this.organization);
+        assert.strictEqual((await this.model.originalOrganizations).length, 1);
         assert.true(
-          this.model.originalOrganizations.includes(this.organization)
+          (await this.model.originalOrganizations).includes(this.organization)
         );
 
-        this.model.addOriginalOrganization(this.otherOrganization);
-        assert.strictEqual(this.model.originalOrganizations.length, 2);
+        await this.model.addOriginalOrganization(this.otherOrganization);
+        assert.strictEqual((await this.model.originalOrganizations).length, 2);
         assert.true(
-          this.model.originalOrganizations.includes(this.otherOrganization)
-        );
-      });
-
-      test('it does not add duplicate original organizations', function (assert) {
-        this.model.addOriginalOrganization(this.organization);
-        assert.strictEqual(this.model.originalOrganizations.length, 1);
-        assert.true(
-          this.model.originalOrganizations.includes(this.organization)
-        );
-
-        this.model.addOriginalOrganization(this.organization);
-        assert.strictEqual(this.model.originalOrganizations.length, 1);
-        assert.true(
-          this.model.originalOrganizations.includes(this.organization)
+          (await this.model.originalOrganizations).includes(
+            this.otherOrganization
+          )
         );
       });
 
-      test('it has no effect to add undefined', function (assert) {
-        this.model.addOriginalOrganization(undefined);
-        assert.strictEqual(this.model.originalOrganizations.length, 0);
+      test('it does not add duplicate original organizations', async function (assert) {
+        await this.model.addOriginalOrganization(this.organization);
+        assert.strictEqual((await this.model.originalOrganizations).length, 1);
+        assert.true(
+          (await this.model.originalOrganizations).includes(this.organization)
+        );
+
+        await this.model.addOriginalOrganization(this.organization);
+        assert.strictEqual((await this.model.originalOrganizations).length, 1);
+        assert.true(
+          (await this.model.originalOrganizations).includes(this.organization)
+        );
+      });
+
+      test('it has no effect to add undefined', async function (assert) {
+        await this.model.addOriginalOrganization(undefined);
+        assert.strictEqual((await this.model.originalOrganizations).length, 0);
       });
     });
 
     module('removeOriginalOrganization', function () {
-      test('it removes an existing organization', function (assert) {
-        this.model.addOriginalOrganization(this.organization);
-        this.model.addOriginalOrganization(this.otherOrganization);
-        assert.strictEqual(this.model.originalOrganizations.length, 2);
+      test('it removes an existing organization', async function (assert) {
+        await this.model.addOriginalOrganization(this.organization);
+        await this.model.addOriginalOrganization(this.otherOrganization);
+        assert.strictEqual((await this.model.originalOrganizations).length, 2);
 
-        this.model.removeOriginalOrganization(this.organization);
-        assert.strictEqual(this.model.originalOrganizations.length, 1);
+        await this.model.removeOriginalOrganization(this.organization);
+        assert.strictEqual((await this.model.originalOrganizations).length, 1);
         assert.false(
-          this.model.originalOrganizations.includes(this.organization)
+          (await this.model.originalOrganizations).includes(this.organization)
         );
         assert.true(
-          this.model.originalOrganizations.includes(this.otherOrganization)
+          (await this.model.originalOrganizations).includes(
+            this.otherOrganization
+          )
         );
       });
 
-      test('it has no impact to remove an non-existing organisation', function (assert) {
-        this.model.addOriginalOrganization(this.organization);
-        this.model.addOriginalOrganization(this.otherOrganization);
+      test('it has no impact to remove an non-existing organisation', async function (assert) {
+        await this.model.addOriginalOrganization(this.organization);
+        await this.model.addOriginalOrganization(this.otherOrganization);
 
         const removedOrganisation = this.store().createRecord(
           'administrative-unit'
         );
 
-        assert.strictEqual(this.model.originalOrganizations.length, 2);
+        assert.strictEqual((await this.model.originalOrganizations).length, 2);
         assert.false(
-          this.model.originalOrganizations.includes(removedOrganisation)
+          (await this.model.originalOrganizations).includes(removedOrganisation)
         );
 
-        this.model.removeOriginalOrganization(removedOrganisation);
-        assert.strictEqual(this.model.originalOrganizations.length, 2);
+        await this.model.removeOriginalOrganization(removedOrganisation);
+        assert.strictEqual((await this.model.originalOrganizations).length, 2);
         assert.true(
-          this.model.originalOrganizations.includes(this.organization)
+          (await this.model.originalOrganizations).includes(this.organization)
         );
         assert.true(
-          this.model.originalOrganizations.includes(this.otherOrganization)
+          (await this.model.originalOrganizations).includes(
+            this.otherOrganization
+          )
         );
       });
 
-      test('it has no effect to remove undefined', function (assert) {
-        this.model.addOriginalOrganization(this.organization);
-        this.model.addOriginalOrganization(this.otherOrganization);
-        assert.strictEqual(this.model.originalOrganizations.length, 2);
-
-        this.model.removeOriginalOrganization(undefined);
-        assert.strictEqual(this.model.originalOrganizations.length, 2);
+      test('it has no effect to remove undefined', async function (assert) {
+        await this.model.addOriginalOrganization(this.organization);
+        await this.model.addOriginalOrganization(this.otherOrganization);
+        assert.strictEqual((await this.model.originalOrganizations).length, 2);
+        await this.model.removeOriginalOrganization(undefined);
+        assert.strictEqual((await this.model.originalOrganizations).length, 2);
       });
     });
   });
@@ -394,91 +399,94 @@ module('Unit | Model | change event', function (hooks) {
     });
 
     module('addResultingOrganization', function () {
-      test('it adds the provided organization', function (assert) {
-        assert.strictEqual(this.model.resultingOrganizations.length, 0);
+      test('it adds the provided organization', async function (assert) {
+        assert.strictEqual((await this.model.resultingOrganizations).length, 0);
 
-        this.model.addResultingOrganization(this.organization);
+        await this.model.addResultingOrganization(this.organization);
 
-        assert.strictEqual(this.model.resultingOrganizations.length, 1);
+        assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.true(
-          this.model.resultingOrganizations.includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization)
         );
       });
 
-      test('it does not add duplicate resulting organizations', function (assert) {
-        this.model.addResultingOrganization(this.organization);
-        assert.strictEqual(this.model.resultingOrganizations.length, 1);
+      test('it does not add duplicate resulting organizations', async function (assert) {
+        await this.model.addResultingOrganization(this.organization);
+        assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.true(
-          this.model.resultingOrganizations.includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization)
         );
 
-        this.model.addResultingOrganization(this.organization);
-        assert.strictEqual(this.model.resultingOrganizations.length, 1);
+        await this.model.addResultingOrganization(this.organization);
+        assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.true(
-          this.model.resultingOrganizations.includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization)
         );
       });
 
-      test('it first clears existing resulting organizations before adding a new one', function (assert) {
-        this.model.addResultingOrganization(this.organization);
-        assert.strictEqual(this.model.resultingOrganizations.length, 1);
+      test('it first clears existing resulting organizations before adding a new one', async function (assert) {
+        await this.model.addResultingOrganization(this.organization);
+        assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.true(
-          this.model.resultingOrganizations.includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization)
         );
 
-        this.model.addResultingOrganization(this.otherOrganization);
-        assert.strictEqual(this.model.resultingOrganizations.length, 1);
+        await this.model.addResultingOrganization(this.otherOrganization);
+        assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.true(
-          this.model.resultingOrganizations.includes(this.otherOrganization)
+          (await this.model.resultingOrganizations).includes(
+            this.otherOrganization
+          )
         );
         assert.false(
-          this.model.resultingOrganizations.includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization)
         );
       });
 
-      test('it has no effect to add undefined', function (assert) {
-        this.model.addResultingOrganization(undefined);
-        assert.strictEqual(this.model.resultingOrganizations.length, 0);
+      test('it has no effect to add undefined', async function (assert) {
+        await this.model.addResultingOrganization(undefined);
+        assert.strictEqual((await this.model.resultingOrganizations).length, 0);
       });
     });
 
     module('removeResultingOrganization', function () {
-      test('it removes an existing organization', function (assert) {
-        this.model.addResultingOrganization(this.organization);
-        assert.strictEqual(this.model.resultingOrganizations.length, 1);
+      test('it removes an existing organization', async function (assert) {
+        await this.model.addResultingOrganization(this.organization);
+        assert.strictEqual((await this.model.resultingOrganizations).length, 1);
 
-        this.model.removeResultingOrganization(this.organization);
-        assert.strictEqual(this.model.resultingOrganizations.length, 0);
+        await this.model.removeResultingOrganization(this.organization);
+        assert.strictEqual((await this.model.resultingOrganizations).length, 0);
         assert.false(
-          this.model.resultingOrganizations.includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization)
         );
       });
 
-      test('it has no impact to remove an non-existing organisation', function (assert) {
-        this.model.addResultingOrganization(this.organization);
+      test('it has no impact to remove an non-existing organisation', async function (assert) {
+        await this.model.addResultingOrganization(this.organization);
 
         const removedOrganisation = this.store().createRecord(
           'administrative-unit'
         );
 
-        assert.strictEqual(this.model.resultingOrganizations.length, 1);
+        assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.false(
-          this.model.resultingOrganizations.includes(removedOrganisation)
+          (await this.model.resultingOrganizations).includes(
+            removedOrganisation
+          )
         );
 
-        this.model.removeResultingOrganization(removedOrganisation);
-        assert.strictEqual(this.model.resultingOrganizations.length, 1);
+        await this.model.removeResultingOrganization(removedOrganisation);
+        assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.true(
-          this.model.resultingOrganizations.includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization)
         );
       });
 
-      test('it has no effect to remove undefined', function (assert) {
-        this.model.addResultingOrganization(this.organization);
-        assert.strictEqual(this.model.resultingOrganizations.length, 1);
-
-        this.model.removeResultingOrganization(undefined);
-        assert.strictEqual(this.model.resultingOrganizations.length, 1);
+      test('it has no effect to remove undefined', async function (assert) {
+        await this.model.addResultingOrganization(this.organization);
+        assert.strictEqual((await this.model.resultingOrganizations).length, 1);
+        await this.model.removeResultingOrganization(undefined);
+        assert.strictEqual((await this.model.resultingOrganizations).length, 1);
       });
     });
   });

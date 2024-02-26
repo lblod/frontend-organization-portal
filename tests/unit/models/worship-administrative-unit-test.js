@@ -17,7 +17,6 @@ module('Unit | Model | worship administrative unit', function (hooks) {
 
       assert.false(isValid);
       assert.strictEqual(Object.keys(model.error).length, 3);
-      console.log(model.error);
       assert.propContains(model.error, {
         name: { message: 'Vul de naam in' },
         classification: { message: 'Selecteer een optie' },

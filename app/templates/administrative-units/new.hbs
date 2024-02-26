@@ -261,7 +261,7 @@
                       />
                     </:content>
                   </Item>
-                {{else if this.hasCentralWorshipService}}
+                {{else if @model.administrativeUnit.hasCentralWorshipService}}
                   <Item
                     @labelFor="related-central-worship-service"
                     @required={{false}}

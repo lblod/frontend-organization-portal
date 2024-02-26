@@ -38,7 +38,7 @@
         {{#if @model.administrativeUnit.isWorshipService}}
           <RelatedOrganizations::EditWorshipService
             @model={{@model}}
-            @hasCentralWorshipService={{this.hasCentralWorshipService}}
+            @hasCentralWorshipService={{@model.administrativeUnit.hasCentralWorshipService}}
           />
         {{/if}}
         {{#if @model.administrativeUnit.isCentralWorshipService}}

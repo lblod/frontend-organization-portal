@@ -9,6 +9,7 @@ export default class DecisionModel extends AbstractValidationModel {
 
   @belongsTo('decision-activity', {
     inverse: 'givesCauseTo',
+    async: true,
   })
   hasDecisionActivity;
 

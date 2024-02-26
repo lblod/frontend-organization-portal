@@ -88,3 +88,11 @@ export const validateRequiredWhenClassificationId = (
     otherwise: Joi.optional(),
   }).messages({ 'any.required': message });
 };
+
+/**
+ * Rules for validating a string as an optional field.
+ * @returns {Joi.StringSchema<string>} - Joi schema for optional strings.
+ */
+export const validateStringOptional = () => {
+  return Joi.string().empty('').allow(null);
+};

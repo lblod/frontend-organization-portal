@@ -197,7 +197,7 @@
                   <:content>
                     <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
                       Gewijzigd op
-                      {{date-format @model.resultedFrom.firstObject.date}}
+                      {{date-format (get @model.resultedFrom "0.date")}}
                     </AuHelpText>
                   </:content>
                 </Item>
@@ -462,7 +462,7 @@
                 <:content>
                   <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
                     Gewijzigd op
-                    {{date-format @model.resultedFrom.firstObject.date}}
+                    {{date-format (get @model.resultedFrom "0.date")}}
                   </AuHelpText>
                 </:content>
               </Item>

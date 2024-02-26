@@ -9,7 +9,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesIndexController e
     }
 
     if (this.model.sites.length > 0) {
-      sites = [...sites, ...this.model.sites.toArray()];
+      sites = [...sites, ...this.model.sites.slice()];
     }
 
     return sites;

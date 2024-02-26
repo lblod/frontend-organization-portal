@@ -2,7 +2,6 @@ import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
 import {
   CLASSIFICATION_CODE,
   OCMW_ASSOCIATION_CLASSIFICATION_CODES,
@@ -20,21 +19,6 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   queryParams = ['sort'];
 
   @tracked sort = 'name';
-
-  get hasCentralWorshipService() {
-    const typesThatHaveACentralWorshipService = [
-      RECOGNIZED_WORSHIP_TYPE.ISLAMIC,
-      RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC,
-      RECOGNIZED_WORSHIP_TYPE.ORTHODOX,
-    ];
-
-    return (
-      this.model.administrativeUnit.isWorshipService &&
-      typesThatHaveACentralWorshipService.find(
-        (id) => id == this.model.administrativeUnit.recognizedWorshipType?.id
-      )
-    );
-  }
 
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
@@ -74,18 +58,21 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   @action
   addNewSubOrganization() {
     let subOrganization = this.store.createRecord('organization');
-    this.model.subOrganizations.pushObject(subOrganization);
+    this.model.subOrganizations.push(subOrganization);
   }
 
   @action
   updateSubOrganization(removedOrganization, addedOrganization) {
-    this.model.subOrganizations.removeObject(removedOrganization);
-    this.model.subOrganizations.pushObject(addedOrganization);
+    this.removeSubOrganization(removedOrganization);
+    this.model.subOrganizations.push(addedOrganization);
   }
 
   @action
   removeSubOrganization(organization) {
-    this.model.subOrganizations.removeObject(organization);
+    const index = this.model.subOrganizations.indexOf(organization);
+    if (index > -1) {
+      this.model.subOrganizations.splice(index, 1);
+    }
   }
 
   @action
@@ -95,7 +82,9 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
       this.model.administrativeUnit.wasFoundedByOrganizations = orgs;
     } else {
       this.model.administrativeUnit.isSubOrganizationOf = orgs;
-      this.model.administrativeUnit.wasFoundedByOrganizations = new Array(orgs);
+      this.model.administrativeUnit.wasFoundedByOrganizations = orgs
+        ? [orgs]
+        : [];
     }
   }
 
@@ -107,18 +96,21 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
   @action
   addNewHasParticipants() {
     let organization = this.store.createRecord('organization');
-    this.model.hasParticipants.pushObject(organization);
+    this.model.hasParticipants.push(organization);
   }
 
   @action
   updateHasParticipants(removedOrganization, addedOrganization) {
-    this.model.hasParticipants.removeObject(removedOrganization);
-    this.model.hasParticipants.pushObject(addedOrganization);
+    this.removeHasParticipants(removedOrganization);
+    this.model.hasParticipants.push(addedOrganization);
   }
 
   @action
   removeHasParticipants(organization) {
-    this.model.hasParticipants.removeObject(organization);
+    const index = this.model.hasParticipants.indexOf(organization);
+    if (index > -1) {
+      this.model.hasParticipants.splice(index, 1);
+    }
   }
 
   @dropTask

@@ -12,6 +12,7 @@ import {
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
+  @service store;
 
   get hasValidationErrors() {
     return (
@@ -74,12 +75,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   }
 
   @action
-  setRelation(units) {
-    if (Array.isArray(units)) {
-      this.model.administrativeUnit.isSubOrganizationOf = units[0];
-    } else {
-      this.model.administrativeUnit.isSubOrganizationOf = units;
-    }
+  setRelation(unit) {
+    this.model.administrativeUnit.isSubOrganizationOf = Array.isArray(unit)
+      ? unit[0]
+      : unit;
 
     if (
       this.model.administrativeUnit.isAgb ||
@@ -87,14 +86,15 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       this.model.administrativeUnit.isOcmwAssociation ||
       this.model.administrativeUnit.isPevaMunicipality ||
       this.model.administrativeUnit.isPevaProvince
-    )
-      if (Array.isArray(units)) {
-        this.model.administrativeUnit.wasFoundedByOrganizations = units;
-      } else {
-        this.model.administrativeUnit.wasFoundedByOrganizations = new Array(
-          units
-        );
-      }
+    ) {
+      this.model.administrativeUnit.wasFoundedByOrganizations = Array.isArray(
+        unit
+      )
+        ? unit
+        : unit
+        ? [unit]
+        : [];
+    }
   }
 
   @action
@@ -161,7 +161,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         yield contact.save();
 
         if (isNewContact) {
-          siteContacts.pushObject(contact);
+          siteContacts.push(contact);
           yield primarySite.save();
         }
       }
@@ -176,7 +176,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         yield secondaryContact.save();
 
         if (isNewContact) {
-          siteContacts.pushObject(secondaryContact);
+          siteContacts.push(secondaryContact);
           yield primarySite.save();
         }
       }

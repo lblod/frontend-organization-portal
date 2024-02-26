@@ -7,11 +7,13 @@ export default class AgentInPositionModel extends AgentModel {
 
   @belongsTo('person', {
     inverse: 'agentsInPosition',
+    async: true,
   })
   person;
 
   @hasMany('contact-point', {
     inverse: null,
+    async: true,
   })
   contacts;
 }

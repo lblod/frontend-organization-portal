@@ -123,10 +123,10 @@ export default class ClassificationMultipleSelectComponent extends Component {
     if (
       !this.selectedClassifications.length &&
       this.newId &&
-      !codes.toArray().includes(this.args.selected) &&
+      !codes.slice().includes(this.args.selected) &&
       this.newId != this.oldId
     ) {
-      this.args.onChange(codes.toArray());
+      this.args.onChange(codes.slice());
     }
     this.oldId = this.newId;
 

@@ -125,9 +125,9 @@
                   <:content>
                     <AuLink
                       @route="administrative-units.administrative-unit"
-                      @model={{@model.changeEvent.resultingOrganizations.firstObject.id}}
+                      @model={{get @model.changeEvent.resultingOrganizations "0.id"}}
                     >
-                      {{@model.changeEvent.resultingOrganizations.firstObject.name}}
+                      {{get @model.changeEvent.resultingOrganizations "0.name"}}
                     </AuLink>
                   </:content>
                 </Item>
