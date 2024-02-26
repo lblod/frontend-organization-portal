@@ -303,7 +303,7 @@ module('Unit | Model | change event', function (hooks) {
           (await this.model.originalOrganizations).includes(this.organization)
         );
 
-        await await this.model.addOriginalOrganization(this.otherOrganization);
+        await this.model.addOriginalOrganization(this.otherOrganization);
         assert.strictEqual((await this.model.originalOrganizations).length, 2);
         assert.true(
           (await this.model.originalOrganizations).includes(
