@@ -72,11 +72,9 @@ export default class AdministrativeUnitsNewController extends Controller {
 
   @action
   setRelation(unit) {
-    if (Array.isArray(unit)) {
-      this.model.administrativeUnit.isSubOrganizationOf = unit[0];
-    } else {
-      this.model.administrativeUnit.isSubOrganizationOf = unit;
-    }
+    this.model.administrativeUnit.isSubOrganizationOf = Array.isArray(unit)
+      ? unit[0]
+      : unit;
 
     if (
       this.model.administrativeUnit.isAgb ||
@@ -84,14 +82,15 @@ export default class AdministrativeUnitsNewController extends Controller {
       this.model.administrativeUnit.isOcmwAssociation ||
       this.model.administrativeUnit.isPevaMunicipality ||
       this.model.administrativeUnit.isPevaProvince
-    )
-      if (Array.isArray(unit)) {
-        this.model.administrativeUnit.wasFoundedByOrganizations = unit;
-      } else {
-        this.model.administrativeUnit.wasFoundedByOrganizations = unit
-          ? [unit]
-          : [];
-      }
+    ) {
+      this.model.administrativeUnit.wasFoundedByOrganizations = Array.isArray(
+        unit
+      )
+        ? unit
+        : unit
+        ? [unit]
+        : [];
+    }
   }
 
   @action

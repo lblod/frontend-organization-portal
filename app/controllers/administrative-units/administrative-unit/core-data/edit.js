@@ -75,12 +75,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   }
 
   @action
-  setRelation(units) {
-    if (Array.isArray(units)) {
-      this.model.administrativeUnit.isSubOrganizationOf = units[0];
-    } else {
-      this.model.administrativeUnit.isSubOrganizationOf = units;
-    }
+  setRelation(unit) {
+    this.model.administrativeUnit.isSubOrganizationOf = Array.isArray(unit)
+      ? unit[0]
+      : unit;
 
     if (
       this.model.administrativeUnit.isAgb ||
@@ -88,14 +86,15 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       this.model.administrativeUnit.isOcmwAssociation ||
       this.model.administrativeUnit.isPevaMunicipality ||
       this.model.administrativeUnit.isPevaProvince
-    )
-      if (Array.isArray(units)) {
-        this.model.administrativeUnit.wasFoundedByOrganizations = units;
-      } else {
-        this.model.administrativeUnit.wasFoundedByOrganizations = units
-          ? [units]
-          : [];
-      }
+    ) {
+      this.model.administrativeUnit.wasFoundedByOrganizations = Array.isArray(
+        unit
+      )
+        ? unit
+        : unit
+        ? [unit]
+        : [];
+    }
   }
 
   @action
