@@ -1,6 +1,6 @@
 <PageHeader class="au-o-box">
   <:title>Betrokken lokale besturen</:title>
-  <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+  <:subtitle>{{@model.administrativeUnit.abbName}}</:subtitle>
   <:action>
     <SecuredArea>
       <:edit>
@@ -54,7 +54,7 @@
       {{/if}}
     </c.header>
     <c.body as |involvement|>
-      <td>{{involvement.administrativeUnit.name}}</td>
+      <td>{{involvement.administrativeUnit.abbName}}</td>
       <td>{{involvement.administrativeUnit.classification.label}}</td>
       <td>{{involvement.involvementType.label}}</td>
       {{#if this.isWorshipService}}

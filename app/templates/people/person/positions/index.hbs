@@ -72,7 +72,7 @@
             @route="administrative-units.administrative-unit"
             @model={{position.administrativeUnit.id}}
           >
-            {{position.administrativeUnit.name}}
+            {{position.administrativeUnit.abbName}}
           </AuLink>
         {{else}}
           {{#each position.administrativeUnits as |administrativeUnit index|}}
@@ -80,7 +80,7 @@
               @route="administrative-units.administrative-unit"
               @model={{administrativeUnit.id}}
             >
-              {{administrativeUnit.name}}
+              {{administrativeUnit.abbName}}
               ({{administrativeUnit.classification.label}})
             </AuLink>
             {{#if (gt position.administrativeUnits.length 1)}}

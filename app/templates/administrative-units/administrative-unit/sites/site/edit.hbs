@@ -4,7 +4,7 @@
       <:title>Bewerk vestiging</:title>
       <:subtitle>
         {{this.model.address.fullAddress}},
-        {{this.model.administrativeUnit.name}}
+        {{this.model.administrativeUnit.abbName}}
       </:subtitle>
       <:action>
         <div class="au-u-text-right">
@@ -58,18 +58,16 @@
                   </:content>
                 </Item>
                 {{#if this.model.site.isOtherSite}}
-                  <Item
-                    @labelFor="site-type-name"
-                  >
+                  <Item @labelFor="site-type-name">
                     <:label>Name</:label>
                     <:content>
-                     <AuInput
-                      @selected={{this.model.site.siteTypeName}}
-                      {{on "input" this.setSiteTypeName}}
-                      value={{this.model.site.siteTypeName}}
-                      @width="block"
-                      maxlength="50"
-                     />
+                      <AuInput
+                        @selected={{this.model.site.siteTypeName}}
+                        {{on "input" this.setSiteTypeName}}
+                        value={{this.model.site.siteTypeName}}
+                        @width="block"
+                        maxlength="50"
+                      />
                     </:content>
                   </Item>
                 {{/if}}

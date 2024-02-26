@@ -4,7 +4,7 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Kerngegevens</:title>
-      <:subtitle>{{@model.representativeBody.name}}</:subtitle>
+      <:subtitle>{{@model.representativeBody.abbName}}</:subtitle>
     </PageHeader>
 
     <DataCard>
@@ -14,11 +14,16 @@
           <:left as |Item|>
             <Item>
               <:label>Naam</:label>
-              <:content>{{@model.representativeBody.name}}</:content>
+              <:content>{{@model.representativeBody.abbName}}</:content>
+            </Item>
+            <Item>
+              <:label>Juridische naam</:label>
+              <:content>{{@model.representativeBody.legalName}}</:content>
             </Item>
             <Item>
               <:label>Soort eredienst</:label>
-              <:content>{{@model.representativeBody.recognizedWorshipType.label}}</:content>
+              <:content
+              >{{@model.representativeBody.recognizedWorshipType.label}}</:content>
             </Item>
           </:left>
           <:right as |Item|>
@@ -36,8 +41,10 @@
               <Item>
                 <:content>
                   <AuHelpText @skin="tertiary">Gewijzigd op
-                    {{date-format (get @model.representativeBody.resultedFrom "0.date")}}
-                    </AuHelpText>
+                    {{date-format
+                      (get @model.representativeBody.resultedFrom "0.date")
+                    }}
+                  </AuHelpText>
                 </:content>
               </Item>
             {{/if}}
@@ -77,7 +84,12 @@
               <Item>
                 <:label>Telefoonnummer</:label>
                 <:content>
-                  {{tel-format (get @model.representativeBody.primarySite.contacts "0.telephone")}}
+                  {{tel-format
+                    (get
+                      @model.representativeBody.primarySite.contacts
+                      "0.telephone"
+                    )
+                  }}
                 </:content>
               </Item>
             {{/if}}
@@ -96,11 +108,18 @@
                 <:label>Website</:label>
                 <:content>
                   <a
-                    href={{get @model.representativeBody.primarySite.contacts "0.website"}}
+                    href={{get
+                      @model.representativeBody.primarySite.contacts
+                      "0.website"
+                    }}
                     class="au-c-link"
                     target="_blank"
                     rel="noopener noreferrer"
-                  >{{get @model.representativeBody.primarySite.contacts "0.website"}} (externe link)</a>
+                  >{{get
+                      @model.representativeBody.primarySite.contacts
+                      "0.website"
+                    }}
+                    (externe link)</a>
                 </:content>
               </Item>
             {{/if}}

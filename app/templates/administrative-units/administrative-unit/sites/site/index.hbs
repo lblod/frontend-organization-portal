@@ -2,7 +2,7 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Vestiging: {{@model.site.address.fullAddress}}</:title>
-      <:subtitle>{{@model.administrativeUnit.name}}</:subtitle>
+      <:subtitle>{{@model.administrativeUnit.abbName}}</:subtitle>
       <:action>
         <SecuredArea>
           <:edit>
@@ -31,7 +31,7 @@
               <:label>Type vestiging</:label>
               <:content>{{@model.site.siteType.label}}</:content>
             </Item>
-            {{#if  (and @model.site.isOtherSite @model.site.siteTypeName)}}
+            {{#if (and @model.site.isOtherSite @model.site.siteTypeName)}}
               <Item>
                 <:label>Name</:label>
                 <:content>{{@model.site.siteTypeName}}</:content>

@@ -12,7 +12,7 @@
               @route="administrative-units.administrative-unit"
               @model={{@model.isSubOrganizationOf.isSubOrganizationOf.id}}
             >
-              {{@model.isSubOrganizationOf.isSubOrganizationOf.name}}
+              {{@model.isSubOrganizationOf.isSubOrganizationOf.abbName}}
             </AuLink>
           </:content>
         </Item>
@@ -23,7 +23,7 @@
               @route="administrative-units.administrative-unit.core-data"
               @model={{@model.isSubOrganizationOf.id}}
             >
-              {{@model.isSubOrganizationOf.name}}
+              {{@model.isSubOrganizationOf.abbNname}}
             </AuLink>
           </:content>
         </Item>
@@ -40,7 +40,7 @@
                   <AuLink
                     @route="administrative-units.administrative-unit.core-data"
                     @model={{@model.id}}
-                  >{{org.name}}</AuLink>
+                  >{{org.abbName}}</AuLink>
                 </Item>
               {{/each}}
             </AuList>
@@ -89,7 +89,7 @@
               @route="administrative-units.administrative-unit"
               @model={{organization.id}}
             >
-              {{organization.name}}
+              {{organization.abbName}}
             </AuLink>
           </td>
           <td>

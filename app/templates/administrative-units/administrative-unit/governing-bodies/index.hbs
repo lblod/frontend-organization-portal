@@ -1,6 +1,7 @@
 <PageHeader class="au-o-box">
   <:title>Bestuursorganen</:title>
-  <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
+  <:subtitle>{{@model.administrativeUnit.abbName}}
+    ({{@model.administrativeUnit.classification.label}})</:subtitle>
   <:alert>
     <SecuredArea>
       <:edit>
@@ -51,7 +52,10 @@
         </AuLink>
       </td>
       <td>{{governingBody.period}}</td>
-      <td><GoverningBodyStatus @startDate={{governingBody.startDate}} @endDate={{governingBody.endDate}} /></td>
+      <td><GoverningBodyStatus
+          @startDate={{governingBody.startDate}}
+          @endDate={{governingBody.endDate}}
+        /></td>
       <SecuredArea>
         <:edit>
           <td>
