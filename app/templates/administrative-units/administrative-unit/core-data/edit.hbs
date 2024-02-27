@@ -318,6 +318,8 @@
               @model.administrativeUnit.isPoliceZone
               @model.administrativeUnit.isAssistanceZone
               @model.administrativeUnit.isOcmwAssociation
+              @model.administrativeUnit.isPevaMunicipality
+              @model.administrativeUnit.isPevaProvince
             )
           )
         }}
@@ -362,12 +364,7 @@
                       </Item>
                     {{/if}}
 
-                    {{#if
-                      (or
-                        @model.administrativeUnit.isAgb
-                        @model.administrativeUnit.isPevaMunicipality
-                      )
-                    }}
+                    {{#if @model.administrativeUnit.isAgb}}
                       <Item
                         @labelFor="oprichting-gemeente"
                         @required={{true}}
