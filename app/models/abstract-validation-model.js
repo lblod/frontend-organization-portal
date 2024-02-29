@@ -25,9 +25,12 @@ export default class AbstractValidationModel extends Model {
 
   /**
    * Validate the model using the validation schema.
+   * @param {boolean} relaxMandatoryFoundingOrganization - if true, the
+   * requirement to specify a founding organisation is not enforced for OCMW
+   * associations and PEVAs
    * @returns {Promise<boolean>} - Whether the model is valid.
    */
-  async validate() {
+  async validate(relaxMandatoryFoundingOrganization) {
     this._validationError = undefined;
     const { attributes, relationships } = this.#serializeAll();
     const value = { ...attributes, ...relationships };
@@ -37,6 +40,7 @@ export default class AbstractValidationModel extends Model {
         abortEarly: false,
         context: {
           changedAttributes: this.changedAttributes(),
+          relaxMandatoryFoundingOrganization,
         },
       });
     } catch (error) {

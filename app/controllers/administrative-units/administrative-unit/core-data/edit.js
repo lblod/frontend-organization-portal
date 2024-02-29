@@ -123,7 +123,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     } = this.model;
 
     yield Promise.all([
-      administrativeUnit.validate(),
+      administrativeUnit.validate(true),
       address.validate(),
       contact.validate(),
       secondaryContact.validate(),
