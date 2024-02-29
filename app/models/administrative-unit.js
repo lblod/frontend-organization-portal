@@ -76,15 +76,25 @@ export default class AdministrativeUnitModel extends OrganizationModel {
         IGSCodeList,
         REQUIRED_MESSAGE
       ),
-      wasFoundedByOrganizations: validateRequiredWhenClassificationId(
-        [
-          ...AgbCodeList,
-          ...ApbCodeList,
-          ...OcmwAssociationCodeList,
-          ...PevaMunicipalityCodeList,
-          ...PevaProvinceCodeList,
-        ],
-        REQUIRED_MESSAGE
+      wasFoundedByOrganizations: Joi.when(
+        Joi.ref('$relaxMandatoryFoundingOrganization'),
+        {
+          is: Joi.exist().valid(true),
+          then: validateRequiredWhenClassificationId(
+            [...AgbCodeList, ...ApbCodeList],
+            REQUIRED_MESSAGE
+          ),
+          otherwise: validateRequiredWhenClassificationId(
+            [
+              ...AgbCodeList,
+              ...ApbCodeList,
+              ...OcmwAssociationCodeList,
+              ...PevaMunicipalityCodeList,
+              ...PevaProvinceCodeList,
+            ],
+            REQUIRED_MESSAGE
+          ),
+        }
       ),
       isSubOrganizationOf: validateRequiredWhenClassificationId(
         [
