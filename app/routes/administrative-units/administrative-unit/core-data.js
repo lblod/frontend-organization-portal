@@ -21,7 +21,6 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataRoute extends 
         'is-associated-with',
         'resulted-from',
         'was-founded-by-organizations',
-        'kbo-administrative-unit',
       ].join(),
     });
   }
