@@ -26,9 +26,10 @@ export default class AbstractValidationModel extends Model {
 
   /**
    * Validate the model using the validation schema.
+   * @param {object} [options] - The options for validation.
    * @returns {Promise<boolean>} - Whether the model is valid.
    */
-  async validate() {
+  async validate(options = {}) {
     this.#resetValidationErrors();
     const serializedModel = this.#serializeModel();
 
@@ -37,6 +38,7 @@ export default class AbstractValidationModel extends Model {
         abortEarly: false,
         context: {
           changedAttributes: this.changedAttributes(),
+          ...options,
         },
       });
     } catch (error) {

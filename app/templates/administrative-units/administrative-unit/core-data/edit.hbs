@@ -407,7 +407,7 @@
                     {{#if @model.administrativeUnit.isOcmwAssociation}}
                       <Item
                         @labelFor="oprichting-ocmw-association"
-                        @required={{true}}
+                        @required={{false}}
                         @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganizations.message}}
                       >
                         <:label>Werd opgericht door</:label>
@@ -448,7 +448,7 @@
                       }}
                         <Item
                           @labelFor="oprichting-peva"
-                          @required={{true}}
+                          @required={{false}}
                           @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganizations.message}}
                         >
                           <:label>Werd opgericht door</:label>
