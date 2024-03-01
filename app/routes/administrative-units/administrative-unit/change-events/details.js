@@ -28,6 +28,13 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsRou
       }
     );
 
+    // resolve the first resulting organization here as workaround
+    // the get helper does not work with async relationships in the template
+    // https://github.com/emberjs/ember.js/issues/20510
+    const firstResultingOrganization = (
+      await changeEvent.resultingOrganizations
+    )[0];
+
     let currentChangeEventResult = await findCurrentChangeEventResult(
       administrativeUnit,
       changeEvent
@@ -37,6 +44,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsRou
       administrativeUnit,
       changeEvent,
       currentChangeEventResult,
+      firstResultingOrganization,
     };
   }
 }
