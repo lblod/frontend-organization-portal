@@ -183,7 +183,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       CLASSIFICATION.PEVA_MUNICIPALITY,
       CLASSIFICATION.PEVA_PROVINCE,
     ].forEach((cl) => {
-      test(`it returns no extra error when founder is missing for an existing ${cl.label}`, async function (assert) {
+      test(`it returns no extra error when founder is missing for a ${cl.label} and the mandatory founder rule is relaxed`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
           cl
@@ -192,7 +192,9 @@ module('Unit | Model | administrative unit', function (hooks) {
           classification,
         });
 
-        const isValid = await model.validate(true);
+        const isValid = await model.validate({
+          relaxMandatoryFoundingOrganization: true,
+        });
 
         assert.false(isValid);
         assert.strictEqual(Object.keys(model.error).length, 2);
