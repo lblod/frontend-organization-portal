@@ -11,9 +11,12 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute ext
   @service store;
   @service currentSession;
   @service router;
-
+  get editFeature() {
+    const editFeature = config.features['edit-contact-data']
+    return editFeature === true || editFeature === 'true';
+  }
   beforeModel() {
-    if (!this.currentSession.canEdit) {
+    if (!this.currentSession.canEdit || !this.editFeature) {
       this.router.transitionTo('route-not-found', {
         wildcard: 'pagina-niet-gevonden',
       });

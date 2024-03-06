@@ -2,21 +2,25 @@
   <:title>Vestigingen</:title>
   <:subtitle>{{@model.administrativeUnit.name}} ({{@model.administrativeUnit.classification.label}})</:subtitle>
   <:action>
-    <SecuredArea>
-      <:edit>
-        <AuLink
-          @route="administrative-units.administrative-unit.sites.new"
-          @icon="add"
-          @iconAlignment="left"
-          @skin="button"
-        >
-          Nieuw
-        </AuLink>
-      </:edit>
-      <:readOnly>
-        <ReportWrongData />
-      </:readOnly>
-    </SecuredArea>
+    {{#if (is-feature-enabled "edit-contact-data")}}
+      <SecuredArea>
+        <:edit>
+          <AuLink
+            @route="administrative-units.administrative-unit.sites.new"
+            @icon="add"
+            @iconAlignment="left"
+            @skin="button"
+          >
+            Nieuw
+          </AuLink>
+        </:edit>
+        <:readOnly>
+          <ReportWrongData />
+        </:readOnly>
+      </SecuredArea>
+    {{else}}
+      <ReportWrongData />
+    {{/if}}
   </:action>
 </PageHeader>
 
@@ -49,12 +53,14 @@
       <SecuredArea>
         <:edit>
           <td>
-            <AuLink
-              @model={{site.id}}
-              @route="administrative-units.administrative-unit.sites.site.edit"
-            >
-              Bewerk
-            </AuLink>
+            {{#if (is-feature-enabled "edit-contact-data")}}
+              <AuLink
+                @model={{site.id}}
+                @route="administrative-units.administrative-unit.sites.site.edit"
+              >
+                Bewerk
+              </AuLink>
+            {{/if}}
           </td>
         </:edit>
       </SecuredArea>

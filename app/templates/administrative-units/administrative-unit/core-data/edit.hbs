@@ -294,19 +294,20 @@
             </Card.Columns>
           </:card>
         </EditCard>
-
-        <Site::ContactEditCard
-          @address={{@model.address}}
-          @isAddressSearchEnabledInitially={{if
-            (or (not @model.address.id) @model.address.addressRegisterUri)
-            true
-            false
-          }}
-          @primaryContact={{@model.contact}}
-          @secondaryContact={{@model.secondaryContact}}
-        >
-          <:title>Primaire contactgegevens</:title>
-        </Site::ContactEditCard>
+        {{#if (is-feature-enabled "edit-contact-data")}}
+          <Site::ContactEditCard
+            @address={{@model.address}}
+            @isAddressSearchEnabledInitially={{if
+              (or (not @model.address.id) @model.address.addressRegisterUri)
+              true
+              false
+            }}
+            @primaryContact={{@model.contact}}
+            @secondaryContact={{@model.secondaryContact}}
+          >
+            <:title>Primaire contactgegevens</:title>
+          </Site::ContactEditCard>
+        {{/if}}
 
         {{#if
           (and
