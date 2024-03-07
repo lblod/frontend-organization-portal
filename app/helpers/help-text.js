@@ -12,6 +12,8 @@ const HELP_TEXT = {
     'De naam wordt automatisch ingevuld. Deze naam is gelijk aan de juridische naam. Indien geen juridische naam beschikbaar is, wordt de naam uit KBO ingevuld.',
   legalName:
     'De juridische naam is de naam uit de statuten, decreet of andere juridisch regelgevende teksten of besluiten. Bij het aanmaken van de organisatie wordt deze ingegeven door ABB, daarna verhuist het beheer van deze naam naar de organisatie zelf, via de Contact app.',
+  alternativeNames:
+    'Alternatieve namen kan de afgekorte naam uit statuten, een commerciële en/of een informele naam zijn. Bij het aanmaken van de organisatie wordt deze ingegeven door ABB, daarna verhuist het beheer van deze naam naar de organisatie zelf, via de Contact app.',
 };
 
 export default helper(function helpText([key]) {

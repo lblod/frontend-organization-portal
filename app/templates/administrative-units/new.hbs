@@ -72,6 +72,27 @@
               </:content>
             </Item>
             <Item
+              @labelFor="administrative-unit-alternative-names"
+              @required={{false}}
+            >
+              <:label>Alternatieve naam</:label>
+              <:content as |hasError|>
+                <TrimInput
+                  @width="block"
+                  @disabled={{false}}
+                  @value={{@model.administrativeUnit.alternativeName}}
+                  @onUpdate={{fn
+                    (mut @model.administrativeUnit.alternativeName)
+                  }}
+                  @error={{hasError}}
+                  id="administrative-unit-alternative-names"
+                />
+                <AuHelpText>
+                  {{help-text "alternativeNames"}}
+                </AuHelpText>
+              </:content>
+            </Item>
+            <Item
               @labelFor="classification-select"
               @required={{true}}
               @errorMessage={{@model.administrativeUnit.error.classification.message}}
