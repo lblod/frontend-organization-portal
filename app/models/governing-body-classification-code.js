@@ -12,6 +12,9 @@ export const EXECUTIVE_ORGANEN = [
 export default class GoverningBodyClassificationCodeModel extends Model {
   @attr label;
 
-  @hasMany('administrative-unit-classification-code', { inverse: null })
+  @hasMany('administrative-unit-classification-code', {
+    inverse: null,
+    async: true,
+  })
   appliesWithin;
 }

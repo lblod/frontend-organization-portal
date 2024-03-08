@@ -12,16 +12,23 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
 
   @belongsTo('administrative-unit', {
     inverse: 'involvedBoards',
+    async: true,
+    polymorphic: true,
+    as: 'local-involvement',
   })
   administrativeUnit;
 
   @belongsTo('involvement-type', {
     inverse: null,
+    async: true,
   })
   involvementType;
 
   @belongsTo('worship-administrative-unit', {
     inverse: 'involvements',
+    async: true,
+    polymorphic: true,
+    as: 'local-involvement',
   })
   worshipAdministrativeUnit;
 
@@ -50,6 +57,7 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
         then: Joi.number().min(1).max(100).required(),
         otherwise: Joi.number().empty('').allow(null),
       }).messages({
+        'any.required': 'Vul het percentage in',
         'number.base': 'Vul het percentage in',
         'number.min': 'Het percentage moet groter zijn dan 0',
         'number.max': 'Het percentage mag niet groter zijn dan 100',

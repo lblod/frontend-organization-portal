@@ -50,7 +50,7 @@ export default class AdministrativeUnitSelectByIdentifierComponent extends Compo
     });
 
     if (result) {
-      return [...[searchParams], ...new Set(result.toArray())];
+      return [...[searchParams], ...new Set(result.slice())];
     }
   }
 }

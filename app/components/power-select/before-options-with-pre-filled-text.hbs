@@ -1,10 +1,8 @@
 {{#if @searchEnabled}}
   <div class="ember-power-select-search">
-    {{!template-lint-disable no-down-event-binding}}
     <input type="search" autocomplete="off"
       autocorrect="off" autocapitalize="off"
-      spellcheck={{false}} role="combobox"
-      class="ember-power-select-movable-cursor"
+      spellcheck={{false}} class="ember-power-select-movable-cursor"
       value={{@addressSuggestion.fullAddress}}
       aria-label="Search text input"
       aria-activedescendant={{@ariaActiveDescendant}}

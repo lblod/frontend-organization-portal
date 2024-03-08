@@ -11,7 +11,7 @@
           {{@model.mandatory.mandate.roleBoard.label}},
           <br />
           {{governingBody.classification.label}}
-          {{governingBody.administrativeUnit.name}}
+          {{governingBody.administrativeUnit.abbName}}
         </:title>
         <:subtitle>
           {{@model.person.givenName}}
@@ -49,7 +49,7 @@
                     @route="administrative-units.administrative-unit"
                     @model={{administrativeUnit.id}}
                   >
-                    {{administrativeUnit.name}}
+                    {{administrativeUnit.abbName}}
                   </AuLink>
                 </:content>
               </Item>

@@ -2,7 +2,7 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Kerngegevens</:title>
-      <:subtitle>{{@model.administrativeUnit.name}}
+      <:subtitle>{{@model.administrativeUnit.abbName}}
         ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         {{#if (is-feature-enabled "kbo-data-tab")}}
@@ -78,7 +78,6 @@
             {{on "click" (fn this.setShowAbbData false)}}
           >KBO Gegevens</AuLink>
         </Tab>
-
       </AuTabs>
       {{#if this.showAbbData}}
         <DataCard>
@@ -97,6 +96,18 @@
                   </:content>
                 </Item>
 
+                {{#if this.isMunicipality}}
+                  <Item>
+                    <:label>Stadstitel</:label>
+                    <:content>
+                      {{#if @model.isCity}}
+                        Ja
+                      {{else}}
+                        Nee
+                      {{/if}}
+                    </:content>
+                  </Item>
+                {{/if}}
                 {{#if this.isMunicipality}}
                   <Item>
                     <:label>Stadstitel</:label>
@@ -199,7 +210,7 @@
                     <:content>
                       <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
                         Gewijzigd op
-                        {{date-format @model.resultedFrom.firstObject.date}}
+                        {{date-format (get @model.resultedFrom "0.date")}}
                       </AuHelpText>
                     </:content>
                   </Item>
@@ -346,7 +357,6 @@
         </Site::ContactDataCard>
       {{/if}}
     {{else}}
-
       <DataCard>
         <:title>Bestuurseenheid</:title>
         <:card as |Card|>
@@ -363,6 +373,18 @@
                 </:content>
               </Item>
 
+              {{#if this.isMunicipality}}
+                <Item>
+                  <:label>Stadstitel</:label>
+                  <:content>
+                    {{#if @model.isCity}}
+                      Ja
+                    {{else}}
+                      Nee
+                    {{/if}}
+                  </:content>
+                </Item>
+              {{/if}}
               {{#if this.isMunicipality}}
                 <Item>
                   <:label>Stadstitel</:label>
@@ -470,7 +492,7 @@
                   <:content>
                     <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
                       Gewijzigd op
-                      {{date-format @model.resultedFrom.firstObject.date}}
+                      {{date-format (get @model.resultedFrom "0.date")}}
                     </AuHelpText>
                   </:content>
                 </Item>
@@ -523,7 +545,6 @@
           </Card.Columns>
         </:card>
       </DataCard>
-
       <Site::ContactDataCard
         @address={{@model.administrativeUnit.primarySite.address}}
         @primaryContact={{@model.primaryContact}}
@@ -533,7 +554,6 @@
           Primaire contactgegevens
         </:title>
       </Site::ContactDataCard>
-
     {{/if}}
   </div>
 </div>

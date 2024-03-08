@@ -144,7 +144,7 @@
                       @model={{position.administrativeUnit.id}}
                       @route="administrative-units.administrative-unit"
                     >
-                      {{position.administrativeUnit.name}}
+                      {{position.administrativeUnit.abbName}}
                     </AuLink>
                   </:content>
                 </Item>
@@ -160,7 +160,7 @@
                         @model={{administrativeUnit.id}}
                         @route="administrative-units.administrative-unit"
                       >
-                        {{administrativeUnit.name}}
+                        {{administrativeUnit.abbName}}
                         ({{administrativeUnit.classification.label}})
                       </AuLink>
                       {{#if (gt position.administrativeUnits.length 1)}}

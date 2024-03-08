@@ -12,6 +12,7 @@ import {
 
 export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController extends Controller {
   @service router;
+  @service store;
 
   get hasValidationErrors() {
     return (
@@ -69,17 +70,20 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   }
 
   @action
+  setNames(name) {
+    this.model.administrativeUnit.setAbbName(name);
+  }
+
+  @action
   setKbo(value) {
     this.model.structuredIdentifierKBO.localId = value;
   }
 
   @action
-  setRelation(units) {
-    if (Array.isArray(units)) {
-      this.model.administrativeUnit.isSubOrganizationOf = units[0];
-    } else {
-      this.model.administrativeUnit.isSubOrganizationOf = units;
-    }
+  setRelation(unit) {
+    this.model.administrativeUnit.isSubOrganizationOf = Array.isArray(unit)
+      ? unit[0]
+      : unit;
 
     if (
       this.model.administrativeUnit.isAgb ||
@@ -87,14 +91,15 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       this.model.administrativeUnit.isOcmwAssociation ||
       this.model.administrativeUnit.isPevaMunicipality ||
       this.model.administrativeUnit.isPevaProvince
-    )
-      if (Array.isArray(units)) {
-        this.model.administrativeUnit.wasFoundedByOrganizations = units;
-      } else {
-        this.model.administrativeUnit.wasFoundedByOrganizations = new Array(
-          units
-        );
-      }
+    ) {
+      this.model.administrativeUnit.wasFoundedByOrganizations = Array.isArray(
+        unit
+      )
+        ? unit
+        : unit
+        ? [unit]
+        : [];
+    }
   }
 
   @action
@@ -123,7 +128,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     } = this.model;
 
     yield Promise.all([
-      administrativeUnit.validate(),
+      administrativeUnit.validate({ relaxMandatoryFoundingOrganization: true }),
       address.validate(),
       contact.validate(),
       secondaryContact.validate(),
@@ -161,7 +166,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         yield contact.save();
 
         if (isNewContact) {
-          siteContacts.pushObject(contact);
+          siteContacts.push(contact);
           yield primarySite.save();
         }
       }
@@ -176,7 +181,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         yield secondaryContact.save();
 
         if (isNewContact) {
-          siteContacts.pushObject(secondaryContact);
+          siteContacts.push(secondaryContact);
           yield primarySite.save();
         }
       }
@@ -192,17 +197,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       yield identifierSharepoint.save();
 
       administrativeUnit = setEmptyStringsToNull(administrativeUnit);
-      if (
-        this.model.administrativeUnit.isProvince ||
-        this.model.administrativeUnit.isMunicipality
-      ) {
-        // set province or municipality name to null as data are already in the shared graph
-        administrativeUnit.name = null;
-        yield administrativeUnit.save();
-        yield administrativeUnit.reload();
-      } else {
-        yield administrativeUnit.save();
-      }
+      yield administrativeUnit.save();
 
       const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
       yield fetch(syncKboData, {

@@ -5,7 +5,7 @@
         Veranderingsgebeurtenis:
         {{@model.changeEvent.type.label}}
       </:title>
-      <:subtitle>{{@model.administrativeUnit.name}}
+      <:subtitle>{{@model.administrativeUnit.abbName}}
         ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         <SecuredArea>
@@ -112,7 +112,7 @@
                       @route="administrative-units.administrative-unit"
                       @model={{organization.id}}
                     >
-                      {{organization.name}}
+                      {{organization.abbName}}
                     </AuLink>
                   </:content>
                 </Item>
@@ -125,9 +125,9 @@
                   <:content>
                     <AuLink
                       @route="administrative-units.administrative-unit"
-                      @model={{@model.changeEvent.resultingOrganizations.firstObject.id}}
+                      @model={{@model.firstResultingOrganization.id}}
                     >
-                      {{@model.changeEvent.resultingOrganizations.firstObject.name}}
+                      {{@model.firstResultingOrganization.name}}
                     </AuLink>
                   </:content>
                 </Item>

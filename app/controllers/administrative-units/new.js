@@ -2,7 +2,6 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
-import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
 import {
   CLASSIFICATION_CODE,
   OCMW_ASSOCIATION_CLASSIFICATION_CODES,
@@ -24,21 +23,6 @@ export default class AdministrativeUnitsNewController extends Controller {
       this.model.secondaryContact.error ||
       this.model.identifierKBO.error ||
       this.model.identifierSharepoint.error
-    );
-  }
-
-  get hasCentralWorshipService() {
-    const typesThatHaveACentralWorshipService = [
-      RECOGNIZED_WORSHIP_TYPE.ISLAMIC,
-      RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC,
-      RECOGNIZED_WORSHIP_TYPE.ORTHODOX,
-    ];
-
-    return (
-      this.model.administrativeUnit.isWorshipService &&
-      typesThatHaveACentralWorshipService.find(
-        (id) => id == this.model.administrativeUnit.recognizedWorshipType?.id
-      )
     );
   }
 
@@ -88,11 +72,9 @@ export default class AdministrativeUnitsNewController extends Controller {
 
   @action
   setRelation(unit) {
-    if (Array.isArray(unit)) {
-      this.model.administrativeUnit.isSubOrganizationOf = unit[0];
-    } else {
-      this.model.administrativeUnit.isSubOrganizationOf = unit;
-    }
+    this.model.administrativeUnit.isSubOrganizationOf = Array.isArray(unit)
+      ? unit[0]
+      : unit;
 
     if (
       this.model.administrativeUnit.isAgb ||
@@ -100,14 +82,20 @@ export default class AdministrativeUnitsNewController extends Controller {
       this.model.administrativeUnit.isOcmwAssociation ||
       this.model.administrativeUnit.isPevaMunicipality ||
       this.model.administrativeUnit.isPevaProvince
-    )
-      if (Array.isArray(unit)) {
-        this.model.administrativeUnit.wasFoundedByOrganizations = unit;
-      } else {
-        this.model.administrativeUnit.wasFoundedByOrganizations = new Array(
-          unit
-        );
-      }
+    ) {
+      this.model.administrativeUnit.wasFoundedByOrganizations = Array.isArray(
+        unit
+      )
+        ? unit
+        : unit
+        ? [unit]
+        : [];
+    }
+  }
+
+  @action
+  setNames(name) {
+    this.model.administrativeUnit.setAbbName(name);
   }
 
   @action
@@ -125,7 +113,7 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.administrativeUnit.classification = value;
     this.model.administrativeUnit.subOrganizations = [];
     this.model.administrativeUnit.foundedOrganizations = [];
-    this.model.administrativeUnit.isAssociatedWith = [];
+    this.model.administrativeUnit.isAssociatedWith = null;
     this.model.administrativeUnit.isSubOrganizationOf = null;
     this.model.administrativeUnit.wasFoundedByOrganizations = [];
     this.model.administrativeUnit.hasParticipants = [];
@@ -169,7 +157,6 @@ export default class AdministrativeUnitsNewController extends Controller {
       } else {
         newAdministrativeUnit = administrativeUnit;
       }
-      // Copy data entered in the frontend to the new admin unit
       copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
       structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
@@ -201,7 +188,7 @@ export default class AdministrativeUnitsNewController extends Controller {
       yield address.save();
 
       primarySite.address = address;
-      primarySite.contacts.pushObjects([contact, secondaryContact]);
+      (yield primarySite.contacts).push(contact, secondaryContact);
       if (
         administrativeUnit.isAgb ||
         administrativeUnit.isApb ||
@@ -218,10 +205,10 @@ export default class AdministrativeUnitsNewController extends Controller {
       }
       yield primarySite.save();
 
-      newAdministrativeUnit.identifiers.pushObjects([
+      (yield newAdministrativeUnit.identifiers).push(
         identifierKBO,
-        identifierSharepoint,
-      ]);
+        identifierSharepoint
+      );
       newAdministrativeUnit.primarySite = primarySite;
 
       newAdministrativeUnit = setEmptyStringsToNull(newAdministrativeUnit);
@@ -246,7 +233,6 @@ export default class AdministrativeUnitsNewController extends Controller {
   }
 
   reset() {
-    this.removeUnsavedRecords();
     this.model.primarySite.rollbackAttributes();
     this.model.identifierSharepoint.reset();
     this.model.identifierKBO.reset();
@@ -257,55 +243,28 @@ export default class AdministrativeUnitsNewController extends Controller {
     this.model.secondaryContact.reset();
     this.model.address.reset();
   }
-
-  removeUnsavedRecords() {
-    if (this.model.administrativeUnit.isNew) {
-      this.model.administrativeUnit.destroyRecord();
-    }
-
-    if (this.model.address.isNew) {
-      this.model.address.destroyRecord();
-    }
-
-    if (this.model.contact.isNew) {
-      this.model.contact.destroyRecord();
-    }
-
-    if (this.model.secondaryContact.isNew) {
-      this.model.secondaryContact.destroyRecord();
-    }
-
-    if (this.model.structuredIdentifierKBO.isNew) {
-      this.model.structuredIdentifierKBO.destroyRecord();
-    }
-  }
 }
 
 function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
   newAdministrativeUnit.name = administrativeUnit.name;
-  newAdministrativeUnit.expectedEndDate = administrativeUnit.expectedEndDate;
   newAdministrativeUnit.recognizedWorshipType =
     administrativeUnit.recognizedWorshipType;
   newAdministrativeUnit.classification = administrativeUnit.classification;
   newAdministrativeUnit.organizationStatus =
     administrativeUnit.organizationStatus;
-  newAdministrativeUnit.wasFoundedByOrganizations =
-    administrativeUnit.wasFoundedByOrganizations;
+  if (administrativeUnit.wasFoundedByOrganizations?.length) {
+    newAdministrativeUnit.wasFoundedByOrganizations =
+      administrativeUnit.wasFoundedByOrganizations.slice();
+  }
   newAdministrativeUnit.isSubOrganizationOf =
     administrativeUnit.isSubOrganizationOf;
-  if (
-    administrativeUnit.subOrganizations &&
-    administrativeUnit.subOrganizations.length
-  ) {
+  if (administrativeUnit.subOrganizations?.length) {
     newAdministrativeUnit.subOrganizations =
-      administrativeUnit.subOrganizations;
+      administrativeUnit.subOrganizations.slice();
   }
-  if (
-    administrativeUnit.foundedOrganizations &&
-    administrativeUnit.foundedOrganizations.length
-  ) {
+  if (administrativeUnit.foundedOrganizations?.length) {
     newAdministrativeUnit.foundedOrganizations =
-      administrativeUnit.foundedOrganizations;
+      administrativeUnit.foundedOrganizations.slice();
   }
   newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
   if (administrativeUnit.scope) {
@@ -315,11 +274,9 @@ function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
         administrativeUnit.scope.locatedWithin;
     }
   }
-  if (
-    administrativeUnit.hasParticipants &&
-    administrativeUnit.hasParticipants.length
-  ) {
-    newAdministrativeUnit.hasParticipants = administrativeUnit.hasParticipants;
+  if (administrativeUnit.hasParticipants?.length) {
+    newAdministrativeUnit.hasParticipants =
+      administrativeUnit.hasParticipants.slice();
   }
   if (administrativeUnit.expectedEndDate) {
     newAdministrativeUnit.expectedEndDate = administrativeUnit.expectedEndDate;

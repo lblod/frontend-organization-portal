@@ -59,7 +59,7 @@ export default class AdministrativeUnitSelectComponent extends Component {
           allowedClassificationCodes = [CLASSIFICATION_CODE.WORSHIP_SERVICE];
         }
       } else if (boardPositionCodes.length) {
-        const selectedPosition = boardPositionCodes.firstObject;
+        const selectedPosition = boardPositionCodes.at(0);
         const governingBodyClassification = yield selectedPosition.appliesTo;
         const classificationOptions =
           yield governingBodyClassification.appliesWithin;
@@ -93,14 +93,11 @@ export default class AdministrativeUnitSelectComponent extends Component {
       include: 'classification',
     };
 
+    const selectedProvinceId = this.args.selectedProvince?.get('id');
     // If a province is selected, load the municipalities in it
-    if (
-      this.args.selectedProvince &&
-      this.args.selectedProvince.id &&
-      this.args.selectedProvince.id.length
-    ) {
+    if (selectedProvinceId && selectedProvinceId.length) {
       query.filter['is-sub-organization-of'] = {
-        id: this.args.selectedProvince.id,
+        id: selectedProvinceId,
       };
     }
 

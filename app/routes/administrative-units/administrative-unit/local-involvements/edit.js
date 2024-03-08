@@ -45,7 +45,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
     const involvements = await worshipAdministrativeUnit.involvements;
 
     let involvementTypesProvince = involvementTypes
-      .toArray()
+      .slice()
       .filter((it) => it.id !== INVOLVEMENT_TYPE.ADVISORY); // Non adviserend
 
     return {

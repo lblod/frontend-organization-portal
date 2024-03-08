@@ -60,14 +60,14 @@ export default class ProvinceSelectComponent extends Component {
       provinces = yield this.store.query('administrative-unit', query);
     }
 
-    if (provinces.toArray().length === 1) {
+    if (provinces.slice().length === 1) {
       this.previousMunicipality = this.args.selectedMunicipality;
-      this.previousProvince = provinces.mapBy('name').toArray()[0];
+      this.previousProvince = provinces.map(({ name }) => name).slice()[0];
       this.args.onChange(this.previousProvince);
     } else {
       this.previousMunicipality = null;
       this.previousProvince = null;
     }
-    return provinces.mapBy('name');
+    return provinces.map(({ name }) => name);
   }
 }

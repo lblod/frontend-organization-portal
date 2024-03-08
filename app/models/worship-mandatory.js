@@ -7,6 +7,7 @@ export default class WorshipMandatoryModel extends MandatoryModel {
 
   @belongsTo('half-election', {
     inverse: null,
+    async: true,
   })
   typeHalf;
 }

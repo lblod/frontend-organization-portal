@@ -17,7 +17,7 @@ export default class UserModel extends Model {
   groups;
 
   get group() {
-    return this.groups.firstObject;
+    return this.groups.at(0);
   }
 
   get fullName() {

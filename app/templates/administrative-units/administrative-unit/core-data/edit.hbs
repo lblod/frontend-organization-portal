@@ -2,7 +2,7 @@
   <div class="au-o-box">
     <PageHeader class="au-u-margin-bottom-large">
       <:title>Bewerk kerngegevens</:title>
-      <:subtitle>{{@model.administrativeUnit.name}}
+      <:subtitle>{{@model.administrativeUnit.abbName}}
         ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         <div class="au-u-text-right">
@@ -40,35 +40,45 @@
             <Card.Columns>
               <:left as |Item|>
                 <Item
-                  @labelFor="worship-service-name"
+                  @labelFor="administrative-unit-abb-name"
                   @required={{true}}
-                  @errorMessage={{@model.administrativeUnit.error.name.message}}
                 >
                   <:label>Naam</:label>
                   <:content as |hasError|>
                     <TrimInput
                       @width="block"
-                      @disabled={{or
-                        @model.administrativeUnit.isProvince
-                        @model.administrativeUnit.isMunicipality
-                      }}
-                      @value={{@model.administrativeUnit.name}}
+                      @disabled={{true}}
+                      @value={{@model.administrativeUnit.abbName}}
                       @onUpdate={{fn (mut @model.administrativeUnit.name)}}
                       @error={{hasError}}
-                      id="worship-service-name"
+                      id="administrative-unit-abb-name"
                     />
-                    {{#if
-                      (or
-                        @model.administrativeUnit.isProvince
+                    <AuHelpText>
+                      {{help-text "abbName"}}
+                    </AuHelpText>
+                  </:content>
+                </Item>
+                <Item
+                  @labelFor="administrative-unit-legal-name"
+                  @required={{true}}
+                  @errorMessage={{@model.administrativeUnit.error.legalName.message}}
+                >
+                  <:label>Juridische naam</:label>
+                  <:content as |hasError|>
+                    <TrimInput
+                      @width="block"
+                      @disabled={{(or
                         @model.administrativeUnit.isMunicipality
-                      )
-                    }}
-                      <AuHelpText>
-                        De naam van een gemeente en provincie kan voorlopig niet
-                        langer aangepast worden. Indien toch een aanpassing
-                        nodig, gelieve deze via de helpdesk aan te vragen.
-                      </AuHelpText>
-                    {{/if}}
+                        @model.administrativeUnit.isProvince
+                      )}}
+                      @value={{@model.administrativeUnit.legalName}}
+                      @onUpdate={{this.setNames}}
+                      @error={{hasError}}
+                      id="administrative-unit-legal-name"
+                    />
+                    <AuHelpText>
+                      {{help-text "legalName"}}
+                    </AuHelpText>
                   </:content>
                 </Item>
                 <Item @labelFor="classification">
@@ -318,6 +328,8 @@
               @model.administrativeUnit.isPoliceZone
               @model.administrativeUnit.isAssistanceZone
               @model.administrativeUnit.isOcmwAssociation
+              @model.administrativeUnit.isPevaMunicipality
+              @model.administrativeUnit.isPevaProvince
             )
           )
         }}
@@ -357,17 +369,12 @@
                           Provincie
                         </:label>
                         <:content>
-                          {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
+                          {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.abbName}}
                         </:content>
                       </Item>
                     {{/if}}
 
-                    {{#if
-                      (or
-                        @model.administrativeUnit.isAgb
-                        @model.administrativeUnit.isPevaMunicipality
-                      )
-                    }}
+                    {{#if @model.administrativeUnit.isAgb}}
                       <Item
                         @labelFor="oprichting-gemeente"
                         @required={{true}}
@@ -410,7 +417,7 @@
                     {{#if @model.administrativeUnit.isOcmwAssociation}}
                       <Item
                         @labelFor="oprichting-ocmw-association"
-                        @required={{true}}
+                        @required={{false}}
                         @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganizations.message}}
                       >
                         <:label>Werd opgericht door</:label>
@@ -451,7 +458,7 @@
                       }}
                         <Item
                           @labelFor="oprichting-peva"
-                          @required={{true}}
+                          @required={{false}}
                           @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganizations.message}}
                         >
                           <:label>Werd opgericht door</:label>

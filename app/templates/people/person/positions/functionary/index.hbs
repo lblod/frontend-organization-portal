@@ -7,7 +7,7 @@
         <br />
         {{#each @model.governingBodies as |governingBody|}}
           {{governingBody.administrativeUnit.classification.label}}
-          {{governingBody.administrativeUnit.name}}
+          {{governingBody.administrativeUnit.abbName}}
           <br />
         {{/each}}
       </:title>
@@ -44,7 +44,7 @@
                     @route="administrative-units.administrative-unit"
                     @model={{administrativeUnit.id}}
                   >
-                    {{administrativeUnit.name}}
+                    {{administrativeUnit.abbName}}
                     ({{administrativeUnit.classification.label}})
                   </AuLink>
                   {{#if (gt @model.administrativeUnits.length 1)}}

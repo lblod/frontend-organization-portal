@@ -23,13 +23,18 @@
 # ember-try
 /.node_modules.ember-try/
 /bower.json.ember-try
+/npm-shrinkwrap.json.ember-try
 /package.json.ember-try
+/package-lock.json.ember-try
+/yarn.lock.ember-try
 
+# broccoli-debug
+/DEBUG/
 
-.eslintcache
-.DS_Store
-
-.history
-
-.vscode
+# IDEs and editors
 .editorconfig
+.history
+.vscode
+
+# OS generated files
+.DS_Store
