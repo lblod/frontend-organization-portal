@@ -4,128 +4,365 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Kerngegevens</:title>
-      <:subtitle>{{@model.representativeBody.abbName}}</:subtitle>
+      <:subtitle>{{@model.representativeBody.name}}</:subtitle>
+      <:action>
+        {{#if (is-feature-enabled "kbo-data-tab")}}
+          {{#unless this.showAbbData}}
+            <div class="au-u-flex--column">
+              <AuPill @icon="clock-rewind">
+                Laatst Gewijzigd op {{date-format @model.representativeBody.kboAdministrativeUnit.expectedEndDate}}
+              </AuPill>
+              <ReportWrongData />
+            </div>
+          {{/unless}}
+        {{/if}}
+      </:action>
     </PageHeader>
 
-    <DataCard>
-      <:title>Organisatie</:title>
-      <:card as |Card|>
-        <Card.Columns>
-          <:left as |Item|>
-            <Item>
-              <:label>Naam</:label>
-              <:content>{{@model.representativeBody.abbName}}</:content>
-            </Item>
-            <Item>
-              <:label>Juridische naam</:label>
-              <:content>{{@model.representativeBody.legalName}}</:content>
-            </Item>
-            <Item>
-              <:label>Soort eredienst</:label>
-              <:content
-              >{{@model.representativeBody.recognizedWorshipType.label}}</:content>
-            </Item>
-          </:left>
-          <:right as |Item|>
-            <Item>
-              <:label>Status</:label>
-              <:content>
-                <OrganizationStatus
-                  @id={{@model.representativeBody.organizationStatus.id}}
-                  @label={{@model.representativeBody.organizationStatus.label}}
-                />
-              </:content>
-            </Item>
-            {{! TODO: Take the last date from the change events }}
-            {{#if @model.representativeBody.resultedFrom}}
-              <Item>
-                <:content>
-                  <AuHelpText @skin="tertiary">Gewijzigd op
-                    {{date-format
-                      (get @model.representativeBody.resultedFrom "0.date")
-                    }}
-                  </AuHelpText>
-                </:content>
-              </Item>
-            {{/if}}
-            {{#each @model.representativeBody.identifiers as |identifier|}}
-              <Item>
-                <:label>{{identifier.idName}}</:label>
-                <:content>
-                  {{#if (this.isKboIdentifier identifier)}}
-                    {{kbo-format identifier.structuredIdentifier.localId}}
-                  {{else}}
-                    {{identifier.structuredIdentifier.localId}}
-                  {{/if}}
-                </:content>
-              </Item>
-            {{/each}}
-          </:right>
-        </Card.Columns>
-      </:card>
-    </DataCard>
+    {{#if (is-feature-enabled "kbo-data-tab")}}
+      <AuTabs as |Tab|>
+        <Tab class="au-u-1-1">
+          <AuLink
+            @skin="naked"
+            @width="block"
+            class={{if
+              this.showAbbData
+              "active tab-link-align-left"
+              "tab-link-align-left"
+            }}
+            {{on "click" (fn this.setShowAbbData true)}}
+          >ABB Gegevens</AuLink>
+        </Tab>
 
-    <DataCard>
-      <:title>
-        Primaire contactgegevens
-      </:title>
-      <:card as |Card|>
-        <Card.Columns>
-          <:left as |Item|>
-            <Item>
-              <:label>Adres</:label>
-              <:content>
-                {{@model.representativeBody.primarySite.address.fullAddress}}
-              </:content>
-            </Item>
-            {{#if
-              (get @model.representativeBody.primarySite.contacts "0.telephone")
+        <Tab class="au-u-1-1">
+          <AuLink
+            @skin="naked"
+            @width="block"
+            class={{if
+              this.showAbbData
+              "tab-link-align-left"
+              "active tab-link-align-left"
             }}
+            {{on "click" (fn this.setShowAbbData false)}}
+          >KBO Gegevens</AuLink>
+        </Tab>
+
+      </AuTabs>
+
+      {{#if this.showAbbData}}
+        <DataCard>
+          <:title>Organisatie</:title>
+          <:card as |Card|>
+            <Card.Columns>
+              <:left as |Item|>
+                <Item>
+                  <:label>Naam</:label>
+                  <:content>{{@model.representativeBody.name}}</:content>
+                </Item>
+                <Item>
+                  <:label>Soort eredienst</:label>
+                  <:content
+                  >{{@model.representativeBody.recognizedWorshipType.label}}</:content>
+                </Item>
+              </:left>
+              <:right as |Item|>
+                <Item>
+                  <:label>Status</:label>
+                  <:content>
+                    <OrganizationStatus
+                      @id={{@model.representativeBody.organizationStatus.id}}
+                      @label={{@model.representativeBody.organizationStatus.label}}
+                    />
+                  </:content>
+                </Item>
+                {{! TODO: Take the last date from the change events }}
+                {{#if @model.representativeBody.resultedFrom}}
+                  <Item>
+                    <:content>
+                      <AuHelpText @skin="tertiary">Gewijzigd op
+                        {{date-format
+                          @model.representativeBody.resultedFrom.firstObject.date
+                        }}
+                      </AuHelpText>
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#each @model.representativeBody.identifiers as |identifier|}}
+                  <Item>
+                    <:label>{{identifier.idName}}</:label>
+                    <:content>
+                      {{#if (this.isKboIdentifier identifier)}}
+                        {{kbo-format identifier.structuredIdentifier.localId}}
+                      {{else}}
+                        {{identifier.structuredIdentifier.localId}}
+                      {{/if}}
+                    </:content>
+                  </Item>
+                {{/each}}
+              </:right>
+            </Card.Columns>
+          </:card>
+        </DataCard>
+
+        <DataCard>
+          <:title>
+            Primaire contactgegevens
+          </:title>
+          <:card as |Card|>
+            <Card.Columns>
+              <:left as |Item|>
+                <Item>
+                  <:label>Adres</:label>
+                  <:content>
+                    {{@model.representativeBody.primarySite.address.fullAddress}}
+                  </:content>
+                </Item>
+                {{#if
+                  @model.representativeBody.primarySite.contacts.firstObject.telephone
+                }}
+                  <Item>
+                    <:label>Telefoonnummer</:label>
+                    <:content>
+                      {{tel-format
+                        @model.representativeBody.primarySite.contacts.firstObject.telephone
+                      }}
+                    </:content>
+                  </Item>
+                {{/if}}
+              </:left>
+              <:right as |Item|>
+                <Item>
+                  <:label>Provincie</:label>
+                  <:content>
+                    {{@model.representativeBody.primarySite.address.province}}
+                  </:content>
+                </Item>
+                {{#if
+                  @model.representativeBody.primarySite.contacts.firstObject.website
+                }}
+                  <Item>
+                    <:label>Website</:label>
+                    <:content>
+                      <a
+                        href={{@model.representativeBody.primarySite.contacts.firstObject.website}}
+                        class="au-c-link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >{{@model.representativeBody.primarySite.contacts.firstObject.website}}
+                        (externe link)</a>
+                    </:content>
+                  </Item>
+                {{/if}}
+              </:right>
+            </Card.Columns>
+          </:card>
+        </DataCard>
+      {{else}}
+        <DataCard>
+          <:title>Bestuurseenheid</:title>
+          <:card as |Card|>
+            <Card.Columns>
+              <:left as |Item|>
+                <Item>
+                  <:label>Naam</:label>
+                  <:content>
+                    {{@model.representativeBody.kboAdministrativeUnit.name}}
+                  </:content>
+                </Item>
+                <Item>
+                  <:label>Commerciële naam</:label>
+                  <:content>
+                    {{@model.representativeBody.kboAdministrativeUnit.alternativeName}}
+                  </:content>
+                </Item>
+
+                <Item>
+                  <:label>Afgekorte naam</:label>
+                  <:content>
+                    {{@model.representativeBody.kboAdministrativeUnit.shortName}}
+                  </:content>
+                </Item>
+
+                <Item>
+                  <:label>Rechtsvorm</:label>
+                  <:content>
+                    {{@model.representativeBody.kboAdministrativeUnit.rechtsvorm}}
+                  </:content>
+                </Item>
+              </:left>
+              <:right as |Item|>
+                <Item>
+                  <:label>Status</:label>
+                  <:content>
+                    <OrganizationStatus
+                      @id={{@model.representativeBody.kboAdministrativeUnit.organizationStatus.id}}
+                      @label={{@model.representativeBody.kboAdministrativeUnit.organizationStatus.label}}
+                    />
+                  </:content>
+                </Item>
+
+                <Item>
+                  <:label>Begindatum</:label>
+                  <:content>
+                    {{@model.representativeBody.kboAdministrativeUnit.startDate}}
+                  </:content>
+                </Item>
+
+                <Item>
+                  <:label>Ondernemingsnummer</:label>
+                  <:content>
+                  {{#each
+                      @model.representativeBody.identifiers
+                      as |identifier|
+                    }}
+                    {{#if (this.isKboIdentifier identifier)}}
+                  {{kbo-format
+                      identifier.structuredIdentifier.localId
+                    }}
+                  {{/if}}  
+                  {{/each}}
+                  </:content>
+                </Item>
+                <Item>
+                  <:label>Website KBO</:label>
+                  <:content>
+                    {{#each
+                      @model.representativeBody.identifiers
+                      as |identifier|
+                    }}
+                      {{#if (this.isKboIdentifier identifier)}}
+                        <AuLinkExternal
+                          href="https://kbopub.economie.fgov.be/kbopub/zoeknummerform.html?nummer={{kbo-format
+                            identifier.structuredIdentifier.localId
+                          }}"
+                        >
+                          Link to page (externe link)
+                        </AuLinkExternal>
+                      {{/if}}
+                    {{/each}}
+                  </:content>
+                </Item>
+              </:right>
+            </Card.Columns>
+          </:card>
+        </DataCard>
+        <Site::ContactDataCard
+          @address={{@model.kboContacts.contactAddress}}
+          @primaryContact={{@model.kboContacts}}
+        >
+          <:title>
+            Maatschappelijke zetel
+          </:title>
+        </Site::ContactDataCard>
+      {{/if}}
+    {{else}}
+      <DataCard>
+        <:title>Organisatie</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
               <Item>
-                <:label>Telefoonnummer</:label>
+                <:label>Naam</:label>
+                <:content>{{@model.representativeBody.name}}</:content>
+              </Item>
+              <Item>
+                <:label>Soort eredienst</:label>
+                <:content
+                >{{@model.representativeBody.recognizedWorshipType.label}}</:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item>
+                <:label>Status</:label>
                 <:content>
-                  {{tel-format
-                    (get
-                      @model.representativeBody.primarySite.contacts
-                      "0.telephone"
-                    )
-                  }}
+                  <OrganizationStatus
+                    @id={{@model.representativeBody.organizationStatus.id}}
+                    @label={{@model.representativeBody.organizationStatus.label}}
+                  />
                 </:content>
               </Item>
-            {{/if}}
-          </:left>
-          <:right as |Item|>
-            <Item>
-              <:label>Provincie</:label>
-              <:content>
-                {{@model.representativeBody.primarySite.address.province}}
-              </:content>
-            </Item>
-            {{#if
-              (get @model.representativeBody.primarySite.contacts "0.website")
-            }}
+              {{! TODO: Take the last date from the change events }}
+              {{#if @model.representativeBody.resultedFrom}}
+                <Item>
+                  <:content>
+                    <AuHelpText @skin="tertiary">Gewijzigd op
+                      {{date-format
+                        @model.representativeBody.resultedFrom.firstObject.date
+                      }}
+                    </AuHelpText>
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#each @model.representativeBody.identifiers as |identifier|}}
+                <Item>
+                  <:label>{{identifier.idName}}</:label>
+                  <:content>
+                    {{#if (this.isKboIdentifier identifier)}}
+                      {{kbo-format identifier.structuredIdentifier.localId}}
+                    {{else}}
+                      {{identifier.structuredIdentifier.localId}}
+                    {{/if}}
+                  </:content>
+                </Item>
+              {{/each}}
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+
+      <DataCard>
+        <:title>
+          Primaire contactgegevens
+        </:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
               <Item>
-                <:label>Website</:label>
+                <:label>Adres</:label>
                 <:content>
-                  <a
-                    href={{get
-                      @model.representativeBody.primarySite.contacts
-                      "0.website"
-                    }}
-                    class="au-c-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >{{get
-                      @model.representativeBody.primarySite.contacts
-                      "0.website"
-                    }}
-                    (externe link)</a>
+                  {{@model.representativeBody.primarySite.address.fullAddress}}
                 </:content>
               </Item>
-            {{/if}}
-          </:right>
-        </Card.Columns>
-      </:card>
-    </DataCard>
+              {{#if
+                @model.representativeBody.primarySite.contacts.firstObject.telephone
+              }}
+                <Item>
+                  <:label>Telefoonnummer</:label>
+                  <:content>
+                    {{tel-format
+                      @model.representativeBody.primarySite.contacts.firstObject.telephone
+                    }}
+                  </:content>
+                </Item>
+              {{/if}}
+            </:left>
+            <:right as |Item|>
+              <Item>
+                <:label>Provincie</:label>
+                <:content>
+                  {{@model.representativeBody.primarySite.address.province}}
+                </:content>
+              </Item>
+              {{#if
+                @model.representativeBody.primarySite.contacts.firstObject.website
+              }}
+                <Item>
+                  <:label>Website</:label>
+                  <:content>
+                    <a
+                      href={{@model.representativeBody.primarySite.contacts.firstObject.website}}
+                      class="au-c-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >{{@model.representativeBody.primarySite.contacts.firstObject.website}}
+                      (externe link)</a>
+                  </:content>
+                </Item>
+              {{/if}}
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+    {{/if}}
   </div>
 </div>
