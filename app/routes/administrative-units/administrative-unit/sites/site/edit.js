@@ -12,7 +12,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute ext
   @service currentSession;
   @service router;
   get editFeature() {
-    const editFeature = config.features['edit-contact-data']
+    const editFeature = config.features['edit-contact-data'];
     return editFeature === true || editFeature === 'true';
   }
   beforeModel() {

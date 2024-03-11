@@ -11,7 +11,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewRoute extends 
   @service router;
 
   get editFeature() {
-    const editFeature = config.features['edit-contact-data']
+    const editFeature = config.features['edit-contact-data'];
     return editFeature === true || editFeature === 'true';
   }
 
