@@ -6,6 +6,7 @@ import {
   findPrimaryContact,
   findSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
+import config from 'frontend-organization-portal/config/environment';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute extends Route {
   @service store;
