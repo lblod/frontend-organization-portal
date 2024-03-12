@@ -217,7 +217,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     this.model.contact.reset();
     this.model.secondaryContact.reset();
     this.model.address.reset();
+    this.model.structuredIdentifierKBO.rollbackAttributes();
     this.model.identifierKBO.reset();
+    this.model.structuredIdentifierSharepoint.rollbackAttributes();
     this.model.identifierSharepoint.reset();
   }
 

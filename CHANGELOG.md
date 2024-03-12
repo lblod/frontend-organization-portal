@@ -15,6 +15,16 @@
 
 
 
+
+## 1.22.0-2 (2024-03-12)
+
+#### :bug: Bug Fix
+* [#588](https://github.com/lblod/frontend-organization-portal/pull/588) Fix null value in optional string input ([@aliokan](https://github.com/aliokan))
+* [#587](https://github.com/lblod/frontend-organization-portal/pull/587) Fix sharepoint and kbo reset in administrative-unit edit form ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
 ## 1.22.0-1 (2024-03-01)
 
 ## 1.22.0-0 (2024-02-22)
