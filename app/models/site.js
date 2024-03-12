@@ -5,32 +5,36 @@ import {
   validateBelongsToOptional,
   validateBelongsToRequired,
   validateHasManyOptional,
+  validateStringOptional,
 } from '../validators/schema';
 
 export default class SiteModel extends AbstractValidationModel {
+  @attr siteTypeName;
+
   @belongsTo('address', {
     inverse: null,
+    async: true,
   })
   address;
 
   @hasMany('contact-point', {
     inverse: null,
+    async: true,
   })
   contacts;
 
   @belongsTo('site-type', {
     inverse: null,
+    async: true,
   })
   siteType;
-
-  @attr siteTypeName;
 
   get validationSchema() {
     return Joi.object({
       address: validateBelongsToOptional(),
       contacts: validateHasManyOptional(),
       siteType: validateBelongsToRequired('Voeg een type vestiging toe'),
-      siteTypeName: Joi.string().empty(''),
+      siteTypeName: validateStringOptional(),
     });
   }
 

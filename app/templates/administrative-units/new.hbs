@@ -36,20 +36,39 @@
       <:card as |Card|>
         <Card.Columns>
           <:left as |Item|>
-            <Item
-              @labelFor="administrative-unit-name"
-              @required={{true}}
-              @errorMessage={{@model.administrativeUnit.error.name.message}}
-            >
+            <Item @labelFor="administrative-unit-abb-name" @required={{true}}>
               <:label>Naam</:label>
               <:content as |hasError|>
                 <TrimInput
                   @width="block"
-                  @value={{@model.administrativeUnit.name}}
+                  @disabled={{true}}
+                  @value={{@model.administrativeUnit.abbName}}
                   @onUpdate={{fn (mut @model.administrativeUnit.name)}}
                   @error={{hasError}}
-                  id="administrative-unit-name"
+                  id="administrative-unit-abb-name"
                 />
+                <AuHelpText>
+                  {{help-text "abbName"}}
+                </AuHelpText>
+              </:content>
+            </Item>
+            <Item
+              @labelFor="administrative-unit-legal-name"
+              @required={{true}}
+              @errorMessage={{@model.administrativeUnit.error.legalName.message}}
+            >
+              <:label>Juridische naam</:label>
+              <:content as |hasError|>
+                <TrimInput
+                  @width="block"
+                  @value={{@model.administrativeUnit.legalName}}
+                  @onUpdate={{this.setNames}}
+                  @error={{hasError}}
+                  id="administrative-unit-legal-name"
+                />
+                <AuHelpText>
+                  {{help-text "legalName"}}
+                </AuHelpText>
               </:content>
             </Item>
             <Item
@@ -261,7 +280,7 @@
                       />
                     </:content>
                   </Item>
-                {{else if this.hasCentralWorshipService}}
+                {{else if @model.administrativeUnit.hasCentralWorshipService}}
                   <Item
                     @labelFor="related-central-worship-service"
                     @required={{false}}
@@ -342,7 +361,7 @@
                         Provincie
                       </:label>
                       <:content>
-                        {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
+                        {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.abbName}}
                       </:content>
                     </Item>
                   {{/if}}

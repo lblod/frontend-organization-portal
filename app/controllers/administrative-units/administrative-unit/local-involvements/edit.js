@@ -19,7 +19,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
 
   get hasValidationErrors() {
     let areSomeLocalInvolvementsInvalid = this.model.involvements
-      .toArray()
+      .slice()
       .some((involvement) => involvement.error);
 
     return (
@@ -53,7 +53,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
 
   get isValidTotalFinancingPercentage() {
     let hasFinancialLocalInvolvements = this.model.involvements
-      .toArray()
+      .slice()
       .some((involvement) => involvement.isSupervisory);
 
     if (hasFinancialLocalInvolvements) {
@@ -131,18 +131,21 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     } else {
       involvement = this.store.createRecord('local-involvement', {
         worshipAdministrativeUnit: this.model.worshipAdministrativeUnit,
-        involvementType: this.model.involvementTypes.firstObject,
+        involvementType: this.model.involvementTypes.at(0),
         percentage: 100,
       });
     }
 
-    this.model.involvements.pushObject(involvement);
+    this.model.involvements.push(involvement);
   }
 
   @action
   deleteUnsavedLocalInvolvement(involvement) {
-    this.model.involvements.removeObject(involvement);
-    involvement.destroyRecord();
+    const index = this.model.involvements.indexOf(involvement);
+    if (index > -1) {
+      this.model.involvements.splice(index, 1);
+      involvement.destroyRecord();
+    }
   }
 
   @dropTask
@@ -157,7 +160,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     yield Promise.all(validationPromises);
 
     let areSomeLocalInvolvementsInvalid = involvements
-      .toArray()
+      .slice()
       .some((involvement) => involvement.error);
 
     if (!this.isValidTotalFinancingPercentage) {

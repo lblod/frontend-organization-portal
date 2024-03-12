@@ -15,6 +15,12 @@ export const CENTRAL_WORSHIP_SERVICE_BLACKLIST = [
   'e8cba1540b35a32e9cb45126c38c03c6', // Protestants
 ];
 
+export const WITH_CENTRAL_WORSHIP_SERVICE = [
+  RECOGNIZED_WORSHIP_TYPE.ISLAMIC,
+  RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC,
+  RECOGNIZED_WORSHIP_TYPE.ORTHODOX,
+];
+
 export default class RecognizedWorshipTypeModel extends Model {
   @attr label;
 }

@@ -2,7 +2,7 @@
   <div class="au-o-box">
     <PageHeader class="au-u-margin-bottom-large">
       <:title>Bewerk gerelateerde organisaties</:title>
-      <:subtitle>{{@model.administrativeUnit.name}}
+      <:subtitle>{{@model.administrativeUnit.abbName}}
         ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         <div class="au-u-text-right">
@@ -38,7 +38,7 @@
         {{#if @model.administrativeUnit.isWorshipService}}
           <RelatedOrganizations::EditWorshipService
             @model={{@model}}
-            @hasCentralWorshipService={{this.hasCentralWorshipService}}
+            @hasCentralWorshipService={{@model.administrativeUnit.hasCentralWorshipService}}
           />
         {{/if}}
         {{#if @model.administrativeUnit.isCentralWorshipService}}

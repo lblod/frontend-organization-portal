@@ -1,17 +1,15 @@
 /**
- * Set empty strings to null in an Ember data model
+ * Set empty strings to null in all model attributes.
  *
  * @param {Object} model Ember data model
  * @returns {Object} Ember data model
  */
 export function setEmptyStringsToNull(model) {
-  let properties = Object.keys(model.toJSON());
-
-  for (const property of properties) {
-    if (model[property] === '') {
-      model[property] = null;
+  model.eachAttribute((name) => {
+    if (model[name] === '') {
+      model[name] = null;
     }
-  }
+  });
 
   return model;
 }

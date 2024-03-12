@@ -13,19 +13,15 @@
             <MunicipalitySelect
               @selected={{@model.administrativeUnit.isSubOrganizationOf}}
               @onChange={{@updateRelatedOrg}}
-
               @error={{hasError}}
               @id="related-gemeente"
             />
           </:content>
         </Item>
-        <Item
-          @labelFor="related-municipality"
-          @required={{true}}
-        >
+        <Item @labelFor="related-municipality" @required={{true}}>
           <:label>Provincie</:label>
           <:content>
-            {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
+            {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.abbName}}
           </:content>
         </Item>
       </:left>
@@ -38,26 +34,47 @@
     <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
       Heeft relatie met
     </AuHeading>
-    <AuDataTable id="subOrganizations" @content={{@model.subOrganizations}}
-      @noDataMessage="Geen bestuur" as |t|>
+    <AuDataTable
+      id="subOrganizations"
+      @content={{@model.subOrganizations}}
+      @noDataMessage="Geen bestuur"
+      as |t|
+    >
       <t.content as |c|>
         <c.header>
-          <AuDataTableThSortable @field="classification.label" @label="Type organisatie" @currentSorting={{@sort}} />
-          <AuDataTableThSortable @field="name" @label="Organisatie" @currentSorting={{@sort}} />
-          <AuDataTableThSortable @field="organizationStatus.label" @label="Status" @currentSorting={{@sort}} />
+          <AuDataTableThSortable
+            @field="classification.label"
+            @label="Type organisatie"
+            @currentSorting={{@sort}}
+          />
+          <AuDataTableThSortable
+            @field="name"
+            @label="Organisatie"
+            @currentSorting={{@sort}}
+          />
+          <AuDataTableThSortable
+            @field="organizationStatus.label"
+            @label="Status"
+            @currentSorting={{@sort}}
+          />
         </c.header>
         <c.body as |subOrganization|>
           <td>
             {{subOrganization.classification.label}}
           </td>
           <td>
-            <AuLink @route="administrative-units.administrative-unit" @model={{subOrganization.id}}>
-              {{subOrganization.name}}
+            <AuLink
+              @route="administrative-units.administrative-unit"
+              @model={{subOrganization.id}}
+            >
+              {{subOrganization.abbName}}
             </AuLink>
           </td>
           <td>
-            <OrganizationStatus @id={{subOrganization.organizationStatus.id}}
-              @label={{subOrganization.organizationStatus.label}} />
+            <OrganizationStatus
+              @id={{subOrganization.organizationStatus.id}}
+              @label={{subOrganization.organizationStatus.label}}
+            />
           </td>
         </c.body>
       </t.content>

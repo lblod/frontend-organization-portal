@@ -15,7 +15,7 @@
         Bewerk veranderingsgebeurtenis:
         {{@model.changeEvent.type.label}}
       </:title>
-      <:subtitle>{{@model.administrativeUnit.name}}
+      <:subtitle>{{@model.administrativeUnit.abbName}}
         ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         <div class="au-u-text-right">
@@ -152,7 +152,7 @@
                 <Item>
                   <:label>Betrokken organisatie</:label>
                   <:content>
-                    {{organization.name}}
+                    {{organization.abbName}}
                   </:content>
                 </Item>
               {{/each}}
@@ -162,7 +162,7 @@
                 <Item>
                   <:label>Resulterende organisatie</:label>
                   <:content>
-                    {{@model.changeEvent.resultingOrganizations.firstObject.name}}
+                    {{@model.firstResultingOrganization.name}}
                   </:content>
                 </Item>
                 <Item>

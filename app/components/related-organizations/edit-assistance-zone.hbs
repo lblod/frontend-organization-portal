@@ -20,13 +20,10 @@
             />
           </:content>
         </Item>
-        <Item
-          @labelFor="related-municipality"
-          @required={{true}}
-        >
+        <Item @labelFor="related-municipality" @required={{true}}>
           <:label>Provincie</:label>
           <:content>
-            {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
+            {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.abbName}}
           </:content>
         </Item>
       </:left>

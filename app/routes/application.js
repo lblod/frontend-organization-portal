@@ -5,6 +5,7 @@ export default class ApplicationRoute extends Route {
   @service currentSession;
   @service session;
   @service role;
+  @service router;
 
   async beforeModel() {
     await this.session.setup();

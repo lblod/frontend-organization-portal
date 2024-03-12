@@ -1,4 +1,4 @@
-FROM madnificent/ember:3.28.5 as builder
+FROM madnificent/ember:4.12.1-node_18 as builder
 
 LABEL maintainer="info@redpencil.io"
 
@@ -7,7 +7,7 @@ ARG SHOW_APP_VERSION_HASH=false
 WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 COPY . .
 RUN ember build -prod
 

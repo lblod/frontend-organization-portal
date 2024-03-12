@@ -5,6 +5,7 @@ export default class DecisionActivityModel extends Model {
 
   @hasMany('decision', {
     inverse: 'hasDecisionActivity',
+    async: true,
   })
   givesCauseTo;
 }

@@ -1,10 +1,10 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { dropTask } from 'ember-concurrency';
 
 export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEditRoute extends Route {
   @service currentSession;
   @service router;
+  @service store;
 
   queryParams = {
     sort: { refreshModel: true },
@@ -18,44 +18,28 @@ export default class AdministrativeUnitsAdministrativeUnitRelatedOrganizationsEd
     }
   }
 
-  async model(params) {
-    let administrativeUnit = await this.modelFor(
-      'administrative-units.administrative-unit.related-organizations'
+  async model() {
+    const { id: administrativeUnitId } = this.paramsFor(
+      'administrative-units.administrative-unit'
     );
 
-    const subOrganizations = (
-      await this.loadSubOrganizationsTask.perform(administrativeUnit.id, params)
-    ).toArray();
+    const administrativeUnit = await this.store.findRecord(
+      'administrative-unit',
+      administrativeUnitId,
+      {
+        reload: true,
+        include: 'organization-status,was-founded-by-organizations',
+      }
+    );
 
-    const hasParticipants = (
-      await this.loadHasParticipantsTask.perform(administrativeUnit.id, params)
-    ).toArray();
+    const subOrganizations = await administrativeUnit.subOrganizations;
+    const hasParticipants = await administrativeUnit.hasParticipants;
 
     return {
       administrativeUnit,
       subOrganizations,
       hasParticipants,
     };
-  }
-
-  @dropTask({ cancelOn: 'deactivate' })
-  *loadSubOrganizationsTask(id, params) {
-    return yield this.store.query('administrative-unit', {
-      'filter[is-sub-organization-of][:id:]': id,
-      'page[size]': 500,
-      include: 'classification',
-      sort: params.sort,
-    });
-  }
-
-  @dropTask({ cancelOn: 'deactivate' })
-  *loadHasParticipantsTask(id, params) {
-    return yield this.store.query('administrative-unit', {
-      'filter[participates-in][:id:]': id,
-      'page[size]': 500,
-      include: 'classification',
-      sort: params.sort,
-    });
   }
 
   resetController(controller) {

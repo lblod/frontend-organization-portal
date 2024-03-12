@@ -5,6 +5,7 @@ import {
   validateBelongsToOptional,
   validateEmail,
   validatePhone,
+  validateStringOptional,
   validateUrl,
 } from '../validators/schema';
 
@@ -23,18 +24,21 @@ export default class ContactPointModel extends AbstractValidationModel {
 
   @belongsTo('address', {
     inverse: null,
+    async: true,
   })
   contactAddress;
 
   get validationSchema() {
     return Joi.object({
-      email: validateEmail('Geef een geldig e-mailadres in'),
+      email: validateEmail('Geef een geldig e-mailadres in').allow(null),
       telephone: validatePhone(
         'Enkel een plusteken en cijfers zijn toegelaten'
-      ),
-      fax: validatePhone('Enkel een plusteken en cijfers zijn toegelaten'),
-      website: validateUrl('Geef een geldig internetadres in'),
-      type: Joi.string().empty(''),
+      ).allow(null),
+      fax: validatePhone(
+        'Enkel een plusteken en cijfers zijn toegelaten'
+      ).allow(null),
+      website: validateUrl('Geef een geldig internetadres in').allow(null),
+      type: validateStringOptional(),
       contactAddress: validateBelongsToOptional(),
     });
   }
@@ -55,11 +59,11 @@ export function createSecondaryContact(store) {
 }
 
 export function findPrimaryContact(contactList) {
-  return contactList.findBy('type', CONTACT_TYPE.PRIMARY);
+  return contactList.find(({ type }) => type === CONTACT_TYPE.PRIMARY);
 }
 
 export function findSecondaryContact(contactList) {
-  return contactList.findBy('type', CONTACT_TYPE.SECONDARY);
+  return contactList.find(({ type }) => type === CONTACT_TYPE.SECONDARY);
 }
 export function findKboContact(contactList) {
   return contactList.findBy('type', CONTACT_TYPE.KBO);

@@ -14,6 +14,50 @@
 
 
 
+
+## 1.22.0-1 (2024-03-01)
+
+## 1.22.0-0 (2024-02-22)
+
+#### :rocket: Enhancement
+* [#568](https://github.com/lblod/frontend-organization-portal/pull/568) Feat/site names ([@lagartoverde](https://github.com/lagartoverde))
+* [#563](https://github.com/lblod/frontend-organization-portal/pull/563) Replace ander admini... by andere vestiging ([@lagartoverde](https://github.com/lagartoverde))
+* [#555](https://github.com/lblod/frontend-organization-portal/pull/555) Feat/integration wegwijs api ([@Dachamelemon](https://github.com/Dachamelemon))
+* [#558](https://github.com/lblod/frontend-organization-portal/pull/558) Feature: onboarding PEVA organisations ([@mirdono](https://github.com/mirdono))
+* [#553](https://github.com/lblod/frontend-organization-portal/pull/553) Feature: onboarding public ocmw associations ([@mirdono](https://github.com/mirdono))
+* [#556](https://github.com/lblod/frontend-organization-portal/pull/556) Add validation so the sharepoint is always a number ([@lagartoverde](https://github.com/lagartoverde))
+* [#551](https://github.com/lblod/frontend-organization-portal/pull/551) Update organization-related information in templates ([@aliokan](https://github.com/aliokan))
+
+#### :bug: Bug Fix
+* [#575](https://github.com/lblod/frontend-organization-portal/pull/575) Fix administrative-unit edit validtion on WorshipService ([@aliokan](https://github.com/aliokan))
+* [#572](https://github.com/lblod/frontend-organization-portal/pull/572) Fix address and contact saving ([@aliokan](https://github.com/aliokan))
+* [#573](https://github.com/lblod/frontend-organization-portal/pull/573) Fix: unable to leave page 'personen/nieuw-positie' ([@aliokan](https://github.com/aliokan))
+* [#569](https://github.com/lblod/frontend-organization-portal/pull/569) Fix AGB/APB edit form validation ([@aliokan](https://github.com/aliokan))
+* [#560](https://github.com/lblod/frontend-organization-portal/pull/560) Fix reseting controller when exiting `administrative-units.administrative-unit.core-data.edit` ([@aliokan](https://github.com/aliokan))
+* [#559](https://github.com/lblod/frontend-organization-portal/pull/559) Use identifier instead of structuredIdentifier to detect error ([@aliokan](https://github.com/aliokan))
+
+#### :house: Internal
+* [#577](https://github.com/lblod/frontend-organization-portal/pull/577) Remove unused utils/datepicker ([@aliokan](https://github.com/aliokan))
+* [#576](https://github.com/lblod/frontend-organization-portal/pull/576) Remove `ember-changeset` and all remaining traces ([@aliokan](https://github.com/aliokan))
+* [#571](https://github.com/lblod/frontend-organization-portal/pull/571) Refactor form validation local involvement ([@aliokan](https://github.com/aliokan))
+* [#574](https://github.com/lblod/frontend-organization-portal/pull/574) Delete unused components ([@aliokan](https://github.com/aliokan))
+* [#570](https://github.com/lblod/frontend-organization-portal/pull/570) Refactor: migrate governing body form validation to Joi ([@mirdono](https://github.com/mirdono))
+* [#567](https://github.com/lblod/frontend-organization-portal/pull/567) Refactor: migrate change event forms validation to Joi ([@mirdono](https://github.com/mirdono))
+* [#565](https://github.com/lblod/frontend-organization-portal/pull/565) Migrate `administrative-unit.related-organizations.edit` to the new form validation ([@aliokan](https://github.com/aliokan))
+* [#564](https://github.com/lblod/frontend-organization-portal/pull/564) Remove people new form ([@aliokan](https://github.com/aliokan))
+* [#562](https://github.com/lblod/frontend-organization-portal/pull/562) Remove personal-information and minister disabled forms ([@aliokan](https://github.com/aliokan))
+* [#561](https://github.com/lblod/frontend-organization-portal/pull/561) Remove disabled governing-body forms ([@aliokan](https://github.com/aliokan))
+* [#557](https://github.com/lblod/frontend-organization-portal/pull/557) Add feature flag service and helper ([@aliokan](https://github.com/aliokan))
+* [#554](https://github.com/lblod/frontend-organization-portal/pull/554) POC custom form validation with `joi` ([@aliokan](https://github.com/aliokan))
+* [#552](https://github.com/lblod/frontend-organization-portal/pull/552) CI - Add .woodpecker/.feature.yml configuration file ([@aliokan](https://github.com/aliokan))
+* [#549](https://github.com/lblod/frontend-organization-portal/pull/549) Refactor: classification code duplication ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 4
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+- [@Dachamelemon](https://github.com/Dachamelemon)
+
 ## 1.21.0 (2023-12-19)
 
 #### :rocket: Enhancement

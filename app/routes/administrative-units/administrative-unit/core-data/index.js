@@ -28,7 +28,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       contacts = await primarySite.contacts;
     }
 
-    let resultedFrom = (await administrativeUnit.resultedFrom).toArray();
+    let resultedFrom = (await administrativeUnit.resultedFrom).slice();
     resultedFrom = resultedFrom.sort((a1, a2) => {
       if (!a2.date) {
         return -1;
@@ -39,7 +39,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       return new Date(a2.date).getTime() - new Date(a1.date).getTime();
     });
 
-    const changeEvents = (await administrativeUnit.changedBy).toArray();
+    const changeEvents = (await administrativeUnit.changedBy).slice();
 
     let isCity = false;
     for (const event of changeEvents) {
@@ -84,7 +84,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
             },
           },
         })
-      ).firstObject;
+      ).at(0);
       const scope = await municipalityUnit.scope;
       region = await scope.locatedWithin;
     }

@@ -2,7 +2,7 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Kerngegevens</:title>
-      <:subtitle>{{@model.administrativeUnit.name}}
+      <:subtitle>{{@model.administrativeUnit.abbName}}
         ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         {{#if (is-feature-enabled "kbo-data-tab")}}
@@ -199,7 +199,7 @@
                     <:content>
                       <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
                         Gewijzigd op
-                        {{date-format @model.resultedFrom.firstObject.date}}
+                        {{date-format (get @model.resultedFrom "0.date")}}
                       </AuHelpText>
                     </:content>
                   </Item>
@@ -470,7 +470,7 @@
                   <:content>
                     <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
                       Gewijzigd op
-                      {{date-format @model.resultedFrom.firstObject.date}}
+                      {{date-format (get @model.resultedFrom "0.date")}}
                     </AuHelpText>
                   </:content>
                 </Item>

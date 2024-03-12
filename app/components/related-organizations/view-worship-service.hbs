@@ -14,12 +14,15 @@
   <:card as |Card|>
     <Card.Columns>
       <:left as |Item|>
-        {{#if @model.isAssociatedWith.name}}
+        {{#if @model.isAssociatedWith.abbName}}
           <Item>
             <:label>Representatief orgaan</:label>
             <:content>
-              <AuLink @route="organizations.organization.core-data" @model={{@model.isAssociatedWith.id}}>
-                {{@model.isAssociatedWith.name}}
+              <AuLink
+                @route="organizations.organization.core-data"
+                @model={{@model.isAssociatedWith.id}}
+              >
+                {{@model.isAssociatedWith.abbName}}
               </AuLink>
             </:content>
           </Item>
@@ -27,11 +30,14 @@
         {{#if @model.isSubOrganizationOf}}
           <Item>
             <:label>
-                Centraal bestuur
+              Centraal bestuur
             </:label>
             <:content>
-              <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
-                {{@model.isSubOrganizationOf.name}}
+              <AuLink
+                @route="administrative-units.administrative-unit"
+                @model={{@model.isSubOrganizationOf.id}}
+              >
+                {{@model.isSubOrganizationOf.abbName}}
               </AuLink>
             </:content>
           </Item>

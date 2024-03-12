@@ -24,10 +24,10 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersIndexRoute ex
     let ministerPositions = await administrativeUnit.ministerPositions;
     let ministers = [];
 
-    for (const ministerPosition of ministerPositions.toArray()) {
+    for (const ministerPosition of ministerPositions.slice()) {
       const heldByMinisters = await ministerPosition.heldByMinisters;
       if (heldByMinisters.length) {
-        ministers.push(...heldByMinisters.toArray());
+        ministers.push(...heldByMinisters.slice());
       }
     }
 

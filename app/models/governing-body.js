@@ -14,31 +14,39 @@ export default class GoverningBodyModel extends AbstractValidationModel {
 
   @belongsTo('administrative-unit', {
     inverse: 'governingBodies',
+    async: true,
+    polymorphic: true,
+    as: 'governingBody',
   })
   administrativeUnit;
 
   @belongsTo('governing-body-classification-code', {
     inverse: null,
+    async: true,
   })
   classification;
 
   @belongsTo('governing-body', {
     inverse: 'hasTimeSpecializations',
+    async: true,
   })
   isTimeSpecializationOf;
 
   @hasMany('governing-body', {
     inverse: 'isTimeSpecializationOf',
+    async: true,
   })
   hasTimeSpecializations;
 
   @hasMany('mandate', {
     inverse: 'governingBody',
+    async: true,
   })
   mandates;
 
   @hasMany('board-position', {
     inverse: 'governingBodies',
+    async: true,
   })
   boardPositions;
 
@@ -74,7 +82,10 @@ export default class GoverningBodyModel extends AbstractValidationModel {
 
           return value;
         })
-        .messages({ 'any.required': 'Vul de startdatum in' }),
+        .messages({
+          'any.required': 'Vul de startdatum in',
+          'date.base': 'Vul de startdatum in',
+        }),
       endDate: Joi.date()
         .empty(null)
         .required()
@@ -99,6 +110,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
         })
         .messages({
           'any.required': 'Vul de einddatum in',
+          'date.base': 'Vul de einddatum in',
         }),
       administrativeUnit: validateBelongsToOptional(),
       classification: validateBelongsToOptional(),
@@ -152,7 +164,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
    */
   async getOtherTimedGoverningBodies() {
     let untimedGoverningBodies =
-      (await this.#getUntimedGoverningBodies())?.toArray() ?? [];
+      (await this.#getUntimedGoverningBodies())?.slice() ?? [];
 
     let governingBodies = [];
     for (const untimedGoverningBody of untimedGoverningBodies) {
@@ -162,7 +174,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
           ? await untimedGoverningBody.hasTimeSpecializations
           : [];
 
-        const arrayTimedGoverningBodies = timedGoverningBodies.toArray();
+        const arrayTimedGoverningBodies = timedGoverningBodies.slice();
 
         governingBodies.push(...arrayTimedGoverningBodies);
       }
