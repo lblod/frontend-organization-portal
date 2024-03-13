@@ -1,6 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { findKboContact } from 'frontend-organization-portal/models/contact-point';
+import { A } from '@ember/array';
 
 export default class OrganizationsOrganizationCoreDataRoute extends Route {
   @service store;
@@ -25,16 +26,17 @@ export default class OrganizationsOrganizationCoreDataRoute extends Route {
       }
     );
 
-    let kboContacts = null;
-    const kboAdministrativeUnit =
-      await representativeBody.kboAdministrativeUnit;
-    if (kboAdministrativeUnit) {
-      kboContacts = await kboAdministrativeUnit.contacts;
+    let kboContact = A();
+    const kboContacts = await representativeBody.kboAdministrativeUnit.get(
+      'contacts'
+    );
+    if (kboContacts) {
+      kboContact = findKboContact(kboContacts);
     }
 
     return {
       representativeBody: representativeBody,
-      kboContacts: findKboContact(kboContacts),
+      kboContact: kboContact,
     };
   }
 }
