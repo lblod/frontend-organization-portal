@@ -78,7 +78,7 @@ module.exports = function (environment) {
   if (environment === 'development') {
     ENV.showAppVersionHash = true;
     ENV.environmentName = 'development';
-    ENV.features["edit-contact-data"] = 'false';
+    ENV.features['edit-contact-data'] = 'false';
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
