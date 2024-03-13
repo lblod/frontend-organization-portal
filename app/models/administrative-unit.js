@@ -69,6 +69,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
 
   @belongsTo('kbo-administrative-unit', {
     inverse: 'administrativeUnit',
+    async: true,
   })
   kboAdministrativeUnit;
 
