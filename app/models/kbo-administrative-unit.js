@@ -7,6 +7,7 @@ export default class KboAdministrativeUnitModel extends OrganizationModel {
   @attr startDate;
   @belongsTo('administrative-unit', {
     inverse: 'kboAdministrativeUnit',
+    async: true,
   })
   administrativeUnit;
 }
