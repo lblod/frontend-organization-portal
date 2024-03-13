@@ -20,6 +20,7 @@ export default class RepresentativeBodyModel extends OrganizationModel {
 
   @belongsTo('kbo-administrative-unit', {
     inverse: 'administrativeUnit',
+    async: true,
   })
   kboAdministrativeUnit;
 }
