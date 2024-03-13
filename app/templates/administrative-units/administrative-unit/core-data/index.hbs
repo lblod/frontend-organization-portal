@@ -25,7 +25,8 @@
           {{else}}
             <div class="au-u-flex--column">
               <AuPill @icon="clock-rewind">
-                Laatst Gewijzigd op {{date-format @model.kboAdministrativeUnit.expectedEndDate}}
+                Laatst Gewijzigd op
+                {{date-format @model.kboAdministrativeUnit.expectedEndDate}}
               </AuPill>
               <ReportWrongData />
             </div>
@@ -276,14 +277,14 @@
                 <Item>
                   <:label>Commerciële naam</:label>
                   <:content>
-                    {{@model.kboAdministrativeUnit.alternativeName}}
+                    {{@model.kboAdministrativeUnit.commercialName}}
                   </:content>
                 </Item>
 
                 <Item>
                   <:label>Afgekorte naam</:label>
                   <:content>
-                     {{@model.kboAdministrativeUnit.shortName}}
+                    {{@model.kboAdministrativeUnit.alternativeName}}
                   </:content>
                 </Item>
 
@@ -315,11 +316,13 @@
                 <Item>
                   <:label>Ondernemingsnummer</:label>
                   <:content>
-                  {{#if this.kboIdentifierForKboUnit.structuredIdentifier.localId}}
-                     {{kbo-format
+                    {{#if
                       this.kboIdentifierForKboUnit.structuredIdentifier.localId
                     }}
-                  {{/if}}  
+                      {{kbo-format
+                        this.kboIdentifierForKboUnit.structuredIdentifier.localId
+                      }}
+                    {{/if}}
                   </:content>
                 </Item>
                 <Item>
