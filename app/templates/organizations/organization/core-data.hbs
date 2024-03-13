@@ -81,7 +81,7 @@
                     <:content>
                       <AuHelpText @skin="tertiary">Gewijzigd op
                         {{date-format
-                          @model.representativeBody.resultedFrom.firstObject.date
+                          (get @model.representativeBody.resultedFrom "0.date")
                         }}
                       </AuHelpText>
                     </:content>
@@ -118,13 +118,13 @@
                   </:content>
                 </Item>
                 {{#if
-                  @model.representativeBody.primarySite.contacts.firstObject.telephone
+                  (get @model.representativeBody.primarySite.contacts "0.telephone")
                 }}
                   <Item>
                     <:label>Telefoonnummer</:label>
                     <:content>
                       {{tel-format
-                        @model.representativeBody.primarySite.contacts.firstObject.telephone
+                        (get @model.representativeBody.primarySite.contacts "0.telephone")
                       }}
                     </:content>
                   </Item>
@@ -138,17 +138,17 @@
                   </:content>
                 </Item>
                 {{#if
-                  @model.representativeBody.primarySite.contacts.firstObject.website
+                  (get @model.representativeBody.primarySite.contacts "0.website")
                 }}
                   <Item>
                     <:label>Website</:label>
                     <:content>
                       <a
-                        href={{@model.representativeBody.primarySite.contacts.firstObject.website}}
+                        href={{get @model.representativeBody.primarySite.contacts "0.website"}}
                         class="au-c-link"
                         target="_blank"
                         rel="noopener noreferrer"
-                      >{{@model.representativeBody.primarySite.contacts.firstObject.website}}
+                      >{{get @model.representativeBody.primarySite.contacts "0.website"}}
                         (externe link)</a>
                     </:content>
                   </Item>
@@ -212,7 +212,7 @@
                   <:label>Ondernemingsnummer</:label>
                   <:content>
                   {{#each
-                      @model.representativeBody.identifiers
+                      @model.representativeBody.kboAdministrativeUnit.identifiers
                       as |identifier|
                     }}
                     {{#if (this.isKboIdentifier identifier)}}
@@ -247,8 +247,8 @@
           </:card>
         </DataCard>
         <Site::ContactDataCard
-          @address={{@model.kboContacts.contactAddress}}
-          @primaryContact={{@model.kboContacts}}
+          @address={{@model.kboContact.contactAddress}}
+          @primaryContact={{@model.kboContact}}
         >
           <:title>
             Maatschappelijke zetel
@@ -287,7 +287,7 @@
                   <:content>
                     <AuHelpText @skin="tertiary">Gewijzigd op
                       {{date-format
-                        @model.representativeBody.resultedFrom.firstObject.date
+                        (get @model.representativeBody.resultedFrom "0.date")
                       }}
                     </AuHelpText>
                   </:content>
@@ -324,13 +324,13 @@
                 </:content>
               </Item>
               {{#if
-                @model.representativeBody.primarySite.contacts.firstObject.telephone
+                (get @model.representativeBody.primarySite.contacts "0.telephone")
               }}
                 <Item>
                   <:label>Telefoonnummer</:label>
                   <:content>
                     {{tel-format
-                      @model.representativeBody.primarySite.contacts.firstObject.telephone
+                      (get @model.representativeBody.primarySite.contacts "0.telephone")
                     }}
                   </:content>
                 </Item>
@@ -344,17 +344,17 @@
                 </:content>
               </Item>
               {{#if
-                @model.representativeBody.primarySite.contacts.firstObject.website
+                (get @model.representativeBody.primarySite.contacts "0.website")
               }}
                 <Item>
                   <:label>Website</:label>
                   <:content>
                     <a
-                      href={{@model.representativeBody.primarySite.contacts.firstObject.website}}
+                      href={{get @model.representativeBody.primarySite.contacts "0.website"}}
                       class="au-c-link"
                       target="_blank"
                       rel="noopener noreferrer"
-                    >{{@model.representativeBody.primarySite.contacts.firstObject.website}}
+                    >{{get @model.representativeBody.primarySite.contacts "0.website"}}
                       (externe link)</a>
                   </:content>
                 </Item>

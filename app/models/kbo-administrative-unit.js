@@ -10,4 +10,17 @@ export default class KboAdministrativeUnitModel extends OrganizationModel {
     async: true,
   })
   administrativeUnit;
+
+  @belongsTo('worship-administrative-unit', {
+    inverse: 'kboAdministrativeUnit',
+    polymorphic: true,
+    async: true,
+  })
+  worshipAdministrativeUnit;
+
+  @belongsTo('representative-body', {
+    inverse: 'kboAdministrativeUnit',
+    async: true,
+  })
+  representativeBody;
 }
