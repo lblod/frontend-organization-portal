@@ -81,9 +81,7 @@
                   @width="block"
                   @disabled={{false}}
                   @value={{@model.administrativeUnit.alternativeName}}
-                  @onUpdate={{fn
-                    (mut @model.administrativeUnit.alternativeName)
-                  }}
+                  @onUpdate={{this.setAlternativeNames}}
                   @error={{hasError}}
                   id="administrative-unit-alternative-names"
                 />

@@ -99,6 +99,11 @@ export default class AdministrativeUnitsNewController extends Controller {
   }
 
   @action
+  setAlternativeNames(names) {
+    this.model.administrativeUnit.setAlternativeName(names);
+  }
+
+  @action
   setHasParticipants(units) {
     this.model.administrativeUnit.hasParticipants = units;
   }
