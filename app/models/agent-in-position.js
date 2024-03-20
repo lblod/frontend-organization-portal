@@ -8,6 +8,8 @@ export default class AgentInPositionModel extends AgentModel {
   @belongsTo('person', {
     inverse: 'agentsInPosition',
     async: true,
+    polymorphic: true,
+    as: 'agent-in-position',
   })
   person;
 
