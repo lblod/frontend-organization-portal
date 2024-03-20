@@ -6,7 +6,6 @@ import {
   findPrimaryContact,
   findSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
-import config from 'frontend-organization-portal/config/environment';
 
 export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute extends Route {
   @service store;
@@ -15,7 +14,10 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute ext
   @service features;
 
   beforeModel() {
-    if (!this.currentSession.canEdit || !this.features.isEnabled('edit-contact-data')) {
+    if (
+      !this.currentSession.canEdit ||
+      !this.features.isEnabled('edit-contact-data')
+    ) {
       this.router.transitionTo('route-not-found', {
         wildcard: 'pagina-niet-gevonden',
       });
