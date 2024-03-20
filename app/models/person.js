@@ -9,6 +9,8 @@ export default class PersonModel extends AgentModel {
   @hasMany('agent-in-position', {
     inverse: 'person',
     async: true,
+    polymorphic: true,
+    as: 'person',
   })
   agentsInPosition;
 
