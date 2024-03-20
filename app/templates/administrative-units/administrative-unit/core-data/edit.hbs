@@ -307,6 +307,19 @@
           >
             <:title>Primaire contactgegevens</:title>
           </Site::ContactEditCard>
+        {{else}}
+          <Site::ContactDataCard
+            @address={{@model.administrativeUnit.primarySite.address}}
+            @primaryContact={{@model.primaryContact}}
+            @secondaryContact={{@model.secondaryContact}}
+          >
+            <:title>
+              Primaire contactgegevens 
+            </:title>
+            <:infotext>
+               De primaire contactgegevens kunnen niet langer in het OP aangepast worden. De organisaties kunnen deze gegevens zelf aanpassen via de Contactapp.
+            </:infotext>
+          </Site::ContactDataCard>
         {{/if}}
 
         {{#if
