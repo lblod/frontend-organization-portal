@@ -1,20 +1,25 @@
+## v1.23.0-0 (2024-03-25)
 
+#### :rocket: Enhancement
+* [#586](https://github.com/lblod/frontend-organization-portal/pull/586) Feature: add alternative names for organisations ([@mirdono](https://github.com/mirdono))
+* [#582](https://github.com/lblod/frontend-organization-portal/pull/582) Feat: add legal name for organisations ([@mirdono](https://github.com/mirdono))
 
+#### :bug: Bug Fix
+* [#594](https://github.com/lblod/frontend-organization-portal/pull/594) Fix: display "Naam" as label for the name field for some types of sites ([@mirdono](https://github.com/mirdono))
+* [#593](https://github.com/lblod/frontend-organization-portal/pull/593) fix: make relation between Person and AgentInPosition polymorphic ([@mirdono](https://github.com/mirdono))
+* [#592](https://github.com/lblod/frontend-organization-portal/pull/592) Fix: names help text ([@mirdono](https://github.com/mirdono))
+* [#591](https://github.com/lblod/frontend-organization-portal/pull/591) Fix: correctly set alternative names when creating new administrative units ([@mirdono](https://github.com/mirdono))
+* [#589](https://github.com/lblod/frontend-organization-portal/pull/589) Update ember-data version to 4.12.0 ([@aliokan](https://github.com/aliokan))
+* [#584](https://github.com/lblod/frontend-organization-portal/pull/584) Fix change-event resulting organization name ([@mirdono](https://github.com/mirdono))
 
+#### :house: Internal
+* [#595](https://github.com/lblod/frontend-organization-portal/pull/595) Bump release-it and lerna-changelog plugin ([@aliokan](https://github.com/aliokan))
+* [#589](https://github.com/lblod/frontend-organization-portal/pull/589) Update ember-data version to 4.12.0 ([@aliokan](https://github.com/aliokan))
+* [#579](https://github.com/lblod/frontend-organization-portal/pull/579) Update to ember 4.12 ([@aliokan](https://github.com/aliokan))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+#### Committers: 2
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
 
 ## 1.22.0 (2024-03-19)
 
