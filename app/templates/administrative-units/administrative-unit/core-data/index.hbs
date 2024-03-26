@@ -26,7 +26,7 @@
             <div class="au-u-flex--column">
               <AuPill @icon="clock-rewind">
                 Laatst Gewijzigd op
-                {{date-format @model.kboAdministrativeUnit.expectedEndDate}}
+                {{date-format @model.kboOrganization.expectedEndDate}}
               </AuPill>
               <ReportWrongData />
             </div>
@@ -279,27 +279,27 @@
                 <Item>
                   <:label>Naam</:label>
                   <:content>
-                    {{@model.kboAdministrativeUnit.legalName}}
+                    {{@model.kboOrganization.legalName}}
                   </:content>
                 </Item>
                 <Item>
                   <:label>Commerciële naam</:label>
                   <:content>
-                    {{@model.kboAdministrativeUnit.name}}
+                    {{@model.kboOrganization.name}}
                   </:content>
                 </Item>
 
                 <Item>
                   <:label>Afgekorte naam</:label>
                   <:content>
-                    {{@model.kboAdministrativeUnit.alternativeName}}
+                    {{@model.kboOrganization.alternativeName}}
                   </:content>
                 </Item>
 
                 <Item>
                   <:label>Rechtsvorm</:label>
                   <:content>
-                    {{@model.kboAdministrativeUnit.rechtsvorm}}
+                    {{@model.kboOrganization.rechtsvorm}}
                   </:content>
                 </Item>
               </:left>
@@ -308,8 +308,8 @@
                   <:label>Status</:label>
                   <:content>
                     <OrganizationStatus
-                      @id={{@model.kboAdministrativeUnit.organizationStatus.id}}
-                      @label={{@model.kboAdministrativeUnit.organizationStatus.label}}
+                      @id={{@model.kboOrganization.organizationStatus.id}}
+                      @label={{@model.kboOrganization.organizationStatus.label}}
                     />
                   </:content>
                 </Item>
@@ -317,7 +317,7 @@
                 <Item>
                   <:label>Begindatum</:label>
                   <:content>
-                    {{@model.kboAdministrativeUnit.startDate}}
+                    {{@model.kboOrganization.startDate}}
                   </:content>
                 </Item>
 

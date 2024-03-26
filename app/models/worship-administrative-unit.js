@@ -30,13 +30,6 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
   })
   involvements;
 
-  @belongsTo('kbo-administrative-unit', {
-    inverse: 'worshipAdministrativeUnit',
-    polymorphic: true,
-    async: true,
-  })
-  kboAdministrativeUnit;
-
   get validationSchema() {
     return super.validationSchema.append({
       recognizedWorshipType: validateRequiredWhenClassificationId(

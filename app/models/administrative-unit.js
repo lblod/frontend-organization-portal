@@ -67,12 +67,6 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   })
   scope;
 
-  @belongsTo('kbo-administrative-unit', {
-    inverse: 'administrativeUnit',
-    async: true,
-  })
-  kboAdministrativeUnit;
-
   get validationSchema() {
     const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({
@@ -82,7 +76,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       involvedBoards: validateHasManyOptional(),
       exactMatch: validateBelongsToOptional(),
       scope: validateBelongsToOptional(),
-      kboAdministrativeUnit: validateBelongsToOptional(),
+      kboOrganization: validateBelongsToOptional(),
       isAssociatedWith: validateRequiredWhenClassificationId(
         [
           ...WorshipServiceCodeList,

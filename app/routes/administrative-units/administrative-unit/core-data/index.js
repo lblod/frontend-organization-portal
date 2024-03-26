@@ -90,13 +90,13 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
     }
 
     let kboContacts = A();
-    let kboAdministrativeUnit = await administrativeUnit.kboAdministrativeUnit;
-    if (kboAdministrativeUnit) {
-      kboContacts = await kboAdministrativeUnit.contacts;
+    let kboOrganization = await administrativeUnit.kboOrganization;
+    if (kboOrganization) {
+      kboContacts = await kboOrganization.contacts;
     }
     return {
       administrativeUnit,
-      kboAdministrativeUnit,
+      kboOrganization,
       resultedFrom,
       isCity,
       primaryContact: findPrimaryContact(contacts),

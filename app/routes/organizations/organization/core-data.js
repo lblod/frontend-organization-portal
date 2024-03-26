@@ -21,13 +21,13 @@ export default class OrganizationsOrganizationCoreDataRoute extends Route {
           'primary-site.address',
           'primary-site.contacts',
           'resulted-from',
-          'kbo-administrative-unit',
+          'kbo-organization',
         ].join(),
       }
     );
 
     let kboContact = A();
-    const kboContacts = await representativeBody.kboAdministrativeUnit.get(
+    const kboContacts = await representativeBody.kboOrganization.get(
       'contacts'
     );
     if (kboContacts) {
