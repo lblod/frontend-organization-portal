@@ -59,7 +59,15 @@
                   <:label>Naam</:label>
                   <:content>{{@model.representativeBody.name}}</:content>
                 </Item>
-                <Item>
+                {{#if (gt @model.representativeBody.alternativeName.length 0)}}
+              <Item>
+                <:label>Alternatieve naam</:label>
+                <:content>
+                  {{@model.representativeBody.alternativeName}}
+                </:content>
+              </Item>
+            {{/if}}
+            <Item>
                   <:label>Soort eredienst</:label>
                   <:content
                   >{{@model.representativeBody.recognizedWorshipType.label}}</:content>

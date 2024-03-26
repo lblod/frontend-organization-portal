@@ -53,10 +53,10 @@
                       @error={{hasError}}
                       id="administrative-unit-abb-name"
                     />
-                    <AuHelpText>
-                      {{help-text "abbName"}}
-                    </AuHelpText>
                   </:content>
+                  <:helpText>
+                    {{help-text "abbName"}}
+                  </:helpText>
                 </Item>
                 <Item
                   @labelFor="administrative-unit-legal-name"
@@ -76,10 +76,29 @@
                       @error={{hasError}}
                       id="administrative-unit-legal-name"
                     />
-                    <AuHelpText>
-                      {{help-text "legalName"}}
-                    </AuHelpText>
                   </:content>
+                  <:helpText>
+                    {{help-text "legalName"}}
+                  </:helpText>
+                </Item>
+                <Item
+                  @labelFor="administrative-unit-alternative-names"
+                  @required={{false}}
+                >
+                  <:label>Alternatieve naam</:label>
+                  <:content as |hasError|>
+                    <TrimInput
+                      @width="block"
+                      @disabled={{false}}
+                      @value={{@model.administrativeUnit.alternativeName}}
+                      @onUpdate={{this.setAlternativeNames}}
+                      @error={{hasError}}
+                      id="administrative-unit-alternative-names"
+                    />
+                  </:content>
+                  <:helpText>
+                    {{help-text "alternativeNames"}}
+                  </:helpText>
                 </Item>
                 <Item @labelFor="classification">
                   <:label>Type bestuur</:label>

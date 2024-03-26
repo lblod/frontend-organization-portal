@@ -11,7 +11,7 @@ import {
 export default class OrganizationModel extends AgentModel {
   @attr name;
   @attr legalName;
-  @attr alternativeName;
+  @attr('string-set') alternativeName; // Note: changing to plural breaks stuff
   @attr('date') expectedEndDate;
   @attr purpose;
 
@@ -139,7 +139,7 @@ export default class OrganizationModel extends AgentModel {
       legalName: Joi.string().empty('').required().messages({
         'any.required': 'Vul de juridische naam in',
       }),
-      alternativeName: validateStringOptional(),
+      alternativeName: Joi.array().optional(),
       expectedEndDate: Joi.date().allow(null),
       purpose: validateStringOptional(),
       primarySite: validateBelongsToOptional(),
@@ -169,5 +169,12 @@ export default class OrganizationModel extends AgentModel {
   setAbbName(name) {
     this.name = name;
     this.legalName = name;
+  }
+
+  setAlternativeName(names) {
+    this.alternativeName = names
+      .split(',')
+      .map((s) => s.trim())
+      .filter((s) => s !== '');
   }
 }

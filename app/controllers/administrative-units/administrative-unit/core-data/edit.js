@@ -75,6 +75,11 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   }
 
   @action
+  setAlternativeNames(names) {
+    this.model.administrativeUnit.setAlternativeName(names);
+  }
+
+  @action
   setKbo(value) {
     this.model.structuredIdentifierKBO.localId = value;
   }
@@ -217,7 +222,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     this.model.contact.reset();
     this.model.secondaryContact.reset();
     this.model.address.reset();
+    this.model.structuredIdentifierKBO.rollbackAttributes();
     this.model.identifierKBO.reset();
+    this.model.structuredIdentifierSharepoint.rollbackAttributes();
     this.model.identifierSharepoint.reset();
   }
 

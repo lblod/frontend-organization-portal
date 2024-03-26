@@ -91,6 +91,14 @@
                   <:label>Naam</:label>
                   <:content>{{@model.administrativeUnit.name}}</:content>
                 </Item>
+                {{#if (gt @model.administrativeUnit.alternativeName.length 0)}}
+                  <Item>
+                    <:label>Alternatieve naam</:label>
+                    <:content>
+                      {{@model.administrativeUnit.alternativeName}}
+                    </:content>
+                  </Item>
+                {{/if}}
                 <Item>
                   <:label>Type bestuur</:label>
                   <:content>
@@ -359,6 +367,14 @@
                 <:label>Naam</:label>
                 <:content>{{@model.administrativeUnit.name}}</:content>
               </Item>
+              {{#if (gt @model.administrativeUnit.alternativeName.length 0)}}
+                <Item>
+                  <:label>Alternatieve naam</:label>
+                  <:content>
+                    {{@model.administrativeUnit.alternativeName}}
+                  </:content>
+                </Item>
+              {{/if}}
               <Item>
                 <:label>Type bestuur</:label>
                 <:content>
