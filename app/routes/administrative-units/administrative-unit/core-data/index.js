@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import {
   findPrimaryContact,
   findSecondaryContact,
+  findKboContact,
 } from 'frontend-organization-portal/models/contact-point';
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
@@ -88,13 +89,20 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       region = await scope.locatedWithin;
     }
 
+    let kboContacts = A();
+    let kboOrganization = await administrativeUnit.kboOrganization;
+    if (kboOrganization) {
+      kboContacts = await kboOrganization.contacts;
+    }
     return {
       administrativeUnit,
+      kboOrganization,
       resultedFrom,
       isCity,
       primaryContact: findPrimaryContact(contacts),
       secondaryContact: findSecondaryContact(contacts),
       region,
+      kboContact: findKboContact(kboContacts),
     };
   }
 }
