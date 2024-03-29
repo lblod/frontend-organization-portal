@@ -1,3 +1,12 @@
+
+## v1.23.0-1 (2024-03-29)
+
+#### :bug: Bug Fix
+* [#596](https://github.com/lblod/frontend-organization-portal/pull/596) Fix: explicitly copy legal and alternative names when creating new units ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
 ## v1.23.0-0 (2024-03-25)
 
 #### :rocket: Enhancement
