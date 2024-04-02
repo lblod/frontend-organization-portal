@@ -1,6 +1,6 @@
 {
   "name": "frontend-organization-portal",
-  "version": "1.22.0",
+  "version": "1.23.0",
   "private": true,
   "description": "Frontend for Contact Hub",
   "repository": {
@@ -42,6 +42,7 @@
     "@lblod/ember-environment-banner": "^0.2.0",
     "@lblod/ember-mock-login": "0.7.0",
     "@lblod/ember-rdfa-editor": "^6.1.0",
+    "@release-it-plugins/lerna-changelog": "^6.1.0",
     "@triply/yasgui": "^4.2.20",
     "@zestia/ember-auto-focus": "^4.1.7",
     "broccoli-asset-rev": "^3.0.0",
@@ -92,8 +93,7 @@
     "prettier": "^2.8.7",
     "qunit": "^2.19.4",
     "qunit-dom": "^2.0.0",
-    "release-it": "^14.12.4",
-    "release-it-lerna-changelog": "^4.0.1",
+    "release-it": "^17.1.1",
     "sass": "^1.49.7",
     "sinon": "^17.0.1",
     "stylelint": "^15.11.0",

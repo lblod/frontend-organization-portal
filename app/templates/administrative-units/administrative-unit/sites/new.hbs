@@ -51,18 +51,16 @@
                   </:content>
                 </Item>
                 {{#if this.model.site.isOtherSite}}
-                  <Item
-                    @labelFor="site-type-name"
-                  >
-                    <:label>Name</:label>
+                  <Item @labelFor="site-type-name">
+                    <:label>Naam</:label>
                     <:content>
-                     <AuInput
-                      @selected={{this.model.site.siteTypeName}}
-                      {{on "input" this.setSiteTypeName}}
-                      value={{this.model.site.siteTypeName}}
-                      @width="block"
-                      maxlength="50"
-                     />
+                      <AuInput
+                        @selected={{this.model.site.siteTypeName}}
+                        {{on "input" this.setSiteTypeName}}
+                        value={{this.model.site.siteTypeName}}
+                        @width="block"
+                        maxlength="50"
+                      />
                     </:content>
                   </Item>
                 {{/if}}
