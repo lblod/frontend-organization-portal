@@ -68,6 +68,12 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
     );
   }
 
+  get kboIdentifierForKboUnit() {
+    return this.model.kboOrganization?.identifiers?.find((id) =>
+      this.isKboIdentifier(id)
+    );
+  }
+
   get nisIdentifier() {
     return this.model.administrativeUnit.identifiers.find((id) =>
       this.isNisCodeIdentifier(id)
