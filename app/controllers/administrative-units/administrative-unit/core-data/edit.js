@@ -204,8 +204,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       administrativeUnit = setEmptyStringsToNull(administrativeUnit);
       yield administrativeUnit.save();
 
-      const syncOvoNumberEndpoint = `/sync-ovo-number/${structuredIdentifierKBO.id}`;
-      yield fetch(syncOvoNumberEndpoint, {
+      const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
+      yield fetch(syncKboData, {
         method: 'POST',
       });
 

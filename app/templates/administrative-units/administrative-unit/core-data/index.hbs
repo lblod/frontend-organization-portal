@@ -25,7 +25,8 @@
           {{else}}
             <div class="au-u-flex--column">
               <AuPill @icon="clock-rewind">
-                Laatst Gewijzigd op (Datum)
+                Laatst Gewijzigd op
+                {{date-format @model.kboOrganization.expectedEndDate}}
               </AuPill>
               <ReportWrongData />
             </div>
@@ -88,11 +89,7 @@
               <:left as |Item|>
                 <Item>
                   <:label>Naam</:label>
-                  <:content>{{@model.administrativeUnit.abbName}}</:content>
-                </Item>
-                <Item>
-                  <:label>Juridische naam</:label>
-                  <:content>{{@model.administrativeUnit.legalName}}</:content>
+                  <:content>{{@model.administrativeUnit.name}}</:content>
                 </Item>
                 {{#if (gt @model.administrativeUnit.alternativeName.length 0)}}
                   <Item>
@@ -281,26 +278,28 @@
               <:left as |Item|>
                 <Item>
                   <:label>Naam</:label>
-                  <:content>Aalst</:content>
+                  <:content>
+                    {{@model.kboOrganization.legalName}}
+                  </:content>
                 </Item>
                 <Item>
                   <:label>Commerciële naam</:label>
                   <:content>
-                    Aalst
+                    {{@model.kboOrganization.name}}
                   </:content>
                 </Item>
 
                 <Item>
                   <:label>Afgekorte naam</:label>
                   <:content>
-                    Aalst
+                    {{@model.kboOrganization.alternativeName}}
                   </:content>
                 </Item>
 
                 <Item>
                   <:label>Rechtsvorm</:label>
                   <:content>
-                    RechtsVorm
+                    {{@model.kboOrganization.rechtsvorm}}
                   </:content>
                 </Item>
               </:left>
@@ -309,8 +308,8 @@
                   <:label>Status</:label>
                   <:content>
                     <OrganizationStatus
-                      @id={{@model.administrativeUnit.organizationStatus.id}}
-                      @label={{@model.administrativeUnit.organizationStatus.label}}
+                      @id={{@model.kboOrganization.organizationStatus.id}}
+                      @label={{@model.kboOrganization.organizationStatus.label}}
                     />
                   </:content>
                 </Item>
@@ -318,14 +317,20 @@
                 <Item>
                   <:label>Begindatum</:label>
                   <:content>
-                    01-01-1990
+                    {{@model.kboOrganization.startDate}}
                   </:content>
                 </Item>
 
                 <Item>
                   <:label>Ondernemingsnummer</:label>
                   <:content>
-                    1274.374.678
+                    {{#if
+                      this.kboIdentifierForKboUnit.structuredIdentifier.localId
+                    }}
+                      {{kbo-format
+                        this.kboIdentifierForKboUnit.structuredIdentifier.localId
+                      }}
+                    {{/if}}
                   </:content>
                 </Item>
                 <Item>
@@ -343,9 +348,8 @@
           </:card>
         </DataCard>
         <Site::ContactDataCard
-          @address={{@model.administrativeUnit.primarySite.address}}
-          @primaryContact={{@model.primaryContact}}
-          @secondaryContact={{@model.secondaryContact}}
+          @address={{@model.kboContact.contactAddress}}
+          @primaryContact={{@model.kboContact}}
         >
           <:title>
             Maatschappelijke zetel
@@ -361,11 +365,7 @@
             <:left as |Item|>
               <Item>
                 <:label>Naam</:label>
-                <:content>{{@model.administrativeUnit.abbName}}</:content>
-              </Item>
-              <Item>
-                <:label>Juridische naam</:label>
-                <:content>{{@model.administrativeUnit.legalName}}</:content>
+                <:content>{{@model.administrativeUnit.name}}</:content>
               </Item>
               {{#if (gt @model.administrativeUnit.alternativeName.length 0)}}
                 <Item>
