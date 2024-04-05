@@ -323,19 +323,33 @@
             </Card.Columns>
           </:card>
         </EditCard>
-
-        <Site::ContactEditCard
-          @address={{@model.address}}
-          @isAddressSearchEnabledInitially={{if
-            (or (not @model.address.id) @model.address.addressRegisterUri)
-            true
-            false
-          }}
-          @primaryContact={{@model.contact}}
-          @secondaryContact={{@model.secondaryContact}}
-        >
-          <:title>Primaire contactgegevens</:title>
-        </Site::ContactEditCard>
+        {{#if (is-feature-enabled "edit-contact-data")}}
+          <Site::ContactEditCard
+            @address={{@model.address}}
+            @isAddressSearchEnabledInitially={{if
+              (or (not @model.address.id) @model.address.addressRegisterUri)
+              true
+              false
+            }}
+            @primaryContact={{@model.contact}}
+            @secondaryContact={{@model.secondaryContact}}
+          >
+            <:title>Primaire contactgegevens</:title>
+          </Site::ContactEditCard>
+        {{else}}
+          <Site::ContactDataCard
+            @address={{@model.administrativeUnit.primarySite.address}}
+            @primaryContact={{@model.primaryContact}}
+            @secondaryContact={{@model.secondaryContact}}
+          >
+            <:title>
+              Primaire contactgegevens 
+            </:title>
+            <:infotext>
+               De primaire contactgegevens kunnen niet langer in het OP aangepast worden. De organisaties kunnen deze gegevens zelf aanpassen via de Contactapp.
+            </:infotext>
+          </Site::ContactDataCard>
+        {{/if}}
 
         {{#if
           (and
