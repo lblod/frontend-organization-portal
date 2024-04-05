@@ -18,7 +18,7 @@ module('Unit | Model | organization', function (hooks) {
       assert.false(isValid);
       assert.strictEqual(Object.keys(model.error).length, 2);
       assert.propContains(model.error, {
-        name: { message: 'Vul de naam in' },
+        legalName: { message: 'Vul de juridische naam in' },
         organizationStatus: { message: 'Selecteer een optie' },
       });
     });

@@ -1,19 +1,88 @@
 
+## v1.23.0 (2024-04-02)
 
+## v1.23.0-1 (2024-03-29)
 
+#### :bug: Bug Fix
+* [#596](https://github.com/lblod/frontend-organization-portal/pull/596) Fix: explicitly copy legal and alternative names when creating new units ([@mirdono](https://github.com/mirdono))
 
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
 
+## v1.23.0-0 (2024-03-25)
 
+#### :rocket: Enhancement
+* [#586](https://github.com/lblod/frontend-organization-portal/pull/586) Feature: add alternative names for organisations ([@mirdono](https://github.com/mirdono))
+* [#582](https://github.com/lblod/frontend-organization-portal/pull/582) Feat: add legal name for organisations ([@mirdono](https://github.com/mirdono))
 
+#### :bug: Bug Fix
+* [#594](https://github.com/lblod/frontend-organization-portal/pull/594) Fix: display "Naam" as label for the name field for some types of sites ([@mirdono](https://github.com/mirdono))
+* [#593](https://github.com/lblod/frontend-organization-portal/pull/593) fix: make relation between Person and AgentInPosition polymorphic ([@mirdono](https://github.com/mirdono))
+* [#592](https://github.com/lblod/frontend-organization-portal/pull/592) Fix: names help text ([@mirdono](https://github.com/mirdono))
+* [#591](https://github.com/lblod/frontend-organization-portal/pull/591) Fix: correctly set alternative names when creating new administrative units ([@mirdono](https://github.com/mirdono))
+* [#589](https://github.com/lblod/frontend-organization-portal/pull/589) Update ember-data version to 4.12.0 ([@aliokan](https://github.com/aliokan))
+* [#584](https://github.com/lblod/frontend-organization-portal/pull/584) Fix change-event resulting organization name ([@mirdono](https://github.com/mirdono))
 
+#### :house: Internal
+* [#595](https://github.com/lblod/frontend-organization-portal/pull/595) Bump release-it and lerna-changelog plugin ([@aliokan](https://github.com/aliokan))
+* [#589](https://github.com/lblod/frontend-organization-portal/pull/589) Update ember-data version to 4.12.0 ([@aliokan](https://github.com/aliokan))
+* [#579](https://github.com/lblod/frontend-organization-portal/pull/579) Update to ember 4.12 ([@aliokan](https://github.com/aliokan))
 
+#### Committers: 2
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
 
+## 1.22.0 (2024-03-19)
 
+#### :rocket: Enhancement
+* [#568](https://github.com/lblod/frontend-organization-portal/pull/568) Feat/site names ([@lagartoverde](https://github.com/lagartoverde))
+* [#563](https://github.com/lblod/frontend-organization-portal/pull/563) Replace ander admini... by andere vestiging ([@lagartoverde](https://github.com/lagartoverde))
+* [#555](https://github.com/lblod/frontend-organization-portal/pull/555) Feat/integration wegwijs api ([@Dachamelemon](https://github.com/Dachamelemon))
+* [#558](https://github.com/lblod/frontend-organization-portal/pull/558) Feature: onboarding PEVA organisations ([@mirdono](https://github.com/mirdono))
+* [#553](https://github.com/lblod/frontend-organization-portal/pull/553) Feature: onboarding public ocmw associations ([@mirdono](https://github.com/mirdono))
+* [#556](https://github.com/lblod/frontend-organization-portal/pull/556) Add validation so the sharepoint is always a number ([@lagartoverde](https://github.com/lagartoverde))
+* [#551](https://github.com/lblod/frontend-organization-portal/pull/551) Update organization-related information in templates ([@aliokan](https://github.com/aliokan))
 
+#### :bug: Bug Fix
+* [#588](https://github.com/lblod/frontend-organization-portal/pull/588) Fix null value in optional string input ([@aliokan](https://github.com/aliokan))
+* [#587](https://github.com/lblod/frontend-organization-portal/pull/587) Fix sharepoint and kbo reset in administrative-unit edit form ([@aliokan](https://github.com/aliokan))
+* [#575](https://github.com/lblod/frontend-organization-portal/pull/575) Fix administrative-unit edit validtion on WorshipService ([@aliokan](https://github.com/aliokan))
+* [#572](https://github.com/lblod/frontend-organization-portal/pull/572) Fix address and contact saving ([@aliokan](https://github.com/aliokan))
+* [#573](https://github.com/lblod/frontend-organization-portal/pull/573) Fix: unable to leave page 'personen/nieuw-positie' ([@aliokan](https://github.com/aliokan))
+* [#569](https://github.com/lblod/frontend-organization-portal/pull/569) Fix AGB/APB edit form validation ([@aliokan](https://github.com/aliokan))
+* [#560](https://github.com/lblod/frontend-organization-portal/pull/560) Fix reseting controller when exiting `administrative-units.administrative-unit.core-data.edit` ([@aliokan](https://github.com/aliokan))
+* [#559](https://github.com/lblod/frontend-organization-portal/pull/559) Use identifier instead of structuredIdentifier to detect error ([@aliokan](https://github.com/aliokan))
 
+#### :house: Internal
+* [#577](https://github.com/lblod/frontend-organization-portal/pull/577) Remove unused utils/datepicker ([@aliokan](https://github.com/aliokan))
+* [#576](https://github.com/lblod/frontend-organization-portal/pull/576) Remove `ember-changeset` and all remaining traces ([@aliokan](https://github.com/aliokan))
+* [#571](https://github.com/lblod/frontend-organization-portal/pull/571) Refactor form validation local involvement ([@aliokan](https://github.com/aliokan))
+* [#574](https://github.com/lblod/frontend-organization-portal/pull/574) Delete unused components ([@aliokan](https://github.com/aliokan))
+* [#570](https://github.com/lblod/frontend-organization-portal/pull/570) Refactor: migrate governing body form validation to Joi ([@mirdono](https://github.com/mirdono))
+* [#567](https://github.com/lblod/frontend-organization-portal/pull/567) Refactor: migrate change event forms validation to Joi ([@mirdono](https://github.com/mirdono))
+* [#565](https://github.com/lblod/frontend-organization-portal/pull/565) Migrate `administrative-unit.related-organizations.edit` to the new form validation ([@aliokan](https://github.com/aliokan))
+* [#564](https://github.com/lblod/frontend-organization-portal/pull/564) Remove people new form ([@aliokan](https://github.com/aliokan))
+* [#562](https://github.com/lblod/frontend-organization-portal/pull/562) Remove personal-information and minister disabled forms ([@aliokan](https://github.com/aliokan))
+* [#561](https://github.com/lblod/frontend-organization-portal/pull/561) Remove disabled governing-body forms ([@aliokan](https://github.com/aliokan))
+* [#557](https://github.com/lblod/frontend-organization-portal/pull/557) Add feature flag service and helper ([@aliokan](https://github.com/aliokan))
+* [#554](https://github.com/lblod/frontend-organization-portal/pull/554) POC custom form validation with `joi` ([@aliokan](https://github.com/aliokan))
+* [#552](https://github.com/lblod/frontend-organization-portal/pull/552) CI - Add .woodpecker/.feature.yml configuration file ([@aliokan](https://github.com/aliokan))
+* [#549](https://github.com/lblod/frontend-organization-portal/pull/549) Refactor: classification code duplication ([@mirdono](https://github.com/mirdono))
 
+#### Committers: 4
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+- [@Dachamelemon](https://github.com/Dachamelemon)
 
+## 1.22.0-2 (2024-03-12)
 
+#### :bug: Bug Fix
+* [#588](https://github.com/lblod/frontend-organization-portal/pull/588) Fix null value in optional string input ([@aliokan](https://github.com/aliokan))
+* [#587](https://github.com/lblod/frontend-organization-portal/pull/587) Fix sharepoint and kbo reset in administrative-unit edit form ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
 
 ## 1.22.0-1 (2024-03-01)
 

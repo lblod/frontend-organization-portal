@@ -8,6 +8,12 @@ const HELP_TEXT = {
   kbo: 'Formaat: 0123.456.789',
   url: 'Bijvoorbeeld: https://www.vlaanderen.be',
   email: 'Bijvoorbeeld: mail@adres.com',
+  abbName:
+    'De naam wordt automatisch ingevuld met de juridische naam (indien beschikbaar) of de naam uit KBO.',
+  legalName:
+    'De juridische naam is de naam uit de statuten, een decreet of andere juridisch regelgevende teksten of besluiten.',
+  alternativeNames:
+    ' De alternatieve naam kan de afgekorte naam uit statuten, een commerciële en/of een informele naam zijn.',
 };
 
 export default helper(function helpText([key]) {

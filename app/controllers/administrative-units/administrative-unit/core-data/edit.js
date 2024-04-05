@@ -70,6 +70,16 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
   }
 
   @action
+  setNames(name) {
+    this.model.administrativeUnit.setAbbName(name);
+  }
+
+  @action
+  setAlternativeNames(names) {
+    this.model.administrativeUnit.setAlternativeName(names);
+  }
+
+  @action
   setKbo(value) {
     this.model.structuredIdentifierKBO.localId = value;
   }
@@ -192,17 +202,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       yield identifierSharepoint.save();
 
       administrativeUnit = setEmptyStringsToNull(administrativeUnit);
-      if (
-        this.model.administrativeUnit.isProvince ||
-        this.model.administrativeUnit.isMunicipality
-      ) {
-        // set province or municipality name to null as data are already in the shared graph
-        administrativeUnit.name = null;
-        yield administrativeUnit.save();
-        yield administrativeUnit.reload();
-      } else {
-        yield administrativeUnit.save();
-      }
+      yield administrativeUnit.save();
 
       const syncOvoNumberEndpoint = `/sync-ovo-number/${structuredIdentifierKBO.id}`;
       yield fetch(syncOvoNumberEndpoint, {
@@ -222,7 +222,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
     this.model.contact.reset();
     this.model.secondaryContact.reset();
     this.model.address.reset();
+    this.model.structuredIdentifierKBO.rollbackAttributes();
     this.model.identifierKBO.reset();
+    this.model.structuredIdentifierSharepoint.rollbackAttributes();
     this.model.identifierSharepoint.reset();
   }
 

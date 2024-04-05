@@ -168,7 +168,11 @@
           <c.body as |adminUnit|>
             <td>
               <AuLink @route={{adminUnit.route}} @model={{adminUnit.id}}>
-                {{adminUnit.name}}
+                {{#if adminUnit.legal_name}}
+                  {{adminUnit.legal_name}}
+                {{else}}
+                  {{adminUnit.name}}
+                {{/if}}
               </AuLink>
             </td>
             <td>{{adminUnit.classification_name}}</td>

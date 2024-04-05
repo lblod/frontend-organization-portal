@@ -94,6 +94,16 @@ export default class AdministrativeUnitsNewController extends Controller {
   }
 
   @action
+  setNames(name) {
+    this.model.administrativeUnit.setAbbName(name);
+  }
+
+  @action
+  setAlternativeNames(names) {
+    this.model.administrativeUnit.setAlternativeName(names);
+  }
+
+  @action
   setHasParticipants(units) {
     this.model.administrativeUnit.hasParticipants = units;
   }
@@ -152,7 +162,6 @@ export default class AdministrativeUnitsNewController extends Controller {
       } else {
         newAdministrativeUnit = administrativeUnit;
       }
-      // Copy data entered in the frontend to the new admin unit
       copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
       structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
@@ -243,6 +252,8 @@ export default class AdministrativeUnitsNewController extends Controller {
 
 function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
   newAdministrativeUnit.name = administrativeUnit.name;
+  newAdministrativeUnit.legalName = administrativeUnit.legalName;
+  newAdministrativeUnit.alternativeName = administrativeUnit.alternativeName;
   newAdministrativeUnit.recognizedWorshipType =
     administrativeUnit.recognizedWorshipType;
   newAdministrativeUnit.classification = administrativeUnit.classification;

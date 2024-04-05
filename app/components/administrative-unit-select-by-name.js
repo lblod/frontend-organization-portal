@@ -12,7 +12,7 @@ export default class AdministrativeUnitSelectByNameComponent extends Component {
     const filter = {};
 
     if (searchParams.trim() !== '') {
-      filter[`:phrase_prefix:name`] = searchParams;
+      filter[`:phrase_prefix:legal_name,alternative_name,name`] = searchParams;
     }
 
     filter['classification_id'] = getClassificationIds(

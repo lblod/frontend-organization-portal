@@ -36,21 +36,59 @@
       <:card as |Card|>
         <Card.Columns>
           <:left as |Item|>
-            <Item
-              @labelFor="administrative-unit-name"
-              @required={{true}}
-              @errorMessage={{@model.administrativeUnit.error.name.message}}
-            >
+            <Item @labelFor="administrative-unit-abb-name" @required={{true}}>
               <:label>Naam</:label>
               <:content as |hasError|>
                 <TrimInput
                   @width="block"
-                  @value={{@model.administrativeUnit.name}}
+                  @disabled={{true}}
+                  @value={{@model.administrativeUnit.abbName}}
                   @onUpdate={{fn (mut @model.administrativeUnit.name)}}
                   @error={{hasError}}
-                  id="administrative-unit-name"
+                  id="administrative-unit-abb-name"
                 />
               </:content>
+              <:helpText>
+                {{help-text "abbName"}}
+              </:helpText>
+            </Item>
+            <Item
+              @labelFor="administrative-unit-legal-name"
+              @required={{true}}
+              @errorMessage={{@model.administrativeUnit.error.legalName.message}}
+            >
+              <:label>Juridische naam</:label>
+              <:content as |hasError|>
+                <TrimInput
+                  @width="block"
+                  @value={{@model.administrativeUnit.legalName}}
+                  @onUpdate={{this.setNames}}
+                  @error={{hasError}}
+                  id="administrative-unit-legal-name"
+                />
+              </:content>
+              <:helpText>
+                {{help-text "legalName"}}
+              </:helpText>
+            </Item>
+            <Item
+              @labelFor="administrative-unit-alternative-names"
+              @required={{false}}
+            >
+              <:label>Alternatieve naam</:label>
+              <:content as |hasError|>
+                <TrimInput
+                  @width="block"
+                  @disabled={{false}}
+                  @value={{@model.administrativeUnit.alternativeName}}
+                  @onUpdate={{this.setAlternativeNames}}
+                  @error={{hasError}}
+                  id="administrative-unit-alternative-names"
+                />
+              </:content>
+              <:helpText>
+                {{help-text "alternativeNames"}}
+              </:helpText>
             </Item>
             <Item
               @labelFor="classification-select"
@@ -342,7 +380,7 @@
                         Provincie
                       </:label>
                       <:content>
-                        {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
+                        {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.abbName}}
                       </:content>
                     </Item>
                   {{/if}}

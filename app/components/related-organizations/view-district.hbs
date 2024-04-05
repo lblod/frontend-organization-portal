@@ -3,14 +3,17 @@
   <:card as |Card|>
     <Card.Columns>
       <:left as |Item|>
-        {{#if @model.isSubOrganizationOf.name}}
+        {{#if @model.isSubOrganizationOf.abbName}}
           <Item>
             <:label>
               Gemeente
             </:label>
             <:content>
-              <AuLink @route="administrative-units.administrative-unit" @model={{@model.isSubOrganizationOf.id}}>
-                {{@model.isSubOrganizationOf.name}}
+              <AuLink
+                @route="administrative-units.administrative-unit"
+                @model={{@model.isSubOrganizationOf.id}}
+              >
+                {{@model.isSubOrganizationOf.abbName}}
               </AuLink>
             </:content>
           </Item>
@@ -21,16 +24,22 @@
               Provincie
             </:label>
             <:content>
-              <AuLink @route="administrative-units.administrative-unit" @model={{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.id}}>
-                {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
+              <AuLink
+                @route="administrative-units.administrative-unit"
+                @model={{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.id}}
+              >
+                {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.abbName}}
               </AuLink>
             </:content>
           </Item>
           <Item>
             <:label>OCMW</:label>
             <:content>
-              <AuLink @route="administrative-units.administrative-unit" @model={{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.id}}>
-                {{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.name}}
+              <AuLink
+                @route="administrative-units.administrative-unit"
+                @model={{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.id}}
+              >
+                {{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.abbName}}
               </AuLink>
             </:content>
           </Item>

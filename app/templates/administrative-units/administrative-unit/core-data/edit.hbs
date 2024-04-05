@@ -2,7 +2,7 @@
   <div class="au-o-box">
     <PageHeader class="au-u-margin-bottom-large">
       <:title>Bewerk kerngegevens</:title>
-      <:subtitle>{{@model.administrativeUnit.name}}
+      <:subtitle>{{@model.administrativeUnit.abbName}}
         ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
         <div class="au-u-text-right">
@@ -40,36 +40,65 @@
             <Card.Columns>
               <:left as |Item|>
                 <Item
-                  @labelFor="worship-service-name"
+                  @labelFor="administrative-unit-abb-name"
                   @required={{true}}
-                  @errorMessage={{@model.administrativeUnit.error.name.message}}
                 >
                   <:label>Naam</:label>
                   <:content as |hasError|>
                     <TrimInput
                       @width="block"
-                      @disabled={{or
-                        @model.administrativeUnit.isProvince
-                        @model.administrativeUnit.isMunicipality
-                      }}
-                      @value={{@model.administrativeUnit.name}}
+                      @disabled={{true}}
+                      @value={{@model.administrativeUnit.abbName}}
                       @onUpdate={{fn (mut @model.administrativeUnit.name)}}
                       @error={{hasError}}
-                      id="worship-service-name"
+                      id="administrative-unit-abb-name"
                     />
-                    {{#if
-                      (or
-                        @model.administrativeUnit.isProvince
-                        @model.administrativeUnit.isMunicipality
-                      )
-                    }}
-                      <AuHelpText>
-                        De naam van een gemeente en provincie kan voorlopig niet
-                        langer aangepast worden. Indien toch een aanpassing
-                        nodig, gelieve deze via de helpdesk aan te vragen.
-                      </AuHelpText>
-                    {{/if}}
                   </:content>
+                  <:helpText>
+                    {{help-text "abbName"}}
+                  </:helpText>
+                </Item>
+                <Item
+                  @labelFor="administrative-unit-legal-name"
+                  @required={{true}}
+                  @errorMessage={{@model.administrativeUnit.error.legalName.message}}
+                >
+                  <:label>Juridische naam</:label>
+                  <:content as |hasError|>
+                    <TrimInput
+                      @width="block"
+                      @disabled={{(or
+                        @model.administrativeUnit.isMunicipality
+                        @model.administrativeUnit.isProvince
+                      )}}
+                      @value={{@model.administrativeUnit.legalName}}
+                      @onUpdate={{this.setNames}}
+                      @error={{hasError}}
+                      id="administrative-unit-legal-name"
+                    />
+                  </:content>
+                  <:helpText>
+                    {{help-text "legalName"}}
+                  </:helpText>
+                </Item>
+                <Item
+                  @labelFor="administrative-unit-alternative-names"
+                  @required={{false}}
+                >
+                  <:label>Alternatieve naam</:label>
+                  <:content as |hasError|>
+                    <TrimInput
+                      @width="block"
+                      @disabled={{false}}
+                      @value={{@model.administrativeUnit.alternativeName}}
+                      @onUpdate={{this.setAlternativeNames}}
+                      @error={{hasError}}
+                      id="administrative-unit-alternative-names"
+                    />
+                  </:content>
+                  <:helpText>
+                    {{help-text "alternativeNames"}}
+                  </:helpText>
                 </Item>
                 <Item @labelFor="classification">
                   <:label>Type bestuur</:label>
@@ -373,7 +402,7 @@
                           Provincie
                         </:label>
                         <:content>
-                          {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.name}}
+                          {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.abbName}}
                         </:content>
                       </Item>
                     {{/if}}
