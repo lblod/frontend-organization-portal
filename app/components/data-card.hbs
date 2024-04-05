@@ -4,6 +4,11 @@
       {{yield to="title"}}
     </AuHeading>
   {{/if}}
+  {{#if (has-block "infotext")}}
+    <p class="au-u-margin-bottom-small">
+      {{yield to="infotext"}}
+    </p>
+  {{/if}}
 
   <dl class="au-o-box au-o-box--small au-c-card au-c-card--data">
     <div class="au-c-card__content">

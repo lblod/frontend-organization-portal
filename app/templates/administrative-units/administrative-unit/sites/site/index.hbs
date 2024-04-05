@@ -4,21 +4,25 @@
       <:title>Vestiging: {{@model.site.address.fullAddress}}</:title>
       <:subtitle>{{@model.administrativeUnit.abbName}}</:subtitle>
       <:action>
-        <SecuredArea>
-          <:edit>
-            <AuLink
-              @route="administrative-units.administrative-unit.sites.site.edit"
-              @skin="button-secondary"
-              @icon="pencil"
-              @iconAlignment="left"
-            >
-              Bewerk
-            </AuLink>
-          </:edit>
-          <:readOnly>
-            <ReportWrongData />
-          </:readOnly>
-        </SecuredArea>
+        {{#if (is-feature-enabled "edit-contact-data")}}
+          <SecuredArea>
+            <:edit>
+              <AuLink
+                @route="administrative-units.administrative-unit.sites.site.edit"
+                @skin="button-secondary"
+                @icon="pencil"
+                @iconAlignment="left"
+              >
+                Bewerk
+              </AuLink>
+            </:edit>
+            <:readOnly>
+              <ReportWrongData />
+            </:readOnly>
+          </SecuredArea>
+        {{else}}
+          <ReportWrongData />
+        {{/if}}
       </:action>
     </PageHeader>
 
