@@ -1,4 +1,13 @@
 
+
+## v1.23.1-0 (2024-04-05)
+
+#### :bug: Bug Fix
+* [#599](https://github.com/lblod/frontend-organization-portal/pull/599) Fix: Validate Sharepoint identifier only when modified ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
 ## v1.23.0 (2024-04-02)
 
 ## v1.23.0-1 (2024-03-29)
