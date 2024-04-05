@@ -191,7 +191,7 @@ module('Unit | Model | identifier', function (hooks) {
         const structuredIdentifier = this.store().createRecord(
           'structured-identifier',
           {
-            localId: '123',
+            localId: '123abc',
           }
         );
         const model = this.store().createRecord('identifier', {
