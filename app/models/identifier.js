@@ -64,7 +64,10 @@ export default class IdentifierModel extends AbstractValidationModel {
 
           if (this.idName === ID_NAME.SHAREPOINT) {
             // SharePoint must be empty or digits
-            if (localId && !localId.match(/^\d+$/)) {
+            const changedAttributes = (
+              await this.structuredIdentifier
+            ).changedAttributes();
+            if (changedAttributes?.localId && !localId.match(/^\d+$/)) {
               return helpers.message(
                 'De SharePoint identificator mag enkel cijfers bevatten'
               );
