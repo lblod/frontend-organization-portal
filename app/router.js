@@ -110,6 +110,7 @@ Router.map(function () {
         path: '/gerelateerde-organisaties',
       });
     });
+    this.route('new', { path: '/nieuwe-organisatie' });
   });
   this.route('contact');
   this.route('legal', { path: '/legaal' }, function () {
