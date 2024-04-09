@@ -195,9 +195,13 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       yield structuredIdentifierKBO.save();
       yield identifierKBO.save();
 
-      structuredIdentifierSharepoint = setEmptyStringsToNull(
-        structuredIdentifierSharepoint
-      );
+      // FIXME: If uncommented existing SharePoint identifier is not removed
+      // when user removes the value in the form. Commenting it a quick, dirty
+      // fix because it overwrites the previous value with an empty string
+      // instead of leaving it untouched.
+      // structuredIdentifierSharepoint = setEmptyStringsToNull(
+      //   structuredIdentifierSharepoint,
+      // );
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
 
