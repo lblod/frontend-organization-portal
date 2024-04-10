@@ -230,6 +230,40 @@ module('Unit | Model | identifier', function (hooks) {
           'De SharePoint identificator mag enkel cijfers bevatten'
         );
       });
+
+      test('it does not return an error when localId is an empty string', async function (assert) {
+        const structuredIdentifier = this.store().createRecord(
+          'structured-identifier',
+          {
+            localId: '',
+          }
+        );
+        const model = this.store().createRecord('identifier', {
+          idName: 'SharePoint identificator',
+          structuredIdentifier,
+        });
+
+        const isValid = await model.validate();
+
+        assert.true(isValid);
+      });
+
+      test('it does not return an error when localId is undefined', async function (assert) {
+        const structuredIdentifier = this.store().createRecord(
+          'structured-identifier',
+          {
+            localId: undefined,
+          }
+        );
+        const model = this.store().createRecord('identifier', {
+          idName: 'SharePoint identificator',
+          structuredIdentifier,
+        });
+
+        const isValid = await model.validate();
+
+        assert.true(isValid);
+      });
     });
   });
 });
