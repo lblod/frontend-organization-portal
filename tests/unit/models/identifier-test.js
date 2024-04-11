@@ -187,6 +187,28 @@ module('Unit | Model | identifier', function (hooks) {
         assert.true(isValid);
       });
 
+      test('it does not validate when localId was not changed', async function (assert) {
+        const structuredIdentifier = this.store().createRecord(
+          'structured-identifier',
+          {
+            localId: '123abc',
+          }
+        );
+        const model = this.store().createRecord('identifier', {
+          idName: 'SharePoint identificator',
+          structuredIdentifier,
+        });
+        const stub = sinon.stub(structuredIdentifier, 'changedAttributes');
+        stub.returns({});
+
+        const isValid = await model.validate();
+
+        stub.restore();
+
+        assert.true(isValid);
+        assert.strictEqual(model.error, undefined);
+      });
+
       test('it returns error when localId is not a number', async function (assert) {
         const structuredIdentifier = this.store().createRecord(
           'structured-identifier',
@@ -207,6 +229,40 @@ module('Unit | Model | identifier', function (hooks) {
           model.error.structuredIdentifier.message,
           'De SharePoint identificator mag enkel cijfers bevatten'
         );
+      });
+
+      test('it does not return an error when localId is an empty string', async function (assert) {
+        const structuredIdentifier = this.store().createRecord(
+          'structured-identifier',
+          {
+            localId: '',
+          }
+        );
+        const model = this.store().createRecord('identifier', {
+          idName: 'SharePoint identificator',
+          structuredIdentifier,
+        });
+
+        const isValid = await model.validate();
+
+        assert.true(isValid);
+      });
+
+      test('it does not return an error when localId is undefined', async function (assert) {
+        const structuredIdentifier = this.store().createRecord(
+          'structured-identifier',
+          {
+            localId: undefined,
+          }
+        );
+        const model = this.store().createRecord('identifier', {
+          idName: 'SharePoint identificator',
+          structuredIdentifier,
+        });
+
+        const isValid = await model.validate();
+
+        assert.true(isValid);
       });
     });
   });
