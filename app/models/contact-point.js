@@ -12,7 +12,6 @@ import {
 export const CONTACT_TYPE = {
   PRIMARY: 'Primary',
   SECONDARY: 'Secondary',
-  KBO: 'Kbocontact',
 };
 
 export default class ContactPointModel extends AbstractValidationModel {
@@ -64,7 +63,4 @@ export function findPrimaryContact(contactList) {
 
 export function findSecondaryContact(contactList) {
   return contactList.find(({ type }) => type === CONTACT_TYPE.SECONDARY);
-}
-export function findKboContact(contactList) {
-  return contactList.findBy('type', CONTACT_TYPE.KBO);
 }

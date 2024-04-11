@@ -10,7 +10,7 @@
           {{#unless this.showAbbData}}
             <div class="au-u-flex--column">
               <AuPill @icon="clock-rewind">
-                Laatst Gewijzigd op {{date-format @model.representativeBody.kboOrganization.expectedEndDate}}
+                Laatst Gewijzigd op {{date-format @model.kboOrganization.modified}}
               </AuPill>
               <ReportWrongData />
             </div>
@@ -174,27 +174,27 @@
                 <Item>
                   <:label>Naam</:label>
                   <:content>
-                    {{@model.representativeBody.kboOrganization.legalName}}
+                    {{@model.kboOrganization.legalName}}
                   </:content>
                 </Item>
                 <Item>
                   <:label>Commerciële naam</:label>
                   <:content>
-                    {{@model.representativeBody.kboOrganization.name}}
+                    {{@model.kboOrganization.name}}
                   </:content>
                 </Item>
 
                 <Item>
                   <:label>Afgekorte naam</:label>
                   <:content>
-                    {{@model.representativeBody.kboOrganization.alternativeName}}
+                    {{@model.kboOrganization.alternativeName}}
                   </:content>
                 </Item>
 
                 <Item>
                   <:label>Rechtsvorm</:label>
                   <:content>
-                    {{@model.representativeBody.kboOrganization.rechtsvorm}}
+                    {{@model.kboOrganization.rechtsvorm}}
                   </:content>
                 </Item>
               </:left>
@@ -203,8 +203,8 @@
                   <:label>Status</:label>
                   <:content>
                     <OrganizationStatus
-                      @id={{@model.representativeBody.kboOrganization.organizationStatus.id}}
-                      @label={{@model.representativeBody.kboOrganization.organizationStatus.label}}
+                      @id={{@model.kboOrganization.organizationStatus.id}}
+                      @label={{@model.kboOrganization.organizationStatus.label}}
                     />
                   </:content>
                 </Item>
@@ -212,7 +212,7 @@
                 <Item>
                   <:label>Begindatum</:label>
                   <:content>
-                    {{@model.representativeBody.kboOrganization.startDate}}
+                    {{@model.kboOrganization.startDate}}
                   </:content>
                 </Item>
 
@@ -220,7 +220,7 @@
                   <:label>Ondernemingsnummer</:label>
                   <:content>
                   {{#each
-                      @model.representativeBody.kboOrganization.identifiers
+                      @model.kboOrganization.identifiers
                       as |identifier|
                     }}
                     {{#if (this.isKboIdentifier identifier)}}
