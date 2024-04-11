@@ -324,13 +324,16 @@
                 <Item>
                   <:label>Ondernemingsnummer</:label>
                   <:content>
-                    {{#if
-                      this.kboIdentifierForKboUnit.structuredIdentifier.localId
+                  {{#each
+                      @model.kboOrganization.identifiers
+                      as |identifier|
                     }}
-                      {{kbo-format
-                        this.kboIdentifierForKboUnit.structuredIdentifier.localId
-                      }}
-                    {{/if}}
+                    {{#if (this.isKboIdentifier identifier)}}
+                  {{kbo-format
+                      identifier.structuredIdentifier.localId
+                    }}
+                  {{/if}}  
+                  {{/each}}
                   </:content>
                 </Item>
                 <Item>
