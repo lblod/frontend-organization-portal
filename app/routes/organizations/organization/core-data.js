@@ -29,7 +29,7 @@ export default class OrganizationsOrganizationCoreDataRoute extends Route {
     const kboContacts = await kboOrganization?.contacts ?? [];
 
     return {
-      representativeBody: representativeBody,
+      representativeBody,
       kboOrganization,
       kboContact: findPrimaryContact(kboContacts),
     };
