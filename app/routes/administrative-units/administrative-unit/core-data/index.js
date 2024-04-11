@@ -18,7 +18,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
     );
 
     const primarySite = await administrativeUnit.primarySite;
-    const contacts = await primarySite?.contacts ?? [];
+    const contacts = (await primarySite?.contacts) ?? [];
 
     let resultedFrom = (await administrativeUnit.resultedFrom).slice();
     resultedFrom = resultedFrom.sort((a1, a2) => {
@@ -80,9 +80,9 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       const scope = await municipalityUnit.scope;
       region = await scope.locatedWithin;
     }
-    
+
     const kboOrganization = await administrativeUnit.kboOrganization;
-    const kboContacts = await kboOrganization?.contacts ?? [];
+    const kboContacts = (await kboOrganization?.contacts) ?? [];
 
     return {
       administrativeUnit,

@@ -26,7 +26,7 @@ export default class OrganizationsOrganizationCoreDataRoute extends Route {
     );
 
     const kboOrganization = await representativeBody.kboOrganization;
-    const kboContacts = await kboOrganization?.contacts ?? [];
+    const kboContacts = (await kboOrganization?.contacts) ?? [];
 
     return {
       representativeBody,

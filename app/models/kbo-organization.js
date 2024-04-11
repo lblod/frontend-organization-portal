@@ -5,7 +5,7 @@ export default class KboOrganizationtModel extends OrganizationModel {
   @attr rechtsvorm;
   @attr startDate;
   @attr modified;
-  
+
   @belongsTo('organization', {
     inverse: 'kboOrganization',
     async: true,

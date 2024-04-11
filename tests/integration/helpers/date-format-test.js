@@ -21,5 +21,4 @@ module('Integration | Helper | date-format', function (hooks) {
 
     assert.strictEqual(this.element.textContent.trim(), '01-03-2021');
   });
-
 });
