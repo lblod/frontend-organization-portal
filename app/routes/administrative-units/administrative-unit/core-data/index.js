@@ -3,7 +3,6 @@ import {
   findPrimaryContact,
   findSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
-import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
 import {
   CLASSIFICATION_CODE,
@@ -18,14 +17,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       'administrative-units.administrative-unit.core-data'
     );
 
-    let primarySite = await administrativeUnit.primarySite;
-
-    // TODO : "if" not needed when the data of all administrative units will be correct
-    // they should all have a primary site on creation
-    let contacts = A();
-    if (primarySite) {
-      contacts = await primarySite.contacts;
-    }
+    const primarySite = await administrativeUnit.primarySite;
+    const contacts = (await primarySite?.contacts) ?? [];
 
     let resultedFrom = (await administrativeUnit.resultedFrom).slice();
     resultedFrom = resultedFrom.sort((a1, a2) => {
@@ -88,13 +81,18 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       region = await scope.locatedWithin;
     }
 
+    const kboOrganization = await administrativeUnit.kboOrganization;
+    const kboContacts = (await kboOrganization?.contacts) ?? [];
+
     return {
       administrativeUnit,
+      kboOrganization,
       resultedFrom,
       isCity,
       primaryContact: findPrimaryContact(contacts),
       secondaryContact: findSecondaryContact(contacts),
       region,
+      kboContact: findPrimaryContact(kboContacts),
     };
   }
 }

@@ -133,6 +133,13 @@ export default class OrganizationModel extends AgentModel {
   })
   hasParticipants;
 
+  @belongsTo('kbo-organization', {
+    inverse: 'organization',
+    async: true,
+    as: 'organization',
+  })
+  kboOrganization;
+
   get validationSchema() {
     return super.validationSchema.append({
       name: validateStringOptional(),

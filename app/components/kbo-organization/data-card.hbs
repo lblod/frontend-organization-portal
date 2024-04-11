@@ -1,0 +1,80 @@
+<DataCard>
+  <:title>Bestuurseenheid</:title>
+  <:card as |Card|>
+    <Card.Columns>
+      <:left as |Item|>
+        <Item>
+          <:label>Naam</:label>
+          <:content>
+            {{@kboOrganization.legalName}}
+          </:content>
+        </Item>
+        <Item>
+          <:label>Commerciële naam</:label>
+          <:content>
+            {{@kboOrganization.name}}
+          </:content>
+        </Item>
+
+        <Item>
+          <:label>Afgekorte naam</:label>
+          <:content>
+            {{@kboOrganization.alternativeName}}
+          </:content>
+        </Item>
+
+        <Item>
+          <:label>Rechtsvorm</:label>
+          <:content>
+            {{@kboOrganization.rechtsvorm}}
+          </:content>
+        </Item>
+      </:left>
+      <:right as |Item|>
+        <Item>
+          <:label>Status</:label>
+          <:content>
+            <OrganizationStatus
+              @id={{@kboOrganization.organizationStatus.id}}
+              @label={{@kboOrganization.organizationStatus.label}}
+            />
+          </:content>
+        </Item>
+
+        <Item>
+          <:label>Begindatum</:label>
+          <:content>
+            {{date-format @kboOrganization.startDate}}
+          </:content>
+        </Item>
+
+        <Item>
+          <:label>Ondernemingsnummer</:label>
+          <:content>
+            {{#each @kboOrganization.identifiers as |identifier|}}
+                {{kbo-format identifier.structuredIdentifier.localId}}
+            {{/each}}
+          </:content>
+        </Item>
+        <Item>
+          <:label>Website KBO</:label>
+          <:content>
+            <AuLinkExternal
+              href="https://kbopub.economie.fgov.be/kbopub/zoeknummerform.html?nummer={{@kboIdentifier.structuredIdentifier.localId}}"
+            >
+              Link to page (externe link)
+            </AuLinkExternal>
+          </:content>
+        </Item>
+      </:right>
+    </Card.Columns>
+  </:card>
+</DataCard>
+<Site::ContactDataCard
+  @address={{@kboContact.contactAddress}}
+  @primaryContact={{@kboContact}}
+>
+  <:title>
+    Maatschappelijke zetel
+  </:title>
+</Site::ContactDataCard>

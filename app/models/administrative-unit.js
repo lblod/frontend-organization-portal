@@ -76,6 +76,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       involvedBoards: validateHasManyOptional(),
       exactMatch: validateBelongsToOptional(),
       scope: validateBelongsToOptional(),
+      kboOrganization: validateBelongsToOptional(),
       isAssociatedWith: validateRequiredWhenClassificationId(
         [
           ...WorshipServiceCodeList,
