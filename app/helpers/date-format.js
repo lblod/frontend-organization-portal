@@ -1,13 +1,20 @@
 import { helper } from '@ember/component/helper';
 
 export default helper(function DateFormat([date]) {
-  if (!(date instanceof Date)) {
+  const parsedDate = date instanceof Date ? date : new Date(date);
+
+  if (isNaN(parsedDate.getTime())) {
     return '';
   } else {
-    const day = date.toLocaleDateString('nl-BE', { day: '2-digit' }),
-      month = date.toLocaleDateString('nl-BE', { month: '2-digit' }),
-      year = date.getFullYear();
+    const formatter = new Intl.DateTimeFormat('nl-BE', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
 
-    return day + '-' + month + '-' + year;
+    const formattedDate = formatter.format(parsedDate);
+    const [day, month, year] = formattedDate.split('/'); // Split by '/' to get day, month, and year
+
+    return `${day}-${month}-${year}`; // Use '-' as the separator
   }
 });
