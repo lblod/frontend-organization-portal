@@ -1,6 +1,16 @@
 
 
 
+## v1.23.2 (2024-04-11)
+
+#### :bug: Bug Fix
+* [#600](https://github.com/lblod/frontend-organization-portal/pull/600) Do not trigger validation on empty SharePoint identifier ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
+## v1.23.1 (2024-04-08)
+
 ## v1.23.2-0 (2024-04-10)
 
 #### :bug: Bug Fix
