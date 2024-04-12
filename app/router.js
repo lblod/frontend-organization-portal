@@ -108,9 +108,15 @@ Router.map(function () {
       this.route('core-data', { path: '/kerngegevens' }, function () {
         this.route('edit');
       });
-      this.route('related-organizations', {
-        path: '/gerelateerde-organisaties',
-      });
+      this.route(
+        'related-organizations',
+        {
+          path: '/gerelateerde-organisaties',
+        },
+        function () {
+          this.route('edit');
+        }
+      );
     });
     this.route('new', { path: '/nieuwe-organisatie' });
   });

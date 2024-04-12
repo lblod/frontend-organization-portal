@@ -1,0 +1,59 @@
+<AuDataTable
+  id="subOrganizations"
+  @content={{@model.subOrganizations}}
+  @isLoading={{this.isLoading}}
+  @sort={{this.sort}}
+  @page={{this.page}}
+  @size={{this.size}}
+  @noDataMessage="Geen bestuur"
+  as |t|
+>
+  <t.menu as |menu|>
+    <menu.general>
+      <div class="au-o-box">
+        <AuToggleSwitch
+          @label="Verberg niet actieve organisaties"
+          @checked={{this.organizationStatus}}
+        />
+      </div>
+    </menu.general>
+  </t.menu>
+  <t.content as |c|>
+    <c.header>
+      <AuDataTableThSortable
+        @field="classification.label"
+        @currentSorting={{this.sort}}
+        @label="Type organisatie"
+      />
+      <AuDataTableThSortable
+        @field="name"
+        @currentSorting={{this.sort}}
+        @label="Organisatie"
+      />
+      <AuDataTableThSortable
+        @field="organizationStatus.label"
+        @currentSorting={{this.sort}}
+        @label="Status"
+      />
+    </c.header>
+    <c.body as |subOrganization|>
+      <td>
+        {{subOrganization.classification.label}}
+      </td>
+      <td>
+        <AuLink
+          @route="administrative-units.administrative-unit"
+          @model={{subOrganization.id}}
+        >
+          {{subOrganization.abbName}}
+        </AuLink>
+      </td>
+      <td>
+        <OrganizationStatus
+          @id={{subOrganization.organizationStatus.id}}
+          @label={{subOrganization.organizationStatus.label}}
+        />
+      </td>
+    </c.body>
+  </t.content>
+</AuDataTable>
