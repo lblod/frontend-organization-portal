@@ -9,7 +9,7 @@
           </:label>
           <:content>
             <AuLink
-              @route="administrative-units.administrative-unit"
+              @route="organizations.organization"
               @model={{@model.isSubOrganizationOf.isSubOrganizationOf.id}}
             >
               {{@model.isSubOrganizationOf.isSubOrganizationOf.abbName}}
@@ -20,7 +20,7 @@
           <:label>Gemeente</:label>
           <:content>
             <AuLink
-              @route="administrative-units.administrative-unit.core-data"
+              @route="organizations.organization.core-data"
               @model={{@model.isSubOrganizationOf.id}}
             >
               {{@model.isSubOrganizationOf.abbName}}
@@ -67,7 +67,7 @@
           </td>
           <td>
             <AuLink
-              @route="administrative-units.administrative-unit"
+              @route="organizations.organization"
               @model={{organization.id}}
             >
               {{organization.abbName}}
