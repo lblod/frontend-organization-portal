@@ -5,6 +5,6 @@ export default class OrganizationsOrganizationRoute extends Route {
   @service store;
 
   async model(params) {
-    return this.store.findRecord('representative-body', params.id);
+    return this.store.findRecord('organization', params.id);
   }
 }
