@@ -2,6 +2,7 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Kerngegevens</:title>
+      {{! TODO: classification empty for representative organs }}
       <:subtitle>{{@model.organization.abbName}}
         ({{@model.organization.classification.label}})</:subtitle>
       <:action>
@@ -104,14 +105,17 @@
                   </:content>
                 </Item>
               {{/if}}
-              <Item>
-                <:label>Type bestuur</:label>
-                <:content>
-                  {{@model.organization.classification.label}}
-                </:content>
-              </Item>
+              {{#if @model.organization.classification}}
+                {{! TODO: ensure it is not shown for representative organs when moving classification property in models }}
+                <Item>
+                  <:label>Type bestuur</:label>
+                  <:content>
+                    {{@model.organization.classification.label}}
+                  </:content>
+                </Item>
+              {{/if}}
 
-              {{#if this.isMunicipality}}
+              {{#if @model.organization.isMunicipality}}
                 <Item>
                   <:label>Stadstitel</:label>
                   <:content>
@@ -124,9 +128,8 @@
                 </Item>
               {{/if}}
 
-              {{#if this.isWorshipService}}
+              {{#if @model.organization.recognizedWorshipType}}
                 <Item>
-                  {{! TODO: also show for representative organs}}
                   <:label>Soort eredienst</:label>
                   <:content
                   >{{@model.organization.recognizedWorshipType.label}}</:content>
@@ -150,7 +153,8 @@
               {{/if}}
               {{#if
                 (and
-                  @model.organization.scope.locatedWithin this.isMunicipality
+                  @model.organization.scope.locatedWithin
+                  @model.organization.isMunicipality
                 )
               }}
                 <Item>
@@ -162,8 +166,8 @@
               {{/if}}
               {{#if
                 (or
-                  this.isIGS
-                  this.isOcmwAssociation
+                  @model.organization.isIgs
+                  @model.organization.isOcmwAssociation
                   @model.organization.isPevaMunicipality
                   @model.organization.isPevaProvince
                 )
@@ -245,7 +249,10 @@
               {{#if
                 (and
                   @model.organization.scope.exactMatch
-                  (or this.isMunicipality this.isProvince)
+                  (or
+                    @model.organization.isMunicipality
+                    @model.organization.isProvince
+                  )
                 )
               }}
                 <Item>
