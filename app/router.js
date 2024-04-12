@@ -105,7 +105,9 @@ Router.map(function () {
   );
   this.route('organizations', { path: '/organisaties' }, function () {
     this.route('organization', { path: '/:id/' }, function () {
-      this.route('core-data', { path: '/kerngegevens' });
+      this.route('core-data', { path: '/kerngegevens' }, function () {
+        this.route('edit');
+      });
       this.route('related-organizations', {
         path: '/gerelateerde-organisaties',
       });
