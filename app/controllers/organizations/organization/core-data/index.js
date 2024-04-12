@@ -1,13 +1,8 @@
 import Controller from '@ember/controller';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
-import WorshipServiceModel from 'frontend-organization-portal/models/worship-service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import {
-  CLASSIFICATION_CODE,
-  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
-} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 const SHAREPOINT_LINK_BASE = {
   WORSHIP_SERVICE:
@@ -80,106 +75,28 @@ export default class OrganizationsOrganizationCoreDataIndexController extends Co
     );
   }
 
-  get isWorshipService() {
-    return this.model.organization instanceof WorshipServiceModel;
-  }
-
-  get isMunicipality() {
-    return (
-      this.model.organization.classification?.get('id') ===
-      CLASSIFICATION_CODE.MUNICIPALITY
-    );
-  }
-
-  get isProvince() {
-    return (
-      this.model.organization.classification?.get('id') ===
-      CLASSIFICATION_CODE.PROVINCE
-    );
-  }
-
-  get isDistrict() {
-    return (
-      this.model.organization.classification?.get('id') ===
-      CLASSIFICATION_CODE.DISTRICT
-    );
-  }
-
-  get isOCMW() {
-    return (
-      this.model.organization.classification?.get('id') ===
-      CLASSIFICATION_CODE.OCMW
-    );
-  }
-
-  get isAgb() {
-    return (
-      this.model.organization.classification?.get('id') ===
-      CLASSIFICATION_CODE.AGB
-    );
-  }
-
-  get isApb() {
-    return (
-      this.model.organization.classification?.get('id') ===
-      CLASSIFICATION_CODE.APB
-    );
-  }
-
-  get isIGS() {
-    const typesThatAreIGS = [
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-    ];
-    return typesThatAreIGS.includes(
-      this.model.organization.classification?.get('id')
-    );
-  }
-
-  get isPoliceZone() {
-    return (
-      this.model.organization.classification?.get('id') ===
-      CLASSIFICATION_CODE.POLICE_ZONE
-    );
-  }
-
-  get isAssistanceZone() {
-    return (
-      this.model.organization.classification?.get('id') ===
-      CLASSIFICATION_CODE.ASSISTANCE_ZONE
-    );
-  }
-
-  get isOcmwAssociation() {
-    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
-      this.model.organization.classification?.get('id')
-    );
-  }
-
   get sharePointLinkBase() {
-    if (this.isWorshipService) {
+    if (this.model.organization.isWorshipService) {
       return SHAREPOINT_LINK_BASE.WORSHIP_SERVICE;
-    } else if (this.isDistrict) {
+    } else if (this.model.organization.isDistrict) {
       return SHAREPOINT_LINK_BASE.DISTRICT;
-    } else if (this.isProvince) {
+    } else if (this.model.organization.isProvince) {
       return SHAREPOINT_LINK_BASE.PROVINCE;
-    } else if (this.isMunicipality) {
+    } else if (this.model.organization.isMunicipality) {
       return SHAREPOINT_LINK_BASE.MUNICIPALITY;
-    } else if (this.isOCMW) {
+    } else if (this.model.organization.isOCMW) {
       return SHAREPOINT_LINK_BASE.OCMW;
-    } else if (this.isAgb) {
+    } else if (this.model.organization.isAgb) {
       return SHAREPOINT_LINK_BASE.AGB;
-    } else if (this.isApb) {
+    } else if (this.model.organization.isApb) {
       return SHAREPOINT_LINK_BASE.APB;
-    } else if (this.isIGS) {
+    } else if (this.model.organization.isIgs) {
       return SHAREPOINT_LINK_BASE.IGS;
-    } else if (this.isPoliceZone) {
+    } else if (this.model.organization.isPoliceZone) {
       return SHAREPOINT_LINK_BASE.POLICE_ZONE;
-    } else if (this.isAssistanceZone) {
+    } else if (this.model.organization.isAssistanceZone) {
       return SHAREPOINT_LINK_BASE.ASSISTANCE_ZONE;
-    } else if (this.isOcmwAssoctiation) {
+    } else if (this.model.organization.isOcmwAssociation) {
       return SHAREPOINT_LINK_BASE.OCMW_ASSOCIATION;
     } else if (this.model.organization.isPevaMunicipality) {
       return SHAREPOINT_LINK_BASE.PEVA_MUNICIPALITY;
