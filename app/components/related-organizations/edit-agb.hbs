@@ -6,12 +6,12 @@
         <Item
           @labelFor="related-gemeente"
           @required={{true}}
-          @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.message}}
+          @errorMessage={{@model.organization.error.isSubOrganizationOf.message}}
         >
           <:label>Gemeente</:label>
           <:content as |hasError|>
             <MunicipalitySelect
-              @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+              @selected={{@model.organization.isSubOrganizationOf}}
               @onChange={{@updateRelatedOrg}}
               @error={{hasError}}
               @id="related-gemeente"
@@ -21,7 +21,7 @@
         <Item @labelFor="related-municipality" @required={{true}}>
           <:label>Provincie</:label>
           <:content>
-            {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.abbName}}
+            {{@model.organization.isSubOrganizationOf.isSubOrganizationOf.abbName}}
           </:content>
         </Item>
       </:left>

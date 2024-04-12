@@ -3,12 +3,12 @@
     Heeft als participanten
   </AuHeading>
 
-  {{@model.administrativeUnit.error.hasParticipants.message}}
-  {{#if @model.administrativeUnit.error.hasParticipants.message}}
+  {{@model.organization.error.hasParticipants.message}}
+  {{#if @model.organization.error.hasParticipants.message}}
     <div>
       <AuHelpText
         @error={{true}}
-      >{{@model.administrativeUnit.error.hasParticipants.message}}</AuHelpText>
+      >{{@model.organization.error.hasParticipants.message}}</AuHelpText>
     </div>
   {{/if}}
 
@@ -70,14 +70,14 @@
   </div>
 </div>
 
-{{#if @model.administrativeUnit.foundedOrganizations.length}}
+{{#if @model.organization.foundedOrganizations.length}}
   <div>
     <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
       Heeft relatie met
     </AuHeading>
     <AuDataTable
       id="foundedOrganizations"
-      @content={{@model.administrativeUnit.foundedOrganizations}}
+      @content={{@model.organization.foundedOrganizations}}
       @noDataMessage="Geen bestuur"
       as |t|
     >
