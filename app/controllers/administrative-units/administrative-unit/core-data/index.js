@@ -179,7 +179,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexControlle
       return SHAREPOINT_LINK_BASE.POLICE_ZONE;
     } else if (this.isAssistanceZone) {
       return SHAREPOINT_LINK_BASE.ASSISTANCE_ZONE;
-    } else if (this.isOcmwAssoctiation) {
+    } else if (this.isOcmwAssociation) {
       return SHAREPOINT_LINK_BASE.OCMW_ASSOCIATION;
     } else if (this.model.administrativeUnit.isPevaMunicipality) {
       return SHAREPOINT_LINK_BASE.PEVA_MUNICIPALITY;
