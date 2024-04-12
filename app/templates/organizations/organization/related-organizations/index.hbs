@@ -1,0 +1,132 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <PageHeader class="au-o-box">
+      <:title>Gerelateerde organisaties</:title>
+      <:subtitle>{{@model.organization.abbName}}
+        ({{@model.organization.classification.label}})</:subtitle>
+      <:action>
+        {{#if
+          (not
+            (or
+              @model.organization.isDistrict
+              @model.organization.isProvince
+              this.isRepresentativeBody
+            )
+          )
+        }}
+          <SecuredArea>
+            <:edit>
+              <AuLink
+                @route="organizations.organization.related-organizations.edit"
+                @skin="button-secondary"
+                @icon="pencil"
+                @iconAlignment="left"
+              >
+                Bewerk
+              </AuLink>
+            </:edit>
+            <:readOnly>
+              <ReportWrongData />
+            </:readOnly>
+          </SecuredArea>
+        {{/if}}
+      </:action>
+    </PageHeader>
+
+    {{#if @model.organization.isWorshipService}}
+      <RelatedOrganizations::ViewWorshipService @model={{@model}} />
+    {{/if}}
+
+    {{#if @model.organization.isCentralWorshipService}}
+      <RelatedOrganizations::ViewCentralWorshipService
+        @model={{@model}}
+        @sort={{this.sort}}
+        @page={{this.page}}
+        @size={{this.size}}
+        @organizationStatus={{this.organizationStatus}}
+      />
+    {{/if}}
+
+    {{#if @model.organization.isDistrict}}
+      <RelatedOrganizations::ViewDistrict @model={{@model}} />
+    {{/if}}
+
+    {{#if @model.organization.isMunicipality}}
+      <RelatedOrganizations::ViewMunicipality
+        @model={{@model}}
+        @sort={{this.sort}}
+        @page={{this.page}}
+        @size={{this.size}}
+        @organizationStatus={{this.organizationStatus}}
+      />
+    {{/if}}
+
+    {{#if @model.organization.isOCMW}}
+      <RelatedOrganizations::ViewOcmw @model={{@model}} />
+    {{/if}}
+
+    {{#if @model.organization.isProvince}}
+      <RelatedOrganizations::ViewProvince
+        @model={{@model}}
+        @sort={{this.sort}}
+        @page={{this.page}}
+        @size={{this.size}}
+        @organizationStatus={{this.organizationStatus}}
+      />
+    {{/if}}
+
+    {{#if @model.organization.isAgb}}
+      <RelatedOrganizations::ViewAgb @model={{@model}} />
+    {{/if}}
+
+    {{#if @model.organization.isApb}}
+      <RelatedOrganizations::ViewApb @model={{@model}} />
+    {{/if}}
+
+    {{#if @model.organization.isIgs}}
+      <RelatedOrganizations::ViewIgs @model={{@model}} @sort={{this.sort}} />
+    {{/if}}
+
+    {{#if @model.organization.isPoliceZone}}
+      <RelatedOrganizations::ViewPoliceZone
+        @model={{@model}}
+        @sort={{this.sort}}
+      />
+    {{/if}}
+
+    {{#if @model.organization.isAssistanceZone}}
+      <RelatedOrganizations::ViewAssistanceZone
+        @model={{@model}}
+        @sort={{this.sort}}
+      />
+    {{/if}}
+
+    {{#if @model.organization.isOcmwAssociation}}
+      <RelatedOrganizations::ViewOcmwAssociation
+        @model={{@model}}
+        @sort={{this.sort}}
+      />
+    {{/if}}
+
+    {{#if @model.organization.isPevaMunicipality}}
+      <RelatedOrganizations::ViewPevaMunicipality
+        @model={{@model}}
+        @sort={{this.sort}}
+      />
+    {{/if}}
+
+    {{#if @model.organization.isPevaProvince}}
+      <RelatedOrganizations::ViewPevaProvince
+        @model={{@model}}
+        @sort={{this.sort}}
+      />
+    {{/if}}
+
+    {{#if this.isRepresentativeBody}}
+      <RelatedOrganizations::ViewRepresentativeBody
+        @model={{@model}}
+        @sort={{this.sort}}
+      />
+    {{/if}}
+  </div>
+</div>
