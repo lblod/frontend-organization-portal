@@ -15,6 +15,13 @@ export default class OrganizationModel extends AgentModel {
   @attr('date') expectedEndDate;
   @attr purpose;
 
+  // TODO: generalize to organization-classification-code?
+  @belongsTo('administrative-unit-classification-code', {
+    inverse: null,
+    async: true,
+  })
+  classification;
+
   @belongsTo('site', {
     inverse: null,
     async: true,
@@ -149,6 +156,7 @@ export default class OrganizationModel extends AgentModel {
       alternativeName: Joi.array().optional(),
       expectedEndDate: Joi.date().allow(null),
       purpose: validateStringOptional(),
+      classification: validateBelongsToOptional(),
       primarySite: validateBelongsToOptional(),
       organizationStatus: validateBelongsToRequired('Selecteer een optie'),
       identifiers: validateHasManyOptional(),

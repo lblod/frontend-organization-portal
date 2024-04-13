@@ -25,13 +25,6 @@ import {
 } from '../constants/Classification';
 
 export default class AdministrativeUnitModel extends OrganizationModel {
-  // TODO: generalise and move to organization model?
-  @belongsTo('administrative-unit-classification-code', {
-    inverse: null,
-    async: true,
-  })
-  classification;
-
   @belongsTo('location', {
     inverse: 'administrativeUnits',
     async: true,
