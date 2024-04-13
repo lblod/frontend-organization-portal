@@ -58,6 +58,7 @@ export const CLASSIFICATION = {
     id: 'ea446861-2c51-45fa-afd3-4e4a37b71562',
     label: 'Hulpverleningszone',
   },
+  // FIXME: in other places Representative *body* is used, we should pick one
   REPRESENTATIVE_ORGAN: {
     // FIXME this is not an administrative unit
     id: '89a00b5a-024f-4630-a722-65a5e68967e5',
@@ -127,6 +128,7 @@ export const CLASSIFICATION_CODE = {
   PEVA_PROVINCE: CLASSIFICATION.PEVA_PROVINCE.id,
 };
 
+// TODO: move to Classification.js
 export const OCMW_ASSOCIATION_CLASSIFICATION_CODES = [
   CLASSIFICATION_CODE.WELZIJNSVERENIGING,
   CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
@@ -136,14 +138,16 @@ export const OCMW_ASSOCIATION_CLASSIFICATION_CODES = [
   // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
 ];
 
-// FIXME: generalize and rename this file
+// TODO: remove when no longer needed after organisation refactoring
 export function isNonAdministrativeUnit(id) {
   return id === CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN;
 }
 
 export default class AdministrativeUnitClassificationCodeModel extends OrganizationClassificationCodeModel {
+  // TODO: is this necessary when parent model already has this?
   @attr label;
 
+  // TODO: remove as this is replaced by functions in organisation model
   get isAgbOrApb() {
     return (
       this.id === CLASSIFICATION_CODE.AGB || this.id === CLASSIFICATION_CODE.APB

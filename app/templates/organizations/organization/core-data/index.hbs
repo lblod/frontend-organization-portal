@@ -2,9 +2,9 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Kerngegevens</:title>
-      {{! TODO: classification empty for representative organs }}
       <:subtitle>{{@model.organization.abbName}}
-        ({{@model.organization.classification.label}})</:subtitle>
+        ({{@model.organization.classification.label}})
+      </:subtitle>
       <:action>
         {{#if (is-feature-enabled "kbo-data-tab")}}
           {{#if this.showAbbData}}
@@ -141,6 +141,7 @@
                   <:content>{{@model.organization.denomination}}</:content>
                 </Item>
               {{/if}}
+              {{! TODO: replace this by model function?  }}
               {{#if
                 (eq @model.organization.constructor.modelName "worship-service")
               }}
