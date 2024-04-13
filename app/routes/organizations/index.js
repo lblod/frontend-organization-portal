@@ -2,7 +2,6 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
 import { selectByRole as getClassificationIds } from 'frontend-organization-portal/utils/classification-identifiers';
-import { isNonAdministrativeUnit } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class OrganizationsIndexRoute extends Route {
   @service muSearch;
@@ -87,11 +86,8 @@ export default class OrganizationsIndexRoute extends Route {
       dataMapping: (data) => {
         const entry = data.attributes;
         entry.id = data.id;
-        if (isNonAdministrativeUnit(entry.classification_id)) {
-          entry.route = 'organizations.organization.index';
-        } else {
-          entry.route = 'administrative-units.administrative-unit.index';
-        }
+        entry.route = 'organizations.organization.index';
+
         return entry;
       },
     });
