@@ -74,7 +74,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
     }
 
     if (isRepresentativeBody) {
-      console.log('true');
       return yield this.store.query('administrative-unit', {
         'filter[:or:][is-associated-with][:id:]': id,
         'filter[:or:][founded-organizations][:id:]': id,
