@@ -42,6 +42,7 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
     }
 
     let region;
+    // TODO: use model functions and remove these
     const typesThatAreIGS = [
       CLASSIFICATION_CODE.PROJECTVERENIGING,
       CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
@@ -66,7 +67,7 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
       const address = await primarySite.address;
       const municipalityString = address.municipality;
       const municipalityUnit = (
-        await this.store.query('organization', {
+        await this.store.query('administrative-unit', {
           filter: {
             ':exact:name': municipalityString,
             classification: {
