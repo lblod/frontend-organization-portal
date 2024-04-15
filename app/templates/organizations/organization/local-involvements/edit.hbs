@@ -2,12 +2,12 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <PageHeader class="au-o-box">
     <:title>Bewerk betrokken lokale besturen</:title>
-    <:subtitle>{{@model.worshipAdministrativeUnit.abbName}}</:subtitle>
+    <:subtitle>{{@model.organization.abbName}}</:subtitle>
     <:action>
       <div class="au-u-text-right">
         <AuButtonGroup class="au-c-button-group--align-right">
           <AuLink
-            @route="administrative-units.administrative-unit.local-involvements"
+            @route="organizations.organization.local-involvements"
             @skin="button-secondary"
           >
             Annuleer
@@ -39,7 +39,7 @@
       <t.content as |c|>
         <c.header>
           <th
-            id="administrative-unit"
+            id="organization"
             style="min-width: 18rem;"
             {{!TODO: replace this with some width utilities}}
             {{! template-lint-disable no-inline-styles }}
@@ -62,21 +62,18 @@
         </c.header>
         <c.body as |involvement|>
           <td>
-            {{#let
-              involvement.error.administrativeUnit.message
-              as |errorMessage|
-            }}
+            {{#let involvement.error.organization.message as |errorMessage|}}
               <AdministrativeUnitSelect
-                @selected={{involvement.administrativeUnit}}
-                @onChange={{fn (mut involvement.administrativeUnit)}}
+                @selected={{involvement.organization}}
+                @onChange={{fn (mut involvement.organization)}}
                 @allowClear={{involvement.isNew}}
-                @ariaLabelledBy="administrative-unit"
+                @ariaLabelledBy="organization"
                 @error={{errorMessage}}
                 @classificationCodes={{this.classificationCodes}}
-                as |administrativeUnit|
+                as |organization|
               >
-                {{administrativeUnit.abbName}}
-                ({{administrativeUnit.classification.label}})
+                {{organization.abbName}}
+                ({{organization.classification.label}})
               </AdministrativeUnitSelect>
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
@@ -86,7 +83,7 @@
           <td>
             <AuInput
               @width="block"
-              @value={{involvement.administrativeUnit.classification.label}}
+              @value={{involvement.organization.classification.label}}
               @disabled={{true}}
               aria-labelledby="classification"
             />
@@ -98,7 +95,7 @@
                   {{#if
                     (eq
                       this.municipalityCode
-                      involvement.administrativeUnit.classification.id
+                      involvement.organization.classification.id
                     )
                   }}
                     <PowerSelect
@@ -188,7 +185,7 @@
               {{#if
                 (and
                   involvement.isNew
-                  (not involvement.administrativeUnit.id)
+                  (not involvement.organization.id)
                   (not involvement.involvementType.id)
                   (eq involvement.percentage 0)
                 )

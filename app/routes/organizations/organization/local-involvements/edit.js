@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
-export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditRoute extends Route {
+export default class OrganizationsOrganizationLocalInvolvementsEditRoute extends Route {
   @service store;
   @service currentSession;
   @service router;
@@ -17,22 +17,20 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
   }
 
   async model() {
-    let { id: administrativeUnitId } = this.paramsFor(
-      'administrative-units.administrative-unit'
-    );
+    let { id: organizationId } = this.paramsFor('organizations.organization');
 
-    let worshipAdministrativeUnit = await this.store.findRecord(
+    let organization = await this.store.findRecord(
       'worship-administrative-unit',
-      administrativeUnitId,
+      organizationId,
       {
         reload: true,
         include:
-          'involvements.involvement-type,involvements.administrative-unit.classification',
+          'involvements.involvement-type,involvements.organization.classification',
       }
     );
 
     let involvementTypes;
-    const classification = await worshipAdministrativeUnit.classification;
+    const classification = await organization.classification;
     if (classification.id == CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE) {
       involvementTypes = await this.store.query('involvement-type', {
         filter: {
@@ -42,14 +40,14 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditR
     } else {
       involvementTypes = await this.store.query('involvement-type', {});
     }
-    const involvements = await worshipAdministrativeUnit.involvements;
+    const involvements = await organization.involvements;
 
     let involvementTypesProvince = involvementTypes
       .slice()
       .filter((it) => it.id !== INVOLVEMENT_TYPE.ADVISORY); // Non adviserend
 
     return {
-      worshipAdministrativeUnit,
+      organization,
       involvements,
       involvementTypes,
       involvementTypesProvince,

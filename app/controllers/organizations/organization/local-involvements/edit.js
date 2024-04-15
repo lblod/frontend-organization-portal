@@ -6,7 +6,7 @@ import { dropTask } from 'ember-concurrency';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 
-export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditController extends Controller {
+export default class OrganizationsOrganizationLocalInvolvementsEditController extends Controller {
   @service router;
   @service store;
   @tracked showTotalFinancingPercentageError = false;
@@ -30,7 +30,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
   }
 
   get isWorshipService() {
-    return this.model.worshipAdministrativeUnit.isWorshipService;
+    return this.model.organization.isWorshipService;
   }
 
   get totalFinancingPercentage() {
@@ -125,12 +125,12 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
     let involvement;
     if (this.isWorshipService) {
       involvement = this.store.createRecord('local-involvement', {
-        worshipAdministrativeUnit: this.model.worshipAdministrativeUnit,
+        organization: this.model.organization,
         percentage: 0,
       });
     } else {
       involvement = this.store.createRecord('local-involvement', {
-        worshipAdministrativeUnit: this.model.worshipAdministrativeUnit,
+        organization: this.model.organization,
         involvementType: this.model.involvementTypes.at(0),
         percentage: 100,
       });
@@ -186,8 +186,8 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsEditC
       yield Promise.all(savePromises);
 
       this.router.transitionTo(
-        'administrative-units.administrative-unit.local-involvements',
-        this.model.worshipAdministrativeUnit.id
+        'organizations.organization.local-involvements',
+        this.model.organization.id
       );
     }
   }

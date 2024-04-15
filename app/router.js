@@ -55,13 +55,7 @@ Router.map(function () {
 
         this.route('ministers', { path: '/bedienaren' }, function () {});
         this.route('executives', { path: '/leidinggevenden' });
-        this.route(
-          'local-involvements',
-          { path: '/betrokken-lokale-besturen' },
-          function () {
-            this.route('edit');
-          }
-        );
+
         this.route(
           'change-events',
           { path: '/veranderingsgebeurtenissen' },
@@ -103,6 +97,14 @@ Router.map(function () {
           }
         );
       });
+      // TODO: put ministers and executives here
+      this.route(
+        'local-involvements',
+        { path: '/betrokken-lokale-besturen' },
+        function () {
+          this.route('edit');
+        }
+      );
       this.route(
         'related-organizations',
         {

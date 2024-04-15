@@ -1,11 +1,11 @@
 <PageHeader class="au-o-box">
   <:title>Betrokken lokale besturen</:title>
-  <:subtitle>{{@model.administrativeUnit.abbName}}</:subtitle>
+  <:subtitle>{{@model.organization.abbName}}</:subtitle>
   <:action>
     <SecuredArea>
       <:edit>
         <AuLink
-          @route="administrative-units.administrative-unit.local-involvements.edit"
+          @route="organizations.organization.local-involvements.edit"
           @skin="button-secondary"
           @icon="pencil"
           @iconAlignment="left"
@@ -31,12 +31,12 @@
   <t.content as |c|>
     <c.header>
       <AuDataTableThSortable
-        @field="administrative-unit.name"
+        @field="organization.name"
         @currentSorting={{this.sort}}
         @label="Naam"
       />
       <AuDataTableThSortable
-        @field="administrative-unit.classification.label"
+        @field="organization.classification.label"
         @currentSorting={{this.sort}}
         @label="Type instelling"
       />
@@ -54,8 +54,8 @@
       {{/if}}
     </c.header>
     <c.body as |involvement|>
-      <td>{{involvement.administrativeUnit.abbName}}</td>
-      <td>{{involvement.administrativeUnit.classification.label}}</td>
+      <td>{{involvement.organization.abbName}}</td>
+      <td>{{involvement.organization.classification.label}}</td>
       <td>{{involvement.involvementType.label}}</td>
       {{#if this.isWorshipService}}
         <td>{{involvement.percentage}}%</td>
