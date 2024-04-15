@@ -2,9 +2,9 @@
   id="subOrganizations"
   @content={{@model.subOrganizations}}
   @isLoading={{this.isLoading}}
-  @sort={{this.sort}}
-  @page={{this.page}}
-  @size={{this.size}}
+  @sort={{@sort}}
+  @page={{@page}}
+  @size={{@size}}
   @noDataMessage="Geen bestuur"
   as |t|
 >
@@ -13,7 +13,7 @@
       <div class="au-o-box">
         <AuToggleSwitch
           @label="Verberg niet actieve organisaties"
-          @checked={{this.organizationStatus}}
+          @checked={{@organizationStatus}}
         />
       </div>
     </menu.general>
@@ -22,17 +22,17 @@
     <c.header>
       <AuDataTableThSortable
         @field="classification.label"
-        @currentSorting={{this.sort}}
+        @currentSorting={{@sort}}
         @label="Type organisatie"
       />
       <AuDataTableThSortable
         @field="name"
-        @currentSorting={{this.sort}}
+        @currentSorting={{@sort}}
         @label="Organisatie"
       />
       <AuDataTableThSortable
         @field="organizationStatus.label"
-        @currentSorting={{this.sort}}
+        @currentSorting={{@sort}}
         @label="Status"
       />
     </c.header>
