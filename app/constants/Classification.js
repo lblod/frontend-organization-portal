@@ -29,6 +29,10 @@ export const CentralWorshipServiceCodeList = [
   CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
 ];
 
+export const RepresentativeOrganCodeList = [
+  CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN,
+];
+
 export const OCMWCodeList = [CLASSIFICATION_CODE.OCMW];
 export const OcmwAssociationCodeList = OCMW_ASSOCIATION_CLASSIFICATION_CODES;
 

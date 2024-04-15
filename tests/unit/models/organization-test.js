@@ -16,9 +16,11 @@ module('Unit | Model | organization', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 2);
+      assert.strictEqual(Object.keys(model.error).length, 3);
+      console.log(model.error);
       assert.propContains(model.error, {
         legalName: { message: 'Vul de juridische naam in' },
+        classification: { message: 'Selecteer een optie' },
         organizationStatus: { message: 'Selecteer een optie' },
       });
     });
