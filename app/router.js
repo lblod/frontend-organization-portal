@@ -52,12 +52,6 @@ Router.map(function () {
     function () {
       this.route('administrative-unit', { path: '/:id/' }, function () {
         this.route('core-data', { path: '/kerngegevens' });
-        this.route('sites', { path: '/vestigingen' }, function () {
-          this.route('site', { path: '/:siteId/' }, function () {
-            this.route('edit');
-          });
-          this.route('new', { path: '/nieuwe-vestiging' });
-        });
         this.route(
           'governing-bodies',
           { path: '/bestuursorganen' },
@@ -105,6 +99,12 @@ Router.map(function () {
     this.route('organization', { path: '/:id/' }, function () {
       this.route('core-data', { path: '/kerngegevens' }, function () {
         this.route('edit');
+      });
+      this.route('sites', { path: '/vestigingen' }, function () {
+        this.route('site', { path: '/:siteId/' }, function () {
+          this.route('edit');
+        });
+        this.route('new', { path: '/nieuwe-vestiging' });
       });
       this.route(
         'related-organizations',

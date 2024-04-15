@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 
-export default class AdministrativeUnitsAdministrativeUnitSitesIndexController extends Controller {
+export default class OrganizationsOrganizationSitesIndexController extends Controller {
   get sites() {
     let sites = [];
 

@@ -5,7 +5,7 @@ import {
   createSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
 
-export default class AdministrativeUnitsAdministrativeUnitSitesNewRoute extends Route {
+export default class OrganizationsOrganizationSitesNewRoute extends Route {
   @service store;
   @service currentSession;
   @service router;
@@ -21,16 +21,15 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewRoute extends 
       });
     }
   }
+
   async model() {
-    let administrativeUnit = this.modelFor(
-      'administrative-units.administrative-unit'
-    );
+    let organization = this.modelFor('organizations.organization');
 
     const address = this.store.createRecord('address');
     address.country = 'België';
 
     return {
-      administrativeUnit,
+      organization,
       site: this.store.createRecord('site'),
       address,
       contact: createPrimaryContact(this.store),

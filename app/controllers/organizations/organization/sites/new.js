@@ -7,7 +7,7 @@ import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
 import { action } from '@ember/object';
 
-export default class AdministrativeUnitsAdministrativeUnitSitesNewController extends Controller {
+export default class OrganizationsOrganizationSitesNewController extends Controller {
   @service router;
   @service store;
   @tracked isPrimarySite = false;
@@ -25,8 +25,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
   *createSiteTask(event) {
     event.preventDefault();
 
-    let { address, administrativeUnit, contact, secondaryContact, site } =
-      this.model;
+    let { address, organization, contact, secondaryContact, site } = this.model;
 
     yield site.validate();
     yield address.validate();
@@ -58,26 +57,23 @@ export default class AdministrativeUnitsAdministrativeUnitSitesNewController ext
       (yield site.contacts).push(contact, secondaryContact);
       yield site.save();
 
-      let nonPrimarySites = yield administrativeUnit.sites;
+      let nonPrimarySites = yield organization.sites;
 
       if (this.isPrimarySite) {
-        let previousPrimarySite = yield administrativeUnit.primarySite;
+        let previousPrimarySite = yield organization.primarySite;
 
         if (previousPrimarySite) {
           nonPrimarySites.push(previousPrimarySite);
         }
 
-        administrativeUnit.primarySite = site;
+        organization.primarySite = site;
       } else {
         nonPrimarySites.push(site);
       }
 
-      yield administrativeUnit.save();
+      yield organization.save();
 
-      this.router.replaceWith(
-        'administrative-units.administrative-unit.sites.site',
-        site.id
-      );
+      this.router.replaceWith('organizations.organization.sites.site', site.id);
     }
   }
 

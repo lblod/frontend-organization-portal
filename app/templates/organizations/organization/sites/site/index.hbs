@@ -2,13 +2,13 @@
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
       <:title>Vestiging: {{@model.site.address.fullAddress}}</:title>
-      <:subtitle>{{@model.administrativeUnit.abbName}}</:subtitle>
+      <:subtitle>{{@model.organization.abbName}}</:subtitle>
       <:action>
         {{#if (is-feature-enabled "edit-contact-data")}}
           <SecuredArea>
             <:edit>
               <AuLink
-                @route="administrative-units.administrative-unit.sites.site.edit"
+                @route="organizations.organization.sites.site.edit"
                 @skin="button-secondary"
                 @icon="pencil"
                 @iconAlignment="left"
@@ -46,7 +46,7 @@
             <Item>
               <:label>Primair correspondentieadres</:label>
               <:content>{{if
-                  (eq @model.site.id @model.administrativeUnit.primarySite.id)
+                  (eq @model.site.id @model.organization.primarySite.id)
                   "Ja"
                   "Nee"
                 }}

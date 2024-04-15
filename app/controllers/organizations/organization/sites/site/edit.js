@@ -7,7 +7,7 @@ import { combineFullAddress } from 'frontend-organization-portal/models/address'
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
 
-export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditController extends Controller {
+export default class OrganizationsOrganizationSitesSiteEditController extends Controller {
   @service router;
   @tracked isPrimarySite;
   @tracked isNoPrimarySiteErrorMessage;
@@ -34,7 +34,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
     this.isPrimarySite = isPrimarySite;
     if (
       !this.isPrimarySite &&
-      (!this.model.administrativeUnit.primarySite?.get('id') ||
+      (!this.model.organization.primarySite?.get('id') ||
         this.isCurrentPrimarySite)
     ) {
       this.isNoPrimarySiteErrorMessage =
@@ -46,8 +46,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
   @dropTask
   *save(event) {
     event.preventDefault();
-    let { address, administrativeUnit, contact, secondaryContact, site } =
-      this.model;
+    let { address, organization, contact, secondaryContact, site } = this.model;
 
     yield site.validate();
     yield address.validate();
@@ -89,12 +88,12 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
 
       yield site.save();
 
-      let nonPrimarySites = yield administrativeUnit.sites;
+      let nonPrimarySites = yield organization.sites;
 
       if (this.isCurrentPrimarySite && !this.isPrimarySite) {
         nonPrimarySites.push(site);
-        administrativeUnit.primarySite = null;
-        yield administrativeUnit.save();
+        organization.primarySite = null;
+        yield organization.save();
       } else if (this.isPrimarySite && !this.isCurrentPrimarySite) {
         let previousPrimarySite = this.model.currentPrimarySite;
 
@@ -102,7 +101,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
           nonPrimarySites.push(previousPrimarySite);
         }
 
-        administrativeUnit.primarySite = site;
+        organization.primarySite = site;
         const oldSite = nonPrimarySites.find(
           (nonPrimarySite) => nonPrimarySite.id === site.id
         );
@@ -111,21 +110,21 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
           nonPrimarySites.splice(oldSiteIndex, 1);
         }
 
-        yield administrativeUnit.save();
+        yield organization.save();
       }
 
       // force it to be primary site if there is no primary site
-      if (!administrativeUnit.primarySite?.get('id')) {
-        administrativeUnit.primarySite = site;
+      if (!organization.primarySite?.get('id')) {
+        organization.primarySite = site;
         const siteIndex = nonPrimarySites.indexOf(site);
         if (siteIndex > -1) {
           nonPrimarySites.splice(siteIndex, 1);
         }
-        yield administrativeUnit.save();
+        yield organization.save();
       }
 
       this.router.transitionTo(
-        'administrative-units.administrative-unit.sites.site',
+        'organizations.organization.sites.site',
         site.id
       );
     }
@@ -138,7 +137,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditControlle
 
   resetUnsavedRecords() {
     this.model.address.reset();
-    this.model.administrativeUnit.reset();
+    this.model.organization.reset();
     this.model.contact.reset();
     this.model.secondaryContact.reset();
     this.model.site.reset();
