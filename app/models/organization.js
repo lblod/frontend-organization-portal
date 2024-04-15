@@ -274,8 +274,6 @@ export default class OrganizationModel extends AgentModel {
   }
 
   get isRepresentativeBody() {
-    console.log('classification');
-    console.log(this.classification?.get('id'));
     return this.#hasClassificationId(RepresentativeOrganCodeList);
   }
 
