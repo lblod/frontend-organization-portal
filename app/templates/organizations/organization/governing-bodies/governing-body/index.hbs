@@ -5,13 +5,13 @@
         Bestuursorgaan:
         {{@model.governingBodyClassification.label}}
       </:title>
-      <:subtitle>{{@model.administrativeUnit.abbName}}
-        ({{@model.administrativeUnit.classification.label}})</:subtitle>
+      <:subtitle>{{@model.organization.abbName}}
+        ({{@model.organizationa.classification.label}})</:subtitle>
       <:action>
         <SecuredArea>
           <:edit>
             <AuLink
-              @route="administrative-units.administrative-unit.governing-bodies.governing-body.edit"
+              @route="organizations.organization.governing-bodies.governing-body.edit"
               @skin="button-secondary"
               @icon="pencil"
               @iconAlignment="left"

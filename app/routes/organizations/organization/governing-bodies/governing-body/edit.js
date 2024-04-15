@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyEditRoute extends Route {
+export default class OrganizationsOrganizationGoverningBodiesGoverningBodyEditRoute extends Route {
   @service currentSession;
   @service router;
 
@@ -14,15 +14,15 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   }
 
   async model() {
-    const { administrativeUnit, governingBodyClassification, governingBody } =
+    const { organization, governingBodyClassification, governingBody } =
       await this.modelFor(
-        'administrative-units.administrative-unit.governing-bodies.governing-body'
+        'organizations.organization.governing-bodies.governing-body'
       );
 
     return {
       governingBody,
       governingBodyClassification,
-      administrativeUnit,
+      organization,
     };
   }
 

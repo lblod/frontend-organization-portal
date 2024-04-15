@@ -5,7 +5,7 @@ import {
   MANDATARIES_ROLES,
 } from 'frontend-organization-portal/models/board-position-code';
 
-export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyIndexRoute extends Route {
+export default class OrganizationsOrganizationGoverningBodiesGoverningBodyIndexRoute extends Route {
   @service store;
 
   queryParams = {
@@ -14,9 +14,9 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
   };
 
   async model(params) {
-    let { administrativeUnit, governingBodyClassification, governingBody } =
+    let { organization, governingBodyClassification, governingBody } =
       this.modelFor(
-        'administrative-units.administrative-unit.governing-bodies.governing-body'
+        'organizations.organization.governing-bodies.governing-body'
       );
 
     let query = {
@@ -53,7 +53,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     });
 
     return {
-      administrativeUnit,
+      organization,
       governingBodyClassification,
       governingBody,
       memberMandatories,
