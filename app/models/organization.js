@@ -273,7 +273,9 @@ export default class OrganizationModel extends AgentModel {
     return this.#hasClassificationId(PevaProvinceCodeList);
   }
 
-  get isRepresentativeOrgan() {
+  get isRepresentativeBody() {
+    console.log('classification');
+    console.log(this.classification?.get('id'));
     return this.#hasClassificationId(RepresentativeOrganCodeList);
   }
 

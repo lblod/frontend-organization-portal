@@ -24,7 +24,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       organization.id,
       params,
       organization.isProvince,
-      organization.isRepresentativeOrgan
+      organization.isRepresentativeBody
     );
 
     const participatesIn = await this.loadParticipatesInTask.perform(
@@ -71,6 +71,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       });
     }
 
+    console.log(isRepresentativeBody);
     if (isRepresentativeBody) {
       return yield this.store.query('administrative-unit', {
         'filter[:or:][is-associated-with][:id:]': id,
