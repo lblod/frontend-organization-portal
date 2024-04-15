@@ -23,8 +23,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
     const subOrganizations = await this.loadSubOrganizationsTask.perform(
       organization.id,
       params,
-      organization.isProvince,
-      organization.isRepresentativeBody
+      organization.isProvince
     );
 
     const participatesIn = await this.loadParticipatesInTask.perform(
@@ -50,12 +49,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
 
   // TODO: change 'administrative-unit' in queries to organization when classification is available
   @dropTask({ cancelOn: 'deactivate' })
-  *loadSubOrganizationsTask(
-    id,
-    params,
-    isProvince = false,
-    isRepresentativeBody = false
-  ) {
+  *loadSubOrganizationsTask(id, params, isProvince = false) {
+    // TODO: if you refresh the page the classification will be null resulting in this check always failing, and the frontend incorrectly falling back to the other query for provinces
     if (isProvince) {
       return yield this.store.query('administrative-unit', {
         'filter[:or:][is-sub-organization-of][:id:]': id,
@@ -71,23 +66,11 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       });
     }
 
-    console.log(isRepresentativeBody);
-    if (isRepresentativeBody) {
-      return yield this.store.query('administrative-unit', {
-        'filter[:or:][is-associated-with][:id:]': id,
-        'filter[:or:][founded-organizations][:id:]': id,
-        'filter[organization-status][:id:]': params.organizationStatus
-          ? '63cc561de9188d64ba5840a42ae8f0d6'
-          : undefined,
-        include: 'classification',
-        sort: params.sort,
-        page: { size: params.size, number: params.page },
-      });
-    }
-
     return yield this.store.query('administrative-unit', {
       'filter[:or:][is-sub-organization-of][:id:]': id,
       'filter[:or:][was-founded-by-organizations][:id:]': id,
+      'filter[:or:][is-associated-with][:id:]': id,
+      'filter[:or:][founded-organizations][:id:]': id,
       'filter[organization-status][:id:]': params.organizationStatus
         ? '63cc561de9188d64ba5840a42ae8f0d6'
         : undefined,
