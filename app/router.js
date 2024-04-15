@@ -52,19 +52,7 @@ Router.map(function () {
     function () {
       this.route('administrative-unit', { path: '/:id/' }, function () {
         this.route('core-data', { path: '/kerngegevens' });
-        this.route(
-          'governing-bodies',
-          { path: '/bestuursorganen' },
-          function () {
-            this.route(
-              'governing-body',
-              { path: '/:governingBodyId/' },
-              function () {
-                this.route('edit');
-              }
-            );
-          }
-        );
+
         this.route('ministers', { path: '/bedienaren' }, function () {});
         this.route('executives', { path: '/leidinggevenden' });
         this.route(
@@ -105,6 +93,15 @@ Router.map(function () {
           this.route('edit');
         });
         this.route('new', { path: '/nieuwe-vestiging' });
+      });
+      this.route('governing-bodies', { path: '/bestuursorganen' }, function () {
+        this.route(
+          'governing-body',
+          { path: '/:governingBodyId/' },
+          function () {
+            this.route('edit');
+          }
+        );
       });
       this.route(
         'related-organizations',

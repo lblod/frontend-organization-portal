@@ -3,7 +3,7 @@ import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 
-export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverningBodyEditController extends Controller {
+export default class OrganizationsOrganizationGoverningBodiesGoverningBodyEditController extends Controller {
   @service router;
 
   get hasValidationErrors() {
@@ -15,7 +15,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
     this.reset();
 
     this.router.transitionTo(
-      'administrative-units.administrative-unit.governing-bodies.governing-body'
+      'organizations.organization.governing-bodies.governing-body'
     );
   }
 
@@ -29,7 +29,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesGoverni
       yield this.model.governingBody.save();
 
       this.router.transitionTo(
-        'administrative-units.administrative-unit.governing-bodies.governing-body',
+        'organizations.organization.governing-bodies.governing-body',
         this.model.governingBody.id
       );
     }

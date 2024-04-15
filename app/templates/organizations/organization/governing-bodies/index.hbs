@@ -1,7 +1,7 @@
 <PageHeader class="au-o-box">
   <:title>Bestuursorganen</:title>
-  <:subtitle>{{@model.administrativeUnit.abbName}}
-    ({{@model.administrativeUnit.classification.label}})</:subtitle>
+  <:subtitle>{{@model.organization.abbName}}
+    ({{@model.organization.classification.label}})</:subtitle>
   <:alert>
     <SecuredArea>
       <:edit>
@@ -45,7 +45,7 @@
     <c.body as |governingBody|>
       <td>
         <AuLink
-          @route="administrative-units.administrative-unit.governing-bodies.governing-body"
+          @route="organizations.organization.governing-bodies.governing-body"
           @model={{governingBody.id}}
         >
           {{governingBody.isTimeSpecializationOf.classification.label}}
@@ -60,7 +60,7 @@
         <:edit>
           <td>
             <AuLink
-              @route="administrative-units.administrative-unit.governing-bodies.governing-body.edit"
+              @route="organizations.organization.governing-bodies.governing-body.edit"
               @model={{governingBody.id}}
             >
               Bewerk

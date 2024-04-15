@@ -21,6 +21,15 @@
             Vestigingen
           </AuNavigationNestedLink>
         </li>
+        {{#if this.requiresGoverningBodies}}
+          <li class="au-c-list-navigation__item">
+            <AuNavigationNestedLink
+              @route="organizations.organization.governing-bodies"
+            >
+              Bestuursorganen
+            </AuNavigationNestedLink>
+          </li>
+        {{/if}}
         <li class="au-c-list-navigation__item">
           <AuNavigationLink
             @route="organizations.organization.related-organizations"
