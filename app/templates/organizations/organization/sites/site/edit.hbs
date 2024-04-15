@@ -1,33 +1,40 @@
 <div class="au-c-body-container au-c-body-container--scroll">
   <div class="au-o-box au-o-flow au-o-flow--large">
     <PageHeader>
-      <:title>Voeg vestiging toe</:title>
+      <:title>Bewerk vestiging</:title>
+      <:subtitle>
+        {{this.model.address.fullAddress}},
+        {{this.model.organization.abbName}}
+      </:subtitle>
       <:action>
-        <div class="au-u-test-right">
+        <div class="au-u-text-right">
           <AuButtonGroup class="au-c-button-group--align-right">
             <AuLink
-              @route="administrative-units.administrative-unit.sites"
+              @route="organizations.organization.sites.site"
               @skin="button-secondary"
             >
               Annuleer
             </AuLink>
             <AuButton
-              @loading={{this.createSiteTask.isRunning}}
-              @disabled={{this.createSiteTask.isRunning}}
-              @icon="add"
-              @iconAlignment="left"
+              @loading={{this.save.isRunning}}
+              @disabled={{this.save.isRunning}}
               type="submit"
-              form="new-vestiging-form"
+              form="edit-vestiging-form"
             >
-              Voeg toe
+              Opslaan
             </AuButton>
           </AuButtonGroup>
           <Error::Save @showSaveError={{this.hasValidationErrors}} />
+          <ReportWrongData />
         </div>
       </:action>
     </PageHeader>
 
-    <form id="new-vestiging-form" {{on "submit" (perform this.createSiteTask)}}>
+    <form
+      id="edit-vestiging-form"
+      aria-label="Edit site"
+      {{on "submit" (perform this.save)}}
+    >
       <div class="au-o-flow au-o-flow--large">
         <EditCard>
           <:title>Kerngegevens</:title>
@@ -37,14 +44,14 @@
                 <Item
                   @labelFor="site-type"
                   @required={{true}}
-                  @errorMessage={{@model.site.error.siteType.message}}
+                  @errorMessage={{this.model.site.error.siteType.message}}
                 >
                   <:label>Type vestiging</:label>
                   <:content as |hasError|>
                     <SiteTypeSelect
-                      @selected={{@model.site.siteType}}
-                      @onChange={{fn (mut @model.site.siteType)}}
-                      @administrativeUnitClassification={{this.model.administrativeUnit.classification}}
+                      @selected={{this.model.site.siteType}}
+                      @onChange={{fn (mut this.model.site.siteType)}}
+                      @organizationClassification={{this.model.organization.classification}}
                       @id="site-type"
                       @error={{hasError}}
                     />
@@ -66,7 +73,7 @@
                 {{/if}}
               </:left>
               <:right as |Item|>
-                <Item>
+                <Item @errorMessage={{this.isNoPrimarySiteErrorMessage}}>
                   <:label>Primair correspondentieadres</:label>
                   <:content>
                     <ul class="au-c-list-inline">
@@ -75,8 +82,8 @@
                           @label="Ja"
                           @name="is-primary-site"
                           @value={{this.isPrimarySite}}
-                          @identifier="site-true"
-                          @onChange={{fn (mut this.isPrimarySite) true}}
+                          @identifier="primary-site-true"
+                          @onChange={{this.updateIsPrimarySite true}}
                           checked={{this.isPrimarySite}}
                         />
                       </li>
@@ -85,8 +92,8 @@
                           @label="Nee"
                           @name="is-primary-site"
                           @value={{this.isPrimarySite}}
-                          @identifier="site-false"
-                          @onChange={{fn (mut this.isPrimarySite) false}}
+                          @identifier="primary-site-false"
+                          @onChange={{this.updateIsPrimarySite false}}
                           checked={{not this.isPrimarySite}}
                         />
                       </li>
@@ -99,9 +106,16 @@
         </EditCard>
 
         <Site::ContactEditCard
-          @address={{@model.address}}
-          @primaryContact={{@model.contact}}
-          @secondaryContact={{@model.secondaryContact}}
+          @address={{this.model.address}}
+          @primaryContact={{this.model.contact}}
+          @secondaryContact={{this.model.secondaryContact}}
+          @isAddressSearchEnabledInitially={{if
+            (or
+              (not this.model.address.id) this.model.address.addressRegisterUri
+            )
+            true
+            false
+          }}
         >
           <:title>Contactgegevens</:title>
         </Site::ContactEditCard>

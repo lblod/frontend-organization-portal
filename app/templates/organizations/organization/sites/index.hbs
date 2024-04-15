@@ -1,13 +1,13 @@
 <PageHeader class="au-o-box">
   <:title>Vestigingen</:title>
-  <:subtitle>{{@model.administrativeUnit.abbName}}
-    ({{@model.administrativeUnit.classification.label}})</:subtitle>
+  <:subtitle>{{@model.organization.abbName}}
+    ({{@model.organization.classification.label}})</:subtitle>
   <:action>
     {{#if (is-feature-enabled "edit-contact-data")}}
       <SecuredArea>
         <:edit>
           <AuLink
-            @route="administrative-units.administrative-unit.sites.new"
+            @route="organizations.organization.sites.new"
             @icon="add"
             @iconAlignment="left"
             @skin="button"
@@ -42,7 +42,7 @@
       <td>
         <AuLink
           @model={{site.id}}
-          @route="administrative-units.administrative-unit.sites.site"
+          @route="organizations.organization.sites.site"
         >
           {{site.address.fullAddress}}
         </AuLink>
@@ -57,7 +57,7 @@
             {{#if (is-feature-enabled "edit-contact-data")}}
               <AuLink
                 @model={{site.id}}
-                @route="administrative-units.administrative-unit.sites.site.edit"
+                @route="organizations.organization.sites.site.edit"
               >
                 Bewerk
               </AuLink>

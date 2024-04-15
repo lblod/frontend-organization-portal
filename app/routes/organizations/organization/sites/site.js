@@ -5,13 +5,11 @@ import {
   findSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
 
-export default class AdministrativeUnitsAdministrativeUnitSitesSiteRoute extends Route {
+export default class OrganizationsOrganizationSitesSiteRoute extends Route {
   @service store;
 
   async model({ siteId }) {
-    let administrativeUnit = this.modelFor(
-      'administrative-units.administrative-unit'
-    );
+    let organization = this.modelFor('organizations.organization');
 
     let site = await this.store.findRecord('site', siteId, {
       reload: true,
@@ -24,7 +22,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteRoute extends
       site,
       primaryContact: findPrimaryContact(contacts),
       secondaryContact: findSecondaryContact(contacts),
-      administrativeUnit: administrativeUnit,
+      organization,
     };
   }
 }

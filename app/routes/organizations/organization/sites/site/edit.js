@@ -7,7 +7,7 @@ import {
   findSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
 
-export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute extends Route {
+export default class OrganizationsOrganizationSitesSiteEditRoute extends Route {
   @service store;
   @service currentSession;
   @service router;
@@ -25,9 +25,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute ext
   }
 
   async model() {
-    let { site } = this.modelFor(
-      'administrative-units.administrative-unit.sites.site'
-    );
+    let { site } = this.modelFor('organizations.organization.sites.site');
 
     let contacts = await site.contacts;
 
@@ -41,9 +39,7 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute ext
       secondaryContact = createSecondaryContact(this.store);
     }
 
-    let administrativeUnit = this.modelFor(
-      'administrative-units.administrative-unit'
-    );
+    let organization = this.modelFor('organizations.organization');
 
     let address = await site.address;
 
@@ -52,8 +48,8 @@ export default class AdministrativeUnitsAdministrativeUnitSitesSiteEditRoute ext
       address,
       contact,
       secondaryContact,
-      administrativeUnit,
-      currentPrimarySite: await administrativeUnit.primarySite,
+      organization,
+      currentPrimarySite: await organization.primarySite,
     };
   }
 

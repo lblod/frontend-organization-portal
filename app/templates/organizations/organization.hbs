@@ -16,6 +16,12 @@
           </AuNavigationLink>
         </li>
         <li class="au-c-list-navigation__item">
+          {{! TODO: Is the use of the custom component sitll necessary? }}
+          <AuNavigationNestedLink @route="organizations.organization.sites">
+            Vestigingen
+          </AuNavigationNestedLink>
+        </li>
+        <li class="au-c-list-navigation__item">
           <AuNavigationLink
             @route="organizations.organization.related-organizations"
           >
