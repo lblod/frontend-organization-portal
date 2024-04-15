@@ -4,8 +4,9 @@ import {
   OCMW_ASSOCIATION_CLASSIFICATION_CODES,
 } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
-export default class AdministrativeUnitsAdministrativeUnitController extends Controller {
-  get isWorshipAdministrativeUnit() {
+export default class OrganizationsOrganizationController extends Controller {
+  // TODO: remove and replace uses by model functions
+  get isWorshipOrganization() {
     return this.isWorshipService || this.isCentralWorshipService;
   }
 
@@ -94,7 +95,7 @@ export default class AdministrativeUnitsAdministrativeUnitController extends Con
   get requiresFunctionaries() {
     return !(
       this.isDistrict ||
-      this.isWorshipAdministrativeUnit ||
+      this.isWorshipOrganization ||
       this.isPoliceZone ||
       this.isAssistanceZone ||
       this.model.isPevaMunicipality ||
