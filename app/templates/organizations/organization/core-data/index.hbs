@@ -8,21 +8,23 @@
       <:action>
         {{#if (is-feature-enabled "kbo-data-tab")}}
           {{#if this.showAbbData}}
-            <SecuredArea>
-              <:edit>
-                <div class="au-u-flex--column">
-                  <AuLink
-                    @route="organizations.organization.core-data.edit"
-                    @skin="button-secondary"
-                    @icon="pencil"
-                    @iconAlignment="left"
-                  >
-                    Bewerk
-                  </AuLink>
-                  <ReportWrongData />
-                </div>
-              </:edit>
-            </SecuredArea>
+            {{#unless @model.organization.isRepresentativeBody}}
+              <SecuredArea>
+                <:edit>
+                  <div class="au-u-flex--column">
+                    <AuLink
+                      @route="organizations.organization.core-data.edit"
+                      @skin="button-secondary"
+                      @icon="pencil"
+                      @iconAlignment="left"
+                    >
+                      Bewerk
+                    </AuLink>
+                    <ReportWrongData />
+                  </div>
+                </:edit>
+              </SecuredArea>
+            {{/unless}}
           {{else}}
             <div class="au-u-flex--column">
               <AuPill @icon="clock-rewind">
@@ -33,21 +35,24 @@
             </div>
           {{/if}}
         {{else}}
-          <SecuredArea>
-            <:edit>
-              <AuLink
-                @route="organizations.organization.core-data.edit"
-                @skin="button-secondary"
-                @icon="pencil"
-                @iconAlignment="left"
-              >
-                Bewerk
-              </AuLink>
-            </:edit>
-            <:readOnly>
-              <ReportWrongData />
-            </:readOnly>
-          </SecuredArea>
+          {{#unless @model.organization.isRepresentativeBody}}
+            <SecuredArea>
+              <:edit>
+                <AuLink
+                  @route="organizations.organization.core-data.edit"
+                  @skin="button-secondary"
+                  @icon="pencil"
+                  @iconAlignment="left"
+                >
+                  Bewerk
+                </AuLink>
+              </:edit>
+              <:readOnly>
+                <ReportWrongData />
+              </:readOnly>
+            </SecuredArea>
+          {{/unless}}
+
         {{/if}}
       </:action>
     </PageHeader>
