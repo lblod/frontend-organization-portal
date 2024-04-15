@@ -10,7 +10,7 @@ export default class OrganizationsOrganizationCoreDataRoute extends Route {
     return await this.store.findRecord('organization', organizationId, {
       reload: true,
       include: [
-        //'classification', // TODO: not in organization model
+        'classification',
         'organization-status',
         //'recognized-worship-type', // TODO: not in organization model
         'identifiers.structured-identifier',

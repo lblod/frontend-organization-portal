@@ -7,6 +7,23 @@ import {
   validateHasManyOptional,
   validateStringOptional,
 } from '../validators/schema';
+import {
+  AgbCodeList,
+  ApbCodeList,
+  AssistanceZoneCodeList,
+  CentralWorshipServiceCodeList,
+  DistrictCodeList,
+  IGSCodeList,
+  MunicipalityCodeList,
+  OcmwAssociationCodeList,
+  OCMWCodeList,
+  PoliceZoneCodeList,
+  ProvinceCodeList,
+  WorshipServiceCodeList,
+  PevaMunicipalityCodeList,
+  PevaProvinceCodeList,
+  RepresentativeOrganCodeList,
+} from '../constants/Classification';
 
 export default class OrganizationModel extends AgentModel {
   @attr name;
@@ -15,10 +32,11 @@ export default class OrganizationModel extends AgentModel {
   @attr('date') expectedEndDate;
   @attr purpose;
 
-  // TODO: generalize to organization-classification-code?
-  @belongsTo('administrative-unit-classification-code', {
+  // TODO: this does deviate from our mu-cl-resources configuration where classification is specified on the child levels
+  @belongsTo('organization-classification-code', {
     inverse: null,
     async: true,
+    polymorphic: true,
   })
   classification;
 
@@ -148,6 +166,7 @@ export default class OrganizationModel extends AgentModel {
   kboOrganization;
 
   get validationSchema() {
+    const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({
       name: validateStringOptional(),
       legalName: Joi.string().empty('').required().messages({
@@ -156,7 +175,7 @@ export default class OrganizationModel extends AgentModel {
       alternativeName: Joi.array().optional(),
       expectedEndDate: Joi.date().allow(null),
       purpose: validateStringOptional(),
-      classification: validateBelongsToOptional(),
+      classification: validateBelongsToRequired(REQUIRED_MESSAGE),
       primarySite: validateBelongsToOptional(),
       organizationStatus: validateBelongsToRequired('Selecteer een optie'),
       identifiers: validateHasManyOptional(),
@@ -173,6 +192,7 @@ export default class OrganizationModel extends AgentModel {
       wasFoundedByOrganizations: validateHasManyOptional(),
       participatesIn: validateHasManyOptional(),
       hasParticipants: validateHasManyOptional(),
+      kboOrganization: validateBelongsToOptional(),
     });
   }
 
@@ -191,5 +211,77 @@ export default class OrganizationModel extends AgentModel {
       .split(',')
       .map((s) => s.trim())
       .filter((s) => s !== '');
+  }
+
+  get isMunicipality() {
+    return this.#hasClassificationId(MunicipalityCodeList);
+  }
+
+  get isProvince() {
+    return this.#hasClassificationId(ProvinceCodeList);
+  }
+
+  get isAgb() {
+    return this.#hasClassificationId(AgbCodeList);
+  }
+
+  get isApb() {
+    return this.#hasClassificationId(ApbCodeList);
+  }
+
+  get isIgs() {
+    return this.#hasClassificationId(IGSCodeList);
+  }
+
+  get isPoliceZone() {
+    return this.#hasClassificationId(PoliceZoneCodeList);
+  }
+
+  get isAssistanceZone() {
+    return this.#hasClassificationId(AssistanceZoneCodeList);
+  }
+
+  get isWorshipAdministrativeUnit() {
+    return this.isWorshipService || this.isCentralWorshipService;
+  }
+
+  get isWorshipService() {
+    return this.#hasClassificationId(WorshipServiceCodeList);
+  }
+
+  get isCentralWorshipService() {
+    return this.#hasClassificationId(CentralWorshipServiceCodeList);
+  }
+
+  get isOCMW() {
+    return this.#hasClassificationId(OCMWCodeList);
+  }
+
+  get isOcmwAssociation() {
+    return this.#hasClassificationId(OcmwAssociationCodeList);
+  }
+
+  get isDistrict() {
+    return this.#hasClassificationId(DistrictCodeList);
+  }
+
+  get isPevaMunicipality() {
+    return this.#hasClassificationId(PevaMunicipalityCodeList);
+  }
+
+  get isPevaProvince() {
+    return this.#hasClassificationId(PevaProvinceCodeList);
+  }
+
+  get isRepresentativeOrgan() {
+    return this.#hasClassificationId(RepresentativeOrganCodeList);
+  }
+
+  get hasCentralWorshipService() {
+    return false;
+  }
+
+  #hasClassificationId(classificationIds) {
+    return classificationIds.includes(this.classification?.get('id'));
   }
 }

@@ -1,7 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import RepresentativeBodyModel from '../../../../models/representative-body';
 
 export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute extends Route {
   @service store;
@@ -25,8 +24,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       organization.id,
       params,
       organization.isProvince,
-      // TODO: use cleaner model-based method
-      organization instanceof RepresentativeBodyModel
+      organization.isRepresentativeOrgan
     );
 
     const participatesIn = await this.loadParticipatesInTask.perform(
