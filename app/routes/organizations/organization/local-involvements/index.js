@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsIndexRoute extends Route {
+export default class OrganizationsOrganizationLocalInvolvementsIndexRoute extends Route {
   @service store;
 
   queryParams = {
@@ -10,15 +10,13 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsIndex
   };
 
   async model(params) {
-    let administrativeUnit = this.modelFor(
-      'administrative-units.administrative-unit'
-    );
+    let organization = this.modelFor('organizations.organization');
 
     let query = {
-      include: 'involvement-type,administrative-unit.classification',
+      include: 'involvement-type,organization.classification',
       filter: {
         ['worship-administrative-unit']: {
-          [':id:']: administrativeUnit.id,
+          [':id:']: organization.id,
         },
       },
       sort: params.sort,
@@ -28,7 +26,7 @@ export default class AdministrativeUnitsAdministrativeUnitLocalInvolvementsIndex
     let involvements = await this.store.query('local-involvement', query);
 
     return {
-      administrativeUnit,
+      organization,
       involvements,
     };
   }

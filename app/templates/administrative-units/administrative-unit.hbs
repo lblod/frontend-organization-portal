@@ -16,15 +16,6 @@
             Kerngegevens
           </AuNavigationNestedLink>
         </li>
-        {{#if this.isWorshipAdministrativeUnit}}
-          <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink
-              @route="administrative-units.administrative-unit.local-involvements"
-            >
-              Betrokken lokale besturen
-            </AuNavigationNestedLink>
-          </li>
-        {{/if}}
 
         {{#if (eq @model.constructor.modelName "worship-service")}}
           <li class="au-c-list-navigation__item">
