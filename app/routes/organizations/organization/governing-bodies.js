@@ -2,17 +2,15 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { EXECUTIVE_ORGANEN } from 'frontend-organization-portal/models/governing-body-classification-code';
 
-export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute extends Route {
+export default class OrganizationsOrganizationGoverningBodiesRoute extends Route {
   @service store;
 
   async model() {
-    let { id: administrativeUnitId } = this.paramsFor(
-      'administrative-units.administrative-unit'
-    );
+    let { id: organizationId } = this.paramsFor('organizations.organization');
 
-    let administrativeUnit = await this.store.findRecord(
-      'administrative-unit',
-      administrativeUnitId,
+    let organization = await this.store.findRecord(
+      'organization',
+      organizationId,
       {
         reload: true,
         include:
@@ -20,7 +18,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
       }
     );
 
-    let untimedGoverningBodies = await administrativeUnit.governingBodies;
+    let untimedGoverningBodies = await organization.governingBodies;
     let governingBodies = [];
 
     for (let governingBody of untimedGoverningBodies.slice()) {
@@ -49,7 +47,7 @@ export default class AdministrativeUnitsAdministrativeUnitGoverningBodiesRoute e
     });
 
     return {
-      administrativeUnit,
+      organization,
       governingBodies: sortedTimesGoverningBodies,
     };
   }
