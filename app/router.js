@@ -52,14 +52,6 @@ Router.map(function () {
     function () {
       this.route('administrative-unit', { path: '/:id/' }, function () {
         this.route('core-data', { path: '/kerngegevens' });
-
-        this.route(
-          'related-organizations',
-          { path: '/gerelateerde-organisaties' },
-          function () {
-            this.route('edit');
-          }
-        );
       });
       this.route('new', { path: '/nieuwe-bestuurseenheid' });
     }
