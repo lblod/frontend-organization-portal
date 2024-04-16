@@ -46,13 +46,6 @@ Router.map(function () {
       });
     });
   });
-  this.route(
-    'administrative-units',
-    { path: '/bestuurseenheden' },
-    function () {
-      this.route('administrative-unit', { path: '/:id/' });
-    }
-  );
   this.route('organizations', { path: '/organisaties' }, function () {
     this.route('organization', { path: '/:id/' }, function () {
       this.route('core-data', { path: '/kerngegevens' }, function () {

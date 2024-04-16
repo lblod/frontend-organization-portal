@@ -2,7 +2,7 @@
   {{@error.message}}
   {{#if @error.context.administrativeUnit}}
     <AuLink
-      @route="administrative-units.administrative-unit"
+      @route="organizations.organization"
       @model={{@error.context.administrativeUnit.id}}
       target="_blank"
     >

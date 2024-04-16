@@ -64,6 +64,7 @@
                   </:content>
                 </Item>
               {{/if}}
+
               {{#if @model.askSensitiveInformation.nationalities}}
                 <Item>
                   <:label>Nationaliteit</:label>
@@ -82,6 +83,7 @@
                   <:content>{{this.nationalities}}</:content>
                 </Item>
               {{/if}}
+
               {{#if @model.askSensitiveInformation.gender}}
                 <Item>
                   <:label>Geslacht</:label>
@@ -94,15 +96,14 @@
                     </AuLink>
                   </:content>
                 </Item>
-
               {{else if @model.requestSensitiveInformation.gender}}
-
                 <Item>
                   <:label>Geslacht</:label>
                   <:content
                   >{{@model.requestSensitiveInformation.gender.label}}</:content>
                 </Item>
               {{/if}}
+
               {{#if @model.askSensitiveInformation.ssn}}
                 <Item>
                   <:label>Rijksregisternummer</:label>
@@ -142,7 +143,7 @@
                   <:content>
                     <AuLink
                       @model={{position.administrativeUnit.id}}
-                      @route="administrative-units.administrative-unit"
+                      @route="organizations.organization"
                     >
                       {{position.administrativeUnit.abbName}}
                     </AuLink>
@@ -158,7 +159,7 @@
                     }}
                       <AuLink
                         @model={{administrativeUnit.id}}
-                        @route="administrative-units.administrative-unit"
+                        @route="organizations.organization"
                       >
                         {{administrativeUnit.abbName}}
                         ({{administrativeUnit.classification.label}})
