@@ -51,7 +51,6 @@ Router.map(function () {
     { path: '/bestuurseenheden' },
     function () {
       this.route('administrative-unit', { path: '/:id/' });
-      this.route('new', { path: '/nieuwe-bestuurseenheid' });
     }
   );
   this.route('organizations', { path: '/organisaties' }, function () {

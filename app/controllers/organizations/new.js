@@ -26,6 +26,7 @@ export default class OrganizationsNewController extends Controller {
     );
   }
 
+  // TODO: Move logic to model
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
