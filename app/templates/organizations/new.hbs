@@ -1,9 +1,9 @@
-{{page-title "Voeg bestuurseenheid toe"}}
-{{breadcrumb "Voeg bestuurseenheid toe"}}
+{{page-title "Voeg organisatie toe"}}
+{{breadcrumb "Voeg organisatie toe"}}
 
 <div class="au-c-body-container au-c-body-container--scroll">
   <PageHeader class="au-u-margin au-u-margin-bottom-large">
-    <:title>Voeg bestuurseenheid toe</:title>
+    <:title>Voeg organisatie toe</:title>
     <:action>
       <div class="au-u-text-right">
         <AuButtonGroup class="au-c-button-group--align-right">
@@ -13,7 +13,7 @@
           <AuButton
             @loading={{this.createAdministrativeUnitTask.isRunning}}
             type="submit"
-            form="administrative-unit-creation-form"
+            form="organization-creation-form"
             @icon="add"
             @iconAlignment="left"
           >
@@ -27,8 +27,8 @@
 
   <form
     class="au-o-box au-o-flow au-o-flow--large"
-    id="administrative-unit-creation-form"
-    aria-label="administrative-unit-creation-form"
+    id="organization-creation-form"
+    aria-label="organization-creation-form"
     {{on "submit" (perform this.createAdministrativeUnitTask)}}
   >
     <EditCard @containsRequiredFields={{true}}>
@@ -36,7 +36,7 @@
       <:card as |Card|>
         <Card.Columns>
           <:left as |Item|>
-            <Item @labelFor="administrative-unit-abb-name" @required={{true}}>
+            <Item @labelFor="organization-abb-name" @required={{true}}>
               <:label>Naam</:label>
               <:content as |hasError|>
                 <TrimInput
@@ -45,7 +45,7 @@
                   @value={{@model.administrativeUnit.abbName}}
                   @onUpdate={{fn (mut @model.administrativeUnit.name)}}
                   @error={{hasError}}
-                  id="administrative-unit-abb-name"
+                  id="organization-abb-name"
                 />
               </:content>
               <:helpText>
@@ -53,7 +53,7 @@
               </:helpText>
             </Item>
             <Item
-              @labelFor="administrative-unit-legal-name"
+              @labelFor="organization-legal-name"
               @required={{true}}
               @errorMessage={{@model.administrativeUnit.error.legalName.message}}
             >
@@ -64,7 +64,7 @@
                   @value={{@model.administrativeUnit.legalName}}
                   @onUpdate={{this.setNames}}
                   @error={{hasError}}
-                  id="administrative-unit-legal-name"
+                  id="organization-legal-name"
                 />
               </:content>
               <:helpText>
@@ -72,7 +72,7 @@
               </:helpText>
             </Item>
             <Item
-              @labelFor="administrative-unit-alternative-names"
+              @labelFor="organization-alternative-names"
               @required={{false}}
             >
               <:label>Alternatieve naam</:label>
@@ -83,7 +83,7 @@
                   @value={{@model.administrativeUnit.alternativeName}}
                   @onUpdate={{this.setAlternativeNames}}
                   @error={{hasError}}
-                  id="administrative-unit-alternative-names"
+                  id="organization-alternative-names"
                 />
               </:content>
               <:helpText>

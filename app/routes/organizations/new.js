@@ -23,17 +23,21 @@ export default class OrganizationsNewRoute extends Route {
     const structuredIdentifierKBO = this.store.createRecord(
       'structured-identifier'
     );
+
     const identifierKBO = this.store.createRecord('identifier', {
       idName: ID_NAME.KBO,
       structuredIdentifier: structuredIdentifierKBO,
     });
+
     const structuredIdentifierSharepoint = this.store.createRecord(
       'structured-identifier'
     );
+
     const identifierSharepoint = this.store.createRecord('identifier', {
       idName: ID_NAME.SHAREPOINT,
       structuredIdentifier: structuredIdentifierSharepoint,
     });
+
     return {
       administrativeUnit: this.store.createRecord('administrative-unit'),
       centralWorshipService: this.store.createRecord('central-worship-service'),
