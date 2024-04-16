@@ -69,12 +69,14 @@ Router.map(function () {
       this.route('core-data', { path: '/kerngegevens' }, function () {
         this.route('edit');
       });
+
       this.route('sites', { path: '/vestigingen' }, function () {
         this.route('site', { path: '/:siteId/' }, function () {
           this.route('edit');
         });
         this.route('new', { path: '/nieuwe-vestiging' });
       });
+
       this.route('governing-bodies', { path: '/bestuursorganen' }, function () {
         this.route(
           'governing-body',
@@ -84,8 +86,11 @@ Router.map(function () {
           }
         );
       });
+
       this.route('ministers', { path: '/bedienaren' }, function () {});
+
       this.route('executives', { path: '/leidinggevenden' });
+
       this.route(
         'local-involvements',
         { path: '/betrokken-lokale-besturen' },
@@ -93,6 +98,7 @@ Router.map(function () {
           this.route('edit');
         }
       );
+
       this.route(
         'change-events',
         { path: '/veranderingsgebeurtenissen' },
@@ -103,11 +109,10 @@ Router.map(function () {
           this.route('new', { path: '/nieuw' });
         }
       );
+
       this.route(
         'related-organizations',
-        {
-          path: '/gerelateerde-organisaties',
-        },
+        { path: '/gerelateerde-organisaties' },
         function () {
           this.route('edit');
         }
