@@ -20,6 +20,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   @tracked sort = 'name';
 
+  // TODO:  move logic to model
   get classificationCodes() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
