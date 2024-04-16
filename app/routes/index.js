@@ -5,6 +5,7 @@ export default class IndexRoute extends Route {
   @service session;
   @service router;
   @service role;
+
   beforeModel(transition) {
     this.session.requireAuthentication(transition, 'login');
     if (!this.role.activeRole) {
