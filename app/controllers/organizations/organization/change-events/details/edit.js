@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 
-export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEditController extends Controller {
+export default class OrganizationsOrganizationChangeEventsDetailsEditController extends Controller {
   @service router;
 
   get hasValidationErrors() {
@@ -49,14 +49,14 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
       }
 
       this.router.transitionTo(
-        'administrative-units.administrative-unit.change-events.details',
+        'organizations.organization.change-events.details',
         changeEvent.id
       );
     }
   }
 
   reset() {
-    this.model.administrativeUnit.reset();
+    this.model.organization.reset();
     this.model.changeEvent.reset();
     this.model.decision?.reset();
     this.model.decisionActivity?.rollbackAttributes();

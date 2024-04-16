@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class AdministrativeUnitsAdministrativeUnitChangeEventsIndexRoute extends Route {
+export default class OrganizationsOrganizationChangeEventsIndexRoute extends Route {
   @service store;
 
   queryParams = {
@@ -11,12 +11,10 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsIndexRoute
   };
 
   async model(params) {
-    let { id: administrativeUnitId } = this.paramsFor(
-      'administrative-units.administrative-unit'
-    );
+    let { id: organizationId } = this.paramsFor('organizations.organization');
 
     let changeEventResults = await this.store.query('change-event-result', {
-      'filter[resulting-organization][:id:]': administrativeUnitId,
+      'filter[resulting-organization][:id:]': organizationId,
       include: ['result-from.type', 'status', 'resulting-organization'].join(),
       page: {
         number: params.page,
@@ -26,9 +24,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsIndexRoute
     });
 
     return {
-      administrativeUnit: this.modelFor(
-        'administrative-units.administrative-unit'
-      ),
+      organization: this.modelFor('organizations.organization'),
       changeEventResults,
     };
   }

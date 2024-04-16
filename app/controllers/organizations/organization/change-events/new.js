@@ -25,7 +25,7 @@ const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   // statuses based on the resulting organization
 };
 
-export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewController extends Controller {
+export default class OrganizationsOrganizationChangeEventsNewController extends Controller {
   @service router;
   @service store;
 
@@ -40,12 +40,12 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
   }
 
   get classificationCodes() {
-    return [this.model.administrativeUnit.classification.get('id')];
+    return [this.model.organization.classification.get('id')];
   }
 
   // TODO: replace this with a `url-for` helper.
-  get administrativeUnitCreationUrl() {
-    return this.router.urlFor('administrative-units.new');
+  get organizationCreationUrl() {
+    return this.router.urlFor('organizations.new');
   }
 
   @action
@@ -65,8 +65,8 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
    * organization is added as a new one.
    * If the change event is being created for a central worship service, the
    * provided arguments are also removed as possible resulting organizations.
-   * @param {AdministrativeUnitModel} previousOrganization
-   * @param {AdministrativeUnitModel} organization
+   * @param {OrganizationModel} previousOrganization
+   * @param {OrganizationModel} organization
    */
   @action
   updateOriginalOrganizations(previousOrganization, organization) {
@@ -86,7 +86,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
     // organisation than the original ones. Therefore reset the value of the
     // selected resulting organisation if this is the same as the newly selected
     // original organisation
-    if (this.model.administrativeUnit.isCentralWorshipService) {
+    if (this.model.organization.isCentralWorshipService) {
       this.model.changeEvent.removeResultingOrganization(previousOrganization);
       this.model.changeEvent.removeResultingOrganization(organization);
       this.selectedResultingOrganization = null;
@@ -101,16 +101,16 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
    * If the change event concerns an organization which is *not* a central
    * worship service the organization is also removed as potential resulting
    * organization.
-   * @param {AdministrativeUnitModel} organization - the organization that
+   * @param {OrganizationModel} organization - the organization that
    * should be removed as original organization
    */
   @action
   removeOriginalOrganization(organization) {
-    if (organization && this.model.administrativeUnit !== organization) {
+    if (organization && this.model.organization !== organization) {
       this.model.changeEvent.removeOriginalOrganization(organization);
 
       if (
-        !this.model.administrativeUnit.isCentralWorshipService &&
+        !this.model.organization.isCentralWorshipService &&
         this.model.changeEvent.hasAsResultingOrganization(organization)
       ) {
         this.model.changeEvent.removeResultingOrganization(organization);
@@ -125,7 +125,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
    * Note this currently means that any previously specified resulting
    * organization is removed as the form only supports specifying one resulting
    * organization.
-   * @param {AdministrativeUnitModel} organization - the organization to be
+   * @param {OrganizationModel} organization - the organization to be
    * added as resulting organization
    */
   @action
@@ -139,7 +139,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
     event.preventDefault();
 
     const {
-      administrativeUnit: currentOrganization,
+      organization: currentOrganization,
       changeEvent,
       decision,
       decisionActivity,
@@ -252,7 +252,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
       yield changeEvent.save();
 
       this.router.transitionTo(
-        'administrative-units.administrative-unit.change-events.details',
+        'organizations.organization.change-events.details',
         changeEvent.id
       );
     }
@@ -262,7 +262,7 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewControl
     this.model.changeEvent.reset();
     this.model.decision?.reset();
     this.model.decisionActivity?.rollbackAttributes();
-    this.model.administrativeUnit.reset();
+    this.model.organization.reset();
     this.selectedResultingOrganization = null;
   }
 }

@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 
-export default class AdministrativeUnitsAdministrativeUnitChangeEventsIndexController extends Controller {
+export default class OrganizationsOrganizationChangeEventsIndexController extends Controller {
   queryParams = ['page', 'size', 'sort'];
 
   @tracked page = 0;

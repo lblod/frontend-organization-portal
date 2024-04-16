@@ -1,16 +1,14 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsRoute extends Route {
+export default class OrganizationsOrganizationChangeEventsDetailsRoute extends Route {
   @service store;
 
   async model() {
-    let administrativeUnit = this.modelFor(
-      'administrative-units.administrative-unit'
-    );
+    let organization = this.modelFor('organizations.organization');
 
     let { changeEventId } = this.paramsFor(
-      'administrative-units.administrative-unit.change-events.details'
+      'organizations.organization.change-events.details'
     );
     let changeEvent = await this.store.findRecord(
       'change-event',
@@ -36,12 +34,12 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsRou
     )[0];
 
     let currentChangeEventResult = await findCurrentChangeEventResult(
-      administrativeUnit,
+      organization,
       changeEvent
     );
 
     return {
-      administrativeUnit,
+      organization,
       changeEvent,
       currentChangeEventResult,
       firstResultingOrganization,
