@@ -5,7 +5,6 @@
   model=this.model.id
 }}
 
-{{! TODO: Extend sidebar with all options, cf. administrative-unit.hbs }}
 <SidebarContainer>
   <:sidebar>
     <div class="au-c-sidebar">
@@ -16,7 +15,7 @@
           </AuNavigationLink>
         </li>
         <li class="au-c-list-navigation__item">
-          {{! TODO: Is the use of the custom component sitll necessary? }}
+          {{! TODO: Is the use of the custom component sitll necessary? It was used in old `administrative-units` route, but not in old `organizations` route}}
           <AuNavigationNestedLink @route="organizations.organization.sites">
             Vestigingen
           </AuNavigationNestedLink>
