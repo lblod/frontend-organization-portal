@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class AdministrativeUnitsAdministrativeUnitExecutivesRoute extends Route {
+export default class OrganizationsOrganizationExecutivesRoute extends Route {
   @service store;
 
   queryParams = {
@@ -10,24 +10,22 @@ export default class AdministrativeUnitsAdministrativeUnitExecutivesRoute extend
   };
 
   async model(params) {
-    let { id: administrativeUnitId } = this.paramsFor(
-      'administrative-units.administrative-unit'
-    );
+    let { id: organizationId } = this.paramsFor('organizations.organization');
 
-    let administrativeUnit = await this.store.findRecord(
-      'administrative-unit',
-      administrativeUnitId
+    let organization = await this.store.findRecord(
+      'organization',
+      organizationId
     );
 
     let functionaries = await this.store.query('functionary', {
       'filter[board-position][governing-bodies][is-time-specialization-of][administrative-unit][:id:]':
-        administrativeUnitId,
+        organizationId,
       sort: params.sort,
       page: { number: params.number, size: params.size },
     });
 
     return {
-      administrativeUnit,
+      organization,
       functionaries,
     };
   }

@@ -2,14 +2,14 @@
 
 {{breadcrumb
   "Leidinggevenden"
-  route="administrative-units.administrative-unit.executives"
-  model=(params-for "administrative-units.administrative-unit" param="id")
+  route="organizations.organization.executives"
+  model=(params-for "organizations.organization" param="id")
 }}
 
 <PageHeader class="au-o-box">
   <:title>Leidinggevenden</:title>
-  <:subtitle>{{@model.administrativeUnit.abbName}}
-    ({{@model.administrativeUnit.classification.label}})</:subtitle>
+  <:subtitle>{{@model.organization.abbName}}
+    ({{@model.organization.classification.label}})</:subtitle>
 </PageHeader>
 
 <AuDataTable
