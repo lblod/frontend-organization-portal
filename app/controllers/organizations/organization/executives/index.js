@@ -1,7 +1,8 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-export default class AdministrativeUnitsAdministrativeUnitExecutivesIndexController extends Controller {
+
+export default class OrganizationsOrganizationExecutivesIndexController extends Controller {
   queryParams = ['page', 'sort', 'size'];
 
   size = 25;

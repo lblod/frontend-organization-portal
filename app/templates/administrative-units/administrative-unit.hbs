@@ -16,15 +16,6 @@
             Kerngegevens
           </AuNavigationNestedLink>
         </li>
-        {{#if this.requiresFunctionaries}}
-          <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink
-              @route="administrative-units.administrative-unit.executives"
-            >
-              Leidinggevenden
-            </AuNavigationNestedLink>
-          </li>
-        {{/if}}
         {{#unless this.isProvince}}
           <li class="au-c-list-navigation__item">
             <AuNavigationNestedLink

@@ -48,6 +48,15 @@
             </AuNavigationNestedLink>
           </li>
         {{/if}}
+        {{#if this.requiresFunctionaries}}
+          <li class="au-c-list-navigation__item">
+            <AuNavigationNestedLink
+              @route="organizations.organization.executives"
+            >
+              Leidinggevenden
+            </AuNavigationNestedLink>
+          </li>
+        {{/if}}
         <li class="au-c-list-navigation__item">
           <AuNavigationLink
             @route="organizations.organization.related-organizations"
