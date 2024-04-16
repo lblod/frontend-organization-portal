@@ -1,13 +1,11 @@
 <PageHeader class="au-o-box">
   <:title>Veranderingsgebeurtenissen</:title>
-  <:subtitle>{{@model.administrativeUnit.abbName}}
-    ({{@model.administrativeUnit.classification.label}})</:subtitle>
+  <:subtitle>{{@model.organization.abbName}}
+    ({{@model.organization.classification.label}})</:subtitle>
   <:action>
     <SecuredArea>
       <:edit>
-        <Button::New
-          @route="administrative-units.administrative-unit.change-events.new"
-        />
+        <Button::New @route="organizations.organization.change-events.new" />
       </:edit>
       <:readOnly>
         <ReportWrongData />
@@ -56,7 +54,7 @@
       {{#let changeEventResult.resultFrom as |changeEvent|}}
         <td>
           <AuLink
-            @route="administrative-units.administrative-unit.change-events.details"
+            @route="organizations.organization.change-events.details"
             @model={{changeEvent.id}}
           >
             {{changeEvent.type.label}}
@@ -76,7 +74,7 @@
           <:edit>
             <td>
               <AuLink
-                @route="administrative-units.administrative-unit.change-events.details.edit"
+                @route="organizations.organization.change-events.details.edit"
                 @model={{changeEvent.id}}
               >
                 Bewerk

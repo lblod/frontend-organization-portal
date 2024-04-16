@@ -57,6 +57,15 @@
             </AuNavigationNestedLink>
           </li>
         {{/if}}
+        {{#unless this.isProvince}}
+          <li class="au-c-list-navigation__item">
+            <AuNavigationNestedLink
+              @route="organizations.organization.change-events"
+            >
+              Veranderingsgebeurtenissen
+            </AuNavigationNestedLink>
+          </li>
+        {{/unless}}
         <li class="au-c-list-navigation__item">
           <AuNavigationLink
             @route="organizations.organization.related-organizations"

@@ -5,13 +5,13 @@
         Veranderingsgebeurtenis:
         {{@model.changeEvent.type.label}}
       </:title>
-      <:subtitle>{{@model.administrativeUnit.abbName}}
-        ({{@model.administrativeUnit.classification.label}})</:subtitle>
+      <:subtitle>{{@model.organization.abbName}}
+        ({{@model.organization.classification.label}})</:subtitle>
       <:action>
         <SecuredArea>
           <:edit>
             <Button::Edit
-              @route="administrative-units.administrative-unit.change-events.details.edit"
+              @route="organizations.organization.change-events.details.edit"
             />
           </:edit>
           <:readOnly>
@@ -109,7 +109,7 @@
                   <:label>Betrokken organisatie</:label>
                   <:content>
                     <AuLink
-                      @route="administrative-units.administrative-unit"
+                      @route="organizations.organization"
                       @model={{organization.id}}
                     >
                       {{organization.abbName}}
@@ -124,7 +124,7 @@
                   <:label>Resulterende organisatie</:label>
                   <:content>
                     <AuLink
-                      @route="administrative-units.administrative-unit"
+                      @route="organizations.organization"
                       @model={{@model.firstResultingOrganization.id}}
                     >
                       {{@model.firstResultingOrganization.name}}

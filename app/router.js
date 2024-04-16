@@ -54,16 +54,6 @@ Router.map(function () {
         this.route('core-data', { path: '/kerngegevens' });
 
         this.route(
-          'change-events',
-          { path: '/veranderingsgebeurtenissen' },
-          function () {
-            this.route('details', { path: '/:changeEventId' }, function () {
-              this.route('edit');
-            });
-            this.route('new', { path: '/nieuw' });
-          }
-        );
-        this.route(
           'related-organizations',
           { path: '/gerelateerde-organisaties' },
           function () {
@@ -101,6 +91,16 @@ Router.map(function () {
         { path: '/betrokken-lokale-besturen' },
         function () {
           this.route('edit');
+        }
+      );
+      this.route(
+        'change-events',
+        { path: '/veranderingsgebeurtenissen' },
+        function () {
+          this.route('details', { path: '/:changeEventId' }, function () {
+            this.route('edit');
+          });
+          this.route('new', { path: '/nieuw' });
         }
       );
       this.route(

@@ -16,15 +16,6 @@
             Kerngegevens
           </AuNavigationNestedLink>
         </li>
-        {{#unless this.isProvince}}
-          <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink
-              @route="administrative-units.administrative-unit.change-events"
-            >
-              Veranderingsgebeurtenissen
-            </AuNavigationNestedLink>
-          </li>
-        {{/unless}}
         {{!         Links temporarily hidden until page is completed
         <li class="au-c-list-navigation__item">
           <AuNavigationNestedLink>

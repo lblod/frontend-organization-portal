@@ -1,8 +1,8 @@
 {{page-title "Nieuwe veranderingsgebeurtenis"}}
 {{breadcrumb
   "Nieuwe veranderingsgebeurtenis"
-  route="administrative-units.administrative-unit.change-events.new"
-  model=(params-for "administrative-units.administrative-unit" param="id")
+  route="organizations.organization.change-events.new"
+  model=(params-for "organizations.organization" param="id")
 }}
 
 <div class="au-c-body-container au-c-body-container--scroll">
@@ -12,13 +12,13 @@
   >
     <PageHeader>
       <:title>Voeg veranderingsgebeurtenis toe</:title>
-      <:subtitle>{{@model.administrativeUnit.abbName}}
-        ({{@model.administrativeUnit.classification.label}})</:subtitle>
+      <:subtitle>{{@model.organization.abbName}}
+        ({{@model.organization.classification.label}})</:subtitle>
       <:action>
         <div class="au-u-text-right">
           <AuButtonGroup class="au-c-button-group--align-right">
             <AuLink
-              @route="administrative-units.administrative-unit.change-events"
+              @route="organizations.organization.change-events"
               @skin="button-secondary"
             >
               Annuleer
@@ -51,7 +51,7 @@
                 <ChangeEventTypeSelect
                   @id="change-event-type"
                   @selected={{@model.changeEvent.type}}
-                  @administrativeUnitClassification={{@model.administrativeUnit.classification}}
+                  @administrativeUnitClassification={{@model.organization.classification}}
                   @onChange={{fn (mut @model.changeEvent.type)}}
                   @error={{hasError}}
                 />
@@ -91,11 +91,11 @@
           <:right as |Item|>
             {{#if
               (and
-                (not @model.administrativeUnit.isAgb)
-                (not @model.administrativeUnit.isApb)
-                (not @model.administrativeUnit.isIgs)
-                (not @model.administrativeUnit.isPoliceZone)
-                (not @model.administrativeUnit.isAssistanceZone)
+                (not @model.organization.isAgb)
+                (not @model.organization.isApb)
+                (not @model.organization.isIgs)
+                (not @model.organization.isPoliceZone)
+                (not @model.organization.isAssistanceZone)
                 @model.changeEvent.requiresDecisionInformation
               )
             }}
@@ -122,8 +122,8 @@
                 <:label>
                   {{#if
                     (and
-                      (not @model.administrativeUnit.isAgb)
-                      (not @model.administrativeUnit.isApb)
+                      (not @model.organization.isAgb)
+                      (not @model.organization.isApb)
                       @model.changeEvent.isCityChangeEvent
                     )
                   }}
@@ -172,15 +172,12 @@
                 @model.changeEvent.originalOrganizations
                 as |organization|
               }}
-                <Item @required={{(eq @model.administrativeUnit organization)}}>
+                <Item @required={{(eq @model.organization organization)}}>
                   <:label>Betrokken organisatie</:label>
                   <:content>
                     <div class="flex items-center">
                       <AdministrativeUnitSelect
-                        @disabled={{eq
-                          this.model.administrativeUnit
-                          organization
-                        }}
+                        @disabled={{eq this.model.organization organization}}
                         @selected={{organization}}
                         @onChange={{fn
                           this.updateOriginalOrganizations
@@ -193,7 +190,7 @@
                       {{#if
                         (and
                           (gt @model.changeEvent.originalOrganizations.length 1)
-                          (not (eq this.model.administrativeUnit organization))
+                          (not (eq this.model.organization organization))
                         )
                       }}
                         <AuButton
@@ -286,7 +283,7 @@
                 >
                   <:label>Resulterende organisatie</:label>
                   <:content as |hasError|>
-                    {{#if @model.administrativeUnit.isCentralWorshipService}}
+                    {{#if @model.organization.isCentralWorshipService}}
                       <AdministrativeUnitSelect
                         @selected={{this.selectedResultingOrganization}}
                         @onChange={{this.updateResultingOrganizations}}
@@ -295,9 +292,7 @@
                         @error={{hasError}}
                       />
                       <div class="au-u-margin-top-tiny">
-                        <AuLinkExternal
-                          href={{this.administrativeUnitCreationUrl}}
-                        >
+                        <AuLinkExternal href={{this.organizationCreationUrl}}>
                           Maak resulterende organisatie aan
                         </AuLinkExternal>
                         indien deze nog niet bestaat.

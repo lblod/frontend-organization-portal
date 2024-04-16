@@ -1,8 +1,8 @@
 {{page-title "Bewerk veranderingsgebeurtenis"}}
 {{breadcrumb
   "Bewerk veranderingsgebeurtenis"
-  route="administrative-units.administrative-unit.change-events.details.edit"
-  models=(array @model.administrativeUnit.id @model.changeEvent.id)
+  route="organizations.organization.change-events.details.edit"
+  models=(array @model.organization.id @model.changeEvent.id)
 }}
 
 <div class="au-c-body-container au-c-body-container--scroll">
@@ -15,13 +15,13 @@
         Bewerk veranderingsgebeurtenis:
         {{@model.changeEvent.type.label}}
       </:title>
-      <:subtitle>{{@model.administrativeUnit.abbName}}
-        ({{@model.administrativeUnit.classification.label}})</:subtitle>
+      <:subtitle>{{@model.organization.abbName}}
+        ({{@model.organization.classification.label}})</:subtitle>
       <:action>
         <div class="au-u-text-right">
           <AuButtonGroup class="au-c-button-group--align-right">
             <AuLink
-              @route="administrative-units.administrative-unit.change-events.details"
+              @route="organizations.organization.change-events.details"
               @model={{@model.changeEvent.id}}
               @skin="button-secondary"
             >
@@ -83,11 +83,11 @@
           <:right as |Item|>
             {{#if
               (and
-                (not @model.administrativeUnit.isAgb)
-                (not @model.administrativeUnit.isApb)
-                (not @model.administrativeUnit.isIgs)
-                (not @model.administrativeUnit.isPoliceZone)
-                (not @model.administrativeUnit.isAssistanceZone)
+                (not @model.organization.isAgb)
+                (not @model.organization.isApb)
+                (not @model.organization.isIgs)
+                (not @model.organization.isPoliceZone)
+                (not @model.organization.isAssistanceZone)
                 @model.changeEvent.requiresDecisionInformation
               )
             }}

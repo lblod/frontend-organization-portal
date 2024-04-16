@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewRoute extends Route {
+export default class OrganizationsOrganizationChangeEventsNewRoute extends Route {
   @service currentSession;
   @service router;
   @service store;
@@ -15,17 +15,15 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsNewRoute e
   }
 
   async model() {
-    let administrativeUnit = this.modelFor(
-      'administrative-units.administrative-unit'
-    );
+    let organization = this.modelFor('organizations.organization');
     let changeEvent = this.store.createRecord('change-event', {
-      originalOrganizations: [administrativeUnit],
+      originalOrganizations: [organization],
     });
     let decision = this.store.createRecord('decision');
     let decisionActivity = this.store.createRecord('decisionActivity');
 
     return {
-      administrativeUnit,
+      organization,
       changeEvent,
       decision,
       decisionActivity,

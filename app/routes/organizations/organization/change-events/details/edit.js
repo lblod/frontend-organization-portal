@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 
-export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEditRoute extends Route {
+export default class OrganizationsOrganizationChangeEventsDetailsEditRoute extends Route {
   @service currentSession;
   @service router;
   @service store;
@@ -16,17 +16,16 @@ export default class AdministrativeUnitsAdministrativeUnitChangeEventsDetailsEdi
   }
 
   async model() {
-    let { changeEvent, administrativeUnit, ...detailsPageModel } =
-      this.modelFor(
-        'administrative-units.administrative-unit.change-events.details'
-      );
+    let { changeEvent, organization, ...detailsPageModel } = this.modelFor(
+      'organizations.organization.change-events.details'
+    );
 
     let changeEventType = await changeEvent.type;
     let canAddDecisionInformation =
       changeEventType.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED;
 
     let model = {
-      administrativeUnit,
+      organization,
       ...detailsPageModel,
       changeEvent,
     };
