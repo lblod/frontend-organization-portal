@@ -16,16 +16,6 @@
             Kerngegevens
           </AuNavigationNestedLink>
         </li>
-
-        {{#if (eq @model.constructor.modelName "worship-service")}}
-          <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink
-              @route="administrative-units.administrative-unit.ministers"
-            >
-              Bedienaren
-            </AuNavigationNestedLink>
-          </li>
-        {{/if}}
         {{#if this.requiresFunctionaries}}
           <li class="au-c-list-navigation__item">
             <AuNavigationNestedLink

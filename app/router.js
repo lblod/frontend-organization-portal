@@ -53,7 +53,6 @@ Router.map(function () {
       this.route('administrative-unit', { path: '/:id/' }, function () {
         this.route('core-data', { path: '/kerngegevens' });
 
-        this.route('ministers', { path: '/bedienaren' }, function () {});
         this.route('executives', { path: '/leidinggevenden' });
 
         this.route(
@@ -97,7 +96,8 @@ Router.map(function () {
           }
         );
       });
-      // TODO: put ministers and executives here
+      this.route('ministers', { path: '/bedienaren' }, function () {});
+      // TODO: put executives here
       this.route(
         'local-involvements',
         { path: '/betrokken-lokale-besturen' },
