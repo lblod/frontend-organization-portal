@@ -12,7 +12,7 @@ export default class OrganizationsOrganizationCoreDataRoute extends Route {
       include: [
         'classification',
         'organization-status',
-        //'recognized-worship-type', // TODO: not in organization model
+        //'recognized-worship-type', // TODO: not in organization model, was also commented in original administrative-unit route
         'identifiers.structured-identifier',
         'primary-site.address',
         'primary-site.contacts',
