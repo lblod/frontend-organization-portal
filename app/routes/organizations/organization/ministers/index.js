@@ -1,17 +1,15 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class AdministrativeUnitsAdministrativeUnitMinistersIndexRoute extends Route {
+export default class OrganizationsOrganizationMinistersIndexRoute extends Route {
   @service store;
 
   async model() {
-    let { id: administrativeUnitId } = this.paramsFor(
-      'administrative-units.administrative-unit'
-    );
+    let { id: organizationId } = this.paramsFor('organizations.organization');
 
-    let administrativeUnit = await this.store.findRecord(
+    let organization = await this.store.findRecord(
       'worship-service',
-      administrativeUnitId,
+      organizationId,
       {
         reload: true,
         include: [
@@ -21,7 +19,7 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersIndexRoute ex
       }
     );
 
-    let ministerPositions = await administrativeUnit.ministerPositions;
+    let ministerPositions = await organization.ministerPositions;
     let ministers = [];
 
     for (const ministerPosition of ministerPositions.slice()) {
@@ -32,7 +30,7 @@ export default class AdministrativeUnitsAdministrativeUnitMinistersIndexRoute ex
     }
 
     return {
-      administrativeUnit: administrativeUnit,
+      organization,
       ministers,
     };
   }
