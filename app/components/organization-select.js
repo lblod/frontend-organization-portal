@@ -1,16 +1,16 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 import { timeout, task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 
-import { action } from '@ember/object';
-export default class AdministrativeUnitSelectComponent extends Component {
+export default class OrganizationSelectComponent extends Component {
   @service store;
   @tracked loadedRecord;
 
-  municipalities = trackedTask(this, this.loadAdministrativeUnitsTask, () => [
+  municipalities = trackedTask(this, this.loadOrganizationsTask, () => [
     this.args.selectedProvince,
   ]);
 
@@ -23,7 +23,7 @@ export default class AdministrativeUnitSelectComponent extends Component {
   }
 
   @task
-  *loadAdministrativeUnitsTask(searchParams = '') {
+  *loadOrganizationsTask(searchParams = '') {
     yield Promise.resolve();
     yield timeout(500);
 
@@ -114,7 +114,7 @@ export default class AdministrativeUnitSelectComponent extends Component {
     }
   }
 
-  get selectedAdministrativeUnit() {
+  get selectedOrganization() {
     if (typeof this.args.selected === 'string') {
       return this.loadedRecord;
     }

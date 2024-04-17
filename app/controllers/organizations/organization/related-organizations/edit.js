@@ -126,7 +126,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
       yield organization.save();
 
       this.router.transitionTo(
-        'organizations.organiztion.related-organizations',
+        'organizations.organization.related-organizations',
         organization.id
       );
     }

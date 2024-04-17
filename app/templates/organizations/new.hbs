@@ -364,7 +364,7 @@
                   >
                     <:label>Gemeente</:label>
                     <:content as |hasError|>
-                      <AdministrativeUnitSelect
+                      <OrganizationSelect
                         @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                         @onChange={{this.setRelation}}
                         @classificationCodes={{this.classificationCodes}}
@@ -398,7 +398,7 @@
                     >
                       <:label>Werd opgericht door</:label>
                       <:content as |hasError|>
-                        <AdministrativeUnitSelect
+                        <OrganizationSelect
                           @disabled={{true}}
                           @selected={{@model.administrativeUnit.isSubOrganizationOf}}
                           @onChange={{this.setRelation}}
@@ -513,7 +513,7 @@
                       >
                         <:label>Gemeente</:label>
                         <:content as |hasError|>
-                          <AdministrativeUnitSelect
+                          <OrganizationSelect
                             @selected={{@model.administrativeUnit.isAssociatedWith}}
                             @selectedProvince={{@model.administrativeUnit.isSubOrganizationOf}}
                             @allowClear={{true}}
