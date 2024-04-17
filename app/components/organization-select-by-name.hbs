@@ -6,12 +6,12 @@
     @noMatchesMessage="Geen resultaten"
     @searchMessage="Typ om te zoeken"
     @searchField="name"
-    @search={{perform this.loadAdministrativeUnitsTask}}
+    @search={{perform this.loadOrganizationsTask}}
     @selected={{@selected}}
     @onChange={{@onChange}}
     @triggerId={{@id}}
     as |name|
   >
-      {{name}}
+    {{name}}
   </PowerSelect>
 </div>
