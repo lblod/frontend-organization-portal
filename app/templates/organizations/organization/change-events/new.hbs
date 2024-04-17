@@ -176,7 +176,7 @@
                   <:label>Betrokken organisatie</:label>
                   <:content>
                     <div class="flex items-center">
-                      <AdministrativeUnitSelect
+                      <OrganizationSelect
                         @disabled={{eq this.model.organization organization}}
                         @selected={{organization}}
                         @onChange={{fn
@@ -230,7 +230,7 @@
                   <:label>Betrokken organisatie</:label>
                   <:content as |hasError|>
                     <div class="flex items-center">
-                      <AdministrativeUnitSelect
+                      <OrganizationSelect
                         @onChange={{this.updateOriginalOrganizations}}
                         @classificationCodes={{this.classificationCodes}}
                         @filter={{this.filterSelectedOriginalOrganizations}}
@@ -284,7 +284,7 @@
                   <:label>Resulterende organisatie</:label>
                   <:content as |hasError|>
                     {{#if @model.organization.isCentralWorshipService}}
-                      <AdministrativeUnitSelect
+                      <OrganizationSelect
                         @selected={{this.selectedResultingOrganization}}
                         @onChange={{this.updateResultingOrganizations}}
                         @classificationCodes={{this.classificationCodes}}

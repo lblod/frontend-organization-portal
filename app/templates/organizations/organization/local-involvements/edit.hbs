@@ -63,7 +63,7 @@
         <c.body as |involvement|>
           <td>
             {{#let involvement.error.organization.message as |errorMessage|}}
-              <AdministrativeUnitSelect
+              <OrganizationSelect
                 @selected={{involvement.organization}}
                 @onChange={{fn (mut involvement.organization)}}
                 @allowClear={{involvement.isNew}}
@@ -74,7 +74,7 @@
               >
                 {{organization.abbName}}
                 ({{organization.classification.label}})
-              </AdministrativeUnitSelect>
+              </OrganizationSelect>
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
               {{/if}}

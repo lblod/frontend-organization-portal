@@ -27,7 +27,7 @@
         >
           <:label>Gemeente</:label>
           <:content as |hasError|>
-            <AdministrativeUnitSelect
+            <OrganizationSelect
               @selected={{@model.organization.isAssociatedWith}}
               @selectedProvince={{@model.organization.isSubOrganizationOf}}
               @onChange={{@updateRelatedSubOrg}}

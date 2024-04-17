@@ -8,29 +8,27 @@
     @searchMessage="Typ om te zoeken"
     @searchField="name"
     @onChange={{this.triggerChange}}
-    @search={{perform this.loadAdministrativeUnitsTask}}
-    @selected={{this.selectedAdministrativeUnit}}
-    as |administrativeUnit|
+    @search={{perform this.loadOrganizationsTask}}
+    @selected={{this.selectedOrganization}}
+    as |organization|
   >
-    {{administrativeUnit.abbName}}
+    {{organization.abbName}}
 
     {{#if
       (and
         (not
           (or
             (eq
-              administrativeUnit.classification.label
+              organization.classification.label
               "Centraal bestuur van de eredienst"
             )
-            (eq
-              administrativeUnit.classification.label "Bestuur van de eredienst"
-            )
+            (eq organization.classification.label "Bestuur van de eredienst")
           )
         )
-        administrativeUnit.classification
+        organization.classification
       )
     }}
-      ({{administrativeUnit.classification.label}})
+      ({{organization.classification.label}})
     {{/if}}
   </PowerSelect>
 </div>

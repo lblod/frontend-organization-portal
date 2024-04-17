@@ -30,7 +30,7 @@
           {{organization.classification.label}}
         </td>
         <td>
-          <AdministrativeUnitSelect
+          <OrganizationSelect
             @selected={{organization}}
             @onChange={{fn @updateHasParticipants organization}}
             @classificationCodes={{@classificationCodesOcmwAssociationParticipants}}
