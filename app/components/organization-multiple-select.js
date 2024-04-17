@@ -6,7 +6,7 @@ export default class OrganizationMultipleSelectComponent extends Component {
   @service store;
 
   @restartableTask
-  *loadAdministrativeUnitMultipleTask(searchParams = '') {
+  *loadOrganizationsMultipleTask(searchParams = '') {
     yield timeout(500);
 
     const query = {
