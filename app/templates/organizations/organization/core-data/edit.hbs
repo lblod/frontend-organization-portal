@@ -428,7 +428,7 @@
                       >
                         <:label>Heeft als participanten</:label>
                         <:content as |hasError|>
-                          <AdministrativeUnitMultipleSelect
+                          <OrganizationMultipleSelect
                             @selected={{@model.organization.hasParticipants}}
                             @onChange={{this.setHasParticipants}}
                             @classificationCodes={{this.classificationCodesIgsParticipants}}
@@ -448,7 +448,7 @@
                       >
                         <:label>Werd opgericht door</:label>
                         <:content as |hasError|>
-                          <AdministrativeUnitMultipleSelect
+                          <OrganizationMultipleSelect
                             @disabled={{true}}
                             @selected={{@model.organization.wasFoundedByOrganizations}}
                             @onChange={{this.setRelation}}
@@ -466,7 +466,7 @@
                       >
                         <:label>Heeft als participanten</:label>
                         <:content as |hasError|>
-                          <AdministrativeUnitMultipleSelect
+                          <OrganizationMultipleSelect
                             @selected={{@model.organization.hasParticipants}}
                             @onChange={{this.setHasParticipants}}
                             @classificationCodes={{this.classificationCodesOcmwAssociationParticipants}}
@@ -490,7 +490,7 @@
                           <:label>Werd opgericht door</:label>
                           <:content as |hasError|>
                             {{! TODO: set proper value for @classificationCodes}}
-                            <AdministrativeUnitMultipleSelect
+                            <OrganizationMultipleSelect
                               @disabled={{true}}
                               @selected={{@model.organization.wasFoundedByOrganizations}}
                               @onChange={{this.setRelation}}
@@ -508,7 +508,7 @@
                         >
                           <:label>Heeft als participanten</:label>
                           <:content as |hasError|>
-                            <AdministrativeUnitMultipleSelect
+                            <OrganizationMultipleSelect
                               @selected={{@model.organization.hasParticipants}}
                               @onChange={{this.setHasParticipants}}
                               @classificationCodes={{this.classificationCodesPevaParticipants}}

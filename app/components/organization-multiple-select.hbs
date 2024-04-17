@@ -7,13 +7,13 @@
     @noMatchesMessage="Geen resultaten"
     @searchMessage="Typ om te zoeken"
     @searchField="name"
-    @search={{perform this.loadAdministrativeUnitMultipleTask}}
+    @search={{perform this.loadOrganizationsMultipleTask}}
     @selected={{@selected}}
     @onChange={{@onChange}}
     @triggerId={{@id}}
-    as |administrativeUnit|
+    as |organization|
   >
-    {{administrativeUnit.abbName}}
-    ({{administrativeUnit.classification.label}})
+    {{organization.abbName}}
+    ({{organization.classification.label}})
   </PowerSelectMultiple>
 </div>
