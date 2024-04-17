@@ -51,7 +51,7 @@
                 <ChangeEventTypeSelect
                   @id="change-event-type"
                   @selected={{@model.changeEvent.type}}
-                  @administrativeUnitClassification={{@model.organization.classification}}
+                  @organizationClassification={{@model.organization.classification}}
                   @onChange={{fn (mut @model.changeEvent.type)}}
                   @error={{hasError}}
                 />

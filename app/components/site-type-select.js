@@ -16,49 +16,49 @@ export default class SiteTypeSelectComponent extends Component {
     this.siteTypes = this.loadSiteTypesTask.perform();
   }
 
+  // TODO: get rid of these methods and use those defined in the model?
   get isWorshipAdministrativeUnit() {
     return this.isWorshipService || this.isCentralWorshipService;
   }
 
   get isWorshipService() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
+      this.args.organizationClassification.get('id') ===
       CLASSIFICATION_CODE.WORSHIP_SERVICE
     );
   }
 
   get isCentralWorshipService() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
+      this.args.organizationClassification.get('id') ===
       CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
     );
   }
 
   get isMunicipality() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
+      this.args.organizationClassification.get('id') ===
       CLASSIFICATION_CODE.MUNICIPALITY
     );
   }
 
   get isProvince() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
+      this.args.organizationClassification.get('id') ===
       CLASSIFICATION_CODE.PROVINCE
     );
   }
 
   get isDistrict() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
+      this.args.organizationClassification.get('id') ===
       CLASSIFICATION_CODE.DISTRICT
     );
   }
 
   get isAgb() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
-      CLASSIFICATION_CODE.AGB
+      this.args.organizationClassification.get('id') === CLASSIFICATION_CODE.AGB
     );
   }
 
@@ -70,40 +70,39 @@ export default class SiteTypeSelectComponent extends Component {
       CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
     ];
     return typesThatAreIGS.includes(
-      this.args.administrativeUnitClassification.get('id')
+      this.args.organizationClassification.get('id')
     );
   }
 
   get isApb() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
-      CLASSIFICATION_CODE.APB
+      this.args.organizationClassification.get('id') === CLASSIFICATION_CODE.APB
     );
   }
 
   get isPoliceZone() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
+      this.args.organizationClassification.get('id') ===
       CLASSIFICATION_CODE.POLICE_ZONE
     );
   }
 
   get isOcmwAssociation() {
     return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
-      this.args.administrativeUnitClassification.get('id')
+      this.args.organizationClassification.get('id')
     );
   }
 
   get isPevaMunicipality() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
+      this.args.organizationClassification.get('id') ===
       CLASSIFICATION_CODE.PEVA_MUNICIPALITY
     );
   }
 
   get isPevaProvince() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
+      this.args.organizationClassification.get('id') ===
       CLASSIFICATION_CODE.PEVA_PROVINCE
     );
   }
