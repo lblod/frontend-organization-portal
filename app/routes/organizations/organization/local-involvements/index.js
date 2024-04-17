@@ -10,10 +10,10 @@ export default class OrganizationsOrganizationLocalInvolvementsIndexRoute extend
   };
 
   async model(params) {
-    let organization = this.modelFor('organizations.organization');
+    const organization = this.modelFor('organizations.organization');
 
-    let query = {
-      include: 'involvement-type,organization.classification',
+    const query = {
+      include: 'involvement-type,administrative-unit.classification',
       filter: {
         ['worship-administrative-unit']: {
           [':id:']: organization.id,
