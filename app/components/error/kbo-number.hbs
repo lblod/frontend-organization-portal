@@ -1,12 +1,12 @@
 <AuHelpText @error={{true}}>
   {{@error.message}}
-  {{#if @error.context.administrativeUnit}}
+  {{#if @error.context.organization}}
     <AuLink
       @route="organizations.organization"
-      @model={{@error.context.administrativeUnit.id}}
+      @model={{@error.context.organization.id}}
       target="_blank"
     >
-      {{@error.context.administrativeUnit.abbName}}
+      {{@error.context.organization.abbName}}
     </AuLink>
   {{/if}}
 </AuHelpText>

@@ -9,7 +9,7 @@ export default class PositionSelectComponent extends Component {
   @service currentSession;
 
   positions = trackedTask(this, this.loadPositionTask, () => [
-    this.args.selectedAdministrativeUnit,
+    this.args.selectedOrganization,
   ]);
 
   get selectedPosition() {
@@ -37,22 +37,19 @@ export default class PositionSelectComponent extends Component {
     let boardPositionCodes = [];
     let ministerPositions = [];
 
-    // Filter out blacklisted data if an administrative unit is selected
+    // Filter out blacklisted data if an organization is selected
     if (
-      this.args.selectedAdministrativeUnit &&
-      this.args.selectedAdministrativeUnit.length
+      this.args.selectedOrganization &&
+      this.args.selectedOrganization.length
     ) {
-      const selectedAdministrativeUnitId = this.args.selectedAdministrativeUnit;
+      const selectedOrganizationId = this.args.selectedOrganization;
 
-      const administrativeUnit = (yield this.store.query(
-        'administrative-unit',
-        {
-          'filter[:id:]': selectedAdministrativeUnitId,
-          include: 'classification',
-        }
-      )).at(0);
+      const organization = (yield this.store.query('administrative-unit', {
+        'filter[:id:]': selectedOrganizationId,
+        include: 'classification',
+      })).at(0);
 
-      const classification = yield administrativeUnit.classification;
+      const classification = yield organization.classification;
 
       boardPositionCodes = yield this.store.query('board-position-code', {
         'filter[applies-to][applies-within][:id:]': classification.id,
