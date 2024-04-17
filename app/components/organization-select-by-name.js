@@ -3,12 +3,12 @@ import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 import { selectByRole as getClassificationIds } from 'frontend-organization-portal/utils/classification-identifiers';
 
-export default class AdministrativeUnitSelectByNameComponent extends Component {
+export default class OrganizationSelectByNameComponent extends Component {
   @service muSearch;
   @service currentSession;
 
   @restartableTask
-  *loadAdministrativeUnitsTask(searchParams = '') {
+  *loadOrganizationsTask(searchParams = '') {
     const filter = {};
 
     if (searchParams.trim() !== '') {
@@ -20,7 +20,7 @@ export default class AdministrativeUnitSelectByNameComponent extends Component {
     );
 
     const result = yield this.muSearch.search({
-      index: 'units',
+      index: 'units', // TODO: rename in search config
       sort: 'name',
       page: '0',
       size: '100',
