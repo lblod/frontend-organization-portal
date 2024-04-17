@@ -29,6 +29,7 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
       const role = await mandate.roleBoard;
       const governingBody = await mandate.governingBody;
       const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
+      //TODO: refers to relation in governing body model
       const administrativeUnit =
         await isTimeSpecializationOf.administrativeUnit;
 

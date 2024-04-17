@@ -75,6 +75,7 @@ export default class ContactDetailsService extends Service {
     let administrativeUnits = [];
     for (const governingBody of governingBodies.slice()) {
       const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
+      // TODO: name refers to relation in governing body model
       const administrativeUnit =
         await isTimeSpecializationOf.administrativeUnit;
 

@@ -21,11 +21,13 @@ export default class PeoplePersonPersonalInformationRequestSensitiveDataControll
   @action
   async submit(event) {
     event.preventDefault();
-    let { person, administrativeUnitPersonType } = this.model;
+
+    let { person, organizationPersonType } = this.model;
+
     await this.sensitivePersonalInformation.getInformation(
       person,
       this.reasonCode,
-      administrativeUnitPersonType
+      organizationPersonType
     );
     this.router.refresh();
     this.router.transitionTo(`${this.redirectUrl}`);

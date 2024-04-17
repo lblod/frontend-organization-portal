@@ -7,6 +7,7 @@ export default class PeoplePersonPersonalInformationRoute extends Route {
   @service contactDetails;
   @service sensitivePersonalInformation;
   @service currentSession;
+
   resetController(controller) {
     controller.reset();
   }
