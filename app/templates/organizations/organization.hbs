@@ -16,9 +16,11 @@
         </li>
         <li class="au-c-list-navigation__item">
           {{! TODO: Is the use of the custom component sitll necessary? It was used in old `administrative-units` route, but not in old `organizations` route}}
-          <AuNavigationNestedLink @route="organizations.organization.sites">
-            Vestigingen
-          </AuNavigationNestedLink>
+          {{#unless @model.isRepresentativeBody}}
+            <AuNavigationNestedLink @route="organizations.organization.sites">
+              Vestigingen
+            </AuNavigationNestedLink>
+          {{/unless}}
         </li>
         {{#if this.isWorshipOrganization}}
           <li class="au-c-list-navigation__item">
@@ -56,7 +58,7 @@
             </AuNavigationNestedLink>
           </li>
         {{/if}}
-        {{#unless this.isProvince}}
+        {{#unless (or this.isProvince @model.isRepresentativeBody)}}
           <li class="au-c-list-navigation__item">
             <AuNavigationNestedLink
               @route="organizations.organization.change-events"

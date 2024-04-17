@@ -88,7 +88,8 @@ export default class OrganizationsOrganizationController extends Controller {
       this.isAssistanceZone ||
       this.isOcmwAssociation ||
       this.model.isPevaMunicipality ||
-      this.model.isPevaProvince
+      this.model.isPevaProvince ||
+      this.model.isRepresentativeBody
     );
   }
 
@@ -99,7 +100,8 @@ export default class OrganizationsOrganizationController extends Controller {
       this.isPoliceZone ||
       this.isAssistanceZone ||
       this.model.isPevaMunicipality ||
-      this.model.isPevaProvince
+      this.model.isPevaProvince ||
+      this.model.isRepresentativeBody
     );
   }
 }
