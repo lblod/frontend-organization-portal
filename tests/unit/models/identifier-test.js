@@ -132,13 +132,10 @@ module('Unit | Model | identifier', function (hooks) {
       });
 
       test('it returns error when localId is already used', async function (assert) {
-        const adminstrativeUnit = this.store().createRecord(
-          'administrative-unit',
-          {
-            id: '1',
-            localId: '0123456789',
-          }
-        );
+        const organization = this.store().createRecord('administrative-unit', {
+          id: '1',
+          localId: '0123456789',
+        });
         const structuredIdentifier = this.store().createRecord(
           'structured-identifier',
           {
@@ -153,7 +150,7 @@ module('Unit | Model | identifier', function (hooks) {
           this.owner.lookup('service:store'),
           'query'
         );
-        queryStub.resolves(A([adminstrativeUnit]));
+        queryStub.resolves(A([organization]));
 
         const isValid = await model.validate();
 
@@ -164,8 +161,8 @@ module('Unit | Model | identifier', function (hooks) {
           'Dit KBO nummer is al in gebruik.'
         );
         assert.strictEqual(
-          model.error.structuredIdentifier.context.administrativeUnit.id,
-          adminstrativeUnit.id
+          model.error.structuredIdentifier.context.organization.id,
+          organization.id
         );
 
         queryStub.restore();
