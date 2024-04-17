@@ -4,12 +4,12 @@ import { restartableTask } from 'ember-concurrency';
 import { selectByRole as getClassificationIds } from 'frontend-organization-portal/utils/classification-identifiers';
 import { formatIdentifier } from 'frontend-organization-portal/helpers/format-identifier';
 
-export default class AdministrativeUnitSelectByIdentifierComponent extends Component {
+export default class OrganizationSelectByIdentifierComponent extends Component {
   @service muSearch;
   @service currentSession;
 
   @restartableTask
-  *loadAdministrativeUnitsTask(searchParams = '') {
+  *loadOrganizationsTask(searchParams = '') {
     const filter = {};
 
     searchParams = formatIdentifier([searchParams]);
@@ -27,7 +27,7 @@ export default class AdministrativeUnitSelectByIdentifierComponent extends Compo
     );
 
     const result = yield this.muSearch.search({
-      index: 'units',
+      index: 'units', // TODO: to be renamed in backend search configuration
       sort: 'name',
       page: '0',
       size: '100',
