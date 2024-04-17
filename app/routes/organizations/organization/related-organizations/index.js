@@ -47,7 +47,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
     };
   }
 
-  // TODO: change 'administrative-unit' in queries to organization when classification is available
+  // TODO: change 'administrative-unit' in queries to organization, requires to first modifying the organizations path in the dispatcher
   @dropTask({ cancelOn: 'deactivate' })
   *loadSubOrganizationsTask(id, params, isProvince = false) {
     // TODO: if you refresh the page the classification will be null resulting in this check always failing, and the frontend incorrectly falling back to the other query for provinces
