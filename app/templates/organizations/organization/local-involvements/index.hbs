@@ -31,12 +31,12 @@
   <t.content as |c|>
     <c.header>
       <AuDataTableThSortable
-        @field="organization.name"
+        @field="administrative-unit.name"
         @currentSorting={{this.sort}}
         @label="Naam"
       />
       <AuDataTableThSortable
-        @field="organization.classification.label"
+        @field="administrative-unit.classification.label"
         @currentSorting={{this.sort}}
         @label="Type instelling"
       />
@@ -54,8 +54,8 @@
       {{/if}}
     </c.header>
     <c.body as |involvement|>
-      <td>{{involvement.organization.abbName}}</td>
-      <td>{{involvement.organization.classification.label}}</td>
+      <td>{{involvement.administrativeUnit.abbName}}</td>
+      <td>{{involvement.administrativeUnit.classification.label}}</td>
       <td>{{involvement.involvementType.label}}</td>
       {{#if this.isWorshipService}}
         <td>{{involvement.percentage}}%</td>
