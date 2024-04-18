@@ -6,5 +6,5 @@ steps:
       tags: "feature-${CI_COMMIT_BRANCH##refactor/}"
     secrets: [ docker_username, docker_password ]
 when:
-  branch: feature/*
+  branch: refactor/*
   event: push
