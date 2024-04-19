@@ -1,6 +1,7 @@
 <PageHeader class="au-o-box">
   <:title>Betrokken lokale besturen</:title>
-  <:subtitle>{{@model.organization.abbName}}</:subtitle>
+  <:subtitle>{{@model.organization.abbName}}
+    ({{@model.organization.classification.label}})</:subtitle>
   <:action>
     <SecuredArea>
       <:edit>
