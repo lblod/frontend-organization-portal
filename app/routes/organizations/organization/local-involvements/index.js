@@ -13,6 +13,8 @@ export default class OrganizationsOrganizationLocalInvolvementsIndexRoute extend
     const organization = this.modelFor('organizations.organization');
 
     const query = {
+      // Note: "administrative-unit" is the relationship name in the
+      // local-involvements model
       include: 'involvement-type,administrative-unit.classification',
       filter: {
         ['worship-administrative-unit']: {
