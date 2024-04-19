@@ -21,7 +21,7 @@
             </AuNavigationLink>
           {{/unless}}
         </li>
-        {{#if this.isWorshipOrganization}}
+        {{#if @model.isWorshipAdministrativeUnit}}
           <li class="au-c-list-navigation__item">
             <AuNavigationLink
               @route="organizations.organization.local-involvements"
@@ -53,7 +53,7 @@
             </AuNavigationLink>
           </li>
         {{/if}}
-        {{#unless (or this.isProvince @model.isRepresentativeBody)}}
+        {{#unless (or @model.isProvince @model.isRepresentativeBody)}}
           <li class="au-c-list-navigation__item">
             <AuNavigationLink @route="organizations.organization.change-events">
               Veranderingsgebeurtenissen
