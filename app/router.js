@@ -115,4 +115,15 @@ Router.map(function () {
     path: '/*wildcard',
   });
   this.route('redirect');
+
+  // Added to redirect users from old, removed `administrative-unit` route to
+  // the `organizations` route
+  this.route(
+    'administrative-units',
+    { path: '/bestuurseenheden' },
+    function () {
+      this.route('index', { path: '/' });
+      this.route('wildcard', { path: '/*path' });
+    }
+  );
 });
