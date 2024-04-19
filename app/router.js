@@ -8,15 +8,20 @@ export default class Router extends EmberRouter {
 
 Router.map(function () {
   this.route('login');
+
   this.route('mock-login');
+
   this.route('select-role');
+
   this.route('auth', { path: '/authorization' }, function () {
     this.route('callback');
     this.route('login');
     this.route('logout');
     this.route('switch');
   });
+
   this.route('index', { path: '' });
+
   this.route('people', { path: '/personen' }, function () {
     this.route('new-position', { path: '/nieuw-positie' });
     this.route('person', { path: '/:id/' }, function () {
@@ -46,6 +51,7 @@ Router.map(function () {
       });
     });
   });
+
   this.route('organizations', { path: '/organisaties' }, function () {
     this.route('organization', { path: '/:id/' }, function () {
       this.route('core-data', { path: '/kerngegevens' }, function () {
@@ -102,7 +108,9 @@ Router.map(function () {
     });
     this.route('new', { path: '/nieuwe-organisatie' });
   });
+
   this.route('contact');
+
   this.route('legal', { path: '/legaal' }, function () {
     this.route('disclaimer');
     this.route('cookiestatement', { path: '/cookieverklaring' });
@@ -110,10 +118,13 @@ Router.map(function () {
       path: '/toegankelijkheidsverklaring',
     });
   });
+
   this.route('sparql');
+
   this.route('route-not-found', {
     path: '/*wildcard',
   });
+
   this.route('redirect');
 
   // Added to redirect users from old, removed `administrative-unit` route to
