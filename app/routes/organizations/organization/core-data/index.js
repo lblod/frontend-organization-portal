@@ -4,10 +4,7 @@ import {
   findSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
 import { inject as service } from '@ember/service';
-import {
-  CLASSIFICATION_CODE,
-  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
-} from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
   @service store;
@@ -42,24 +39,9 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
     }
 
     let region;
-    // TODO: use model functions and remove these
-    const typesThatAreIGS = [
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-    ];
-    const isIGS = typesThatAreIGS.includes(
-      organization.classification?.get('id')
-    );
-
-    const isOcmwAssociation = OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
-      organization.classification?.get('id')
-    );
-
     if (
-      isIGS ||
-      isOcmwAssociation ||
+      organization.isIgs ||
+      organization.isOcmwAssociation ||
       organization.isPevaProvince ||
       organization.isPevaMunicipality
     ) {
