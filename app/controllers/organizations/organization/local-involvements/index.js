@@ -5,7 +5,9 @@ import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/adminis
 export default class OrganizationsOrganizationLocalInvolvementsIndexController extends Controller {
   queryParams = ['sort', 'page', 'size'];
 
-  @tracked sort = 'organization.name';
+  // Note: "administrative-unit" is the relationship name in the
+  // local-involvements model
+  @tracked sort = 'administrative-unit.name';
   @tracked page = 0;
   @tracked size = 20;
 
