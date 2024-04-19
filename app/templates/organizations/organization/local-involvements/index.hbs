@@ -45,7 +45,7 @@
         @currentSorting={{this.sort}}
         @label="Type betrokkenheid"
       />
-      {{#if this.isWorshipService}}
+      {{#if @model.organization.isWorshipService}}
         <AuDataTableThSortable
           @field="percentage"
           @currentSorting={{this.sort}}
@@ -57,7 +57,7 @@
       <td>{{involvement.administrativeUnit.abbName}}</td>
       <td>{{involvement.administrativeUnit.classification.label}}</td>
       <td>{{involvement.involvementType.label}}</td>
-      {{#if this.isWorshipService}}
+      {{#if @model.organization.isWorshipService}}
         <td>{{involvement.percentage}}%</td>
       {{/if}}
     </c.body>
