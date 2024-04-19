@@ -15,56 +15,49 @@
           </AuNavigationLink>
         </li>
         <li class="au-c-list-navigation__item">
-          {{! TODO: Is the use of the custom component sitll necessary? It was used in old `administrative-units` route, but not in old `organizations` route}}
           {{#unless @model.isRepresentativeBody}}
-            <AuNavigationNestedLink @route="organizations.organization.sites">
+            <AuNavigationLink @route="organizations.organization.sites">
               Vestigingen
-            </AuNavigationNestedLink>
+            </AuNavigationLink>
           {{/unless}}
         </li>
         {{#if this.isWorshipOrganization}}
           <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink
+            <AuNavigationLink
               @route="organizations.organization.local-involvements"
             >
               Betrokken lokale besturen
-            </AuNavigationNestedLink>
+            </AuNavigationLink>
           </li>
         {{/if}}
         {{#if this.requiresGoverningBodies}}
           <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink
+            <AuNavigationLink
               @route="organizations.organization.governing-bodies"
             >
               Bestuursorganen
-            </AuNavigationNestedLink>
+            </AuNavigationLink>
           </li>
         {{/if}}
         {{#if (eq @model.constructor.modelName "worship-service")}}
           <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink
-              @route="organizations.organization.ministers"
-            >
+            <AuNavigationLink @route="organizations.organization.ministers">
               Bedienaren
-            </AuNavigationNestedLink>
+            </AuNavigationLink>
           </li>
         {{/if}}
         {{#if this.requiresFunctionaries}}
           <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink
-              @route="organizations.organization.executives"
-            >
+            <AuNavigationLink @route="organizations.organization.executives">
               Leidinggevenden
-            </AuNavigationNestedLink>
+            </AuNavigationLink>
           </li>
         {{/if}}
         {{#unless (or this.isProvince @model.isRepresentativeBody)}}
           <li class="au-c-list-navigation__item">
-            <AuNavigationNestedLink
-              @route="organizations.organization.change-events"
-            >
+            <AuNavigationLink @route="organizations.organization.change-events">
               Veranderingsgebeurtenissen
-            </AuNavigationNestedLink>
+            </AuNavigationLink>
           </li>
         {{/unless}}
         <li class="au-c-list-navigation__item">
