@@ -49,7 +49,7 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
       const address = await primarySite.address;
       const municipalityString = address.municipality;
       const municipalityUnit = (
-        await this.store.query('administrative-unit', {
+        await this.store.query('organization', {
           filter: {
             ':exact:name': municipalityString,
             classification: {

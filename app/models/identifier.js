@@ -42,7 +42,7 @@ export default class IdentifierModel extends AbstractValidationModel {
               await this.structuredIdentifier
             ).changedAttributes();
             if (changedAttributes?.localId) {
-              let records = await this.store.query('administrative-unit', {
+              let records = await this.store.query('organization', {
                 filter: {
                   identifiers: {
                     ':exact:id-name': ID_NAME.KBO,
