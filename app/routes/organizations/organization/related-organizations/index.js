@@ -47,12 +47,11 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
     };
   }
 
-  // TODO: change 'administrative-unit' in queries to organization, requires to first modifying the organizations path in the dispatcher
   @dropTask({ cancelOn: 'deactivate' })
   *loadSubOrganizationsTask(id, params, isProvince = false) {
     // TODO: if you refresh the page the classification will be null resulting in this check always failing, and the frontend incorrectly falling back to the other query for provinces
     if (isProvince) {
-      return yield this.store.query('administrative-unit', {
+      return yield this.store.query('organization', {
         'filter[:or:][is-sub-organization-of][:id:]': id,
         'filter[:or:][was-founded-by-organizations][:id:]': id,
         'filter[:or:][is-sub-organization-of][is-sub-organization-of][:id:]':
@@ -66,7 +65,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       });
     }
 
-    return yield this.store.query('administrative-unit', {
+    return yield this.store.query('organization', {
       'filter[:or:][is-sub-organization-of][:id:]': id,
       'filter[:or:][was-founded-by-organizations][:id:]': id,
       'filter[:or:][is-associated-with][:id:]': id,
@@ -82,7 +81,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
 
   @dropTask({ cancelOn: 'deactivate' })
   *loadParticipatesInTask(id, params) {
-    return yield this.store.query('administrative-unit', {
+    return yield this.store.query('organization', {
       'filter[has-participants][:id:]': id,
       'page[size]': 500,
       include: 'classification',
@@ -92,7 +91,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
 
   @dropTask({ cancelOn: 'deactivate' })
   *loadHasParticipantsTask(id, params) {
-    return yield this.store.query('administrative-unit', {
+    return yield this.store.query('organization', {
       'filter[participates-in][:id:]': id,
       'page[size]': 500,
       include: 'classification',
@@ -102,7 +101,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
 
   @dropTask({ cancelOn: 'deactivate' })
   *loadFoundedOrganizationsTask(id, params) {
-    return yield this.store.query('administrative-unit', {
+    return yield this.store.query('organization', {
       'filter[founded-organizations][:id:]': id,
       'page[size]': 500,
       include: 'classification',
