@@ -19,7 +19,7 @@ export default class MunicipalitySelectByNameComponent extends Component {
 
     if (this.args.selectedProvince && this.args.selectedProvince.length) {
       // If a province is selected, load the municipalities in it
-      let municipalities = yield this.store.query('administrative-unit', {
+      let municipalities = yield this.store.query('organization', {
         filter: {
           'is-sub-organization-of': {
             ':exact:name': this.args.selectedProvince,
@@ -49,10 +49,7 @@ export default class MunicipalitySelectByNameComponent extends Component {
         },
       };
 
-      const municipalities = yield this.store.query(
-        'administrative-unit',
-        query
-      );
+      const municipalities = yield this.store.query('organization', query);
 
       return municipalities.map(({ name }) => name);
     }
