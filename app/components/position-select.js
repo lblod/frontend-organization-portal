@@ -44,7 +44,7 @@ export default class PositionSelectComponent extends Component {
     ) {
       const selectedOrganizationId = this.args.selectedOrganization;
 
-      const organization = (yield this.store.query('administrative-unit', {
+      const organization = (yield this.store.query('organization', {
         'filter[:id:]': selectedOrganizationId,
         include: 'classification',
       })).at(0);

@@ -35,7 +35,7 @@ export default class ProvinceOrganizationSelectComponent extends Component {
       }
 
       // If a municipality is selected, load the province it belongs to
-      provinces = yield this.store.query('administrative-unit', {
+      provinces = yield this.store.query('organization', {
         filter: {
           'sub-organizations': {
             id: selectedMunicipalityId,
@@ -48,7 +48,7 @@ export default class ProvinceOrganizationSelectComponent extends Component {
       });
     } else {
       // Else load all the provinces
-      provinces = yield this.store.query('administrative-unit', {
+      provinces = yield this.store.query('organization', {
         filter: {
           classification: {
             id: CLASSIFICATION_CODE.PROVINCE,
