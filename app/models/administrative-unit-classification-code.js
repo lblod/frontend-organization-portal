@@ -138,11 +138,6 @@ export const OCMW_ASSOCIATION_CLASSIFICATION_CODES = [
   // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
 ];
 
-// TODO: remove when no longer needed after organisation refactoring
-export function isNonAdministrativeUnit(id) {
-  return id === CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN;
-}
-
 export default class AdministrativeUnitClassificationCodeModel extends OrganizationClassificationCodeModel {
   // TODO: is this necessary when parent model already has this?
   @attr label;
