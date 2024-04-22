@@ -232,7 +232,7 @@ export default class OrganizationsNewController extends Controller {
       });
 
       this.router.replaceWith(
-        'administrative-units.administrative-unit',
+        'organizations.organization',
         newAdministrativeUnit.id
       );
     }
