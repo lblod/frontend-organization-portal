@@ -105,7 +105,7 @@ export default class OrganizationSelectComponent extends Component {
       query['filter[name]'] = searchParams;
     }
 
-    searchResults = yield this.store.query('administrative-unit', query);
+    searchResults = yield this.store.query('organization', query);
 
     if (typeof this.args.filter === 'function') {
       return this.args.filter(searchResults);

@@ -26,6 +26,6 @@ export default class OrganizationMultipleSelectComponent extends Component {
       query['filter[name]'] = searchParams;
     }
 
-    return yield this.store.query('administrative-unit', query);
+    return yield this.store.query('organization', query);
   }
 }
