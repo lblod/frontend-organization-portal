@@ -27,7 +27,7 @@ export default class OrganizationSelectByIdentifierComponent extends Component {
     );
 
     const result = yield this.muSearch.search({
-      index: 'units', // TODO: to be renamed in backend search configuration
+      index: 'organizations',
       sort: 'name',
       page: '0',
       size: '100',
