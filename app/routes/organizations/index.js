@@ -78,7 +78,7 @@ export default class OrganizationsIndexRoute extends Route {
     }
 
     return yield this.muSearch.search({
-      index: 'units', // TODO: refers to `on_path` in search config, rename in backend first
+      index: 'organizations',
       page: params.page,
       size: params.size,
       sort: params.sort,
