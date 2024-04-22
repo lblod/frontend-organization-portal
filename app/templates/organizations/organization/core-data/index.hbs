@@ -110,15 +110,14 @@
                   </:content>
                 </Item>
               {{/if}}
-              {{#if @model.organization.classification}}
-                {{! TODO: ensure it is not shown for representative organs when moving classification property in models }}
+              {{#unless @model.organization.isRepresentativeBody}}
                 <Item>
                   <:label>Type bestuur</:label>
                   <:content>
                     {{@model.organization.classification.label}}
                   </:content>
                 </Item>
-              {{/if}}
+              {{/unless}}
 
               {{#if @model.organization.isMunicipality}}
                 <Item>
