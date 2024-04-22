@@ -20,7 +20,7 @@ export default class OrganizationSelectByNameComponent extends Component {
     );
 
     const result = yield this.muSearch.search({
-      index: 'units', // TODO: rename in search config
+      index: 'organizations',
       sort: 'name',
       page: '0',
       size: '100',
