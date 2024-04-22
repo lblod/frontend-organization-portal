@@ -32,7 +32,6 @@ export default class OrganizationModel extends AgentModel {
   @attr('date') expectedEndDate;
   @attr purpose;
 
-  // TODO: this does deviate from our mu-cl-resources configuration where classification is specified on the child levels
   @belongsTo('organization-classification-code', {
     inverse: null,
     async: true,
