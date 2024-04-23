@@ -105,12 +105,8 @@ module('Unit | Model | change event', function (hooks) {
     });
 
     test('it returns an error when only one original organisation is given for a fusion event', async function (assert) {
-      const originalOrganisation = this.store().createRecord(
-        'administrative-unit'
-      );
-      const resultingOrganisation = this.store().createRecord(
-        'administrative-unit'
-      );
+      const originalOrganisation = this.store().createRecord('organization');
+      const resultingOrganisation = this.store().createRecord('organization');
 
       const eventType = this.store().createRecord('change-event-type', {
         id: CHANGE_EVENT_TYPE.FUSIE,
@@ -134,12 +130,8 @@ module('Unit | Model | change event', function (hooks) {
     });
 
     test('it returns an error when mandatory resulting organisation is missing for a fusion event', async function (assert) {
-      const originalOrganisationOne = this.store().createRecord(
-        'administrative-unit'
-      );
-      const originalOrganisationTwo = this.store().createRecord(
-        'administrative-unit'
-      );
+      const originalOrganisationOne = this.store().createRecord('organization');
+      const originalOrganisationTwo = this.store().createRecord('organization');
 
       const eventType = this.store().createRecord('change-event-type', {
         id: CHANGE_EVENT_TYPE.FUSIE,
@@ -188,12 +180,8 @@ module('Unit | Model | change event', function (hooks) {
     });
 
     test('it returns an error when only one original organisation is given for a merge event', async function (assert) {
-      const originalOrganisation = this.store().createRecord(
-        'administrative-unit'
-      );
-      const resultingOrganisation = this.store().createRecord(
-        'administrative-unit'
-      );
+      const originalOrganisation = this.store().createRecord('organization');
+      const resultingOrganisation = this.store().createRecord('organization');
 
       const eventType = this.store().createRecord('change-event-type', {
         id: CHANGE_EVENT_TYPE.MERGER,
@@ -217,12 +205,8 @@ module('Unit | Model | change event', function (hooks) {
     });
 
     test('it returns an error when mandatory resulting organisation is missing for a merger event', async function (assert) {
-      const originalOrganisationOne = this.store().createRecord(
-        'administrative-unit'
-      );
-      const originalOrganisationTwo = this.store().createRecord(
-        'administrative-unit'
-      );
+      const originalOrganisationOne = this.store().createRecord('organization');
+      const originalOrganisationTwo = this.store().createRecord('organization');
 
       const eventType = this.store().createRecord('change-event-type', {
         id: CHANGE_EVENT_TYPE.MERGER,
@@ -285,8 +269,8 @@ module('Unit | Model | change event', function (hooks) {
   module('originalOrganizations', function (hooks) {
     hooks.beforeEach(function () {
       this.model = this.store().createRecord('change-event');
-      this.organization = this.store().createRecord('administrative-unit');
-      this.otherOrganization = this.store().createRecord('administrative-unit');
+      this.organization = this.store().createRecord('organization');
+      this.otherOrganization = this.store().createRecord('organization');
     });
 
     hooks.afterEach(function () {
@@ -354,9 +338,7 @@ module('Unit | Model | change event', function (hooks) {
         await this.model.addOriginalOrganization(this.organization);
         await this.model.addOriginalOrganization(this.otherOrganization);
 
-        const removedOrganisation = this.store().createRecord(
-          'administrative-unit'
-        );
+        const removedOrganisation = this.store().createRecord('organization');
 
         assert.strictEqual((await this.model.originalOrganizations).length, 2);
         assert.false(
@@ -388,8 +370,8 @@ module('Unit | Model | change event', function (hooks) {
   module('resultingOrganizations', function (hooks) {
     hooks.beforeEach(function () {
       this.model = this.store().createRecord('change-event');
-      this.organization = this.store().createRecord('administrative-unit');
-      this.otherOrganization = this.store().createRecord('administrative-unit');
+      this.organization = this.store().createRecord('organization');
+      this.otherOrganization = this.store().createRecord('organization');
     });
 
     hooks.afterEach(function () {
@@ -464,9 +446,7 @@ module('Unit | Model | change event', function (hooks) {
       test('it has no impact to remove an non-existing organisation', async function (assert) {
         await this.model.addResultingOrganization(this.organization);
 
-        const removedOrganisation = this.store().createRecord(
-          'administrative-unit'
-        );
+        const removedOrganisation = this.store().createRecord('organization');
 
         assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.false(
