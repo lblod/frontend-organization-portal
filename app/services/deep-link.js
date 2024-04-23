@@ -5,9 +5,9 @@ import Service, { inject as service } from '@ember/service';
 const REDIRECT_HANDLER = {
   'http://www.w3.org/ns/person#Person': 'person',
   'http://data.lblod.info/vocabularies/erediensten/BestuurVanDeEredienst':
-    'administrative-unit',
+    'organization',
   'http://data.lblod.info/vocabularies/erediensten/CentraalBestuurVanDeEredienst':
-    'administrative-unit',
+    'organization',
 };
 
 export default class DeepLinkService extends Service {
