@@ -132,7 +132,7 @@ module('Unit | Model | identifier', function (hooks) {
       });
 
       test('it returns error when localId is already used', async function (assert) {
-        const organization = this.store().createRecord('administrative-unit', {
+        const organization = this.store().createRecord('organization', {
           id: '1',
           localId: '0123456789',
         });

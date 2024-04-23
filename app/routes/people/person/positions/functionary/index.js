@@ -19,7 +19,6 @@ export default class PeoplePersonPositionsFunctionaryIndexRoute extends Route {
 
       governingBodies.push(isTimeSpecializationOf);
 
-      // TODO: refers to relation name in governing body name
       const administrativeUnit =
         await isTimeSpecializationOf.administrativeUnit;
 
