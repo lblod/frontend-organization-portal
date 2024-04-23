@@ -8,7 +8,7 @@ import {
 export default class ContactDetailsService extends Service {
   @service store;
 
-  async ministerToPosition(minister, onlyActivePosition = true) {
+  async #ministerToPosition(minister, onlyActivePosition = true) {
     if (onlyActivePosition && !isActivePosition(minister.agentEndDate)) {
       return null;
     }
@@ -33,7 +33,7 @@ export default class ContactDetailsService extends Service {
     };
   }
 
-  async mandatoryToPosition(mandatory, onlyActivePosition = true) {
+  async #mandatoryToPosition(mandatory, onlyActivePosition = true) {
     const mandate = await mandatory.mandate;
     if (onlyActivePosition && !isActivePosition(mandatory.endDate)) {
       return null;
@@ -61,7 +61,7 @@ export default class ContactDetailsService extends Service {
     };
   }
 
-  async functionaryToPosition(functionary, onlyActivePosition = true) {
+  async #functionaryToPosition(functionary, onlyActivePosition = true) {
     const boardPosition = await functionary.boardPosition;
 
     if (onlyActivePosition && !isActivePosition(functionary.endDate)) {
@@ -75,7 +75,6 @@ export default class ContactDetailsService extends Service {
     let administrativeUnits = [];
     for (const governingBody of governingBodies.slice()) {
       const isTimeSpecializationOf = await governingBody.isTimeSpecializationOf;
-      // TODO: name refers to relation in governing body model
       const administrativeUnit =
         await isTimeSpecializationOf.administrativeUnit;
 
@@ -109,21 +108,21 @@ export default class ContactDetailsService extends Service {
     const ministers = (await person.agentsInPosition).slice(); // bedienaren
 
     for (let mandatory of mandatories) {
-      const position = await this.mandatoryToPosition(mandatory);
+      const position = await this.#mandatoryToPosition(mandatory);
       if (position) {
         positions.push(position);
       }
     }
 
     for (let functionary of functionaries) {
-      const position = await this.functionaryToPosition(functionary);
+      const position = await this.#functionaryToPosition(functionary);
       if (position) {
         positions.push(position);
       }
     }
 
     for (let minister of ministers) {
-      const position = await this.ministerToPosition(minister);
+      const position = await this.#ministerToPosition(minister);
       if (position) {
         positions.push(position);
       }

@@ -39,8 +39,8 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
 
     let primarySite = await organization.primarySite;
 
-    // TODO : "if" not needed when the data of all administrative units will be correct
-    // they should all have a primary site on creation
+    // TODO: "if" not needed when the data of all organizations is correct, they
+    // should all have a primary site on creation.
     let address;
     let contacts;
     if (primarySite) {
