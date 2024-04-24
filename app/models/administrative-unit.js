@@ -11,9 +11,13 @@ import {
   ApbCodeList,
   AssistanceZoneCodeList,
   CentralWorshipServiceCodeList,
+  DistrictCodeList,
   IGSCodeList,
+  MunicipalityCodeList,
   OcmwAssociationCodeList,
+  OCMWCodeList,
   PoliceZoneCodeList,
+  ProvinceCodeList,
   WorshipServiceCodeList,
   PevaMunicipalityCodeList,
   PevaProvinceCodeList,
@@ -125,5 +129,53 @@ export default class AdministrativeUnitModel extends OrganizationModel {
         otherwise: Joi.optional(),
       }),
     });
+  }
+
+  get isMunicipality() {
+    return this._hasClassificationId(MunicipalityCodeList);
+  }
+
+  get isProvince() {
+    return this._hasClassificationId(ProvinceCodeList);
+  }
+
+  get isAgb() {
+    return this._hasClassificationId(AgbCodeList);
+  }
+
+  get isApb() {
+    return this._hasClassificationId(ApbCodeList);
+  }
+
+  get isIgs() {
+    return this._hasClassificationId(IGSCodeList);
+  }
+
+  get isPoliceZone() {
+    return this._hasClassificationId(PoliceZoneCodeList);
+  }
+
+  get isAssistanceZone() {
+    return this._hasClassificationId(AssistanceZoneCodeList);
+  }
+
+  get isOCMW() {
+    return this._hasClassificationId(OCMWCodeList);
+  }
+
+  get isOcmwAssociation() {
+    return this._hasClassificationId(OcmwAssociationCodeList);
+  }
+
+  get isDistrict() {
+    return this._hasClassificationId(DistrictCodeList);
+  }
+
+  get isPevaMunicipality() {
+    return this._hasClassificationId(PevaMunicipalityCodeList);
+  }
+
+  get isPevaProvince() {
+    return this._hasClassificationId(PevaProvinceCodeList);
   }
 }
