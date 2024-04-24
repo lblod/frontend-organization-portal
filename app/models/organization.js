@@ -7,23 +7,6 @@ import {
   validateHasManyOptional,
   validateStringOptional,
 } from '../validators/schema';
-import {
-  AgbCodeList,
-  ApbCodeList,
-  AssistanceZoneCodeList,
-  CentralWorshipServiceCodeList,
-  DistrictCodeList,
-  IGSCodeList,
-  MunicipalityCodeList,
-  OcmwAssociationCodeList,
-  OCMWCodeList,
-  PoliceZoneCodeList,
-  ProvinceCodeList,
-  WorshipServiceCodeList,
-  PevaMunicipalityCodeList,
-  PevaProvinceCodeList,
-  RepresentativeOrganCodeList,
-} from '../constants/Classification';
 
 export default class OrganizationModel extends AgentModel {
   @attr name;
@@ -213,75 +196,7 @@ export default class OrganizationModel extends AgentModel {
       .filter((s) => s !== '');
   }
 
-  get isMunicipality() {
-    return this.#hasClassificationId(MunicipalityCodeList);
-  }
-
-  get isProvince() {
-    return this.#hasClassificationId(ProvinceCodeList);
-  }
-
-  get isAgb() {
-    return this.#hasClassificationId(AgbCodeList);
-  }
-
-  get isApb() {
-    return this.#hasClassificationId(ApbCodeList);
-  }
-
-  get isIgs() {
-    return this.#hasClassificationId(IGSCodeList);
-  }
-
-  get isPoliceZone() {
-    return this.#hasClassificationId(PoliceZoneCodeList);
-  }
-
-  get isAssistanceZone() {
-    return this.#hasClassificationId(AssistanceZoneCodeList);
-  }
-
-  get isWorshipAdministrativeUnit() {
-    return this.isWorshipService || this.isCentralWorshipService;
-  }
-
-  get isWorshipService() {
-    return this.#hasClassificationId(WorshipServiceCodeList);
-  }
-
-  get isCentralWorshipService() {
-    return this.#hasClassificationId(CentralWorshipServiceCodeList);
-  }
-
-  get isOCMW() {
-    return this.#hasClassificationId(OCMWCodeList);
-  }
-
-  get isOcmwAssociation() {
-    return this.#hasClassificationId(OcmwAssociationCodeList);
-  }
-
-  get isDistrict() {
-    return this.#hasClassificationId(DistrictCodeList);
-  }
-
-  get isPevaMunicipality() {
-    return this.#hasClassificationId(PevaMunicipalityCodeList);
-  }
-
-  get isPevaProvince() {
-    return this.#hasClassificationId(PevaProvinceCodeList);
-  }
-
-  get isRepresentativeBody() {
-    return this.#hasClassificationId(RepresentativeOrganCodeList);
-  }
-
-  get hasCentralWorshipService() {
-    return false;
-  }
-
-  #hasClassificationId(classificationIds) {
+  _hasClassificationId(classificationIds) {
     return classificationIds.includes(this.classification?.get('id'));
   }
 }
