@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 module('Unit | Model | worship administrative unit', function (hooks) {
   setupTest(hooks);
@@ -21,6 +22,66 @@ module('Unit | Model | worship administrative unit', function (hooks) {
         legalName: { message: 'Vul de juridische naam in' },
         classification: { message: 'Selecteer een optie' },
         organizationStatus: { message: 'Selecteer een optie' },
+      });
+    });
+  });
+
+  module('classification', function () {
+    test(`it should return true for worship service`, async function (assert) {
+      const classification = this.store().createRecord(
+        'administrative-unit-classification-code',
+        CLASSIFICATION.WORSHIP_SERVICE
+      );
+      const model = this.store().createRecord('worship-service', {
+        classification,
+      });
+
+      const result = model.isWorshipAdministrativeUnit;
+      assert.true(result);
+    });
+
+    test(`it should return true for a central worship service`, async function (assert) {
+      const classification = this.store().createRecord(
+        'administrative-unit-classification-code',
+        CLASSIFICATION.CENTRAL_WORSHIP_SERVICE
+      );
+      const model = this.store().createRecord('central-worship-service', {
+        classification,
+      });
+
+      const result = model.isWorshipAdministrativeUnit;
+      assert.true(result);
+    });
+
+    test('it should return false for a representative body', async function (assert) {
+      const classification = this.store().createRecord(
+        'administrative-unit-classification-code',
+        CLASSIFICATION.REPRESENTATIVE_ORGAN
+      );
+      const model = this.store().createRecord('representative-body', {
+        classification,
+      });
+
+      const result = model.isWorshipAdministrativeUnit;
+      assert.notOk(result);
+    });
+
+    [
+      CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
+      CLASSIFICATION.REPRESENTATIVE_ORGAN,
+      CLASSIFICATION.WORSHIP_SERVICE,
+    ].forEach((cl) => {
+      test('it should return false for a worship administrative unit', async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl
+        );
+        const model = this.store().createRecord('worship-administrative-unit', {
+          classification,
+        });
+
+        const result = model.isWorshipAdministrativeUnit;
+        assert.notOk(result);
       });
     });
   });
