@@ -127,7 +127,7 @@ export default class OrganizationSelectComponent extends Component {
     let selectedOrganization = this.args.selected;
     if (typeof selectedOrganization === 'string') {
       this.loadedRecord = yield this.store.findRecord(
-        'administrative-unit',
+        'organization',
         selectedOrganization
       );
     }
