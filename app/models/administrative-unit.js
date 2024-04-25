@@ -22,6 +22,7 @@ import {
   PevaMunicipalityCodeList,
   PevaProvinceCodeList,
 } from '../constants/Classification';
+import { CLASSIFICATION_CODE } from './administrative-unit-classification-code';
 
 export default class AdministrativeUnitModel extends OrganizationModel {
   @belongsTo('location', {
@@ -177,5 +178,61 @@ export default class AdministrativeUnitModel extends OrganizationModel {
 
   get isPevaProvince() {
     return this._hasClassificationId(PevaProvinceCodeList);
+  }
+
+  get participantClassifications() {
+    if (this.isIgs) {
+      return [
+        CLASSIFICATION_CODE.MUNICIPALITY,
+        CLASSIFICATION_CODE.OCMW,
+        CLASSIFICATION_CODE.AGB,
+        CLASSIFICATION_CODE.PROJECTVERENIGING,
+        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+        CLASSIFICATION_CODE.POLICE_ZONE,
+        CLASSIFICATION_CODE.ASSISTANCE_ZONE,
+        CLASSIFICATION_CODE.PEVA_MUNICIPALITY,
+        CLASSIFICATION_CODE.PEVA_PROVINCE,
+        // TODO when onboarded, add companies
+      ];
+    } else if (this.isOcmwAssociation) {
+      return OcmwAssociationCodeList.concat([
+        CLASSIFICATION_CODE.MUNICIPALITY,
+        CLASSIFICATION_CODE.OCMW,
+      ]);
+    } else if (this.isPevaMunicipality || this.isPevaProvince) {
+      return [
+        CLASSIFICATION_CODE.PROJECTVERENIGING,
+        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
+        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+      ];
+    }
+    return [];
+  }
+
+  get founderClassifications() {
+    if (
+      this.isApb ||
+      this.isAgb ||
+      this.isPevaMunicipality ||
+      this.isPevaProvince
+    ) {
+      return [CLASSIFICATION_CODE.MUNICIPALITY];
+    } else if (this.isOcmwAssociation) {
+      return OcmwAssociationCodeList.concat([
+        CLASSIFICATION_CODE.MUNICIPALITY,
+        CLASSIFICATION_CODE.OCMW,
+      ]);
+    }
+    return [];
+  }
+
+  // Note: this is used in the new organization and edit core data forms. It
+  // might be merged with the above founder getter once the relationships
+  // between organizations have been sorted out.
+  get municipalityClassificationCode() {
+    return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
 }

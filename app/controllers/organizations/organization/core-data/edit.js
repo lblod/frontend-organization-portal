@@ -5,8 +5,6 @@ import { combineFullAddress } from 'frontend-organization-portal/models/address'
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import { OcmwAssociationCodeList } from 'frontend-organization-portal/constants/Classification';
 
 export default class OrganizationsOrganizationCoreDataEditController extends Controller {
   @service router;
@@ -22,50 +20,6 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
       this.model.identifierKBO.error ||
       this.model.identifierSharepoint.error
     );
-  }
-
-  get classificationCodes() {
-    return [CLASSIFICATION_CODE.MUNICIPALITY];
-  }
-
-  get classificationCodesIgsParticipants() {
-    return [
-      CLASSIFICATION_CODE.MUNICIPALITY,
-      CLASSIFICATION_CODE.OCMW,
-      CLASSIFICATION_CODE.AGB,
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-      CLASSIFICATION_CODE.POLICE_ZONE,
-      CLASSIFICATION_CODE.ASSISTANCE_ZONE,
-      CLASSIFICATION_CODE.PEVA_MUNICIPALITY,
-      CLASSIFICATION_CODE.PEVA_PROVINCE,
-      // TODO when onboarded, add companies
-    ];
-  }
-
-  get classificationCodesOcmwAssociationParticipants() {
-    return OcmwAssociationCodeList.concat([
-      CLASSIFICATION_CODE.MUNICIPALITY,
-      CLASSIFICATION_CODE.OCMW,
-    ]);
-  }
-
-  get classificationCodesOcmwAssociationFounders() {
-    return OcmwAssociationCodeList.concat([
-      CLASSIFICATION_CODE.MUNICIPALITY,
-      CLASSIFICATION_CODE.OCMW,
-    ]);
-  }
-
-  get classificationCodesPevaParticipants() {
-    return [
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-    ];
   }
 
   @action

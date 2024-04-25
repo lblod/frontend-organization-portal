@@ -2,12 +2,10 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import fetch from 'fetch';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
-import { OcmwAssociationCodeList } from 'frontend-organization-portal/constants/Classification';
 
 export default class OrganizationsNewController extends Controller {
   @service router;
@@ -22,51 +20,6 @@ export default class OrganizationsNewController extends Controller {
       this.model.identifierKBO.error ||
       this.model.identifierSharepoint.error
     );
-  }
-
-  // TODO: Move logic to model
-  get classificationCodes() {
-    return [CLASSIFICATION_CODE.MUNICIPALITY];
-  }
-
-  get classificationCodesIgsParticipants() {
-    return [
-      CLASSIFICATION_CODE.MUNICIPALITY,
-      CLASSIFICATION_CODE.OCMW,
-      CLASSIFICATION_CODE.AGB,
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-      CLASSIFICATION_CODE.POLICE_ZONE,
-      CLASSIFICATION_CODE.ASSISTANCE_ZONE,
-      CLASSIFICATION_CODE.PEVA_MUNICIPALITY,
-      CLASSIFICATION_CODE.PEVA_PROVINCE,
-      // TODO when onboarded, add companies
-    ];
-  }
-
-  get classificationCodesOcmwAssociationFounders() {
-    return OcmwAssociationCodeList.concat([
-      CLASSIFICATION_CODE.OCMW,
-      CLASSIFICATION_CODE.MUNICIPALITY,
-    ]);
-  }
-
-  get classificationCodesOcmwAssociationParticipants() {
-    return OcmwAssociationCodeList.concat([
-      CLASSIFICATION_CODE.MUNICIPALITY,
-      CLASSIFICATION_CODE.OCMW,
-    ]);
-  }
-
-  get classificationCodesPevaParticipants() {
-    return [
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-    ];
   }
 
   @action

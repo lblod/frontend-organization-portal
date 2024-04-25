@@ -101,7 +101,7 @@
         {{#if @model.organization.isIgs}}
           <RelatedOrganizations::EditIgs
             @model={{@model}}
-            @classificationCodesIgsParticipants={{this.classificationCodesIgsParticipants}}
+            @classificationCodesIgsParticipants={{@model.organization.participantClassifications}}
             @addNewHasParticipants={{this.addNewHasParticipants}}
             @updateHasParticipants={{this.updateHasParticipants}}
             @removeHasParticipants={{this.removeHasParticipants}}
@@ -125,7 +125,7 @@
         {{#if @model.organization.isOcmwAssociation}}
           <RelatedOrganizations::EditOcmwAssociation
             @model={{@model}}
-            @classificationCodesOcmwAssociationParticipants={{this.classificationCodesOcmwAssociationParticipants}}
+            @classificationCodesOcmwAssociationParticipants={{@model.organization.participantClassifications}}
             @addNewHasParticipants={{this.addNewHasParticipants}}
             @updateHasParticipants={{this.updateHasParticipants}}
             @removeHasParticipants={{this.removeHasParticipants}}
@@ -135,7 +135,7 @@
         {{#if @model.organization.isPevaMunicipality}}
           <RelatedOrganizations::EditPevaMunicipality
             @model={{@model}}
-            @classificationCodesParticipants={{this.classificationCodesPevaParticipants}}
+            @classificationCodesParticipants={{@model.organization.participantClassifications}}
             @addNewHasParticipants={{this.addNewHasParticipants}}
             @updateHasParticipants={{this.updateHasParticipants}}
             @removeHasParticipants={{this.removeHasParticipants}}
@@ -145,7 +145,7 @@
         {{#if @model.organization.isPevaProvince}}
           <RelatedOrganizations::EditPevaProvince
             @model={{@model}}
-            @classificationCodesParticipants={{this.classificationCodesPevaParticipants}}
+            @classificationCodesParticipants={{@model.organization.participantClassifications}}
             @addNewHasParticipants={{this.addNewHasParticipants}}
             @updateHasParticipants={{this.updateHasParticipants}}
             @removeHasParticipants={{this.removeHasParticipants}}
