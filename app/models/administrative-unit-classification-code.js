@@ -1,4 +1,3 @@
-import { attr } from '@ember-data/model';
 import OrganizationClassificationCodeModel from './organization-classification-code';
 
 export const CLASSIFICATION = {
@@ -138,28 +137,4 @@ export const OCMW_ASSOCIATION_CLASSIFICATION_CODES = [
   // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
 ];
 
-export default class AdministrativeUnitClassificationCodeModel extends OrganizationClassificationCodeModel {
-  // TODO: is this necessary when parent model already has this?
-  @attr label;
-
-  // TODO: remove as this is replaced by functions in organisation model
-  get isAgbOrApb() {
-    return (
-      this.id === CLASSIFICATION_CODE.AGB || this.id === CLASSIFICATION_CODE.APB
-    );
-  }
-
-  get isIgs() {
-    return (
-      this.id === CLASSIFICATION_CODE.PROJECTVERENIGING ||
-      this.id === CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
-      this.id === CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
-      this.id ===
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
-    );
-  }
-
-  get isOcmwAssociation() {
-    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(this.id);
-  }
-}
+export default class AdministrativeUnitClassificationCodeModel extends OrganizationClassificationCodeModel {}
