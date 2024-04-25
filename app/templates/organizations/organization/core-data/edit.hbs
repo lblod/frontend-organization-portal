@@ -382,7 +382,7 @@
                         <OrganizationSelect
                           @selected={{@model.organization.isSubOrganizationOf}}
                           @onChange={{this.setRelation}}
-                          @classificationCodes={{this.classificationCodes}}
+                          @classificationCodes={{@model.organization.municipalityClassificationCode}}
                           @error={{hasError}}
                           @id="related-gemeente"
                         />
@@ -412,7 +412,7 @@
                             @disabled={{true}}
                             @selected={{@model.organization.isSubOrganizationOf}}
                             @onChange={{this.setRelation}}
-                            @classificationCodes={{this.classificationCodes}}
+                            @classificationCodes={{@model.organization.founderClassifications}}
                             @error={{hasError}}
                             @id="oprichting-gemeente"
                           />
@@ -431,7 +431,7 @@
                           <OrganizationMultipleSelect
                             @selected={{@model.organization.hasParticipants}}
                             @onChange={{this.setHasParticipants}}
-                            @classificationCodes={{this.classificationCodesIgsParticipants}}
+                            @classificationCodes={{@model.organization.participantClassifications}}
                             @error={{hasError}}
                             @id="has-participants"
                           />
@@ -452,7 +452,7 @@
                             @disabled={{true}}
                             @selected={{@model.organization.wasFoundedByOrganizations}}
                             @onChange={{this.setRelation}}
-                            @classificationCodes={{this.classificationCodesOcmwAssociationFounders}}
+                            @classificationCodes={{@model.organization.founderClassifications}}
                             @error={{hasError}}
                             @id="oprichting-ocmw-association"
                           />
@@ -469,7 +469,7 @@
                           <OrganizationMultipleSelect
                             @selected={{@model.organization.hasParticipants}}
                             @onChange={{this.setHasParticipants}}
-                            @classificationCodes={{this.classificationCodesOcmwAssociationParticipants}}
+                            @classificationCodes={{@model.organization.participantClassifications}}
                             @error={{hasError}}
                             @id="has-participants"
                           />
@@ -489,12 +489,11 @@
                         >
                           <:label>Werd opgericht door</:label>
                           <:content as |hasError|>
-                            {{! TODO: set proper value for @classificationCodes}}
                             <OrganizationMultipleSelect
                               @disabled={{true}}
                               @selected={{@model.organization.wasFoundedByOrganizations}}
                               @onChange={{this.setRelation}}
-                              @classificationCodes={{this.classificationCodes}}
+                              @classificationCodes={{@model.organization.founderClassifications}}
                               @error={{hasError}}
                               @id="oprichting-peva"
                             />
@@ -511,7 +510,7 @@
                             <OrganizationMultipleSelect
                               @selected={{@model.organization.hasParticipants}}
                               @onChange={{this.setHasParticipants}}
-                              @classificationCodes={{this.classificationCodesPevaParticipants}}
+                              @classificationCodes={{@model.organization.participantClassifications}}
                               @error={{hasError}}
                               @id="has-participants"
                             />
@@ -550,7 +549,7 @@
                               @onChange={{this.setMunicipality}}
                               @allowClear={{true}}
                               @selectedProvince={{@model.organization.wasFoundedByOrganizations}}
-                              @classificationCodes={{this.classificationCodes}}
+                              @classificationCodes={{@model.organization.founderClassifications}}
                               @error={{hasError}}
                               @id="related-gemeente"
                             />
