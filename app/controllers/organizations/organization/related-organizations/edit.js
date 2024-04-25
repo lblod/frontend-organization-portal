@@ -2,11 +2,9 @@ import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import {
-  CLASSIFICATION_CODE,
-  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
-} from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { tracked } from '@glimmer/tracking';
+import { OcmwAssociationCodeList } from 'frontend-organization-portal/constants/Classification';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditController extends Controller {
   @service router;
@@ -41,7 +39,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   }
 
   get classificationCodesOcmwAssociationParticipants() {
-    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
+    return OcmwAssociationCodeList.concat([
       CLASSIFICATION_CODE.MUNICIPALITY,
       CLASSIFICATION_CODE.OCMW,
     ]);

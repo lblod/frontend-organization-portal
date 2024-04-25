@@ -1,10 +1,8 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
-import {
-  CLASSIFICATION_CODE,
-  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
-} from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { OcmwAssociationCodeList } from '../constants/Classification';
 
 export default class SiteTypeSelectComponent extends Component {
   @service store;
@@ -88,7 +86,7 @@ export default class SiteTypeSelectComponent extends Component {
   }
 
   get isOcmwAssociation() {
-    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
+    return OcmwAssociationCodeList.includes(
       this.args.organizationClassification.get('id')
     );
   }
