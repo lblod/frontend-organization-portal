@@ -145,10 +145,7 @@
                   <:content>{{@model.organization.denomination}}</:content>
                 </Item>
               {{/if}}
-              {{! TODO: replace this by model function?  }}
-              {{#if
-                (eq @model.organization.constructor.modelName "worship-service")
-              }}
+              {{#if @model.organization.isWorshipService}}
                 <Item>
                   <:label>Grensoverschrijdend</:label>
                   <:content>
