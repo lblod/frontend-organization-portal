@@ -14,7 +14,8 @@ export default class SiteTypeSelectComponent extends Component {
     this.siteTypes = this.loadSiteTypesTask.perform();
   }
 
-  // TODO: get rid of these methods and use those defined in the model?
+  // TODO: the site edit functionality moves to CLB app, afterwards this code
+  // should be removed as it is no longer needed in OP
   get isWorshipAdministrativeUnit() {
     return this.isWorshipService || this.isCentralWorshipService;
   }
