@@ -76,11 +76,11 @@ export default class AdministrativeUnitModel extends OrganizationModel {
           ...CentralWorshipServiceCodeList,
           ...ApbCodeList,
         ],
-        REQUIRED_MESSAGE
+        REQUIRED_MESSAGE,
       ),
       hasParticipants: validateRequiredWhenClassificationId(
         IGSCodeList,
-        REQUIRED_MESSAGE
+        REQUIRED_MESSAGE,
       ),
       wasFoundedByOrganizations: Joi.when(
         // Note: For OCMW associations and PEVAs a founding organisation is
@@ -97,7 +97,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
           is: Joi.exist().valid(true),
           then: validateRequiredWhenClassificationId(
             [...AgbCodeList, ...ApbCodeList],
-            REQUIRED_MESSAGE
+            REQUIRED_MESSAGE,
           ),
           otherwise: validateRequiredWhenClassificationId(
             [
@@ -107,9 +107,9 @@ export default class AdministrativeUnitModel extends OrganizationModel {
               ...PevaMunicipalityCodeList,
               ...PevaProvinceCodeList,
             ],
-            REQUIRED_MESSAGE
+            REQUIRED_MESSAGE,
           ),
-        }
+        },
       ),
       isSubOrganizationOf: validateRequiredWhenClassificationId(
         [
@@ -119,7 +119,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
           ...PoliceZoneCodeList,
           ...AssistanceZoneCodeList,
         ],
-        REQUIRED_MESSAGE
+        REQUIRED_MESSAGE,
       ),
       expectedEndDate: Joi.when('classification.id', {
         is: Joi.exist().valid(...IGSCodeList),
