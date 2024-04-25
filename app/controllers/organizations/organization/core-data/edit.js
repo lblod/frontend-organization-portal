@@ -5,10 +5,8 @@ import { combineFullAddress } from 'frontend-organization-portal/models/address'
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
-import {
-  CLASSIFICATION_CODE,
-  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
-} from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { OcmwAssociationCodeList } from 'frontend-organization-portal/constants/Classification';
 
 export default class OrganizationsOrganizationCoreDataEditController extends Controller {
   @service router;
@@ -48,14 +46,14 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
   }
 
   get classificationCodesOcmwAssociationParticipants() {
-    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
+    return OcmwAssociationCodeList.concat([
       CLASSIFICATION_CODE.MUNICIPALITY,
       CLASSIFICATION_CODE.OCMW,
     ]);
   }
 
   get classificationCodesOcmwAssociationFounders() {
-    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
+    return OcmwAssociationCodeList.concat([
       CLASSIFICATION_CODE.MUNICIPALITY,
       CLASSIFICATION_CODE.OCMW,
     ]);

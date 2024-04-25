@@ -1,8 +1,5 @@
 //TODO: Move CLASSIFICATION_CODE to constants
-import {
-  CLASSIFICATION_CODE,
-  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
-} from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export const MunicipalityCodeList = [CLASSIFICATION_CODE.MUNICIPALITY];
 
@@ -34,7 +31,14 @@ export const RepresentativeOrganCodeList = [
 ];
 
 export const OCMWCodeList = [CLASSIFICATION_CODE.OCMW];
-export const OcmwAssociationCodeList = OCMW_ASSOCIATION_CLASSIFICATION_CODES;
+export const OcmwAssociationCodeList = [
+  CLASSIFICATION_CODE.WELZIJNSVERENIGING,
+  CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
+  // TODO: uncomment when onboarding private OCMW associations
+  // CLASSIFICATION_CODE.ZIEKENHUISVERENIGING,
+  // CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+  // CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
+];
 
 export const DistrictCodeList = [CLASSIFICATION_CODE.DISTRICT];
 
