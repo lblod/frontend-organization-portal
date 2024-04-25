@@ -58,7 +58,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   @action
   addNewSubOrganization() {
-    let subOrganization = this.store.createRecord('organization');
+    let subOrganization = this.store.createRecord('administrative-unit');
     this.model.subOrganizations.push(subOrganization);
   }
 
@@ -94,7 +94,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   @action
   addNewHasParticipants() {
-    let organization = this.store.createRecord('organization');
+    let organization = this.store.createRecord('administrative-unit');
     this.model.hasParticipants.push(organization);
   }
 
