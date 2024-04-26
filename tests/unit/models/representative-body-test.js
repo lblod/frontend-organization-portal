@@ -30,7 +30,7 @@ module('Unit | Model | representative body', function (hooks) {
     test('it should return true for a representative body', async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
-        CLASSIFICATION.REPRESENTATIVE_ORGAN
+        CLASSIFICATION.REPRESENTATIVE_BODY
       );
       const model = this.store().createRecord('representative-body', {
         classification,

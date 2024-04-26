@@ -4,7 +4,7 @@ export function selectByRole(hasWorshipRole) {
   if (hasWorshipRole) {
     return `${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id},
           ${CLASSIFICATION.WORSHIP_SERVICE.id},
-          ${CLASSIFICATION.REPRESENTATIVE_ORGAN.id}
+          ${CLASSIFICATION.REPRESENTATIVE_BODY.id}
 
         `;
   } else {

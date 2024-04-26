@@ -129,12 +129,12 @@ module(
       );
     });
 
-    test('Representative organ', function (assert) {
-      assert.ok(CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN);
+    test('Representative nody', function (assert) {
+      assert.ok(CLASSIFICATION_CODE.REPRESENTATIVE_BODY);
 
       assert.strictEqual(
-        CLASSIFICATION.REPRESENTATIVE_ORGAN.id,
-        CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN
+        CLASSIFICATION.REPRESENTATIVE_BODY.id,
+        CLASSIFICATION_CODE.REPRESENTATIVE_BODY
       );
     });
 

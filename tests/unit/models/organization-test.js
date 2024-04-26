@@ -46,7 +46,7 @@ module('Unit | Model | organization', function (hooks) {
       ],
       [CLASSIFICATION.POLICE_ZONE, 'isPoliceZone'],
       [CLASSIFICATION.ASSISTANCE_ZONE, 'isAssistanceZone'],
-      [CLASSIFICATION.REPRESENTATIVE_ORGAN, 'isRepresentativeBody'],
+      [CLASSIFICATION.REPRESENTATIVE_BODY, 'isRepresentativeBody'],
       [CLASSIFICATION.WELZIJNSVERENIGING, 'isOcmwAssociation'],
       [CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING, 'isOcmwAssociation'],
       [CLASSIFICATION.PEVA_MUNICIPALITY, 'isPevaMunicipality'],

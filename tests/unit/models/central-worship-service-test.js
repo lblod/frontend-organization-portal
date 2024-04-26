@@ -43,7 +43,7 @@ module('Unit | Model | central worship service', function (hooks) {
 
     [
       [CLASSIFICATION.WORSHIP_SERVICE, 'isWorshipService'],
-      [CLASSIFICATION.REPRESENTATIVE_ORGAN, 'isRepresentativeBody'],
+      [CLASSIFICATION.REPRESENTATIVE_BODY, 'isRepresentativeBody'],
     ].forEach(([cl, func]) => {
       test(`it should return false for ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(

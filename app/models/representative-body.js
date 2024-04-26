@@ -4,7 +4,7 @@ import {
   validateBelongsToOptional,
   validateHasManyOptional,
 } from '../validators/schema';
-import { RepresentativeOrganCodeList } from '../constants/Classification';
+import { RepresentativeBodyCodeList } from '../constants/Classification';
 
 export const BLACKLIST_RO = [
   'e224c637ba8bb0e5dfbb87da225b4652', // Executief van de Moslims van België
@@ -31,6 +31,6 @@ export default class RepresentativeBodyModel extends OrganizationModel {
   }
 
   get isRepresentativeBody() {
-    return this._hasClassificationId(RepresentativeOrganCodeList);
+    return this._hasClassificationId(RepresentativeBodyCodeList);
   }
 }
