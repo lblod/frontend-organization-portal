@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 
 export default class OrganizationsOrganizationLocalInvolvementsEditController extends Controller {
@@ -13,8 +13,8 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
   @tracked showMoreThanOneFinancialTypeError = false;
 
   classificationCodes = [
-    CLASSIFICATION_CODE.MUNICIPALITY,
-    CLASSIFICATION_CODE.PROVINCE,
+    CLASSIFICATION.MUNICIPALITY.id,
+    CLASSIFICATION.PROVINCE.id,
   ];
 
   get hasValidationErrors() {
@@ -48,7 +48,7 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
   }
 
   get municipalityCode() {
-    return CLASSIFICATION_CODE.MUNICIPALITY;
+    return CLASSIFICATION.MUNICIPALITY.id;
   }
 
   get isValidTotalFinancingPercentage() {

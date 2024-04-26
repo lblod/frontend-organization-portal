@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
@@ -41,7 +41,7 @@ export default class ProvinceOrganizationSelectComponent extends Component {
             id: selectedMunicipalityId,
           },
           classification: {
-            id: CLASSIFICATION_CODE.PROVINCE,
+            id: CLASSIFICATION.PROVINCE.id,
           },
         },
         sort: 'name',
@@ -51,7 +51,7 @@ export default class ProvinceOrganizationSelectComponent extends Component {
       provinces = yield this.store.query('organization', {
         filter: {
           classification: {
-            id: CLASSIFICATION_CODE.PROVINCE,
+            id: CLASSIFICATION.PROVINCE.id,
           },
         },
         sort: 'name',

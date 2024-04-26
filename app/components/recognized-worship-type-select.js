@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class RecognizedWorshipTypeSelect extends Component {
   @service store;
@@ -45,7 +45,7 @@ export default class RecognizedWorshipTypeSelect extends Component {
 
     if (
       this.args.selectedClassificationId ==
-      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+      CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id
     ) {
       // Filter out blacklisted types for central worship services
       recognizedWorshipTypes = recognizedWorshipTypes.filter(

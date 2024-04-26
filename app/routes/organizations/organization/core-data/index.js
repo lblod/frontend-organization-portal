@@ -4,7 +4,7 @@ import {
   findSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
 import { inject as service } from '@ember/service';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
   @service store;
@@ -53,7 +53,7 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
           filter: {
             ':exact:name': municipalityString,
             classification: {
-              ':id:': CLASSIFICATION_CODE.MUNICIPALITY,
+              ':id:': CLASSIFICATION.MUNICIPALITY.id,
             },
           },
         })

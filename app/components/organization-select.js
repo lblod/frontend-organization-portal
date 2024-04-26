@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { timeout, task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 
 export default class OrganizationSelectComponent extends Component {
@@ -53,10 +53,10 @@ export default class OrganizationSelectComponent extends Component {
         // Only worship services have minister positions
         if (
           classificationCodes.find(
-            (code) => code == CLASSIFICATION_CODE.WORSHIP_SERVICE
+            (code) => code == CLASSIFICATION.WORSHIP_SERVICE.id
           )
         ) {
-          allowedClassificationCodes = [CLASSIFICATION_CODE.WORSHIP_SERVICE];
+          allowedClassificationCodes = [CLASSIFICATION.WORSHIP_SERVICE.id];
         }
       } else if (boardPositionCodes.length) {
         const selectedPosition = boardPositionCodes.at(0);
@@ -77,7 +77,7 @@ export default class OrganizationSelectComponent extends Component {
       allowedClassificationCodes = classificationCodes;
     }
 
-    let code = CLASSIFICATION_CODE.MUNICIPALITY;
+    let code = CLASSIFICATION.MUNICIPALITY.id;
 
     if (classificationCodes && classificationCodes.length) {
       code = classificationCodes.join();
