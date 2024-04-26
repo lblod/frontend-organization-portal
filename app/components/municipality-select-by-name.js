@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 
 export default class MunicipalitySelectByNameComponent extends Component {
@@ -25,7 +25,7 @@ export default class MunicipalitySelectByNameComponent extends Component {
             ':exact:name': this.args.selectedProvince,
           },
           classification: {
-            id: CLASSIFICATION_CODE.MUNICIPALITY,
+            id: CLASSIFICATION.MUNICIPALITY.id,
           },
         },
         sort: 'name',
@@ -40,7 +40,7 @@ export default class MunicipalitySelectByNameComponent extends Component {
       const query = {
         filter: {
           classification: {
-            id: CLASSIFICATION_CODE.MUNICIPALITY,
+            id: CLASSIFICATION.MUNICIPALITY.id,
           },
         },
         sort: 'name',

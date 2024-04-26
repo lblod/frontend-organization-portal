@@ -22,7 +22,7 @@ import {
   PevaMunicipalityCodeList,
   PevaProvinceCodeList,
 } from '../constants/Classification';
-import { CLASSIFICATION_CODE } from './administrative-unit-classification-code';
+import { CLASSIFICATION } from './administrative-unit-classification-code';
 
 export default class AdministrativeUnitModel extends OrganizationModel {
   @belongsTo('location', {
@@ -183,30 +183,30 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   get participantClassifications() {
     if (this.isIgs) {
       return [
-        CLASSIFICATION_CODE.MUNICIPALITY,
-        CLASSIFICATION_CODE.OCMW,
-        CLASSIFICATION_CODE.AGB,
-        CLASSIFICATION_CODE.PROJECTVERENIGING,
-        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-        CLASSIFICATION_CODE.POLICE_ZONE,
-        CLASSIFICATION_CODE.ASSISTANCE_ZONE,
-        CLASSIFICATION_CODE.PEVA_MUNICIPALITY,
-        CLASSIFICATION_CODE.PEVA_PROVINCE,
+        CLASSIFICATION.MUNICIPALITY.id,
+        CLASSIFICATION.OCMW.id,
+        CLASSIFICATION.AGB.id,
+        CLASSIFICATION.PROJECTVERENIGING.id,
+        CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
+        CLASSIFICATION.POLICE_ZONE.id,
+        CLASSIFICATION.ASSISTANCE_ZONE.id,
+        CLASSIFICATION.PEVA_MUNICIPALITY.id,
+        CLASSIFICATION.PEVA_PROVINCE.id,
         // TODO when onboarded, add organizations
       ];
     } else if (this.isOcmwAssociation) {
       return OcmwAssociationCodeList.concat([
-        CLASSIFICATION_CODE.MUNICIPALITY,
-        CLASSIFICATION_CODE.OCMW,
+        CLASSIFICATION.MUNICIPALITY.id,
+        CLASSIFICATION.OCMW.id,
       ]);
     } else if (this.isPevaMunicipality || this.isPevaProvince) {
       return [
-        CLASSIFICATION_CODE.PROJECTVERENIGING,
-        CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+        CLASSIFICATION.PROJECTVERENIGING.id,
+        CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
       ];
     }
     return [];
@@ -219,11 +219,11 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       this.isPevaMunicipality ||
       this.isPevaProvince
     ) {
-      return [CLASSIFICATION_CODE.MUNICIPALITY];
+      return [CLASSIFICATION.MUNICIPALITY.id];
     } else if (this.isOcmwAssociation) {
       return OcmwAssociationCodeList.concat([
-        CLASSIFICATION_CODE.MUNICIPALITY,
-        CLASSIFICATION_CODE.OCMW,
+        CLASSIFICATION.MUNICIPALITY.id,
+        CLASSIFICATION.OCMW.id,
       ]);
     }
     return [];
@@ -233,7 +233,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   // might be merged with the above founder getter once the relationships
   // between organizations have been sorted out.
   get municipalityClassificationCode() {
-    return [CLASSIFICATION_CODE.MUNICIPALITY];
+    return [CLASSIFICATION.MUNICIPALITY.id];
   }
 
   get requiresGoverningBodies() {

@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { OcmwAssociationCodeList } from '../constants/Classification';
 
 export default class SiteTypeSelectComponent extends Component {
@@ -23,50 +23,50 @@ export default class SiteTypeSelectComponent extends Component {
   get isWorshipService() {
     return (
       this.args.organizationClassification.get('id') ===
-      CLASSIFICATION_CODE.WORSHIP_SERVICE
+      CLASSIFICATION.WORSHIP_SERVICE.id
     );
   }
 
   get isCentralWorshipService() {
     return (
       this.args.organizationClassification.get('id') ===
-      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+      CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id
     );
   }
 
   get isMunicipality() {
     return (
       this.args.organizationClassification.get('id') ===
-      CLASSIFICATION_CODE.MUNICIPALITY
+      CLASSIFICATION.MUNICIPALITY.id
     );
   }
 
   get isProvince() {
     return (
       this.args.organizationClassification.get('id') ===
-      CLASSIFICATION_CODE.PROVINCE
+      CLASSIFICATION.PROVINCE.id
     );
   }
 
   get isDistrict() {
     return (
       this.args.organizationClassification.get('id') ===
-      CLASSIFICATION_CODE.DISTRICT
+      CLASSIFICATION.DISTRICT.id
     );
   }
 
   get isAgb() {
     return (
-      this.args.organizationClassification.get('id') === CLASSIFICATION_CODE.AGB
+      this.args.organizationClassification.get('id') === CLASSIFICATION.AGB.id
     );
   }
 
   get isIGS() {
     const typesThatAreIGS = [
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+      CLASSIFICATION.PROJECTVERENIGING.id,
+      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
     ];
     return typesThatAreIGS.includes(
       this.args.organizationClassification.get('id')
@@ -75,14 +75,14 @@ export default class SiteTypeSelectComponent extends Component {
 
   get isApb() {
     return (
-      this.args.organizationClassification.get('id') === CLASSIFICATION_CODE.APB
+      this.args.organizationClassification.get('id') === CLASSIFICATION.APB.id
     );
   }
 
   get isPoliceZone() {
     return (
       this.args.organizationClassification.get('id') ===
-      CLASSIFICATION_CODE.POLICE_ZONE
+      CLASSIFICATION.POLICE_ZONE.id
     );
   }
 
@@ -95,14 +95,14 @@ export default class SiteTypeSelectComponent extends Component {
   get isPevaMunicipality() {
     return (
       this.args.organizationClassification.get('id') ===
-      CLASSIFICATION_CODE.PEVA_MUNICIPALITY
+      CLASSIFICATION.PEVA_MUNICIPALITY.id
     );
   }
 
   get isPevaProvince() {
     return (
       this.args.organizationClassification.get('id') ===
-      CLASSIFICATION_CODE.PEVA_PROVINCE
+      CLASSIFICATION.PEVA_PROVINCE.id
     );
   }
 

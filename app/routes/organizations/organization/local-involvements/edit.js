@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class OrganizationsOrganizationLocalInvolvementsEditRoute extends Route {
   @service store;
@@ -31,7 +31,7 @@ export default class OrganizationsOrganizationLocalInvolvementsEditRoute extends
 
     let involvementTypes;
     const classification = await organization.classification;
-    if (classification.id == CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE) {
+    if (classification.id == CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id) {
       involvementTypes = await this.store.query('involvement-type', {
         filter: {
           id: INVOLVEMENT_TYPE.SUPERVISORY, // Toezichthoundend

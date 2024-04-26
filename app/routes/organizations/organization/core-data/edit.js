@@ -9,7 +9,7 @@ import {
 import { createAddress } from 'frontend-organization-portal/models/address';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { A } from '@ember/array';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 import { action } from '@ember/object';
 
@@ -97,7 +97,7 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
           filter: {
             ':exact:name': municipalityString,
             classification: {
-              ':id:': CLASSIFICATION_CODE.MUNICIPALITY,
+              ':id:': CLASSIFICATION.MUNICIPALITY.id,
             },
           },
         })
