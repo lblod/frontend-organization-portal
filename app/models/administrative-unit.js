@@ -235,4 +235,30 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   get municipalityClassificationCode() {
     return [CLASSIFICATION_CODE.MUNICIPALITY];
   }
+
+  get requiresGoverningBodies() {
+    return !(
+      this.isAgb ||
+      this.isApb ||
+      this.isIgs ||
+      this.isPoliceZone ||
+      this.isAssistanceZone ||
+      this.isOcmwAssociation ||
+      this.isPevaMunicipality ||
+      this.isPevaProvince ||
+      this.isRepresentativeBody
+    );
+  }
+
+  get requiresFunctionaries() {
+    return !(
+      this.isDistrict ||
+      this.isWorshipAdministrativeUnit ||
+      this.isPoliceZone ||
+      this.isAssistanceZone ||
+      this.isPevaMunicipality ||
+      this.isPevaProvince ||
+      this.isRepresentativeBody
+    );
+  }
 }

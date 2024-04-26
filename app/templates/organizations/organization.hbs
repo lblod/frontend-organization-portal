@@ -30,7 +30,7 @@
             </AuNavigationLink>
           </li>
         {{/if}}
-        {{#if this.requiresGoverningBodies}}
+        {{#if @model.requiresGoverningBodies}}
           <li class="au-c-list-navigation__item">
             <AuNavigationLink
               @route="organizations.organization.governing-bodies"
@@ -46,7 +46,7 @@
             </AuNavigationLink>
           </li>
         {{/if}}
-        {{#if this.requiresFunctionaries}}
+        {{#if @model.requiresFunctionaries}}
           <li class="au-c-list-navigation__item">
             <AuNavigationLink @route="organizations.organization.executives">
               Leidinggevenden
