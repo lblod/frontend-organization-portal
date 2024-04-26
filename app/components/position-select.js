@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class PositionSelectComponent extends Component {
   @service store;
@@ -55,7 +55,7 @@ export default class PositionSelectComponent extends Component {
         'filter[applies-to][applies-within][:id:]': classification.id,
       });
 
-      if (classification.id == CLASSIFICATION_CODE.WORSHIP_SERVICE) {
+      if (classification.id == CLASSIFICATION.WORSHIP_SERVICE.id) {
         ministerPositions = yield this.store.query(
           'minister-position-function',
           {
@@ -67,23 +67,23 @@ export default class PositionSelectComponent extends Component {
       let allowedIds = [];
       if (this.currentSession.hasUnitRole) {
         allowedIds = [
-          CLASSIFICATION_CODE.MUNICIPALITY,
-          CLASSIFICATION_CODE.PROVINCE,
-          CLASSIFICATION_CODE.OCMW,
-          CLASSIFICATION_CODE.DISTRICT,
-          CLASSIFICATION_CODE.AGB,
-          CLASSIFICATION_CODE.APB,
-          CLASSIFICATION_CODE.PROJECTVERENIGING,
-          CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-          CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-          CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-          CLASSIFICATION_CODE.WELZIJNSVERENIGING,
-          CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
+          CLASSIFICATION.MUNICIPALITY.id,
+          CLASSIFICATION.PROVINCE.id,
+          CLASSIFICATION.OCMW.id,
+          CLASSIFICATION.DISTRICT.id,
+          CLASSIFICATION.AGB.id,
+          CLASSIFICATION.APB.id,
+          CLASSIFICATION.PROJECTVERENIGING.id,
+          CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
+          CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
+          CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
+          CLASSIFICATION.WELZIJNSVERENIGING.id,
+          CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
         ];
       } else {
         allowedIds = [
-          CLASSIFICATION_CODE.WORSHIP_SERVICE,
-          CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
+          CLASSIFICATION.WORSHIP_SERVICE.id,
+          CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
         ];
       }
 
