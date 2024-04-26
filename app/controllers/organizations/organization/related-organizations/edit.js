@@ -120,7 +120,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     organization.subOrganizations = subOrganizations;
     organization.hasParticipants = hasParticipants;
 
-    yield organization.validate();
+    yield organization.validate({ relaxMandatoryFoundingOrganization: true });
 
     if (!this.hasValidationErrors) {
       yield organization.save();
