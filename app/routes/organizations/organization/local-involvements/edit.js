@@ -25,7 +25,7 @@ export default class OrganizationsOrganizationLocalInvolvementsEditRoute extends
       {
         reload: true,
         include:
-          'involvements.involvement-type,involvements.organization.classification',
+          'involvements.involvement-type,involvements.administrative-unit.classification',
       }
     );
 

@@ -64,8 +64,8 @@
           <td>
             {{#let involvement.error.organization.message as |errorMessage|}}
               <OrganizationSelect
-                @selected={{involvement.organization}}
-                @onChange={{fn (mut involvement.organization)}}
+                @selected={{involvement.administrativeUnit}}
+                @onChange={{fn (mut involvement.administrativeUnit)}}
                 @allowClear={{involvement.isNew}}
                 @ariaLabelledBy="organization"
                 @error={{errorMessage}}
@@ -83,7 +83,7 @@
           <td>
             <AuInput
               @width="block"
-              @value={{involvement.organization.classification.label}}
+              @value={{involvement.administrativeUnit.classification.label}}
               @disabled={{true}}
               aria-labelledby="classification"
             />
@@ -95,7 +95,7 @@
                   {{#if
                     (eq
                       this.municipalityCode
-                      involvement.organization.classification.id
+                      involvement.administrativeUnit.classification.id
                     )
                   }}
                     <PowerSelect
@@ -185,7 +185,7 @@
               {{#if
                 (and
                   involvement.isNew
-                  (not involvement.organization.id)
+                  (not involvement.administrativeUnit.id)
                   (not involvement.involvementType.id)
                   (eq involvement.percentage 0)
                 )
