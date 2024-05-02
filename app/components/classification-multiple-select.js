@@ -62,7 +62,7 @@ export default class ClassificationMultipleSelectComponent extends Component {
     ) {
       allowedIds = [
         CLASSIFICATION_CODE.WORSHIP_SERVICE,
-        CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN,
+        CLASSIFICATION_CODE.REPRESENTATIVE_BODY,
       ];
     } else {
       allowedIds = [
@@ -80,7 +80,7 @@ export default class ClassificationMultipleSelectComponent extends Component {
         CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
         CLASSIFICATION_CODE.POLICE_ZONE,
         CLASSIFICATION_CODE.ASSISTANCE_ZONE,
-        CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN,
+        CLASSIFICATION_CODE.REPRESENTATIVE_BODY,
         CLASSIFICATION_CODE.WELZIJNSVERENIGING,
         CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING,
         // TODO: uncomment when onboarding private OCMW associations
@@ -98,14 +98,14 @@ export default class ClassificationMultipleSelectComponent extends Component {
           ![
             CLASSIFICATION_CODE.WORSHIP_SERVICE,
             CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
-            CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN,
+            CLASSIFICATION_CODE.REPRESENTATIVE_BODY,
           ].includes(id)
       );
     } else {
       allowedIds = allowedIds.filter((id) =>
         [
           CLASSIFICATION_CODE.WORSHIP_SERVICE,
-          CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN,
+          CLASSIFICATION_CODE.REPRESENTATIVE_BODY,
           CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE,
         ].includes(id)
       );

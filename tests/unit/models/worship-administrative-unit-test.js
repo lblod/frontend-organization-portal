@@ -56,7 +56,7 @@ module('Unit | Model | worship administrative unit', function (hooks) {
     test('it should return false for a representative body', async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
-        CLASSIFICATION.REPRESENTATIVE_ORGAN
+        CLASSIFICATION.REPRESENTATIVE_BODY
       );
       const model = this.store().createRecord('representative-body', {
         classification,
@@ -68,10 +68,10 @@ module('Unit | Model | worship administrative unit', function (hooks) {
 
     [
       CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
-      CLASSIFICATION.REPRESENTATIVE_ORGAN,
+      CLASSIFICATION.REPRESENTATIVE_BODY,
       CLASSIFICATION.WORSHIP_SERVICE,
     ].forEach((cl) => {
-      test('it should return false for a worship administrative unit', async function (assert) {
+      test(`it should return false for a ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
           cl

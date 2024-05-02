@@ -69,7 +69,7 @@ export default class OrganizationsIndexController extends Controller {
           org.classification_id !== CLASSIFICATION_CODE.WORSHIP_SERVICE &&
           org.classification_id !==
             CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE &&
-          org.classification_id !== CLASSIFICATION_CODE.REPRESENTATIVE_ORGAN
+          org.classification_id !== CLASSIFICATION_CODE.REPRESENTATIVE_BODY
         );
       });
     }

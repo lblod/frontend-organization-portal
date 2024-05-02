@@ -194,7 +194,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
         CLASSIFICATION_CODE.ASSISTANCE_ZONE,
         CLASSIFICATION_CODE.PEVA_MUNICIPALITY,
         CLASSIFICATION_CODE.PEVA_PROVINCE,
-        // TODO when onboarded, add companies
+        // TODO when onboarded, add organizations
       ];
     } else if (this.isOcmwAssociation) {
       return OcmwAssociationCodeList.concat([
