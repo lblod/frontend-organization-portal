@@ -2,10 +2,6 @@ import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import {
-  CLASSIFICATION_CODE,
-  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
-} from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { tracked } from '@glimmer/tracking';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditController extends Controller {
@@ -19,42 +15,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   queryParams = ['sort'];
 
   @tracked sort = 'name';
-
-  // TODO:  move logic to model
-  get classificationCodes() {
-    return [CLASSIFICATION_CODE.MUNICIPALITY];
-  }
-
-  get classificationCodesIgsParticipants() {
-    return [
-      CLASSIFICATION_CODE.MUNICIPALITY,
-      CLASSIFICATION_CODE.OCMW,
-      CLASSIFICATION_CODE.AGB,
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-      CLASSIFICATION_CODE.POLICE_ZONE,
-      CLASSIFICATION_CODE.ASSISTANCE_ZONE,
-      // TODO when onboarded, add companies
-    ];
-  }
-
-  get classificationCodesOcmwAssociationParticipants() {
-    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.concat([
-      CLASSIFICATION_CODE.MUNICIPALITY,
-      CLASSIFICATION_CODE.OCMW,
-    ]);
-  }
-
-  get classificationCodesPevaParticipants() {
-    return [
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-    ];
-  }
 
   @action
   addNewSubOrganization() {
