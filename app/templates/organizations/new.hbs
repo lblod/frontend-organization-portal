@@ -279,7 +279,7 @@
       <:title>Primaire contactgegevens</:title>
     </Site::ContactEditCard>
 
-    {{#if this.model.administrativeUnit.classification}}
+    {{#if @model.administrativeUnit.classification}}
       <EditCard @containsRequiredFields={{true}}>
         <:title>Gerelateerde organisaties</:title>
         <:card as |Card|>
@@ -299,7 +299,32 @@
                       />
                     </:content>
                   </Item>
-                {{else if @model.administrativeUnit.hasCentralWorshipService}}
+                {{/if}}
+                {{! FIXME: dirty hack to have the field displayed in the right
+                circumstances. This enables the field for worship services of
+                worship type Roman-Catholic, Islamic, and Orthodox. This should
+                become unneccessary when the organization creation functionality
+                stops defaulting to plain administrative units (OP-3183).}}
+                {{#if
+                  (and
+                    @model.administrativeUnit.isWorshipService
+                    @model.administrativeUnit.recognizedWorshipType
+                    (or
+                      (eq
+                        @model.administrativeUnit.recognizedWorshipType.id
+                        "b13d1d623626bc1ee75c7d20bc60e3c0"
+                      )
+                      (eq
+                        @model.administrativeUnit.recognizedWorshipType.id
+                        "9d8bd472a00bf0a5c7b7186606365a52"
+                      )
+                      (eq
+                        @model.administrativeUnit.recognizedWorshipType.id
+                        "84bcd6896f575bae4857ff8d2764bed8"
+                      )
+                    )
+                  )
+                }}
                   <Item
                     @labelFor="related-central-worship-service"
                     @required={{false}}
