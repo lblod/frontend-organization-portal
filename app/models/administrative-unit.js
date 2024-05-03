@@ -261,4 +261,20 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       this.isRepresentativeBody
     );
   }
+
+  // NOTE: the following worship-related functions have to be placed here
+  // instead of their corresponding models. The new organization form works
+  // based on an administrative unit record and does not show the correct
+  // fields if these functions are placed in the more specific models.
+  get isWorshipAdministrativeUnit() {
+    return this.isWorshipService || this.isCentralWorshipService;
+  }
+
+  get isWorshipService() {
+    return this._hasClassificationId(WorshipServiceCodeList);
+  }
+
+  get isCentralWorshipService() {
+    return this._hasClassificationId(CentralWorshipServiceCodeList);
+  }
 }
