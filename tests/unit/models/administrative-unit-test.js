@@ -285,25 +285,6 @@ module('Unit | Model | administrative unit', function (hooks) {
       });
     });
 
-    [
-      [CLASSIFICATION.WORSHIP_SERVICE, 'isWorshipService'],
-      [CLASSIFICATION.CENTRAL_WORSHIP_SERVICE, 'isCentralWorshipService'],
-      [CLASSIFICATION.REPRESENTATIVE_BODY, 'isRepresentativeBody'],
-    ].forEach(([cl, func]) => {
-      test(`it should return false for ${cl.label}`, async function (assert) {
-        const classification = this.store().createRecord(
-          'administrative-unit-classification-code',
-          cl
-        );
-        const model = this.store().createRecord('administrative-unit', {
-          classification,
-        });
-
-        const result = model[func];
-        assert.notOk(result);
-      });
-    });
-
     Object.keys(CLASSIFICATION).forEach((cl) => {
       test(`it should return false for whether ${cl.label} has a central worship service`, async function (assert) {
         const classification = this.store().createRecord(

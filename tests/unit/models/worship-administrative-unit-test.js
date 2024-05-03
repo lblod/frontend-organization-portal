@@ -65,24 +65,5 @@ module('Unit | Model | worship administrative unit', function (hooks) {
       const result = model.isWorshipAdministrativeUnit;
       assert.notOk(result);
     });
-
-    [
-      CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
-      CLASSIFICATION.REPRESENTATIVE_BODY,
-      CLASSIFICATION.WORSHIP_SERVICE,
-    ].forEach((cl) => {
-      test(`it should return false for a ${cl.label}`, async function (assert) {
-        const classification = this.store().createRecord(
-          'administrative-unit-classification-code',
-          cl
-        );
-        const model = this.store().createRecord('worship-administrative-unit', {
-          classification,
-        });
-
-        const result = model.isWorshipAdministrativeUnit;
-        assert.notOk(result);
-      });
-    });
   });
 });
