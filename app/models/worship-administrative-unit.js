@@ -48,7 +48,9 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
     );
   }
 
-  #hasRecognizedWorshipTypeId(classificationIds) {
-    return classificationIds.includes(this.classification?.get('id'));
+  #hasRecognizedWorshipTypeId(recognizedWorshipTypeIds) {
+    return recognizedWorshipTypeIds.includes(
+      this.recognizedWorshipType?.get('id')
+    );
   }
 }
