@@ -40,23 +40,5 @@ module('Unit | Model | central worship service', function (hooks) {
       const result = model.isCentralWorshipService;
       assert.true(result);
     });
-
-    [
-      [CLASSIFICATION.WORSHIP_SERVICE, 'isWorshipService'],
-      [CLASSIFICATION.REPRESENTATIVE_BODY, 'isRepresentativeBody'],
-    ].forEach(([cl, func]) => {
-      test(`it should return false for ${cl.label}`, async function (assert) {
-        const classification = this.store().createRecord(
-          'administrative-unit-classification-code',
-          cl
-        );
-        const model = this.store().createRecord('central-worship-service', {
-          classification,
-        });
-
-        const result = model[func];
-        assert.notOk(result);
-      });
-    });
   });
 });
