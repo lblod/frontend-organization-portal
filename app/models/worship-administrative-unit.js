@@ -5,6 +5,10 @@ import {
   validateHasManyOptional,
 } from '../validators/schema';
 import { WITH_CENTRAL_WORSHIP_SERVICE } from './recognized-worship-type';
+import {
+  CentralWorshipServiceCodeList,
+  WorshipServiceCodeList,
+} from '../constants/Classification';
 
 export default class WorshipAdministrativeUnitModel extends AdministrativeUnitModel {
   @belongsTo('recognized-worship-type', {
@@ -48,5 +52,21 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
     return recognizedWorshipTypeIds.includes(
       this.recognizedWorshipType?.get('id')
     );
+  }
+
+  // NOTE: the following functions have to be placed here instead of in the more
+  // specific models. The new organization form works based on an worship
+  // administrative unit record and does not show the correct fields if these
+  // functions are placed in the more specific models.
+  get isWorshipAdministrativeUnit() {
+    return this.isWorshipService || this.isCentralWorshipService;
+  }
+
+  get isWorshipService() {
+    return this._hasClassificationId(WorshipServiceCodeList);
+  }
+
+  get isCentralWorshipService() {
+    return this._hasClassificationId(CentralWorshipServiceCodeList);
   }
 }
