@@ -38,8 +38,17 @@ export default class OrganizationsNewRoute extends Route {
       structuredIdentifier: structuredIdentifierSharepoint,
     });
 
+    let administrativeUnit;
+    if (this.currentSession.hasWorshipRole) {
+      administrativeUnit = this.store.createRecord(
+        'worship-administrative-unit'
+      );
+    } else {
+      administrativeUnit = this.store.createRecord('administrative-unit');
+    }
+
     return {
-      administrativeUnit: this.store.createRecord('administrative-unit'),
+      administrativeUnit,
       centralWorshipService: this.store.createRecord('central-worship-service'),
       worshipService: this.store.createRecord('worship-service'),
       primarySite: this.store.createRecord('site'),
