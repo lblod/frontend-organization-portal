@@ -14,6 +14,10 @@ export default class OrganizationsNewController extends Controller {
   get hasValidationErrors() {
     return (
       this.model.administrativeUnit.error ||
+      (this.model.administrativeUnit.isCentralWorshipService &&
+        this.model.centralWorshipService.error) ||
+      (this.model.administrativeUnit.isWorshipService &&
+        this.model.worshipService.error) ||
       this.model.address.error ||
       this.model.contact.error ||
       this.model.secondaryContact.error ||
@@ -22,11 +26,38 @@ export default class OrganizationsNewController extends Controller {
     );
   }
 
+  /**
+   * Set the specified property to the given value for each relevant
+   * organization model instance in the route.
+   * @param {string} property - the name of the property to be set
+   * @param {*} value - the value to be assigned to the property
+   */
+  #setPropertyToValue(property, value) {
+    // TODO: loop over relevant models instead of three calls?
+    this.model.administrativeUnit[property] = value;
+    // TODO: only set when worship user
+    this.model.centralWorshipService[property] = value;
+    this.model.worshipService[property] = value;
+  }
+
+  /**
+   * Call a function with the given name and argument on each organization model
+   * in this route.
+   * @param {string} func - the name of the function to call
+   * @param {*} arg - the argument to pass on to the setter
+   */
+  #callSetter(func, arg) {
+    this.model.administrativeUnit[func](arg);
+    this.model.centralWorshipService[func](arg);
+    this.model.worshipService[func](arg);
+  }
+
   @action
   setRelation(unit) {
-    this.model.administrativeUnit.isSubOrganizationOf = Array.isArray(unit)
-      ? unit[0]
-      : unit;
+    this.#setPropertyToValue(
+      'isSubOrganizationOf',
+      Array.isArray(unit) ? unit[0] : unit
+    );
 
     if (
       this.model.administrativeUnit.isAgb ||
@@ -35,29 +66,41 @@ export default class OrganizationsNewController extends Controller {
       this.model.administrativeUnit.isPevaMunicipality ||
       this.model.administrativeUnit.isPevaProvince
     ) {
-      this.model.administrativeUnit.wasFoundedByOrganizations = Array.isArray(
-        unit
-      )
-        ? unit
-        : unit
-        ? [unit]
-        : [];
+      this.#setPropertyToValue(
+        'wasFoundedByOrganizations',
+        Array.isArray(unit) ? unit : unit ? [unit] : []
+      );
     }
   }
 
   @action
   setNames(name) {
-    this.model.administrativeUnit.setAbbName(name);
+    this.#callSetter('setAbbName', name);
   }
 
   @action
   setAlternativeNames(names) {
-    this.model.administrativeUnit.setAlternativeName(names);
+    this.#callSetter('setAlternativeName', names);
+  }
+
+  @action
+  setRecognizedWorshipType(type) {
+    this.#setPropertyToValue('recognizedWorshipType', type);
+  }
+
+  @action
+  setOrganizationStatus(status) {
+    this.#setPropertyToValue('organizationStatus', status);
+  }
+
+  @action
+  setIsAssociatedWith(units) {
+    this.#setPropertyToValue('isAssociatedWith', units);
   }
 
   @action
   setHasParticipants(units) {
-    this.model.administrativeUnit.hasParticipants = units;
+    this.#setPropertyToValue('hasParticipants', units);
   }
 
   @action
@@ -65,15 +108,35 @@ export default class OrganizationsNewController extends Controller {
     this.model.structuredIdentifierKBO.localId = value;
   }
 
-  @action
-  setClassification(value) {
-    this.model.administrativeUnit.classification = value;
+  // TODO: actually model logic?
+  resetRelations() {
     this.model.administrativeUnit.subOrganizations = [];
     this.model.administrativeUnit.foundedOrganizations = [];
     this.model.administrativeUnit.isAssociatedWith = null;
     this.model.administrativeUnit.isSubOrganizationOf = null;
     this.model.administrativeUnit.wasFoundedByOrganizations = [];
     this.model.administrativeUnit.hasParticipants = [];
+
+    this.model.centralWorshipService.subOrganizations = [];
+    this.model.centralWorshipService.foundedOrganizations = [];
+    this.model.centralWorshipService.isAssociatedWith = null;
+    this.model.centralWorshipService.isSubOrganizationOf = null;
+    this.model.centralWorshipService.wasFoundedByOrganizations = [];
+    this.model.centralWorshipService.hasParticipants = [];
+
+    this.model.worshipService.subOrganizations = [];
+    this.model.worshipService.foundedOrganizations = [];
+    this.model.worshipService.isAssociatedWith = null;
+    this.model.worshipService.isSubOrganizationOf = null;
+    this.model.worshipService.wasFoundedByOrganizations = [];
+    this.model.worshipService.hasParticipants = [];
+  }
+
+  @action
+  setClassification(value) {
+    this.#setPropertyToValue('classification', value);
+
+    this.resetRelations();
   }
 
   @dropTask
@@ -96,6 +159,8 @@ export default class OrganizationsNewController extends Controller {
 
     yield Promise.all([
       administrativeUnit.validate(),
+      centralWorshipService.validate(),
+      worshipService.validate(),
       address.validate(),
       contact.validate(),
       secondaryContact.validate(),

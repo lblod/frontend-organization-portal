@@ -117,9 +117,7 @@
                 <:content as |hasError|>
                   <RecognizedWorshipTypeSelect
                     @selected={{@model.administrativeUnit.recognizedWorshipType}}
-                    @onChange={{fn
-                      (mut @model.administrativeUnit.recognizedWorshipType)
-                    }}
+                    @onChange={{this.setRecognizedWorshipType}}
                     @allowClear={{true}}
                     @selectedClassificationId={{@model.administrativeUnit.classification.id}}
                     @error={{hasError}}
@@ -218,9 +216,7 @@
               <:content as |hasError|>
                 <OrganizationStatusSelect
                   @selected={{@model.administrativeUnit.organizationStatus}}
-                  @onChange={{fn
-                    (mut @model.administrativeUnit.organizationStatus)
-                  }}
+                  @onChange={{this.setOrganizationStatus}}
                   @error={{hasError}}
                   @id="status-select"
                 />
@@ -291,9 +287,9 @@
                     <:label>Bestuur van de eredienst</:label>
                     <:content>
                       <WorshipServiceMultipleSelect
-                        @selected={{@model.administrativeUnit.subOrganizations}}
+                        @selected={{@model.centralWorshipService.subOrganizations}}
                         @onChange={{fn
-                          (mut @model.administrativeUnit.subOrganizations)
+                          (mut @model.centralWorshipService.subOrganizations)
                         }}
                         id="related-worship-service"
                       />
@@ -310,9 +306,7 @@
                     <:content as |hasError|>
                       <CentralWorshipSelect
                         @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                        @onChange={{fn
-                          (mut @model.administrativeUnit.isSubOrganizationOf)
-                        }}
+                        @onChange={{this.setRelation}}
                         @error={{hasError}}
                         @id="related-central-worship-service"
                       />
@@ -328,9 +322,7 @@
                   <:content as |hasError|>
                     <RepresentativeBodySelect
                       @selected={{@model.administrativeUnit.isAssociatedWith}}
-                      @onChange={{fn
-                        (mut @model.administrativeUnit.isAssociatedWith)
-                      }}
+                      @onChange={{this.setIsAssociatedWith}}
                       @error={{hasError}}
                       @id="related-representative-body"
                     />
