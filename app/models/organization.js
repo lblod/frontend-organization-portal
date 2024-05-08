@@ -178,6 +178,17 @@ export default class OrganizationModel extends AgentModel {
     });
   }
 
+  resetRelations() {
+    this.subOrganizations = [];
+    this.isSubOrganizationOf = null;
+    this.associatedOrganizations = [];
+    this.isAssociatedWith = null;
+    this.foundedOrganizations = [];
+    this.wasFoundedByOrganizations = [];
+    this.participatesIn = [];
+    this.hasParticipants = [];
+  }
+
   // TODO: use registered KBO name as fallback
   get abbName() {
     return this.legalName ?? this.name;

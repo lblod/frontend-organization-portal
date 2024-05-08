@@ -44,7 +44,7 @@ export default class OrganizationsNewController extends Controller {
    * Call a function with the given name and argument on each organization model
    * in this route.
    * @param {string} func - the name of the function to call
-   * @param {*} arg - the argument to pass on to the setter
+   * @param {*} [arg] - optional argument to pass on to the function
    */
   #callSetter(func, arg) {
     this.model.administrativeUnit[func](arg);
@@ -108,35 +108,10 @@ export default class OrganizationsNewController extends Controller {
     this.model.structuredIdentifierKBO.localId = value;
   }
 
-  // TODO: actually model logic?
-  resetRelations() {
-    this.model.administrativeUnit.subOrganizations = [];
-    this.model.administrativeUnit.foundedOrganizations = [];
-    this.model.administrativeUnit.isAssociatedWith = null;
-    this.model.administrativeUnit.isSubOrganizationOf = null;
-    this.model.administrativeUnit.wasFoundedByOrganizations = [];
-    this.model.administrativeUnit.hasParticipants = [];
-
-    this.model.centralWorshipService.subOrganizations = [];
-    this.model.centralWorshipService.foundedOrganizations = [];
-    this.model.centralWorshipService.isAssociatedWith = null;
-    this.model.centralWorshipService.isSubOrganizationOf = null;
-    this.model.centralWorshipService.wasFoundedByOrganizations = [];
-    this.model.centralWorshipService.hasParticipants = [];
-
-    this.model.worshipService.subOrganizations = [];
-    this.model.worshipService.foundedOrganizations = [];
-    this.model.worshipService.isAssociatedWith = null;
-    this.model.worshipService.isSubOrganizationOf = null;
-    this.model.worshipService.wasFoundedByOrganizations = [];
-    this.model.worshipService.hasParticipants = [];
-  }
-
   @action
   setClassification(value) {
     this.#setPropertyToValue('classification', value);
-
-    this.resetRelations();
+    this.#callSetter('resetRelations');
   }
 
   @dropTask
