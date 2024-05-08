@@ -236,6 +236,16 @@ export default class AdministrativeUnitModel extends OrganizationModel {
     return [CLASSIFICATION.MUNICIPALITY.id];
   }
 
+  get requiresFoundedByOrganization() {
+    return (
+      this.isAgb ||
+      this.isApb ||
+      this.isOcmwAssociation ||
+      this.isPevaMunicipality ||
+      this.isPevaProvince
+    );
+  }
+
   get requiresGoverningBodies() {
     return !(
       this.isAgb ||

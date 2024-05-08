@@ -46,7 +46,7 @@ export default class OrganizationsNewController extends Controller {
    * @param {string} func - the name of the function to call
    * @param {*} [arg] - optional argument to pass on to the function
    */
-  #callSetter(func, arg) {
+  #callFunctionForModels(func, arg) {
     this.model.administrativeUnit[func](arg);
     this.model.centralWorshipService[func](arg);
     this.model.worshipService[func](arg);
@@ -59,13 +59,7 @@ export default class OrganizationsNewController extends Controller {
       Array.isArray(unit) ? unit[0] : unit
     );
 
-    if (
-      this.model.administrativeUnit.isAgb ||
-      this.model.administrativeUnit.isApb ||
-      this.model.administrativeUnit.isOcmwAssociation ||
-      this.model.administrativeUnit.isPevaMunicipality ||
-      this.model.administrativeUnit.isPevaProvince
-    ) {
+    if (this.model.administrativeUnit.requiresFoundedByOrganization) {
       this.#setPropertyToValue(
         'wasFoundedByOrganizations',
         Array.isArray(unit) ? unit : unit ? [unit] : []
@@ -75,12 +69,12 @@ export default class OrganizationsNewController extends Controller {
 
   @action
   setNames(name) {
-    this.#callSetter('setAbbName', name);
+    this.#callFunctionForModels('setAbbName', name);
   }
 
   @action
   setAlternativeNames(names) {
-    this.#callSetter('setAlternativeName', names);
+    this.#callFunctionForModels('setAlternativeName', names);
   }
 
   @action
@@ -111,7 +105,7 @@ export default class OrganizationsNewController extends Controller {
   @action
   setClassification(value) {
     this.#setPropertyToValue('classification', value);
-    this.#callSetter('resetRelations');
+    this.#callFunctionForModels('resetRelations');
   }
 
   @dropTask
