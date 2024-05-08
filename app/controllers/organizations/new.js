@@ -10,6 +10,7 @@ import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transf
 export default class OrganizationsNewController extends Controller {
   @service router;
   @service store;
+  @service currentSession;
 
   get hasValidationErrors() {
     return (
@@ -35,9 +36,10 @@ export default class OrganizationsNewController extends Controller {
   #setPropertyToValue(property, value) {
     // TODO: loop over relevant models instead of three calls?
     this.model.administrativeUnit[property] = value;
-    // TODO: only set when worship user
-    this.model.centralWorshipService[property] = value;
-    this.model.worshipService[property] = value;
+    if (this.currentSession.hasWorshipRole) {
+      this.model.centralWorshipService[property] = value;
+      this.model.worshipService[property] = value;
+    }
   }
 
   /**
@@ -48,8 +50,10 @@ export default class OrganizationsNewController extends Controller {
    */
   #callFunctionForModels(func, arg) {
     this.model.administrativeUnit[func](arg);
-    this.model.centralWorshipService[func](arg);
-    this.model.worshipService[func](arg);
+    if (this.currentSession.hasWorshipRole) {
+      this.model.centralWorshipService[func](arg);
+      this.model.worshipService[func](arg);
+    }
   }
 
   @action
