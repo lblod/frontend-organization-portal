@@ -230,6 +230,8 @@ export default class OrganizationsNewController extends Controller {
     this.model.structuredIdentifierSharepoint.rollbackAttributes();
     this.model.structuredIdentifierKBO.rollbackAttributes();
     this.model.administrativeUnit.reset();
+    this.model.centralWorshipService.reset();
+    this.model.worshipService.reset();
     this.model.contact.reset();
     this.model.secondaryContact.reset();
     this.model.address.reset();
