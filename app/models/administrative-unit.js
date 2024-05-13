@@ -194,7 +194,12 @@ export default class AdministrativeUnitModel extends OrganizationModel {
         CLASSIFICATION.ASSISTANCE_ZONE.id,
         CLASSIFICATION.PEVA_MUNICIPALITY.id,
         CLASSIFICATION.PEVA_PROVINCE.id,
-        // TODO when onboarded, add organizations
+        CLASSIFICATION.WELZIJNSVERENIGING.id,
+        CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
+        CLASSIFICATION.ZIEKENHUISVERENIGING.id,
+        CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
+          .id,
+        CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
       ];
     } else if (this.isOcmwAssociation) {
       return OcmwAssociationCodeList.concat([
