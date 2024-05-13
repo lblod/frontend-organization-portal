@@ -70,22 +70,21 @@ export const CLASSIFICATION = {
     id: '34b5af85-dc9f-468f-9e03-ef89b174c267',
     label: 'Autonome verzorgingsinstelling',
   },
-  // TODO: Non-administrative unit associations: introduced later
-  // ZIEKENHUISVERENIGING: {
-  //   // FIXME this is not an administrative unit
-  //   id: '82250452-83a0-48f4-89cc-b430320493ce',
-  //   label: 'Ziekenhuisvereniging',
-  // },
-  // VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING: {
-  //   // FIXME this is not an administrative unit
-  //   id: '35833ba2-7371-400b-8df2-2912f66fb153',
-  //   label: 'Vereniging of vennootschap voor sociale dienstverlening',
-  // },
-  // WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP: {
-  //   // FIXME this is not an administrative unit
-  //   id: '82fd21dc-e8bb-4d13-a010-f4a12358ef10',
-  //   label: 'Woonzorgvereniging of woonzorgvennootschap',
-  // },
+  ZIEKENHUISVERENIGING: {
+    // FIXME this is not an administrative unit
+    id: '82250452-83a0-48f4-89cc-b430320493ce',
+    label: 'Ziekenhuisvereniging',
+  },
+  VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING: {
+    // FIXME this is not an administrative unit
+    id: '35833ba2-7371-400b-8df2-2912f66fb153',
+    label: 'Vereniging of vennootschap voor sociale dienstverlening',
+  },
+  WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP: {
+    // FIXME this is not an administrative unit
+    id: '82fd21dc-e8bb-4d13-a010-f4a12358ef10',
+    label: 'Woonzorgvereniging of woonzorgvennootschap',
+  },
   PEVA_MUNICIPALITY: {
     id: '2ad46df5-5c79-4d67-84d5-604c1377231e',
     label: 'PEVA gemeente',
