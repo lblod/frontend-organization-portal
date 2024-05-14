@@ -32,4 +32,8 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
       ),
     });
   }
+
+  get isOcmwAssociation() {
+    return this._hasClassificationId(OcmwAssociationCodeList);
+  }
 }
