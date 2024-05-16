@@ -1,0 +1,585 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box">
+    <PageHeader class="au-u-margin-bottom-large">
+      <:title>Bewerk kerngegevens</:title>
+      <:subtitle>{{@model.organization.abbName}}
+        ({{@model.organization.classification.label}})</:subtitle>
+      <:action>
+        <div class="au-u-text-right">
+          <AuButtonGroup class="au-c-button-group--align-right">
+            <AuLink
+              @route="organizations.organization.core-data"
+              @skin="button-secondary"
+            >
+              Annuleer
+            </AuLink>
+            <AuButton
+              @loading={{this.save.isRunning}}
+              @disabled={{this.save.isRunning}}
+              form="edit-core-info-form"
+              type="submit"
+            >
+              Opslaan
+            </AuButton>
+          </AuButtonGroup>
+          <Error::Save @showSaveError={{this.hasValidationErrors}} />
+          <ReportWrongData />
+        </div>
+      </:action>
+    </PageHeader>
+
+    <form
+      id="edit-core-info-form"
+      aria-label="edit-core-info-form"
+      {{on "submit" (perform this.save)}}
+    >
+      <div class="au-o-flow au-o-flow--large">
+        <EditCard @containsRequiredFields={{true}}>
+          <:title>Organisatie</:title>
+          <:card as |Card|>
+            <Card.Columns>
+              <:left as |Item|>
+                <Item @labelFor="organization-abb-name" @required={{true}}>
+                  <:label>Naam</:label>
+                  <:content as |hasError|>
+                    <TrimInput
+                      @width="block"
+                      @disabled={{true}}
+                      @value={{@model.organization.abbName}}
+                      @onUpdate={{fn (mut @model.organization.name)}}
+                      @error={{hasError}}
+                      id="organization-abb-name"
+                    />
+                  </:content>
+                  <:helpText>
+                    {{help-text "abbName"}}
+                  </:helpText>
+                </Item>
+                <Item
+                  @labelFor="organization-legal-name"
+                  @required={{true}}
+                  @errorMessage={{@model.organization.error.legalName.message}}
+                >
+                  <:label>Juridische naam</:label>
+                  <:content as |hasError|>
+                    <TrimInput
+                      @width="block"
+                      @disabled={{(or
+                        @model.organization.isMunicipality
+                        @model.organization.isProvince
+                      )}}
+                      @value={{@model.organization.legalName}}
+                      @onUpdate={{this.setNames}}
+                      @error={{hasError}}
+                      id="organization-legal-name"
+                    />
+                  </:content>
+                  <:helpText>
+                    {{help-text "legalName"}}
+                  </:helpText>
+                </Item>
+                <Item
+                  @labelFor="organization-alternative-names"
+                  @required={{false}}
+                >
+                  <:label>Alternatieve naam</:label>
+                  <:content as |hasError|>
+                    <TrimInput
+                      @width="block"
+                      @disabled={{false}}
+                      @value={{@model.organization.alternativeName}}
+                      @onUpdate={{this.setAlternativeNames}}
+                      @error={{hasError}}
+                      id="organization-alternative-names"
+                    />
+                  </:content>
+                  <:helpText>
+                    {{help-text "alternativeNames"}}
+                  </:helpText>
+                </Item>
+                <Item @labelFor="classification">
+                  <:label>Type bestuur</:label>
+                  <:content>
+                    <PowerSelect
+                      @disabled={{true}}
+                      @selected={{@model.organization.classification}}
+                      @onChange={{fn (mut @model.organization.classification)}}
+                      @triggerId="classification"
+                      as |classification|
+                    >
+                      {{classification.label}}
+                    </PowerSelect>
+                  </:content>
+                </Item>
+                {{#if @model.organization.isWorshipAdministrativeUnit}}
+                  <Item
+                    @labelFor="recognized-worship-type-select"
+                    @required={{true}}
+                    @errorMessage={{@model.organization.error.recognizedWorshipType.message}}
+                  >
+                    <:label>Soort eredienst</:label>
+                    <:content as |hasError|>
+                      <RecognizedWorshipTypeSelect
+                        @selected={{@model.organization.recognizedWorshipType}}
+                        @onChange={{fn
+                          (mut @model.organization.recognizedWorshipType)
+                        }}
+                        @allowClear={{false}}
+                        @error={{hasError}}
+                        @id="recognized-worship-type-select"
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#if @model.organization.isWorshipService}}
+                  <Item @labelFor="denomination">
+                    <:label>Strekking</:label>
+                    <:content>
+                      <TrimInput
+                        @width="block"
+                        @value={{@model.organization.denomination}}
+                        @onUpdate={{fn (mut @model.organization.denomination)}}
+                        id="denomination"
+                      />
+                    </:content>
+                  </Item>
+                  <Item>
+                    <:label>Grensoverschrijvend</:label>
+                    <:content>
+                      <ul class="au-c-list-inline">
+                        <li class="au-c-list-inline__item">
+                          <AuControlRadio
+                            @label="Ja"
+                            @name="is-cross-border"
+                            @value={{@model.organization.crossBorder}}
+                            @identifier="cross-border-true"
+                            @onChange={{fn
+                              (mut @model.organization.crossBorder)
+                              true
+                            }}
+                            checked={{@model.organization.crossBorder}}
+                          />
+                        </li>
+                        <li class="au-c-list-inline__item">
+                          <AuControlRadio
+                            @label="Nee"
+                            @name="is-cross-border"
+                            @value={{@model.organization.crossBorder}}
+                            @identifier="cross-border-false"
+                            @onChange={{fn
+                              (mut @model.organization.crossBorder)
+                              false
+                            }}
+                            checked={{not @model.organization.crossBorder}}
+                          />
+                        </li>
+                      </ul>
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#if @model.organization.isMunicipality}}
+                  <Item @labelFor="regio">
+                    <:label>Regio</:label>
+                    <:content>
+                      {{@model.organization.scope.locatedWithin.label}}
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#if
+                  (or
+                    @model.organization.isIgs
+                    @model.organization.isOcmwAssociation
+                  )
+                }}
+                  <Item @labelFor="igs-regio">
+                    <:label>Regio</:label>
+                    <:content>
+                      <TrimInput
+                        @width="block"
+                        @value={{@model.region.label}}
+                        @disabled="true"
+                        id="igs-regio"
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#if @model.organization.isIgs}}
+                  <Item
+                    @labelFor="expectedEndDate"
+                    @errorMessage={{@model.organization.error.expectedEndDate.message}}
+                  >
+                    <:label>Geplande einddatum</:label>
+                    <:content as |hasError|>
+                      <Datepicker
+                        @onChange={{fn
+                          (mut @model.organization.expectedEndDate)
+                        }}
+                        @value={{@model.organization.expectedEndDate}}
+                        @error={{hasError}}
+                      />
+                    </:content>
+                  </Item>
+                  <Item @labelFor="purpose">
+                    <:label>Doel</:label>
+                    <:content>
+                      <RichTextEditor
+                        @onChange={{fn (mut @model.organization.purpose)}}
+                        @value={{@model.organization.purpose}}
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
+              </:left>
+              <:right as |Item|>
+                <Item @labelFor="status-select">
+                  <:label>Status</:label>
+                  <:content>
+                    <PowerSelect
+                      @noMatchesMessage="Geen resultaten"
+                      @options={{@model.statuses}}
+                      @selected={{@model.organization.organizationStatus}}
+                      @onChange={{fn
+                        (mut @model.organization.organizationStatus)
+                      }}
+                      @disabled={{true}}
+                      @triggerId="status-select"
+                      as |status|
+                    >
+                      {{status.label}}
+                    </PowerSelect>
+                  </:content>
+                </Item>
+                <Item
+                  @labelFor="kbo-identifier"
+                  @errorMessage={{@model.identifierKBO.error.structuredIdentifier}}
+                  @required={{true}}
+                >
+                  <:label>{{@model.identifierKBO.idName}}</:label>
+                  <:content as |hasError|>
+                    <AuInput
+                      @maskPlaceholder="_"
+                      autocomplete="off"
+                      @mask="####.###.###"
+                      @onChange={{this.setKbo}}
+                      @width="block"
+                      @value={{@model.structuredIdentifierKBO.localId}}
+                      @error={{hasError}}
+                      id="kbo-identifier"
+                      placeholder="____.___.___"
+                    />
+                  </:content>
+                  <:error as |error|>
+                    <Error::KboNumber @error={{error}} />
+                  </:error>
+                </Item>
+                <Item
+                  @labelFor="sharepoint-identifier"
+                  @errorMessage={{@model.identifierSharepoint.error.structuredIdentifier.message}}
+                >
+                  <:label>{{@model.identifierSharepoint.idName}}</:label>
+                  <:content as |hasError|>
+                    <TrimInput
+                      @width="block"
+                      @value={{@model.structuredIdentifierSharepoint.localId}}
+                      @onUpdate={{fn
+                        (mut @model.structuredIdentifierSharepoint.localId)
+                      }}
+                      @error={{hasError}}
+                      id="sharepoint-identifier"
+                    />
+                  </:content>
+                </Item>
+                {{#if
+                  (or
+                    @model.organization.isMunicipality
+                    @model.organization.isProvince
+                  )
+                }}
+                  <Item @labelFor="nis-identifier">
+                    <:label>{{@model.identifierNIS.idName}}</:label>
+                    <:content>
+                      {{@model.organization.scope.exactMatch.notation}}
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#if @model.structuredIdentifierOVO.localId}}
+                  <Item @labelFor="ovo-identifier">
+                    <:label>{{@model.identifierOVO.idName}}</:label>
+                    <:content>
+                      {{@model.structuredIdentifierOVO.localId}}
+                    </:content>
+                  </Item>
+                {{/if}}
+              </:right>
+            </Card.Columns>
+          </:card>
+        </EditCard>
+        {{#if (is-feature-enabled "edit-contact-data")}}
+          <Site::ContactEditCard
+            @address={{@model.address}}
+            @isAddressSearchEnabledInitially={{if
+              (or (not @model.address.id) @model.address.addressRegisterUri)
+              true
+              false
+            }}
+            @primaryContact={{@model.contact}}
+            @secondaryContact={{@model.secondaryContact}}
+          >
+            <:title>Primaire contactgegevens</:title>
+          </Site::ContactEditCard>
+        {{else}}
+          <Site::ContactDataCard
+            @address={{@model.organization.primarySite.address}}
+            @primaryContact={{@model.primaryContact}}
+            @secondaryContact={{@model.secondaryContact}}
+          >
+            <:title>
+              Primaire contactgegevens
+            </:title>
+            <:infotext>
+              De primaire contactgegevens kunnen niet langer in het OP aangepast
+              worden. De organisaties kunnen deze gegevens zelf aanpassen via de
+              Contactapp.
+            </:infotext>
+          </Site::ContactDataCard>
+        {{/if}}
+
+        {{#if
+          (and
+            @model.organization.classification
+            (or
+              @model.organization.isAgb
+              @model.organization.isApb
+              @model.organization.isIgs
+              @model.organization.isPoliceZone
+              @model.organization.isAssistanceZone
+              @model.organization.isOcmwAssociation
+              @model.organization.isPevaMunicipality
+              @model.organization.isPevaProvince
+            )
+          )
+        }}
+          <EditCard @containsRequiredFields={{true}}>
+            <:title>Gerelateerde organisaties</:title>
+            <:card as |Card|>
+              <Card.Columns>
+                <:left as |Item|>
+                  {{#if
+                    (or
+                      @model.organization.isAgb
+                      @model.organization.isIgs
+                      @model.organization.isPoliceZone
+                      @model.organization.isAssistanceZone
+                    )
+                  }}
+                    <Item
+                      @labelFor="related-gemeente"
+                      @required={{true}}
+                      @errorMessage={{@model.organization.error.isSubOrganizationOf.message}}
+                    >
+                      <:label>Gemeente</:label>
+                      <:content as |hasError|>
+                        <OrganizationSelect
+                          @selected={{@model.organization.isSubOrganizationOf}}
+                          @onChange={{this.setRelation}}
+                          @classificationCodes={{@model.organization.municipalityClassificationCode}}
+                          @error={{hasError}}
+                          @id="related-gemeente"
+                        />
+                      </:content>
+                    </Item>
+
+                    {{#if @model.organization.isSubOrganizationOf}}
+                      <Item>
+                        <:label>
+                          Provincie
+                        </:label>
+                        <:content>
+                          {{@model.organization.isSubOrganizationOf.isSubOrganizationOf.abbName}}
+                        </:content>
+                      </Item>
+                    {{/if}}
+
+                    {{#if @model.organization.isAgb}}
+                      <Item
+                        @labelFor="oprichting-gemeente"
+                        @required={{true}}
+                        @errorMessage={{@model.organization.error.isSubOrganizationOf.message}}
+                      >
+                        <:label>Werd opgericht door</:label>
+                        <:content as |hasError|>
+                          <OrganizationSelect
+                            @disabled={{true}}
+                            @selected={{@model.organization.isSubOrganizationOf}}
+                            @onChange={{this.setRelation}}
+                            @classificationCodes={{@model.organization.founderClassifications}}
+                            @error={{hasError}}
+                            @id="oprichting-gemeente"
+                          />
+                        </:content>
+                      </Item>
+                    {{/if}}
+
+                    {{#if @model.organization.isIgs}}
+                      <Item
+                        @labelFor="has-participants"
+                        @required={{true}}
+                        @errorMessage={{@model.organization.error.hasParticipants.message}}
+                      >
+                        <:label>Heeft als participanten</:label>
+                        <:content as |hasError|>
+                          <OrganizationMultipleSelect
+                            @selected={{@model.organization.hasParticipants}}
+                            @onChange={{this.setHasParticipants}}
+                            @classificationCodes={{@model.organization.participantClassifications}}
+                            @error={{hasError}}
+                            @id="has-participants"
+                          />
+                        </:content>
+                      </Item>
+                    {{/if}}
+
+                  {{else}}
+                    {{#if @model.organization.isOcmwAssociation}}
+                      <Item
+                        @labelFor="oprichting-ocmw-association"
+                        @required={{false}}
+                        @errorMessage={{@model.organization.error.wasFoundedByOrganizations.message}}
+                      >
+                        <:label>Werd opgericht door</:label>
+                        <:content as |hasError|>
+                          <OrganizationMultipleSelect
+                            @disabled={{true}}
+                            @selected={{@model.organization.wasFoundedByOrganizations}}
+                            @onChange={{this.setRelation}}
+                            @classificationCodes={{@model.organization.founderClassifications}}
+                            @error={{hasError}}
+                            @id="oprichting-ocmw-association"
+                          />
+                        </:content>
+                      </Item>
+
+                      <Item
+                        @labelFor="has-participants"
+                        @required={{false}}
+                        @errorMessage={{@model.organization.error.hasParticipants.message}}
+                      >
+                        <:label>Heeft als participanten</:label>
+                        <:content as |hasError|>
+                          <OrganizationMultipleSelect
+                            @selected={{@model.organization.hasParticipants}}
+                            @onChange={{this.setHasParticipants}}
+                            @classificationCodes={{@model.organization.participantClassifications}}
+                            @error={{hasError}}
+                            @id="has-participants"
+                          />
+                        </:content>
+                      </Item>
+                    {{else}}
+                      {{#if
+                        (or
+                          @model.organization.isPevaMunicipality
+                          @model.organization.isPevaProvince
+                        )
+                      }}
+                        <Item
+                          @labelFor="oprichting-peva"
+                          @required={{false}}
+                          @errorMessage={{@model.organization.error.wasFoundedByOrganizations.message}}
+                        >
+                          <:label>Werd opgericht door</:label>
+                          <:content as |hasError|>
+                            <OrganizationMultipleSelect
+                              @disabled={{true}}
+                              @selected={{@model.organization.wasFoundedByOrganizations}}
+                              @onChange={{this.setRelation}}
+                              @classificationCodes={{@model.organization.founderClassifications}}
+                              @error={{hasError}}
+                              @id="oprichting-peva"
+                            />
+                          </:content>
+                        </Item>
+
+                        <Item
+                          @labelFor="has-participants"
+                          @required={{false}}
+                          @errorMessage={{@model.organization.error.hasParticipants.message}}
+                        >
+                          <:label>Heeft als participanten</:label>
+                          <:content as |hasError|>
+                            <OrganizationMultipleSelect
+                              @selected={{@model.organization.hasParticipants}}
+                              @onChange={{this.setHasParticipants}}
+                              @classificationCodes={{@model.organization.participantClassifications}}
+                              @error={{hasError}}
+                              @id="has-participants"
+                            />
+                          </:content>
+                        </Item>
+                      {{else}}
+                        {{! Currently only APBs remain}}
+                        <Item
+                          @labelFor="related-provincie"
+                          @required={{true}}
+                          @errorMessage={{@model.organization.error.isSubOrganizationOf.message}}
+                        >
+                          <:label>Provincie</:label>
+                          <:content as |hasError|>
+                            <ProvinceOrganizationSelect
+                              @selected={{@model.organization.isSubOrganizationOf}}
+                              @onChange={{this.setRelation}}
+                              @allowClear={{(not
+                                @model.organization.isAssociatedWith
+                              )}}
+                              @selectedMunicipality={{@model.organization.isAssociatedWith}}
+                              @error={{hasError}}
+                              @id="related-provincie"
+                            />
+                          </:content>
+                        </Item>
+                        <Item
+                          @labelFor="related-gemeente"
+                          @required={{true}}
+                          @errorMessage={{@model.organization.error.isAssociatedWith.message}}
+                        >
+                          <:label>Gemeente</:label>
+                          <:content as |hasError|>
+                            <OrganizationSelect
+                              @selected={{@model.organization.isAssociatedWith}}
+                              @onChange={{this.setMunicipality}}
+                              @allowClear={{true}}
+                              @selectedProvince={{@model.organization.wasFoundedByOrganizations}}
+                              @classificationCodes={{@model.organization.founderClassifications}}
+                              @error={{hasError}}
+                              @id="related-gemeente"
+                            />
+                          </:content>
+                        </Item>
+                        <Item
+                          @labelFor="opgericht-provincie"
+                          @required={{true}}
+                          @errorMessage={{@model.organization.error.isSubOrganizationOf.message}}
+                        >
+                          <:label>Werd opgericht door</:label>
+                          <:content as |hasError|>
+                            <ProvinceOrganizationSelect
+                              @disabled={{true}}
+                              @selected={{@model.organization.isSubOrganizationOf}}
+                              @onChange={{this.setRelation}}
+                              @error={{hasError}}
+                              @id="opgericht-provincie"
+                            />
+                          </:content>
+                        </Item>
+                      {{/if}}
+                    {{/if}}
+                  {{/if}}
+                </:left>
+              </Card.Columns>
+            </:card>
+          </EditCard>
+        {{/if}}
+      </div>
+    </form>
+  </div>
+</div>

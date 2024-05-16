@@ -10,7 +10,7 @@
             </:label>
             <:content>
               <AuLink
-                @route="administrative-units.administrative-unit"
+                @route="organizations.organization"
                 @model={{@model.isSubOrganizationOf.id}}
               >
                 {{@model.isSubOrganizationOf.abbName}}
@@ -18,17 +18,17 @@
             </:content>
           </Item>
         {{/if}}
-        {{#if @model.administrativeUnit.isSubOrganizationOf}}
+        {{#if @model.organization.isSubOrganizationOf}}
           <Item>
             <:label>
               Provincie
             </:label>
             <:content>
               <AuLink
-                @route="administrative-units.administrative-unit"
-                @model={{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.id}}
+                @route="organizations.organization"
+                @model={{@model.organization.isSubOrganizationOf.isSubOrganizationOf.id}}
               >
-                {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.abbName}}
+                {{@model.organization.isSubOrganizationOf.isSubOrganizationOf.abbName}}
               </AuLink>
             </:content>
           </Item>
@@ -36,10 +36,10 @@
             <:label>OCMW</:label>
             <:content>
               <AuLink
-                @route="administrative-units.administrative-unit"
-                @model={{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.id}}
+                @route="organizations.organization"
+                @model={{@model.organization.isSubOrganizationOf.isAssociatedWith.id}}
               >
-                {{@model.administrativeUnit.isSubOrganizationOf.isAssociatedWith.abbName}}
+                {{@model.organization.isSubOrganizationOf.isAssociatedWith.abbName}}
               </AuLink>
             </:content>
           </Item>

@@ -248,4 +248,56 @@ module('Unit | Model | administrative unit', function (hooks) {
       });
     });
   });
+
+  module('classification', function () {
+    [
+      [CLASSIFICATION.MUNICIPALITY, 'isMunicipality'],
+      [CLASSIFICATION.PROVINCE, 'isProvince'],
+      [CLASSIFICATION.OCMW, 'isOCMW'],
+      [CLASSIFICATION.DISTRICT, 'isDistrict'],
+      [CLASSIFICATION.AGB, 'isAgb'],
+      [CLASSIFICATION.APB, 'isApb'],
+      [CLASSIFICATION.PROJECTVERENIGING, 'isIgs'],
+      [CLASSIFICATION.DIENSTVERLENENDE_VERENIGING, 'isIgs'],
+      [CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING, 'isIgs'],
+      [
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+        'isIgs',
+      ],
+      [CLASSIFICATION.POLICE_ZONE, 'isPoliceZone'],
+      [CLASSIFICATION.ASSISTANCE_ZONE, 'isAssistanceZone'],
+      [CLASSIFICATION.WELZIJNSVERENIGING, 'isOcmwAssociation'],
+      [CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING, 'isOcmwAssociation'],
+      [CLASSIFICATION.PEVA_MUNICIPALITY, 'isPevaMunicipality'],
+      [CLASSIFICATION.PEVA_PROVINCE, 'isPevaProvince'],
+    ].forEach(([cl, func]) => {
+      test(`it should return true for ${cl.label}`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          classification,
+        });
+
+        const result = model[func];
+        assert.true(result);
+      });
+    });
+
+    Object.keys(CLASSIFICATION).forEach((cl) => {
+      test(`it should return false for whether ${cl.label} has a central worship service`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          classification,
+        });
+
+        const result = model.hasCentralWorshipService;
+        assert.notOk(result);
+      });
+    });
+  });
 });

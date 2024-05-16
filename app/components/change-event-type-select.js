@@ -13,7 +13,7 @@ import {
   CHANGE_EVENTS_OCMW_ASSOCIATION,
   CHANGE_EVENTS_PEVA,
 } from 'frontend-organization-portal/models/change-event-type';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class ChangeEventTypeSelectComponent extends Component {
   @service store;
@@ -27,69 +27,69 @@ export default class ChangeEventTypeSelectComponent extends Component {
   @task *loadChangeEventTypesTask() {
     let types = yield this.store.findAll('change-event-type');
 
-    let classification = yield this.args.administrativeUnitClassification;
-    if (classification.id == CLASSIFICATION_CODE.WORSHIP_SERVICE) {
+    let classification = yield this.args.organizationClassification;
+    if (classification.id == CLASSIFICATION.WORSHIP_SERVICE.id) {
       types = types.filter((t) =>
         this.isIdInList(t.id, CHANGE_EVENTS_WORSHIP_SERVICE)
       );
     }
-    if (classification.id == CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE) {
+    if (classification.id == CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id) {
       types = types.filter((t) =>
         this.isIdInList(t.id, CHANGE_EVENTS_CENTRAL_WORSHIP_SERVICE)
       );
     }
-    if (classification.id == CLASSIFICATION_CODE.MUNICIPALITY) {
+    if (classification.id == CLASSIFICATION.MUNICIPALITY.id) {
       types = types.filter((t) =>
         this.isIdInList(t.id, CHANGE_EVENTS_MUNICIPALITY)
       );
     }
-    if (classification.id == CLASSIFICATION_CODE.OCMW) {
+    if (classification.id == CLASSIFICATION.OCMW.id) {
       types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_OCMW));
     }
-    if (classification.id == CLASSIFICATION_CODE.DISTRICT) {
+    if (classification.id == CLASSIFICATION.DISTRICT.id) {
       types = types.filter((t) =>
         this.isIdInList(t.id, CHANGE_EVENTS_DISTRICT)
       );
     }
     if (
-      classification.id == CLASSIFICATION_CODE.AGB ||
-      classification.id == CLASSIFICATION_CODE.APB
+      classification.id == CLASSIFICATION.AGB.id ||
+      classification.id == CLASSIFICATION.APB.id
     ) {
       types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_AGB_APB));
     }
     if (
-      classification.id == CLASSIFICATION_CODE.PROJECTVERENIGING ||
-      classification.id == CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING ||
-      classification.id == CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING ||
+      classification.id == CLASSIFICATION.PROJECTVERENIGING.id ||
+      classification.id == CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id ||
+      classification.id == CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id ||
       classification.id ==
-        CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id
     ) {
       types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_IGS));
     }
     if (
-      classification.id == CLASSIFICATION_CODE.POLICE_ZONE ||
-      classification.id == CLASSIFICATION_CODE.ASSISTANCE_ZONE
+      classification.id == CLASSIFICATION.POLICE_ZONE.id ||
+      classification.id == CLASSIFICATION.ASSISTANCE_ZONE.id
     ) {
       types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_PZ_HPZ));
     }
     if (
-      classification.id == CLASSIFICATION_CODE.WELZIJNSVERENIGING ||
-      classification.id == CLASSIFICATION_CODE.AUTONOME_VERZORGINGSINSTELLING
+      classification.id == CLASSIFICATION.WELZIJNSVERENIGING.id ||
+      classification.id == CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id
       // TODO: uncomment when onboarding private OCMW associations
       // ||
-      // classification.id == CLASSIFICATION_CODE.ZIEKENHUISVERENIGING ||
+      // classification.id == CLASSIFICATION.ZIEKENHUISVERENIGING.id ||
       // classification.id ==
-      //   CLASSIFICATION_CODE.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING ||
+      //   CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id ||
       // classification.id ==
-      //   CLASSIFICATION_CODE.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
+      //   CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id
     ) {
       types = types.filter((t) =>
         this.isIdInList(t.id, CHANGE_EVENTS_OCMW_ASSOCIATION)
       );
     }
     if (
-      classification.id == CLASSIFICATION_CODE.PEVA_MUNICIPALITY ||
-      classification.id == CLASSIFICATION_CODE.PEVA_PROVINCE
+      classification.id == CLASSIFICATION.PEVA_MUNICIPALITY.id ||
+      classification.id == CLASSIFICATION.PEVA_PROVINCE.id
     ) {
       types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_PEVA));
     }

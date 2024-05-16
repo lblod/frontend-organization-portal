@@ -64,6 +64,7 @@
                   </:content>
                 </Item>
               {{/if}}
+
               {{#if @model.askSensitiveInformation.nationalities}}
                 <Item>
                   <:label>Nationaliteit</:label>
@@ -82,6 +83,7 @@
                   <:content>{{this.nationalities}}</:content>
                 </Item>
               {{/if}}
+
               {{#if @model.askSensitiveInformation.gender}}
                 <Item>
                   <:label>Geslacht</:label>
@@ -94,15 +96,14 @@
                     </AuLink>
                   </:content>
                 </Item>
-
               {{else if @model.requestSensitiveInformation.gender}}
-
                 <Item>
                   <:label>Geslacht</:label>
                   <:content
                   >{{@model.requestSensitiveInformation.gender.label}}</:content>
                 </Item>
               {{/if}}
+
               {{#if @model.askSensitiveInformation.ssn}}
                 <Item>
                   <:label>Rijksregisternummer</:label>
@@ -142,7 +143,7 @@
                   <:content>
                     <AuLink
                       @model={{position.administrativeUnit.id}}
-                      @route="administrative-units.administrative-unit"
+                      @route="organizations.organization"
                     >
                       {{position.administrativeUnit.abbName}}
                     </AuLink>
@@ -154,14 +155,14 @@
                   <:content>
                     {{#each
                       position.administrativeUnits
-                      as |administrativeUnit index|
+                      as |organization index|
                     }}
                       <AuLink
-                        @model={{administrativeUnit.id}}
-                        @route="administrative-units.administrative-unit"
+                        @model={{organization.id}}
+                        @route="organizations.organization"
                       >
-                        {{administrativeUnit.abbName}}
-                        ({{administrativeUnit.classification.label}})
+                        {{organization.abbName}}
+                        ({{organization.classification.label}})
                       </AuLink>
                       {{#if (gt position.administrativeUnits.length 1)}}
                         {{unless index "/"}}

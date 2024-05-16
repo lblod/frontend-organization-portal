@@ -1,0 +1,10 @@
+steps:
+  build-feature:
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      repo: ${CI_REPO}
+      tags: "refactor-${CI_COMMIT_BRANCH##refactor/}"
+    secrets: [ docker_username, docker_password ]
+when:
+  branch: refactor/*
+  event: push

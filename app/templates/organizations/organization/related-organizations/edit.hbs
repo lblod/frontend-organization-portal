@@ -1,0 +1,157 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box">
+    <PageHeader class="au-u-margin-bottom-large">
+      <:title>Bewerk gerelateerde organisaties</:title>
+      <:subtitle>{{@model.organization.abbName}}
+        ({{@model.organization.classification.label}})</:subtitle>
+      <:action>
+        <div class="au-u-text-right">
+          <AuButtonGroup class="au-c-button-group--align-right">
+            <AuLink
+              @route="organizations.organization.related-organizations"
+              @skin="button-secondary"
+            >
+              Annuleer
+            </AuLink>
+            <AuButton
+              @loading={{this.save.isRunning}}
+              @disabled={{this.save.isRunning}}
+              form="edit-core-info-form"
+              type="submit"
+            >
+              Opslaan
+            </AuButton>
+          </AuButtonGroup>
+          <ReportWrongData />
+          <Error::Save @showSaveError={{this.hasValidationErrors}} />
+        </div>
+      </:action>
+    </PageHeader>
+
+    <form
+      id="edit-core-info-form"
+      aria-label="edit-core-info-form"
+      {{on "submit" (perform this.save)}}
+    >
+      <div class="au-o-flow au-o-flow--large">
+        {{#if @model.organization.isWorshipService}}
+          <RelatedOrganizations::EditWorshipService
+            @model={{@model}}
+            @hasCentralWorshipService={{@model.organization.hasCentralWorshipService}}
+          />
+        {{/if}}
+
+        {{#if @model.organization.isCentralWorshipService}}
+          <RelatedOrganizations::EditCentralWorshipService
+            @model={{@model}}
+            @addNewSubOrganization={{this.addNewSubOrganization}}
+            @updateSubOrganization={{this.updateSubOrganization}}
+            @removeSubOrganization={{this.removeSubOrganization}}
+            @sort={{this.sort}}
+          />
+        {{/if}}
+
+        {{#if @model.organization.isMunicipality}}
+          <RelatedOrganizations::EditMunicipality
+            @model={{@model}}
+            @addNewSubOrganization={{this.addNewSubOrganization}}
+            @updateSubOrganization={{this.updateSubOrganization}}
+            @removeSubOrganization={{this.removeSubOrganization}}
+            @sort={{this.sort}}
+          />
+        {{/if}}
+
+        {{#if @model.organization.isOCMW}}
+          <RelatedOrganizations::EditOcmw @model={{@model}} />
+        {{/if}}
+
+        {{#if @model.organization.isProvince}}
+          <RelatedOrganizations::EditProvince
+            @model={{@model}}
+            @addNewSubOrganization={{this.addNewSubOrganization}}
+            @updateSubOrganization={{this.updateSubOrganization}}
+            @removeSubOrganization={{this.removeSubOrganization}}
+            @sort={{this.sort}}
+          />
+        {{/if}}
+
+        {{#if @model.organization.isApb}}
+          <RelatedOrganizations::EditApb
+            @model={{@model}}
+            @updateRelatedOrg={{this.updateRelatedOrg}}
+            @updateRelatedSubOrg={{this.updateRelatedSubOrg}}
+            @addNewSubOrganization={{this.addNewSubOrganization}}
+            @updateSubOrganization={{this.updateSubOrganization}}
+            @removeSubOrganization={{this.removeSubOrganization}}
+            @sort={{this.sort}}
+          />
+        {{/if}}
+
+        {{#if @model.organization.isAgb}}
+          <RelatedOrganizations::EditAgb
+            @model={{@model}}
+            @updateRelatedOrg={{this.updateRelatedOrg}}
+            @addNewSubOrganization={{this.addNewSubOrganization}}
+            @updateSubOrganization={{this.updateSubOrganization}}
+            @removeSubOrganization={{this.removeSubOrganization}}
+            @sort={{this.sort}}
+          />
+        {{/if}}
+
+        {{#if @model.organization.isIgs}}
+          <RelatedOrganizations::EditIgs
+            @model={{@model}}
+            @classificationCodesIgsParticipants={{@model.organization.participantClassifications}}
+            @addNewHasParticipants={{this.addNewHasParticipants}}
+            @updateHasParticipants={{this.updateHasParticipants}}
+            @removeHasParticipants={{this.removeHasParticipants}}
+          />
+        {{/if}}
+
+        {{#if @model.organization.isPoliceZone}}
+          <RelatedOrganizations::EditPoliceZone
+            @model={{@model}}
+            @sort={{this.sort}}
+          />
+        {{/if}}
+
+        {{#if @model.organization.isAssistanceZone}}
+          <RelatedOrganizations::EditAssistanceZone
+            @model={{@model}}
+            @sort={{this.sort}}
+          />
+        {{/if}}
+
+        {{#if @model.organization.isOcmwAssociation}}
+          <RelatedOrganizations::EditOcmwAssociation
+            @model={{@model}}
+            @classificationCodesOcmwAssociationParticipants={{@model.organization.participantClassifications}}
+            @addNewHasParticipants={{this.addNewHasParticipants}}
+            @updateHasParticipants={{this.updateHasParticipants}}
+            @removeHasParticipants={{this.removeHasParticipants}}
+          />
+        {{/if}}
+
+        {{#if @model.organization.isPevaMunicipality}}
+          <RelatedOrganizations::EditPevaMunicipality
+            @model={{@model}}
+            @classificationCodesParticipants={{@model.organization.participantClassifications}}
+            @addNewHasParticipants={{this.addNewHasParticipants}}
+            @updateHasParticipants={{this.updateHasParticipants}}
+            @removeHasParticipants={{this.removeHasParticipants}}
+          />
+        {{/if}}
+
+        {{#if @model.organization.isPevaProvince}}
+          <RelatedOrganizations::EditPevaProvince
+            @model={{@model}}
+            @classificationCodesParticipants={{@model.organization.participantClassifications}}
+            @addNewHasParticipants={{this.addNewHasParticipants}}
+            @updateHasParticipants={{this.updateHasParticipants}}
+            @removeHasParticipants={{this.removeHasParticipants}}
+          />
+        {{/if}}
+      </div>
+    </form>
+  </div>
+</div>

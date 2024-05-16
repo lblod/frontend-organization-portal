@@ -6,15 +6,13 @@
         <Item
           @labelFor="related-provincie"
           @required={{false}}
-          @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.message}}
+          @errorMessage={{@model.organization.error.isSubOrganizationOf.message}}
         >
           <:label>Provincie</:label>
           <:content as |hasError|>
             <ProvinceOrganizationSelect
-              @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-              @onChange={{fn
-                (mut @model.administrativeUnit.isSubOrganizationOf)
-              }}
+              @selected={{@model.organization.isSubOrganizationOf}}
+              @onChange={{fn (mut @model.organization.isSubOrganizationOf)}}
               @error={{hasError}}
               @id="related-provincie"
             />
@@ -23,7 +21,7 @@
         <Item @labelFor="related-ocmw">
           <:label>OCMW</:label>
           <:content>
-            {{@model.administrativeUnit.isAssociatedWith.abbName}}
+            {{@model.organization.isAssociatedWith.abbName}}
           </:content>
         </Item>
       </:left>
@@ -31,14 +29,14 @@
   </:card>
 </EditCard>
 
-{{#if @model.administrativeUnit.foundedOrganizations.length}}
+{{#if @model.organization.foundedOrganizations.length}}
   <div>
     <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
       Heeft relatie met
     </AuHeading>
     <AuDataTable
       id="foundedOrganizations"
-      @content={{@model.administrativeUnit.foundedOrganizations}}
+      @content={{@model.organization.foundedOrganizations}}
       @noDataMessage="Geen bestuur"
       as |t|
     >
@@ -66,7 +64,7 @@
           </td>
           <td>
             <AuLink
-              @route="administrative-units.administrative-unit"
+              @route="organizations.organization"
               @model={{subOrganization.id}}
             >
               {{subOrganization.abbName}}

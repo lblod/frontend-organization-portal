@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import { CLASSIFICATION_CODE } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 
 export default class MunicipalitySelectComponent extends Component {
@@ -19,13 +19,13 @@ export default class MunicipalitySelectComponent extends Component {
 
     if (this.args.selectedProvince && this.args.selectedProvince.length) {
       // If a province is selected, load the municipalities in it
-      let municipalities = yield this.store.query('administrative-unit', {
+      let municipalities = yield this.store.query('organization', {
         filter: {
           'is-sub-organization-of': {
             ':exact:name': this.args.selectedProvince,
           },
           classification: {
-            id: CLASSIFICATION_CODE.MUNICIPALITY,
+            id: CLASSIFICATION.MUNICIPALITY.id,
           },
         },
         sort: 'name',
@@ -40,7 +40,7 @@ export default class MunicipalitySelectComponent extends Component {
       const query = {
         filter: {
           classification: {
-            id: CLASSIFICATION_CODE.MUNICIPALITY,
+            id: CLASSIFICATION.MUNICIPALITY.id,
           },
         },
         sort: 'name',
@@ -49,7 +49,7 @@ export default class MunicipalitySelectComponent extends Component {
         },
       };
 
-      return yield this.store.query('administrative-unit', query);
+      return yield this.store.query('organization', query);
     }
   }
 }

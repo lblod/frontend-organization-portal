@@ -1,0 +1,34 @@
+<div class={{if @error "ember-power-select--error"}} ...attributes>
+  <PowerSelect
+    @disabled={{@disabled}}
+    @allowClear={{@allowClear}}
+    @searchEnabled={{true}}
+    @loadingMessage="Aan het laden..."
+    @noMatchesMessage="Geen resultaten"
+    @searchMessage="Typ om te zoeken"
+    @searchField="name"
+    @onChange={{this.triggerChange}}
+    @search={{perform this.loadOrganizationsTask}}
+    @selected={{this.selectedOrganization}}
+    as |organization|
+  >
+    {{organization.abbName}}
+
+    {{#if
+      (and
+        (not
+          (or
+            (eq
+              organization.classification.label
+              "Centraal bestuur van de eredienst"
+            )
+            (eq organization.classification.label "Bestuur van de eredienst")
+          )
+        )
+        organization.classification
+      )
+    }}
+      ({{organization.classification.label}})
+    {{/if}}
+  </PowerSelect>
+</div>

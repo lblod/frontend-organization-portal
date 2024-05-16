@@ -2,8 +2,8 @@
   Om de gerelateerde gemeenten te zien, ga naar
   <LinkTo
     class="au-c-link"
-    @model={{@model.administrativeUnit.id}}
-    @route="administrative-units.administrative-unit.local-involvements.index"
+    @model={{@model.organization.id}}
+    @route="organizations.organization.local-involvements.index"
   >
     Betrokken lokale besturen
   </LinkTo>
@@ -34,7 +34,7 @@
             </:label>
             <:content>
               <AuLink
-                @route="administrative-units.administrative-unit"
+                @route="organizations.organization"
                 @model={{@model.isSubOrganizationOf.id}}
               >
                 {{@model.isSubOrganizationOf.abbName}}

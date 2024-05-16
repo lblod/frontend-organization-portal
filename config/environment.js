@@ -57,7 +57,7 @@ module.exports = function (environment) {
       general:
         'https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal',
       module: {
-        administrativeUnits:
+        organizations:
           'https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/modules/bestuurseenheden',
         people:
           'https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/modules/personen',

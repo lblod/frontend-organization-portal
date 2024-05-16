@@ -41,13 +41,13 @@
               <:content>
                 {{#let
                   @model.minister.ministerPosition.worshipService
-                  as |administrativeUnit|
+                  as |organization|
                 }}
                   <AuLink
-                    @route="administrative-units.administrative-unit"
-                    @model={{administrativeUnit.id}}
+                    @route="organizations.organization"
+                    @model={{organization.id}}
                   >
-                    {{administrativeUnit.abbName}}
+                    {{organization.abbName}}
                   </AuLink>
                 {{/let}}
               </:content>

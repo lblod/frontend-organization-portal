@@ -1,0 +1,297 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box au-o-flow au-o-flow--large">
+    <PageHeader>
+      <:title>Kerngegevens</:title>
+      <:subtitle>{{@model.organization.abbName}}
+        ({{@model.organization.classification.label}})
+      </:subtitle>
+      <:action>
+        {{#if (is-feature-enabled "kbo-data-tab")}}
+          {{#if this.showAbbData}}
+            {{#unless @model.organization.isRepresentativeBody}}
+              <SecuredArea>
+                <:edit>
+                  <div class="au-u-flex--column">
+                    <AuLink
+                      @route="organizations.organization.core-data.edit"
+                      @skin="button-secondary"
+                      @icon="pencil"
+                      @iconAlignment="left"
+                    >
+                      Bewerk
+                    </AuLink>
+                    <ReportWrongData />
+                  </div>
+                </:edit>
+              </SecuredArea>
+            {{/unless}}
+          {{else}}
+            <div class="au-u-flex--column">
+              <AuPill @icon="clock-rewind">
+                Laatst Gewijzigd op
+                {{date-format @model.kboOrganization.modified}}
+              </AuPill>
+              <ReportWrongData />
+            </div>
+          {{/if}}
+        {{else}}
+          {{#unless @model.organization.isRepresentativeBody}}
+            <SecuredArea>
+              <:edit>
+                <AuLink
+                  @route="organizations.organization.core-data.edit"
+                  @skin="button-secondary"
+                  @icon="pencil"
+                  @iconAlignment="left"
+                >
+                  Bewerk
+                </AuLink>
+              </:edit>
+              <:readOnly>
+                <ReportWrongData />
+              </:readOnly>
+            </SecuredArea>
+          {{/unless}}
+
+        {{/if}}
+      </:action>
+    </PageHeader>
+
+    {{! this is a feature for KBO data. where the backend is still in progress }}
+    {{#if (is-feature-enabled "kbo-data-tab")}}
+      <AuTabs as |Tab|>
+        <Tab class="au-u-1-1">
+          <AuLink
+            @skin="naked"
+            @width="block"
+            class={{if
+              this.showAbbData
+              "active tab-link-align-left"
+              "tab-link-align-left"
+            }}
+            {{on "click" (fn this.setShowAbbData true)}}
+          >ABB Gegevens</AuLink>
+        </Tab>
+
+        <Tab class="au-u-1-1">
+          <AuLink
+            @skin="naked"
+            @width="block"
+            class={{if
+              this.showAbbData
+              "tab-link-align-left"
+              "active tab-link-align-left"
+            }}
+            {{on "click" (fn this.setShowAbbData false)}}
+          >KBO Gegevens</AuLink>
+        </Tab>
+      </AuTabs>
+    {{/if}}
+
+    {{#if this.showAbbData}}
+      <DataCard>
+        <:title>Organisatie</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item>
+                <:label>Naam</:label>
+                <:content>{{@model.organization.abbName}}</:content>
+              </Item>
+              <Item>
+                <:label>Juridische naam</:label>
+                <:content>{{@model.organization.legalName}}</:content>
+              </Item>
+              {{#if (gt @model.organization.alternativeName.length 0)}}
+                <Item>
+                  <:label>Alternatieve naam</:label>
+                  <:content>
+                    {{@model.organization.alternativeName}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#unless @model.organization.isRepresentativeBody}}
+                <Item>
+                  <:label>Type bestuur</:label>
+                  <:content>
+                    {{@model.organization.classification.label}}
+                  </:content>
+                </Item>
+              {{/unless}}
+
+              {{#if @model.organization.isMunicipality}}
+                <Item>
+                  <:label>Stadstitel</:label>
+                  <:content>
+                    {{#if @model.isCity}}
+                      Ja
+                    {{else}}
+                      Nee
+                    {{/if}}
+                  </:content>
+                </Item>
+              {{/if}}
+
+              {{#if @model.organization.recognizedWorshipType}}
+                <Item>
+                  <:label>Soort eredienst</:label>
+                  <:content
+                  >{{@model.organization.recognizedWorshipType.label}}</:content>
+                </Item>
+              {{/if}}
+              {{#if @model.organization.denomination}}
+                <Item>
+                  <:label>Strekking</:label>
+                  <:content>{{@model.organization.denomination}}</:content>
+                </Item>
+              {{/if}}
+              {{#if @model.organization.isWorshipService}}
+                <Item>
+                  <:label>Grensoverschrijdend</:label>
+                  <:content>
+                    {{@model.organization.crossBorderNominal}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if
+                (and
+                  @model.organization.scope.locatedWithin
+                  @model.organization.isMunicipality
+                )
+              }}
+                <Item>
+                  <:label>Regio</:label>
+                  <:content>
+                    {{@model.organization.scope.locatedWithin.label}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if
+                (or
+                  @model.organization.isIgs
+                  @model.organization.isOcmwAssociation
+                  @model.organization.isPevaMunicipality
+                  @model.organization.isPevaProvince
+                )
+              }}
+                <Item>
+                  <:label>Regio</:label>
+                  <:content>
+                    {{@model.region.label}}
+                  </:content>
+                </Item>
+                {{#if @model.organization.expectedEndDate}}
+                  <Item>
+                    <:label>Geplande einddatum</:label>
+                    <:content>
+                      {{date-format @model.organization.expectedEndDate}}
+                      {{#if this.expiredExpectedEndDate}}
+                        <AuPill @skin="error">De geplande einddatum is
+                          overschreden</AuPill>
+                      {{/if}}
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#if @model.organization.purpose}}
+                  <Item>
+                    <:label>Doel</:label>
+                    <:content>
+                      <RichTextEditor
+                        @show="true"
+                        @value={{@model.organization.purpose}}
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
+              {{/if}}
+            </:left>
+            <:right as |Item|>
+              <Item>
+                <:label>Status</:label>
+                <:content>
+                  <OrganizationStatus
+                    @id={{@model.organization.organizationStatus.id}}
+                    @label={{@model.organization.organizationStatus.label}}
+                  />
+                </:content>
+              </Item>
+              {{#if @model.resultedFrom}}
+                <Item>
+                  <:content>
+                    <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
+                      Gewijzigd op
+                      {{date-format (get @model.resultedFrom "0.date")}}
+                    </AuHelpText>
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if this.kboIdentifier.structuredIdentifier.localId}}
+                <Item>
+                  <:label>{{this.kboIdentifier.idName}}</:label>
+                  <:content>
+                    {{kbo-format
+                      this.kboIdentifier.structuredIdentifier.localId
+                    }}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if this.sharepointIdentifier.structuredIdentifier.localId}}
+                <Item>
+                  <:label>{{this.sharepointIdentifier.idName}}</:label>
+                  <:content>
+                    <AuLinkExternal
+                      href="{{this.sharePointLinkBase}}{{this.sharepointIdentifier.structuredIdentifier.localId}}"
+                    >
+                      {{this.sharepointIdentifier.structuredIdentifier.localId}}
+                      (externe link)
+                    </AuLinkExternal>
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if
+                (and
+                  @model.organization.scope.exactMatch
+                  (or
+                    @model.organization.isMunicipality
+                    @model.organization.isProvince
+                  )
+                )
+              }}
+                <Item>
+                  <:label>NIS</:label>
+                  <:content>
+                    {{@model.organization.scope.exactMatch.notation}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if this.ovoIdentifier.structuredIdentifier.localId}}
+                <Item>
+                  <:label>{{this.ovoIdentifier.idName}}</:label>
+                  <:content>
+                    {{this.ovoIdentifier.structuredIdentifier.localId}}
+                  </:content>
+                </Item>
+              {{/if}}
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+
+      <Site::ContactDataCard
+        @address={{@model.organization.primarySite.address}}
+        @primaryContact={{@model.primaryContact}}
+        @secondaryContact={{@model.secondaryContact}}
+      >
+        <:title>
+          Primaire contactgegevens
+        </:title>
+      </Site::ContactDataCard>
+    {{else}}
+      <KboOrganization::DataCard
+        @kboOrganization={{@model.kboOrganization}}
+        @kboIdentifier={{this.kboIdentifier}}
+        @kboContact={{@model.kboContact}}
+      />
+    {{/if}}
+  </div>
+</div>

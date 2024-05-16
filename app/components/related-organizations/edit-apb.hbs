@@ -6,15 +6,15 @@
         <Item
           @labelFor="related-provincie"
           @required={{true}}
-          @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.message}}
+          @errorMessage={{@model.organization.error.isSubOrganizationOf.message}}
         >
           <:label>Provincie</:label>
           <:content as |hasError|>
             <ProvinceOrganizationSelect
-              @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+              @selected={{@model.organization.isSubOrganizationOf}}
               @onChange={{@updateRelatedOrg}}
-              @allowClear={{(not @model.administrativeUnit.isAssociatedWith)}}
-              @selectedMunicipality={{@model.administrativeUnit.isAssociatedWith}}
+              @allowClear={{(not @model.organization.isAssociatedWith)}}
+              @selectedMunicipality={{@model.organization.isAssociatedWith}}
               @error={{hasError}}
               @id="related-provincie"
             />
@@ -23,13 +23,13 @@
         <Item
           @labelFor="related-gemeente"
           @required={{true}}
-          @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.message}}
+          @errorMessage={{@model.organization.error.isAssociatedWith.message}}
         >
           <:label>Gemeente</:label>
           <:content as |hasError|>
-            <AdministrativeUnitSelect
-              @selected={{@model.administrativeUnit.isAssociatedWith}}
-              @selectedProvince={{@model.administrativeUnit.isSubOrganizationOf}}
+            <OrganizationSelect
+              @selected={{@model.organization.isAssociatedWith}}
+              @selectedProvince={{@model.organization.isSubOrganizationOf}}
               @onChange={{@updateRelatedSubOrg}}
               @allowClear={{true}}
               @error={{hasError}}
@@ -77,7 +77,7 @@
           </td>
           <td>
             <AuLink
-              @route="administrative-units.administrative-unit"
+              @route="organizations.organization"
               @model={{subOrganization.id}}
             >
               {{subOrganization.abbName}}

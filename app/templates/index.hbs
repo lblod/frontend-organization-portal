@@ -7,7 +7,7 @@
         </div>
         <ul class="au-c-list-navigation">
           <li class="au-c-list-navigation__item">
-            <AuNavigationLink @route="administrative-units">
+            <AuNavigationLink @route="organizations">
               Organisaties
             </AuNavigationLink>
           </li>
@@ -77,13 +77,11 @@
             </c.content>
             <c.footer>
               <AuButtonGroup class="au-c-button-group--wrap">
-                <AuButton
-                  {{on "click" (fn this.goToContext "administrative-units")}}
-                >
+                <AuButton {{on "click" (fn this.goToContext "organizations")}}>
                   Ga naar organisaties
                 </AuButton>
                 <a
-                  href={{config "userManual.module.administrativeUnits"}}
+                  href={{config "userManual.module.organizations"}}
                   class="au-c-button au-c-button--link-secondary"
                   target="_blank"
                   rel="noopener noreferrer"

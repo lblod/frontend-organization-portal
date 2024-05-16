@@ -1,10 +1,8 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
-import {
-  CLASSIFICATION_CODE,
-  OCMW_ASSOCIATION_CLASSIFICATION_CODES,
-} from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { OcmwAssociationCodeList } from '../constants/Classification';
 
 export default class SiteTypeSelectComponent extends Component {
   @service store;
@@ -16,95 +14,95 @@ export default class SiteTypeSelectComponent extends Component {
     this.siteTypes = this.loadSiteTypesTask.perform();
   }
 
+  // TODO: the site edit functionality moves to CLB app, afterwards this code
+  // should be removed as it is no longer needed in OP
   get isWorshipAdministrativeUnit() {
     return this.isWorshipService || this.isCentralWorshipService;
   }
 
   get isWorshipService() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
-      CLASSIFICATION_CODE.WORSHIP_SERVICE
+      this.args.organizationClassification.get('id') ===
+      CLASSIFICATION.WORSHIP_SERVICE.id
     );
   }
 
   get isCentralWorshipService() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
-      CLASSIFICATION_CODE.CENTRAL_WORSHIP_SERVICE
+      this.args.organizationClassification.get('id') ===
+      CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id
     );
   }
 
   get isMunicipality() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
-      CLASSIFICATION_CODE.MUNICIPALITY
+      this.args.organizationClassification.get('id') ===
+      CLASSIFICATION.MUNICIPALITY.id
     );
   }
 
   get isProvince() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
-      CLASSIFICATION_CODE.PROVINCE
+      this.args.organizationClassification.get('id') ===
+      CLASSIFICATION.PROVINCE.id
     );
   }
 
   get isDistrict() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
-      CLASSIFICATION_CODE.DISTRICT
+      this.args.organizationClassification.get('id') ===
+      CLASSIFICATION.DISTRICT.id
     );
   }
 
   get isAgb() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
-      CLASSIFICATION_CODE.AGB
+      this.args.organizationClassification.get('id') === CLASSIFICATION.AGB.id
     );
   }
 
   get isIGS() {
     const typesThatAreIGS = [
-      CLASSIFICATION_CODE.PROJECTVERENIGING,
-      CLASSIFICATION_CODE.DIENSTVERLENENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING,
-      CLASSIFICATION_CODE.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+      CLASSIFICATION.PROJECTVERENIGING.id,
+      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
     ];
     return typesThatAreIGS.includes(
-      this.args.administrativeUnitClassification.get('id')
+      this.args.organizationClassification.get('id')
     );
   }
 
   get isApb() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
-      CLASSIFICATION_CODE.APB
+      this.args.organizationClassification.get('id') === CLASSIFICATION.APB.id
     );
   }
 
   get isPoliceZone() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
-      CLASSIFICATION_CODE.POLICE_ZONE
+      this.args.organizationClassification.get('id') ===
+      CLASSIFICATION.POLICE_ZONE.id
     );
   }
 
   get isOcmwAssociation() {
-    return OCMW_ASSOCIATION_CLASSIFICATION_CODES.includes(
-      this.args.administrativeUnitClassification.get('id')
+    return OcmwAssociationCodeList.includes(
+      this.args.organizationClassification.get('id')
     );
   }
 
   get isPevaMunicipality() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
-      CLASSIFICATION_CODE.PEVA_MUNICIPALITY
+      this.args.organizationClassification.get('id') ===
+      CLASSIFICATION.PEVA_MUNICIPALITY.id
     );
   }
 
   get isPevaProvince() {
     return (
-      this.args.administrativeUnitClassification.get('id') ===
-      CLASSIFICATION_CODE.PEVA_PROVINCE
+      this.args.organizationClassification.get('id') ===
+      CLASSIFICATION.PEVA_PROVINCE.id
     );
   }
 

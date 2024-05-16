@@ -1,0 +1,184 @@
+{{page-title "Bewerk veranderingsgebeurtenis"}}
+{{breadcrumb
+  "Bewerk veranderingsgebeurtenis"
+  route="organizations.organization.change-events.details.edit"
+  models=(array @model.organization.id @model.changeEvent.id)
+}}
+
+<div class="au-c-body-container au-c-body-container--scroll">
+  <form
+    class="au-o-box au-o-flow au-o-flow--large"
+    {{on "submit" (perform this.save)}}
+  >
+    <PageHeader>
+      <:title>
+        Bewerk veranderingsgebeurtenis:
+        {{@model.changeEvent.type.label}}
+      </:title>
+      <:subtitle>{{@model.organization.abbName}}
+        ({{@model.organization.classification.label}})</:subtitle>
+      <:action>
+        <div class="au-u-text-right">
+          <AuButtonGroup class="au-c-button-group--align-right">
+            <AuLink
+              @route="organizations.organization.change-events.details"
+              @model={{@model.changeEvent.id}}
+              @skin="button-secondary"
+            >
+              Annuleer
+            </AuLink>
+            <AuButton
+              @loading={{this.save.isRunning}}
+              @disabled={{this.save.isRunning}}
+              type="submit"
+            >
+              Opslaan
+            </AuButton>
+          </AuButtonGroup>
+          <Error::Save @showSaveError={{this.hasValidationErrors}} />
+        </div>
+      </:action>
+    </PageHeader>
+
+    <EditCard @containsRequiredFields={{true}}>
+      <:title>Veranderingsgebeurtenis</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Type veranderingsgebeurtenis</:label>
+              <:content>{{@model.changeEvent.type.label}}</:content>
+            </Item>
+            <Item @labelFor="change-event-description">
+              <:label>Beschrijving</:label>
+              <:content>
+                <AuTextarea
+                  @value={{@model.changeEvent.description}}
+                  @width="block"
+                  id="change-event-description"
+                />
+              </:content>
+            </Item>
+            {{#if @model.changeEvent.requiresDecisionInformation}}
+              <Item
+                @labelFor="change-event-decision-link"
+                @errorMessage={{@model.decision.error.documentLink.message}}
+              >
+                <:label>Link naar besluit</:label>
+                <:content as |hasError|>
+                  <TrimInput
+                    @value={{@model.decision.documentLink}}
+                    @onUpdate={{fn (mut @model.decision.documentLink)}}
+                    @width="block"
+                    @error={{hasError}}
+                    id="change-event-decision-link"
+                  />
+                </:content>
+                <:helpText>
+                  {{help-text "url"}}
+                </:helpText>
+              </Item>
+            {{/if}}
+          </:left>
+          <:right as |Item|>
+            {{#if
+              (and
+                (not @model.organization.isAgb)
+                (not @model.organization.isApb)
+                (not @model.organization.isIgs)
+                (not @model.organization.isPoliceZone)
+                (not @model.organization.isAssistanceZone)
+                @model.changeEvent.requiresDecisionInformation
+              )
+            }}
+              {{#unless @model.changeEvent.isCityChangeEvent}}
+                <Item
+                  @labelFor="change-event-decision-activity-date"
+                  @errorMessage={{@model.decisionActivity.error.endDate.message}}
+                >
+                  <:label>Datum ministerieel besluit</:label>
+                  <:content as |hasError|>
+                    <Datepicker
+                      @id="change-event-decision-activity-date"
+                      @value={{@model.decisionActivity.endDate}}
+                      @onChange={{fn (mut @model.decisionActivity.endDate)}}
+                      @error={{hasError}}
+                    />
+                  </:content>
+                </Item>
+              {{/unless}}
+              <Item
+                @labelFor="change-event-decision-publication-date"
+                @errorMessage={{@model.decision.error.publicationDate.message}}
+              >
+                <:label>
+                  {{#if @model.changeEvent.isCityChangeEvent}}
+                    Datum besluit
+                  {{else}}
+                    Datum publicatie BS
+                  {{/if}}
+                </:label>
+                <:content as |hasError|>
+                  <Datepicker
+                    @id="change-event-decision-publication-date"
+                    @value={{@model.decision.publicationDate}}
+                    @onChange={{fn (mut @model.decision.publicationDate)}}
+                    @error={{hasError}}
+                  />
+                </:content>
+              </Item>
+            {{/if}}
+            <Item>
+              <:label>Datum veranderingsgebeurtenis</:label>
+              <:content>
+                {{date-format @model.changeEvent.date}}
+              </:content>
+            </Item>
+          </:right>
+        </Card.Columns>
+      </:card>
+    </EditCard>
+
+    {{#if @model.changeEvent.canAffectMultipleOrganizations}}
+      <DataCard>
+        <:title>{{@model.changeEvent.type.label}}</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              {{#each
+                @model.changeEvent.originalOrganizations
+                as |organization|
+              }}
+                <Item>
+                  <:label>Betrokken organisatie</:label>
+                  <:content>
+                    {{organization.abbName}}
+                  </:content>
+                </Item>
+              {{/each}}
+            </:left>
+            <:right as |Item|>
+              {{#if @model.changeEvent.isMergerChangeEvent}}
+                <Item>
+                  <:label>Resulterende organisatie</:label>
+                  <:content>
+                    {{@model.firstResultingOrganization.name}}
+                  </:content>
+                </Item>
+                <Item>
+                  <:label>Resulterende status</:label>
+                  <:content>
+                    <OrganizationStatus
+                      @id={{@model.currentChangeEventResult.status.id}}
+                      @label={{@model.currentChangeEventResult.status.label}}
+                    />
+                  </:content>
+                </Item>
+              {{/if}}
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+    {{/if}}
+  </form>
+</div>

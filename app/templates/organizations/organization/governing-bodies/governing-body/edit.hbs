@@ -1,0 +1,100 @@
+<div class="au-c-body-container au-c-body-container--scroll">
+  <div class="au-o-box">
+    <PageHeader class="au-u-margin-bottom-large">
+      <:title>Bewerk bestuursorgaan</:title>
+      <:subtitle>
+        {{@model.governingBodyClassification.label}}
+        {{@model.organization.abbName}}
+        ({{@model.organization.classification.label}})
+      </:subtitle>
+      <:action>
+        <div class="au-u-text-right">
+          <AuButtonGroup class="au-c-button-group--align-right">
+            <AuButton {{on "click" this.cancel}} @skin="secondary">
+              Annuleer
+            </AuButton>
+            <AuButton
+              @loading={{this.save.isRunning}}
+              @disabled={{this.save.isRunning}}
+              type="submit"
+              form="edit-governing-body-form"
+            >
+              Opslaan
+            </AuButton>
+          </AuButtonGroup>
+          <Error::Save @showSaveError={{this.hasValidationErrors}} />
+          <ReportWrongData />
+        </div>
+      </:action>
+    </PageHeader>
+    <form
+      id="edit-governing-body-form"
+      aria-label="edit-governing-body-form"
+      {{on "submit" (perform this.save)}}
+    >
+      <div class="au-o-flow au-o-flow--large">
+        <EditCard>
+          <:title>Bestuursorgaan</:title>
+          <:card as |Card|>
+            <Card.Columns>
+              <:left as |Item|>
+                <Item>
+                  <:label>Type</:label>
+                  <:content>
+                    <AuInput
+                      @width="block"
+                      @value={{@model.governingBodyClassification.label}}
+                      @disabled={{true}}
+                    />
+                  </:content>
+                </Item>
+                <Item>
+                  <:label>Termijn</:label>
+                  <:content>
+                    <AuInput
+                      @width="block"
+                      @value={{@model.governingBody.period}}
+                      @disabled={{true}}
+                    />
+                  </:content>
+                </Item>
+              </:left>
+              <:right as |Item|>
+                <Item
+                  @labelFor="governing-body-start-date"
+                  @errorMessage={{@model.governingBody.error.startDate.message}}
+                  @required={{true}}
+                >
+                  <:label>Startdatum</:label>
+                  <:content as |hasError|>
+                    <Datepicker
+                      @id="governing-body-start-date"
+                      @value={{@model.governingBody.startDate}}
+                      @onChange={{fn (mut @model.governingBody.startDate)}}
+                      @error={{hasError}}
+                    />
+                  </:content>
+                </Item>
+                <Item
+                  @labelFor="governing-body-end-date"
+                  @errorMessage={{@model.governingBody.error.endDate.message}}
+                  @required={{true}}
+                >
+                  <:label>Einddatum</:label>
+                  <:content as |hasError|>
+                    <Datepicker
+                      @id="governing-body-end-date"
+                      @value={{@model.governingBody.endDate}}
+                      @onChange={{fn (mut @model.governingBody.endDate)}}
+                      @error={{hasError}}
+                    />
+                  </:content>
+                </Item>
+              </:right>
+            </Card.Columns>
+          </:card>
+        </EditCard>
+      </div>
+    </form>
+  </div>
+</div>

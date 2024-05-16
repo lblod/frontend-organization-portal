@@ -42,7 +42,7 @@ export default class IdentifierModel extends AbstractValidationModel {
               await this.structuredIdentifier
             ).changedAttributes();
             if (changedAttributes?.localId) {
-              let records = await this.store.query('administrative-unit', {
+              let records = await this.store.query('organization', {
                 filter: {
                   identifiers: {
                     ':exact:id-name': ID_NAME.KBO,
@@ -56,7 +56,7 @@ export default class IdentifierModel extends AbstractValidationModel {
 
               if (records.length > 0) {
                 return helpers.message('Dit KBO nummer is al in gebruik.', {
-                  administrativeUnit: records.at(0),
+                  organization: records.at(0),
                 });
               }
             }

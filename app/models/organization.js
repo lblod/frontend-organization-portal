@@ -15,6 +15,13 @@ export default class OrganizationModel extends AgentModel {
   @attr('date') expectedEndDate;
   @attr purpose;
 
+  @belongsTo('organization-classification-code', {
+    inverse: null,
+    async: true,
+    polymorphic: true,
+  })
+  classification;
+
   @belongsTo('site', {
     inverse: null,
     async: true,
@@ -141,6 +148,7 @@ export default class OrganizationModel extends AgentModel {
   kboOrganization;
 
   get validationSchema() {
+    const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({
       name: validateStringOptional(),
       legalName: Joi.string().empty('').required().messages({
@@ -149,6 +157,7 @@ export default class OrganizationModel extends AgentModel {
       alternativeName: Joi.array().optional(),
       expectedEndDate: Joi.date().allow(null),
       purpose: validateStringOptional(),
+      classification: validateBelongsToRequired(REQUIRED_MESSAGE),
       primarySite: validateBelongsToOptional(),
       organizationStatus: validateBelongsToRequired('Selecteer een optie'),
       identifiers: validateHasManyOptional(),
@@ -165,6 +174,7 @@ export default class OrganizationModel extends AgentModel {
       wasFoundedByOrganizations: validateHasManyOptional(),
       participatesIn: validateHasManyOptional(),
       hasParticipants: validateHasManyOptional(),
+      kboOrganization: validateBelongsToOptional(),
     });
   }
 
@@ -183,5 +193,9 @@ export default class OrganizationModel extends AgentModel {
       .split(',')
       .map((s) => s.trim())
       .filter((s) => s !== '');
+  }
+
+  _hasClassificationId(classificationIds) {
+    return classificationIds.includes(this.classification?.get('id'));
   }
 }

@@ -1,11 +1,12 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-
 import { action } from '@ember/object';
+
 export default class OrganizationsRoute extends Route {
   @service session;
   @service router;
   @service role;
+
   beforeModel(transition) {
     this.session.requireAuthentication(transition, 'login');
 
@@ -13,6 +14,7 @@ export default class OrganizationsRoute extends Route {
       return this.router.transitionTo('select-role');
     }
   }
+
   @action
   error(error) {
     console.log(error);

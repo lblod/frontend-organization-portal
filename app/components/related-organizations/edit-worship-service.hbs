@@ -6,15 +6,13 @@
         <Item
           @labelFor="related-representative-body"
           @required={{true}}
-          @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.message}}
+          @errorMessage={{@model.organization.error.isAssociatedWith.message}}
         >
           <:label>Representatief orgaan</:label>
           <:content as |hasError|>
             <RepresentativeBodySelect
-              @selected={{@model.administrativeUnit.isAssociatedWith}}
-              @onChange={{fn
-                (mut @model.administrativeUnit.isAssociatedWith)
-              }}
+              @selected={{@model.organization.isAssociatedWith}}
+              @onChange={{fn (mut @model.organization.isAssociatedWith)}}
               @error={{hasError}}
               @id="related-representative-body"
             />
@@ -24,15 +22,13 @@
           <Item
             @labelFor="related-central-worship-service"
             @required={{false}}
-            @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.message}}
+            @errorMessage={{@model.organization.error.isSubOrganizationOf.message}}
           >
             <:label>Centraal bestuur</:label>
             <:content as |hasError|>
               <CentralWorshipSelect
-                @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                @onChange={{fn
-                  (mut @model.administrativeUnit.isSubOrganizationOf)
-                }}
+                @selected={{@model.organization.isSubOrganizationOf}}
+                @onChange={{fn (mut @model.organization.isSubOrganizationOf)}}
                 @error={{hasError}}
                 @id="related-central-worship-service"
               />
