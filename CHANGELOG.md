@@ -1,6 +1,24 @@
 
 
 
+
+## v1.24.0-0 (2024-05-16)
+
+#### :rocket: Enhancement
+* [#610](https://github.com/lblod/frontend-organization-portal/pull/610) Add message when kboOrganization is missing ([@aliokan](https://github.com/aliokan))
+* [#598](https://github.com/lblod/frontend-organization-portal/pull/598) Feat/integrated first wegwijs data in frontend ([@Dachamelemon](https://github.com/Dachamelemon))
+* [#585](https://github.com/lblod/frontend-organization-portal/pull/585) Made edit contact data into a feature ([@lagartoverde](https://github.com/lagartoverde))
+* [#578](https://github.com/lblod/frontend-organization-portal/pull/578) Feat/integrated first wegwijs data in frontend ([@Dachamelemon](https://github.com/Dachamelemon))
+
+#### :bug: Bug Fix
+* [#601](https://github.com/lblod/frontend-organization-portal/pull/601) fix: Corrected typo in function call ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 4
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+- Oscar Rodriguez Villalobos ([@lagartoverde](https://github.com/lagartoverde))
+- [@Dachamelemon](https://github.com/Dachamelemon)
+
 ## v1.23.2 (2024-04-11)
 
 #### :bug: Bug Fix
