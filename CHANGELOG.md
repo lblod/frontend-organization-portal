@@ -2,6 +2,15 @@
 
 
 
+
+## v1.24.0-1 (2024-05-17)
+
+#### :bug: Bug Fix
+* [#612](https://github.com/lblod/frontend-organization-portal/pull/612) Enable dynamic feature toggles of kbo-data-tab from backend ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
 ## v1.24.0-0 (2024-05-16)
 
 #### :rocket: Enhancement
