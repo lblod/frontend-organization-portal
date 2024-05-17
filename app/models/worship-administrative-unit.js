@@ -5,7 +5,6 @@ import {
   validateRequiredWhenClassificationId,
 } from '../validators/schema';
 import { WorshipServiceCodeList } from '../constants/Classification';
-import { WITH_CENTRAL_WORSHIP_SERVICE } from './recognized-worship-type';
 
 export default class WorshipAdministrativeUnitModel extends AdministrativeUnitModel {
   @belongsTo('recognized-worship-type', {
@@ -41,16 +40,7 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
     });
   }
 
-  get hasCentralWorshipService() {
-    return (
-      this.isWorshipService &&
-      this.#hasRecognizedWorshipTypeId(WITH_CENTRAL_WORSHIP_SERVICE)
-    );
-  }
-
-  #hasRecognizedWorshipTypeId(recognizedWorshipTypeIds) {
-    return recognizedWorshipTypeIds.includes(
-      this.recognizedWorshipType?.get('id')
-    );
+  get isWorshipAdministrativeUnit() {
+    return this.isWorshipService || this.isCentralWorshipService;
   }
 }
