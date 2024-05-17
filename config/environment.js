@@ -65,7 +65,7 @@ module.exports = function (environment) {
     },
 
     features: {
-      'kbo-data-tab': false,
+      'kbo-data-tab': '{{ENABLE_KBO_DATA_TAB_FEATURE}}',
       'edit-contact-data': '{{ENABLE_EDIT_CONTACT_DATA_FEATURE}}',
     },
 
