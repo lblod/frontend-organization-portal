@@ -29,10 +29,10 @@
     class="au-o-box au-o-flow au-o-flow--large"
     id="organization-creation-form"
     aria-label="organization-creation-form"
-    {{on "submit" (perform this.createAdministrativeUnitTask)}}
+    {{on "submit" (perform this.createOrganizationTask)}}
   >
     <EditCard @containsRequiredFields={{true}}>
-      <:title>Bestuurseenheid</:title>
+      <:title>Organisatie</:title>
       <:card as |Card|>
         <Card.Columns>
           <:left as |Item|>
@@ -42,8 +42,8 @@
                 <TrimInput
                   @width="block"
                   @disabled={{true}}
-                  @value={{@model.administrativeUnit.abbName}}
-                  @onUpdate={{fn (mut @model.administrativeUnit.name)}}
+                  @value={{this.currentOrganizationModel.abbName}}
+                  @onUpdate={{fn (mut this.currentOrganizationModel.name)}}
                   @error={{hasError}}
                   id="organization-abb-name"
                 />
@@ -55,13 +55,13 @@
             <Item
               @labelFor="organization-legal-name"
               @required={{true}}
-              @errorMessage={{@model.administrativeUnit.error.legalName.message}}
+              @errorMessage={{this.currentOrganizationModel.error.legalName.message}}
             >
               <:label>Juridische naam</:label>
               <:content as |hasError|>
                 <TrimInput
                   @width="block"
-                  @value={{@model.administrativeUnit.legalName}}
+                  @value={{this.currentOrganizationModel.legalName}}
                   @onUpdate={{this.setNames}}
                   @error={{hasError}}
                   id="organization-legal-name"
@@ -80,7 +80,7 @@
                 <TrimInput
                   @width="block"
                   @disabled={{false}}
-                  @value={{@model.administrativeUnit.alternativeName}}
+                  @value={{this.currentOrganizationModel.alternativeName}}
                   @onUpdate={{this.setAlternativeNames}}
                   @error={{hasError}}
                   id="organization-alternative-names"
@@ -93,42 +93,42 @@
             <Item
               @labelFor="classification-select"
               @required={{true}}
-              @errorMessage={{@model.administrativeUnit.error.classification.message}}
+              @errorMessage={{this.currentOrganizationModel.error.classification.message}}
             >
               <:label>Type bestuur</:label>
               <:content as |hasError|>
                 <ClassificationSelect
-                  @selected={{@model.administrativeUnit.classification}}
-                  @selectedRecognizedWorshipTypeId={{@model.administrativeUnit.recognizedWorshipType.id}}
-                  @onChange={{this.setClassification}}
+                  @selected={{this.currentOrganizationModel.classification}}
+                  @selectedRecognizedWorshipTypeId={{this.currentOrganizationModel.recognizedWorshipType.id}}
+                  @onChange={{this.organizationConverter}}
                   @restrictForNewBestuurseenheden={{true}}
                   @error={{hasError}}
                   @id="classification-select"
                 />
               </:content>
             </Item>
-            {{#if @model.administrativeUnit.isWorshipAdministrativeUnit}}
+            {{#if this.currentOrganizationModel.isWorshipAdministrativeUnit}}
               <Item
                 @labelFor="recognized-worship-type-select"
                 @required={{true}}
-                @errorMessage={{@model.administrativeUnit.error.recognizedWorshipType.message}}
+                @errorMessage={{this.currentOrganizationModel.error.recognizedWorshipType.message}}
               >
                 <:label>Soort eredienst</:label>
                 <:content as |hasError|>
                   <RecognizedWorshipTypeSelect
-                    @selected={{@model.administrativeUnit.recognizedWorshipType}}
+                    @selected={{this.currentOrganizationModel.recognizedWorshipType}}
                     @onChange={{fn
-                      (mut @model.administrativeUnit.recognizedWorshipType)
+                      (mut this.currentOrganizationModel.recognizedWorshipType)
                     }}
                     @allowClear={{true}}
-                    @selectedClassificationId={{@model.administrativeUnit.classification.id}}
+                    @selectedClassificationId={{this.currentOrganizationModel.classification.id}}
                     @error={{hasError}}
                     @id="recognized-worship-type-select"
                   />
                 </:content>
               </Item>
             {{/if}}
-            {{#if @model.administrativeUnit.isWorshipService}}
+            {{#if this.currentOrganizationModel.isWorshipService}}
               <Item @labelFor="denomination">
                 <:label>Strekking</:label>
                 <:content>
@@ -174,24 +174,24 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if @model.administrativeUnit.isMunicipality}}
+            {{#if this.currentOrganizationModel.isMunicipality}}
               <Item @labelFor="regio">
                 <:label>Regio</:label>
                 <:content>
-                  {{@model.administrativeUnit.scope.locatedWithin}}
+                  {{this.currentOrganizationModel.scope.locatedWithin}}
                 </:content>
               </Item>
             {{/if}}
-            {{#if @model.administrativeUnit.isIgs}}
+            {{#if this.currentOrganizationModel.isIgs}}
               <Item
                 @labelFor="expectedEndDate"
-                @errorMessage={{@model.administrativeUnit.error.expectedEndDate.message}}
+                @errorMessage={{this.currentOrganizationModel.error.expectedEndDate.message}}
               >
                 <:label>Geplande einddatum</:label>
                 <:content as |hasError|>
                   <Datepicker
                     @onChange={{fn
-                      (mut @model.administrativeUnit.expectedEndDate)
+                      (mut this.currentOrganizationModel.expectedEndDate)
                     }}
                     @error={{hasError}}
                   />
@@ -201,8 +201,8 @@
                 <:label>Doel</:label>
                 <:content>
                   <RichTextEditor
-                    @onChange={{fn (mut @model.administrativeUnit.purpose)}}
-                    @value={{@model.administrativeUnit.purpose}}
+                    @onChange={{fn (mut this.currentOrganizationModel.purpose)}}
+                    @value={{this.currentOrganizationModel.purpose}}
                   />
                 </:content>
               </Item>
@@ -212,14 +212,14 @@
             <Item
               @labelFor="status-select"
               @required={{true}}
-              @errorMessage={{@model.administrativeUnit.error.organizationStatus.message}}
+              @errorMessage={{this.currentOrganizationModel.error.organizationStatus.message}}
             >
               <:label>Status</:label>
               <:content as |hasError|>
                 <OrganizationStatusSelect
-                  @selected={{@model.administrativeUnit.organizationStatus}}
+                  @selected={{this.currentOrganizationModel.organizationStatus}}
                   @onChange={{fn
-                    (mut @model.administrativeUnit.organizationStatus)
+                    (mut this.currentOrganizationModel.organizationStatus)
                   }}
                   @error={{hasError}}
                   @id="status-select"
@@ -279,21 +279,21 @@
       <:title>Primaire contactgegevens</:title>
     </Site::ContactEditCard>
 
-    {{#if @model.administrativeUnit.classification}}
+    {{#if this.currentOrganizationModel.classification}}
       <EditCard @containsRequiredFields={{true}}>
         <:title>Gerelateerde organisaties</:title>
         <:card as |Card|>
-          {{#if @model.administrativeUnit.isWorshipAdministrativeUnit}}
+          {{#if this.currentOrganizationModel.isWorshipAdministrativeUnit}}
             <Card.Columns>
               <:left as |Item|>
-                {{#if @model.administrativeUnit.isCentralWorshipService}}
+                {{#if this.currentOrganizationModel.isCentralWorshipService}}
                   <Item @labelFor="related-worship-service">
                     <:label>Bestuur van de eredienst</:label>
                     <:content>
                       <WorshipServiceMultipleSelect
-                        @selected={{@model.administrativeUnit.subOrganizations}}
+                        @selected={{this.currentOrganizationModel.subOrganizations}}
                         @onChange={{fn
-                          (mut @model.administrativeUnit.subOrganizations)
+                          (mut this.currentOrganizationModel.subOrganizations)
                         }}
                         id="related-worship-service"
                       />
@@ -307,19 +307,19 @@
                 stops defaulting to plain administrative units (OP-3183).}}
                 {{#if
                   (and
-                    @model.administrativeUnit.isWorshipService
-                    @model.administrativeUnit.recognizedWorshipType
+                    this.currentOrganizationModel.isWorshipService
+                    this.currentOrganizationModel.recognizedWorshipType
                     (or
                       (eq
-                        @model.administrativeUnit.recognizedWorshipType.id
+                        this.currentOrganizationModel.recognizedWorshipType.id
                         "b13d1d623626bc1ee75c7d20bc60e3c0"
                       )
                       (eq
-                        @model.administrativeUnit.recognizedWorshipType.id
+                        this.currentOrganizationModel.recognizedWorshipType.id
                         "9d8bd472a00bf0a5c7b7186606365a52"
                       )
                       (eq
-                        @model.administrativeUnit.recognizedWorshipType.id
+                        this.currentOrganizationModel.recognizedWorshipType.id
                         "84bcd6896f575bae4857ff8d2764bed8"
                       )
                     )
@@ -328,14 +328,16 @@
                   <Item
                     @labelFor="related-central-worship-service"
                     @required={{false}}
-                    @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.message}}
+                    @errorMessage={{this.currentOrganizationModel.error.isSubOrganizationOf.message}}
                   >
                     <:label>Centraal bestuur</:label>
                     <:content as |hasError|>
                       <CentralWorshipSelect
-                        @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                        @selected={{this.currentOrganizationModel.isSubOrganizationOf}}
                         @onChange={{fn
-                          (mut @model.administrativeUnit.isSubOrganizationOf)
+                          (mut
+                            this.currentOrganizationModel.isSubOrganizationOf
+                          )
                         }}
                         @error={{hasError}}
                         @id="related-central-worship-service"
@@ -346,14 +348,14 @@
                 <Item
                   @labelFor="related-representative-body"
                   @required={{true}}
-                  @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.message}}
+                  @errorMessage={{this.currentOrganizationModel.error.isAssociatedWith.message}}
                 >
                   <:label>Representatief orgaan</:label>
                   <:content as |hasError|>
                     <RepresentativeBodySelect
-                      @selected={{@model.administrativeUnit.isAssociatedWith}}
+                      @selected={{this.currentOrganizationModel.isAssociatedWith}}
                       @onChange={{fn
-                        (mut @model.administrativeUnit.isAssociatedWith)
+                        (mut this.currentOrganizationModel.isAssociatedWith)
                       }}
                       @error={{hasError}}
                       @id="related-representative-body"
@@ -367,67 +369,67 @@
               <:left as |Item|>
                 {{#if
                   (or
-                    @model.administrativeUnit.isOCMW
-                    @model.administrativeUnit.isAgb
-                    @model.administrativeUnit.isDistrict
-                    @model.administrativeUnit.isIgs
-                    @model.administrativeUnit.isPoliceZone
-                    @model.administrativeUnit.isAssistanceZone
-                    @model.administrativeUnit.isPevaMunicipality
+                    this.currentOrganizationModel.isOCMW
+                    this.currentOrganizationModel.isAgb
+                    this.currentOrganizationModel.isDistrict
+                    this.currentOrganizationModel.isIgs
+                    this.currentOrganizationModel.isPoliceZone
+                    this.currentOrganizationModel.isAssistanceZone
+                    this.currentOrganizationModel.isPevaMunicipality
                   )
                 }}
                   <Item
                     @labelFor="related-gemeente"
                     @required={{(or
-                      @model.administrativeUnit.isAgb
-                      @model.administrativeUnit.isIgs
-                      @model.administrativeUnit.isPoliceZone
-                      @model.administrativeUnit.isAssistanceZone
-                      @model.administrativeUnit.isPevaMunicipality
+                      this.currentOrganizationModel.isAgb
+                      this.currentOrganizationModel.isIgs
+                      this.currentOrganizationModel.isPoliceZone
+                      this.currentOrganizationModel.isAssistanceZone
+                      this.currentOrganizationModel.isPevaMunicipality
                     )}}
-                    @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.message}}
+                    @errorMessage={{this.currentOrganizationModel.error.isSubOrganizationOf.message}}
                   >
                     <:label>Gemeente</:label>
                     <:content as |hasError|>
                       <OrganizationSelect
-                        @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                        @selected={{this.currentOrganizationModel.isSubOrganizationOf}}
                         @onChange={{this.setRelation}}
-                        @classificationCodes={{@model.administrativeUnit.municipalityClassificationCode}}
+                        @classificationCodes={{this.currentOrganizationModel.municipalityClassificationCode}}
                         @error={{hasError}}
                         @id="related-gemeente"
                       />
                     </:content>
                   </Item>
 
-                  {{#if @model.administrativeUnit.isSubOrganizationOf}}
+                  {{#if this.currentOrganizationModel.isSubOrganizationOf}}
                     <Item>
                       <:label>
                         Provincie
                       </:label>
                       <:content>
-                        {{@model.administrativeUnit.isSubOrganizationOf.isSubOrganizationOf.abbName}}
+                        {{this.currentOrganizationModel.isSubOrganizationOf.isSubOrganizationOf.abbName}}
                       </:content>
                     </Item>
                   {{/if}}
 
                   {{#if
                     (or
-                      @model.administrativeUnit.isAgb
-                      @model.administrativeUnit.isPevaMunicipality
+                      this.currentOrganizationModel.isAgb
+                      this.currentOrganizationModel.isPevaMunicipality
                     )
                   }}
                     <Item
                       @labelFor="oprichting-gemeente"
                       @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganizations.message}}
+                      @errorMessage={{this.currentOrganizationModel.error.wasFoundedByOrganizations.message}}
                     >
                       <:label>Werd opgericht door</:label>
                       <:content as |hasError|>
                         <OrganizationSelect
                           @disabled={{true}}
-                          @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                          @selected={{this.currentOrganizationModel.isSubOrganizationOf}}
                           @onChange={{this.setRelation}}
-                          @classificationCodes={{@model.administrativeUnit.founderClassifications}}
+                          @classificationCodes={{this.currentOrganizationModel.founderClassifications}}
                           @error={{hasError}}
                           @id="oprichting-gemeente"
                         />
@@ -435,18 +437,18 @@
                     </Item>
                   {{/if}}
 
-                  {{#if @model.administrativeUnit.isIgs}}
+                  {{#if this.currentOrganizationModel.isIgs}}
                     <Item
                       @labelFor="has-participants"
                       @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.hasParticipants.message}}
+                      @errorMessage={{this.currentOrganizationModel.error.hasParticipants.message}}
                     >
                       <:label>Heeft als participanten</:label>
                       <:content as |hasError|>
                         <OrganizationMultipleSelect
-                          @selected={{@model.administrativeUnit.hasParticipants}}
+                          @selected={{this.currentOrganizationModel.hasParticipants}}
                           @onChange={{this.setHasParticipants}}
-                          @classificationCodes={{@model.administrativeUnit.participantClassifications}}
+                          @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
                           @error={{hasError}}
                           @id="has-participants"
                         />
@@ -454,17 +456,17 @@
                     </Item>
                   {{/if}}
 
-                  {{#if @model.administrativeUnit.isPevaMunicipality}}
+                  {{#if this.currentOrganizationModel.isPevaMunicipality}}
                     <Item
                       @labelFor="has-participants-peva-municipality"
-                      @errorMessage={{@model.administrativeUnit.error.hasParticipants.message}}
+                      @errorMessage={{this.currentOrganizationModel.error.hasParticipants.message}}
                     >
                       <:label>Heeft als participanten</:label>
                       <:content as |hasError|>
                         <OrganizationMultipleSelect
-                          @selected={{@model.administrativeUnit.hasParticipants}}
+                          @selected={{this.currentOrganizationModel.hasParticipants}}
                           @onChange={{this.setHasParticipants}}
-                          @classificationCodes={{@model.administrativeUnit.participantClassifications}}
+                          @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
                           @error={{hasError}}
                           @id="has-participants-peva-municipality"
                         />
@@ -472,18 +474,18 @@
                     </Item>
                   {{/if}}
                 {{else}}
-                  {{#if @model.administrativeUnit.isOcmwAssociation}}
+                  {{#if this.currentOrganizationModel.isOcmwAssociation}}
                     <Item
                       @labelFor="oprichting-ocmw-association"
                       @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.wasFoundedByOrganizations.message}}
+                      @errorMessage={{this.currentOrganizationModel.error.wasFoundedByOrganizations.message}}
                     >
                       <:label>Werd opgericht door</:label>
                       <:content as |hasError|>
                         <OrganizationMultipleSelect
-                          @selected={{@model.administrativeUnit.wasFoundedByOrganizations}}
+                          @selected={{this.currentOrganizationModel.wasFoundedByOrganizations}}
                           @onChange={{this.setRelation}}
-                          @classificationCodes={{@model.administrativeUnit.founderClassifications}}
+                          @classificationCodes={{this.currentOrganizationModel.founderClassifications}}
                           @error={{hasError}}
                           @id="oprichting-ocmw-association"
                         />
@@ -492,14 +494,14 @@
 
                     <Item
                       @labelFor="has-participants-ocmw-association"
-                      @errorMessage={{@model.administrativeUnit.error.hasParticipants.message}}
+                      @errorMessage={{this.currentOrganizationModel.error.hasParticipants.message}}
                     >
                       <:label>Heeft als participanten</:label>
                       <:content as |hasError|>
                         <OrganizationMultipleSelect
-                          @selected={{@model.administrativeUnit.hasParticipants}}
+                          @selected={{this.currentOrganizationModel.hasParticipants}}
                           @onChange={{this.setHasParticipants}}
-                          @classificationCodes={{@model.administrativeUnit.participantClassifications}}
+                          @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
                           @error={{hasError}}
                           @id="has-participants-ocmw-association"
                         />
@@ -510,18 +512,18 @@
                     <Item
                       @labelFor="related-provincie"
                       @required={{(or
-                        @model.administrativeUnit.isApb
-                        @model.administrativeUnit.isPevaProvince
+                        this.currentOrganizationModel.isApb
+                        this.currentOrganizationModel.isPevaProvince
                       )}}
-                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.message}}
+                      @errorMessage={{this.currentOrganizationModel.error.isSubOrganizationOf.message}}
                     >
                       <:label>Provincie</:label>
                       <:content as |hasError|>
                         <ProvinceOrganizationSelect
-                          @selected={{@model.administrativeUnit.isSubOrganizationOf}}
-                          @selectedMunicipality={{@model.administrativeUnit.isAssociatedWith}}
+                          @selected={{this.currentOrganizationModel.isSubOrganizationOf}}
+                          @selectedMunicipality={{this.currentOrganizationModel.isAssociatedWith}}
                           @allowClear={{(not
-                            @model.administrativeUnit.isAssociatedWith
+                            this.currentOrganizationModel.isAssociatedWith
                           )}}
                           @onChange={{this.setRelation}}
                           @error={{hasError}}
@@ -530,22 +532,24 @@
                       </:content>
                     </Item>
 
-                    {{#if @model.administrativeUnit.isApb}}
+                    {{#if this.currentOrganizationModel.isApb}}
                       <Item
                         @labelFor="related-gemeente"
                         @required={{true}}
-                        @errorMessage={{@model.administrativeUnit.error.isAssociatedWith.message}}
+                        @errorMessage={{this.currentOrganizationModel.error.isAssociatedWith.message}}
                       >
                         <:label>Gemeente</:label>
                         <:content as |hasError|>
                           <OrganizationSelect
-                            @selected={{@model.administrativeUnit.isAssociatedWith}}
-                            @selectedProvince={{@model.administrativeUnit.isSubOrganizationOf}}
+                            @selected={{this.currentOrganizationModel.isAssociatedWith}}
+                            @selectedProvince={{this.currentOrganizationModel.isSubOrganizationOf}}
                             @allowClear={{true}}
                             @onChange={{fn
-                              (mut @model.administrativeUnit.isAssociatedWith)
+                              (mut
+                                this.currentOrganizationModel.isAssociatedWith
+                              )
                             }}
-                            @classificationCodes={{@model.administrativeUnit.municipalityClassificationCode}}
+                            @classificationCodes={{this.currentOrganizationModel.municipalityClassificationCode}}
                             @error={{hasError}}
                             @id="related-gemeente"
                           />
@@ -556,13 +560,13 @@
                     <Item
                       @labelFor="opgericht-provincie"
                       @required={{true}}
-                      @errorMessage={{@model.administrativeUnit.error.isSubOrganizationOf.message}}
+                      @errorMessage={{this.currentOrganizationModel.error.isSubOrganizationOf.message}}
                     >
                       <:label>Werd opgericht door</:label>
                       <:content as |hasError|>
                         <ProvinceOrganizationSelect
                           @disabled={{true}}
-                          @selected={{@model.administrativeUnit.isSubOrganizationOf}}
+                          @selected={{this.currentOrganizationModel.isSubOrganizationOf}}
                           @onChange={{this.setRelation}}
                           @error={{hasError}}
                           @id="opgericht-provincie"
@@ -570,17 +574,17 @@
                       </:content>
                     </Item>
 
-                    {{#if @model.administrativeUnit.isPevaProvince}}
+                    {{#if this.currentOrganizationModel.isPevaProvince}}
                       <Item
                         @labelFor="has-participants-peva-province"
-                        @errorMessage={{@model.administrativeUnit.error.hasParticipants.message}}
+                        @errorMessage={{this.currentOrganizationModel.error.hasParticipants.message}}
                       >
                         <:label>Heeft als participanten</:label>
                         <:content as |hasError|>
                           <OrganizationMultipleSelect
-                            @selected={{@model.administrativeUnit.hasParticipants}}
+                            @selected={{this.currentOrganizationModel.hasParticipants}}
                             @onChange={{this.setHasParticipants}}
-                            @classificationCodes={{@model.administrativeUnit.participantClassifications}}
+                            @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
                             @error={{hasError}}
                             @id="has-participants-peva-province"
                           />

@@ -1,19 +1,23 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
+import { tracked } from '@glimmer/tracking';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import fetch from 'fetch';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
+import { CLASSIFICATION } from '../../models/administrative-unit-classification-code';
 
 export default class OrganizationsNewController extends Controller {
   @service router;
   @service store;
 
+  @tracked currentOrganizationModel;
+
   get hasValidationErrors() {
     return (
-      this.model.administrativeUnit.error ||
+      this.currentOrganizationModel.error ||
       this.model.address.error ||
       this.model.contact.error ||
       this.model.secondaryContact.error ||
@@ -24,18 +28,18 @@ export default class OrganizationsNewController extends Controller {
 
   @action
   setRelation(unit) {
-    this.model.administrativeUnit.isSubOrganizationOf = Array.isArray(unit)
+    this.currentOrganizationModel.isSubOrganizationOf = Array.isArray(unit)
       ? unit[0]
       : unit;
 
     if (
-      this.model.administrativeUnit.isAgb ||
-      this.model.administrativeUnit.isApb ||
-      this.model.administrativeUnit.isOcmwAssociation ||
-      this.model.administrativeUnit.isPevaMunicipality ||
-      this.model.administrativeUnit.isPevaProvince
+      this.currentOrganizationModel.isAgb ||
+      this.currentOrganizationModel.isApb ||
+      this.currentOrganizationModel.isOcmwAssociation ||
+      this.currentOrganizationModel.isPevaMunicipality ||
+      this.currentOrganizationModel.isPevaProvince
     ) {
-      this.model.administrativeUnit.wasFoundedByOrganizations = Array.isArray(
+      this.currentOrganizationModel.wasFoundedByOrganizations = Array.isArray(
         unit
       )
         ? unit
@@ -47,17 +51,17 @@ export default class OrganizationsNewController extends Controller {
 
   @action
   setNames(name) {
-    this.model.administrativeUnit.setAbbName(name);
+    this.currentOrganizationModel.setAbbName(name);
   }
 
   @action
   setAlternativeNames(names) {
-    this.model.administrativeUnit.setAlternativeName(names);
+    this.currentOrganizationModel.setAlternativeName(names);
   }
 
   @action
   setHasParticipants(units) {
-    this.model.administrativeUnit.hasParticipants = units;
+    this.currentOrganizationModel.hasParticipants = units;
   }
 
   @action
@@ -65,25 +69,143 @@ export default class OrganizationsNewController extends Controller {
     this.model.structuredIdentifierKBO.localId = value;
   }
 
+  /**
+   * Update the {@link currentOrganizationModel} to the model type that matches
+   * the classification code selected by the user. This includes create a new
+   * model instance and instantiating it with the necessary values already
+   * filled in by the user. Any set relations with other organizations, for
+   * example the organization at hand was founded by another one, are not
+   * copied. These relations, and there interpretation, are typically specific
+   * to the classification of an organization, it is up to the user to set the
+   * necessary relations (again) via the form.
+   *
+   * @param {AdministrativeUnitClassificationCodeModel}
+   * organizationClassificationCode - the model object representing the
+   * classification code selected by the user
+   */
   @action
-  setClassification(value) {
-    this.model.administrativeUnit.classification = value;
-    this.model.administrativeUnit.subOrganizations = [];
-    this.model.administrativeUnit.foundedOrganizations = [];
-    this.model.administrativeUnit.isAssociatedWith = null;
-    this.model.administrativeUnit.isSubOrganizationOf = null;
-    this.model.administrativeUnit.wasFoundedByOrganizations = [];
-    this.model.administrativeUnit.hasParticipants = [];
+  organizationConverter(organizationClassificationCode) {
+    // Note: extra guard to avoid infinite loop when setting the recognised
+    // worship type ("Soort eredienst" field) triggers a refresh for the
+    // classification, which in turn triggers a refresh of recognized worship
+    // type and so on...
+    if (
+      organizationClassificationCode.id !==
+      this.currentOrganizationModel.classification.id
+    ) {
+      // Create new model instance based on the provided classification
+      let newOrganizationModelInstance = this.#createNewModelInstance(
+        organizationClassificationCode.id
+      );
+      // Note: explicitly set here to ensure form is updated
+      newOrganizationModelInstance.classification =
+        organizationClassificationCode;
+
+      // Copy attributes and relationships to new model instance
+      this.#copyPropertiesToModel(newOrganizationModelInstance);
+
+      // Delete the old model instance
+      // Note: this sometimes causes an InternalError concerning too much
+      // recursion to be thrown when the ember-inspector plugin is open. The
+      // error seems to be specific to the plugin and does not seem to occur
+      // otherwise.
+      this.currentOrganizationModel.deleteRecord();
+
+      // Update the organization model instance used by this controller
+      this.currentOrganizationModel = newOrganizationModelInstance;
+    }
+  }
+
+  /**
+   * Create new organization model instance of the model type that matches the
+   * provided classification code.
+   *
+   * @param {string} classificationCodeId - the unique identifier of
+   * the selected classification code
+   * @returns {OrganizationModel} New model instance that matches to provided
+   * classification code
+   */
+  #createNewModelInstance(classificationCodeId) {
+    // FIXME: This logic is somewhat duplicate with the classification getters
+    // in the models. Should find a way to avoid having to manually add the
+    // classification id when onboarding
+    if (classificationCodeId === CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id) {
+      return this.store.createRecord('central-worship-service');
+    } else if (classificationCodeId === CLASSIFICATION.WORSHIP_SERVICE.id) {
+      return this.store.createRecord('worship-service');
+    } else if (
+      [
+        CLASSIFICATION.MUNICIPALITY.id,
+        CLASSIFICATION.PROVINCE.id,
+        CLASSIFICATION.OCMW.id,
+        CLASSIFICATION.DISTRICT.id,
+        CLASSIFICATION.AGB.id,
+        CLASSIFICATION.APB.id,
+        CLASSIFICATION.PROJECTVERENIGING.id,
+        CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
+        CLASSIFICATION.POLICE_ZONE.id,
+        CLASSIFICATION.ASSISTANCE_ZONE.id,
+        CLASSIFICATION.WELZIJNSVERENIGING.id,
+        CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
+        CLASSIFICATION.PEVA_MUNICIPALITY.id,
+        CLASSIFICATION.PEVA_PROVINCE.id,
+      ].includes(classificationCodeId)
+    ) {
+      return this.store.createRecord('administrative-unit');
+    } else {
+      return this.store.createRecord('organization');
+    }
+  }
+
+  /**
+   * Copy the properties of the {@link currentOrganizationModel} to the provided
+   * model instance. Any relations the {@link currentOrganizationModel} has with
+   * other organizations are *not* copied. These relations are dependent upon
+   * the exact classification of the organization and should be explicitly set
+   * by the user.
+   *
+   * @param {OrganizationModel} newOrganizationModel - the model instance to
+   * which the properties must be copied
+   */
+  #copyPropertiesToModel(newOrganizationModel) {
+    newOrganizationModel.name = this.currentOrganizationModel.name;
+    newOrganizationModel.legalName = this.currentOrganizationModel.legalName;
+    newOrganizationModel.alternativeName =
+      this.currentOrganizationModel.alternativeName;
+    newOrganizationModel.organizationStatus =
+      this.currentOrganizationModel.organizationStatus;
+
+    if (newOrganizationModel.isWorshipAdministrativeUnit) {
+      newOrganizationModel.recognizedWorshipType =
+        this.currentOrganizationModel.recognizedWorshipType;
+    }
+
+    if (this.currentOrganizationModel.scope) {
+      newOrganizationModel.scope = this.currentOrganizationModel.scope;
+      if (newOrganizationModel.scope.locatedWithin) {
+        newOrganizationModel.scope.locatedWithin =
+          this.currentOrganizationModel.scope.locatedWithin;
+      }
+    }
+
+    // Only IGSs have an, optional, expected end data and/or goal. Only copy
+    // these values when new organization is also an IGS.
+    if (newOrganizationModel.isIgs) {
+      newOrganizationModel.expectedEndDate =
+        this.currentOrganizationModel.expectedEndDate;
+      if (this.currentOrganizationModel.purpose?.length) {
+        newOrganizationModel.purpose = this.currentOrganizationModel.purpose;
+      }
+    }
   }
 
   @dropTask
-  *createAdministrativeUnitTask(event) {
+  *createOrganizationTask(event) {
     event.preventDefault();
 
     let {
-      administrativeUnit,
-      centralWorshipService,
-      worshipService,
       primarySite,
       address,
       contact,
@@ -95,7 +217,7 @@ export default class OrganizationsNewController extends Controller {
     } = this.model;
 
     yield Promise.all([
-      administrativeUnit.validate(),
+      this.currentOrganizationModel.validate(),
       address.validate(),
       contact.validate(),
       secondaryContact.validate(),
@@ -105,16 +227,6 @@ export default class OrganizationsNewController extends Controller {
 
     if (!this.hasValidationErrors) {
       const siteTypes = yield this.store.findAll('site-type');
-      let newAdministrativeUnit;
-      // Set the proper type to the new admin unit
-      if (administrativeUnit.isCentralWorshipService) {
-        newAdministrativeUnit = centralWorshipService;
-      } else if (administrativeUnit.isWorshipService) {
-        newAdministrativeUnit = worshipService;
-      } else {
-        newAdministrativeUnit = administrativeUnit;
-      }
-      copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit);
 
       structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
       yield structuredIdentifierKBO.save();
@@ -147,14 +259,14 @@ export default class OrganizationsNewController extends Controller {
       primarySite.address = address;
       (yield primarySite.contacts).push(contact, secondaryContact);
       if (
-        administrativeUnit.isAgb ||
-        administrativeUnit.isApb ||
-        administrativeUnit.isIGS ||
-        administrativeUnit.isPoliceZone ||
-        administrativeUnit.isAssistanceZone ||
-        administrativeUnit.isOcmwAssociation ||
-        administrativeUnit.isPevaMunicipality ||
-        administrativeUnit.isPevaProvince
+        this.currentOrganizationModel.isAgb ||
+        this.currentOrganizationModel.isApb ||
+        this.currentOrganizationModel.isIGS ||
+        this.currentOrganizationModel.isPoliceZone ||
+        this.currentOrganizationModel.isAssistanceZone ||
+        this.currentOrganizationModel.isOcmwAssociation ||
+        this.currentOrganizationModel.isPevaMunicipality ||
+        this.currentOrganizationModel.isPevaProvince
       ) {
         primarySite.siteType = siteTypes.find(
           (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
@@ -162,17 +274,19 @@ export default class OrganizationsNewController extends Controller {
       }
       yield primarySite.save();
 
-      (yield newAdministrativeUnit.identifiers).push(
+      (yield this.currentOrganizationModel.identifiers).push(
         identifierKBO,
         identifierSharepoint
       );
-      newAdministrativeUnit.primarySite = primarySite;
+      this.currentOrganizationModel.primarySite = primarySite;
 
-      newAdministrativeUnit = setEmptyStringsToNull(newAdministrativeUnit);
+      this.currentOrganizationModel = setEmptyStringsToNull(
+        this.currentOrganizationModel
+      );
 
-      yield newAdministrativeUnit.save();
+      yield this.currentOrganizationModel.save();
 
-      const createRelationshipsEndpoint = `/create-administrative-unit-relationships/${newAdministrativeUnit.id}`;
+      const createRelationshipsEndpoint = `/create-administrative-unit-relationships/${this.currentOrganizationModel.id}`;
       yield fetch(createRelationshipsEndpoint, {
         method: 'POST',
       });
@@ -184,7 +298,7 @@ export default class OrganizationsNewController extends Controller {
 
       this.router.replaceWith(
         'organizations.organization',
-        newAdministrativeUnit.id
+        this.currentOrganizationModel.id
       );
     }
   }
@@ -195,52 +309,9 @@ export default class OrganizationsNewController extends Controller {
     this.model.identifierKBO.reset();
     this.model.structuredIdentifierSharepoint.rollbackAttributes();
     this.model.structuredIdentifierKBO.rollbackAttributes();
-    this.model.administrativeUnit.reset();
+    this.currentOrganizationModel.reset();
     this.model.contact.reset();
     this.model.secondaryContact.reset();
     this.model.address.reset();
-  }
-}
-
-function copyAdministrativeUnitData(newAdministrativeUnit, administrativeUnit) {
-  newAdministrativeUnit.name = administrativeUnit.name;
-  newAdministrativeUnit.legalName = administrativeUnit.legalName;
-  newAdministrativeUnit.alternativeName = administrativeUnit.alternativeName;
-  newAdministrativeUnit.recognizedWorshipType =
-    administrativeUnit.recognizedWorshipType;
-  newAdministrativeUnit.classification = administrativeUnit.classification;
-  newAdministrativeUnit.organizationStatus =
-    administrativeUnit.organizationStatus;
-  if (administrativeUnit.wasFoundedByOrganizations?.length) {
-    newAdministrativeUnit.wasFoundedByOrganizations =
-      administrativeUnit.wasFoundedByOrganizations.slice();
-  }
-  newAdministrativeUnit.isSubOrganizationOf =
-    administrativeUnit.isSubOrganizationOf;
-  if (administrativeUnit.subOrganizations?.length) {
-    newAdministrativeUnit.subOrganizations =
-      administrativeUnit.subOrganizations.slice();
-  }
-  if (administrativeUnit.foundedOrganizations?.length) {
-    newAdministrativeUnit.foundedOrganizations =
-      administrativeUnit.foundedOrganizations.slice();
-  }
-  newAdministrativeUnit.isAssociatedWith = administrativeUnit.isAssociatedWith;
-  if (administrativeUnit.scope) {
-    newAdministrativeUnit.scope = administrativeUnit.scope;
-    if (newAdministrativeUnit.scope.locatedWithin) {
-      newAdministrativeUnit.scope.locatedWithin =
-        administrativeUnit.scope.locatedWithin;
-    }
-  }
-  if (administrativeUnit.hasParticipants?.length) {
-    newAdministrativeUnit.hasParticipants =
-      administrativeUnit.hasParticipants.slice();
-  }
-  if (administrativeUnit.expectedEndDate) {
-    newAdministrativeUnit.expectedEndDate = administrativeUnit.expectedEndDate;
-  }
-  if (administrativeUnit.purpose?.length) {
-    newAdministrativeUnit.purpose = administrativeUnit.purpose;
   }
 }
