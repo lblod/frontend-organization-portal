@@ -69,6 +69,15 @@ export default class OrganizationsNewController extends Controller {
     this.model.structuredIdentifierKBO.localId = value;
   }
 
+  @action
+  setRecognizedWorshipType(recognizedWorshipType) {
+    this.currentOrganizationModel.recognizedWorshipType = recognizedWorshipType;
+
+    // Remove the relation to any set central worship service since not all
+    // kinds of worship services require this.
+    this.currentOrganizationModel.isSubOrganizationOf = null;
+  }
+
   /**
    * Update the {@link currentOrganizationModel} to the model type that matches
    * the classification code selected by the user. This includes create a new
