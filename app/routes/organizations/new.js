@@ -39,9 +39,6 @@ export default class OrganizationsNewRoute extends Route {
     });
 
     return {
-      administrativeUnit: this.store.createRecord('administrative-unit'),
-      centralWorshipService: this.store.createRecord('central-worship-service'),
-      worshipService: this.store.createRecord('worship-service'),
       primarySite: this.store.createRecord('site'),
       address: this.store.createRecord('address', {
         country: 'België',
@@ -58,5 +55,14 @@ export default class OrganizationsNewRoute extends Route {
   resetController(controller) {
     super.resetController(...arguments);
     controller.reset();
+  }
+
+  setupController(controller) {
+    super.setupController(...arguments);
+
+    controller.set(
+      'currentOrganizationModel',
+      this.store.createRecord('organization')
+    );
   }
 }
