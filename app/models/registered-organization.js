@@ -3,6 +3,7 @@ import {
   validateHasManyOptional,
   validateRequiredWhenClassificationId,
 } from '../validators/schema';
+import { CLASSIFICATION } from './administrative-unit-classification-code';
 import OrganizationModel from './organization';
 import Joi from 'joi';
 
@@ -35,5 +36,25 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
 
   get isOcmwAssociation() {
     return this._hasClassificationId(OcmwAssociationCodeList);
+  }
+
+  get participantClassifications() {
+    if (this.isOcmwAssociation) {
+      return OcmwAssociationCodeList.concat([
+        CLASSIFICATION.MUNICIPALITY.id,
+        CLASSIFICATION.OCMW.id,
+      ]);
+    }
+    return [];
+  }
+
+  get founderClassifications() {
+    if (this.isOcmwAssociation) {
+      return OcmwAssociationCodeList.concat([
+        CLASSIFICATION.MUNICIPALITY.id,
+        CLASSIFICATION.OCMW.id,
+      ]);
+    }
+    return [];
   }
 }
