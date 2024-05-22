@@ -144,6 +144,15 @@ export default class OrganizationsNewController extends Controller {
       return this.store.createRecord('worship-service');
     } else if (
       [
+        CLASSIFICATION.ZIEKENHUISVERENIGING.id,
+        CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
+          .id,
+        CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
+      ].includes(classificationCodeId)
+    ) {
+      return this.store.createRecord('registered-organization');
+    } else if (
+      [
         CLASSIFICATION.MUNICIPALITY.id,
         CLASSIFICATION.PROVINCE.id,
         CLASSIFICATION.OCMW.id,
