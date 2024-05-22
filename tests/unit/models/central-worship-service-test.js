@@ -25,6 +25,29 @@ module('Unit | Model | central worship service', function (hooks) {
         organizationStatus: { message: 'Selecteer een optie' },
       });
     });
+
+    test('it should return extra errors when classification is set', async function (assert) {
+      const classification = this.store().createRecord(
+        'administrative-unit-classification-code',
+        CLASSIFICATION.CENTRAL_WORSHIP_SERVICE
+      );
+      const model = this.store().createRecord('worship-service', {
+        classification,
+      });
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 4);
+
+      assert.propContains(model.error, {
+        legalName: { message: 'Vul de juridische naam in' },
+        organizationStatus: { message: 'Selecteer een optie' },
+        // Required for central worship services
+        isAssociatedWith: { message: 'Selecteer een optie' },
+        recognizedWorshipType: { message: 'Selecteer een optie' },
+      });
+    });
   });
 
   module('classification', function () {
