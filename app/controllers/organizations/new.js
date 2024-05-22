@@ -106,12 +106,12 @@ export default class OrganizationsNewController extends Controller {
       let newOrganizationModelInstance = this.#createNewModelInstance(
         organizationClassificationCode.id
       );
-      // Note: explicitly set here to ensure form is updated
-      newOrganizationModelInstance.classification =
-        organizationClassificationCode;
 
       // Copy attributes and relationships to new model instance
       this.#copyPropertiesToModel(newOrganizationModelInstance);
+      // Note: explicitly set here to ensure form is updated
+      newOrganizationModelInstance.classification =
+        organizationClassificationCode;
 
       // Delete the old model instance
       // Note: this sometimes causes an InternalError concerning too much
