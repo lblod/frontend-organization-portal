@@ -4,7 +4,10 @@ import {
   validateHasManyOptional,
   validateRequiredWhenClassificationId,
 } from '../validators/schema';
-import { WorshipServiceCodeList } from '../constants/Classification';
+import {
+  CentralWorshipServiceCodeList,
+  WorshipServiceCodeList,
+} from '../constants/Classification';
 
 export default class WorshipAdministrativeUnitModel extends AdministrativeUnitModel {
   @belongsTo('recognized-worship-type', {
@@ -32,7 +35,7 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
   get validationSchema() {
     return super.validationSchema.append({
       recognizedWorshipType: validateRequiredWhenClassificationId(
-        WorshipServiceCodeList,
+        [...WorshipServiceCodeList, ...CentralWorshipServiceCodeList],
         'Selecteer een optie'
       ),
       ministerPositions: validateHasManyOptional(),
