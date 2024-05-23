@@ -209,17 +209,10 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
       administrativeUnit = setEmptyStringsToNull(administrativeUnit);
       yield administrativeUnit.save();
 
-      if (this.features.isEnabled('kbo-data-tab')) {
-        const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
-        yield fetch(syncKboData, {
-          method: 'POST',
-        });
-      } else {
-        const syncOvoNumberEndpoint = `/sync-ovo-number/${structuredIdentifierKBO.id}`;
-        yield fetch(syncOvoNumberEndpoint, {
-          method: 'POST',
-        });
-      }
+      const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
+      yield fetch(syncKboData, {
+        method: 'POST',
+      });
 
       this.router.refresh();
       this.router.transitionTo(
