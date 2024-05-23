@@ -5,82 +5,62 @@
       <:subtitle>{{@model.administrativeUnit.abbName}}
         ({{@model.administrativeUnit.classification.label}})</:subtitle>
       <:action>
-        {{#if (is-feature-enabled "kbo-data-tab")}}
-          {{#if this.showAbbData}}
-            <SecuredArea>
-              <:edit>
-                <div class="au-u-flex--column">
-                  <AuLink
-                    @route="administrative-units.administrative-unit.core-data.edit"
-                    @skin="button-secondary"
-                    @icon="pencil"
-                    @iconAlignment="left"
-                  >
-                    Bewerk
-                  </AuLink>
-                  <ReportWrongData />
-                </div>
-              </:edit>
-            </SecuredArea>
-          {{else}}
-            <div class="au-u-flex--column">
-              <AuPill @icon="clock-rewind">
-                Laatst Gewijzigd op {{date-format @model.kboOrganization.modified}}
-              </AuPill>
-              <ReportWrongData />
-            </div>
-          {{/if}}
-        {{else}}
+        {{#if this.showAbbData}}
           <SecuredArea>
             <:edit>
-              <AuLink
-                @route="administrative-units.administrative-unit.core-data.edit"
-                @skin="button-secondary"
-                @icon="pencil"
-                @iconAlignment="left"
-              >
-                Bewerk
-              </AuLink>
+              <div class="au-u-flex--column">
+                <AuLink
+                  @route="administrative-units.administrative-unit.core-data.edit"
+                  @skin="button-secondary"
+                  @icon="pencil"
+                  @iconAlignment="left"
+                >
+                  Bewerk
+                </AuLink>
+                <ReportWrongData />
+              </div>
             </:edit>
-            <:readOnly>
-              <ReportWrongData />
-            </:readOnly>
           </SecuredArea>
+        {{else}}
+          <div class="au-u-flex--column">
+            <AuPill @icon="clock-rewind">
+              Laatst Gewijzigd op
+              {{date-format @model.kboOrganization.modified}}
+            </AuPill>
+            <ReportWrongData />
+          </div>
         {{/if}}
       </:action>
     </PageHeader>
 
-    {{! this is a feature for KBO data. where the backend is still in progress }}
-    {{#if (is-feature-enabled "kbo-data-tab")}}
-      <AuTabs as |Tab|>
-        <Tab class="au-u-1-1">
-          <AuLink
-            @skin="naked"
-            @width="block"
-            class={{if
-              this.showAbbData
-              "active tab-link-align-left"
-              "tab-link-align-left"
-            }}
-            {{on "click" (fn this.setShowAbbData true)}}
-          >ABB Gegevens</AuLink>
-        </Tab>
+    <AuTabs as |Tab|>
+      <Tab class="au-u-1-1">
+        <AuLink
+          @skin="naked"
+          @width="block"
+          class={{if
+            this.showAbbData
+            "active tab-link-align-left"
+            "tab-link-align-left"
+          }}
+          {{on "click" (fn this.setShowAbbData true)}}
+        >ABB Gegevens</AuLink>
+      </Tab>
 
-        <Tab class="au-u-1-1">
-          <AuLink
-            @skin="naked"
-            @width="block"
-            class={{if
-              this.showAbbData
-              "tab-link-align-left"
-              "active tab-link-align-left"
-            }}
-            {{on "click" (fn this.setShowAbbData false)}}
-          >KBO Gegevens</AuLink>
-        </Tab>
-      </AuTabs>
-    {{/if}}
-      
+      <Tab class="au-u-1-1">
+        <AuLink
+          @skin="naked"
+          @width="block"
+          class={{if
+            this.showAbbData
+            "tab-link-align-left"
+            "active tab-link-align-left"
+          }}
+          {{on "click" (fn this.setShowAbbData false)}}
+        >KBO Gegevens</AuLink>
+      </Tab>
+    </AuTabs>
+
     {{#if this.showAbbData}}
       <DataCard>
         <:title>Bestuurseenheid</:title>

@@ -225,8 +225,8 @@ export default class AdministrativeUnitsNewController extends Controller {
         method: 'POST',
       });
 
-      const syncOvoNumberEndpoint = `/sync-ovo-number/${structuredIdentifierKBO.id}`;
-      yield fetch(syncOvoNumberEndpoint, {
+      const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
+      yield fetch(syncKboData, {
         method: 'POST',
       });
 
