@@ -61,7 +61,7 @@
             <:label>Website KBO</:label>
             <:content>
               <AuLinkExternal
-                href="https://kbopub.economie.fgov.be/kbopub/zoeknummerform.html?nummer={{@kboIdentifier.structuredIdentifier.localId}}"
+                href="https://kbopub.economie.fgov.be/kbopub/zoeknummerform.html?nummer={{@kboNumber}}"
               >
                 Link to page (externe link)
               </AuLinkExternal>
@@ -81,6 +81,6 @@
   </Site::ContactDataCard>
 {{else}}
   <AuAlert @skin="warning" @size="tiny">
-    <p>{{if @kboIdentifier this.noKboOrganizationMessage this.noKboMessage}}</p>
+    <p>{{if @kboNumber this.noKboOrganizationMessage this.noKboMessage}}</p>
   </AuAlert>
 {{/if}}

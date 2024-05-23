@@ -283,7 +283,7 @@
     {{else}}
       <KboOrganization::DataCard
         @kboOrganization={{@model.kboOrganization}}
-        @kboIdentifier={{this.kboIdentifier}}
+        @kboNumber={{this.kboIdentifier.structuredIdentifier.localId}}
         @kboContact={{@model.kboContact}}
       />
     {{/if}}
