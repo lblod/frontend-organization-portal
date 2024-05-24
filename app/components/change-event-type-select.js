@@ -74,14 +74,13 @@ export default class ChangeEventTypeSelectComponent extends Component {
     }
     if (
       classification.id == CLASSIFICATION.WELZIJNSVERENIGING.id ||
-      classification.id == CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id
-      // TODO: uncomment when onboarding private OCMW associations
-      // ||
-      // classification.id == CLASSIFICATION.ZIEKENHUISVERENIGING.id ||
-      // classification.id ==
-      //   CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id ||
-      // classification.id ==
-      //   CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id
+      classification.id == CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id ||
+      classification.id == CLASSIFICATION.ZIEKENHUISVERENIGING.id ||
+      classification.id ==
+        CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
+          .id ||
+      classification.id ==
+        CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id
     ) {
       types = types.filter((t) =>
         this.isIdInList(t.id, CHANGE_EVENTS_OCMW_ASSOCIATION)

@@ -214,7 +214,9 @@ module('Unit | Model | administrative unit', function (hooks) {
         classification,
       });
 
-      const isValid = await model.validate(true);
+      const isValid = await model.validate({
+        relaxMandatoryFoundingOrganization: true,
+      });
 
       assert.false(isValid);
       assert.strictEqual(Object.keys(model.error).length, 4);
@@ -235,7 +237,9 @@ module('Unit | Model | administrative unit', function (hooks) {
         classification,
       });
 
-      const isValid = await model.validate(true);
+      const isValid = await model.validate({
+        relaxMandatoryFoundingOrganization: true,
+      });
 
       assert.false(isValid);
       assert.strictEqual(Object.keys(model.error).length, 5);

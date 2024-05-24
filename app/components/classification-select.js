@@ -59,10 +59,10 @@ export default class ClassificationSelectComponent extends Component {
         CLASSIFICATION.ASSISTANCE_ZONE.id,
         CLASSIFICATION.WELZIJNSVERENIGING.id,
         CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
-        // TODO: uncomment when onboarding private OCMW associations
-        // CLASSIFICATION.ZIEKENHUISVERENIGING.id,
-        // CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
-        // CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
+        CLASSIFICATION.ZIEKENHUISVERENIGING.id,
+        CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
+          .id,
+        CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
         CLASSIFICATION.PEVA_MUNICIPALITY.id,
         CLASSIFICATION.PEVA_PROVINCE.id,
       ];
@@ -84,10 +84,10 @@ export default class ClassificationSelectComponent extends Component {
         CLASSIFICATION.ASSISTANCE_ZONE.id,
         CLASSIFICATION.WELZIJNSVERENIGING.id,
         CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
-        // TODO: uncomment when onboarding private OCMW associations
-        // CLASSIFICATION.ZIEKENHUISVERENIGING.id,
-        // CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
-        // CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
+        CLASSIFICATION.ZIEKENHUISVERENIGING.id,
+        CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
+          .id,
+        CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
         CLASSIFICATION.PEVA_MUNICIPALITY.id,
         CLASSIFICATION.PEVA_PROVINCE.id,
       ];
@@ -110,13 +110,10 @@ export default class ClassificationSelectComponent extends Component {
       );
     }
 
-    const codes = yield this.store.query(
-      'administrative-unit-classification-code',
-      {
-        'filter[:id:]': allowedIds.join(),
-        sort: 'label',
-      }
-    );
+    const codes = yield this.store.query('organization-classification-code', {
+      'filter[:id:]': allowedIds.join(),
+      sort: 'label',
+    });
 
     // Auto-selects the type if there is only one option
     if (codes.slice().length === 1 && codes.slice()[0] != this.args.selected) {
