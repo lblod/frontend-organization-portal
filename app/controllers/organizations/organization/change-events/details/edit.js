@@ -44,9 +44,10 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
         }
       }
 
-      if (changeEvent.hasDirtyAttributes) {
-        yield changeEvent.save();
-      }
+      // Note: always save change event as adding a decision is not detected by
+      // the `hasDirtyAttributes` method, which results in the new decision to
+      // be discarded on save.
+      yield changeEvent.save();
 
       this.router.transitionTo(
         'organizations.organization.change-events.details',
