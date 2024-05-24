@@ -3,6 +3,19 @@
 
 
 
+
+## v1.24.0-2 (2024-05-24)
+
+#### :rocket: Enhancement
+* [#616](https://github.com/lblod/frontend-organization-portal/pull/616) Remove `kbo-data-tab` feature flag ([@aliokan](https://github.com/aliokan))
+
+#### :bug: Bug Fix
+* [#617](https://github.com/lblod/frontend-organization-portal/pull/617) Add missing `representative-body-classification-codes` model ([@aliokan](https://github.com/aliokan))
+* [#615](https://github.com/lblod/frontend-organization-portal/pull/615) Fix Missing kbo number message ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
 ## v1.24.0-1 (2024-05-17)
 
 #### :bug: Bug Fix
