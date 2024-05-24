@@ -14,7 +14,8 @@ export default class DecisionModel extends AbstractValidationModel {
   hasDecisionActivity;
 
   get isEmpty() {
-    return !this.publicationDate && !this.documentLink;
+    // TODO: should this not also check for an activity?
+    return !(this.publicationDate || this.documentLink);
   }
 
   get validationSchema() {
