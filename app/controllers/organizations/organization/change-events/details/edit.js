@@ -40,7 +40,15 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
           if (decision.isNew) {
             changeEvent.decision = decision;
           }
+
           yield decision.save();
+        }
+
+        if (decision.isEmpty) {
+          changeEvent.decision = null;
+          yield decision.destroyRecord();
+          // Prevents errors in call to `reset()` on transition
+          this.model.decision = null;
         }
       }
 
