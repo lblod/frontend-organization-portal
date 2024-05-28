@@ -271,13 +271,15 @@
       </:card>
     </EditCard>
 
-    <Site::ContactEditCard
-      @address={{@model.address}}
-      @primaryContact={{@model.contact}}
-      @secondaryContact={{@model.secondaryContact}}
-    >
-      <:title>Primaire contactgegevens</:title>
-    </Site::ContactEditCard>
+    {{#if (is-feature-enabled "edit-contact-data")}}
+      <Site::ContactEditCard
+        @address={{@model.address}}
+        @primaryContact={{@model.contact}}
+        @secondaryContact={{@model.secondaryContact}}
+      >
+        <:title>Primaire contactgegevens</:title>
+      </Site::ContactEditCard>
+    {{/if}}
 
     {{#if this.model.administrativeUnit.classification}}
       <EditCard @containsRequiredFields={{true}}>
