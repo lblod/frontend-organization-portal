@@ -81,4 +81,62 @@ module('Unit | Model | organization', function (hooks) {
       });
     });
   });
+
+  module('abbName', function () {
+    test('it should return the legal name when set', async function (assert) {
+      const model = this.store().createRecord('organization', {
+        legalName: 'some legal name',
+      });
+
+      assert.deepEqual(model.abbName, 'some legal name');
+    });
+
+    test('it should return the name when no legal name is set and there is no KBO organization', async function (assert) {
+      const model = this.store().createRecord('organization', {
+        name: 'some organization name',
+      });
+
+      assert.deepEqual(model.abbName, 'some organization name');
+    });
+
+    test('it should return the KBO organization name when no legal name is set', async function (assert) {
+      const kboOrganizationModel = this.store().createRecord(
+        'kboOrganization',
+        {
+          name: 'kbo organization',
+        }
+      );
+      const model = this.store().createRecord('organization', {
+        kboOrganization: kboOrganizationModel,
+      });
+
+      assert.deepEqual(model.abbName, 'kbo organization');
+    });
+
+    test('it should return the name when no legal name is set and KBO organization has no name', async function (assert) {
+      const kboOrganizationModel = this.store().createRecord('kboOrganization');
+      const model = this.store().createRecord('organization', {
+        kboOrganization: kboOrganizationModel,
+        name: 'some name',
+      });
+
+      assert.deepEqual(model.abbName, 'some name');
+    });
+
+    test('it should return the legal name even if a KBO organization and name are set', async function (assert) {
+      const kboOrganizationModel = this.store().createRecord(
+        'kboOrganization',
+        {
+          name: 'kbo organization',
+        }
+      );
+      const model = this.store().createRecord('organization', {
+        legalName: 'some legal name',
+        name: 'some name',
+        kboOrganization: kboOrganizationModel,
+      });
+
+      assert.deepEqual(model.abbName, 'some legal name');
+    });
+  });
 });

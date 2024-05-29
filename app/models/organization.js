@@ -178,9 +178,8 @@ export default class OrganizationModel extends AgentModel {
     });
   }
 
-  // TODO: use registered KBO name as fallback
   get abbName() {
-    return this.legalName ?? this.name;
+    return this.legalName ?? this.kboOrganization?.get('name') ?? this.name;
   }
 
   setAbbName(name) {
