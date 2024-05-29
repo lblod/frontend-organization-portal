@@ -95,13 +95,13 @@
               @required={{true}}
               @errorMessage={{this.currentOrganizationModel.error.classification.message}}
             >
-              <:label>Type bestuur</:label>
+              <:label>Type organisatie</:label>
               <:content as |hasError|>
                 <ClassificationSelect
                   @selected={{this.currentOrganizationModel.classification}}
                   @selectedRecognizedWorshipTypeId={{this.currentOrganizationModel.recognizedWorshipType.id}}
                   @onChange={{this.organizationConverter}}
-                  @restrictForNewBestuurseenheden={{true}}
+                  @restrictForNewOrganizations={{true}}
                   @error={{hasError}}
                   @id="classification-select"
                 />

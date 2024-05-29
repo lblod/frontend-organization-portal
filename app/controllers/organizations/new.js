@@ -28,10 +28,12 @@ export default class OrganizationsNewController extends Controller {
   }
 
   @action
-  setRelation(unit) {
-    this.currentOrganizationModel.isSubOrganizationOf = Array.isArray(unit)
-      ? unit[0]
-      : unit;
+  setRelation(organization) {
+    this.currentOrganizationModel.isSubOrganizationOf = Array.isArray(
+      organization
+    )
+      ? organization[0]
+      : organization;
 
     if (
       this.currentOrganizationModel.isAgb ||
@@ -41,11 +43,11 @@ export default class OrganizationsNewController extends Controller {
       this.currentOrganizationModel.isPevaProvince
     ) {
       this.currentOrganizationModel.wasFoundedByOrganizations = Array.isArray(
-        unit
+        organization
       )
-        ? unit
-        : unit
-        ? [unit]
+        ? organization
+        : organization
+        ? [organization]
         : [];
     }
   }
@@ -61,8 +63,8 @@ export default class OrganizationsNewController extends Controller {
   }
 
   @action
-  setHasParticipants(units) {
-    this.currentOrganizationModel.hasParticipants = units;
+  setHasParticipants(organizations) {
+    this.currentOrganizationModel.hasParticipants = organizations;
   }
 
   @action
@@ -89,30 +91,27 @@ export default class OrganizationsNewController extends Controller {
    * to the classification of an organization, it is up to the user to set the
    * necessary relations (again) via the form.
    *
-   * @param {AdministrativeUnitClassificationCodeModel}
-   * organizationClassificationCode - the model object representing the
-   * classification code selected by the user
+   * @param {OrganizationClassificationCodeModel} classificationCode - the model
+   *     object representing the classification code selected by the user.
    */
   @action
-  organizationConverter(organizationClassificationCode) {
+  organizationConverter(classificationCode) {
     // Note: extra guard to avoid infinite loop when setting the recognised
     // worship type ("Soort eredienst" field) triggers a refresh for the
     // classification, which in turn triggers a refresh of recognized worship
     // type and so on...
     if (
-      organizationClassificationCode.id !==
-      this.currentOrganizationModel.classification.id
+      classificationCode.id !== this.currentOrganizationModel.classification.id
     ) {
       // Create new model instance based on the provided classification
       let newOrganizationModelInstance = this.#createNewModelInstance(
-        organizationClassificationCode.id
+        classificationCode.id
       );
 
       // Copy attributes and relationships to new model instance
       this.#copyPropertiesToModel(newOrganizationModelInstance);
       // Note: explicitly set here to ensure form is updated
-      newOrganizationModelInstance.classification =
-        organizationClassificationCode;
+      newOrganizationModelInstance.classification = classificationCode;
 
       // Delete the old model instance
       // Note: this sometimes causes an InternalError concerning too much
@@ -131,9 +130,9 @@ export default class OrganizationsNewController extends Controller {
    * provided classification code.
    *
    * @param {string} classificationCodeId - the unique identifier of
-   * the selected classification code
+   *     the selected classification code.
    * @returns {OrganizationModel} New model instance that matches to provided
-   * classification code
+   *     classification code.
    */
   #createNewModelInstance(classificationCodeId) {
     // FIXME: This logic is somewhat duplicate with the classification getters
@@ -186,7 +185,7 @@ export default class OrganizationsNewController extends Controller {
    * by the user.
    *
    * @param {OrganizationModel} newOrganizationModel - the model instance to
-   * which the properties must be copied
+   *     which the properties must be copied
    */
   #copyPropertiesToModel(newOrganizationModel) {
     newOrganizationModel.name = this.currentOrganizationModel.name;
