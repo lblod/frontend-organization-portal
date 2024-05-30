@@ -4,6 +4,15 @@
 
 
 
+
+## v1.24.0-3 (2024-05-30)
+
+#### :bug: Bug Fix
+* [#621](https://github.com/lblod/frontend-organization-portal/pull/621) Add edit contact behind feature flag in new addministrative-unit form ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
 ## v1.24.0-2 (2024-05-24)
 
 #### :rocket: Enhancement
