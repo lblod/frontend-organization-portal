@@ -304,7 +304,7 @@ export default class OrganizationsNewController extends Controller {
 
       yield this.currentOrganizationModel.save();
 
-      const createRelationshipsEndpoint = `/create-administrative-unit-relationships/${this.currentOrganizationModel.id}`;
+      const createRelationshipsEndpoint = `/construct-organization-relationships/${this.currentOrganizationModel.id}`;
       yield fetch(createRelationshipsEndpoint, {
         method: 'POST',
       });
