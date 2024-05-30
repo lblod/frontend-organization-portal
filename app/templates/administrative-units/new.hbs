@@ -271,13 +271,33 @@
       </:card>
     </EditCard>
 
-    <Site::ContactEditCard
-      @address={{@model.address}}
-      @primaryContact={{@model.contact}}
-      @secondaryContact={{@model.secondaryContact}}
-    >
-      <:title>Primaire contactgegevens</:title>
-    </Site::ContactEditCard>
+    {{#if (is-feature-enabled "edit-contact-data")}}
+      <Site::ContactEditCard
+        @address={{@model.address}}
+        @primaryContact={{@model.contact}}
+        @secondaryContact={{@model.secondaryContact}}
+      >
+        <:title>Primaire contactgegevens</:title>
+      </Site::ContactEditCard>
+    {{else}}
+      <div class="au-u-max-width-large">
+        <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
+          Primaire contactgegevens
+        </AuHeading>
+        <p class="au-u-margin-bottom-small">
+          De primaire contactgegevens kunnen niet langer in het OP ingegeven
+          worden. Gelieve de contactgegevens (adres, telefoonnummers, e-mail en
+          website) in te geven in de
+          <AuLinkExternal
+            href="https://controle.contactgegevens.lokaalbestuur.vlaanderen.be/"
+          >
+            controle omgeving van de contactapp
+          </AuLinkExternal>. Deze contactgegevens stromen door naar het
+          OrganisatiePortaal. De organisaties kunnen hun eigen gegevens nadien
+          zelf aanpassen via de Contactapp.
+        </p>
+      </div>
+    {{/if}}
 
     {{#if this.model.administrativeUnit.classification}}
       <EditCard @containsRequiredFields={{true}}>
