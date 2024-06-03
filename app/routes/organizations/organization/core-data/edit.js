@@ -88,7 +88,12 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
 
     let region;
 
-    if (organization.isIgs || organization.isOcmwAssociation) {
+    if (
+      organization.isIgs ||
+      organization.isOcmwAssociation ||
+      organization.isPevaProvince ||
+      organization.isPevaMunicipality
+    ) {
       const primarySite = await organization.primarySite;
       const address = await primarySite.address;
       const municipalityString = address.municipality;
