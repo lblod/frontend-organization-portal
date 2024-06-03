@@ -144,11 +144,14 @@
                 </Item>
               {{/if}}
               {{#if
-                (or
-                  this.isIGS
-                  this.isOcmwAssociation
-                  @model.administrativeUnit.isPevaMunicipality
-                  @model.administrativeUnit.isPevaProvince
+                (and
+                  (or
+                    this.isIGS
+                    this.isOcmwAssociation
+                    @model.administrativeUnit.isPevaMunicipality
+                    @model.administrativeUnit.isPevaProvince
+                  )
+                  @model.region.label
                 )
               }}
                 <Item>
