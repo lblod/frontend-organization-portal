@@ -154,7 +154,7 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditController
         // TODO : "if" not needed when the data of all administrative units will be correct
         // they should all have a primary site on creation
         if (!primarySite) {
-          primarySite = primarySite = this.store.createRecord('site');
+          primarySite = this.store.createRecord('site');
           primarySite.address = address;
           administrativeUnit.primarySite = primarySite;
         }

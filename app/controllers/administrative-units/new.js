@@ -158,7 +158,6 @@ export default class AdministrativeUnitsNewController extends Controller {
     }
 
     if (!this.hasValidationErrors) {
-      const siteTypes = yield this.store.findAll('site-type');
       let newAdministrativeUnit;
       // Set the proper type to the new admin unit
       if (administrativeUnit.isCentralWorshipService) {
@@ -211,6 +210,7 @@ export default class AdministrativeUnitsNewController extends Controller {
           administrativeUnit.isPevaMunicipality ||
           administrativeUnit.isPevaProvince
         ) {
+          const siteTypes = yield this.store.findAll('site-type');
           primarySite.siteType = siteTypes.find(
             (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
           );
