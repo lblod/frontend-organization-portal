@@ -174,7 +174,12 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if @model.administrativeUnit.isMunicipality}}
+            {{#if
+              (and
+                @model.administrativeUnit.isMunicipality
+                @model.administrativeUnit.scope.locatedWithin
+              )
+            }}
               <Item @labelFor="regio">
                 <:label>Regio</:label>
                 <:content>

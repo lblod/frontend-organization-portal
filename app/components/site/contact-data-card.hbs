@@ -8,12 +8,14 @@
   <:card as |Card|>
     <Card.Columns>
       <:left as |Item|>
-        <Item>
-          <:label>Adres</:label>
-          <:content>
-            {{@address.fullAddress}}
-          </:content>
-        </Item>
+        {{#if @address.fullAddress}}
+          <Item>
+            <:label>Adres</:label>
+            <:content>
+              {{@address.fullAddress}}
+            </:content>
+          </Item>
+        {{/if}}
         {{#if @address.province}}
           <Item>
             <:label>Provincie</:label>

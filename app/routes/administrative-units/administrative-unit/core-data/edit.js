@@ -46,8 +46,8 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     let address;
     let contacts;
     if (primarySite) {
-      address = await primarySite.address;
-      contacts = await primarySite.contacts;
+      address = await primarySite?.address;
+      contacts = await primarySite?.contacts;
     } else {
       address = createAddress(this.store);
       contacts = A();
@@ -91,21 +91,22 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataEditRoute exte
     let region;
 
     if (administrativeUnit.isIgs || administrativeUnit.isOcmwAssociation) {
-      const primarySite = await administrativeUnit.primarySite;
-      const address = await primarySite.address;
-      const municipalityString = address.municipality;
-      const municipalityUnit = (
-        await this.store.query('administrative-unit', {
-          filter: {
-            ':exact:name': municipalityString,
-            classification: {
-              ':id:': CLASSIFICATION_CODE.MUNICIPALITY,
+      const address = await primarySite?.address;
+      const municipalityString = address?.municipality;
+      if (municipalityString) {
+        const municipalityUnit = (
+          await this.store.query('administrative-unit', {
+            filter: {
+              ':exact:name': municipalityString,
+              classification: {
+                ':id:': CLASSIFICATION_CODE.MUNICIPALITY,
+              },
             },
-          },
-        })
-      ).at(0);
-      const scope = await municipalityUnit.scope;
-      region = await scope.locatedWithin;
+          })
+        ).at(0);
+        const scope = await municipalityUnit.scope;
+        region = await scope.locatedWithin;
+      }
     }
 
     return {

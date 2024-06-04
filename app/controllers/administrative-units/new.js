@@ -14,6 +14,7 @@ import { transformPhoneNumbers } from '../../utils/transform-phone-numbers';
 export default class AdministrativeUnitsNewController extends Controller {
   @service router;
   @service store;
+  @service features;
 
   get hasValidationErrors() {
     return (
@@ -144,15 +145,19 @@ export default class AdministrativeUnitsNewController extends Controller {
 
     yield Promise.all([
       administrativeUnit.validate(),
-      address.validate(),
-      contact.validate(),
-      secondaryContact.validate(),
       identifierKBO.validate(),
       identifierSharepoint.validate(),
     ]);
 
+    if (this.features.isEnabled('edit-contact-data')) {
+      yield Promise.all([
+        address.validate(),
+        contact.validate(),
+        secondaryContact.validate(),
+      ]);
+    }
+
     if (!this.hasValidationErrors) {
-      const siteTypes = yield this.store.findAll('site-type');
       let newAdministrativeUnit;
       // Set the proper type to the new admin unit
       if (administrativeUnit.isCentralWorshipService) {
@@ -174,47 +179,50 @@ export default class AdministrativeUnitsNewController extends Controller {
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
 
-      contact = setEmptyStringsToNull(contact);
-      contact.telephone = transformPhoneNumbers(contact.telephone);
-      yield contact.save();
+      if (this.features.isEnabled('edit-contact-data')) {
+        contact = setEmptyStringsToNull(contact);
+        contact.telephone = transformPhoneNumbers(contact.telephone);
+        yield contact.save();
 
-      secondaryContact = setEmptyStringsToNull(secondaryContact);
-      secondaryContact.telephone = transformPhoneNumbers(
-        secondaryContact.telephone
-      );
-      yield secondaryContact.save();
-
-      if (!address.isCountryBelgium) {
-        address.province = '';
-      }
-
-      address.fullAddress = combineFullAddress(address);
-      address = setEmptyStringsToNull(address);
-      yield address.save();
-
-      primarySite.address = address;
-      (yield primarySite.contacts).push(contact, secondaryContact);
-      if (
-        administrativeUnit.isAgb ||
-        administrativeUnit.isApb ||
-        administrativeUnit.isIGS ||
-        administrativeUnit.isPoliceZone ||
-        administrativeUnit.isAssistanceZone ||
-        administrativeUnit.isOcmwAssociation ||
-        administrativeUnit.isPevaMunicipality ||
-        administrativeUnit.isPevaProvince
-      ) {
-        primarySite.siteType = siteTypes.find(
-          (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
+        secondaryContact = setEmptyStringsToNull(secondaryContact);
+        secondaryContact.telephone = transformPhoneNumbers(
+          secondaryContact.telephone
         );
+        yield secondaryContact.save();
+
+        if (!address.isCountryBelgium) {
+          address.province = '';
+        }
+
+        address.fullAddress = combineFullAddress(address);
+        address = setEmptyStringsToNull(address);
+        yield address.save();
+
+        primarySite.address = address;
+        (yield primarySite.contacts).push(contact, secondaryContact);
+        if (
+          administrativeUnit.isAgb ||
+          administrativeUnit.isApb ||
+          administrativeUnit.isIGS ||
+          administrativeUnit.isPoliceZone ||
+          administrativeUnit.isAssistanceZone ||
+          administrativeUnit.isOcmwAssociation ||
+          administrativeUnit.isPevaMunicipality ||
+          administrativeUnit.isPevaProvince
+        ) {
+          const siteTypes = yield this.store.findAll('site-type');
+          primarySite.siteType = siteTypes.find(
+            (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
+          );
+        }
+        yield primarySite.save();
+        newAdministrativeUnit.primarySite = primarySite;
       }
-      yield primarySite.save();
 
       (yield newAdministrativeUnit.identifiers).push(
         identifierKBO,
         identifierSharepoint
       );
-      newAdministrativeUnit.primarySite = primarySite;
 
       newAdministrativeUnit = setEmptyStringsToNull(newAdministrativeUnit);
 

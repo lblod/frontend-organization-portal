@@ -64,21 +64,22 @@ export default class AdministrativeUnitsAdministrativeUnitCoreDataIndexRoute ext
       administrativeUnit.isPevaProvince ||
       administrativeUnit.isPevaMunicipality
     ) {
-      const primarySite = await administrativeUnit.primarySite;
-      const address = await primarySite.address;
-      const municipalityString = address.municipality;
-      const municipalityUnit = (
-        await this.store.query('administrative-unit', {
-          filter: {
-            ':exact:name': municipalityString,
-            classification: {
-              ':id:': CLASSIFICATION_CODE.MUNICIPALITY,
+      const address = await primarySite?.address;
+      const municipalityString = address?.municipality;
+      if (municipalityString) {
+        const municipalityUnit = (
+          await this.store.query('administrative-unit', {
+            filter: {
+              ':exact:name': municipalityString,
+              classification: {
+                ':id:': CLASSIFICATION_CODE.MUNICIPALITY,
+              },
             },
-          },
-        })
-      ).at(0);
-      const scope = await municipalityUnit.scope;
-      region = await scope.locatedWithin;
+          })
+        ).at(0);
+        const scope = await municipalityUnit.scope;
+        region = await scope.locatedWithin;
+      }
     }
 
     const kboOrganization = await administrativeUnit.kboOrganization;
