@@ -5,6 +5,15 @@
 
 
 
+
+## v1.24.0-4 (2024-06-04)
+
+#### :bug: Bug Fix
+* [#624](https://github.com/lblod/frontend-organization-portal/pull/624) Fix/addministrative unit without address and contact ([@aliokan](https://github.com/aliokan))
+
+#### Committers: 1
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
 ## v1.24.0-3 (2024-05-30)
 
 #### :bug: Bug Fix
