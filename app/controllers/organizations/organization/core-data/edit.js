@@ -89,7 +89,10 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
       identifierSharepoint.validate(),
     ]);
 
-    if (this.features.isEnabled('edit-contact-data')) {
+    if (
+      this.features.isEnabled('edit-contact-data') ||
+      organization.isPrivateOcmwAssociation
+    ) {
       yield Promise.all([
         address.validate(),
         contact.validate(),
@@ -98,7 +101,10 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
     }
 
     if (!this.hasValidationErrors) {
-      if (this.features.isEnabled('edit-contact-data')) {
+      if (
+        this.features.isEnabled('edit-contact-data') ||
+        organization.isPrivateOcmwAssociation
+      ) {
         let primarySite = yield organization.primarySite;
 
         // TODO: "if" not needed when the data of all organizations will be

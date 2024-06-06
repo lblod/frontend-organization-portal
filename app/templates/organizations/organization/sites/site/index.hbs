@@ -4,7 +4,12 @@
       <:title>Vestiging: {{@model.site.address.fullAddress}}</:title>
       <:subtitle>{{@model.organization.abbName}}</:subtitle>
       <:action>
-        {{#if (is-feature-enabled "edit-contact-data")}}
+        {{#if
+          (or
+            (is-feature-enabled "edit-contact-data")
+            @model.organization.isPrivateOcmwAssociation
+          )
+        }}
           <SecuredArea>
             <:edit>
               <AuLink

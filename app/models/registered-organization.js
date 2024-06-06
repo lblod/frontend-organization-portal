@@ -1,4 +1,7 @@
-import { OcmwAssociationCodeList } from '../constants/Classification';
+import {
+  OcmwAssociationCodeList,
+  PrivateOcmwCodeList,
+} from '../constants/Classification';
 import {
   validateHasManyOptional,
   validateRequiredWhenClassificationId,
@@ -36,6 +39,10 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
 
   get isOcmwAssociation() {
     return this._hasClassificationId(OcmwAssociationCodeList);
+  }
+
+  get isPrivateOcmwAssociation() {
+    return this._hasClassificationId(PrivateOcmwCodeList);
   }
 
   get participantClassifications() {

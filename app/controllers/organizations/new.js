@@ -241,7 +241,10 @@ export default class OrganizationsNewController extends Controller {
       identifierSharepoint.validate(),
     ]);
 
-    if (this.features.isEnabled('edit-contact-data')) {
+    if (
+      this.features.isEnabled('edit-contact-data') ||
+      this.currentOrganizationModel.isPrivateOcmwAssociation
+    ) {
       yield Promise.all([
         address.validate(),
         contact.validate(),
@@ -260,7 +263,10 @@ export default class OrganizationsNewController extends Controller {
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
 
-      if (this.features.isEnabled('edit-contact-data')) {
+      if (
+        this.features.isEnabled('edit-contact-data') ||
+        this.currentOrganizationModel.isPrivateOcmwAssociation
+      ) {
         contact = setEmptyStringsToNull(contact);
         contact.telephone = transformPhoneNumbers(contact.telephone);
         yield contact.save();
