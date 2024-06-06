@@ -94,21 +94,22 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
       organization.isPevaProvince ||
       organization.isPevaMunicipality
     ) {
-      const primarySite = await organization.primarySite;
-      const address = await primarySite.address;
-      const municipalityString = address.municipality;
-      const municipalityUnit = (
-        await this.store.query('organization', {
-          filter: {
-            ':exact:name': municipalityString,
-            classification: {
-              ':id:': CLASSIFICATION.MUNICIPALITY.id,
+      const address = await primarySite?.address;
+      const municipalityString = address?.municipality;
+      if (municipalityString) {
+        const municipalityUnit = (
+          await this.store.query('organization', {
+            filter: {
+              ':exact:name': municipalityString,
+              classification: {
+                ':id:': CLASSIFICATION.MUNICIPALITY.id,
+              },
             },
-          },
-        })
-      ).at(0);
-      const scope = await municipalityUnit.scope;
-      region = await scope.locatedWithin;
+          })
+        ).at(0);
+        const scope = await municipalityUnit.scope;
+        region = await scope.locatedWithin;
+      }
     }
 
     return {

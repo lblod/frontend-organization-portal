@@ -115,4 +115,4 @@ Or in template files by using the `is-feature-enabled` helper:
 ### List of feature flags
 
 | Name | Description |
-| kbo-data-tab | adds a tab to display the core data for an organization as provided by KBO |
+| edit-contact-data | Enable the edition of contact site |
