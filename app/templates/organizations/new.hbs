@@ -327,31 +327,7 @@
                     </:content>
                   </Item>
                 {{/if}}
-                {{! FIXME: dirty hack to have the field displayed in the right
-                circumstances. This enables the field for worship services of
-                worship type Roman-Catholic, Islamic, and Orthodox. This should
-                become unneccessary when the organization creation functionality
-                stops defaulting to plain administrative units (OP-3183).}}
-                {{#if
-                  (and
-                    this.currentOrganizationModel.isWorshipService
-                    this.currentOrganizationModel.recognizedWorshipType
-                    (or
-                      (eq
-                        this.currentOrganizationModel.recognizedWorshipType.id
-                        "b13d1d623626bc1ee75c7d20bc60e3c0"
-                      )
-                      (eq
-                        this.currentOrganizationModel.recognizedWorshipType.id
-                        "9d8bd472a00bf0a5c7b7186606365a52"
-                      )
-                      (eq
-                        this.currentOrganizationModel.recognizedWorshipType.id
-                        "84bcd6896f575bae4857ff8d2764bed8"
-                      )
-                    )
-                  )
-                }}
+                {{#if this.currentOrganizationModel.hasCentralWorshipService}}
                   <Item
                     @labelFor="related-central-worship-service"
                     @required={{false}}
