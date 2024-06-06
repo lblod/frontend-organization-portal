@@ -12,6 +12,7 @@ import { CLASSIFICATION } from '../../models/administrative-unit-classification-
 export default class OrganizationsNewController extends Controller {
   @service router;
   @service store;
+  @service features;
 
   @tracked currentOrganizationModel;
 
@@ -236,16 +237,19 @@ export default class OrganizationsNewController extends Controller {
 
     yield Promise.all([
       this.currentOrganizationModel.validate(),
-      address.validate(),
-      contact.validate(),
-      secondaryContact.validate(),
       identifierKBO.validate(),
       identifierSharepoint.validate(),
     ]);
 
-    if (!this.hasValidationErrors) {
-      const siteTypes = yield this.store.findAll('site-type');
+    if (this.features.isEnabled('edit-contact-data')) {
+      yield Promise.all([
+        address.validate(),
+        contact.validate(),
+        secondaryContact.validate(),
+      ]);
+    }
 
+    if (!this.hasValidationErrors) {
       structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
       yield structuredIdentifierKBO.save();
       yield identifierKBO.save();
@@ -256,47 +260,50 @@ export default class OrganizationsNewController extends Controller {
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
 
-      contact = setEmptyStringsToNull(contact);
-      contact.telephone = transformPhoneNumbers(contact.telephone);
-      yield contact.save();
+      if (this.features.isEnabled('edit-contact-data')) {
+        contact = setEmptyStringsToNull(contact);
+        contact.telephone = transformPhoneNumbers(contact.telephone);
+        yield contact.save();
 
-      secondaryContact = setEmptyStringsToNull(secondaryContact);
-      secondaryContact.telephone = transformPhoneNumbers(
-        secondaryContact.telephone
-      );
-      yield secondaryContact.save();
-
-      if (!address.isCountryBelgium) {
-        address.province = '';
-      }
-
-      address.fullAddress = combineFullAddress(address);
-      address = setEmptyStringsToNull(address);
-      yield address.save();
-
-      primarySite.address = address;
-      (yield primarySite.contacts).push(contact, secondaryContact);
-      if (
-        this.currentOrganizationModel.isAgb ||
-        this.currentOrganizationModel.isApb ||
-        this.currentOrganizationModel.isIGS ||
-        this.currentOrganizationModel.isPoliceZone ||
-        this.currentOrganizationModel.isAssistanceZone ||
-        this.currentOrganizationModel.isOcmwAssociation ||
-        this.currentOrganizationModel.isPevaMunicipality ||
-        this.currentOrganizationModel.isPevaProvince
-      ) {
-        primarySite.siteType = siteTypes.find(
-          (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
+        secondaryContact = setEmptyStringsToNull(secondaryContact);
+        secondaryContact.telephone = transformPhoneNumbers(
+          secondaryContact.telephone
         );
+        yield secondaryContact.save();
+
+        if (!address.isCountryBelgium) {
+          address.province = '';
+        }
+
+        address.fullAddress = combineFullAddress(address);
+        address = setEmptyStringsToNull(address);
+        yield address.save();
+
+        primarySite.address = address;
+        (yield primarySite.contacts).push(contact, secondaryContact);
+        if (
+          this.currentOrganizationModel.isAgb ||
+          this.currentOrganizationModel.isApb ||
+          this.currentOrganizationModel.isIGS ||
+          this.currentOrganizationModel.isPoliceZone ||
+          this.currentOrganizationModel.isAssistanceZone ||
+          this.currentOrganizationModel.isOcmwAssociation ||
+          this.currentOrganizationModel.isPevaMunicipality ||
+          this.currentOrganizationModel.isPevaProvince
+        ) {
+          const siteTypes = yield this.store.findAll('site-type');
+          primarySite.siteType = siteTypes.find(
+            (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
+          );
+        }
+        yield primarySite.save();
+        this.currentOrganizationModel.primarySite = primarySite;
       }
-      yield primarySite.save();
 
       (yield this.currentOrganizationModel.identifiers).push(
         identifierKBO,
         identifierSharepoint
       );
-      this.currentOrganizationModel.primarySite = primarySite;
 
       this.currentOrganizationModel = setEmptyStringsToNull(
         this.currentOrganizationModel
@@ -309,8 +316,8 @@ export default class OrganizationsNewController extends Controller {
         method: 'POST',
       });
 
-      const syncOvoNumberEndpoint = `/sync-ovo-number/${structuredIdentifierKBO.id}`;
-      yield fetch(syncOvoNumberEndpoint, {
+      const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
+      yield fetch(syncKboData, {
         method: 'POST',
       });
 

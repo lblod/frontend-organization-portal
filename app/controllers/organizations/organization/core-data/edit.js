@@ -85,60 +85,67 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
 
     yield Promise.all([
       organization.validate({ relaxMandatoryFoundingOrganization: true }),
-      address.validate(),
-      contact.validate(),
-      secondaryContact.validate(),
       identifierKBO.validate(),
       identifierSharepoint.validate(),
     ]);
 
+    if (this.features.isEnabled('edit-contact-data')) {
+      yield Promise.all([
+        address.validate(),
+        contact.validate(),
+        secondaryContact.validate(),
+      ]);
+    }
+
     if (!this.hasValidationErrors) {
-      let primarySite = yield organization.primarySite;
+      if (this.features.isEnabled('edit-contact-data')) {
+        let primarySite = yield organization.primarySite;
 
-      // TODO: "if" not needed when the data of all organizations will be
-      // correct they should all have a primary site on creation
-      if (!primarySite) {
-        primarySite = primarySite = this.store.createRecord('site');
-        primarySite.address = address;
-        organization.primarySite = primarySite;
-      }
-
-      if (address.hasDirtyAttributes) {
-        if (!address.isCountryBelgium) {
-          address.province = '';
+        // TODO: "if" not needed when the data of all organizations will be
+        // correct they should all have a primary site on creation
+        if (!primarySite) {
+          primarySite = this.store.createRecord('site');
+          primarySite.address = address;
+          organization.primarySite = primarySite;
         }
-        address.fullAddress = combineFullAddress(address);
-        address = setEmptyStringsToNull(address);
-        yield address.save();
-      }
 
-      let siteContacts = yield primarySite.contacts;
-
-      if (contact.hasDirtyAttributes) {
-        let isNewContact = contact.isNew;
-
-        contact.telephone = transformPhoneNumbers(contact.telephone);
-        contact = setEmptyStringsToNull(contact);
-        yield contact.save();
-
-        if (isNewContact) {
-          siteContacts.push(contact);
-          yield primarySite.save();
+        if (address.hasDirtyAttributes) {
+          if (!address.isCountryBelgium) {
+            address.province = '';
+          }
+          address.fullAddress = combineFullAddress(address);
+          address = setEmptyStringsToNull(address);
+          yield address.save();
         }
-      }
 
-      if (secondaryContact.hasDirtyAttributes) {
-        let isNewContact = secondaryContact.isNew;
+        let siteContacts = yield primarySite.contacts;
 
-        secondaryContact.telephone = transformPhoneNumbers(
-          secondaryContact.telephone
-        );
-        secondaryContact = setEmptyStringsToNull(secondaryContact);
-        yield secondaryContact.save();
+        if (contact.hasDirtyAttributes) {
+          let isNewContact = contact.isNew;
 
-        if (isNewContact) {
-          siteContacts.push(secondaryContact);
-          yield primarySite.save();
+          contact.telephone = transformPhoneNumbers(contact.telephone);
+          contact = setEmptyStringsToNull(contact);
+          yield contact.save();
+
+          if (isNewContact) {
+            siteContacts.push(contact);
+            yield primarySite.save();
+          }
+        }
+
+        if (secondaryContact.hasDirtyAttributes) {
+          let isNewContact = secondaryContact.isNew;
+
+          secondaryContact.telephone = transformPhoneNumbers(
+            secondaryContact.telephone
+          );
+          secondaryContact = setEmptyStringsToNull(secondaryContact);
+          yield secondaryContact.save();
+
+          if (isNewContact) {
+            siteContacts.push(secondaryContact);
+            yield primarySite.save();
+          }
         }
       }
 
@@ -159,17 +166,10 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
       organization = setEmptyStringsToNull(organization);
       yield organization.save();
 
-      if (this.features.isEnabled('kbo-data-tab')) {
-        const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
-        yield fetch(syncKboData, {
-          method: 'POST',
-        });
-      } else {
-        const syncOvoNumberEndpoint = `/sync-ovo-number/${structuredIdentifierKBO.id}`;
-        yield fetch(syncOvoNumberEndpoint, {
-          method: 'POST',
-        });
-      }
+      const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
+      yield fetch(syncKboData, {
+        method: 'POST',
+      });
 
       this.router.refresh();
       this.router.transitionTo(
