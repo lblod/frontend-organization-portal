@@ -316,7 +316,12 @@
             </Card.Columns>
           </:card>
         </EditCard>
-        {{#if (is-feature-enabled "edit-contact-data")}}
+        {{#if
+          (or
+            (is-feature-enabled "edit-contact-data")
+            @model.organization.isPrivateOcmwAssociation
+          )
+        }}
           <Site::ContactEditCard
             @address={{@model.address}}
             @isAddressSearchEnabledInitially={{if

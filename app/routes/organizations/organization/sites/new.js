@@ -12,9 +12,19 @@ export default class OrganizationsOrganizationSitesNewRoute extends Route {
   @service features;
 
   beforeModel() {
+    if (!this.currentSession.canEdit) {
+      this.router.transitionTo('route-not-found', {
+        wildcard: 'pagina-niet-gevonden',
+      });
+    }
+  }
+
+  afterModel(model) {
     if (
-      !this.currentSession.canEdit ||
-      !this.features.isEnabled('edit-contact-data')
+      !(
+        this.features.isEnabled('edit-contact-data') ||
+        model.organization.isPrivateOcmwAssociation
+      )
     ) {
       this.router.transitionTo('route-not-found', {
         wildcard: 'pagina-niet-gevonden',
