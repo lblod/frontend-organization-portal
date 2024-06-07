@@ -5,6 +5,7 @@ import { combineFullAddress } from 'frontend-organization-portal/models/address'
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
+import isContactEditableOrganization from '../../../../utils/editable-contact-data';
 
 export default class OrganizationsOrganizationCoreDataEditController extends Controller {
   @service router;
@@ -91,7 +92,7 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
 
     if (
       this.features.isEnabled('edit-contact-data') ||
-      organization.isPrivateOcmwAssociation
+      isContactEditableOrganization(this.model.organization)
     ) {
       yield Promise.all([
         address.validate(),
@@ -103,7 +104,7 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
     if (!this.hasValidationErrors) {
       if (
         this.features.isEnabled('edit-contact-data') ||
-        organization.isPrivateOcmwAssociation
+        isContactEditableOrganization(this.model.organization)
       ) {
         let primarySite = yield organization.primarySite;
 

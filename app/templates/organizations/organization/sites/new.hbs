@@ -44,7 +44,7 @@
                     <SiteTypeSelect
                       @selected={{@model.site.siteType}}
                       @onChange={{fn (mut @model.site.siteType)}}
-                      @organizationClassification={{this.model.organization.classification}}
+                      @organization={{this.model.organization}}
                       @id="site-type"
                       @error={{hasError}}
                     />

@@ -3,12 +3,7 @@
   <:subtitle>{{@model.organization.abbName}}
     ({{@model.organization.classification.label}})</:subtitle>
   <:action>
-    {{#if
-      (or
-        (is-feature-enabled "edit-contact-data")
-        @model.organization.isPrivateOcmwAssociation
-      )
-    }}
+    {{#if (editable-contact-data @model.organization)}}
       <SecuredArea>
         <:edit>
           <AuLink
@@ -59,12 +54,7 @@
       <SecuredArea>
         <:edit>
           <td>
-            {{#if
-              (or
-                (is-feature-enabled "edit-contact-data")
-                @model.organization.isPrivateOcmwAssociation
-              )
-            }}
+            {{#if (editable-contact-data @model.organization)}}
               <AuLink
                 @model={{site.id}}
                 @route="organizations.organization.sites.site.edit"

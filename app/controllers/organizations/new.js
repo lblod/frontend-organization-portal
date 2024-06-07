@@ -8,6 +8,7 @@ import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-
 import fetch from 'fetch';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
 import { CLASSIFICATION } from '../../models/administrative-unit-classification-code';
+import isContactEditableOrganization from '../../utils/editable-contact-data';
 
 export default class OrganizationsNewController extends Controller {
   @service router;
@@ -250,7 +251,7 @@ export default class OrganizationsNewController extends Controller {
 
     if (
       this.features.isEnabled('edit-contact-data') ||
-      this.currentOrganizationModel.isPrivateOcmwAssociation
+      isContactEditableOrganization(this.currentOrganizationModel)
     ) {
       yield Promise.all([
         address.validate(),
@@ -272,9 +273,7 @@ export default class OrganizationsNewController extends Controller {
 
       if (
         this.features.isEnabled('edit-contact-data') ||
-        this.currentOrganizationModel.isPrivateOcmwAssociation ||
-        this.currentOrganizationModel.isAssociationOther ||
-        this.currentOrganizationModel.isCorporationOther
+        isContactEditableOrganization(this.currentOrganizationModel)
       ) {
         contact = setEmptyStringsToNull(contact);
         contact.telephone = transformPhoneNumbers(contact.telephone);

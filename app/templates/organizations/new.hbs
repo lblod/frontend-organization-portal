@@ -278,12 +278,7 @@
       </:card>
     </EditCard>
 
-    {{#if
-      (or
-        (is-feature-enabled "edit-contact-data")
-        this.currentOrganizationModel.isPrivateOcmwAssociation
-      )
-    }}
+    {{#if (editable-contact-data this.currentOrganizationModel)}}
       <Site::ContactEditCard
         @address={{@model.address}}
         @primaryContact={{@model.contact}}

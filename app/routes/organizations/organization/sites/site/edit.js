@@ -6,6 +6,7 @@ import {
   findPrimaryContact,
   findSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
+import isContactEditableOrganization from '../../../../../utils/editable-contact-data';
 
 export default class OrganizationsOrganizationSitesSiteEditRoute extends Route {
   @service store;
@@ -25,7 +26,7 @@ export default class OrganizationsOrganizationSitesSiteEditRoute extends Route {
     if (
       !(
         this.features.isEnabled('edit-contact-data') ||
-        model.organization.isPrivateOcmwAssociation
+        isContactEditableOrganization(model.organization)
       )
     ) {
       this.router.transitionTo('route-not-found', {
