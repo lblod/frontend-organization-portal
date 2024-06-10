@@ -29,10 +29,6 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
     );
   }
 
-  get isWorshipService() {
-    return this.model.organization.isWorshipService;
-  }
-
   get totalFinancingPercentage() {
     return this.model.involvements.reduce((percentageTotal, involvement) => {
       let percentage = parseFloat(involvement.percentage);
@@ -123,7 +119,7 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
   @action
   addNewLocalInvolvement() {
     let involvement;
-    if (this.isWorshipService) {
+    if (this.model.organization.isWorshipService) {
       involvement = this.store.createRecord('local-involvement', {
         organization: this.model.organization,
         percentage: 0,

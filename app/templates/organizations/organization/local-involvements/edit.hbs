@@ -46,7 +46,7 @@
           >Naam</th>
           <th id="classification">Type instelling</th>
           <th id="involvement-type">Type betrokkenheid</th>
-          {{#if this.isWorshipService}}
+          {{#if @model.organization.isWorshipService}}
             <th id="financial-percentage">
               Financieel percentage
               <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
@@ -91,7 +91,7 @@
           <td>
             {{#let involvement.error.involvementType.message as |errorMessage|}}
               <div class={{if errorMessage "ember-power-select--error"}}>
-                {{#if this.isWorshipService}}
+                {{#if @model.organization.isWorshipService}}
                   {{#if
                     (eq
                       this.municipalityCode
@@ -152,7 +152,7 @@
               {{/if}}
             {{/let}}
           </td>
-          {{#if this.isWorshipService}}
+          {{#if @model.organization.isWorshipService}}
             <td>
               {{#let
                 (or
@@ -208,7 +208,7 @@
     </AuDataTable>
   </form>
 
-  {{#if this.isWorshipService}}
+  {{#if @model.organization.isWorshipService}}
     <div class="au-o-box au-o-box--small">
       <AuButton
         @skin="secondary"
