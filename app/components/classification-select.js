@@ -5,6 +5,7 @@ import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { getClassificationIdsForRole } from '../utils/classification-identifiers';
+import { convertClassificationToGroups } from '../utils/group-classifications';
 
 export default class ClassificationSelectComponent extends Component {
   @service store;
@@ -64,7 +65,7 @@ export default class ClassificationSelectComponent extends Component {
       this.args.onChange(codes.slice()[0]);
     }
 
-    return codes;
+    return convertClassificationToGroups(codes);
   }
 
   #isIdInBlacklist(id) {

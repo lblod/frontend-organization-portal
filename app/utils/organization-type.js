@@ -1,33 +1,4 @@
-import { ORGANIZATION_TYPES } from '../constants/organization-types';
 import { CLASSIFICATION } from '../models/administrative-unit-classification-code';
-
-const administrativeUnitClassificationIds = Object.values(CLASSIFICATION)
-  .map((cl) => cl.id)
-  .filter(
-    (id) =>
-      ![
-        // Non administrative units
-        CLASSIFICATION.ZIEKENHUISVERENIGING.id,
-        CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
-          .id,
-        CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-        CLASSIFICATION.ASSOCIATION_OTHER.id,
-        CLASSIFICATION.CORPORATION_OTHER.id,
-      ].includes(id)
-  );
-
-const associationClassificationIds = [
-  CLASSIFICATION.ZIEKENHUISVERENIGING.id,
-  CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
-  CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-  CLASSIFICATION.ASSOCIATION_OTHER.id,
-];
-
-const corporationClassificationIds = [CLASSIFICATION.CORPORATION_OTHER.id];
-
-function intersectionNotEmpty(left, right) {
-  return left.filter((elem) => right.includes(elem)).length > 0;
-}
 
 /**
  * Get a set of organization types that match the give classification code
@@ -39,30 +10,11 @@ function intersectionNotEmpty(left, right) {
  * @returns {string[]} The matching organization codes.
  */
 export function getOrganizationTypes(...classificationCodeIds) {
-  const types = [];
+  const organizationTypes = Object.values(CLASSIFICATION)
+    .filter((cl) => classificationCodeIds.includes(cl.id))
+    .map((cl) => cl.organizationType);
 
-  if (
-    intersectionNotEmpty(
-      classificationCodeIds,
-      administrativeUnitClassificationIds
-    )
-  ) {
-    types.push(ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT);
-  }
-
-  if (
-    intersectionNotEmpty(classificationCodeIds, associationClassificationIds)
-  ) {
-    types.push(ORGANIZATION_TYPES.ASSOCIATION);
-  }
-
-  if (
-    intersectionNotEmpty(classificationCodeIds, corporationClassificationIds)
-  ) {
-    types.push(ORGANIZATION_TYPES.CORPORATION);
-  }
-
-  return types;
+  return Array.from(new Set(organizationTypes));
 }
 
 /**
