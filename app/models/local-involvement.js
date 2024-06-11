@@ -69,7 +69,10 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
         return value;
       }),
       percentage: Joi.when('involvementType.id', {
-        is: Joi.exist().valid(INVOLVEMENT_TYPE.SUPERVISORY),
+        is: Joi.exist().valid(
+          INVOLVEMENT_TYPE.SUPERVISORY,
+          INVOLVEMENT_TYPE.MID_FINANCIAL
+        ),
         then: Joi.number().min(1).max(100).required(),
         otherwise: Joi.number().empty('').allow(null),
       }).messages({
