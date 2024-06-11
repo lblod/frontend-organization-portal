@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
+import sinon from 'sinon';
 
 module('Unit | Model | local involvement', function (hooks) {
   setupTest(hooks);
@@ -85,6 +86,330 @@ module('Unit | Model | local involvement', function (hooks) {
             message: errorMessage,
           },
         });
+      });
+    });
+
+    module('existsOtherSupervisoryLocalInvolvement', function () {
+      test('it returns true when there is another SUPERVISORY local involvement', async function (assert) {
+        const administrativeUnit = this.store().createRecord(
+          'administrative-unit'
+        );
+        const involvementType = this.store().createRecord('involvement-type', {
+          id: INVOLVEMENT_TYPE.SUPERVISORY,
+        });
+
+        const percentage = '50';
+        const model = this.store().createRecord('local-involvement', {
+          administrativeUnit,
+          involvementType,
+          percentage,
+        });
+
+        const otherModel = this.store().createRecord('local-involvement', {
+          administrativeUnit,
+          involvementType,
+          percentage,
+        });
+
+        const getOtherLocalInvolvementsStub = sinon.stub(
+          model,
+          'getOtherLocalInvolvements'
+        );
+        getOtherLocalInvolvementsStub.resolves([otherModel]);
+
+        const result = await model.existsOtherSupervisoryLocalInvolvement();
+        assert.ok(result);
+      });
+
+      test('it returns false when there is no other local involvement', async function (assert) {
+        const administrativeUnit = this.store().createRecord(
+          'administrative-unit'
+        );
+        const involvementType = this.store().createRecord('involvement-type', {
+          id: INVOLVEMENT_TYPE.SUPERVISORY,
+        });
+
+        const percentage = '50';
+        const model = this.store().createRecord('local-involvement', {
+          administrativeUnit,
+          involvementType,
+          percentage,
+        });
+
+        const getOtherLocalInvolvementsStub = sinon.stub(
+          model,
+          'getOtherLocalInvolvements'
+        );
+        getOtherLocalInvolvementsStub.resolves([]);
+
+        const result = await model.existsOtherSupervisoryLocalInvolvement();
+        assert.notOk(result);
+      });
+
+      test('it returns false when there is only another ADVISORY local involvement', async function (assert) {
+        const administrativeUnit = this.store().createRecord(
+          'administrative-unit'
+        );
+        const supervisoryInvolvementType = this.store().createRecord(
+          'involvement-type',
+          {
+            id: INVOLVEMENT_TYPE.SUPERVISORY,
+          }
+        );
+        const advisoryInvolvementType = this.store().createRecord(
+          'involvement-type',
+          {
+            id: INVOLVEMENT_TYPE.ADVISORY,
+          }
+        );
+
+        const percentage = '50';
+        const model = this.store().createRecord('local-involvement', {
+          administrativeUnit,
+          involvementType: supervisoryInvolvementType,
+          percentage,
+        });
+
+        const otherModel = this.store().createRecord('local-involvement', {
+          administrativeUnit,
+          involvementType: advisoryInvolvementType,
+          percentage,
+        });
+
+        const getOtherLocalInvolvementsStub = sinon.stub(
+          model,
+          'getOtherLocalInvolvements'
+        );
+        getOtherLocalInvolvementsStub.resolves([otherModel]);
+
+        const result = await model.existsOtherSupervisoryLocalInvolvement();
+        assert.notOk(result);
+      });
+
+      test('it returns false when there is only another MID_FINANCIAL local involvement', async function (assert) {
+        const administrativeUnit = this.store().createRecord(
+          'administrative-unit'
+        );
+        const supervisoryInvolvementType = this.store().createRecord(
+          'involvement-type',
+          {
+            id: INVOLVEMENT_TYPE.SUPERVISORY,
+          }
+        );
+        const midFinancialInvolvementType = this.store().createRecord(
+          'involvement-type',
+          {
+            id: INVOLVEMENT_TYPE.MID_FINANCIAL,
+          }
+        );
+
+        const percentage = '50';
+        const model = this.store().createRecord('local-involvement', {
+          administrativeUnit,
+          involvementType: supervisoryInvolvementType,
+          percentage,
+        });
+
+        const otherModel = this.store().createRecord('local-involvement', {
+          administrativeUnit,
+          involvementType: midFinancialInvolvementType,
+          percentage,
+        });
+
+        const getOtherLocalInvolvementsStub = sinon.stub(
+          model,
+          'getOtherLocalInvolvements'
+        );
+        getOtherLocalInvolvementsStub.resolves([otherModel]);
+
+        const result = await model.existsOtherSupervisoryLocalInvolvement();
+        assert.notOk(result);
+      });
+
+      test('it returns false when there are other non-supervisory local involvements', async function (assert) {
+        const administrativeUnit = this.store().createRecord(
+          'administrative-unit'
+        );
+        const supervisoryInvolvementType = this.store().createRecord(
+          'involvement-type',
+          {
+            id: INVOLVEMENT_TYPE.SUPERVISORY,
+          }
+        );
+        const advisoryInvolvementType = this.store().createRecord(
+          'involvement-type',
+          {
+            id: INVOLVEMENT_TYPE.ADVISORY,
+          }
+        );
+        const midFinancialInvolvementType = this.store().createRecord(
+          'involvement-type',
+          {
+            id: INVOLVEMENT_TYPE.MID_FINANCIAL,
+          }
+        );
+        const percentage = '50';
+
+        const model = this.store().createRecord('local-involvement', {
+          administrativeUnit,
+          involvementType: supervisoryInvolvementType,
+          percentage,
+        });
+
+        const midFinancialModel = this.store().createRecord(
+          'local-involvement',
+          {
+            administrativeUnit,
+            involvementType: midFinancialInvolvementType,
+            percentage,
+          }
+        );
+
+        const advisoryModel = this.store().createRecord('local-involvement', {
+          administrativeUnit,
+          involvementType: advisoryInvolvementType,
+          percentage,
+        });
+
+        const getOtherLocalInvolvementsStub = sinon.stub(
+          model,
+          'getOtherLocalInvolvements'
+        );
+        getOtherLocalInvolvementsStub.resolves([
+          midFinancialModel,
+          advisoryModel,
+        ]);
+
+        const result = await model.existsOtherSupervisoryLocalInvolvement();
+        assert.notOk(result);
+      });
+
+      test('it returns true when there is at least one other SUPERVISORY local involvement', async function (assert) {
+        const administrativeUnit = this.store().createRecord(
+          'administrative-unit'
+        );
+        const supervisoryInvolvementType = this.store().createRecord(
+          'involvement-type',
+          {
+            id: INVOLVEMENT_TYPE.SUPERVISORY,
+          }
+        );
+        const advisoryInvolvementType = this.store().createRecord(
+          'involvement-type',
+          {
+            id: INVOLVEMENT_TYPE.ADVISORY,
+          }
+        );
+        const midFinancialInvolvementType = this.store().createRecord(
+          'involvement-type',
+          {
+            id: INVOLVEMENT_TYPE.MID_FINANCIAL,
+          }
+        );
+        const percentage = '50';
+
+        const model = this.store().createRecord('local-involvement', {
+          administrativeUnit,
+          involvementType: supervisoryInvolvementType,
+          percentage,
+        });
+
+        const otherModel = this.store().createRecord('local-involvement', {
+          administrativeUnit,
+          involvementType: supervisoryInvolvementType,
+          percentage,
+        });
+
+        const midFinancialModel = this.store().createRecord(
+          'local-involvement',
+          {
+            administrativeUnit,
+            involvementType: midFinancialInvolvementType,
+            percentage,
+          }
+        );
+
+        const advisoryModel = this.store().createRecord('local-involvement', {
+          administrativeUnit,
+          involvementType: advisoryInvolvementType,
+          percentage,
+        });
+
+        const getOtherLocalInvolvementsStub = sinon.stub(
+          model,
+          'getOtherLocalInvolvements'
+        );
+        getOtherLocalInvolvementsStub.resolves([
+          midFinancialModel,
+          advisoryModel,
+          otherModel,
+        ]);
+
+        const result = await model.existsOtherSupervisoryLocalInvolvement();
+        assert.ok(result);
+      });
+    });
+
+    test('it returns an error when there is already a SUPERVISORY local involvement', async function (assert) {
+      const administrativeUnit = this.store().createRecord(
+        'administrative-unit'
+      );
+      const involvementType = this.store().createRecord('involvement-type', {
+        id: INVOLVEMENT_TYPE.SUPERVISORY,
+      });
+
+      const model = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        involvementType,
+        percentage: '100',
+      });
+
+      const hasSupervisoryLocalInvolvementStub = sinon.stub(
+        model,
+        'hasSupervisoryLocalInvolvement'
+      );
+      hasSupervisoryLocalInvolvementStub.resolves(true);
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.propContains(model.error, {
+        involvementType: {
+          message:
+            'Er kan slechts één gemeente- of provincieoverheid optreden als hoofdtoezichthouder',
+        },
+      });
+    });
+
+    test('it returns an error when there is no SUPERVISORY local involvement', async function (assert) {
+      const administrativeUnit = this.store().createRecord(
+        'administrative-unit'
+      );
+      const involvementType = this.store().createRecord('involvement-type', {
+        id: INVOLVEMENT_TYPE.ADVISORY,
+      });
+
+      const model = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        involvementType,
+        percentage: '100',
+      });
+
+      const hasSupervisoryLocalInvolvementStub = sinon.stub(
+        model,
+        'hasSupervisoryLocalInvolvement'
+      );
+      hasSupervisoryLocalInvolvementStub.resolves(false);
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.propContains(model.error, {
+        involvementType: {
+          message: 'U dient een toezichthoudende overheid aan te duiden',
+        },
       });
     });
   });

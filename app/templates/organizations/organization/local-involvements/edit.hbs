@@ -141,15 +141,6 @@
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
               {{/if}}
-              {{#if
-                (and
-                  involvement.isSupervisory
-                  this.showMoreThanOneFinancialTypeError
-                )
-              }}
-                <AuHelpText @error={{true}}>Er kan slechts één gemeente- of
-                  provincieoverheid optreden als hoofdtoezichthouder</AuHelpText>
-              {{/if}}
             {{/let}}
           </td>
           {{#if @model.organization.isWorshipService}}

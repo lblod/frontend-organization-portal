@@ -50,6 +50,22 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
           );
         }
 
+        const existsOtherSupervisory =
+          await this.existsOtherSupervisoryLocalInvolvement();
+
+        // Is there already a supervisory local involvement?
+        if (this.isSupervisory && existsOtherSupervisory) {
+          return helpers.message(
+            'Er kan slechts één gemeente- of provincieoverheid optreden als hoofdtoezichthouder'
+          );
+        }
+        // Is there at least one supervisory local involvement?
+        if (!(this.isSupervisory || existsOtherSupervisory)) {
+          return helpers.message(
+            'U dient een toezichthoudende overheid aan te duiden'
+          );
+        }
+
         return value;
       }),
       percentage: Joi.when('involvementType.id', {
@@ -81,5 +97,35 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
 
   #hasInvolvementTypeId(classificationId) {
     return this.involvementType?.get('id') === classificationId;
+  }
+
+  /**
+   * Check whether there is already a supervisory local involvement for the
+   * associated worship administrative unit.
+   * @returns {Promise<Boolean>} True if there is already a supervisory local
+   *     involvement, false otherwise.
+   */
+  async existsOtherSupervisoryLocalInvolvement() {
+    return (await this.getOtherLocalInvolvements()).some(
+      (elem) => elem.isSupervisory
+    );
+  }
+
+  /**
+   * Retrieve all local involvements relating to the same organization.
+   * @returns {Promise<A[LocalInvolvementModel>} All local involvements relating
+   *     to the same organization as the this local involvement.
+   */
+  async getOtherLocalInvolvements() {
+    const worshipAdministrativeUnit = await this.worshipAdministrativeUnit;
+    let relatedLocalInvolvements = await this.store.query('local-involvement', {
+      filter: {
+        'worship-administrative-unit': {
+          id: worshipAdministrativeUnit.get('id'),
+        },
+      },
+    });
+
+    return relatedLocalInvolvements.filter((elem) => elem.id !== this.id);
   }
 }
