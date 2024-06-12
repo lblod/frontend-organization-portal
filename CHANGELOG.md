@@ -7,6 +7,31 @@
 
 
 
+## v1.25.0 (2024-06-12)
+
+#### :rocket: Enhancement
+* [#627](https://github.com/lblod/frontend-organization-portal/pull/627) feat: ignore edit-contact-data flag for private OCMW associations ([@mirdono](https://github.com/mirdono))
+* [#619](https://github.com/lblod/frontend-organization-portal/pull/619) feature: use KBO organization's name as first fallback ([@mirdono](https://github.com/mirdono))
+* [#614](https://github.com/lblod/frontend-organization-portal/pull/614) feature: add functionality for private OCMW associations ([@mirdono](https://github.com/mirdono))
+* [#611](https://github.com/lblod/frontend-organization-portal/pull/611) Generalise organisation creation to operate on the most specific model type ([@mirdono](https://github.com/mirdono))
+* [#602](https://github.com/lblod/frontend-organization-portal/pull/602) refactor: generalise administrative units to organisations ([@mirdono](https://github.com/mirdono))
+
+#### :bug: Bug Fix
+* [#623](https://github.com/lblod/frontend-organization-portal/pull/623) fix: correctly include region when editing a PEVA ([@mirdono](https://github.com/mirdono))
+* [#620](https://github.com/lblod/frontend-organization-portal/pull/620) fix: set properties on correct model ([@mirdono](https://github.com/mirdono))
+* [#618](https://github.com/lblod/frontend-organization-portal/pull/618) fix: correctly update change event decisions after editing ([@mirdono](https://github.com/mirdono))
+* [#613](https://github.com/lblod/frontend-organization-portal/pull/613) fix: require recognised worship type for central worship services ([@mirdono](https://github.com/mirdono))
+* [#611](https://github.com/lblod/frontend-organization-portal/pull/611) Generalise organisation creation to operate on the most specific model type ([@mirdono](https://github.com/mirdono))
+
+#### :house: Internal
+* [#626](https://github.com/lblod/frontend-organization-portal/pull/626) refactor: resolved fixme central worship service field ([@mirdono](https://github.com/mirdono))
+* [#622](https://github.com/lblod/frontend-organization-portal/pull/622) refactor: call relationship service using new name ([@mirdono](https://github.com/mirdono))
+* [#602](https://github.com/lblod/frontend-organization-portal/pull/602) refactor: generalise administrative units to organisations ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 2
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+- Laurent Deketelaere ([@aliokan](https://github.com/aliokan))
+
 ## v1.25.0-0 (2024-06-10)
 
 #### :rocket: Enhancement
