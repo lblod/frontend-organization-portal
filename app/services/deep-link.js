@@ -4,10 +4,7 @@ import Service, { inject as service } from '@ember/service';
 // TODO: find a better way to store / configure the handlers map
 const REDIRECT_HANDLER = {
   'http://www.w3.org/ns/person#Person': 'person',
-  'http://data.lblod.info/vocabularies/erediensten/BestuurVanDeEredienst':
-    'organization',
-  'http://data.lblod.info/vocabularies/erediensten/CentraalBestuurVanDeEredienst':
-    'organization',
+  'http://www.w3.org/ns/org#Organization': 'organization',
 };
 
 export default class DeepLinkService extends Service {
