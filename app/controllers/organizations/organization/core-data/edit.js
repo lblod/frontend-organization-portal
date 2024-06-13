@@ -5,7 +5,7 @@ import { combineFullAddress } from 'frontend-organization-portal/models/address'
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
-import isContactEditableOrganization from '../../../../utils/editable-contact-data';
+import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 
 export default class OrganizationsOrganizationCoreDataEditController extends Controller {
   @service router;

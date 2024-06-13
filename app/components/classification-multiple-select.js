@@ -5,7 +5,7 @@ import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { tracked } from '@glimmer/tracking';
-import { getClassificationIdsForRole } from '../utils/classification-identifiers';
+import { getClassificationIdsForRole } from 'frontend-organization-portal/utils/classification-identifiers';
 
 export default class ClassificationMultipleSelectComponent extends Component {
   @service store;

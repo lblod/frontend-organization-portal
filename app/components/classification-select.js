@@ -4,8 +4,8 @@ import { task } from 'ember-concurrency';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import { getClassificationIdsForRole } from '../utils/classification-identifiers';
-import { convertClassificationToGroups } from '../utils/group-classifications';
+import { getClassificationIdsForRole } from 'frontend-organization-portal/utils/classification-identifiers';
+import { convertClassificationToGroups } from 'frontend-organization-portal/utils/group-classifications';
 
 export default class ClassificationSelectComponent extends Component {
   @service store;

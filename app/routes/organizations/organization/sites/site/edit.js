@@ -6,7 +6,7 @@ import {
   findPrimaryContact,
   findSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
-import isContactEditableOrganization from '../../../../../utils/editable-contact-data';
+import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 
 export default class OrganizationsOrganizationSitesSiteEditRoute extends Route {
   @service store;

@@ -7,8 +7,8 @@ import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import fetch from 'fetch';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
-import { CLASSIFICATION } from '../../models/administrative-unit-classification-code';
-import isContactEditableOrganization from '../../utils/editable-contact-data';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 
 export default class OrganizationsNewController extends Controller {
   @service router;
