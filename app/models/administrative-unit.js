@@ -180,6 +180,10 @@ export default class AdministrativeUnitModel extends OrganizationModel {
     return this._hasClassificationId(PevaProvinceCodeList);
   }
 
+  get isAdministrativeUnit() {
+    return true;
+  }
+
   get participantClassifications() {
     if (this.isIgs) {
       return [

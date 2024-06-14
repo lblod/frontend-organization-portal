@@ -200,9 +200,17 @@ export default class OrganizationsNewController extends Controller {
         this.currentOrganizationModel.recognizedWorshipType;
     }
 
-    if (this.currentOrganizationModel.scope) {
+    // Scope is defined in the administrative unit model, only copy if both
+    // source and target model are of that type. Otherwise, it can cause errors
+    // when user changes the selected organizations types and classifications
+    // code in the form.
+    if (
+      this.currentOrganizationModel.isAdministrativeUnit &&
+      newOrganizationModel.isAdministrativeUnit &&
+      this.currentOrganizationModel.scope
+    ) {
       newOrganizationModel.scope = this.currentOrganizationModel.scope;
-      if (newOrganizationModel.scope.locatedWithin) {
+      if (this.currentOrganizationModel.scope.locatedWithin) {
         newOrganizationModel.scope.locatedWithin =
           this.currentOrganizationModel.scope.locatedWithin;
       }
