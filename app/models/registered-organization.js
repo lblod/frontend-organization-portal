@@ -60,6 +60,8 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
       return OcmwAssociationCodeList.concat([
         CLASSIFICATION.MUNICIPALITY.id,
         CLASSIFICATION.OCMW.id,
+        CLASSIFICATION.ASSOCIATION_OTHER.id,
+        CLASSIFICATION.CORPORATION_OTHER.id,
       ]);
     }
     return [];
@@ -70,6 +72,8 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
       return OcmwAssociationCodeList.concat([
         CLASSIFICATION.MUNICIPALITY.id,
         CLASSIFICATION.OCMW.id,
+        CLASSIFICATION.ASSOCIATION_OTHER.id,
+        CLASSIFICATION.CORPORATION_OTHER.id,
       ]);
     }
     return [];

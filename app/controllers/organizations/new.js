@@ -272,7 +272,9 @@ export default class OrganizationsNewController extends Controller {
 
       if (
         this.features.isEnabled('edit-contact-data') ||
-        this.currentOrganizationModel.isPrivateOcmwAssociation
+        this.currentOrganizationModel.isPrivateOcmwAssociation ||
+        this.currentOrganizationModel.isAssociationOther ||
+        this.currentOrganizationModel.isCorporationOther
       ) {
         contact = setEmptyStringsToNull(contact);
         contact.telephone = transformPhoneNumbers(contact.telephone);
@@ -302,7 +304,9 @@ export default class OrganizationsNewController extends Controller {
           this.currentOrganizationModel.isAssistanceZone ||
           this.currentOrganizationModel.isOcmwAssociation ||
           this.currentOrganizationModel.isPevaMunicipality ||
-          this.currentOrganizationModel.isPevaProvince
+          this.currentOrganizationModel.isPevaProvince ||
+          this.currentOrganizationModel.isAssociationOther ||
+          this.currentOrganizationModel.isCorporationOther
         ) {
           const siteTypes = yield this.store.findAll('site-type');
           primarySite.siteType = siteTypes.find(

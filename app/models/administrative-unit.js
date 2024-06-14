@@ -204,11 +204,15 @@ export default class AdministrativeUnitModel extends OrganizationModel {
         CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
           .id,
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
+        CLASSIFICATION.ASSOCIATION_OTHER.id,
+        CLASSIFICATION.CORPORATION_OTHER.id,
       ];
     } else if (this.isOcmwAssociation) {
       return OcmwAssociationCodeList.concat([
         CLASSIFICATION.MUNICIPALITY.id,
         CLASSIFICATION.OCMW.id,
+        CLASSIFICATION.ASSOCIATION_OTHER.id,
+        CLASSIFICATION.CORPORATION_OTHER.id,
       ]);
     } else if (this.isPevaMunicipality || this.isPevaProvince) {
       return [
@@ -222,17 +226,26 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   }
 
   get founderClassifications() {
-    if (
-      this.isApb ||
-      this.isAgb ||
-      this.isPevaMunicipality ||
-      this.isPevaProvince
-    ) {
+    if (this.isApb || this.isAgb) {
       return [CLASSIFICATION.MUNICIPALITY.id];
+    } else if (this.isPevaMunicipality) {
+      return [
+        CLASSIFICATION.MUNICIPALITY.id,
+        CLASSIFICATION.ASSOCIATION_OTHER.id,
+        CLASSIFICATION.CORPORATION_OTHER.id,
+      ];
+    } else if (this.isPevaProvince) {
+      return [
+        CLASSIFICATION.PROVINCE.id,
+        CLASSIFICATION.ASSOCIATION_OTHER.id,
+        CLASSIFICATION.CORPORATION_OTHER.id,
+      ];
     } else if (this.isOcmwAssociation) {
       return OcmwAssociationCodeList.concat([
         CLASSIFICATION.MUNICIPALITY.id,
         CLASSIFICATION.OCMW.id,
+        CLASSIFICATION.ASSOCIATION_OTHER.id,
+        CLASSIFICATION.CORPORATION_OTHER.id,
       ]);
     }
     return [];
