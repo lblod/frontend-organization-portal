@@ -5,6 +5,7 @@ import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { tracked } from '@glimmer/tracking';
+import { getClassificationIdsForRole } from '../utils/classification-identifiers';
 
 export default class ClassificationMultipleSelectComponent extends Component {
   @service store;
@@ -14,6 +15,7 @@ export default class ClassificationMultipleSelectComponent extends Component {
   @tracked newId;
 
   classifications = trackedTask(this, this.loadClassificationsTask, () => [
+    this.args.selectedOrganizationTypes,
     this.args.selectedRecognizedWorshipTypeId,
   ]);
 
@@ -46,72 +48,34 @@ export default class ClassificationMultipleSelectComponent extends Component {
     return classifications.find((status) => status.id === id);
   }
 
-  @task *loadClassificationsTask() {
+  @task
+  *loadClassificationsTask() {
     // Trick used to avoid infinite loop
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
     yield Promise.resolve();
 
-    let allowedIds;
+    // Filter possible options based selected organization types, if any
+    let selectedOrganizationTypes = this.args.selectedOrganizationTypes;
+    let allowedIds = selectedOrganizationTypes
+      ? getClassificationIdsForRole(
+          this.currentSession.hasWorshipRole,
+          false,
+          ...selectedOrganizationTypes.split(',')
+        )
+      : getClassificationIdsForRole(this.currentSession.hasWorshipRole);
 
     let selectedRecognizedWorshipTypeId =
       this.args.selectedRecognizedWorshipTypeId;
 
     if (
       selectedRecognizedWorshipTypeId &&
-      this.isIdInBlacklist(selectedRecognizedWorshipTypeId)
+      this.#isIdInBlacklist(selectedRecognizedWorshipTypeId)
     ) {
-      allowedIds = [
-        CLASSIFICATION.WORSHIP_SERVICE.id,
-        CLASSIFICATION.REPRESENTATIVE_BODY.id,
-      ];
-    } else {
-      allowedIds = [
-        CLASSIFICATION.WORSHIP_SERVICE.id,
-        CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
-        CLASSIFICATION.MUNICIPALITY.id,
-        CLASSIFICATION.PROVINCE.id,
-        CLASSIFICATION.OCMW.id,
-        CLASSIFICATION.DISTRICT.id,
-        CLASSIFICATION.AGB.id,
-        CLASSIFICATION.APB.id,
-        CLASSIFICATION.PROJECTVERENIGING.id,
-        CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
-        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
-        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
-        CLASSIFICATION.POLICE_ZONE.id,
-        CLASSIFICATION.ASSISTANCE_ZONE.id,
-        CLASSIFICATION.REPRESENTATIVE_BODY.id,
-        CLASSIFICATION.WELZIJNSVERENIGING.id,
-        CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
-        CLASSIFICATION.ZIEKENHUISVERENIGING.id,
-        CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
-          .id,
-        CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-        CLASSIFICATION.PEVA_MUNICIPALITY.id,
-        CLASSIFICATION.PEVA_PROVINCE.id,
-      ];
-    }
-
-    if (this.currentSession.hasUnitRole) {
       allowedIds = allowedIds.filter(
-        (id) =>
-          ![
-            CLASSIFICATION.WORSHIP_SERVICE.id,
-            CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
-            CLASSIFICATION.REPRESENTATIVE_BODY.id,
-          ].includes(id)
-      );
-    } else {
-      allowedIds = allowedIds.filter((id) =>
-        [
-          CLASSIFICATION.WORSHIP_SERVICE.id,
-          CLASSIFICATION.REPRESENTATIVE_BODY.id,
-          CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
-        ].includes(id)
+        (id) => id === CLASSIFICATION.WORSHIP_SERVICE.id
       );
     }
 
-    // fixme rename file and make it more generic
     const codes = yield this.store.query('organization-classification-code', {
       'filter[:id:]': allowedIds.join(),
       sort: 'label',
@@ -133,7 +97,7 @@ export default class ClassificationMultipleSelectComponent extends Component {
     return codes;
   }
 
-  isIdInBlacklist(id) {
+  #isIdInBlacklist(id) {
     return CENTRAL_WORSHIP_SERVICE_BLACKLIST.find((element) => element == id);
   }
 }
