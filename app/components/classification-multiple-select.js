@@ -64,6 +64,7 @@ export default class ClassificationMultipleSelectComponent extends Component {
         )
       : getClassificationIdsForRole(this.currentSession.hasWorshipRole);
 
+    // Filter possible options based on selected worship service type, if any
     let selectedRecognizedWorshipTypeId =
       this.args.selectedRecognizedWorshipTypeId;
 

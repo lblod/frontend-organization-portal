@@ -1,7 +1,10 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
-import { selectByRole as getClassificationIds } from 'frontend-organization-portal/utils/classification-identifiers';
+import {
+  selectByRole as getClassificationIds,
+  getClassificationIdsForRole,
+} from 'frontend-organization-portal/utils/classification-identifiers';
 
 export default class OrganizationsIndexRoute extends Route {
   @service muSearch;
@@ -14,6 +17,7 @@ export default class OrganizationsIndexRoute extends Route {
     identifier: { refreshModel: true, replace: true },
     municipality: { refreshModel: true, replace: true },
     province: { refreshModel: true, replace: true },
+    organizationTypes: { refreshModel: true, replace: true },
     classificationIds: { refreshModel: true, replace: true },
     recognizedWorshipTypeId: { refreshModel: true, replace: true },
     organizationStatus: { refreshModel: true, replace: true },
@@ -46,18 +50,39 @@ export default class OrganizationsIndexRoute extends Route {
         .trim();
     }
 
-    if (params.classificationIds) {
-      const queryIds = params.classificationIds
+    // Determine classification codes based on user selection, if any
+    let queryClassifications = [];
+    if (params.classificationIds && params.organizationTypes) {
+      // TODO: simplify code
+      const idsFromOrganizationType = getClassificationIdsForRole(
+        this.currentSession.hasWorshipRole,
+        false,
+        ...params.organizationTypes.split(',')
+      );
+
+      const idsFromClassifications = params.classificationIds.split(',');
+
+      queryClassifications = idsFromOrganizationType
+        .filter((id) => idsFromClassifications.includes(id))
+        .map((id) => `(classification_id:${id})`)
+        .join(' OR ');
+    } else if (params.organizationTypes) {
+      queryClassifications = getClassificationIdsForRole(
+        this.currentSession.hasWorshipRole,
+        false,
+        ...params.organizationTypes.split(',')
+      ).join(' OR ');
+    } else if (params.classificationIds) {
+      queryClassifications = params.classificationIds
         .split(',')
         .map((id) => `(classification_id:${id})`)
         .join(' OR ');
-
-      filter[':query:classification_id'] = queryIds;
     } else {
-      filter['classification_id'] = getClassificationIds(
+      queryClassifications = getClassificationIds(
         this.currentSession.hasWorshipRole
       );
     }
+    filter[':query:classification_id'] = queryClassifications;
 
     if (params.municipality) {
       filter[':phrase:municipality'] = params.municipality;

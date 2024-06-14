@@ -42,6 +42,18 @@
               @id="filter-province"
             />
           </div>
+          {{#unless this.modelHasOnlyWorshipOrganizations}}
+            <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
+              <AuLabel for="organization-type">Type organisatie</AuLabel>
+              <OrganizationTypeMultipleSelect
+                @selected={{this.organizationTypes}}
+                @onChange={{this.setOrganizationTypes}}
+                @selectedClassificationIds={{this.classificationIds}}
+                @allowClear={{true}}
+                @id="organization-type"
+              />
+            </div>
+          {{/unless}}
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="classification">Type</AuLabel>
             <ClassificationMultipleSelect
@@ -49,6 +61,7 @@
               @onChange={{this.setClassificationIds}}
               @allowClear={{true}}
               @selectedRecognizedWorshipTypeId={{this.recognizedWorshipTypeId}}
+              @selectedOrganizationTypes={{this.organizationTypes}}
               @id="classification"
             />
           </div>

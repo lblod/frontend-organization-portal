@@ -14,6 +14,7 @@ export default class OrganizationsIndexController extends Controller {
     'identifier',
     'municipality',
     'province',
+    'organizationTypes',
     'classificationIds',
     'recognizedWorshipTypeId',
     'organizationStatus',
@@ -26,6 +27,7 @@ export default class OrganizationsIndexController extends Controller {
   @tracked identifier = '';
   @tracked municipality = '';
   @tracked province = '';
+  @tracked organizationTypes = '';
   @tracked classificationIds = '';
   @tracked recognizedWorshipTypeId = '';
   @tracked organizationStatus = '';
@@ -85,6 +87,12 @@ export default class OrganizationsIndexController extends Controller {
     } else {
       this.router.refresh();
     }
+  }
+
+  @action
+  setOrganizationTypes(selection) {
+    this.page = null;
+    this.organizationTypes = selection.join(',');
   }
 
   @action
@@ -153,6 +161,7 @@ export default class OrganizationsIndexController extends Controller {
     this.identifier = '';
     this.municipality = '';
     this.province = '';
+    this.organizationTypes = '';
     this.classificationIds = '';
     this.recognizedWorshipTypeId = '';
     this.organizationStatus = '';
