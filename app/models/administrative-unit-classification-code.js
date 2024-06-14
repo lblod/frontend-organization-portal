@@ -85,6 +85,16 @@ export const CLASSIFICATION = {
     id: '82fd21dc-e8bb-4d13-a010-f4a12358ef10',
     label: 'Woonzorgvereniging of woonzorgvennootschap',
   },
+  ASSOCIATION_OTHER: {
+    // FIXME this is not an administrative unit
+    id: '3e5c8e30-95a7-47b0-b0a4-210d5bd440a7',
+    label: 'Ander type vereniging',
+  },
+  CORPORATION_OTHER: {
+    // FIXME this is not an administrative unit
+    id: 'b9ed22af-3661-4c3e-b07f-b641d80ebf61',
+    label: 'Vennootschap',
+  },
   PEVA_MUNICIPALITY: {
     id: '2ad46df5-5c79-4d67-84d5-604c1377231e',
     label: 'PEVA gemeente',

@@ -31,7 +31,8 @@ export const RepresentativeBodyCodeList = [
 ];
 
 export const OCMWCodeList = [CLASSIFICATION.OCMW.id];
-export const PrivateOcmwCodeList = [
+
+export const PrivateOcmwAssociationCodeList = [
   CLASSIFICATION.ZIEKENHUISVERENIGING.id,
   CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
   CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
@@ -39,10 +40,13 @@ export const PrivateOcmwCodeList = [
 export const OcmwAssociationCodeList = [
   CLASSIFICATION.WELZIJNSVERENIGING.id,
   CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
-  ...PrivateOcmwCodeList,
+  ...PrivateOcmwAssociationCodeList,
 ];
 
 export const DistrictCodeList = [CLASSIFICATION.DISTRICT.id];
 
 export const PevaMunicipalityCodeList = [CLASSIFICATION.PEVA_MUNICIPALITY.id];
 export const PevaProvinceCodeList = [CLASSIFICATION.PEVA_PROVINCE.id];
+
+export const AssociationOtherCodeList = [CLASSIFICATION.ASSOCIATION_OTHER.id];
+export const CorporationOtherCodeList = [CLASSIFICATION.CORPORATION_OTHER.id];
