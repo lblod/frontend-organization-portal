@@ -53,7 +53,6 @@ export default class OrganizationsIndexRoute extends Route {
     // Determine classification codes based on user selection, if any
     let queryClassifications = [];
     if (params.classificationIds && params.organizationTypes) {
-      // TODO: simplify code
       const idsFromOrganizationType = getClassificationIdsForRole(
         this.currentSession.hasWorshipRole,
         false,

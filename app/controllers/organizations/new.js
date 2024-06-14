@@ -130,15 +130,14 @@ export default class OrganizationsNewController extends Controller {
    * Create new organization model instance of the model type that matches the
    * provided classification code.
    *
-   * @param {string} classificationCodeId - the unique identifier of
-   *     the selected classification code.
+   * @param {string} classificationCodeId - the unique identifier of the
+   *     selected classification code.
    * @returns {OrganizationModel} New model instance that matches to provided
    *     classification code.
    */
   #createNewModelInstance(classificationCodeId) {
-    // FIXME: This logic is somewhat duplicate with the classification getters
-    // in the models. Should find a way to avoid having to manually add the
-    // classification id when onboarding
+    // TODO: move logic to determine correct model to some util, that uses
+    // information from the CLASSIFICATION data structure
     if (classificationCodeId === CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id) {
       return this.store.createRecord('central-worship-service');
     } else if (classificationCodeId === CLASSIFICATION.WORSHIP_SERVICE.id) {
@@ -149,6 +148,8 @@ export default class OrganizationsNewController extends Controller {
         CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
           .id,
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
+        CLASSIFICATION.ASSOCIATION_OTHER.id,
+        CLASSIFICATION.CORPORATION_OTHER.id,
       ].includes(classificationCodeId)
     ) {
       return this.store.createRecord('registered-organization');
