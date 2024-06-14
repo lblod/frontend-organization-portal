@@ -7,7 +7,8 @@ import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import fetch from 'fetch';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
-import { CLASSIFICATION } from '../../models/administrative-unit-classification-code';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 
 export default class OrganizationsNewController extends Controller {
   @service router;
@@ -28,10 +29,12 @@ export default class OrganizationsNewController extends Controller {
   }
 
   @action
-  setRelation(unit) {
-    this.currentOrganizationModel.isSubOrganizationOf = Array.isArray(unit)
-      ? unit[0]
-      : unit;
+  setRelation(organization) {
+    this.currentOrganizationModel.isSubOrganizationOf = Array.isArray(
+      organization
+    )
+      ? organization[0]
+      : organization;
 
     if (
       this.currentOrganizationModel.isAgb ||
@@ -41,11 +44,11 @@ export default class OrganizationsNewController extends Controller {
       this.currentOrganizationModel.isPevaProvince
     ) {
       this.currentOrganizationModel.wasFoundedByOrganizations = Array.isArray(
-        unit
+        organization
       )
-        ? unit
-        : unit
-        ? [unit]
+        ? organization
+        : organization
+        ? [organization]
         : [];
     }
   }
@@ -61,8 +64,8 @@ export default class OrganizationsNewController extends Controller {
   }
 
   @action
-  setHasParticipants(units) {
-    this.currentOrganizationModel.hasParticipants = units;
+  setHasParticipants(organizations) {
+    this.currentOrganizationModel.hasParticipants = organizations;
   }
 
   @action
@@ -89,30 +92,27 @@ export default class OrganizationsNewController extends Controller {
    * to the classification of an organization, it is up to the user to set the
    * necessary relations (again) via the form.
    *
-   * @param {AdministrativeUnitClassificationCodeModel}
-   * organizationClassificationCode - the model object representing the
-   * classification code selected by the user
+   * @param {OrganizationClassificationCodeModel} classificationCode - the model
+   *     object representing the classification code selected by the user.
    */
   @action
-  organizationConverter(organizationClassificationCode) {
+  organizationConverter(classificationCode) {
     // Note: extra guard to avoid infinite loop when setting the recognised
     // worship type ("Soort eredienst" field) triggers a refresh for the
     // classification, which in turn triggers a refresh of recognized worship
     // type and so on...
     if (
-      organizationClassificationCode.id !==
-      this.currentOrganizationModel.classification.id
+      classificationCode.id !== this.currentOrganizationModel.classification.id
     ) {
       // Create new model instance based on the provided classification
       let newOrganizationModelInstance = this.#createNewModelInstance(
-        organizationClassificationCode.id
+        classificationCode.id
       );
 
       // Copy attributes and relationships to new model instance
       this.#copyPropertiesToModel(newOrganizationModelInstance);
       // Note: explicitly set here to ensure form is updated
-      newOrganizationModelInstance.classification =
-        organizationClassificationCode;
+      newOrganizationModelInstance.classification = classificationCode;
 
       // Delete the old model instance
       // Note: this sometimes causes an InternalError concerning too much
@@ -130,15 +130,14 @@ export default class OrganizationsNewController extends Controller {
    * Create new organization model instance of the model type that matches the
    * provided classification code.
    *
-   * @param {string} classificationCodeId - the unique identifier of
-   * the selected classification code
+   * @param {string} classificationCodeId - the unique identifier of the
+   *     selected classification code.
    * @returns {OrganizationModel} New model instance that matches to provided
-   * classification code
+   *     classification code.
    */
   #createNewModelInstance(classificationCodeId) {
-    // FIXME: This logic is somewhat duplicate with the classification getters
-    // in the models. Should find a way to avoid having to manually add the
-    // classification id when onboarding
+    // TODO: move logic to determine correct model to some util, that uses
+    // information from the CLASSIFICATION data structure
     if (classificationCodeId === CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id) {
       return this.store.createRecord('central-worship-service');
     } else if (classificationCodeId === CLASSIFICATION.WORSHIP_SERVICE.id) {
@@ -149,6 +148,8 @@ export default class OrganizationsNewController extends Controller {
         CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
           .id,
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
+        CLASSIFICATION.ASSOCIATION_OTHER.id,
+        CLASSIFICATION.CORPORATION_OTHER.id,
       ].includes(classificationCodeId)
     ) {
       return this.store.createRecord('registered-organization');
@@ -186,7 +187,7 @@ export default class OrganizationsNewController extends Controller {
    * by the user.
    *
    * @param {OrganizationModel} newOrganizationModel - the model instance to
-   * which the properties must be copied
+   *     which the properties must be copied
    */
   #copyPropertiesToModel(newOrganizationModel) {
     newOrganizationModel.name = this.currentOrganizationModel.name;
@@ -201,9 +202,17 @@ export default class OrganizationsNewController extends Controller {
         this.currentOrganizationModel.recognizedWorshipType;
     }
 
-    if (this.currentOrganizationModel.scope) {
+    // Scope is defined in the administrative unit model, only copy if both
+    // source and target model are of that type. Otherwise, it can cause errors
+    // when user changes the selected organizations types and classifications
+    // code in the form.
+    if (
+      this.currentOrganizationModel.isAdministrativeUnit &&
+      newOrganizationModel.isAdministrativeUnit &&
+      this.currentOrganizationModel.scope
+    ) {
       newOrganizationModel.scope = this.currentOrganizationModel.scope;
-      if (newOrganizationModel.scope.locatedWithin) {
+      if (this.currentOrganizationModel.scope.locatedWithin) {
         newOrganizationModel.scope.locatedWithin =
           this.currentOrganizationModel.scope.locatedWithin;
       }
@@ -243,7 +252,7 @@ export default class OrganizationsNewController extends Controller {
 
     if (
       this.features.isEnabled('edit-contact-data') ||
-      this.currentOrganizationModel.isPrivateOcmwAssociation
+      isContactEditableOrganization(this.currentOrganizationModel)
     ) {
       yield Promise.all([
         address.validate(),
@@ -265,7 +274,7 @@ export default class OrganizationsNewController extends Controller {
 
       if (
         this.features.isEnabled('edit-contact-data') ||
-        this.currentOrganizationModel.isPrivateOcmwAssociation
+        isContactEditableOrganization(this.currentOrganizationModel)
       ) {
         contact = setEmptyStringsToNull(contact);
         contact.telephone = transformPhoneNumbers(contact.telephone);
@@ -295,7 +304,9 @@ export default class OrganizationsNewController extends Controller {
           this.currentOrganizationModel.isAssistanceZone ||
           this.currentOrganizationModel.isOcmwAssociation ||
           this.currentOrganizationModel.isPevaMunicipality ||
-          this.currentOrganizationModel.isPevaProvince
+          this.currentOrganizationModel.isPevaProvince ||
+          this.currentOrganizationModel.isAssociationOther ||
+          this.currentOrganizationModel.isCorporationOther
         ) {
           const siteTypes = yield this.store.findAll('site-type');
           primarySite.siteType = siteTypes.find(

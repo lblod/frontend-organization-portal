@@ -159,7 +159,7 @@ export default class OrganizationModel extends AgentModel {
       purpose: validateStringOptional(),
       classification: validateBelongsToRequired(REQUIRED_MESSAGE),
       primarySite: validateBelongsToOptional(),
-      organizationStatus: validateBelongsToRequired('Selecteer een optie'),
+      organizationStatus: validateBelongsToRequired(REQUIRED_MESSAGE),
       identifiers: validateHasManyOptional(),
       sites: validateHasManyOptional(),
       changedBy: validateHasManyOptional(),

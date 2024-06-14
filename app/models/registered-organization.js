@@ -1,6 +1,8 @@
 import {
   OcmwAssociationCodeList,
-  PrivateOcmwCodeList,
+  PrivateOcmwAssociationCodeList,
+  CorporationOtherCodeList,
+  AssociationOtherCodeList,
 } from '../constants/Classification';
 import {
   validateHasManyOptional,
@@ -42,7 +44,15 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
   }
 
   get isPrivateOcmwAssociation() {
-    return this._hasClassificationId(PrivateOcmwCodeList);
+    return this._hasClassificationId(PrivateOcmwAssociationCodeList);
+  }
+
+  get isAssociationOther() {
+    return this._hasClassificationId(AssociationOtherCodeList);
+  }
+
+  get isCorporationOther() {
+    return this._hasClassificationId(CorporationOtherCodeList);
   }
 
   get participantClassifications() {
@@ -50,6 +60,8 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
       return OcmwAssociationCodeList.concat([
         CLASSIFICATION.MUNICIPALITY.id,
         CLASSIFICATION.OCMW.id,
+        CLASSIFICATION.ASSOCIATION_OTHER.id,
+        CLASSIFICATION.CORPORATION_OTHER.id,
       ]);
     }
     return [];
@@ -60,6 +72,8 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
       return OcmwAssociationCodeList.concat([
         CLASSIFICATION.MUNICIPALITY.id,
         CLASSIFICATION.OCMW.id,
+        CLASSIFICATION.ASSOCIATION_OTHER.id,
+        CLASSIFICATION.CORPORATION_OTHER.id,
       ]);
     }
     return [];

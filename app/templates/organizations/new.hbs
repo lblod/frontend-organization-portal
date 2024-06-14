@@ -95,13 +95,13 @@
               @required={{true}}
               @errorMessage={{this.currentOrganizationModel.error.classification.message}}
             >
-              <:label>Type bestuur</:label>
+              <:label>Type organisatie</:label>
               <:content as |hasError|>
                 <ClassificationSelect
                   @selected={{this.currentOrganizationModel.classification}}
                   @selectedRecognizedWorshipTypeId={{this.currentOrganizationModel.recognizedWorshipType.id}}
                   @onChange={{this.organizationConverter}}
-                  @restrictForNewBestuurseenheden={{true}}
+                  @restrictForNewOrganizations={{true}}
                   @error={{hasError}}
                   @id="classification-select"
                 />
@@ -278,12 +278,7 @@
       </:card>
     </EditCard>
 
-    {{#if
-      (or
-        (is-feature-enabled "edit-contact-data")
-        this.currentOrganizationModel.isPrivateOcmwAssociation
-      )
-    }}
+    {{#if (editable-contact-data this.currentOrganizationModel)}}
       <Site::ContactEditCard
         @address={{@model.address}}
         @primaryContact={{@model.contact}}
@@ -311,7 +306,13 @@
       </div>
     {{/if}}
 
-    {{#if this.currentOrganizationModel.classification}}
+    {{#if
+      (and
+        this.currentOrganizationModel.classification
+        (not this.currentOrganizationModel.isAssociationOther)
+        (not this.currentOrganizationModel.isCorporationOther)
+      )
+    }}
       <EditCard @containsRequiredFields={{true}}>
         <:title>Gerelateerde organisaties</:title>
         <:card as |Card|>
@@ -383,7 +384,6 @@
                     this.currentOrganizationModel.isIgs
                     this.currentOrganizationModel.isPoliceZone
                     this.currentOrganizationModel.isAssistanceZone
-                    this.currentOrganizationModel.isPevaMunicipality
                   )
                 }}
                   <Item
@@ -393,7 +393,6 @@
                       this.currentOrganizationModel.isIgs
                       this.currentOrganizationModel.isPoliceZone
                       this.currentOrganizationModel.isAssistanceZone
-                      this.currentOrganizationModel.isPevaMunicipality
                     )}}
                     @errorMessage={{this.currentOrganizationModel.error.isSubOrganizationOf.message}}
                   >
@@ -420,12 +419,7 @@
                     </Item>
                   {{/if}}
 
-                  {{#if
-                    (or
-                      this.currentOrganizationModel.isAgb
-                      this.currentOrganizationModel.isPevaMunicipality
-                    )
-                  }}
+                  {{#if this.currentOrganizationModel.isAgb}}
                     <Item
                       @labelFor="oprichting-gemeente"
                       @required={{true}}
@@ -482,9 +476,15 @@
                     </Item>
                   {{/if}}
                 {{else}}
-                  {{#if this.currentOrganizationModel.isOcmwAssociation}}
+                  {{#if
+                    (or
+                      this.currentOrganizationModel.isOcmwAssociation
+                      this.currentOrganizationModel.isPevaMunicipality
+                      this.currentOrganizationModel.isPevaProvince
+                    )
+                  }}
                     <Item
-                      @labelFor="oprichting-ocmw-association"
+                      @labelFor="oprichting-ocmw-association-peva"
                       @required={{true}}
                       @errorMessage={{this.currentOrganizationModel.error.wasFoundedByOrganizations.message}}
                     >
@@ -495,13 +495,13 @@
                           @onChange={{this.setRelation}}
                           @classificationCodes={{this.currentOrganizationModel.founderClassifications}}
                           @error={{hasError}}
-                          @id="oprichting-ocmw-association"
+                          @id="oprichting-ocmw-association-peva"
                         />
                       </:content>
                     </Item>
 
                     <Item
-                      @labelFor="has-participants-ocmw-association"
+                      @labelFor="has-participants-ocmw-association-peva"
                       @errorMessage={{this.currentOrganizationModel.error.hasParticipants.message}}
                     >
                       <:label>Heeft als participanten</:label>
@@ -511,18 +511,15 @@
                           @onChange={{this.setHasParticipants}}
                           @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
                           @error={{hasError}}
-                          @id="has-participants-ocmw-association"
+                          @id="has-participants-ocmw-association-peva"
                         />
                       </:content>
                     </Item>
                   {{else}}
-                    {{! Only APBs and PEVA province remain here }}
+                    {{! Only APBs remain here }}
                     <Item
                       @labelFor="related-provincie"
-                      @required={{(or
-                        this.currentOrganizationModel.isApb
-                        this.currentOrganizationModel.isPevaProvince
-                      )}}
+                      @required={{this.currentOrganizationModel.isApb}}
                       @errorMessage={{this.currentOrganizationModel.error.isSubOrganizationOf.message}}
                     >
                       <:label>Provincie</:label>
@@ -540,30 +537,26 @@
                       </:content>
                     </Item>
 
-                    {{#if this.currentOrganizationModel.isApb}}
-                      <Item
-                        @labelFor="related-gemeente"
-                        @required={{true}}
-                        @errorMessage={{this.currentOrganizationModel.error.isAssociatedWith.message}}
-                      >
-                        <:label>Gemeente</:label>
-                        <:content as |hasError|>
-                          <OrganizationSelect
-                            @selected={{this.currentOrganizationModel.isAssociatedWith}}
-                            @selectedProvince={{this.currentOrganizationModel.isSubOrganizationOf}}
-                            @allowClear={{true}}
-                            @onChange={{fn
-                              (mut
-                                this.currentOrganizationModel.isAssociatedWith
-                              )
-                            }}
-                            @classificationCodes={{this.currentOrganizationModel.municipalityClassificationCode}}
-                            @error={{hasError}}
-                            @id="related-gemeente"
-                          />
-                        </:content>
-                      </Item>
-                    {{/if}}
+                    <Item
+                      @labelFor="related-gemeente"
+                      @required={{true}}
+                      @errorMessage={{this.currentOrganizationModel.error.isAssociatedWith.message}}
+                    >
+                      <:label>Gemeente</:label>
+                      <:content as |hasError|>
+                        <OrganizationSelect
+                          @selected={{this.currentOrganizationModel.isAssociatedWith}}
+                          @selectedProvince={{this.currentOrganizationModel.isSubOrganizationOf}}
+                          @allowClear={{true}}
+                          @onChange={{fn
+                            (mut this.currentOrganizationModel.isAssociatedWith)
+                          }}
+                          @classificationCodes={{this.currentOrganizationModel.municipalityClassificationCode}}
+                          @error={{hasError}}
+                          @id="related-gemeente"
+                        />
+                      </:content>
+                    </Item>
 
                     <Item
                       @labelFor="opgericht-provincie"
@@ -581,24 +574,6 @@
                         />
                       </:content>
                     </Item>
-
-                    {{#if this.currentOrganizationModel.isPevaProvince}}
-                      <Item
-                        @labelFor="has-participants-peva-province"
-                        @errorMessage={{this.currentOrganizationModel.error.hasParticipants.message}}
-                      >
-                        <:label>Heeft als participanten</:label>
-                        <:content as |hasError|>
-                          <OrganizationMultipleSelect
-                            @selected={{this.currentOrganizationModel.hasParticipants}}
-                            @onChange={{this.setHasParticipants}}
-                            @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
-                            @error={{hasError}}
-                            @id="has-participants-peva-province"
-                          />
-                        </:content>
-                      </Item>
-                    {{/if}}
                   {{/if}}
                 {{/if}}
               </:left>

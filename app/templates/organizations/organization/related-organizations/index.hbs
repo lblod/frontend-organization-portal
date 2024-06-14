@@ -12,6 +12,8 @@
               @model.organization.isDistrict
               @model.organization.isProvince
               @model.organization.isRepresentativeBody
+              @model.organization.isAssociationOther
+              @model.organization.isCorporationOther
             )
           )
         }}
@@ -132,6 +134,24 @@
         @page={{this.page}}
         @size={{this.size}}
         @organizationStatus={{this.organizationStatus}}
+      />
+    {{/if}}
+
+    {{#if @model.organization.isAssociationOther}}
+      <RelatedOrganizations::ViewAssociationOther
+        @model={{@model}}
+        @sort={{this.sort}}
+        @page={{this.page}}
+        @size={{this.size}}
+      />
+    {{/if}}
+
+    {{#if @model.organization.isCorporationOther}}
+      <RelatedOrganizations::ViewCorporationOther
+        @model={{@model}}
+        @sort={{this.sort}}
+        @page={{this.page}}
+        @size={{this.size}}
       />
     {{/if}}
   </div>
