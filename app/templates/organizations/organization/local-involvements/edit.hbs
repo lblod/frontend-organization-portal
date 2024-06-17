@@ -69,7 +69,7 @@
                 @allowClear={{involvement.isNew}}
                 @ariaLabelledBy="organization"
                 @error={{errorMessage}}
-                @classificationCodes={{this.classificationCodes}}
+                @classificationCodes={{involvement.worshipAdministrativeUnit.localInvolvementClassifications}}
                 as |organization|
               >
                 {{organization.abbName}}
@@ -89,17 +89,10 @@
             />
           </td>
           <td>
-            {{! TODO: display error messages concerning supervisory on all
-              involvement type fields }}
             {{#let involvement.error.involvementType.message as |errorMessage|}}
               <div class={{if errorMessage "ember-power-select--error"}}>
                 {{#if @model.organization.isWorshipService}}
-                  {{#if
-                    (eq
-                      this.municipalityCode
-                      involvement.administrativeUnit.classification.id
-                    )
-                  }}
+                  {{#if involvement.administrativeUnit.isMunicipality}}
                     <PowerSelect
                       @noMatchesMessage="Geen resultaten"
                       @options={{this.model.involvementTypes}}

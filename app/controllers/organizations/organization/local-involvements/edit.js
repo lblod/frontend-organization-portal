@@ -2,26 +2,16 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 
 export default class OrganizationsOrganizationLocalInvolvementsEditController extends Controller {
   @service router;
   @service store;
 
-  classificationCodes = [
-    CLASSIFICATION.MUNICIPALITY.id,
-    CLASSIFICATION.PROVINCE.id,
-  ];
-
   get hasValidationErrors() {
     return this.model.involvements
       .slice()
       .some((involvement) => involvement.error);
-  }
-
-  get municipalityCode() {
-    return CLASSIFICATION.MUNICIPALITY.id;
   }
 
   setup() {

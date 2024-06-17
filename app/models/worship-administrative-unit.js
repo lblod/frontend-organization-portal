@@ -8,6 +8,7 @@ import {
   CentralWorshipServiceCodeList,
   WorshipServiceCodeList,
 } from '../constants/Classification';
+import { CLASSIFICATION } from './administrative-unit-classification-code';
 
 export default class WorshipAdministrativeUnitModel extends AdministrativeUnitModel {
   @belongsTo('recognized-worship-type', {
@@ -45,5 +46,9 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
 
   get isWorshipAdministrativeUnit() {
     return this.isWorshipService || this.isCentralWorshipService;
+  }
+
+  get localInvolvementClassifications() {
+    return [CLASSIFICATION.MUNICIPALITY.id, CLASSIFICATION.PROVINCE.id];
   }
 }
