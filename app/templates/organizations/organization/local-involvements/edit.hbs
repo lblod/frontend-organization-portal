@@ -62,7 +62,10 @@
         </c.header>
         <c.body as |involvement|>
           <td>
-            {{#let involvement.error.organization.message as |errorMessage|}}
+            {{#let
+              involvement.error.administrativeUnit.message
+              as |errorMessage|
+            }}
               <OrganizationSelect
                 @selected={{involvement.administrativeUnit}}
                 @onChange={{fn (mut involvement.administrativeUnit)}}
