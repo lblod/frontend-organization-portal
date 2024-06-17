@@ -73,7 +73,31 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
           INVOLVEMENT_TYPE.SUPERVISORY,
           INVOLVEMENT_TYPE.MID_FINANCIAL
         ),
-        then: Joi.number().min(1).max(100).required(),
+        then: Joi.number()
+          .min(1)
+          .max(100)
+          .required()
+          .external(async (value, helpers) => {
+            const otherLocalInvolvements =
+              await this.getOtherLocalInvolvements();
+            const sumOtherPercentages = otherLocalInvolvements.reduce(
+              (percentageAcc, involvement) =>
+                percentageAcc + Number(involvement.percentage),
+              0
+            );
+
+            if (
+              Number.isNaN(sumOtherPercentages) ||
+              sumOtherPercentages + Number(value) !== 100
+            ) {
+              return helpers.message(
+                'Het totaal van alle percentages moet gelijk zijn aan 100'
+              );
+            }
+
+            return value;
+          }),
+        // TODO: enforce it is zero in this case?
         otherwise: Joi.number().empty('').allow(null),
       }).messages({
         'any.required': 'Vul het percentage in',
@@ -81,7 +105,6 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
         'number.min': 'Het percentage moet groter zijn dan 0',
         'number.max': 'Het percentage mag niet groter zijn dan 100',
       }),
-
       worshipAdministrativeUnit: validateBelongsToOptional(),
     });
   }

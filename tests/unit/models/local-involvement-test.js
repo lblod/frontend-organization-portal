@@ -44,7 +44,14 @@ module('Unit | Model | local involvement', function (hooks) {
       const model = this.store().createRecord('local-involvement', {
         administrativeUnit,
         involvementType,
+        percentage: '100',
       });
+
+      const getOtherLocalInvolvementsStub = sinon.stub(
+        model,
+        'getOtherLocalInvolvements'
+      );
+      getOtherLocalInvolvementsStub.resolves([]);
 
       const isValid = await model.validate();
 
@@ -76,6 +83,12 @@ module('Unit | Model | local involvement', function (hooks) {
           involvementType,
           percentage,
         });
+
+        const getOtherLocalInvolvementsStub = sinon.stub(
+          model,
+          'getOtherLocalInvolvements'
+        );
+        getOtherLocalInvolvementsStub.resolves([]);
 
         const isValid = await model.validate();
 
@@ -361,14 +374,19 @@ module('Unit | Model | local involvement', function (hooks) {
       const model = this.store().createRecord('local-involvement', {
         administrativeUnit,
         involvementType,
-        percentage: '100',
+        percentage: '50',
+      });
+      const otherModel = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        involvementType,
+        percentage: '50',
       });
 
-      const hasSupervisoryLocalInvolvementStub = sinon.stub(
+      const getOtherLocalInvolvementsStub = sinon.stub(
         model,
-        'hasSupervisoryLocalInvolvement'
+        'getOtherLocalInvolvements'
       );
-      hasSupervisoryLocalInvolvementStub.resolves(true);
+      getOtherLocalInvolvementsStub.resolves([otherModel]);
 
       const isValid = await model.validate();
 
@@ -396,11 +414,11 @@ module('Unit | Model | local involvement', function (hooks) {
         percentage: '100',
       });
 
-      const hasSupervisoryLocalInvolvementStub = sinon.stub(
+      const getOtherLocalInvolvementsStub = sinon.stub(
         model,
-        'hasSupervisoryLocalInvolvement'
+        'getOtherLocalInvolvements'
       );
-      hasSupervisoryLocalInvolvementStub.resolves(false);
+      getOtherLocalInvolvementsStub.resolves([]);
 
       const isValid = await model.validate();
 
@@ -411,6 +429,141 @@ module('Unit | Model | local involvement', function (hooks) {
           message: 'U dient een toezichthoudende overheid aan te duiden',
         },
       });
+    });
+
+    test('it returns an error when the total financing percentage is above 100', async function (assert) {
+      const administrativeUnit = this.store().createRecord(
+        'administrative-unit'
+      );
+      const supervisoryInvolvementType = this.store().createRecord(
+        'involvement-type',
+        {
+          id: INVOLVEMENT_TYPE.SUPERVISORY,
+        }
+      );
+
+      const midFinancingInvolvementType = this.store().createRecord(
+        'involvement-type',
+        {
+          id: INVOLVEMENT_TYPE.MID_FINANCING,
+        }
+      );
+
+      const model = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        involvementType: supervisoryInvolvementType,
+        percentage: '100',
+      });
+
+      const otherModel = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        involvementType: midFinancingInvolvementType,
+        percentage: '100',
+      });
+
+      const getOtherLocalInvolvementsStub = sinon.stub(
+        model,
+        'getOtherLocalInvolvements'
+      );
+      getOtherLocalInvolvementsStub.resolves([otherModel]);
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.propContains(model.error, {
+        percentage: {
+          message: 'Het totaal van alle percentages moet gelijk zijn aan 100',
+        },
+      });
+    });
+
+    test('it returns an error when the total financing percentage is below 100', async function (assert) {
+      const administrativeUnit = this.store().createRecord(
+        'administrative-unit'
+      );
+      const supervisoryInvolvementType = this.store().createRecord(
+        'involvement-type',
+        {
+          id: INVOLVEMENT_TYPE.SUPERVISORY,
+        }
+      );
+
+      const midFinancingInvolvementType = this.store().createRecord(
+        'involvement-type',
+        {
+          id: INVOLVEMENT_TYPE.MID_FINANCING,
+        }
+      );
+
+      const model = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        involvementType: supervisoryInvolvementType,
+        percentage: '5',
+      });
+
+      const otherModel = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        involvementType: midFinancingInvolvementType,
+        percentage: '5',
+      });
+
+      const getOtherLocalInvolvementsStub = sinon.stub(
+        model,
+        'getOtherLocalInvolvements'
+      );
+      getOtherLocalInvolvementsStub.resolves([otherModel]);
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.propContains(model.error, {
+        percentage: {
+          message: 'Het totaal van alle percentages moet gelijk zijn aan 100',
+        },
+      });
+    });
+
+    test('it properly handles numbers with a decimal point', async function (assert) {
+      const administrativeUnit = this.store().createRecord(
+        'administrative-unit'
+      );
+      const supervisoryInvolvementType = this.store().createRecord(
+        'involvement-type',
+        {
+          id: INVOLVEMENT_TYPE.SUPERVISORY,
+        }
+      );
+
+      const midFinancingInvolvementType = this.store().createRecord(
+        'involvement-type',
+        {
+          id: INVOLVEMENT_TYPE.MID_FINANCING,
+        }
+      );
+
+      const model = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        involvementType: supervisoryInvolvementType,
+        percentage: '45.5',
+      });
+
+      const otherModel = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        involvementType: midFinancingInvolvementType,
+        percentage: '54.5',
+      });
+
+      const getOtherLocalInvolvementsStub = sinon.stub(
+        model,
+        'getOtherLocalInvolvements'
+      );
+      getOtherLocalInvolvementsStub.resolves([otherModel]);
+
+      const isValid = await model.validate();
+
+      assert.true(isValid);
     });
   });
 });

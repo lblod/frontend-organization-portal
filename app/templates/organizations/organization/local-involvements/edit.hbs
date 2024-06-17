@@ -89,6 +89,8 @@
             />
           </td>
           <td>
+            {{! TODO: display error messages concerning supervisory on all
+              involvement type fields }}
             {{#let involvement.error.involvementType.message as |errorMessage|}}
               <div class={{if errorMessage "ember-power-select--error"}}>
                 {{#if @model.organization.isWorshipService}}
@@ -113,7 +115,6 @@
                       {{involvementType.label}}
                     </PowerSelect>
                   {{else}}
-
                     <PowerSelect
                       @noMatchesMessage="Geen resultaten"
                       @options={{this.model.involvementTypesProvince}}
@@ -145,19 +146,7 @@
           </td>
           {{#if @model.organization.isWorshipService}}
             <td>
-              {{#let
-                (or
-                  involvement.error.percentage.message
-                  (if
-                    (and
-                      involvement.isSupervisory
-                      this.showTotalFinancingPercentageError
-                    )
-                    "Het totaal van alle percentages moet gelijk zijn aan 100"
-                  )
-                )
-                as |errorMessage|
-              }}
+              {{#let involvement.error.percentage.message as |errorMessage|}}
                 <AuInput
                   @disabled={{this.isDisabledPercentage involvement}}
                   @error={{errorMessage}}
