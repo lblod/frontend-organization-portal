@@ -95,37 +95,24 @@
             {{#let involvement.error.involvementType.message as |errorMessage|}}
               <div class={{if errorMessage "ember-power-select--error"}}>
                 {{#if @model.organization.isWorshipService}}
-                  {{#if involvement.administrativeUnit.isMunicipality}}
-                    <PowerSelect
-                      @noMatchesMessage="Geen resultaten"
-                      @options={{this.model.involvementTypes}}
-                      @selected={{involvement.involvementType}}
-                      @onChange={{fn
-                        this.handleInvolvementTypeSelection
-                        involvement
-                      }}
-                      @ariaLabelledBy="involvement-type"
-                      @allowClear={{involvement.isNew}}
-                      as |involvementType|
-                    >
-                      {{involvementType.label}}
-                    </PowerSelect>
-                  {{else}}
-                    <PowerSelect
-                      @noMatchesMessage="Geen resultaten"
-                      @options={{this.model.involvementTypesProvince}}
-                      @selected={{involvement.involvementType}}
-                      @onChange={{fn
-                        this.handleInvolvementTypeSelection
-                        involvement
-                      }}
-                      @ariaLabelledBy="involvement-type"
-                      @allowClear={{involvement.isNew}}
-                      as |involvementType|
-                    >
-                      {{involvementType.label}}
-                    </PowerSelect>
-                  {{/if}}
+                  <PowerSelect
+                    @noMatchesMessage="Geen resultaten"
+                    @options={{if
+                      involvement.administrativeUnit.isProvince
+                      this.model.involvementTypesProvince
+                      this.model.involvementTypes
+                    }}
+                    @selected={{involvement.involvementType}}
+                    @onChange={{fn
+                      this.handleInvolvementTypeSelection
+                      involvement
+                    }}
+                    @ariaLabelledBy="involvement-type"
+                    @allowClear={{involvement.isNew}}
+                    as |involvementType|
+                  >
+                    {{involvementType.label}}
+                  </PowerSelect>
                 {{else}}
                   <AuInput
                     @width="block"
