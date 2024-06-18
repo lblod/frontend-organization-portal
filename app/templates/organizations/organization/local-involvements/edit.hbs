@@ -46,7 +46,7 @@
           >Naam</th>
           <th id="classification">Type instelling</th>
           <th id="involvement-type">Type betrokkenheid</th>
-          {{#if this.isWorshipService}}
+          {{#if @model.organization.isWorshipService}}
             <th id="financial-percentage">
               Financieel percentage
               <AuHelpText @skin="tertiary" class="au-u-margin-top-none">
@@ -62,14 +62,17 @@
         </c.header>
         <c.body as |involvement|>
           <td>
-            {{#let involvement.error.organization.message as |errorMessage|}}
+            {{#let
+              involvement.error.administrativeUnit.message
+              as |errorMessage|
+            }}
               <OrganizationSelect
                 @selected={{involvement.administrativeUnit}}
                 @onChange={{fn (mut involvement.administrativeUnit)}}
                 @allowClear={{involvement.isNew}}
                 @ariaLabelledBy="organization"
                 @error={{errorMessage}}
-                @classificationCodes={{this.classificationCodes}}
+                @classificationCodes={{involvement.worshipAdministrativeUnit.localInvolvementClassifications}}
                 as |organization|
               >
                 {{organization.abbName}}
@@ -91,44 +94,25 @@
           <td>
             {{#let involvement.error.involvementType.message as |errorMessage|}}
               <div class={{if errorMessage "ember-power-select--error"}}>
-                {{#if this.isWorshipService}}
-                  {{#if
-                    (eq
-                      this.municipalityCode
-                      involvement.administrativeUnit.classification.id
-                    )
-                  }}
-                    <PowerSelect
-                      @noMatchesMessage="Geen resultaten"
-                      @options={{this.model.involvementTypes}}
-                      @selected={{involvement.involvementType}}
-                      @onChange={{fn
-                        this.handleInvolvementTypeSelection
-                        involvement
-                      }}
-                      @ariaLabelledBy="involvement-type"
-                      @allowClear={{involvement.isNew}}
-                      as |involvementType|
-                    >
-                      {{involvementType.label}}
-                    </PowerSelect>
-                  {{else}}
-
-                    <PowerSelect
-                      @noMatchesMessage="Geen resultaten"
-                      @options={{this.model.involvementTypesProvince}}
-                      @selected={{involvement.involvementType}}
-                      @onChange={{fn
-                        this.handleInvolvementTypeSelection
-                        involvement
-                      }}
-                      @ariaLabelledBy="involvement-type"
-                      @allowClear={{involvement.isNew}}
-                      as |involvementType|
-                    >
-                      {{involvementType.label}}
-                    </PowerSelect>
-                  {{/if}}
+                {{#if @model.organization.isWorshipService}}
+                  <PowerSelect
+                    @noMatchesMessage="Geen resultaten"
+                    @options={{if
+                      involvement.administrativeUnit.isProvince
+                      this.model.involvementTypesProvince
+                      this.model.involvementTypes
+                    }}
+                    @selected={{involvement.involvementType}}
+                    @onChange={{fn
+                      this.handleInvolvementTypeSelection
+                      involvement
+                    }}
+                    @ariaLabelledBy="involvement-type"
+                    @allowClear={{involvement.isNew}}
+                    as |involvementType|
+                  >
+                    {{involvementType.label}}
+                  </PowerSelect>
                 {{else}}
                   <AuInput
                     @width="block"
@@ -141,32 +125,11 @@
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
               {{/if}}
-              {{#if
-                (and
-                  involvement.isSupervisory
-                  this.showMoreThanOneFinancialTypeError
-                )
-              }}
-                <AuHelpText @error={{true}}>Er kan slechts één gemeente- of
-                  provincieoverheid optreden als hoofdtoezichthouder</AuHelpText>
-              {{/if}}
             {{/let}}
           </td>
-          {{#if this.isWorshipService}}
+          {{#if @model.organization.isWorshipService}}
             <td>
-              {{#let
-                (or
-                  involvement.error.percentage.message
-                  (if
-                    (and
-                      involvement.isSupervisory
-                      this.showTotalFinancingPercentageError
-                    )
-                    "Het totaal van alle percentages moet gelijk zijn aan 100"
-                  )
-                )
-                as |errorMessage|
-              }}
+              {{#let involvement.error.percentage.message as |errorMessage|}}
                 <AuInput
                   @disabled={{this.isDisabledPercentage involvement}}
                   @error={{errorMessage}}
@@ -208,7 +171,7 @@
     </AuDataTable>
   </form>
 
-  {{#if this.isWorshipService}}
+  {{#if @model.organization.isWorshipService}}
     <div class="au-o-box au-o-box--small">
       <AuButton
         @skin="secondary"

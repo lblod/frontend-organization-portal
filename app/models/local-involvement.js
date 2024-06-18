@@ -50,11 +50,54 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
           );
         }
 
+        const existsOtherSupervisory =
+          await this.existsOtherSupervisoryLocalInvolvement();
+
+        // Is there already a supervisory local involvement?
+        if (this.isSupervisory && existsOtherSupervisory) {
+          return helpers.message(
+            'Er kan slechts één gemeente- of provincieoverheid optreden als hoofdtoezichthouder'
+          );
+        }
+        // Is there at least one supervisory local involvement?
+        if (!(this.isSupervisory || existsOtherSupervisory)) {
+          return helpers.message(
+            'U dient een toezichthoudende overheid aan te duiden'
+          );
+        }
+
         return value;
       }),
       percentage: Joi.when('involvementType.id', {
-        is: Joi.exist().valid(INVOLVEMENT_TYPE.SUPERVISORY),
-        then: Joi.number().min(1).max(100).required(),
+        is: Joi.exist().valid(
+          INVOLVEMENT_TYPE.SUPERVISORY,
+          INVOLVEMENT_TYPE.MID_FINANCIAL
+        ),
+        then: Joi.number()
+          .min(1)
+          .max(100)
+          .required()
+          .external(async (value, helpers) => {
+            const otherLocalInvolvements =
+              await this.getOtherLocalInvolvements();
+            const sumOtherPercentages = otherLocalInvolvements.reduce(
+              (percentageAcc, involvement) =>
+                percentageAcc + Number(involvement.percentage),
+              0
+            );
+
+            if (
+              Number.isNaN(sumOtherPercentages) ||
+              sumOtherPercentages + Number(value) !== 100
+            ) {
+              return helpers.message(
+                'Het totaal van alle percentages moet gelijk zijn aan 100'
+              );
+            }
+
+            return value;
+          }),
+        // TODO: enforce it is zero in this case?
         otherwise: Joi.number().empty('').allow(null),
       }).messages({
         'any.required': 'Vul het percentage in',
@@ -62,7 +105,6 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
         'number.min': 'Het percentage moet groter zijn dan 0',
         'number.max': 'Het percentage mag niet groter zijn dan 100',
       }),
-
       worshipAdministrativeUnit: validateBelongsToOptional(),
     });
   }
@@ -81,5 +123,35 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
 
   #hasInvolvementTypeId(classificationId) {
     return this.involvementType?.get('id') === classificationId;
+  }
+
+  /**
+   * Check whether there is already a supervisory local involvement for the
+   * associated worship administrative unit.
+   * @returns {Promise<Boolean>} True if there is already a supervisory local
+   *     involvement, false otherwise.
+   */
+  async existsOtherSupervisoryLocalInvolvement() {
+    return (await this.getOtherLocalInvolvements()).some(
+      (elem) => elem.isSupervisory
+    );
+  }
+
+  /**
+   * Retrieve all local involvements relating to the same organization.
+   * @returns {Promise<A[LocalInvolvementModel>} All local involvements relating
+   *     to the same organization as the this local involvement.
+   */
+  async getOtherLocalInvolvements() {
+    const worshipAdministrativeUnit = await this.worshipAdministrativeUnit;
+    let relatedLocalInvolvements = await this.store.query('local-involvement', {
+      filter: {
+        'worship-administrative-unit': {
+          id: worshipAdministrativeUnit.get('id'),
+        },
+      },
+    });
+
+    return relatedLocalInvolvements.filter((elem) => elem.id !== this.id);
   }
 }
