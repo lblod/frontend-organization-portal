@@ -36,6 +36,19 @@
       </:action>
     </PageHeader>
 
+    {{#if @model.organization.isWorshipAdministrativeUnit}}
+      <div>
+        Om de gerelateerde gemeenten te zien, ga naar
+        <LinkTo
+          class="au-c-link"
+          @model={{@model.organization.id}}
+          @route="organizations.organization.local-involvements.index"
+        >
+          Betrokken lokale besturen
+        </LinkTo>
+      </div>
+    {{/if}}
+
     {{#if @model.organization.isWorshipService}}
       <RelatedOrganizations::ViewWorshipService @model={{@model}} />
     {{/if}}
