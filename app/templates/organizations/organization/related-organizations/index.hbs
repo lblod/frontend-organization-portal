@@ -49,11 +49,19 @@
       </div>
     {{/if}}
 
-    {{! TODO: reorganize to get rid of code duplication }}
-    {{#if @model.organization.isWorshipService}}
-      <RelatedOrganizations::ViewWorshipService @model={{@model}} />
-    {{/if}}
+    {{#unless
+      (or
+        @model.organization.isProvince
+        @model.organization.isOcmwAssociation
+        @model.organization.isPevaMunicipality
+        @model.organization.isPevaProvince
+        @model.organization.isRepresentativeBody
+      )
+    }}
+      <RelatedOrganizationsDataCard @model={{@model}} />
+    {{/unless}}
 
+    {{! TODO: reorganize to get rid of code duplication }}
     {{#if @model.organization.isCentralWorshipService}}
       <RelatedOrganizations::ViewCentralWorshipService @model={{@model}} />
       <RelatedOrganizationsViewTable
@@ -68,12 +76,7 @@
       />
     {{/if}}
 
-    {{#if @model.organization.isDistrict}}
-      <RelatedOrganizations::ViewDistrict @model={{@model}} />
-    {{/if}}
-
     {{#if @model.organization.isMunicipality}}
-      <RelatedOrganizations::ViewMunicipality @model={{@model}} />
       <RelatedOrganizationsViewTable
         @elements={{@model.organization.foundedOrganizations}}
         id="municipality-founded-organizations"
@@ -95,7 +98,6 @@
     {{/if}}
 
     {{#if @model.organization.isOCMW}}
-      <RelatedOrganizations::ViewOcmw @model={{@model}} />
       <RelatedOrganizationsViewTable
         @elements={{@model.participatesIn}}
         @label="Participeert in"
@@ -119,7 +121,6 @@
     {{/if}}
 
     {{#if @model.organization.isAgb}}
-      <RelatedOrganizations::ViewAgb @model={{@model}} />
       <RelatedOrganizationsViewTable
         @elements={{@model.participatesIn}}
         @label="Participeert in"
@@ -130,12 +131,7 @@
       />
     {{/if}}
 
-    {{#if @model.organization.isApb}}
-      <RelatedOrganizations::ViewApb @model={{@model}} />
-    {{/if}}
-
     {{#if @model.organization.isIgs}}
-      <RelatedOrganizations::ViewIgs @model={{@model}} />
       <RelatedOrganizationsViewTable
         @elements={{@model.participatesIn}}
         @label="Participeert in"
@@ -156,7 +152,6 @@
     {{/if}}
 
     {{#if @model.organization.isPoliceZone}}
-      <RelatedOrganizations::ViewPoliceZone @model={{@model}} />
       <RelatedOrganizationsViewTable
         @elements={{@model.participatesIn}}
         @label="Participeert in"
@@ -168,7 +163,6 @@
     {{/if}}
 
     {{#if @model.organization.isAssistanceZone}}
-      <RelatedOrganizations::ViewAssistanceZone @model={{@model}} />
       <RelatedOrganizationsViewTable
         @elements={{@model.participatesIn}}
         @label="Participeert in"
