@@ -61,134 +61,41 @@
       <RelatedOrganizationsDataCard @model={{@model}} />
     {{/unless}}
 
-    {{! TODO: reorganize to get rid of code duplication }}
-    {{#if @model.organization.isCentralWorshipService}}
-      <RelatedOrganizations::ViewCentralWorshipService @model={{@model}} />
+    {{#if
+      (or
+        @model.organization.isCentralWorshipService
+        @model.organization.isRepresentativeBody
+      )
+    }}
       <RelatedOrganizationsViewTable
         @elements={{@model.subOrganizations}}
+        @displayWhenEmpty={{@model.organization.isRepresentativeBody}}
         @label="Heeft relatie met"
         @sort={{this.sort}}
         @page={{this.page}}
         @size={{this.size}}
         @allowHidingInactiveOrganizations={{true}}
         @organizationStatus={{this.organizationStatus}}
-        id="central-worship-service-sub-organizations"
+        id="worship-sub-organizations"
       />
-    {{/if}}
-
-    {{#if @model.organization.isMunicipality}}
-      <RelatedOrganizationsViewTable
-        @elements={{@model.organization.foundedOrganizations}}
-        id="municipality-founded-organizations"
-        @allowHidingInactiveOrganizations={{true}}
-        @organizationStatus={{this.organizationStatus}}
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-
-      <RelatedOrganizationsViewTable
-        @elements={{@model.participatesIn}}
-        @label="Participeert in"
-        id="municipality-participates-in"
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-    {{/if}}
-
-    {{#if @model.organization.isOCMW}}
-      <RelatedOrganizationsViewTable
-        @elements={{@model.participatesIn}}
-        @label="Participeert in"
-        id="ocmw-participates-in"
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-    {{/if}}
-
-    {{#if @model.organization.isProvince}}
-      <RelatedOrganizationsViewTable
-        @elements={{@model.organization.foundedOrganizations}}
-        id="province-founded-organizations"
-        @allowHidingInactiveOrganizations={{true}}
-        @organizationStatus={{this.organizationStatus}}
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-    {{/if}}
-
-    {{#if @model.organization.isAgb}}
-      <RelatedOrganizationsViewTable
-        @elements={{@model.participatesIn}}
-        @label="Participeert in"
-        id="agb-participates-in"
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-    {{/if}}
-
-    {{#if @model.organization.isIgs}}
-      <RelatedOrganizationsViewTable
-        @elements={{@model.participatesIn}}
-        @label="Participeert in"
-        id="igs-participates-in"
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-
-      <RelatedOrganizationsViewTable
-        @elements={{@model.hasParticipants}}
-        @label="Heeft als participanten"
-        id="igs-has-participants"
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-    {{/if}}
-
-    {{#if @model.organization.isPoliceZone}}
-      <RelatedOrganizationsViewTable
-        @elements={{@model.participatesIn}}
-        @label="Participeert in"
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-        id="police-zone-participates-in"
-      />
-    {{/if}}
-
-    {{#if @model.organization.isAssistanceZone}}
-      <RelatedOrganizationsViewTable
-        @elements={{@model.participatesIn}}
-        @label="Participeert in"
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-        id="assistance-zone-participates-in"
-      />
-    {{/if}}
-
-    {{#if
-      (or
-        @model.organization.isOcmwAssociation
-        @model.organization.isPevaMunicipality
-        @model.organization.isPevaProvince
-      )
-    }}
-      <RelatedOrganizationsViewTable
-        @elements={{@model.wasFoundedByOrganizations}}
-        @displayWhenEmpty={{true}}
-        @label="Werd opericht door"
-        id="was-founded-by"
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
+    {{else}}
+      {{#if
+        (or
+          @model.organization.isOcmwAssociation
+          @model.organization.isPevaMunicipality
+          @model.organization.isPevaProvince
+        )
+      }}
+        <RelatedOrganizationsViewTable
+          @elements={{@model.wasFoundedByOrganizations}}
+          @displayWhenEmpty={{true}}
+          @label="Werd opericht door"
+          id="was-founded-by"
+          @sort={{this.sort}}
+          @page={{this.page}}
+          @size={{this.size}}
+        />
+      {{/if}}
 
       <RelatedOrganizationsViewTable
         @elements={{@model.organization.foundedOrganizations}}
@@ -213,35 +120,6 @@
         @elements={{@model.hasParticipants}}
         @label="Heeft als participanten"
         id="has-participants"
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-    {{/if}}
-
-    {{#if @model.organization.isRepresentativeBody}}
-      <RelatedOrganizationsViewTable
-        @elements={{@model.subOrganizations}}
-        @displayWhenEmpty={{true}}
-        @allowHidingInactiveOrganizations={{true}}
-        @organizationStatus={{this.organizationStatus}}
-        @label=""
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-    {{/if}}
-
-    {{#if
-      (or
-        @model.organization.isAssociationOther
-        @model.organization.isCorporationOther
-      )
-    }}
-      <RelatedOrganizationsViewTable
-        @elements={{@model.participatesIn}}
-        @label="Participeert in"
-        id="other-participates-in"
         @sort={{this.sort}}
         @page={{this.page}}
         @size={{this.size}}
