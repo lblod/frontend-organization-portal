@@ -1,28 +1,3 @@
-<EditCard @containsRequiredFields={{true}}>
-  <:title>Behoort tot</:title>
-  <:card as |Card|>
-    <Card.Columns>
-      <:left as |Item|>
-        <Item
-          @labelFor="related-representative-body"
-          @required={{true}}
-          @errorMessage={{@model.organization.error.isAssociatedWith.message}}
-        >
-          <:label>Representatief orgaan</:label>
-          <:content as |hasError|>
-            <RepresentativeBodySelect
-              @selected={{@model.organization.isAssociatedWith}}
-              @onChange={{fn (mut @model.organization.isAssociatedWith)}}
-              @error={{hasError}}
-              @id="related-representative-body"
-            />
-          </:content>
-        </Item>
-      </:left>
-    </Card.Columns>
-  </:card>
-</EditCard>
-
 <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
   Heeft relatie met
 </AuHeading>

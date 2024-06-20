@@ -35,30 +35,24 @@
     >
       <div class="au-o-flow au-o-flow--large">
         {{#if @model.organization.isWorshipService}}
-          <RelatedOrganizations::EditWorshipService
-            @model={{@model}}
-            @hasCentralWorshipService={{@model.organization.hasCentralWorshipService}}
-          />
+          <RelatedOrganizationsEditCard @model={{@model.organization}} />
         {{/if}}
 
         {{#if @model.organization.isCentralWorshipService}}
-          <RelatedOrganizations::EditCentralWorshipService
-            @model={{@model}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
+          <RelatedOrganizationsEditCard @model={{@model.organization}} />
+          <RelatedOrganizationsEditTable
+            @model={{@model.organization}}
+            @elements={{@model.subOrganizations}}
+            @addRelatedOrganization={{this.addNewSubOrganization}}
+            @updateRelatedOrganization={{this.updateSubOrganization}}
+            @removeRelatedOrganization={{this.removeSubOrganization}}
             @sort={{this.sort}}
+            id="central-worship-service-sub-organizations"
           />
         {{/if}}
 
         {{#if @model.organization.isMunicipality}}
-          <RelatedOrganizations::EditMunicipality
-            @model={{@model}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
-            @sort={{this.sort}}
-          />
+          <RelatedOrganizationsEditCard @model={{@model.organization}} />
 
           <RelatedOrganizations
             @elements={{@model.organization.foundedOrganizations}}
@@ -71,18 +65,14 @@
         {{/if}}
 
         {{#if @model.organization.isOCMW}}
-          <RelatedOrganizations::EditOcmw @model={{@model}} />
+          <RelatedOrganizationsEditCard @model={{@model.organization}} />
         {{/if}}
 
         {{#if @model.organization.isApb}}
-          <RelatedOrganizations::EditApb
-            @model={{@model}}
+          <RelatedOrganizationsEditCard
+            @model={{@model.organization}}
             @updateRelatedOrg={{this.updateRelatedOrg}}
             @updateRelatedSubOrg={{this.updateRelatedSubOrg}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
-            @sort={{this.sort}}
           />
 
           <RelatedOrganizations
@@ -96,13 +86,9 @@
         {{/if}}
 
         {{#if @model.organization.isAgb}}
-          <RelatedOrganizations::EditAgb
-            @model={{@model}}
+          <RelatedOrganizationsEditCard
+            @model={{@model.organization}}
             @updateRelatedOrg={{this.updateRelatedOrg}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
-            @sort={{this.sort}}
           />
 
           <RelatedOrganizations
@@ -116,27 +102,25 @@
         {{/if}}
 
         {{#if @model.organization.isIgs}}
-          <RelatedOrganizations::EditIgs
-            @model={{@model}}
-            @classificationCodesIgsParticipants={{@model.organization.participantClassifications}}
-            @addNewHasParticipants={{this.addNewHasParticipants}}
-            @updateHasParticipants={{this.updateHasParticipants}}
-            @removeHasParticipants={{this.removeHasParticipants}}
+          <RelatedOrganizationsEditCard @model={{@model.organization}} />
+          <RelatedOrganizationsEditTable
+            @model={{@model.organization}}
+            @elements={{@model.hasParticipants}}
+            @label="Heeft als participanten"
+            @addRelatedOrganization={{this.addNewHasParticipants}}
+            @updateRelatedOrganization={{this.updateHasParticipants}}
+            @removeRelatedOrganization={{this.removeHasParticipants}}
+            @sort={{this.sort}}
+            id="igs-participants"
           />
         {{/if}}
 
         {{#if @model.organization.isPoliceZone}}
-          <RelatedOrganizations::EditPoliceZone
-            @model={{@model}}
-            @sort={{this.sort}}
-          />
+          <RelatedOrganizationsEditCard @model={{@model.organization}} />
         {{/if}}
 
         {{#if @model.organization.isAssistanceZone}}
-          <RelatedOrganizations::EditAssistanceZone
-            @model={{@model}}
-            @sort={{this.sort}}
-          />
+          <RelatedOrganizationsEditCard @model={{@model.organization}} />
         {{/if}}
 
         {{#if @model.organization.isOcmwAssociation}}

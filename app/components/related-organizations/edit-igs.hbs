@@ -1,34 +1,3 @@
-<EditCard @containsRequiredFields={{true}}>
-  <:title>Heeft relatie met</:title>
-  <:card as |Card|>
-    <Card.Columns>
-      <:left as |Item|>
-        <Item
-          @labelFor="related-gemeente"
-          @required={{true}}
-          @errorMessage={{@model.organization.error.isSubOrganizationOf.message}}
-        >
-          <:label>Gemeente</:label>
-          <:content as |hasError|>
-            <MunicipalitySelect
-              @selected={{@model.organization.isSubOrganizationOf}}
-              @onChange={{fn (mut @model.organization.isSubOrganizationOf)}}
-              @error={{hasError}}
-              @id="related-gemeente"
-            />
-          </:content>
-        </Item>
-        <Item @labelFor="related-municipality">
-          <:label>Provincie</:label>
-          <:content>
-            {{@model.organization.isSubOrganizationOf.isSubOrganizationOf.abbName}}
-          </:content>
-        </Item>
-      </:left>
-    </Card.Columns>
-  </:card>
-</EditCard>
-
 <div>
   <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
     Heeft als participanten
