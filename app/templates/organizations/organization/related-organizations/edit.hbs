@@ -59,20 +59,19 @@
             @removeSubOrganization={{this.removeSubOrganization}}
             @sort={{this.sort}}
           />
+
+          <RelatedOrganizations
+            @elements={{@model.organization.foundedOrganizations}}
+            @label="Heeft relatie met"
+            id="municipality-founded-organizations"
+            @sort={{this.sort}}
+            @page={{this.page}}
+            @size={{this.size}}
+          />
         {{/if}}
 
         {{#if @model.organization.isOCMW}}
           <RelatedOrganizations::EditOcmw @model={{@model}} />
-        {{/if}}
-
-        {{#if @model.organization.isProvince}}
-          <RelatedOrganizations::EditProvince
-            @model={{@model}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
-            @sort={{this.sort}}
-          />
         {{/if}}
 
         {{#if @model.organization.isApb}}
@@ -85,6 +84,15 @@
             @removeSubOrganization={{this.removeSubOrganization}}
             @sort={{this.sort}}
           />
+
+          <RelatedOrganizations
+            @elements={{@model.subOrganizations}}
+            @label="Heeft relatie met"
+            id="apb-sub-organizations"
+            @sort={{this.sort}}
+            @page={{this.page}}
+            @size={{this.size}}
+          />
         {{/if}}
 
         {{#if @model.organization.isAgb}}
@@ -95,6 +103,15 @@
             @updateSubOrganization={{this.updateSubOrganization}}
             @removeSubOrganization={{this.removeSubOrganization}}
             @sort={{this.sort}}
+          />
+
+          <RelatedOrganizations
+            @elements={{@model.subOrganizations}}
+            @label="Heeft relatie met"
+            id="agb-sub-organizations"
+            @sort={{this.sort}}
+            @page={{this.page}}
+            @size={{this.size}}
           />
         {{/if}}
 
@@ -130,6 +147,15 @@
             @updateHasParticipants={{this.updateHasParticipants}}
             @removeHasParticipants={{this.removeHasParticipants}}
           />
+
+          <RelatedOrganizations
+            @elements={{@model.organization.foundedOrganizations}}
+            @label="Heeft relatie met"
+            id="ocmw-association-founded-organizations"
+            @sort={{this.sort}}
+            @page={{this.page}}
+            @size={{this.size}}
+          />
         {{/if}}
 
         {{#if @model.organization.isPevaMunicipality}}
@@ -140,6 +166,15 @@
             @updateHasParticipants={{this.updateHasParticipants}}
             @removeHasParticipants={{this.removeHasParticipants}}
           />
+
+          <RelatedOrganizations
+            @elements={{@model.organization.foundedOrganizations}}
+            @label="Heeft relatie met"
+            id="peva-municipality-founded-organizations"
+            @sort={{this.sort}}
+            @page={{this.page}}
+            @size={{this.size}}
+          />
         {{/if}}
 
         {{#if @model.organization.isPevaProvince}}
@@ -149,6 +184,15 @@
             @addNewHasParticipants={{this.addNewHasParticipants}}
             @updateHasParticipants={{this.updateHasParticipants}}
             @removeHasParticipants={{this.removeHasParticipants}}
+          />
+
+          <RelatedOrganizations
+            @elements={{@model.organization.foundedOrganizations}}
+            @label="Heeft relatie met"
+            id="peva-province-founded-organizations"
+            @sort={{this.sort}}
+            @page={{this.page}}
+            @size={{this.size}}
           />
         {{/if}}
       </div>
