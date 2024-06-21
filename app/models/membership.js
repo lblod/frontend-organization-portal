@@ -2,7 +2,7 @@ import Model, { belongsTo } from '@ember-data/model';
 
 export default class MembershipModel extends Model {
   @belongsTo('organization', {
-    inverse: 'membershipsOfOrganization',
+    inverse: 'membershipsOfOrganizations',
     async: true,
     polymorphic: true,
     as: 'membership',

@@ -15,11 +15,13 @@ export default class OrganizationsOrganizationCoreDataRoute extends Route {
         'identifiers.structured-identifier',
         'primary-site.address',
         'primary-site.contacts',
-        'is-sub-organization-of',
-        'is-associated-with',
+        // 'is-sub-organization-of',
+        // 'is-associated-with',
         'resulted-from',
-        'was-founded-by-organizations',
+        // 'was-founded-by-organizations',
         'kbo-organization',
+        'memberships-of-organizations',
+        'memberships',
       ].join(),
     });
   }

@@ -1,5 +1,7 @@
+{{! TODO: remove conditional display }}
 {{#if (or @elements.length @displayWhenEmpty)}}
   <div>
+    {{! TODO: remove heading }}
     <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
       {{or @label "Heeft relatie met"}}
     </AuHeading>
@@ -12,6 +14,7 @@
       @noDataMessage={{or @noDataMessage "Geen organisatie"}}
       as |t|
     >
+      {{! TODO: remove conditional }}
       {{#if @allowHidingInactiveOrganizations}}
         <t.menu as |menu|>
           <menu.general>
@@ -27,12 +30,18 @@
       <t.content as |c|>
         <c.header>
           <AuDataTableThSortable
+            @field="role.label"
+            @label="Type relatie"
+            @currentSorting={{@sort}}
+          />
+
+          <AuDataTableThSortable
             @field="classification.label"
             @label="Type organisatie"
             @currentSorting={{@sort}}
           />
           <AuDataTableThSortable
-            @field="name"
+            @field="organization.name"
             @label="Organisatie"
             @currentSorting={{@sort}}
           />
@@ -42,22 +51,25 @@
             @currentSorting={{@sort}}
           />
         </c.header>
-        <c.body as |organization|>
+        <c.body as |membership|>
           <td>
-            {{organization.classification.label}}
+            {{membership.role.opLabel}}
+          </td>
+          <td>
+            {{membership.organization.classification.label}}
           </td>
           <td>
             <AuLink
               @route="organizations.organization"
-              @model={{organization.id}}
+              @model={{membership.organization.id}}
             >
-              {{organization.abbName}}
+              {{membership.organization.abbName}}
             </AuLink>
           </td>
           <td>
             <OrganizationStatus
-              @id={{organization.organizationStatus.id}}
-              @label={{organization.organizationStatus.label}}
+              @id={{membership.organization.organizationStatus.id}}
+              @label={{membership.organization.organizationStatus.label}}
             />
           </td>
         </c.body>

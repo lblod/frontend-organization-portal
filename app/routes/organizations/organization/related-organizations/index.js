@@ -14,17 +14,18 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
   async model(params) {
     const organization = this.modelFor('organizations.organization');
 
-    const isAssociatedWith = await organization.isAssociatedWith;
-    const isSubOrganizationOf = await organization.isSubOrganizationOf;
+    // const isAssociatedWith = await organization.isAssociatedWith;
+    // const isSubOrganizationOf = await organization.isSubOrganizationOf;
 
-    const wasFoundedByOrganizations =
-      await this.loadFoundedOrganizationsTask.perform(organization.id, params);
+    // const wasFoundedByOrganizations =
+    //   await this.loadFoundedOrganizationsTask.perform(organization.id, params);
 
-    const subOrganizations = await this.loadSubOrganizationsTask.perform(
-      organization.id,
-      params,
-      organization.isProvince
-    );
+    // const subOrganizations = await this.loadSubOrganizationsTask.perform(
+    //   organization.id,
+    //   params,
+    //   organization.isProvince
+    // );
+    //
 
     const participatesIn = await this.loadParticipatesInTask.perform(
       organization.id,
@@ -38,10 +39,10 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
 
     return {
       organization,
-      wasFoundedByOrganizations,
-      isAssociatedWith,
-      isSubOrganizationOf,
-      subOrganizations,
+      // wasFoundedByOrganizations,
+      // isAssociatedWith,
+      // isSubOrganizationOf,
+      // subOrganizations,
       participatesIn,
       hasParticipants,
     };
