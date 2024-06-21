@@ -7,6 +7,20 @@
 
 
 
+
+## v1.26.0-0 (2024-06-21)
+
+#### :rocket: Enhancement
+* [#630](https://github.com/lblod/frontend-organization-portal/pull/630) fix: improve local involvement validations ([@mirdono](https://github.com/mirdono))
+* [#628](https://github.com/lblod/frontend-organization-portal/pull/628) feat: add associations and corporations ([@mirdono](https://github.com/mirdono))
+* [#629](https://github.com/lblod/frontend-organization-portal/pull/629) fix: redirect for all organizations ([@mirdono](https://github.com/mirdono))
+
+#### :bug: Bug Fix
+* [#630](https://github.com/lblod/frontend-organization-portal/pull/630) fix: improve local involvement validations ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
 ## v1.25.0 (2024-06-12)
 
 #### :rocket: Enhancement
