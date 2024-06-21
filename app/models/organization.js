@@ -76,53 +76,67 @@ export default class OrganizationModel extends AgentModel {
   })
   positions;
 
-  @hasMany('organization', {
-    inverse: 'isSubOrganizationOf',
+  @hasMany('membership', {
+    inverse: 'member',
     async: true,
-    polymorphic: true,
     as: 'organization',
   })
-  subOrganizations;
+  membershipsOfOrganization;
 
-  @belongsTo('organization', {
-    inverse: 'subOrganizations',
+  @hasMany('membership', {
+    inverse: 'organization',
     async: true,
-    polymorphic: true,
     as: 'organization',
   })
-  isSubOrganizationOf;
+  memberships;
 
-  @hasMany('organization', {
-    inverse: 'isAssociatedWith',
-    async: true,
-    polymorphic: true,
-    as: 'organization',
-  })
-  associatedOrganizations;
+  // @hasMany('organization', {
+  //   inverse: 'isSubOrganizationOf',
+  //   async: true,
+  //   polymorphic: true,
+  //   as: 'organization',
+  // })
+  // subOrganizations;
 
-  @belongsTo('organization', {
-    inverse: 'associatedOrganizations',
-    async: true,
-    polymorphic: true,
-    as: 'organization',
-  })
-  isAssociatedWith;
+  // @belongsTo('organization', {
+  //   inverse: 'subOrganizations',
+  //   async: true,
+  //   polymorphic: true,
+  //   as: 'organization',
+  // })
+  // isSubOrganizationOf;
 
-  @hasMany('organization', {
-    inverse: 'wasFoundedByOrganizations',
-    async: true,
-    polymorphic: true,
-    as: 'organization',
-  })
-  foundedOrganizations;
+  // @hasMany('organization', {
+  //   inverse: 'isAssociatedWith',
+  //   async: true,
+  //   polymorphic: true,
+  //   as: 'organization',
+  // })
+  // associatedOrganizations;
 
-  @hasMany('organization', {
-    inverse: 'foundedOrganizations',
-    async: true,
-    polymorphic: true,
-    as: 'organization',
-  })
-  wasFoundedByOrganizations;
+  // @belongsTo('organization', {
+  //   inverse: 'associatedOrganizations',
+  //   async: true,
+  //   polymorphic: true,
+  //   as: 'organization',
+  // })
+  // isAssociatedWith;
+
+  // @hasMany('organization', {
+  //   inverse: 'wasFoundedByOrganizations',
+  //   async: true,
+  //   polymorphic: true,
+  //   as: 'organization',
+  // })
+  // foundedOrganizations;
+
+  // @hasMany('organization', {
+  //   inverse: 'foundedOrganizations',
+  //   async: true,
+  //   polymorphic: true,
+  //   as: 'organization',
+  // })
+  // wasFoundedByOrganizations;
 
   @hasMany('organization', {
     inverse: 'hasParticipants',
