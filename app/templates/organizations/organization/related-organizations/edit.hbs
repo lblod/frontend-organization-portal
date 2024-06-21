@@ -124,12 +124,15 @@
         {{/if}}
 
         {{#if @model.organization.isOcmwAssociation}}
-          <RelatedOrganizations::EditOcmwAssociation
-            @model={{@model}}
-            @classificationCodesOcmwAssociationParticipants={{@model.organization.participantClassifications}}
-            @addNewHasParticipants={{this.addNewHasParticipants}}
-            @updateHasParticipants={{this.updateHasParticipants}}
-            @removeHasParticipants={{this.removeHasParticipants}}
+          <RelatedOrganizationsEditTable
+            @model={{@model.organization}}
+            @elements={{@model.hasParticipants}}
+            @label="Heeft als participanten"
+            @addRelatedOrganization={{this.addNewHasParticipants}}
+            @updateRelatedOrganization={{this.updateHasParticipants}}
+            @removeRelatedOrganization={{this.removeHasParticipants}}
+            @sort={{this.sort}}
+            id="ocmw-association-participants"
           />
 
           <RelatedOrganizations
@@ -143,12 +146,15 @@
         {{/if}}
 
         {{#if @model.organization.isPevaMunicipality}}
-          <RelatedOrganizations::EditPevaMunicipality
-            @model={{@model}}
-            @classificationCodesParticipants={{@model.organization.participantClassifications}}
-            @addNewHasParticipants={{this.addNewHasParticipants}}
-            @updateHasParticipants={{this.updateHasParticipants}}
-            @removeHasParticipants={{this.removeHasParticipants}}
+          <RelatedOrganizationsEditTable
+            @model={{@model.organization}}
+            @elements={{@model.hasParticipants}}
+            @label="Heeft als participanten"
+            @addRelatedOrganization={{this.addNewHasParticipants}}
+            @updateRelatedOrganization={{this.updateHasParticipants}}
+            @removeRelatedOrganization={{this.removeHasParticipants}}
+            @sort={{this.sort}}
+            id="peva-municipality-association-participants"
           />
 
           <RelatedOrganizations
@@ -162,12 +168,15 @@
         {{/if}}
 
         {{#if @model.organization.isPevaProvince}}
-          <RelatedOrganizations::EditPevaProvince
-            @model={{@model}}
-            @classificationCodesParticipants={{@model.organization.participantClassifications}}
-            @addNewHasParticipants={{this.addNewHasParticipants}}
-            @updateHasParticipants={{this.updateHasParticipants}}
-            @removeHasParticipants={{this.removeHasParticipants}}
+          <RelatedOrganizationsEditTable
+            @model={{@model.organization}}
+            @elements={{@model.hasParticipants}}
+            @label="Heeft als participanten"
+            @addRelatedOrganization={{this.addNewHasParticipants}}
+            @updateRelatedOrganization={{this.updateHasParticipants}}
+            @removeRelatedOrganization={{this.removeHasParticipants}}
+            @sort={{this.sort}}
+            id="peva-province-association-participants"
           />
 
           <RelatedOrganizations
