@@ -36,119 +36,90 @@
       </:action>
     </PageHeader>
 
-    {{#if @model.organization.isWorshipService}}
-      <RelatedOrganizations::ViewWorshipService @model={{@model}} />
+    {{#if @model.organization.isWorshipAdministrativeUnit}}
+      <div>
+        Om de gerelateerde gemeenten te zien, ga naar
+        <LinkTo
+          class="au-c-link"
+          @model={{@model.organization.id}}
+          @route="organizations.organization.local-involvements.index"
+        >
+          Betrokken lokale besturen
+        </LinkTo>
+      </div>
     {{/if}}
 
-    {{#if @model.organization.isCentralWorshipService}}
-      <RelatedOrganizations::ViewCentralWorshipService
-        @model={{@model}}
+    {{#unless
+      (or
+        @model.organization.isProvince
+        @model.organization.isOcmwAssociation
+        @model.organization.isPevaMunicipality
+        @model.organization.isPevaProvince
+        @model.organization.isRepresentativeBody
+      )
+    }}
+      <RelatedOrganizationsDataCard @model={{@model}} />
+    {{/unless}}
+
+    {{#if
+      (or
+        @model.organization.isCentralWorshipService
+        @model.organization.isRepresentativeBody
+      )
+    }}
+      <RelatedOrganizationsViewTable
+        @elements={{@model.subOrganizations}}
+        @displayWhenEmpty={{@model.organization.isRepresentativeBody}}
+        @label="Heeft relatie met"
         @sort={{this.sort}}
         @page={{this.page}}
         @size={{this.size}}
+        @allowHidingInactiveOrganizations={{true}}
         @organizationStatus={{this.organizationStatus}}
+        id="worship-sub-organizations"
       />
-    {{/if}}
+    {{else}}
+      {{#if
+        (or
+          @model.organization.isOcmwAssociation
+          @model.organization.isPevaMunicipality
+          @model.organization.isPevaProvince
+        )
+      }}
+        <RelatedOrganizationsViewTable
+          @elements={{@model.wasFoundedByOrganizations}}
+          @displayWhenEmpty={{true}}
+          @label="Werd opericht door"
+          id="was-founded-by"
+          @sort={{this.sort}}
+          @page={{this.page}}
+          @size={{this.size}}
+        />
+      {{/if}}
 
-    {{#if @model.organization.isDistrict}}
-      <RelatedOrganizations::ViewDistrict @model={{@model}} />
-    {{/if}}
-
-    {{#if @model.organization.isMunicipality}}
-      <RelatedOrganizations::ViewMunicipality
-        @model={{@model}}
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
+      <RelatedOrganizationsViewTable
+        @elements={{@model.organization.foundedOrganizations}}
+        id="founded-organizations"
+        @allowHidingInactiveOrganizations={{true}}
         @organizationStatus={{this.organizationStatus}}
-      />
-    {{/if}}
-
-    {{#if @model.organization.isOCMW}}
-      <RelatedOrganizations::ViewOcmw @model={{@model}} />
-    {{/if}}
-
-    {{#if @model.organization.isProvince}}
-      <RelatedOrganizations::ViewProvince
-        @model={{@model}}
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-        @organizationStatus={{this.organizationStatus}}
-      />
-    {{/if}}
-
-    {{#if @model.organization.isAgb}}
-      <RelatedOrganizations::ViewAgb @model={{@model}} />
-    {{/if}}
-
-    {{#if @model.organization.isApb}}
-      <RelatedOrganizations::ViewApb @model={{@model}} />
-    {{/if}}
-
-    {{#if @model.organization.isIgs}}
-      <RelatedOrganizations::ViewIgs @model={{@model}} @sort={{this.sort}} />
-    {{/if}}
-
-    {{#if @model.organization.isPoliceZone}}
-      <RelatedOrganizations::ViewPoliceZone
-        @model={{@model}}
-        @sort={{this.sort}}
-      />
-    {{/if}}
-
-    {{#if @model.organization.isAssistanceZone}}
-      <RelatedOrganizations::ViewAssistanceZone
-        @model={{@model}}
-        @sort={{this.sort}}
-      />
-    {{/if}}
-
-    {{#if @model.organization.isOcmwAssociation}}
-      <RelatedOrganizations::ViewOcmwAssociation
-        @model={{@model}}
         @sort={{this.sort}}
         @page={{this.page}}
         @size={{this.size}}
       />
-    {{/if}}
 
-    {{#if @model.organization.isPevaMunicipality}}
-      <RelatedOrganizations::ViewPevaMunicipality
-        @model={{@model}}
-        @sort={{this.sort}}
-      />
-    {{/if}}
-
-    {{#if @model.organization.isPevaProvince}}
-      <RelatedOrganizations::ViewPevaProvince
-        @model={{@model}}
-        @sort={{this.sort}}
-      />
-    {{/if}}
-
-    {{#if @model.organization.isRepresentativeBody}}
-      <RelatedOrganizations::ViewRepresentativeBody
-        @model={{@model}}
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-        @organizationStatus={{this.organizationStatus}}
-      />
-    {{/if}}
-
-    {{#if @model.organization.isAssociationOther}}
-      <RelatedOrganizations::ViewAssociationOther
-        @model={{@model}}
+      <RelatedOrganizationsViewTable
+        @elements={{@model.participatesIn}}
+        @label="Participeert in"
+        id="participates-in"
         @sort={{this.sort}}
         @page={{this.page}}
         @size={{this.size}}
       />
-    {{/if}}
 
-    {{#if @model.organization.isCorporationOther}}
-      <RelatedOrganizations::ViewCorporationOther
-        @model={{@model}}
+      <RelatedOrganizationsViewTable
+        @elements={{@model.hasParticipants}}
+        @label="Heeft als participanten"
+        id="has-participants"
         @sort={{this.sort}}
         @page={{this.page}}
         @size={{this.size}}

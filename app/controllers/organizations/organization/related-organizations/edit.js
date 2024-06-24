@@ -15,6 +15,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   queryParams = ['sort'];
 
   @tracked sort = 'name';
+  @tracked page = 0;
+  @tracked size = 25;
 
   @action
   addNewSubOrganization() {

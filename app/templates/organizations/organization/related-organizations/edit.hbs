@@ -34,121 +34,86 @@
       {{on "submit" (perform this.save)}}
     >
       <div class="au-o-flow au-o-flow--large">
-        {{#if @model.organization.isWorshipService}}
-          <RelatedOrganizations::EditWorshipService
-            @model={{@model}}
-            @hasCentralWorshipService={{@model.organization.hasCentralWorshipService}}
+        {{#if
+          (or
+            @model.organization.isWorshipService
+            @model.organization.isCentralWorshipService
+            @model.organization.isMunicipality
+            @model.organization.isOCMW
+            @model.organization.isIgs
+            @model.organization.isPoliceZone
+            @model.organization.isAssistanceZone
+          )
+        }}
+          <RelatedOrganizationsEditCard @model={{@model.organization}} />
+        {{/if}}
+
+        {{#if (or @model.organization.isApb @model.organization.isAgb)}}
+          <RelatedOrganizationsEditCard
+            @model={{@model.organization}}
+            @updateRelatedOrg={{this.updateRelatedOrg}}
+            @updateRelatedSubOrg={{this.updateRelatedSubOrg}}
           />
         {{/if}}
 
         {{#if @model.organization.isCentralWorshipService}}
-          <RelatedOrganizations::EditCentralWorshipService
-            @model={{@model}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
+          <RelatedOrganizationsEditTable
+            @model={{@model.organization}}
+            @elements={{@model.subOrganizations}}
+            @addRelatedOrganization={{this.addNewSubOrganization}}
+            @updateRelatedOrganization={{this.updateSubOrganization}}
+            @removeRelatedOrganization={{this.removeSubOrganization}}
             @sort={{this.sort}}
+            id="central-worship-service-sub-organizations"
           />
         {{/if}}
 
-        {{#if @model.organization.isMunicipality}}
-          <RelatedOrganizations::EditMunicipality
-            @model={{@model}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
+        {{#if
+          (or
+            @model.organization.isIgs
+            @model.organization.isOcmwAssociation
+            @model.organization.isPevaMunicipality
+            @model.organization.isPevaProvince
+          )
+        }}
+          <RelatedOrganizationsEditTable
+            @model={{@model.organization}}
+            @elements={{@model.hasParticipants}}
+            @label="Heeft als participanten"
+            @addRelatedOrganization={{this.addNewHasParticipants}}
+            @updateRelatedOrganization={{this.updateHasParticipants}}
+            @removeRelatedOrganization={{this.removeHasParticipants}}
             @sort={{this.sort}}
+            id="edit-participants"
           />
         {{/if}}
 
-        {{#if @model.organization.isOCMW}}
-          <RelatedOrganizations::EditOcmw @model={{@model}} />
-        {{/if}}
-
-        {{#if @model.organization.isProvince}}
-          <RelatedOrganizations::EditProvince
-            @model={{@model}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
+        {{#if
+          (or
+            @model.organization.isMunicipality
+            @model.organization.isOcmwAssociation
+            @model.organization.isPevaMunicipality
+            @model.organization.isPevaProvince
+          )
+        }}
+          <RelatedOrganizations
+            @elements={{@model.organization.foundedOrganizations}}
+            @label="Heeft relatie met"
+            id="view-founded-organizations"
             @sort={{this.sort}}
+            @page={{this.page}}
+            @size={{this.size}}
           />
         {{/if}}
 
-        {{#if @model.organization.isApb}}
-          <RelatedOrganizations::EditApb
-            @model={{@model}}
-            @updateRelatedOrg={{this.updateRelatedOrg}}
-            @updateRelatedSubOrg={{this.updateRelatedSubOrg}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
+        {{#if (or @model.organization.isApb @model.organization.isAgb)}}
+          <RelatedOrganizations
+            @elements={{@model.subOrganizations}}
+            @label="Heeft relatie met"
+            id="view-sub-organizations"
             @sort={{this.sort}}
-          />
-        {{/if}}
-
-        {{#if @model.organization.isAgb}}
-          <RelatedOrganizations::EditAgb
-            @model={{@model}}
-            @updateRelatedOrg={{this.updateRelatedOrg}}
-            @addNewSubOrganization={{this.addNewSubOrganization}}
-            @updateSubOrganization={{this.updateSubOrganization}}
-            @removeSubOrganization={{this.removeSubOrganization}}
-            @sort={{this.sort}}
-          />
-        {{/if}}
-
-        {{#if @model.organization.isIgs}}
-          <RelatedOrganizations::EditIgs
-            @model={{@model}}
-            @classificationCodesIgsParticipants={{@model.organization.participantClassifications}}
-            @addNewHasParticipants={{this.addNewHasParticipants}}
-            @updateHasParticipants={{this.updateHasParticipants}}
-            @removeHasParticipants={{this.removeHasParticipants}}
-          />
-        {{/if}}
-
-        {{#if @model.organization.isPoliceZone}}
-          <RelatedOrganizations::EditPoliceZone
-            @model={{@model}}
-            @sort={{this.sort}}
-          />
-        {{/if}}
-
-        {{#if @model.organization.isAssistanceZone}}
-          <RelatedOrganizations::EditAssistanceZone
-            @model={{@model}}
-            @sort={{this.sort}}
-          />
-        {{/if}}
-
-        {{#if @model.organization.isOcmwAssociation}}
-          <RelatedOrganizations::EditOcmwAssociation
-            @model={{@model}}
-            @classificationCodesOcmwAssociationParticipants={{@model.organization.participantClassifications}}
-            @addNewHasParticipants={{this.addNewHasParticipants}}
-            @updateHasParticipants={{this.updateHasParticipants}}
-            @removeHasParticipants={{this.removeHasParticipants}}
-          />
-        {{/if}}
-
-        {{#if @model.organization.isPevaMunicipality}}
-          <RelatedOrganizations::EditPevaMunicipality
-            @model={{@model}}
-            @classificationCodesParticipants={{@model.organization.participantClassifications}}
-            @addNewHasParticipants={{this.addNewHasParticipants}}
-            @updateHasParticipants={{this.updateHasParticipants}}
-            @removeHasParticipants={{this.removeHasParticipants}}
-          />
-        {{/if}}
-
-        {{#if @model.organization.isPevaProvince}}
-          <RelatedOrganizations::EditPevaProvince
-            @model={{@model}}
-            @classificationCodesParticipants={{@model.organization.participantClassifications}}
-            @addNewHasParticipants={{this.addNewHasParticipants}}
-            @updateHasParticipants={{this.updateHasParticipants}}
-            @removeHasParticipants={{this.removeHasParticipants}}
+            @page={{this.page}}
+            @size={{this.size}}
           />
         {{/if}}
       </div>

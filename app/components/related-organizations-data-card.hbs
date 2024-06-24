@@ -1,0 +1,149 @@
+<DataCard>
+  <:title>Heeft relatie met</:title>
+  <:card as |Card|>
+    <Card.Columns>
+      <:left as |Item|>
+        {{#if
+          (or
+            @model.organization.isDistrict
+            @model.organization.isAgb
+            @model.organization.isIgs
+            @model.organization.isPoliceZone
+            @model.organization.isAssistanceZone
+          )
+        }}
+          {{#if @model.organization.isSubOrganizationOf}}
+            <Item>
+              <:label>
+                Provincie
+              </:label>
+              <:content>
+                <AuLink
+                  @route="organizations.organization"
+                  @model={{@model.organization.isSubOrganizationOf.isSubOrganizationOf.id}}
+                >
+                  {{@model.organization.isSubOrganizationOf.isSubOrganizationOf.abbName}}
+                </AuLink>
+              </:content>
+            </Item>
+          {{/if}}
+        {{/if}}
+
+        {{#if
+          (and
+            (or
+              @model.organization.isMunicipality
+              @model.organization.isOCMW
+              @model.organization.isAgb
+              @model.organization.isDistrict
+              @model.organization.isApb
+              @model.organization.isIgs
+              @model.organization.isPoliceZone
+              @model.organization.isAssistanceZone
+              @model.organization.isWorshipService
+            )
+            @model.isSubOrganizationOf
+          )
+        }}
+          <Item>
+            <:label>
+              {{#if
+                (or
+                  @model.organization.isMunicipality
+                  @model.organization.isOCMW
+                  @model.organization.isApb
+                )
+              }}
+                Provincie
+              {{else if @model.organization.isWorshipService}}
+                Centraal bestuur
+              {{else}}
+                Gemeente
+              {{/if}}
+            </:label>
+            <:content>
+              <AuLink
+                @route="organizations.organization"
+                @model={{@model.isSubOrganizationOf.id}}
+              >
+                {{@model.isSubOrganizationOf.abbName}}
+              </AuLink>
+            </:content>
+          </Item>
+        {{/if}}
+
+        {{#if
+          (or
+            @model.organization.isOCMW
+            @model.organization.isApb
+            @model.organization.isMunicipality
+            @model.organization.isWorshipService
+            @model.organization.isCentralWorshipService
+          )
+        }}
+          <Item>
+            <:label>
+              {{#if @model.organization.isMunicipality}}
+                OCMW
+              {{else if
+                (or
+                  @model.organization.isWorshipService
+                  @model.organization.isCentralWorshipService
+                )
+              }}
+                Representatief orgaan
+              {{else}}
+                Gemeente
+              {{/if}}
+            </:label>
+            <:content>
+              <AuLink
+                @route="organizations.organization.core-data"
+                @model={{@model.isAssociatedWith.id}}
+              >
+                {{@model.isAssociatedWith.abbName}}
+              </AuLink>
+            </:content>
+          </Item>
+        {{/if}}
+
+        {{#if @model.organization.isDistrict}}
+          {{#if @model.organization.isSubOrganizationOf}}
+            <Item>
+              <:label>OCMW</:label>
+              <:content>
+                <AuLink
+                  @route="organizations.organization"
+                  @model={{@model.organization.isSubOrganizationOf.isAssociatedWith.id}}
+                >
+                  {{@model.organization.isSubOrganizationOf.isAssociatedWith.abbName}}
+                </AuLink>
+              </:content>
+            </Item>
+          {{/if}}
+        {{/if}}
+
+        {{#if (or @model.organization.isAgb @model.organization.isApb)}}
+          <Item>
+            <:label>Werd opgericht door</:label>
+            <:content>
+              {{! Note: this is somewhat of a hacky way to deal the many
+                multiplicity for `wasFoundedByOrganizations` since AGBs and
+                APBs should always have a single founder}}
+              <AuList @direction="horizontal" as |Item|>
+                {{#each @model.wasFoundedByOrganizations as |org|}}
+                  <Item>
+                    <AuLink
+                      @route="organizations.organization.core-data"
+                      @model={{@model.id}}
+                    >{{org.abbName}}</AuLink>
+                  </Item>
+                {{/each}}
+              </AuList>
+            </:content>
+          </Item>
+        {{/if}}
+      </:left>
+    </Card.Columns>
+  </:card>
+</DataCard>
