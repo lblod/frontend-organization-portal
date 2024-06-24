@@ -49,64 +49,17 @@
       </div>
     {{/if}}
 
-    {{#if
-      (or
-        @model.organization.isCentralWorshipService
-        @model.organization.isRepresentativeBody
-      )
-    }}
-      <RelatedOrganizationsViewTable
-        @elements={{@model.subOrganizations}}
-        @displayWhenEmpty={{@model.organization.isRepresentativeBody}}
-        @label="Heeft relatie met"
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-        @allowHidingInactiveOrganizations={{true}}
-        @organizationStatus={{this.organizationStatus}}
-        id="worship-sub-organizations"
-      />
-    {{else}}
-      {{#if
-        (or
-          @model.organization.isOcmwAssociation
-          @model.organization.isPevaMunicipality
-          @model.organization.isPevaProvince
-        )
-      }}
-        <RelatedOrganizationsViewTable
-          @elements={{@model.wasFoundedByOrganizations}}
-          @displayWhenEmpty={{true}}
-          @label="Werd opericht door"
-          id="was-founded-by"
-          @sort={{this.sort}}
-          @page={{this.page}}
-          @size={{this.size}}
-        />
-      {{/if}}
+    <RelatedOrganizationsViewTable
+      @model={{@model}}
+      id="membershipsOfOrganizations"
+      @allowHidingInactiveOrganizations={{true}}
+      @organizationStatus={{this.organizationStatus}}
+      @sort={{this.sort}}
+      @page={{this.page}}
+      @size={{this.size}}
+    />
 
-      <RelatedOrganizationsViewTable
-        @model={{@model}}
-        @elements={{@model.allRelatedOrganizations}}
-        id="membershipsOfOrganizations"
-        @allowHidingInactiveOrganizations={{true}}
-        @organizationStatus={{this.organizationStatus}}
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-
-      {{!-- <RelatedOrganizationsViewTable
-           @elements={{@model.organization.foundedOrganizations}}
-           id="founded-organizations"
-           @allowHidingInactiveOrganizations={{true}}
-           @organizationStatus={{this.organizationStatus}}
-           @sort={{this.sort}}
-           @page={{this.page}}
-           @size={{this.size}}
-           />
-
-           <RelatedOrganizationsViewTable
+    {{!-- <RelatedOrganizationsViewTable
            @elements={{@model.participatesIn}}
            @label="Participeert in"
            id="participates-in"
@@ -123,6 +76,5 @@
            @page={{this.page}}
            @size={{this.size}}
            /> --}}
-    {{/if}}
   </div>
 </div>
