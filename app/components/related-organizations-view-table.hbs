@@ -1,79 +1,95 @@
-{{! TODO: remove conditional display }}
-{{#if (or @elements.length @displayWhenEmpty)}}
-  <div>
-    {{! TODO: remove heading }}
-    <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
-      {{or @label "Heeft relatie met"}}
-    </AuHeading>
-    <AuDataTable
-      @content={{@elements}}
-      @sort={{@sort}}
-      @page={{@page}}
-      @size={{@size}}
-      @isLoading={{@isLoading}}
-      @noDataMessage={{or @noDataMessage "Geen organisatie"}}
-      as |t|
-    >
-      {{! TODO: remove conditional }}
-      {{#if @allowHidingInactiveOrganizations}}
-        <t.menu as |menu|>
-          <menu.general>
-            <div class="au-o-box">
-              <AuToggleSwitch
-                @label="Verberg niet actieve organisaties"
-                @checked={{@organizationStatus}}
-              />
-            </div>
-          </menu.general>
-        </t.menu>
-      {{/if}}
-      <t.content as |c|>
-        <c.header>
-          <AuDataTableThSortable
-            @field="role.label"
-            @label="Type relatie"
-            @currentSorting={{@sort}}
-          />
+<AuDataTable
+  @content={{@model.membershipsUnionMembershipsOfOrganizations}}
+  @sort={{@sort}}
+  @page={{@page}}
+  @size={{@size}}
+  @isLoading={{@isLoading}}
+  @noDataMessage={{or @noDataMessage "Geen organisatie"}}
+  as |t|
+>
 
-          <AuDataTableThSortable
-            @field="classification.label"
-            @label="Type organisatie"
-            @currentSorting={{@sort}}
+  <t.menu as |menu|>
+    <menu.general>
+      <div class="au-o-box">
+        <AuToggleSwitch
+          @label="Verberg niet actieve organisaties"
+          @checked={{@organizationStatus}}
+        />
+      </div>
+    </menu.general>
+  </t.menu>
+
+  <t.content as |c|>
+    <c.header>
+      <AuDataTableThSortable
+        @field="role.label"
+        @label="Type relatie"
+        @currentSorting={{@sort}}
+      />
+
+      <AuDataTableThSortable
+        @field="classification.label"
+        @label="Type organisatie"
+        @currentSorting={{@sort}}
+      />
+      <AuDataTableThSortable
+        @field="organization.name"
+        @label="Organisatie"
+        @currentSorting={{@sort}}
+      />
+      <AuDataTableThSortable
+        @field="organizationStatus.label"
+        @label="Status"
+        @currentSorting={{@sort}}
+      />
+    </c.header>
+
+    {{! TODO: move conditional logic to controller?  }}
+    <c.body as |membership|>
+      <td>
+        {{#if (eq membership.organization.id @model.organization.id)}}
+          {{membership.role.inverseOpLabel}}
+        {{else}}
+          {{membership.role.opLabel}}
+        {{/if}}
+      </td>
+      <td>
+        {{#if (eq membership.organization.id @model.organization.id)}}
+          {{membership.member.classification.label}}
+        {{else}}
+          {{membership.organization.classification.label}}
+        {{/if}}
+      </td>
+      <td>
+        {{#if (eq membership.organization.id @model.organization.id)}}
+          <AuLink
+            @route="organizations.organization"
+            @model={{membership.member.id}}
+          >
+            {{membership.member.abbName}}
+          </AuLink>
+        {{else}}
+          <AuLink
+            @route="organizations.organization"
+            @model={{membership.organization.id}}
+          >
+            {{membership.organization.abbName}}
+          </AuLink>
+        {{/if}}
+      </td>
+      <td>
+        {{#if (eq membership.organization.id @model.organization.id)}}
+          <OrganizationStatus
+            @id={{membership.member.organizationStatus.id}}
+            @label={{membership.member.organizationStatus.label}}
           />
-          <AuDataTableThSortable
-            @field="organization.name"
-            @label="Organisatie"
-            @currentSorting={{@sort}}
+        {{else}}
+          <OrganizationStatus
+            @id={{membership.organization.organizationStatus.id}}
+            @label={{membership.organization.organizationStatus.label}}
           />
-          <AuDataTableThSortable
-            @field="organizationStatus.label"
-            @label="Status"
-            @currentSorting={{@sort}}
-          />
-        </c.header>
-        <c.body as |membership|>
-          <td>
-            {{membership.role.opLabel}}
-          </td>
-          <td>
-            {{membership.organization.classification.label}}
-          </td>
-          <td>
-            <AuLink
-              @route="organizations.organization"
-              @model={{membership.organization.id}}
-            >
-              {{membership.organization.abbName}}
-            </AuLink>
-          </td>
-          <td>
-            <OrganizationStatus
-              @id={{membership.organization.organizationStatus.id}}
-              @label={{membership.organization.organizationStatus.label}}
-            />
-          </td>
-        </c.body>
-      </t.content>
-    </AuDataTable>
-  </div>
-{{/if}}
+        {{/if}}
+      </td>
+    </c.body>
+  </t.content>
+</AuDataTable>

@@ -37,12 +37,22 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       params
     );
 
+    const memberships = await organization.memberships;
+    const membershipsOfOrganizations =
+      await organization.membershipsOfOrganizations;
+
+    const membershipsUnionMembershipsOfOrganizations = [
+      ...memberships,
+      ...membershipsOfOrganizations,
+    ];
+
     return {
       organization,
       // wasFoundedByOrganizations,
       // isAssociatedWith,
       // isSubOrganizationOf,
       // subOrganizations,
+      membershipsUnionMembershipsOfOrganizations,
       participatesIn,
       hasParticipants,
     };

@@ -97,20 +97,9 @@
         />
       {{/if}}
 
-      {{! TODO: merge tables into single one, displayed relation differs:
-      `member` vs `organization`}}
       <RelatedOrganizationsViewTable
-        @elements={{@model.organization.memberships}}
-        id="memberships"
-        @allowHidingInactiveOrganizations={{true}}
-        @organizationStatus={{this.organizationStatus}}
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-
-      <RelatedOrganizationsViewTable
-        @elements={{@model.organization.membershipsOfOrganizations}}
+        @model={{@model}}
+        @elements={{@model.allRelatedOrganizations}}
         id="membershipsOfOrganizations"
         @allowHidingInactiveOrganizations={{true}}
         @organizationStatus={{this.organizationStatus}}
