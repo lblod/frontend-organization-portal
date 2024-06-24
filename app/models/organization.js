@@ -90,70 +90,6 @@ export default class OrganizationModel extends AgentModel {
   })
   memberships;
 
-  // @hasMany('organization', {
-  //   inverse: 'isSubOrganizationOf',
-  //   async: true,
-  //   polymorphic: true,
-  //   as: 'organization',
-  // })
-  // subOrganizations;
-
-  // @belongsTo('organization', {
-  //   inverse: 'subOrganizations',
-  //   async: true,
-  //   polymorphic: true,
-  //   as: 'organization',
-  // })
-  // isSubOrganizationOf;
-
-  // @hasMany('organization', {
-  //   inverse: 'isAssociatedWith',
-  //   async: true,
-  //   polymorphic: true,
-  //   as: 'organization',
-  // })
-  // associatedOrganizations;
-
-  // @belongsTo('organization', {
-  //   inverse: 'associatedOrganizations',
-  //   async: true,
-  //   polymorphic: true,
-  //   as: 'organization',
-  // })
-  // isAssociatedWith;
-
-  // @hasMany('organization', {
-  //   inverse: 'wasFoundedByOrganizations',
-  //   async: true,
-  //   polymorphic: true,
-  //   as: 'organization',
-  // })
-  // foundedOrganizations;
-
-  // @hasMany('organization', {
-  //   inverse: 'foundedOrganizations',
-  //   async: true,
-  //   polymorphic: true,
-  //   as: 'organization',
-  // })
-  // wasFoundedByOrganizations;
-
-  @hasMany('organization', {
-    inverse: 'hasParticipants',
-    async: true,
-    polymorphic: true,
-    as: 'organization',
-  })
-  participatesIn;
-
-  @hasMany('organization', {
-    inverse: 'participatesIn',
-    async: true,
-    polymorphic: true,
-    as: 'organization',
-  })
-  hasParticipants;
-
   @belongsTo('kbo-organization', {
     inverse: 'organization',
     async: true,
@@ -180,14 +116,8 @@ export default class OrganizationModel extends AgentModel {
       resultedFrom: validateHasManyOptional(),
       changeEventResults: validateHasManyOptional(),
       positions: validateHasManyOptional(),
-      subOrganizations: validateHasManyOptional(),
-      isSubOrganizationOf: validateBelongsToOptional(),
-      associatedOrganizations: validateHasManyOptional(),
-      isAssociatedWith: validateBelongsToOptional(),
-      foundedOrganizations: validateHasManyOptional(),
-      wasFoundedByOrganizations: validateHasManyOptional(),
-      participatesIn: validateHasManyOptional(),
-      hasParticipants: validateHasManyOptional(),
+      membershipsOfOrganizations: validateHasManyOptional(),
+      memberships: validateHasManyOptional(),
       kboOrganization: validateBelongsToOptional(),
     });
   }
