@@ -10,22 +10,24 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
     organizationStatus: { refreshModel: true, replace: true },
   };
 
-  async model() {
+  async model(params) {
     const organization = this.modelFor('organizations.organization');
 
-    // TODO: move logic to somewhere else?
-    const memberships = await organization.memberships;
-    const membershipsOfOrganizations =
-      await organization.membershipsOfOrganizations;
+    // TODO: consider active organizations filter
+    const query = {
+      'filter[:or:][organization][:id:]': organization.id,
+      'filter[:or:][member][:id:]': organization.id,
+      include:
+        'member,member.classification,organization,organization.classification',
+      sort: params.sort,
+      page: { size: params.size, number: params.page },
+    };
 
-    const membershipsUnionMembershipsOfOrganizations = [
-      ...memberships,
-      ...membershipsOfOrganizations,
-    ];
+    const allMembershipRelations = await this.store.query('membership', query);
 
     return {
       organization,
-      membershipsUnionMembershipsOfOrganizations,
+      allMembershipRelations,
     };
   }
 }
