@@ -1,6 +1,5 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
 
-// TODO: check labels wrt tickets
 export const MEMBERSHIP_ROLES = [
   {
     id: '4ec7d5c39bdc4e84b4174379b9e22ad8',
