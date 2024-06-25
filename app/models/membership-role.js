@@ -36,6 +36,7 @@ export const MEMBERSHIP_ROLES_MAPPING = {
   },
 };
 
+// TODO: add validations
 export default class MembershipRoleModel extends Model {
   @attr('string') label;
 

@@ -1,5 +1,6 @@
 import Model, { belongsTo } from '@ember-data/model';
 
+// TODO: add validations?
 export default class MembershipModel extends Model {
   @belongsTo('organization', {
     inverse: 'membershipsOfOrganizations',
