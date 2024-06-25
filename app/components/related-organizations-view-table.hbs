@@ -21,75 +21,43 @@
 
   <t.content as |c|>
     <c.header>
-      {{! TODO: use [inverse]OpLabel }}
+      {{! TODO: use same grey colour as other headers}}
+      <th>Type relatie</th>
       <AuDataTableThSortable
-        @field="role.label"
-        @label="Type relatie"
-        @currentSorting={{@sort}}
-      />
-      {{! TODO: consider `member` relation as well when sorting }}
-      <AuDataTableThSortable
-        @field="organization.classification.label"
+        @field="classification.label"
         @label="Type organisatie"
         @currentSorting={{@sort}}
       />
       <AuDataTableThSortable
-        @field="organization.name"
+        @field="name"
         @label="Organisatie"
         @currentSorting={{@sort}}
       />
       <AuDataTableThSortable
-        @field="organization.organizationStatus.label"
+        @field="organizationStatus.label"
         @label="Status"
         @currentSorting={{@sort}}
       />
     </c.header>
 
-    {{! TODO: move conditional logic to controller?  }}
-    <c.body as |membership|>
+    <c.body as |organization|>
       <td>
-        {{#if (eq membership.organization.id @model.organization.id)}}
-          {{membership.role.inverseOpLabel}}
-        {{else}}
-          {{membership.role.opLabel}}
-        {{/if}}
+        {{! TODO: create helper to determine correct membership and role}}
+        {{@model.organization.membershipsOfOrganzations.role.label}}
       </td>
       <td>
-        {{#if (eq membership.organization.id @model.organization.id)}}
-          {{membership.member.classification.label}}
-        {{else}}
-          {{membership.organization.classification.label}}
-        {{/if}}
+        {{organization.classification.label}}
       </td>
       <td>
-        {{#if (eq membership.organization.id @model.organization.id)}}
-          <AuLink
-            @route="organizations.organization"
-            @model={{membership.member.id}}
-          >
-            {{membership.member.abbName}}
-          </AuLink>
-        {{else}}
-          <AuLink
-            @route="organizations.organization"
-            @model={{membership.organization.id}}
-          >
-            {{membership.organization.abbName}}
-          </AuLink>
-        {{/if}}
+        <AuLink @route="organizations.organization" @model={{organization.id}}>
+          {{organization.abbName}}
+        </AuLink>
       </td>
       <td>
-        {{#if (eq membership.organization.id @model.organization.id)}}
-          <OrganizationStatus
-            @id={{membership.member.organizationStatus.id}}
-            @label={{membership.member.organizationStatus.label}}
-          />
-        {{else}}
-          <OrganizationStatus
-            @id={{membership.organization.organizationStatus.id}}
-            @label={{membership.organization.organizationStatus.label}}
-          />
-        {{/if}}
+        <OrganizationStatus
+          @id={{organization.organizationStatus.id}}
+          @label={{organization.organizationStatus.label}}
+        />
       </td>
     </c.body>
   </t.content>
