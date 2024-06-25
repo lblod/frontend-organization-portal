@@ -1,5 +1,5 @@
 <AuDataTable
-  @content={{@model.allMembershipRelations}}
+  @content={{@model.relatedOrganizations}}
   @sort={{@sort}}
   @page={{@page}}
   @size={{@size}}
@@ -43,7 +43,7 @@
     <c.body as |organization|>
       <td>
         {{! TODO: create helper to determine correct membership and role}}
-        {{@model.organization.membershipsOfOrganzations.role.label}}
+        {{find-membership-role @model.organization organization}}
       </td>
       <td>
         {{organization.classification.label}}
