@@ -7,7 +7,6 @@
   @noDataMessage={{or @noDataMessage "Geen organisatie"}}
   as |t|
 >
-
   <t.menu as |menu|>
     <menu.general>
       <div class="au-o-box">
@@ -42,8 +41,8 @@
 
     <c.body as |organization|>
       <td>
-        {{! TODO: create helper to determine correct membership and role}}
-        {{find-membership-role @model.organization organization}}
+        {{! TODO: format better, add some new lines?}}
+        {{get-memberships-role-labels @model.organization organization}}
       </td>
       <td>
         {{organization.classification.label}}

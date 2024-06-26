@@ -20,7 +20,14 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       'filter[organization-status][:id:]': params.organizationStatus
         ? '63cc561de9188d64ba5840a42ae8f0d6' // active
         : undefined,
-      include: 'memberships.role,memberships-of-organizations.role',
+      include: [
+        'memberships.role',
+        'memberships.member',
+        'memberships.organization',
+        'memberships-of-organizations.role',
+        'memberships-of-organizations.member',
+        'memberships-of-organizations.organization',
+      ].join(),
       sort: params.sort,
       page: { size: params.size, number: params.page },
     };
