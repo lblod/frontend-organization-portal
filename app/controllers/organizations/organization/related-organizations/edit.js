@@ -55,6 +55,11 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     // TODO: update diff log
   }
 
+  @action
+  updateRelationTypes() {
+    // TODO: implement
+  }
+
   @dropTask
   *save(event) {
     event.preventDefault();
