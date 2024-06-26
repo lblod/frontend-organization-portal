@@ -1,26 +1,28 @@
 <div>
-  <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
-    {{or @label "Heeft relatie met"}}
-  </AuHeading>
-
-  {{#unless @model.isCentralWorshipService}}
-    {{@model.organization.error.hasParticipants.message}}
-    {{#if @model.organization.error.hasParticipants.message}}
-      <div>
-        <AuHelpText
-          @error={{true}}
-        >{{@model.organization.error.hasParticipants.message}}</AuHelpText>
-      </div>
-    {{/if}}
-  {{/unless}}
-
   <AuDataTable
-    @content={{@elements}}
+    @content={{@content}}
+    @sort={{@sort}}
+    @page={{@page}}
+    @size={{@size}}
+    @isLoading={{@isLoading}}
     @noDataMessage={{or @noDataMessage "Geen organisatie"}}
     as |t|
   >
+    <t.menu as |menu|>
+      <menu.general>
+        <div class="au-o-box">
+          <AuToggleSwitch
+            @label="Verberg niet actieve organisaties"
+            @checked={{@organizationStatus}}
+          />
+        </div>
+      </menu.general>
+    </t.menu>
+
     <t.content as |c|>
       <c.header>
+        {{! TODO: use same grey colour as other headers}}
+        <th>Type relatie</th>
         <AuDataTableThSortable
           @field="classification.label"
           @label="Type organisatie"
@@ -38,12 +40,14 @@
         />
         <th></th>
       </c.header>
+
       <c.body as |organization|>
         <td>
-          {{organization.classification.label}}
+          {{! TODO: improve formatting  }}
+          {{get-memberships-role-labels @model.organization organization}}
         </td>
         <td>
-          {{#if @model.isCentralWorshipService}}
+          {{#if @model.isWorshipAdministrativeUnit}}
             <WorshipServiceSelect
               @selected={{organization}}
               @onChange={{fn @updateRelatedOrganization organization}}
@@ -53,9 +57,13 @@
             <OrganizationSelect
               @selected={{organization}}
               @onChange={{fn @updateRelatedOrganization organization}}
-              @classificationCodes={{@model.participantClassifications}}
+              {{! TODO: correctly limit based on relation and organization type  }}
+              @classificationCodes={{@model.organization.participantClassifications}}
             />
           {{/if}}
+        </td>
+        <td>
+          {{organization.abbName}}
         </td>
         <td>
           <OrganizationStatus

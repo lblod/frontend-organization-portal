@@ -3,84 +3,68 @@ import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { A } from '@ember/array';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditController extends Controller {
   @service router;
   @service store;
 
-  get hasValidationErrors() {
-    return this.model.organization.error;
-  }
-
-  queryParams = ['sort'];
+  queryParams = ['sort', 'page', 'size', 'organizationStatus'];
 
   @tracked sort = 'name';
   @tracked page = 0;
   @tracked size = 25;
+  @tracked organizationStatus = true;
 
-  @action
-  addNewSubOrganization() {
-    let subOrganization = this.store.createRecord('administrative-unit');
-    this.model.subOrganizations.push(subOrganization);
+  @tracked relatedOrganizations;
+
+  get hasValidationErrors() {
+    return this.model.organization.error;
   }
 
-  @action
-  updateSubOrganization(removedOrganization, addedOrganization) {
-    this.removeSubOrganization(removedOrganization);
-    this.model.subOrganizations.push(addedOrganization);
-  }
-
-  @action
-  removeSubOrganization(organization) {
-    const index = this.model.subOrganizations.indexOf(organization);
-    if (index > -1) {
-      this.model.subOrganizations.splice(index, 1);
+  setup() {
+    if (!this.relatedOrganizations) {
+      // Note: use EmberArray since this variable is tracked
+      this.relatedOrganizations = A(
+        this.model.relatedOrganizations.map((e) => e)
+      );
+    }
+    if (this.relatedOrganizations.length === 0) {
+      this.addRelatedOrganization();
     }
   }
 
   @action
-  updateRelatedOrg(orgs) {
-    if (Array.isArray(orgs)) {
-      this.model.organization.isSubOrganizationOf = orgs[0];
-      this.model.organization.wasFoundedByOrganizations = orgs;
-    } else {
-      this.model.organization.isSubOrganizationOf = orgs;
-      this.model.organization.wasFoundedByOrganizations = orgs ? [orgs] : [];
-    }
+  addRelatedOrganization() {
+    let organization = this.store.createRecord('organization');
+    this.relatedOrganizations.pushObject(organization);
+    // TODO: update diff
   }
 
   @action
-  updateRelatedSubOrg(subOrg) {
-    this.model.organization.isAssociatedWith = subOrg;
+  removeRelatedOrganization(organization) {
+    // TODO: do not remove if membership concerns founding
+    this.relatedOrganizations.removeObject(organization);
+    // TODO: update diff log
   }
 
   @action
-  addNewHasParticipants() {
-    let organization = this.store.createRecord('administrative-unit');
-    this.model.hasParticipants.push(organization);
-  }
-
-  @action
-  updateHasParticipants(removedOrganization, addedOrganization) {
-    this.removeHasParticipants(removedOrganization);
-    this.model.hasParticipants.push(addedOrganization);
-  }
-
-  @action
-  removeHasParticipants(organization) {
-    const index = this.model.hasParticipants.indexOf(organization);
-    if (index > -1) {
-      this.model.hasParticipants.splice(index, 1);
-    }
+  updateRelatedOrganization(removedOrganization, organization) {
+    this.removeRelatedOrganization(removedOrganization);
+    this.relatedOrganizations.pushObject(organization);
+    // TODO: update diff log
   }
 
   @dropTask
   *save(event) {
     event.preventDefault();
 
-    let { organization, subOrganizations, hasParticipants } = this.model;
-    organization.subOrganizations = subOrganizations;
-    organization.hasParticipants = hasParticipants;
+    let organization = this.model.organization;
+    // let { organization, subOrganizations, hasParticipants } = this.model;
+    // organization.subOrganizations = subOrganizations;
+    // organization.hasParticipants = hasParticipants;
+
+    // TODO: update all the memberships and memberships-of-organizations of the necessary organizations
 
     yield organization.validate({ relaxMandatoryFoundingOrganization: true });
 

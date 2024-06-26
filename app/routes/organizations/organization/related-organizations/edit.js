@@ -8,6 +8,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
 
   queryParams = {
     sort: { refreshModel: true },
+    page: { refreshModel: true },
+    organizationStatus: { refreshModel: true, replace: true },
   };
 
   beforeModel() {
@@ -18,26 +20,39 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
     }
   }
 
-  async model() {
-    const { id: organizationId } = this.paramsFor('organizations.organization');
+  async model(params) {
+    const organization = this.modelFor('organizations.organization');
 
-    const organization = await this.store.findRecord(
-      'organization',
-      organizationId,
-      {
-        reload: true,
-        include: 'organization-status,was-founded-by-organizations',
-      }
-    );
+    const query = {
+      'filter[:or:][memberships][member][:id:]': organization.id,
+      'filter[:or:][memberships-of-organizations][organization][:id:]':
+        organization.id,
+      'filter[organization-status][:id:]': params.organizationStatus
+        ? '63cc561de9188d64ba5840a42ae8f0d6' // active
+        : undefined,
+      include: [
+        'memberships.role',
+        'memberships.member',
+        'memberships.organization',
+        'memberships-of-organizations.role',
+        'memberships-of-organizations.member',
+        'memberships-of-organizations.organization',
+      ].join(),
+      sort: params.sort,
+      page: { size: params.size, number: params.page },
+    };
 
-    const subOrganizations = await organization.subOrganizations;
-    const hasParticipants = await organization.hasParticipants;
+    const relatedOrganizations = await this.store.query('organization', query);
 
     return {
       organization,
-      subOrganizations,
-      hasParticipants,
+      relatedOrganizations,
     };
+  }
+
+  setupController(controller, model) {
+    super.setupController(...arguments);
+    controller.setup(model);
   }
 
   resetController(controller) {
