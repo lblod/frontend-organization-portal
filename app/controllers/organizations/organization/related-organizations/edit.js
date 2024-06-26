@@ -3,88 +3,102 @@ import { dropTask } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { A } from '@ember/array';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditController extends Controller {
   @service router;
   @service store;
 
-  get hasValidationErrors() {
-    return this.model.organization.error;
-  }
+  queryParams = ['page', 'size'];
 
-  queryParams = ['sort'];
-
-  @tracked sort = 'name';
   @tracked page = 0;
-  @tracked size = 25;
+  @tracked size = 500;
 
-  @action
-  addNewSubOrganization() {
-    let subOrganization = this.store.createRecord('administrative-unit');
-    this.model.subOrganizations.push(subOrganization);
+  @tracked memberships;
+
+  get hasValidationErrors() {
+    return this.memberships.some((membership) => membership.error);
   }
 
-  @action
-  updateSubOrganization(removedOrganization, addedOrganization) {
-    this.removeSubOrganization(removedOrganization);
-    this.model.subOrganizations.push(addedOrganization);
-  }
-
-  @action
-  removeSubOrganization(organization) {
-    const index = this.model.subOrganizations.indexOf(organization);
-    if (index > -1) {
-      this.model.subOrganizations.splice(index, 1);
+  setup() {
+    if (!this.memberships) {
+      // Note: use EmberArray since this variable is tracked
+      this.memberships = A(this.model.memberships.map((e) => e));
+    }
+    if (this.memberships.length === 0) {
+      this.addMembership();
     }
   }
 
   @action
-  updateRelatedOrg(orgs) {
-    if (Array.isArray(orgs)) {
-      this.model.organization.isSubOrganizationOf = orgs[0];
-      this.model.organization.wasFoundedByOrganizations = orgs;
-    } else {
-      this.model.organization.isSubOrganizationOf = orgs;
-      this.model.organization.wasFoundedByOrganizations = orgs ? [orgs] : [];
+  addMembership() {
+    let membership = this.store.createRecord('membership');
+    this.memberships.pushObject(membership);
+  }
+
+  @action
+  removeMembership(membership) {
+    // TODO: display warning when membership concerns founding
+    membership.deleteRecord();
+  }
+
+  @action
+  updateMembershipRole(membership, roleLabel) {
+    // Remove any previously assigned relations
+    membership.member = null;
+    membership.organization = null;
+
+    // Find the role model matching the label
+    // Note: this assumes that the labels are unique for each membership role
+    const roleModel = this.model.roles.find(
+      (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel
+    );
+    membership.role = roleModel;
+
+    // (Re-)assign the active organisation to the appropriate relation
+    // Note: when the label and inverse label are identical, this prioritises
+    // setting the active organisation as member
+    if (roleLabel === roleModel.opLabel) {
+      membership.member = this.model.organization;
+    } else if (roleLabel === roleModel.inverseOpLabel) {
+      membership.organization = this.model.organization;
     }
   }
 
   @action
-  updateRelatedSubOrg(subOrg) {
-    this.model.organization.isAssociatedWith = subOrg;
+  displayRoleLabel(membership) {
+    return membership.getRoleLabelForPerspective(this.model.organization);
   }
 
-  @action
-  addNewHasParticipants() {
-    let organization = this.store.createRecord('administrative-unit');
-    this.model.hasParticipants.push(organization);
-  }
+  get roleOptions() {
+    const result = new Set();
+    this.model.roles.forEach((role) => {
+      result.add(role.opLabel);
+      result.add(role.inverseOpLabel);
+    });
 
-  @action
-  updateHasParticipants(removedOrganization, addedOrganization) {
-    this.removeHasParticipants(removedOrganization);
-    this.model.hasParticipants.push(addedOrganization);
-  }
-
-  @action
-  removeHasParticipants(organization) {
-    const index = this.model.hasParticipants.indexOf(organization);
-    if (index > -1) {
-      this.model.hasParticipants.splice(index, 1);
-    }
+    return Array.from(result);
   }
 
   @dropTask
   *save(event) {
     event.preventDefault();
 
-    let { organization, subOrganizations, hasParticipants } = this.model;
-    organization.subOrganizations = subOrganizations;
-    organization.hasParticipants = hasParticipants;
+    let organization = this.model.organization;
 
-    yield organization.validate({ relaxMandatoryFoundingOrganization: true });
+    yield organization.validate();
+
+    let validationPromises = this.memberships.map((membership) =>
+      membership.validate()
+    );
+    yield Promise.all(validationPromises);
 
     if (!this.hasValidationErrors) {
+      let savePromises = this.memberships.map((membership) => {
+        membership.save();
+      });
+      yield Promise.all(savePromises);
+
       yield organization.save();
 
       this.router.transitionTo(
@@ -96,5 +110,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   reset() {
     this.model.organization.reset();
+    this.memberships = null;
   }
 }

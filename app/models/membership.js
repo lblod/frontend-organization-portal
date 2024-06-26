@@ -1,7 +1,12 @@
-import Model, { belongsTo } from '@ember-data/model';
+import { belongsTo } from '@ember-data/model';
+import AbstractValidationModel from './abstract-validation-model';
+import Joi from 'joi';
+import {
+  validateBelongsToOptional,
+  validateBelongsToRequired,
+} from '../validators/schema';
 
-// TODO: add validations?
-export default class MembershipModel extends Model {
+export default class MembershipModel extends AbstractValidationModel {
   @belongsTo('organization', {
     inverse: 'membershipsOfOrganizations',
     async: true,

@@ -4,13 +4,13 @@ import Joi from 'joi';
 import {
   validateBelongsToOptional,
   validateHasManyOptional,
-  validateRequiredWhenClassificationId,
+  // validateRequiredWhenClassificationId,
 } from '../validators/schema';
 import {
   AgbCodeList,
   ApbCodeList,
   AssistanceZoneCodeList,
-  CentralWorshipServiceCodeList,
+  // CentralWorshipServiceCodeList,
   DistrictCodeList,
   IGSCodeList,
   MunicipalityCodeList,
@@ -18,7 +18,7 @@ import {
   OCMWCodeList,
   PoliceZoneCodeList,
   ProvinceCodeList,
-  WorshipServiceCodeList,
+  // WorshipServiceCodeList,
   PevaMunicipalityCodeList,
   PevaProvinceCodeList,
 } from '../constants/Classification';
@@ -62,7 +62,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   scope;
 
   get validationSchema() {
-    const REQUIRED_MESSAGE = 'Selecteer een optie';
+    // const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({
       locatedWithin: validateBelongsToOptional(),
       governingBodies: validateHasManyOptional(),
@@ -71,57 +71,57 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       scope: validateBelongsToOptional(),
       kboOrganization: validateBelongsToOptional(),
       // TODO: modify to new membership relation validation
-      isAssociatedWith: validateRequiredWhenClassificationId(
-        [
-          ...WorshipServiceCodeList,
-          ...CentralWorshipServiceCodeList,
-          ...ApbCodeList,
-        ],
-        REQUIRED_MESSAGE
-      ),
-      hasParticipants: validateRequiredWhenClassificationId(
-        IGSCodeList,
-        REQUIRED_MESSAGE
-      ),
-      wasFoundedByOrganizations: Joi.when(
-        // Note: For OCMW associations and PEVAs a founding organisation is
-        // normally mandatory. But the available business data when onboarding
-        // them was incomplete in this respect. Therefore, we opted to relax
-        // this rule for the OCMW associations and PEVAs imported during the
-        // onboarding. The `relaxMandatoryFoundingOrganization` option allows us
-        // to specify that a founding organisation is not mandatory in, for
-        // example, the edit core data form. Otherwise, the form validation
-        // would prevent editing the core data of the imported organisations due
-        // to the lack of founding organisation.
-        Joi.ref('$relaxMandatoryFoundingOrganization'),
-        {
-          is: Joi.exist().valid(true),
-          then: validateRequiredWhenClassificationId(
-            [...AgbCodeList, ...ApbCodeList],
-            REQUIRED_MESSAGE
-          ),
-          otherwise: validateRequiredWhenClassificationId(
-            [
-              ...AgbCodeList,
-              ...ApbCodeList,
-              ...OcmwAssociationCodeList,
-              ...PevaMunicipalityCodeList,
-              ...PevaProvinceCodeList,
-            ],
-            REQUIRED_MESSAGE
-          ),
-        }
-      ),
-      isSubOrganizationOf: validateRequiredWhenClassificationId(
-        [
-          ...AgbCodeList,
-          ...ApbCodeList,
-          ...IGSCodeList,
-          ...PoliceZoneCodeList,
-          ...AssistanceZoneCodeList,
-        ],
-        REQUIRED_MESSAGE
-      ),
+      // isAssociatedWith: validateRequiredWhenClassificationId(
+      //   [
+      //     ...WorshipServiceCodeList,
+      //     ...CentralWorshipServiceCodeList,
+      //     ...ApbCodeList,
+      //   ],
+      //   REQUIRED_MESSAGE
+      // ),
+      // hasParticipants: validateRequiredWhenClassificationId(
+      //   IGSCodeList,
+      //   REQUIRED_MESSAGE
+      // ),
+      // wasFoundedByOrganizations: Joi.when(
+      //   // Note: For OCMW associations and PEVAs a founding organisation is
+      //   // normally mandatory. But the available business data when onboarding
+      //   // them was incomplete in this respect. Therefore, we opted to relax
+      //   // this rule for the OCMW associations and PEVAs imported during the
+      //   // onboarding. The `relaxMandatoryFoundingOrganization` option allows us
+      //   // to specify that a founding organisation is not mandatory in, for
+      //   // example, the edit core data form. Otherwise, the form validation
+      //   // would prevent editing the core data of the imported organisations due
+      //   // to the lack of founding organisation.
+      //   Joi.ref('$relaxMandatoryFoundingOrganization'),
+      //   {
+      //     is: Joi.exist().valid(true),
+      //     then: validateRequiredWhenClassificationId(
+      //       [...AgbCodeList, ...ApbCodeList],
+      //       REQUIRED_MESSAGE
+      //     ),
+      //     otherwise: validateRequiredWhenClassificationId(
+      //       [
+      //         ...AgbCodeList,
+      //         ...ApbCodeList,
+      //         ...OcmwAssociationCodeList,
+      //         ...PevaMunicipalityCodeList,
+      //         ...PevaProvinceCodeList,
+      //       ],
+      //       REQUIRED_MESSAGE
+      //     ),
+      //   }
+      // ),
+      // isSubOrganizationOf: validateRequiredWhenClassificationId(
+      //   [
+      //     ...AgbCodeList,
+      //     ...ApbCodeList,
+      //     ...IGSCodeList,
+      //     ...PoliceZoneCodeList,
+      //     ...AssistanceZoneCodeList,
+      //   ],
+      //   REQUIRED_MESSAGE
+      // ),
       expectedEndDate: Joi.when('classification.id', {
         is: Joi.exist().valid(...IGSCodeList),
         then: Joi.date()

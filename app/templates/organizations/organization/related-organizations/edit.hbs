@@ -33,89 +33,23 @@
       aria-label="edit-core-info-form"
       {{on "submit" (perform this.save)}}
     >
+
       <div class="au-o-flow au-o-flow--large">
-        {{#if
-          (or
-            @model.organization.isWorshipService
-            @model.organization.isCentralWorshipService
-            @model.organization.isMunicipality
-            @model.organization.isOCMW
-            @model.organization.isIgs
-            @model.organization.isPoliceZone
-            @model.organization.isAssistanceZone
-          )
-        }}
-          <RelatedOrganizationsEditCard @model={{@model.organization}} />
-        {{/if}}
-
-        {{#if (or @model.organization.isApb @model.organization.isAgb)}}
-          <RelatedOrganizationsEditCard
-            @model={{@model.organization}}
-            @updateRelatedOrg={{this.updateRelatedOrg}}
-            @updateRelatedSubOrg={{this.updateRelatedSubOrg}}
-          />
-        {{/if}}
-
-        {{#if @model.organization.isCentralWorshipService}}
-          <RelatedOrganizationsEditTable
-            @model={{@model.organization}}
-            @elements={{@model.subOrganizations}}
-            @addRelatedOrganization={{this.addNewSubOrganization}}
-            @updateRelatedOrganization={{this.updateSubOrganization}}
-            @removeRelatedOrganization={{this.removeSubOrganization}}
-            @sort={{this.sort}}
-            id="central-worship-service-sub-organizations"
-          />
-        {{/if}}
-
-        {{#if
-          (or
-            @model.organization.isIgs
-            @model.organization.isOcmwAssociation
-            @model.organization.isPevaMunicipality
-            @model.organization.isPevaProvince
-          )
-        }}
-          <RelatedOrganizationsEditTable
-            @model={{@model.organization}}
-            @elements={{@model.hasParticipants}}
-            @label="Heeft als participanten"
-            @addRelatedOrganization={{this.addNewHasParticipants}}
-            @updateRelatedOrganization={{this.updateHasParticipants}}
-            @removeRelatedOrganization={{this.removeHasParticipants}}
-            @sort={{this.sort}}
-            id="edit-participants"
-          />
-        {{/if}}
-
-        {{#if
-          (or
-            @model.organization.isMunicipality
-            @model.organization.isOcmwAssociation
-            @model.organization.isPevaMunicipality
-            @model.organization.isPevaProvince
-          )
-        }}
-          <RelatedOrganizations
-            @elements={{@model.organization.foundedOrganizations}}
-            @label="Heeft relatie met"
-            id="view-founded-organizations"
-            @sort={{this.sort}}
-            @page={{this.page}}
-            @size={{this.size}}
-          />
-        {{/if}}
-
-        {{#if (or @model.organization.isApb @model.organization.isAgb)}}
-          <RelatedOrganizations
-            @elements={{@model.subOrganizations}}
-            @label="Heeft relatie met"
-            id="view-sub-organizations"
-            @sort={{this.sort}}
-            @page={{this.page}}
-            @size={{this.size}}
-          />
-        {{/if}}
+        {{! TODO: rename component to MembershipsEditTable }}
+        <RelatedOrganizationsEditTable
+          @model={{@model}}
+          @content={{this.memberships}}
+          @organizationStatus={{this.organizationStatus}}
+          @sort={{this.sort}}
+          @page={{this.page}}
+          @size={{this.size}}
+          @addRelatedOrganization={{this.addMembership}}
+          @removeRelatedOrganization={{this.removeMembership}}
+          @updateMembershipRole={{this.updateMembershipRole}}
+          @displayRoleLabel={{this.displayRoleLabel}}
+          @roleOptions={{this.roleOptions}}
+          id="edit-related-organizations"
+        />
       </div>
     </form>
   </div>

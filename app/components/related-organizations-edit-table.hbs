@@ -1,67 +1,124 @@
-<div>
-  <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
-    {{or @label "Heeft relatie met"}}
-  </AuHeading>
-
-  {{#unless @model.isCentralWorshipService}}
-    {{@model.organization.error.hasParticipants.message}}
-    {{#if @model.organization.error.hasParticipants.message}}
-      <div>
-        <AuHelpText
-          @error={{true}}
-        >{{@model.organization.error.hasParticipants.message}}</AuHelpText>
+<AuDataTable
+  @content={{@content}}
+  @sort={{@sort}}
+  @page={{@page}}
+  @size={{@size}}
+  @isLoading={{@isLoading}}
+  @noDataMessage={{or @noDataMessage "Geen organisatie"}}
+  as |t|
+>
+  <t.menu as |menu|>
+    <menu.general>
+      <div class="au-o-box">
+        <MembershipRoleSelect
+          @options={{@model.roles}}
+          @selected={{@selectedRole}}
+          @onChange={{fn (mut @selectedRole)}}
+          @allowClear={{true}}
+        />
       </div>
-    {{/if}}
-  {{/unless}}
+    </menu.general>
+  </t.menu>
 
-  <AuDataTable
-    @content={{@elements}}
-    @noDataMessage={{or @noDataMessage "Geen organisatie"}}
-    as |t|
-  >
-    <t.content as |c|>
-      <c.header>
-        <AuDataTableThSortable
-          @field="classification.label"
-          @label="Type organisatie"
-          @currentSorting={{@sort}}
-        />
-        <AuDataTableThSortable
-          @field="name"
-          @label="Organisatie"
-          @currentSorting={{@sort}}
-        />
-        <AuDataTableThSortable
-          @field="organizationStatus.label"
-          @label="Status"
-          @currentSorting={{@sort}}
-        />
-        <th></th>
-      </c.header>
-      <c.body as |organization|>
+  <t.content as |c|>
+    <c.header>
+      <th>Type relatie</th>
+      <th>Type organisatie</th>
+      <th>Organisatie</th>
+      <th>Status</th>
+      <th></th>
+    </c.header>
+
+    <c.body as |membership|>
+      {{#unless membership.isDeleted}}
         <td>
-          {{organization.classification.label}}
+          {{#let membership.error.role.message as |errorMessage|}}
+            <MembershipRoleSelect
+              @disabled={{not membership.isNew}}
+              @selected={{(fn @displayRoleLabel membership)}}
+              @options={{@model.roles}}
+              @onChange={{(fn @updateMembershipRole membership)}}
+              @error={{errorMessage}}
+              @id="membership-role"
+            />
+            {{#if errorMessage}}
+              <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+            {{/if}}
+          {{/let}}
         </td>
+        {{! TODO: get rid of conditionals and duplication here}}
         <td>
-          {{#if @model.isCentralWorshipService}}
-            <WorshipServiceSelect
-              @selected={{organization}}
-              @onChange={{fn @updateRelatedOrganization organization}}
-              id="related-worship-service"
-            />
+          {{#if (eq membership.member.id @model.organization.id)}}
+            {{membership.organization.classification.label}}
           {{else}}
-            <OrganizationSelect
-              @selected={{organization}}
-              @onChange={{fn @updateRelatedOrganization organization}}
-              @classificationCodes={{@model.participantClassifications}}
-            />
+            {{membership.member.classification.label}}
           {{/if}}
         </td>
         <td>
-          <OrganizationStatus
-            @id={{organization.organizationStatus.id}}
-            @label={{organization.organizationStatus.label}}
-          />
+          {{#if (eq membership.member.id @model.organization.id)}}
+            {{#let membership.error.organization.message as |errorMessage|}}
+              {{#if @model.isWorshipAdministrativeUnit}}
+                <WorshipServiceSelect
+                  @disabled={{not (and membership.role membership.isNew)}}
+                  @selected={{membership.organization}}
+                  @onChange={{fn (mut membership.organization)}}
+                  @error={{errorMessage}}
+                  id="related-worship-service"
+                />
+              {{else}}
+                <OrganizationSelect
+                  @disabled={{not (and membership.role membership.isNew)}}
+                  @selected={{membership.organization}}
+                  @error={{errorMessage}}
+                  @onChange={{fn (mut membership.organization)}}
+                  @classificationCodes={{(@model.organization.getClassificationCodesForMembership
+                    membership
+                  )}}
+                />
+              {{/if}}
+              {{#if errorMessage}}
+                <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+              {{/if}}
+            {{/let}}
+          {{else}}
+            {{#let membership.error.member.message as |errorMessage|}}
+              {{#if @model.isWorshipAdministrativeUnit}}
+                <WorshipServiceSelect
+                  @disabled={{not (and membership.role membership.isNew)}}
+                  @selected={{membership.member}}
+                  @onChange={{fn (mut membership.member)}}
+                  @error={{errorMessage}}
+                  id="related-worship-service"
+                />
+              {{else}}
+                <OrganizationSelect
+                  @disabled={{not (and membership.role membership.isNew)}}
+                  @selected={{membership.member}}
+                  @onChange={{fn (mut membership.member)}}
+                  @error={{errorMessage}}
+                  @classificationCodes={{(@model.organization.getClassificationCodesForMembership
+                    membership
+                  )}}
+                />
+              {{/if}}
+              {{#if errorMessage}}
+                <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+              {{/if}}
+            {{/let}}
+          {{/if}}
+        </td>
+        <td>
+          {{#if (eq membership.member.id @model.organization.id)}}
+            <OrganizationStatus
+              @id={{membership.organization.organizationStatus.id}}
+              @label={{membership.organization.organizationStatus.label}}
+            />
+          {{else}}
+            <OrganizationStatus
+              @id={{membership.member.organizationStatus.id}}
+              @label={{membership.member.organizationStatus.label}}
+            />
+          {{/if}}
         </td>
         <td>
           <AuButton
@@ -69,24 +126,24 @@
             @icon="bin"
             @iconAlignment="left"
             @skin="link"
-            {{on "click" (fn @removeRelatedOrganization organization)}}
+            {{on "click" (fn @removeRelatedOrganization membership)}}
           >
             Verwijder
           </AuButton>
         </td>
-      </c.body>
-    </t.content>
-  </AuDataTable>
+      {{/unless}}
+    </c.body>
+  </t.content>
+</AuDataTable>
 
-  <div class="au-o-box au-o-box--small">
-    <AuButton
-      @skin="secondary"
-      @width="block"
-      @icon="add"
-      @iconAlignment="left"
-      {{on "click" @addRelatedOrganization}}
-    >
-      Voeg nieuwe gerelateerde organisatie toe
-    </AuButton>
-  </div>
+<div class="au-o-box au-o-box--small">
+  <AuButton
+    @skin="secondary"
+    @width="block"
+    @icon="add"
+    @iconAlignment="left"
+    {{on "click" @addRelatedOrganization}}
+  >
+    Voeg nieuwe gerelateerde organisatie toe
+  </AuButton>
 </div>

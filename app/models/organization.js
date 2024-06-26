@@ -1,4 +1,5 @@
 import { attr, hasMany, belongsTo } from '@ember-data/model';
+import { action } from '@ember/object';
 import AgentModel from './agent';
 import Joi from 'joi';
 import {
@@ -7,6 +8,7 @@ import {
   validateHasManyOptional,
   validateStringOptional,
 } from '../validators/schema';
+import getOppositeClassifications from '../constants/memberships';
 
 export default class OrganizationModel extends AgentModel {
   @attr name;
@@ -140,5 +142,22 @@ export default class OrganizationModel extends AgentModel {
 
   _hasClassificationId(classificationIds) {
     return classificationIds.includes(this.classification?.get('id'));
+  }
+
+  /**
+   * Get the list of organization's classification codes which can have the
+   * given membership relation with this organization. The direction of the
+   * membership relation is determined based on whether this organization acts
+   * as member or organization in the provided membership.
+   * @param {{@link MembershipModel}} membership - The membership for which to
+   *     determine the appropriate classification codes.
+   * @returns {[string]} A list of classifications codes specifying the kinds of
+   *     organizations that are allowed to act as the other organization in the
+   *     membership with this organization. If this organization is not involved
+   *     in the provided membership, the result is an empty list.
+   */
+  @action
+  getClassificationCodesForMembership(membership) {
+    return getOppositeClassifications(membership, this);
   }
 }
