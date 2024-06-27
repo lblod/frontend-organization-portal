@@ -56,7 +56,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   }
 
   @action
-  updateRelationTypes() {
+  updateMembershipRoles() {
     // TODO: implement
   }
 
@@ -85,5 +85,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   reset() {
     this.model.organization.reset();
+    this.relatedOrganizations = null;
   }
 }

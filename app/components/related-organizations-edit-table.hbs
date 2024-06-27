@@ -43,17 +43,15 @@
 
       <c.body as |organization|>
         <td>
-          {{! TODO: add options based on type of selected organization }}
           <MembershipRoleMultipleSelect
             @selectedMembershipRoles={{get-memberships-role-labels
               @model.organization
               organization
             }}
-            @onChange={{@updateRelationTypes}}
-            as |type|
-          >
-            {{type}}
-          </MembershipRoleMultipleSelect>
+            @onChange={{@updateMembershipRoles}}
+            @options={{@model.roles}}
+            @id="membership-roles"
+          />
         </td>
         <td>
           {{#if @model.isWorshipAdministrativeUnit}}
@@ -66,7 +64,7 @@
             <OrganizationSelect
               @selected={{organization}}
               @onChange={{fn @updateRelatedOrganization organization}}
-              {{! TODO: correctly limit based on relation and organization type }}
+              {{! TODO: correctly limit based on organization classification and any selected membership type}}
               @classificationCodes={{@model.organization.participantClassifications}}
             />
           {{/if}}

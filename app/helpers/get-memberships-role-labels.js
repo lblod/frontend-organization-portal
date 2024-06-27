@@ -24,8 +24,7 @@ export default function getMembershipsRoleLabels(
         membership.organization.id === organization.id &&
         membership.member.id === relatedOrganization.id
       ) {
-        const label = membership.role.get('inverseOpLabel');
-        labels.push(label);
+        labels.push(membership.getRoleLabel(true));
       }
     });
 
@@ -37,8 +36,7 @@ export default function getMembershipsRoleLabels(
         membership.member.id === organization.id &&
         membership.organization.id === relatedOrganization.id
       ) {
-        const label = membership.role.get('opLabel');
-        labels.push(label);
+        labels.push(membership.getRoleLabel());
       }
     });
 

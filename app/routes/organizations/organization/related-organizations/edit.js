@@ -44,9 +44,16 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
 
     const relatedOrganizations = await this.store.query('organization', query);
 
+    // TODO: retrieve in component instead
+    let roles = await this.store.findAll('membership-role');
+    // Limit to membership roles concerning related organizations, excluding
+    // the roles concerning positions
+    roles = roles.filter((role) => role.opLabel);
+
     return {
       organization,
       relatedOrganizations,
+      roles,
     };
   }
 

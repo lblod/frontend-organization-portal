@@ -29,4 +29,19 @@ export default class MembershipModel extends Model {
     async: true,
   })
   during;
+
+  /**
+   * Get the label of the role as it should be read from the perspective of
+   * either the member or organization. For example, a participation membership
+   * from the member perspective should result in 'Participeert in', while from
+   * the organization perspective it is 'Heeft als participanten'.
+   * @param {*} member - A truthy value means taking the member perspective.
+   * @returns {string} The role label as read from the specified perspective.
+   */
+  getRoleLabel(member) {
+    if (member) {
+      return this.role.get('inverseOpLabel');
+    }
+    return this.role.get('opLabel');
+  }
 }

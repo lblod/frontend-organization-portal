@@ -1,17 +1,23 @@
 <div class={{if @error "ember-power-select--error"}}>
   <PowerSelectMultiple
-    @searchEnabled={{or @searchEnabled true}}
+    @searchEnabled={{false}}
     @allowClear={{or @allowClear true}}
     @searchField="label"
     @loadingMessage="Aan het laden..."
     @noMatchesMessage="Geen resultaten"
     @searchMessage="Typ om te zoeken"
-    @options={{@membershipRoles}}
+    @options={{@options}}
     @selected={{@selectedMembershipRoles}}
     @onChange={{@onChange}}
     @triggerId={{@id}}
     as |type|
   >
-    {{type}}
+    {{! TODO: list option labels in both directions }}
+    {{! TODO: get rid of conditional }}
+    {{#if type.length}}
+      {{type}}
+    {{else}}
+      {{type.opLabel}}
+    {{/if}}
   </PowerSelectMultiple>
 </div>
