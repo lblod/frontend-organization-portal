@@ -59,4 +59,15 @@ export default class MembershipModel extends AbstractValidationModel {
     }
     return this.role.get('opLabel');
   }
+
+  getRoleLabelForPerspective(organization) {
+    if (this.role) {
+      if (this.member?.id === organization.id) {
+        return this.role.get('opLabel');
+      }
+      if (this.organization?.id === organization.id) {
+        return this.role.get('inverseOpLabel');
+      }
+    }
+  }
 }

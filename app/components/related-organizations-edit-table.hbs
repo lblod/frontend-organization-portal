@@ -33,8 +33,8 @@
           {{#let membership.error.role.message as |errorMessage|}}
             {{! TODO: disable when an organization is selected?}}
             <MembershipRoleSelect
-              @selected={{membership.role}}
-              @options={{@model.roles}}
+              @selected={{(fn @displayRoleLabel membership)}}
+              @options={{@roleOptions}}
               @onChange={{(fn @updateMembershipRole membership)}}
               @error={{errorMessage}}
               @id="membership-role"

@@ -52,10 +52,43 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   }
 
   @action
-  updateMembershipRole(membership, role) {
-    membership.role = role;
-    // TODO: or member depending on direction of role
-    membership.organization = this.model.organization;
+  updateMembershipRole(membership, roleLabel) {
+    // Remove any previously set value
+    // TODO: deal with any set organization?
+    if (membership.member.id === this.model.organization.id) {
+      membership.member = null;
+    }
+    if (membership.organization.id === this.model.organization.id) {
+      membership.organization = null;
+    }
+
+    const roleModel = this.model.roles.find(
+      (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel
+    );
+    membership.role = roleModel;
+
+    if (roleLabel === roleModel.opLabel) {
+      membership.member = this.model.organization;
+    }
+    if (roleLabel === roleModel.inverseOpLabel) {
+      membership.organization = this.model.organization;
+    }
+  }
+
+  @action
+  displayRoleLabel(membership) {
+    return membership.getRoleLabelForPerspective(this.model.organization);
+  }
+
+  // TODO: deal with duplicated general membership
+  get roleOptions() {
+    const result = [];
+    this.model.roles.forEach((role) => {
+      result.push(role.opLabel);
+      result.push(role.inverseOpLabel);
+    });
+
+    return result;
   }
 
   @dropTask
