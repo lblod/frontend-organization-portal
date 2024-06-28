@@ -23,36 +23,27 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
   async model(params) {
     const organization = this.modelFor('organizations.organization');
 
+    // TODO: filter for memberships with active organizations
     const query = {
-      'filter[:or:][memberships][member][:id:]': organization.id,
-      'filter[:or:][memberships-of-organizations][organization][:id:]':
-        organization.id,
-      'filter[organization-status][:id:]': params.organizationStatus
-        ? '63cc561de9188d64ba5840a42ae8f0d6' // active
-        : undefined,
-      include: [
-        'memberships.role',
-        'memberships.member',
-        'memberships.organization',
-        'memberships-of-organizations.role',
-        'memberships-of-organizations.member',
-        'memberships-of-organizations.organization',
-      ].join(),
+      'filter[:or:][member][:id:]': organization.id,
+      'filter[:or:][organization][:id:]': organization.id,
+      include: 'role,member,member,organization',
       sort: params.sort,
       page: { size: params.size, number: params.page },
     };
 
-    const relatedOrganizations = await this.store.query('organization', query);
+    const memberships = await this.store.query('membership', query);
 
-    // TODO: retrieve in component instead
+    // TODO: retrieve in component instead?
     let roles = await this.store.findAll('membership-role');
     // Limit to membership roles concerning related organizations, excluding
     // the roles concerning positions
+    // FIXME: sometimes results in a "TypeError: MEMBERSHIP_ROLES.find(...) is undefined"
     roles = roles.filter((role) => role.opLabel);
 
     return {
       organization,
-      relatedOrganizations,
+      memberships,
       roles,
     };
   }

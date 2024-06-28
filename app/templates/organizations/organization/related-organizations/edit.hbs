@@ -37,15 +37,14 @@
       <div class="au-o-flow au-o-flow--large">
         <RelatedOrganizationsEditTable
           @model={{@model}}
-          @content={{this.relatedOrganizations}}
+          @content={{this.memberships}}
           @organizationStatus={{this.organizationStatus}}
           @sort={{this.sort}}
           @page={{this.page}}
           @size={{this.size}}
-          @addRelatedOrganization={{this.addRelatedOrganization}}
-          @removeRelatedOrganization={{this.removeRelatedOrganization}}
-          @updateRelatedOrganization={{this.updateRelatedOrganization}}
-          @updateMembershipRoles={{this.updateMembershipRoles}}
+          @addRelatedOrganization={{this.addMembership}}
+          @removeRelatedOrganization={{this.removeMembership}}
+          @updateMembershipRole={{this.updateMembershipRole}}
           id="edit-related-organizations"
         />
       </div>

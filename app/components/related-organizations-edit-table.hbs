@@ -21,62 +21,79 @@
 
     <t.content as |c|>
       <c.header>
-        {{! TODO: use same grey colour as other headers}}
         <th>Type relatie</th>
-        <AuDataTableThSortable
-          @field="classification.label"
-          @label="Type organisatie"
-          @currentSorting={{@sort}}
-        />
-        <AuDataTableThSortable
-          @field="name"
-          @label="Organisatie"
-          @currentSorting={{@sort}}
-        />
-        <AuDataTableThSortable
-          @field="organizationStatus.label"
-          @label="Status"
-          @currentSorting={{@sort}}
-        />
+        <th>Type organisatie</th>
+        <th>Organisatie</th>
+        <th>Status</th>
         <th></th>
       </c.header>
 
-      <c.body as |organization|>
+      <c.body as |membership|>
         <td>
-          <MembershipRoleMultipleSelect
-            @selectedMembershipRoles={{get-memberships-role-labels
-              @model.organization
-              organization
-            }}
-            @onChange={{@updateMembershipRoles}}
+          <MembershipRoleSelect
+            @selected={{membership.role}}
             @options={{@model.roles}}
-            @id="membership-roles"
+            @onChange={{(fn @updateMembershipRole membership)}}
+            @id="membership-role"
           />
         </td>
+        {{! TODO: get rid of conditionals and duplication here}}
         <td>
-          {{#if @model.isWorshipAdministrativeUnit}}
-            <WorshipServiceSelect
-              @selected={{organization}}
-              @onChange={{fn @updateRelatedOrganization organization}}
-              id="related-worship-service"
-            />
+          {{#if (eq membership.member.id @model.organization.id)}}
+            {{membership.organization.classification.label}}
           {{else}}
-            <OrganizationSelect
-              @selected={{organization}}
-              @onChange={{fn @updateRelatedOrganization organization}}
-              {{! TODO: correctly limit based on organization classification and any selected membership type}}
-              @classificationCodes={{@model.organization.participantClassifications}}
-            />
+            {{membership.member.classification.label}}
           {{/if}}
         </td>
         <td>
-          {{organization.abbName}}
+          {{#if (eq membership.member.id @model.organization.id)}}
+            {{#if @model.isWorshipAdministrativeUnit}}
+              <WorshipServiceSelect
+                @disabled={{(not membership.role)}}
+                @selected={{membership.organization}}
+                @onChange={{fn (mut membership.organization)}}
+                id="related-worship-service"
+              />
+            {{else}}
+              <OrganizationSelect
+                @disabled={{(not membership.role)}}
+                @selected={{membership.organization}}
+                @onChange={{fn (mut membership.organization)}}
+                {{! TODO: correctly limit based on organization classification and any selected membership type}}
+                @classificationCodes={{@model.organization.participantClassifications}}
+              />
+            {{/if}}
+          {{else}}
+            {{#if @model.isWorshipAdministrativeUnit}}
+              <WorshipServiceSelect
+                @disabled={{(not membership.role)}}
+                @selected={{membership.member}}
+                @onChange={{fn (mut membership.member)}}
+                id="related-worship-service"
+              />
+            {{else}}
+              <OrganizationSelect
+                @disabled={{(not membership.role)}}
+                @selected={{membership.member}}
+                @onChange={{fn (mut membership.member)}}
+                {{! TODO: correctly limit based on organization classification and any selected membership type}}
+                @classificationCodes={{@model.organization.participantClassifications}}
+              />
+            {{/if}}
+          {{/if}}
         </td>
         <td>
-          <OrganizationStatus
-            @id={{organization.organizationStatus.id}}
-            @label={{organization.organizationStatus.label}}
-          />
+          {{#if (eq membership.member.id @model.organization.id)}}
+            <OrganizationStatus
+              @id={{membership.organization.organizationStatus.id}}
+              @label={{membership.organization.organizationStatus.label}}
+            />
+          {{else}}
+            <OrganizationStatus
+              @id={{membership.member.organizationStatus.id}}
+              @label={{membership.member.organizationStatus.label}}
+            />
+          {{/if}}
         </td>
         <td>
           <AuButton
@@ -84,7 +101,7 @@
             @icon="bin"
             @iconAlignment="left"
             @skin="link"
-            {{on "click" (fn @removeRelatedOrganization organization)}}
+            {{on "click" (fn @removeRelatedOrganization membership)}}
           >
             Verwijder
           </AuButton>

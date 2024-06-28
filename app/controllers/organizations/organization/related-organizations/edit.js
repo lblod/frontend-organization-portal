@@ -11,53 +11,51 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   queryParams = ['sort', 'page', 'size', 'organizationStatus'];
 
-  @tracked sort = 'name';
+  @tracked sort = 'role.label';
   @tracked page = 0;
   @tracked size = 25;
   @tracked organizationStatus = true;
 
-  @tracked relatedOrganizations;
+  @tracked memberships;
+
+  removedMemberships = [];
 
   get hasValidationErrors() {
-    return this.model.organization.error;
+    return (
+      this.model.organization.error ||
+      this.memberships.some((membership) => membership.error)
+    );
   }
 
   setup() {
-    if (!this.relatedOrganizations) {
+    if (!this.memberships) {
       // Note: use EmberArray since this variable is tracked
-      this.relatedOrganizations = A(
-        this.model.relatedOrganizations.map((e) => e)
-      );
+      this.memberships = A(this.model.memberships.map((e) => e));
     }
-    if (this.relatedOrganizations.length === 0) {
-      this.addRelatedOrganization();
+    if (this.memberships.length === 0) {
+      this.addMembership();
     }
   }
 
   @action
-  addRelatedOrganization() {
-    let organization = this.store.createRecord('organization');
-    this.relatedOrganizations.pushObject(organization);
-    // TODO: update diff
+  addMembership() {
+    let membership = this.store.createRecord('membership');
+    this.memberships.pushObject(membership);
   }
 
   @action
-  removeRelatedOrganization(organization) {
+  removeMembership(membership) {
     // TODO: do not remove if membership concerns founding
-    this.relatedOrganizations.removeObject(organization);
-    // TODO: update diff log
+    this.memberships.removeObject(membership);
+    // // TODO: use isDeleted flag?
+    this.removedMemberships.push(membership);
   }
 
   @action
-  updateRelatedOrganization(removedOrganization, organization) {
-    this.removeRelatedOrganization(removedOrganization);
-    this.relatedOrganizations.pushObject(organization);
-    // TODO: update diff log
-  }
-
-  @action
-  updateMembershipRoles() {
-    // TODO: implement
+  updateMembershipRole(membership, role) {
+    membership.role = role;
+    // TODO: or member depending on direction of role
+    membership.organization = this.model.organization;
   }
 
   @dropTask
@@ -65,15 +63,29 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     event.preventDefault();
 
     let organization = this.model.organization;
-    // let { organization, subOrganizations, hasParticipants } = this.model;
-    // organization.subOrganizations = subOrganizations;
-    // organization.hasParticipants = hasParticipants;
 
     // TODO: update all the memberships and memberships-of-organizations of the necessary organizations
 
-    yield organization.validate({ relaxMandatoryFoundingOrganization: true });
+    // TODO: commented as it complains about missing organization status
+    //yield organization.validate({ relaxMandatoryFoundingOrganization: true });
+
+    let validationPromises = this.memberships.map((membership) =>
+      membership.validate()
+    );
+    yield Promise.all(validationPromises);
+
+    this.memberships.some((membership) => console.log(membership.error));
 
     if (!this.hasValidationErrors) {
+      let savePromises = this.memberships.map((membership) => {
+        membership.save();
+      });
+      yield Promise.all(savePromises);
+
+      this.removedMemberships.forEach((membership) =>
+        membership.destroyRecord()
+      );
+
       yield organization.save();
 
       this.router.transitionTo(
@@ -85,6 +97,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   reset() {
     this.model.organization.reset();
-    this.relatedOrganizations = null;
+    this.memberships = null;
   }
 }

@@ -1,7 +1,12 @@
-import Model, { belongsTo } from '@ember-data/model';
+import { belongsTo } from '@ember-data/model';
+import AbstractValidationModel from './abstract-validation-model';
+import Joi from 'joi';
+import {
+  validateBelongsToOptional,
+  validateBelongsToRequired,
+} from '../validators/schema';
 
-// TODO: add validations?
-export default class MembershipModel extends Model {
+export default class MembershipModel extends AbstractValidationModel {
   @belongsTo('organization', {
     inverse: 'membershipsOfOrganizations',
     async: true,
@@ -29,6 +34,16 @@ export default class MembershipModel extends Model {
     async: true,
   })
   during;
+
+  get validationSchema() {
+    const REQUIRED_MESSAGE = 'Selecteer een optie';
+    return Joi.object({
+      member: validateBelongsToRequired(REQUIRED_MESSAGE),
+      organization: validateBelongsToRequired(REQUIRED_MESSAGE),
+      role: validateBelongsToRequired(REQUIRED_MESSAGE),
+      during: validateBelongsToOptional(),
+    });
+  }
 
   /**
    * Get the label of the role as it should be read from the perspective of
