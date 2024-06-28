@@ -1,5 +1,6 @@
 <div class={{if @error "ember-power-select--error"}}>
   <PowerSelect
+    @disabled={{@disabled}}
     @loadingMessage="Aan het laden..."
     @searchField="label"
     @options={{@options}}

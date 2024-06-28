@@ -64,8 +64,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
     let organization = this.model.organization;
 
-    // TODO: update all the memberships and memberships-of-organizations of the necessary organizations
-
     // TODO: commented as it complains about missing organization status
     //yield organization.validate({ relaxMandatoryFoundingOrganization: true });
 
@@ -73,8 +71,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
       membership.validate()
     );
     yield Promise.all(validationPromises);
-
-    this.memberships.some((membership) => console.log(membership.error));
 
     if (!this.hasValidationErrors) {
       let savePromises = this.memberships.map((membership) => {

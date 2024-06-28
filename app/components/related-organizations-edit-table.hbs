@@ -30,6 +30,7 @@
 
       <c.body as |membership|>
         <td>
+          {{! TODO: disable when an organization is selected?}}
           <MembershipRoleSelect
             @selected={{membership.role}}
             @options={{@model.roles}}
