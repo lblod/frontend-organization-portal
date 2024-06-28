@@ -30,13 +30,19 @@
 
       <c.body as |membership|>
         <td>
-          {{! TODO: disable when an organization is selected?}}
-          <MembershipRoleSelect
-            @selected={{membership.role}}
-            @options={{@model.roles}}
-            @onChange={{(fn @updateMembershipRole membership)}}
-            @id="membership-role"
-          />
+          {{#let membership.error.role.message as |errorMessage|}}
+            {{! TODO: disable when an organization is selected?}}
+            <MembershipRoleSelect
+              @selected={{membership.role}}
+              @options={{@model.roles}}
+              @onChange={{(fn @updateMembershipRole membership)}}
+              @error={{errorMessage}}
+              @id="membership-role"
+            />
+            {{#if errorMessage}}
+              <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+            {{/if}}
+          {{/let}}
         </td>
         {{! TODO: get rid of conditionals and duplication here}}
         <td>
@@ -47,41 +53,50 @@
           {{/if}}
         </td>
         <td>
-          {{#if (eq membership.member.id @model.organization.id)}}
-            {{#if @model.isWorshipAdministrativeUnit}}
-              <WorshipServiceSelect
-                @disabled={{(not membership.role)}}
-                @selected={{membership.organization}}
-                @onChange={{fn (mut membership.organization)}}
-                id="related-worship-service"
-              />
+          {{#let membership.error.role.message as |errorMessage|}}
+            {{#if (eq membership.member.id @model.organization.id)}}
+              {{#if @model.isWorshipAdministrativeUnit}}
+                <WorshipServiceSelect
+                  @disabled={{(not membership.role)}}
+                  @selected={{membership.organization}}
+                  @onChange={{fn (mut membership.organization)}}
+                  @error={{errorMessage}}
+                  id="related-worship-service"
+                />
+              {{else}}
+                <OrganizationSelect
+                  @disabled={{(not membership.role)}}
+                  @selected={{membership.organization}}
+                  @error={{errorMessage}}
+                  @onChange={{fn (mut membership.organization)}}
+                  {{! TODO: correctly limit based on organization classification and any selected membership type}}
+                  @classificationCodes={{@model.organization.participantClassifications}}
+                />
+              {{/if}}
             {{else}}
-              <OrganizationSelect
-                @disabled={{(not membership.role)}}
-                @selected={{membership.organization}}
-                @onChange={{fn (mut membership.organization)}}
-                {{! TODO: correctly limit based on organization classification and any selected membership type}}
-                @classificationCodes={{@model.organization.participantClassifications}}
-              />
+              {{#if @model.isWorshipAdministrativeUnit}}
+                <WorshipServiceSelect
+                  @disabled={{(not membership.role)}}
+                  @selected={{membership.member}}
+                  @onChange={{fn (mut membership.member)}}
+                  @error={{errorMessage}}
+                  id="related-worship-service"
+                />
+              {{else}}
+                <OrganizationSelect
+                  @disabled={{(not membership.role)}}
+                  @selected={{membership.member}}
+                  @onChange={{fn (mut membership.member)}}
+                  @error={{errorMessage}}
+                  {{! TODO: correctly limit based on organization classification and any selected membership type}}
+                  @classificationCodes={{@model.organization.participantClassifications}}
+                />
+              {{/if}}
             {{/if}}
-          {{else}}
-            {{#if @model.isWorshipAdministrativeUnit}}
-              <WorshipServiceSelect
-                @disabled={{(not membership.role)}}
-                @selected={{membership.member}}
-                @onChange={{fn (mut membership.member)}}
-                id="related-worship-service"
-              />
-            {{else}}
-              <OrganizationSelect
-                @disabled={{(not membership.role)}}
-                @selected={{membership.member}}
-                @onChange={{fn (mut membership.member)}}
-                {{! TODO: correctly limit based on organization classification and any selected membership type}}
-                @classificationCodes={{@model.organization.participantClassifications}}
-              />
+            {{#if errorMessage}}
+              <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
             {{/if}}
-          {{/if}}
+          {{/let}}
         </td>
         <td>
           {{#if (eq membership.member.id @model.organization.id)}}
