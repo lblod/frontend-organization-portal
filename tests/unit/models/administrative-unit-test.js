@@ -25,7 +25,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       });
     });
 
-    test("it returns more error when it's PROJECTVERENIGING and expectedEndDate earlier than now", async function (assert) {
+    test("it returns an extra error when it's a PROJECTVERENIGING and expectedEndDate earlier than now", async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
         CLASSIFICATION.PROJECTVERENIGING
@@ -38,87 +38,147 @@ module('Unit | Model | administrative unit', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 5);
+      assert.strictEqual(Object.keys(model.error).length, 3);
       assert.propContains(model.error, {
         legalName: { message: 'Vul de juridische naam in' },
         expectedEndDate: {
           message: 'De datum mag niet in het verleden liggen',
         },
-        hasParticipants: { message: 'Selecteer een optie' },
-        isSubOrganizationOf: { message: 'Selecteer een optie' },
         organizationStatus: { message: 'Selecteer een optie' },
       });
     });
 
     [
+      CLASSIFICATION.PROJECTVERENIGING,
+      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
       CLASSIFICATION.WELZIJNSVERENIGING,
       CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
       CLASSIFICATION.PEVA_MUNICIPALITY,
       CLASSIFICATION.PEVA_PROVINCE,
+      CLASSIFICATION.AGB,
+      CLASSIFICATION.APB,
+      CLASSIFICATION.POLICE_ZONE,
+      CLASSIFICATION.ASSISTANCE_ZONE,
     ].forEach((cl) => {
-      test(`it returns an extra error when founder is missing for ${cl.label} without relaxing the mandatory rule`, async function (assert) {
+      test(`it should return an extra error when a new  ${cl.label} is created without memberships`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
           cl
         );
+
         const model = this.store().createRecord('administrative-unit', {
           classification,
         });
 
-        const isValid = await model.validate();
+        const isValid = await model.validate({ creatingNewOrganization: true });
 
         assert.false(isValid);
         assert.strictEqual(Object.keys(model.error).length, 3);
         assert.propContains(model.error, {
           legalName: { message: 'Vul de juridische naam in' },
           organizationStatus: { message: 'Selecteer een optie' },
-          wasFoundedByOrganizations: { message: 'Selecteer een optie' },
+          memberships: { message: 'Selecteer een optie' },
         });
       });
     });
 
     [
+      CLASSIFICATION.PROJECTVERENIGING,
+      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
       CLASSIFICATION.WELZIJNSVERENIGING,
       CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
       CLASSIFICATION.PEVA_MUNICIPALITY,
       CLASSIFICATION.PEVA_PROVINCE,
+      CLASSIFICATION.AGB,
+      CLASSIFICATION.APB,
+      CLASSIFICATION.POLICE_ZONE,
+      CLASSIFICATION.ASSISTANCE_ZONE,
     ].forEach((cl) => {
-      test(`it returns an extra error when founder is missing for ${cl.label} when providing wrong argument to relax mandatory`, async function (assert) {
+      test(`it should return an extra error when a new  ${cl.label} is created with an empty memberships array`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
           cl
         );
+
         const model = this.store().createRecord('administrative-unit', {
           classification,
+          memberships: [],
         });
 
-        const isValid = await model.validate('notTrue');
+        const isValid = await model.validate({ creatingNewOrganization: true });
 
         assert.false(isValid);
         assert.strictEqual(Object.keys(model.error).length, 3);
         assert.propContains(model.error, {
           legalName: { message: 'Vul de juridische naam in' },
           organizationStatus: { message: 'Selecteer een optie' },
-          wasFoundedByOrganizations: { message: 'Selecteer een optie' },
+          memberships: { message: 'Selecteer een optie' },
         });
       });
     });
 
     [
+      CLASSIFICATION.PROJECTVERENIGING,
+      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
       CLASSIFICATION.WELZIJNSVERENIGING,
       CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
       CLASSIFICATION.PEVA_MUNICIPALITY,
       CLASSIFICATION.PEVA_PROVINCE,
+      CLASSIFICATION.AGB,
+      CLASSIFICATION.APB,
+      CLASSIFICATION.POLICE_ZONE,
+      CLASSIFICATION.ASSISTANCE_ZONE,
     ].forEach((cl) => {
-      test(`it returns no extra error when founder is provided for a ${cl.label}`, async function (assert) {
+      test(`it should not return an extra error when a membership is defined present when creating an new ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
           cl
         );
-        const founder = this.store().createRecord('administrative-unit');
+        const membership = this.store().createRecord('membership');
+
         const model = this.store().createRecord('administrative-unit', {
           classification,
-          wasFoundedByOrganizations: [founder],
+          memberships: [membership],
+        });
+
+        const isValid = await model.validate({ creatingNewOrganization: true });
+
+        assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 2);
+        assert.propContains(model.error, {
+          legalName: { message: 'Vul de juridische naam in' },
+          organizationStatus: { message: 'Selecteer een optie' },
+        });
+      });
+    });
+
+    [
+      CLASSIFICATION.PROJECTVERENIGING,
+      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+      CLASSIFICATION.WELZIJNSVERENIGING,
+      CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
+      CLASSIFICATION.PEVA_MUNICIPALITY,
+      CLASSIFICATION.PEVA_PROVINCE,
+      CLASSIFICATION.AGB,
+      CLASSIFICATION.APB,
+      CLASSIFICATION.POLICE_ZONE,
+      CLASSIFICATION.ASSISTANCE_ZONE,
+    ].forEach((cl) => {
+      test(`it should not return an extra error when editing an existing ${cl.label} without memberships`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          classification,
         });
 
         const isValid = await model.validate();
@@ -132,69 +192,31 @@ module('Unit | Model | administrative unit', function (hooks) {
       });
     });
 
-    test(`it returns no extra error when founder is provided for an AGB`, async function (assert) {
-      const classification = this.store().createRecord(
-        'administrative-unit-classification-code',
-        CLASSIFICATION.AGB
-      );
-      const founder = this.store().createRecord('administrative-unit');
-      const model = this.store().createRecord('administrative-unit', {
-        classification,
-        wasFoundedByOrganizations: [founder],
-      });
-
-      const isValid = await model.validate();
-
-      assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 3);
-      assert.propContains(model.error, {
-        legalName: { message: 'Vul de juridische naam in' },
-        organizationStatus: { message: 'Selecteer een optie' },
-        isSubOrganizationOf: { message: 'Selecteer een optie' },
-      });
-    });
-
-    test(`it returns no extra error when founder is provided for an APB`, async function (assert) {
-      const classification = this.store().createRecord(
-        'administrative-unit-classification-code',
-        CLASSIFICATION.APB
-      );
-      const founder = this.store().createRecord('administrative-unit');
-      const model = this.store().createRecord('administrative-unit', {
-        classification,
-        wasFoundedByOrganizations: [founder],
-      });
-
-      const isValid = await model.validate();
-
-      assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 4);
-      assert.propContains(model.error, {
-        legalName: { message: 'Vul de juridische naam in' },
-        organizationStatus: { message: 'Selecteer een optie' },
-        isAssociatedWith: { message: 'Selecteer een optie' },
-        isSubOrganizationOf: { message: 'Selecteer een optie' },
-      });
-    });
-
     [
+      CLASSIFICATION.PROJECTVERENIGING,
+      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
       CLASSIFICATION.WELZIJNSVERENIGING,
       CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
       CLASSIFICATION.PEVA_MUNICIPALITY,
       CLASSIFICATION.PEVA_PROVINCE,
+      CLASSIFICATION.AGB,
+      CLASSIFICATION.APB,
+      CLASSIFICATION.POLICE_ZONE,
+      CLASSIFICATION.ASSISTANCE_ZONE,
     ].forEach((cl) => {
-      test(`it returns no extra error when founder is missing for a ${cl.label} and the mandatory founder rule is relaxed`, async function (assert) {
+      test(`it should not return an extra error when editing an ${cl.label} with an empty memberships array`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
           cl
         );
         const model = this.store().createRecord('administrative-unit', {
           classification,
+          memberships: [],
         });
 
-        const isValid = await model.validate({
-          relaxMandatoryFoundingOrganization: true,
-        });
+        const isValid = await model.validate();
 
         assert.false(isValid);
         assert.strictEqual(Object.keys(model.error).length, 2);
@@ -205,50 +227,40 @@ module('Unit | Model | administrative unit', function (hooks) {
       });
     });
 
-    test('it has no effect to relax the mandatory founder rule for an AGB', async function (assert) {
-      const classification = this.store().createRecord(
-        'administrative-unit-classification-code',
-        CLASSIFICATION.AGB
-      );
-      const model = this.store().createRecord('administrative-unit', {
-        classification,
-      });
+    [
+      CLASSIFICATION.PROJECTVERENIGING,
+      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+      CLASSIFICATION.WELZIJNSVERENIGING,
+      CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
+      CLASSIFICATION.PEVA_MUNICIPALITY,
+      CLASSIFICATION.PEVA_PROVINCE,
+      CLASSIFICATION.AGB,
+      CLASSIFICATION.APB,
+      CLASSIFICATION.POLICE_ZONE,
+      CLASSIFICATION.ASSISTANCE_ZONE,
+    ].forEach((cl) => {
+      test(`it should not return an extra error when editing an existing with memberships ${cl.label}`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl
+        );
+        const membership = this.store().createRecord('membership');
 
-      const isValid = await model.validate({
-        relaxMandatoryFoundingOrganization: true,
-      });
+        const model = this.store().createRecord('administrative-unit', {
+          classification,
+          memberships: [membership],
+        });
 
-      assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 4);
-      assert.propContains(model.error, {
-        legalName: { message: 'Vul de juridische naam in' },
-        organizationStatus: { message: 'Selecteer een optie' },
-        wasFoundedByOrganizations: { message: 'Selecteer een optie' },
-        isSubOrganizationOf: { message: 'Selecteer een optie' },
-      });
-    });
+        const isValid = await model.validate();
 
-    test('it has no effect to relax the mandatory founder rule for an APB', async function (assert) {
-      const classification = this.store().createRecord(
-        'administrative-unit-classification-code',
-        CLASSIFICATION.APB
-      );
-      const model = this.store().createRecord('administrative-unit', {
-        classification,
-      });
-
-      const isValid = await model.validate({
-        relaxMandatoryFoundingOrganization: true,
-      });
-
-      assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 5);
-      assert.propContains(model.error, {
-        legalName: { message: 'Vul de juridische naam in' },
-        organizationStatus: { message: 'Selecteer een optie' },
-        isAssociatedWith: { message: 'Selecteer een optie' },
-        wasFoundedByOrganizations: { message: 'Selecteer een optie' },
-        isSubOrganizationOf: { message: 'Selecteer een optie' },
+        assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 2);
+        assert.propContains(model.error, {
+          legalName: { message: 'Vul de juridische naam in' },
+          organizationStatus: { message: 'Selecteer een optie' },
+        });
       });
     });
   });

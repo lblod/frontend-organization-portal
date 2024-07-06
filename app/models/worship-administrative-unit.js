@@ -1,6 +1,8 @@
 import { belongsTo, hasMany } from '@ember-data/model';
 import AdministrativeUnitModel from './administrative-unit';
+import Joi from 'joi';
 import {
+  validateHasManyNotEmptyRequired,
   validateHasManyOptional,
   validateRequiredWhenClassificationId,
 } from '../validators/schema';
@@ -34,13 +36,26 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
   involvements;
 
   get validationSchema() {
+    const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({
       recognizedWorshipType: validateRequiredWhenClassificationId(
         [...WorshipServiceCodeList, ...CentralWorshipServiceCodeList],
-        'Selecteer een optie'
+        REQUIRED_MESSAGE
       ),
       ministerPositions: validateHasManyOptional(),
       involvements: validateHasManyOptional(),
+      // NOTE:The requested functionality was to *not* validate memberships of
+      // already existing organizations. When creating a new organization a
+      // mandatory membership is enforced by providing a `true` value for
+      // `creatingNewOrganization`.
+      membershipsOfOrganizations: Joi.when(
+        Joi.ref('$creatingNewOrganization'),
+        {
+          is: Joi.exist().valid(true),
+          then: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
+          otherwise: validateHasManyOptional(),
+        }
+      ),
     });
   }
 

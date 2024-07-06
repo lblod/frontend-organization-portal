@@ -26,25 +26,89 @@ module('Unit | Model | worship service', function (hooks) {
       });
     });
 
-    test('it should return extra errors when classification is set', async function (assert) {
+    test(`it should return an extra error when creating a new ${CLASSIFICATION.WORSHIP_SERVICE.label} without membershipsOfOrganizations`, async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
         CLASSIFICATION.WORSHIP_SERVICE
       );
-      const model = this.store().createRecord('worship-service', {
+      const model = this.store().createRecord('central-worship-service', {
+        classification,
+      });
+
+      const isValid = await model.validate({ creatingNewOrganization: true });
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 4);
+      console.log(model.error);
+
+      assert.propContains(model.error, {
+        legalName: { message: 'Vul de juridische naam in' },
+        organizationStatus: { message: 'Selecteer een optie' },
+        recognizedWorshipType: { message: 'Selecteer een optie' },
+        membershipsOfOrganizations: { message: 'Selecteer een optie' },
+      });
+    });
+
+    test(`it should not return an extra error when creating a new ${CLASSIFICATION.WORSHIP_SERVICE.label} with membershipsOfOrganizations`, async function (assert) {
+      const classification = this.store().createRecord(
+        'administrative-unit-classification-code',
+        CLASSIFICATION.WORSHIP_SERVICE
+      );
+      const membership = this.store().createRecord('membership');
+      const model = this.store().createRecord('central-worship-service', {
+        classification,
+        membershipsOfOrganizations: [membership],
+      });
+
+      const isValid = await model.validate({ creatingNewOrganization: true });
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 3);
+      assert.propContains(model.error, {
+        legalName: { message: 'Vul de juridische naam in' },
+        organizationStatus: { message: 'Selecteer een optie' },
+        recognizedWorshipType: { message: 'Selecteer een optie' },
+      });
+    });
+
+    test(`it should not return an extra error when editing an existing ${CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.label} without membershipsOfOrganizations`, async function (assert) {
+      const classification = this.store().createRecord(
+        'administrative-unit-classification-code',
+        CLASSIFICATION.WORSHIP_SERVICE
+      );
+      const model = this.store().createRecord('central-worship-service', {
         classification,
       });
 
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 4);
-
+      assert.strictEqual(Object.keys(model.error).length, 3);
       assert.propContains(model.error, {
         legalName: { message: 'Vul de juridische naam in' },
         organizationStatus: { message: 'Selecteer een optie' },
-        // Required for worship services
-        isAssociatedWith: { message: 'Selecteer een optie' },
+        recognizedWorshipType: { message: 'Selecteer een optie' },
+      });
+    });
+
+    test(`it should not return an extra error when editing an existing ${CLASSIFICATION.WORSHIP_SERVICE.label} with membershipsOfOrganizations`, async function (assert) {
+      const classification = this.store().createRecord(
+        'administrative-unit-classification-code',
+        CLASSIFICATION.WORSHIP_SERVICE
+      );
+      const membership = this.store().createRecord('membership');
+      const model = this.store().createRecord('central-worship-service', {
+        classification,
+        membershipsOfOrganizations: [membership],
+      });
+
+      const isValid = await model.validate({ creatingNewOrganization: true });
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 3);
+      assert.propContains(model.error, {
+        legalName: { message: 'Vul de juridische naam in' },
+        organizationStatus: { message: 'Selecteer een optie' },
         recognizedWorshipType: { message: 'Selecteer een optie' },
       });
     });

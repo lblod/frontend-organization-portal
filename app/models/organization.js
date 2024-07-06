@@ -81,6 +81,7 @@ export default class OrganizationModel extends AgentModel {
   @hasMany('membership', {
     inverse: 'member',
     async: true,
+    polymorphic: true,
     as: 'organization',
   })
   membershipsOfOrganizations;
@@ -88,6 +89,7 @@ export default class OrganizationModel extends AgentModel {
   @hasMany('membership', {
     inverse: 'organization',
     async: true,
+    polymorphic: true,
     as: 'organization',
   })
   memberships;

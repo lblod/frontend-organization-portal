@@ -5,6 +5,7 @@ import {
   validateBelongsToOptional,
   validateBelongsToRequired,
 } from '../validators/schema';
+import { MEMBERSHIP_ROLES_MAPPING } from './membership-role';
 
 export default class MembershipModel extends AbstractValidationModel {
   @belongsTo('organization', {
@@ -40,9 +41,79 @@ export default class MembershipModel extends AbstractValidationModel {
     return Joi.object({
       member: validateBelongsToRequired(REQUIRED_MESSAGE),
       organization: validateBelongsToRequired(REQUIRED_MESSAGE),
-      role: validateBelongsToRequired(REQUIRED_MESSAGE),
+      role: Joi.when(Joi.ref('$creatingNewOrganization'), {
+        // Notes:
+        // - The requested functionality was to *not* perform validations when
+        //   editing the memberships of already existing organisations. The
+        //   extra validations below are only sufficient in the context of the
+        //   new organisation form in which the classification of the related
+        //   organisation is enforced by the form. The above
+        //   `creatingNewOrganization` allows us to specify whether the extra
+        //   validations should be performed:
+        //     ```
+        //     someMembership.validate({creatingNewOrganization: true})
+        //     ```
+        // - If this validation for use during editing: For OCMW associations
+        //   and PEVAs a founding organisation is normally mandatory. But the
+        //   available business data when onboarding them was incomplete in this
+        //   respect. Therefore, we opted to relax this rule for the OCMW
+        //   associations and PEVAs imported during the onboarding. Due to the
+        //   above note this relaxation comes automatically, but if/when the
+        //   validations are also performed during editing this should again be
+        //   taken into account.
+        is: Joi.exist().valid(true),
+        then: validateBelongsToRequired(REQUIRED_MESSAGE).external(
+          async (value, helpers) => {
+            const organization = await this.organization;
+            // NOTE: do not rely on IDs as this is dealing with not yet
+            // persisted resources
+            const allMemberships = await organization.memberships;
+
+            let roles = [];
+
+            if (organization.isIgs) {
+              roles.push(
+                MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+                MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN
+              );
+            }
+            if (organization.isApb) {
+              roles.push(
+                MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+                MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH
+              );
+            }
+            if (organization.isAgb) {
+              roles.push(MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF);
+            }
+            if (
+              organization.isOcmwAssociation ||
+              organization.isPevaMunicipality ||
+              organization.isPevaProvince
+            ) {
+              roles.push(MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF);
+            }
+            if (organization.isPoliceZone || organization.isAssistanceZone) {
+              roles.push(MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH);
+            }
+
+            if (!this.#containsMembershipForRoles(allMemberships, roles)) {
+              return helpers.message('Selecteer een optie');
+            }
+
+            return value;
+          }
+        ),
+        otherwise: validateBelongsToRequired(REQUIRED_MESSAGE),
+      }),
       during: validateBelongsToOptional(),
     });
+  }
+
+  #containsMembershipForRoles(memberships, roles) {
+    return roles.every((role) =>
+      memberships.some((membership) => membership.role.id === role.id)
+    );
   }
 
   /**
