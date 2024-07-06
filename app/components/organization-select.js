@@ -95,6 +95,7 @@ export default class OrganizationSelectComponent extends Component {
 
     const selectedProvinceId = this.args.selectedProvince?.get('id');
     // If a province is selected, load the municipalities in it
+    // TODO: use memberships
     if (selectedProvinceId && selectedProvinceId.length) {
       query.filter['is-sub-organization-of'] = {
         id: selectedProvinceId,

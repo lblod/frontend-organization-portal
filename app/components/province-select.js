@@ -39,8 +39,10 @@ export default class ProvinceSelectComponent extends Component {
       // If a municipality is selected, load the province it belongs to
       provinces = yield this.store.query('organization', {
         filter: {
-          'sub-organizations': {
-            ':exact:name': this.args.selectedMunicipality,
+          memberships: {
+            member: {
+              ':exact:name': this.args.selectedMunicipality,
+            },
           },
           classification: {
             id: CLASSIFICATION.PROVINCE.id,
