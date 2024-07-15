@@ -131,6 +131,30 @@
           >
             Verwijder
           </AuButton>
+          <AuModal
+            @modalOpen={{@showConfirmRemoval}}
+            @closeModal={{@cancelRemoveMembership}}
+          >
+            <:title>Bevestig</:title>
+            <:body>Weet je zeker dat je de relatie
+              {{#if (eq membership.member.id @model.organization.id)}}
+                "{{membership.role.opLabel}}"
+              {{else}}
+                "{{membership.role.inverseOpLabel}}"
+              {{/if}}
+              wilt verwijderen?</:body>
+            <:footer>
+              <AuButtonGroup>
+                <AuButton
+                  @alert={{true}}
+                  @icon="bin"
+                  @iconAlignment="left"
+                  {{on "click" (fn @removeMembership membership)}}
+                >Ja</AuButton>
+                <AuButton {{on "click" @cancelRemoveMembership}}>Nee</AuButton>
+              </AuButtonGroup>
+            </:footer>
+          </AuModal>
         </td>
       {{/unless}}
     </c.body>

@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { A } from '@ember/array';
+import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditController extends Controller {
   @service router;
@@ -17,13 +18,15 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   @tracked memberships;
   @tracked selectedRoleLabel;
 
+  @tracked removingFounder = false;
+
   get hasValidationErrors() {
     return this.memberships.some((membership) => membership.error);
   }
 
   get hasUnsavedEdits() {
     return this.memberships.some(
-      (membership) => membership.isNew || membership.isDeleted,
+      (membership) => membership.isNew || membership.isDeleted
     );
   }
 
@@ -45,8 +48,22 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   @action
   removeMembership(membership) {
-    // TODO: display warning when membership concerns founding
+    if (membership.role.id === MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id) {
+      this.removingFounder = true;
+    } else {
+      this.reallyRemoveMembership(membership);
+    }
+  }
+
+  @action
+  cancelMembershipRemoval() {
+    this.removingFounder = false;
+  }
+
+  @action
+  reallyRemoveMembership(membership) {
     membership.deleteRecord();
+    this.removingFounder = false;
   }
 
   @action
@@ -58,7 +75,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     // Find the role model matching the label
     // Note: this assumes that the labels are unique for each membership role
     const roleModel = this.model.roles.find(
-      (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel,
+      (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel
     );
     membership.role = roleModel;
 
@@ -86,7 +103,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     yield organization.validate();
 
     let validationPromises = this.memberships.map((membership) =>
-      membership.validate(),
+      membership.validate()
     );
     yield Promise.all(validationPromises);
 
@@ -100,7 +117,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
       this.router.transitionTo(
         'organizations.organization.related-organizations',
-        organization.id,
+        organization.id
       );
     }
   }
@@ -109,5 +126,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     this.model.organization.reset();
     this.memberships = null;
     this.selectedRoleLabel = null;
+    this.removingFounder = false;
   }
 }
