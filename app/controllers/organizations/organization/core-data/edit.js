@@ -38,37 +38,6 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
     this.model.structuredIdentifierKBO.localId = value;
   }
 
-  @action
-  setRelation(unit) {
-    this.model.organization.isSubOrganizationOf = Array.isArray(unit)
-      ? unit[0]
-      : unit;
-
-    if (
-      this.model.organization.isAgb ||
-      this.model.organization.isApb ||
-      this.model.organization.isOcmwAssociation ||
-      this.model.organization.isPevaMunicipality ||
-      this.model.organization.isPevaProvince
-    ) {
-      this.model.organization.wasFoundedByOrganizations = Array.isArray(unit)
-        ? unit
-        : unit
-        ? [unit]
-        : [];
-    }
-  }
-
-  @action
-  setHasParticipants(units) {
-    this.model.organization.hasParticipants = units;
-  }
-
-  @action
-  setMunicipality(municipality) {
-    this.model.organization.isAssociatedWith = municipality;
-  }
-
   @dropTask
   *save(event) {
     event.preventDefault();
