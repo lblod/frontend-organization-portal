@@ -10,7 +10,7 @@ import {
 // organisations. For each classification code in an organisations property the
 // classification codes for the allowed kinds of participants are listed in the
 // members property.
-const allowedParticipationMemberships = [
+export const allowedParticipationMemberships = [
   {
     organizations: [...IGSCodeList],
     members: [
@@ -50,7 +50,7 @@ const allowedParticipationMemberships = [
   },
 ];
 
-const allowedfoundingMemberships = [
+export const allowedfoundingMemberships = [
   {
     organizations: [CLASSIFICATION.AGB.id],
     members: [CLASSIFICATION.MUNICIPALITY.id],

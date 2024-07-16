@@ -20,7 +20,10 @@ import {
   PevaMunicipalityCodeList,
   PevaProvinceCodeList,
 } from '../constants/Classification';
-import { CLASSIFICATION } from './administrative-unit-classification-code';
+import {
+  allowedfoundingMemberships,
+  allowedParticipationMemberships,
+} from '../constants/memberships';
 
 export default class AdministrativeUnitModel extends OrganizationModel {
   @belongsTo('location', {
@@ -156,77 +159,15 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   }
 
   get participantClassifications() {
-    if (this.isIgs) {
-      return [
-        CLASSIFICATION.MUNICIPALITY.id,
-        CLASSIFICATION.OCMW.id,
-        CLASSIFICATION.AGB.id,
-        CLASSIFICATION.PROJECTVERENIGING.id,
-        CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
-        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
-        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
-        CLASSIFICATION.POLICE_ZONE.id,
-        CLASSIFICATION.ASSISTANCE_ZONE.id,
-        CLASSIFICATION.PEVA_MUNICIPALITY.id,
-        CLASSIFICATION.PEVA_PROVINCE.id,
-        CLASSIFICATION.WELZIJNSVERENIGING.id,
-        CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
-        CLASSIFICATION.ZIEKENHUISVERENIGING.id,
-        CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
-          .id,
-        CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-        CLASSIFICATION.ASSOCIATION_OTHER.id,
-        CLASSIFICATION.CORPORATION_OTHER.id,
-      ];
-    } else if (this.isOcmwAssociation) {
-      return OcmwAssociationCodeList.concat([
-        CLASSIFICATION.MUNICIPALITY.id,
-        CLASSIFICATION.OCMW.id,
-        CLASSIFICATION.ASSOCIATION_OTHER.id,
-        CLASSIFICATION.CORPORATION_OTHER.id,
-      ]);
-    } else if (this.isPevaMunicipality || this.isPevaProvince) {
-      return [
-        CLASSIFICATION.PROJECTVERENIGING.id,
-        CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
-        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
-        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
-      ];
-    }
-    return [];
+    return allowedParticipationMemberships
+      .filter((e) => e.organizations.includes(this.classification.id))
+      .flatMap((e) => e.members);
   }
 
   get founderClassifications() {
-    if (this.isApb || this.isAgb) {
-      return [CLASSIFICATION.MUNICIPALITY.id];
-    } else if (this.isPevaMunicipality) {
-      return [
-        CLASSIFICATION.MUNICIPALITY.id,
-        CLASSIFICATION.ASSOCIATION_OTHER.id,
-        CLASSIFICATION.CORPORATION_OTHER.id,
-      ];
-    } else if (this.isPevaProvince) {
-      return [
-        CLASSIFICATION.PROVINCE.id,
-        CLASSIFICATION.ASSOCIATION_OTHER.id,
-        CLASSIFICATION.CORPORATION_OTHER.id,
-      ];
-    } else if (this.isOcmwAssociation) {
-      return OcmwAssociationCodeList.concat([
-        CLASSIFICATION.MUNICIPALITY.id,
-        CLASSIFICATION.OCMW.id,
-        CLASSIFICATION.ASSOCIATION_OTHER.id,
-        CLASSIFICATION.CORPORATION_OTHER.id,
-      ]);
-    }
-    return [];
-  }
-
-  // Note: this is used in the new organization and edit core data forms. It
-  // might be merged with the above founder getter once the relationships
-  // between organizations have been sorted out.
-  get municipalityClassificationCode() {
-    return [CLASSIFICATION.MUNICIPALITY.id];
+    return allowedfoundingMemberships
+      .filter((e) => e.organizations.includes(this.classification.id))
+      .flatMap((e) => e.members);
   }
 
   get requiresGoverningBodies() {

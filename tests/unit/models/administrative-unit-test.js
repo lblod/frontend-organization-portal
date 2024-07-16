@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
+import { OcmwAssociationCodeList } from 'frontend-organization-portal/constants/Classification';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 module('Unit | Model | administrative unit', function (hooks) {
@@ -313,6 +314,130 @@ module('Unit | Model | administrative unit', function (hooks) {
 
         const result = model.hasCentralWorshipService;
         assert.notOk(result);
+      });
+    });
+  });
+
+  module('participantClassifications', function () {
+    const igsParticipants = [
+      CLASSIFICATION.MUNICIPALITY.id,
+      CLASSIFICATION.OCMW.id,
+      CLASSIFICATION.AGB.id,
+      CLASSIFICATION.PROJECTVERENIGING.id,
+      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
+      CLASSIFICATION.POLICE_ZONE.id,
+      CLASSIFICATION.ASSISTANCE_ZONE.id,
+      CLASSIFICATION.PEVA_MUNICIPALITY.id,
+      CLASSIFICATION.PEVA_PROVINCE.id,
+      CLASSIFICATION.WELZIJNSVERENIGING.id,
+      CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
+      CLASSIFICATION.ZIEKENHUISVERENIGING.id,
+      CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
+      CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
+      CLASSIFICATION.ASSOCIATION_OTHER.id,
+      CLASSIFICATION.CORPORATION_OTHER.id,
+    ];
+
+    const ocmwAssociationParticipants = OcmwAssociationCodeList.concat([
+      CLASSIFICATION.MUNICIPALITY.id,
+      CLASSIFICATION.OCMW.id,
+      CLASSIFICATION.ASSOCIATION_OTHER.id,
+      CLASSIFICATION.CORPORATION_OTHER.id,
+    ]);
+
+    const pevaParticipants = [
+      CLASSIFICATION.PROJECTVERENIGING.id,
+      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
+    ];
+
+    [
+      [CLASSIFICATION.PROJECTVERENIGING, igsParticipants],
+      [CLASSIFICATION.DIENSTVERLENENDE_VERENIGING, igsParticipants],
+      [CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING, igsParticipants],
+      [
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+        igsParticipants,
+      ],
+      [CLASSIFICATION.PEVA_MUNICIPALITY, pevaParticipants],
+      [CLASSIFICATION.PEVA_PROVINCE, pevaParticipants],
+      [CLASSIFICATION.WELZIJNSVERENIGING, ocmwAssociationParticipants],
+      [
+        CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
+        ocmwAssociationParticipants,
+      ],
+    ].forEach(([cl, classificationCodes]) => {
+      test(`it should allow valid participants for ${cl.label}`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          classification,
+        });
+        const result = model.participantClassifications;
+
+        assert.deepEqual(result.sort(), classificationCodes.sort());
+      });
+    });
+  });
+
+  module('founderClassifications', function () {
+    [
+      [CLASSIFICATION.APB, [CLASSIFICATION.MUNICIPALITY.id]],
+      [CLASSIFICATION.AGB, [CLASSIFICATION.MUNICIPALITY.id]],
+      [
+        CLASSIFICATION.PEVA_MUNICIPALITY,
+        [
+          CLASSIFICATION.MUNICIPALITY.id,
+          CLASSIFICATION.ASSOCIATION_OTHER.id,
+          CLASSIFICATION.CORPORATION_OTHER.id,
+        ],
+      ],
+      [
+        CLASSIFICATION.PEVA_PROVINCE,
+        [
+          CLASSIFICATION.PROVINCE.id,
+          CLASSIFICATION.ASSOCIATION_OTHER.id,
+          CLASSIFICATION.CORPORATION_OTHER.id,
+        ],
+      ],
+      [
+        CLASSIFICATION.WELZIJNSVERENIGING,
+        [
+          ...OcmwAssociationCodeList,
+          CLASSIFICATION.MUNICIPALITY.id,
+          CLASSIFICATION.OCMW.id,
+          CLASSIFICATION.ASSOCIATION_OTHER.id,
+          CLASSIFICATION.CORPORATION_OTHER.id,
+        ],
+      ],
+      [
+        CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
+        [
+          ...OcmwAssociationCodeList,
+          CLASSIFICATION.MUNICIPALITY.id,
+          CLASSIFICATION.OCMW.id,
+          CLASSIFICATION.ASSOCIATION_OTHER.id,
+          CLASSIFICATION.CORPORATION_OTHER.id,
+        ],
+      ],
+    ].forEach(([cl, classificationCodes]) => {
+      test(`it should allow a(n) ${cl.label} to be founded by the correct organizations`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          classification,
+        });
+
+        const result = model.founderClassifications;
+
+        assert.deepEqual(result.sort(), classificationCodes.sort());
       });
     });
   });
