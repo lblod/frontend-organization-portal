@@ -6,6 +6,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexControlle
 
   @tracked sort = 'name';
   @tracked page = 0;
-  @tracked size = 25;
+  @tracked size = 500;
   @tracked organizationStatus = true;
 }

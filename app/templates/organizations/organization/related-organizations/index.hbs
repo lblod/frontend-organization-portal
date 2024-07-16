@@ -49,81 +49,13 @@
       </div>
     {{/if}}
 
-    {{#unless
-      (or
-        @model.organization.isProvince
-        @model.organization.isOcmwAssociation
-        @model.organization.isPevaMunicipality
-        @model.organization.isPevaProvince
-        @model.organization.isRepresentativeBody
-      )
-    }}
-      <RelatedOrganizationsDataCard @model={{@model}} />
-    {{/unless}}
-
-    {{#if
-      (or
-        @model.organization.isCentralWorshipService
-        @model.organization.isRepresentativeBody
-      )
-    }}
-      <RelatedOrganizationsViewTable
-        @elements={{@model.subOrganizations}}
-        @displayWhenEmpty={{@model.organization.isRepresentativeBody}}
-        @label="Heeft relatie met"
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-        @allowHidingInactiveOrganizations={{true}}
-        @organizationStatus={{this.organizationStatus}}
-        id="worship-sub-organizations"
-      />
-    {{else}}
-      {{#if
-        (or
-          @model.organization.isOcmwAssociation
-          @model.organization.isPevaMunicipality
-          @model.organization.isPevaProvince
-        )
-      }}
-        <RelatedOrganizationsViewTable
-          @elements={{@model.wasFoundedByOrganizations}}
-          @displayWhenEmpty={{true}}
-          @label="Werd opericht door"
-          id="was-founded-by"
-          @sort={{this.sort}}
-          @page={{this.page}}
-          @size={{this.size}}
-        />
-      {{/if}}
-
-      <RelatedOrganizationsViewTable
-        @elements={{@model.organization.foundedOrganizations}}
-        id="founded-organizations"
-        @allowHidingInactiveOrganizations={{true}}
-        @organizationStatus={{this.organizationStatus}}
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-
-      <RelatedOrganizationsViewTable
-        @elements={{@model.participatesIn}}
-        @label="Participeert in"
-        id="participates-in"
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-
-      <RelatedOrganizationsViewTable
-        @elements={{@model.hasParticipants}}
-        @label="Heeft als participanten"
-        id="has-participants"
-        @sort={{this.sort}}
-        @page={{this.page}}
-        @size={{this.size}}
-      />
-    {{/if}}
+    <RelatedOrganizationsViewTable
+      @model={{@model}}
+      id="relatedOrganizations"
+      @organizationStatus={{this.organizationStatus}}
+      @sort={{this.sort}}
+      @page={{this.page}}
+      @size={{this.size}}
+    />
   </div>
 </div>
