@@ -70,6 +70,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       exactMatch: validateBelongsToOptional(),
       scope: validateBelongsToOptional(),
       kboOrganization: validateBelongsToOptional(),
+      // TODO: modify to new membership relation validation
       isAssociatedWith: validateRequiredWhenClassificationId(
         [
           ...WorshipServiceCodeList,

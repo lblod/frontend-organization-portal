@@ -16,6 +16,7 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
   get validationSchema() {
     const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({
+      // TODO: modify to new membership relation validation
       wasFoundedByOrganizations: Joi.when(
         // Note: For OCMW associations and PEVAs a founding organisation is
         // normally mandatory. But the available business data when onboarding
