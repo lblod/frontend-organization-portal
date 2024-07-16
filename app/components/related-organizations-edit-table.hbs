@@ -11,6 +11,7 @@
     <menu.general>
       <div class="au-o-box">
         <MembershipRoleSelect
+          @disabled={{@unsavedEdit}}
           @options={{@model.roles}}
           @selected={{@selectedRole}}
           @onChange={{fn (mut @selectedRole)}}

@@ -33,9 +33,7 @@
       aria-label="edit-core-info-form"
       {{on "submit" (perform this.save)}}
     >
-
       <div class="au-o-flow au-o-flow--large">
-        {{! TODO: rename component to MembershipsEditTable }}
         <RelatedOrganizationsEditTable
           @model={{@model}}
           @content={{this.memberships}}
@@ -47,7 +45,8 @@
           @removeRelatedOrganization={{this.removeMembership}}
           @updateMembershipRole={{this.updateMembershipRole}}
           @displayRoleLabel={{this.displayRoleLabel}}
-          @roleOptions={{this.roleOptions}}
+          @selectedRole={{this.selectedRoleLabel}}
+          @unsavedEdit={{this.hasUnsavedEdits}}
           id="edit-related-organizations"
         />
       </div>

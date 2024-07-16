@@ -9,10 +9,18 @@
 >
   <t.menu as |menu|>
     <menu.general>
+      {{! TODO: place next to each other }}
       <div class="au-o-box">
         <AuToggleSwitch
           @label="Verberg niet actieve organisaties"
           @checked={{@organizationStatus}}
+        />
+
+        <MembershipRoleSelect
+          @options={{@model.roles}}
+          @selected={{@selectedRole}}
+          @onChange={{fn (mut @selectedRole)}}
+          @allowClear={{true}}
         />
       </div>
     </menu.general>

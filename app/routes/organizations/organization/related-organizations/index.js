@@ -9,6 +9,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
     sort: { refreshModel: true },
     page: { refreshModel: true },
     organizationStatus: { refreshModel: true, replace: true },
+    selectedRoleLabel: { refreshModel: true, replace: true },
   };
 
   /**

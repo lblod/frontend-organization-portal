@@ -49,13 +49,16 @@
       </div>
     {{/if}}
 
-    <RelatedOrganizationsViewTable
-      @model={{@model}}
-      id="relatedOrganizations"
-      @organizationStatus={{this.organizationStatus}}
-      @sort={{this.sort}}
-      @page={{this.page}}
-      @size={{this.size}}
-    />
+    <div>
+      <RelatedOrganizationsViewTable
+        @model={{@model}}
+        id="relatedOrganizations"
+        @organizationStatus={{this.organizationStatus}}
+        @sort={{this.sort}}
+        @page={{this.page}}
+        @size={{this.size}}
+        @selectedRole={{this.selectedRoleLabel}}
+      />
+    </div>
   </div>
 </div>

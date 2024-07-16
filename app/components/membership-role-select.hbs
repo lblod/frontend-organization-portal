@@ -3,10 +3,11 @@
     @disabled={{@disabled}}
     @loadingMessage="Aan het laden..."
     @searchField="label"
-    @options={{@options}}
+    @options={{this.getMembershipRoleLabels @options}}
     @selected={{@selected}}
     @onChange={{@onChange}}
     @triggerId={{@id}}
+    @allowClear={{@allowClear}}
     as |role|
   >
     {{role}}

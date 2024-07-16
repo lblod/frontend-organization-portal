@@ -9,15 +9,22 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   @service router;
   @service store;
 
-  queryParams = ['page', 'size'];
+  queryParams = ['page', 'size', 'selectedRoleLabel'];
 
   @tracked page = 0;
   @tracked size = 500;
 
   @tracked memberships;
+  @tracked selectedRoleLabel;
 
   get hasValidationErrors() {
     return this.memberships.some((membership) => membership.error);
+  }
+
+  get hasUnsavedEdits() {
+    return this.memberships.some(
+      (membership) => membership.isNew || membership.isDeleted,
+    );
   }
 
   setup() {
@@ -51,7 +58,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     // Find the role model matching the label
     // Note: this assumes that the labels are unique for each membership role
     const roleModel = this.model.roles.find(
-      (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel
+      (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel,
     );
     membership.role = roleModel;
 
@@ -70,16 +77,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     return membership.getRoleLabelForPerspective(this.model.organization);
   }
 
-  get roleOptions() {
-    const result = new Set();
-    this.model.roles.forEach((role) => {
-      result.add(role.opLabel);
-      result.add(role.inverseOpLabel);
-    });
-
-    return Array.from(result);
-  }
-
   @dropTask
   *save(event) {
     event.preventDefault();
@@ -89,7 +86,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     yield organization.validate();
 
     let validationPromises = this.memberships.map((membership) =>
-      membership.validate()
+      membership.validate(),
     );
     yield Promise.all(validationPromises);
 
@@ -103,7 +100,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
       this.router.transitionTo(
         'organizations.organization.related-organizations',
-        organization.id
+        organization.id,
       );
     }
   }
@@ -111,5 +108,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   reset() {
     this.model.organization.reset();
     this.memberships = null;
+    this.selectedRoleLabel = null;
   }
 }

@@ -10,6 +10,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
   queryParams = {
     sort: { refreshModel: true },
     page: { refreshModel: true },
+    selectedRoleLabel: { refreshModel: true, replace: true },
   };
 
   beforeModel() {
