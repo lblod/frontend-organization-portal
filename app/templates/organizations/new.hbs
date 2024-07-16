@@ -388,10 +388,9 @@
                   >
                     <:label>Gemeente</:label>
                     <:content as |hasError|>
-                      <OrganizationSelect
+                      <MunicipalitySelect
                         @selected={{this.municipality}}
                         @onChange={{this.setMunicipality}}
-                        @classificationCodes={{this.currentOrganizationModel.municipalityClassificationCode}}
                         @error={{hasError}}
                         @id="related-gemeente"
                       />
@@ -494,12 +493,11 @@
                     >
                       <:label>Gemeente</:label>
                       <:content as |hasError|>
-                        <OrganizationSelect
+                        <MunicipalitySelect
                           @selected={{this.municipality}}
                           @selectedProvince={{this.province}}
                           @allowClear={{true}}
                           @onChange={{this.setMunicipality}}
-                          @classificationCodes={{this.currentOrganizationModel.municipalityClassificationCode}}
                           @error={{hasError}}
                           @id="related-municipality"
                         />

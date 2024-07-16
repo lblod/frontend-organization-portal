@@ -17,13 +17,15 @@ export default class MunicipalitySelectComponent extends Component {
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
     yield Promise.resolve();
 
-    if (this.args.selectedProvince && this.args.selectedProvince.length) {
+    const selectedProvinceId = this.args.selectedProvince?.get('id');
+
+    if (selectedProvinceId && selectedProvinceId.length) {
       // If a province is selected, load the municipalities in it
       let municipalities = yield this.store.query('organization', {
         filter: {
           'memberships-of-organizations': {
             organization: {
-              ':exact:name': this.args.selectedProvince,
+              id: selectedProvinceId,
             },
           },
           classification: {
