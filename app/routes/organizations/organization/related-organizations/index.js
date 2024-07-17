@@ -18,23 +18,25 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       'filter[:or:][memberships-of-organizations][organization][:id:]':
         organization.id,
       'filter[organization-status][:id:]': params.organizationStatus
-        ? '63cc561de9188d64ba5840a42ae8f0d6'
+        ? '63cc561de9188d64ba5840a42ae8f0d6' // active
         : undefined,
-      // include:
-      //   'member,member.classification,organization,organization.classification',
-      include: 'memberships,memberships-of-organizations',
+      include: [
+        'memberships.role',
+        'memberships.member',
+        'memberships.organization',
+        'memberships-of-organizations.role',
+        'memberships-of-organizations.member',
+        'memberships-of-organizations.organization',
+      ].join(),
       sort: params.sort,
       page: { size: params.size, number: params.page },
     };
 
-    const allMembershipRelations = await this.store.query(
-      'organization',
-      query
-    );
+    const relatedOrganizations = await this.store.query('organization', query);
 
     return {
       organization,
-      allMembershipRelations,
+      relatedOrganizations,
     };
   }
 }

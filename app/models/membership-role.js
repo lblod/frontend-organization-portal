@@ -8,7 +8,7 @@ export const MEMBERSHIP_ROLES = [
   },
   {
     id: '73d5e1cf250d42fab15926771f07505a',
-    label: 'Is oprichter van ', // is founder of
+    label: 'Is oprichter van', // is founder of
     inverseLabel: 'Werd opgericht door ', // was founded by
   },
   {
@@ -27,7 +27,7 @@ export const MEMBERSHIP_ROLES_MAPPING = {
   IS_FOUNDER_OF: {
     id: '73d5e1cf250d42fab15926771f07505a',
     label: 'Is oprichter van ', // is founder of
-    inverseLabel: 'Werd opgericht door ', // was founded by
+    inverseLabel: 'Werd opgericht door', // was founded by
   },
   PARTICIPATES_IN: {
     id: '2152eb830b1143bfb97a7dd9596d6c63',

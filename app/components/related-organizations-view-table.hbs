@@ -1,5 +1,5 @@
 <AuDataTable
-  @content={{@model.allMembershipRelations}}
+  @content={{@model.relatedOrganizations}}
   @sort={{@sort}}
   @page={{@page}}
   @size={{@size}}
@@ -7,7 +7,6 @@
   @noDataMessage={{or @noDataMessage "Geen organisatie"}}
   as |t|
 >
-
   <t.menu as |menu|>
     <menu.general>
       <div class="au-o-box">
