@@ -350,7 +350,7 @@
                 <Item
                   @labelFor="related-representative-body"
                   @required={{true}}
-                  @errorMessage={{this.currentOrganizationModel.error.membershipsOfOrganizations.message}}
+                  @errorMessage={{this.representativeBodyError}}
                 >
                   <:label>Representatief orgaan</:label>
                   <:content as |hasError|>
@@ -421,7 +421,7 @@
                       <:content as |hasError|>
                         <OrganizationMultipleSelect
                           @selected={{this.participants}}
-                          @onChange={{this.addParticipants}}
+                          @onChange={{fn (mut this.participants)}}
                           @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
                           @error={{hasError}}
                           @id="participants-igs"
@@ -459,7 +459,7 @@
                       <:content as |hasError|>
                         <OrganizationMultipleSelect
                           @selected={{this.participants}}
-                          @onChange={{this.addParticipants}}
+                          @onChange={{fn (mut this.participants)}}
                           @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
                           @error={{hasError}}
                           @id="participants-ocmw-association-peva"

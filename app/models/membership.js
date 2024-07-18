@@ -72,28 +72,27 @@ export default class MembershipModel extends AbstractValidationModel {
             let roles = [];
 
             if (organization.isIgs) {
-              roles.push(
-                MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
-                MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN
-              );
+              roles.push(MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN);
             }
-            if (organization.isApb) {
-              roles.push(
-                MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
-                MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH
-              );
-            }
-            if (organization.isAgb) {
-              roles.push(MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF);
-            }
+
             if (
+              organization.isApb ||
+              organization.isAgb ||
               organization.isOcmwAssociation ||
               organization.isPevaMunicipality ||
               organization.isPevaProvince
             ) {
               roles.push(MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF);
             }
-            if (organization.isPoliceZone || organization.isAssistanceZone) {
+
+            if (
+              organization.isApb ||
+              organization.isIgs ||
+              organization.isPoliceZone ||
+              organization.isAssistanceZone ||
+              organization.isWorshipService ||
+              organization.isCentralWorshipService
+            ) {
               roles.push(MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH);
             }
 
@@ -102,7 +101,7 @@ export default class MembershipModel extends AbstractValidationModel {
             }
 
             return value;
-          }
+          },
         ),
         otherwise: validateBelongsToRequired(REQUIRED_MESSAGE),
       }),
@@ -112,7 +111,7 @@ export default class MembershipModel extends AbstractValidationModel {
 
   #containsMembershipForRoles(memberships, roles) {
     return roles.every((role) =>
-      memberships.some((membership) => membership.role.id === role.id)
+      memberships.some((membership) => membership.role.id === role.id),
     );
   }
 

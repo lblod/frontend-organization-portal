@@ -26,7 +26,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   get hasUnsavedEdits() {
     return this.memberships.some(
-      (membership) => membership.isNew || membership.isDeleted
+      (membership) => membership.isNew || membership.isDeleted,
     );
   }
 
@@ -75,17 +75,27 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     // Find the role model matching the label
     // Note: this assumes that the labels are unique for each membership role
     const roleModel = this.model.roles.find(
-      (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel
+      (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel,
     );
     membership.role = roleModel;
 
-    // (Re-)assign the active organisation to the appropriate relation
-    // Note: when the label and inverse label are identical, this prioritises
-    // setting the active organisation as member
-    if (roleLabel === roleModel.opLabel) {
-      membership.member = this.model.organization;
+    // (Re-)assign the active organisation to the appropriate relation Note:
+    // when the label and inverse label are identical, this prioritises setting
+    // the active organisation as member. The exceptions are municipalities and
+    // central worship services which *currently* always act as organisation in
+    // memberships with the "has relation with" role.
+    const currentOrganization = this.model.organization;
+    if (
+      roleLabel === roleModel.opLabel &&
+      !(
+        membership.role.get('hasRelationWith') &&
+        (currentOrganization.isCentralWorshipService ||
+          currentOrganization.isMunicipality)
+      )
+    ) {
+      membership.member = currentOrganization;
     } else if (roleLabel === roleModel.inverseOpLabel) {
-      membership.organization = this.model.organization;
+      membership.organization = currentOrganization;
     }
   }
 
@@ -98,12 +108,34 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   *save(event) {
     event.preventDefault();
 
+    // In case the membership concerns a HAS_RELATION_WITH between a worship
+    // service and representative body, make sure the involved organizations
+    // are assigned to the correct side of the membership.
+    this.memberships = yield Promise.all(
+      this.memberships.map(async (membership) => {
+        if (
+          membership.role.get('id') ===
+            MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id &&
+          membership.organization.get('isRepresentativeBody') &&
+          membership.member.get('isWorshipService')
+        ) {
+          [membership.member, membership.organization] = [
+            await membership.organization,
+            await membership.member,
+          ];
+          return membership;
+        } else {
+          return membership;
+        }
+      }),
+    );
+
     let organization = this.model.organization;
 
     yield organization.validate();
 
     let validationPromises = this.memberships.map((membership) =>
-      membership.validate()
+      membership.validate(),
     );
     yield Promise.all(validationPromises);
 
@@ -117,7 +149,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
       this.router.transitionTo(
         'organizations.organization.related-organizations',
-        organization.id
+        organization.id,
       );
     }
   }

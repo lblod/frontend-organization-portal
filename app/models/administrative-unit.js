@@ -10,6 +10,7 @@ import {
   AgbCodeList,
   ApbCodeList,
   AssistanceZoneCodeList,
+  CentralWorshipServiceCodeList,
   DistrictCodeList,
   IGSCodeList,
   MunicipalityCodeList,
@@ -19,6 +20,7 @@ import {
   ProvinceCodeList,
   PevaMunicipalityCodeList,
   PevaProvinceCodeList,
+  WorshipServiceCodeList,
 } from '../constants/Classification';
 import {
   allowedfoundingMemberships,
@@ -88,7 +90,9 @@ export default class AdministrativeUnitModel extends OrganizationModel {
             ...PevaMunicipalityCodeList,
             ...PevaProvinceCodeList,
             ...PoliceZoneCodeList,
-            ...AssistanceZoneCodeList
+            ...AssistanceZoneCodeList,
+            ...WorshipServiceCodeList,
+            ...CentralWorshipServiceCodeList,
           ),
           then: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
           otherwise: validateHasManyOptional(),

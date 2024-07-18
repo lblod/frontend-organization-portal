@@ -58,50 +58,30 @@
         <td>
           {{#if (eq membership.member.id @model.organization.id)}}
             {{#let membership.error.organization.message as |errorMessage|}}
-              {{#if @model.isWorshipAdministrativeUnit}}
-                <WorshipServiceSelect
-                  @disabled={{not (and membership.role membership.isNew)}}
-                  @selected={{membership.organization}}
-                  @onChange={{fn (mut membership.organization)}}
-                  @error={{errorMessage}}
-                  id="related-worship-service"
-                />
-              {{else}}
-                <OrganizationSelect
-                  @disabled={{not (and membership.role membership.isNew)}}
-                  @selected={{membership.organization}}
-                  @error={{errorMessage}}
-                  @onChange={{fn (mut membership.organization)}}
-                  @classificationCodes={{(@model.organization.getClassificationCodesForMembership
-                    membership
-                  )}}
-                />
-              {{/if}}
+              <OrganizationSelect
+                @disabled={{not (and membership.role membership.isNew)}}
+                @selected={{membership.organization}}
+                @error={{errorMessage}}
+                @onChange={{fn (mut membership.organization)}}
+                @classificationCodes={{(@model.organization.getClassificationCodesForMembership
+                  membership
+                )}}
+              />
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
               {{/if}}
             {{/let}}
           {{else}}
             {{#let membership.error.member.message as |errorMessage|}}
-              {{#if @model.isWorshipAdministrativeUnit}}
-                <WorshipServiceSelect
-                  @disabled={{not (and membership.role membership.isNew)}}
-                  @selected={{membership.member}}
-                  @onChange={{fn (mut membership.member)}}
-                  @error={{errorMessage}}
-                  id="related-worship-service"
-                />
-              {{else}}
-                <OrganizationSelect
-                  @disabled={{not (and membership.role membership.isNew)}}
-                  @selected={{membership.member}}
-                  @onChange={{fn (mut membership.member)}}
-                  @error={{errorMessage}}
-                  @classificationCodes={{(@model.organization.getClassificationCodesForMembership
-                    membership
-                  )}}
-                />
-              {{/if}}
+              <OrganizationSelect
+                @disabled={{not (and membership.role membership.isNew)}}
+                @selected={{membership.member}}
+                @onChange={{fn (mut membership.member)}}
+                @error={{errorMessage}}
+                @classificationCodes={{(@model.organization.getClassificationCodesForMembership
+                  membership
+                )}}
+              />
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
               {{/if}}

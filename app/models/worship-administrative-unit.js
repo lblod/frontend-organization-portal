@@ -40,22 +40,10 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
     return super.validationSchema.append({
       recognizedWorshipType: validateRequiredWhenClassificationId(
         [...WorshipServiceCodeList, ...CentralWorshipServiceCodeList],
-        REQUIRED_MESSAGE
+        REQUIRED_MESSAGE,
       ),
       ministerPositions: validateHasManyOptional(),
       involvements: validateHasManyOptional(),
-      // NOTE:The requested functionality was to *not* validate memberships of
-      // already existing organizations. When creating a new organization a
-      // mandatory membership is enforced by providing a `true` value for
-      // `creatingNewOrganization`.
-      membershipsOfOrganizations: Joi.when(
-        Joi.ref('$creatingNewOrganization'),
-        {
-          is: Joi.exist().valid(true),
-          then: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
-          otherwise: validateHasManyOptional(),
-        }
-      ),
     });
   }
 

@@ -1,10 +1,25 @@
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
-import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import {
   IGSCodeList,
   OcmwAssociationCodeList,
   PevaCodeList,
 } from 'frontend-organization-portal/constants/Classification';
+import {
+  AgbCodeList,
+  ApbCodeList,
+  AssistanceZoneCodeList,
+  AssociationOtherCodeList,
+  CentralWorshipServiceCodeList,
+  CorporationOtherCodeList,
+  MunicipalityCodeList,
+  OCMWCodeList,
+  PevaMunicipalityCodeList,
+  PevaProvinceCodeList,
+  PoliceZoneCodeList,
+  ProvinceCodeList,
+  RepresentativeBodyCodeList,
+  WorshipServiceCodeList,
+} from './Classification';
 
 // Specifies which kinds of organisations can acts as participants in other
 // organisations. For each classification code in an organisations property the
@@ -14,34 +29,26 @@ export const allowedParticipationMemberships = [
   {
     organizations: [...IGSCodeList],
     members: [
-      CLASSIFICATION.MUNICIPALITY.id,
-      CLASSIFICATION.OCMW.id,
-      CLASSIFICATION.AGB.id,
-      CLASSIFICATION.PROJECTVERENIGING.id,
-      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
-      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
-      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
-      CLASSIFICATION.POLICE_ZONE.id,
-      CLASSIFICATION.ASSISTANCE_ZONE.id,
-      CLASSIFICATION.PEVA_MUNICIPALITY.id,
-      CLASSIFICATION.PEVA_PROVINCE.id,
-      CLASSIFICATION.WELZIJNSVERENIGING.id,
-      CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
-      CLASSIFICATION.ZIEKENHUISVERENIGING.id,
-      CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
-      CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-      CLASSIFICATION.ASSOCIATION_OTHER.id,
-      CLASSIFICATION.CORPORATION_OTHER.id,
+      ...MunicipalityCodeList,
+      ...OCMWCodeList,
+      ...AgbCodeList,
+      ...IGSCodeList,
+      ...PoliceZoneCodeList,
+      ...AssistanceZoneCodeList,
+      ...PevaCodeList,
+      ...OcmwAssociationCodeList,
+      ...AssociationOtherCodeList,
+      ...CorporationOtherCodeList,
     ],
   },
   {
     organizations: [...OcmwAssociationCodeList],
     members: [
       ...OcmwAssociationCodeList,
-      CLASSIFICATION.MUNICIPALITY.id,
-      CLASSIFICATION.OCMW.id,
-      CLASSIFICATION.ASSOCIATION_OTHER.id,
-      CLASSIFICATION.CORPORATION_OTHER.id,
+      ...MunicipalityCodeList,
+      ...OCMWCodeList,
+      ...AssociationOtherCodeList,
+      ...CorporationOtherCodeList,
     ],
   },
   {
@@ -52,38 +59,68 @@ export const allowedParticipationMemberships = [
 
 export const allowedfoundingMemberships = [
   {
-    organizations: [CLASSIFICATION.AGB.id],
-    members: [CLASSIFICATION.MUNICIPALITY.id],
+    organizations: [...AgbCodeList],
+    members: [...MunicipalityCodeList],
   },
   {
-    organizations: [CLASSIFICATION.APB.id],
-    members: [CLASSIFICATION.MUNICIPALITY.id],
+    organizations: [...ApbCodeList],
+    members: [...MunicipalityCodeList],
   },
   {
-    organizations: [CLASSIFICATION.PEVA_MUNICIPALITY.id],
+    organizations: [...PevaMunicipalityCodeList],
     members: [
-      CLASSIFICATION.MUNICIPALITY.id,
-      CLASSIFICATION.ASSOCIATION_OTHER.id,
-      CLASSIFICATION.CORPORATION_OTHER.id,
+      ...MunicipalityCodeList,
+      ...AssociationOtherCodeList,
+      ...CorporationOtherCodeList,
     ],
   },
   {
-    organizations: [CLASSIFICATION.PEVA_PROVINCE.id],
+    organizations: [...PevaProvinceCodeList],
     members: [
-      CLASSIFICATION.PROVINCE.id,
-      CLASSIFICATION.ASSOCIATION_OTHER.id,
-      CLASSIFICATION.CORPORATION_OTHER.id,
+      ...ProvinceCodeList,
+      ...AssociationOtherCodeList,
+      ...CorporationOtherCodeList,
     ],
   },
   {
     organizations: [...OcmwAssociationCodeList],
     members: [
       ...OcmwAssociationCodeList,
-      CLASSIFICATION.MUNICIPALITY.id,
-      CLASSIFICATION.OCMW.id,
-      CLASSIFICATION.ASSOCIATION_OTHER.id,
-      CLASSIFICATION.CORPORATION_OTHER.id,
+      ...MunicipalityCodeList,
+      ...OCMWCodeList,
+      ...AssociationOtherCodeList,
+      ...CorporationOtherCodeList,
     ],
+  },
+];
+
+export const allowedHasRelationWithMemberships = [
+  {
+    organizations: [...MunicipalityCodeList],
+    members: [
+      ...AgbCodeList,
+      ...IGSCodeList,
+      ...PoliceZoneCodeList,
+      ...AssistanceZoneCodeList,
+    ],
+  },
+  {
+    organizations: [
+      ...CentralWorshipServiceCodeList,
+      ...RepresentativeBodyCodeList,
+    ],
+    members: [...WorshipServiceCodeList],
+  },
+  {
+    organizations: [...WorshipServiceCodeList, ...RepresentativeBodyCodeList],
+    members: [...CentralWorshipServiceCodeList],
+  },
+  {
+    organizations: [
+      ...WorshipServiceCodeList,
+      ...CentralWorshipServiceCodeList,
+    ],
+    members: [...RepresentativeBodyCodeList],
   },
 ];
 
@@ -93,6 +130,10 @@ const allowedMembershipRelations = new Map([
     allowedParticipationMemberships,
   ],
   [MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id, allowedfoundingMemberships],
+  [
+    MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+    allowedHasRelationWithMemberships,
+  ],
 ]);
 
 /**
