@@ -8,6 +8,6 @@ export default class MembershipRoleSelectComponent extends Component {
       roleLabels.add(role.inverseOpLabel);
     });
 
-    return Array.from(roleLabels);
+    return Array.from(roleLabels).sort();
   }
 }
