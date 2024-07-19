@@ -1,8 +1,6 @@
 import { belongsTo, hasMany } from '@ember-data/model';
 import AdministrativeUnitModel from './administrative-unit';
-import Joi from 'joi';
 import {
-  validateHasManyNotEmptyRequired,
   validateHasManyOptional,
   validateRequiredWhenClassificationId,
 } from '../validators/schema';
@@ -40,7 +38,7 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
     return super.validationSchema.append({
       recognizedWorshipType: validateRequiredWhenClassificationId(
         [...WorshipServiceCodeList, ...CentralWorshipServiceCodeList],
-        REQUIRED_MESSAGE,
+        REQUIRED_MESSAGE
       ),
       ministerPositions: validateHasManyOptional(),
       involvements: validateHasManyOptional(),

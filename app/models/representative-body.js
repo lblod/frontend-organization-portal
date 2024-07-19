@@ -39,7 +39,7 @@ export default class RepresentativeBodyModel extends OrganizationModel {
           is: Joi.exist().valid(true),
           then: validateHasManyNotEmptyRequired('Selecteer een optie'),
           otherwise: validateHasManyOptional(),
-        },
+        }
       ),
     });
   }

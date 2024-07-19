@@ -29,7 +29,7 @@ module('Unit | Model | worship service', function (hooks) {
     test(`it should return an extra error when creating a new ${CLASSIFICATION.WORSHIP_SERVICE.label} without a membership`, async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
-        CLASSIFICATION.WORSHIP_SERVICE,
+        CLASSIFICATION.WORSHIP_SERVICE
       );
       const model = this.store().createRecord('worship-service', {
         classification,
@@ -51,7 +51,7 @@ module('Unit | Model | worship service', function (hooks) {
     test(`it should not return an extra error when creating a new ${CLASSIFICATION.WORSHIP_SERVICE.label} with a membership`, async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
-        CLASSIFICATION.WORSHIP_SERVICE,
+        CLASSIFICATION.WORSHIP_SERVICE
       );
       const membership = this.store().createRecord('membership');
       const model = this.store().createRecord('worship-service', {
@@ -73,7 +73,7 @@ module('Unit | Model | worship service', function (hooks) {
     test(`it should not return an extra error when editing an existing ${CLASSIFICATION.WORSHIP_SERVICE.label} without a membership`, async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
-        CLASSIFICATION.WORSHIP_SERVICE,
+        CLASSIFICATION.WORSHIP_SERVICE
       );
       const model = this.store().createRecord('worship-service', {
         classification,
@@ -93,7 +93,7 @@ module('Unit | Model | worship service', function (hooks) {
     test(`it should not return an extra error when editing an existing ${CLASSIFICATION.WORSHIP_SERVICE.label} with a membership`, async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
-        CLASSIFICATION.WORSHIP_SERVICE,
+        CLASSIFICATION.WORSHIP_SERVICE
       );
       const membership = this.store().createRecord('membership');
       const model = this.store().createRecord('worship-service', {
@@ -117,7 +117,7 @@ module('Unit | Model | worship service', function (hooks) {
     test('it should return true for worship service', async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
-        CLASSIFICATION.WORSHIP_SERVICE,
+        CLASSIFICATION.WORSHIP_SERVICE
       );
       const model = this.store().createRecord('worship-service', {
         classification,
@@ -130,7 +130,7 @@ module('Unit | Model | worship service', function (hooks) {
     test(`it should return false for a representative body`, async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
-        CLASSIFICATION.REPRESENTATIVE_BODY,
+        CLASSIFICATION.REPRESENTATIVE_BODY
       );
       const model = this.store().createRecord('worship-service', {
         classification,

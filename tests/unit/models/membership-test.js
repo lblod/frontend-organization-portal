@@ -36,21 +36,21 @@ module('Unit | Model | membership', function (hooks) {
         test(`it should not return an error when a founder and participant are provided for ${cl.label}`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
-            cl,
+            cl
           );
 
           const organization = this.store().createRecord(
             'administrative-unit',
             {
               classification,
-            },
+            }
           );
 
           const member = this.store().createRecord('organization');
 
           const participantRole = this.store().createRecord(
             'membership-role',
-            MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+            MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN
           );
 
           const participant = this.store().createRecord('membership', {
@@ -59,7 +59,7 @@ module('Unit | Model | membership', function (hooks) {
 
           const relationRole = this.store().createRecord(
             'membership-role',
-            MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+            MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH
           );
 
           const model = this.store().createRecord('membership', {
@@ -90,13 +90,13 @@ module('Unit | Model | membership', function (hooks) {
         test(`it should return an error when organization is a(n) ${cl.label} lacking a founder`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
-            cl,
+            cl
           );
           const organization = this.store().createRecord(
             'administrative-unit',
             {
               classification,
-            },
+            }
           );
 
           const member = this.store().createRecord('organization');
@@ -132,13 +132,13 @@ module('Unit | Model | membership', function (hooks) {
         test(`it should return an error when organization is a ${cl.label} without participants`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
-            cl,
+            cl
           );
           const organization = this.store().createRecord(
             'administrative-unit',
             {
               classification,
-            },
+            }
           );
 
           const member = this.store().createRecord('organization');
@@ -169,13 +169,13 @@ module('Unit | Model | membership', function (hooks) {
         test(`it should return an error when a related municipality is missing for ${cl.label}`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
-            cl,
+            cl
           );
           const organization = this.store().createRecord(
             'administrative-unit',
             {
               classification,
-            },
+            }
           );
           const member = this.store().createRecord('organization');
           const role = this.store().createRecord('membership-role');
@@ -209,19 +209,19 @@ module('Unit | Model | membership', function (hooks) {
         test(`it returns no error when membership is a founder for a ${cl.label}`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
-            cl,
+            cl
           );
           const organization = this.store().createRecord(
             'administrative-unit',
             {
               classification,
-            },
+            }
           );
           const member = this.store().createRecord('organization');
 
           const founderRole = this.store().createRecord(
             'membership-role',
-            MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+            MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF
           );
 
           const model = this.store().createRecord('membership', {
@@ -249,19 +249,19 @@ module('Unit | Model | membership', function (hooks) {
         test(`it returns no error there is another founder for a ${cl.label}`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
-            cl,
+            cl
           );
           const organization = this.store().createRecord(
             'administrative-unit',
             {
               classification,
-            },
+            }
           );
           const member = this.store().createRecord('organization');
 
           const founderRole = this.store().createRecord(
             'membership-role',
-            MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+            MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF
           );
           const founder = this.store().createRecord('membership', {
             role: founderRole,
@@ -290,13 +290,13 @@ module('Unit | Model | membership', function (hooks) {
           test(`it returns an error when there is no membership  with the "has relation with" role for a ${cl.label}`, async function (assert) {
             const classification = this.store().createRecord(
               'administrative-unit-classification-code',
-              cl,
+              cl
             );
             const organization = this.store().createRecord(
               'administrative-unit',
               {
                 classification,
-              },
+              }
             );
             const member = this.store().createRecord('organization');
 
@@ -320,7 +320,7 @@ module('Unit | Model | membership', function (hooks) {
               role: { message: 'Selecteer een optie' },
             });
           });
-        },
+        }
       );
 
       [CLASSIFICATION.POLICE_ZONE, CLASSIFICATION.ASSISTANCE_ZONE].forEach(
@@ -328,19 +328,19 @@ module('Unit | Model | membership', function (hooks) {
           test(`it returns no error when membership is a "has relation with" for a ${cl.label}`, async function (assert) {
             const classification = this.store().createRecord(
               'administrative-unit-classification-code',
-              cl,
+              cl
             );
             const organization = this.store().createRecord(
               'administrative-unit',
               {
                 classification,
-              },
+              }
             );
             const member = this.store().createRecord('organization');
 
             const relationRole = this.store().createRecord(
               'membership-role',
-              MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+              MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH
             );
 
             const model = this.store().createRecord('membership', {
@@ -357,7 +357,7 @@ module('Unit | Model | membership', function (hooks) {
 
             assert.true(isValid);
           });
-        },
+        }
       );
 
       [
@@ -367,7 +367,7 @@ module('Unit | Model | membership', function (hooks) {
         test(`it returns an error when there is no membership  with the "has relation with" role for a ${cl.label}`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
-            cl,
+            cl
           );
           const organization = this.store().createRecord(
             cl.id === CLASSIFICATION.WORSHIP_SERVICE.id
@@ -375,7 +375,7 @@ module('Unit | Model | membership', function (hooks) {
               : 'central-worship-service',
             {
               classification,
-            },
+            }
           );
           const member = this.store().createRecord('organization');
 
@@ -408,7 +408,7 @@ module('Unit | Model | membership', function (hooks) {
         test(`it returns no error when membership is a "has relation with" for a ${cl.label}`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
-            cl,
+            cl
           );
           const organization = this.store().createRecord(
             cl.id === CLASSIFICATION.WORSHIP_SERVICE.id
@@ -416,13 +416,13 @@ module('Unit | Model | membership', function (hooks) {
               : 'central-worship-service',
             {
               classification,
-            },
+            }
           );
           const member = this.store().createRecord('organization');
 
           const relationRole = this.store().createRecord(
             'membership-role',
-            MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+            MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH
           );
 
           const model = this.store().createRecord('membership', {
@@ -452,13 +452,13 @@ module('Unit | Model | membership', function (hooks) {
         test(`it returns no error when founder is missing for a ${cl.label} and the mandatory founder rule is relaxed`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
-            cl,
+            cl
           );
           const organization = this.store().createRecord(
             'administrative-unit',
             {
               classification,
-            },
+            }
           );
           const member = this.store().createRecord('organization');
 
