@@ -4,15 +4,12 @@ import { action } from '@ember/object';
 import { timeout, task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import { trackedTask } from 'ember-resources/util/ember-concurrency';
+import { ORGANIZATION_STATUS } from '../models/organization-status-code';
 
 export default class OrganizationSelectComponent extends Component {
   @service store;
-  @tracked loadedRecord;
 
-  municipalities = trackedTask(this, this.loadOrganizationsTask, () => [
-    this.args.selectedProvince,
-  ]);
+  @tracked loadedRecord;
 
   @action
   triggerChange(event) {
@@ -28,9 +25,8 @@ export default class OrganizationSelectComponent extends Component {
     yield timeout(500);
 
     let classificationCodes = this.args.classificationCodes;
-    let allowedClassificationCodes = [];
     let searchResults = [];
-    let query = '';
+    let query;
 
     const selectedPositionId = this.args.selectedPosition;
 
@@ -51,53 +47,38 @@ export default class OrganizationSelectComponent extends Component {
 
       if (ministerPositions.length) {
         // Only worship services have minister positions
-        if (
-          classificationCodes.find(
-            (code) => code == CLASSIFICATION.WORSHIP_SERVICE.id
-          )
-        ) {
-          allowedClassificationCodes = [CLASSIFICATION.WORSHIP_SERVICE.id];
-        }
+        classificationCodes = [CLASSIFICATION.WORSHIP_SERVICE.id];
       } else if (boardPositionCodes.length) {
         const selectedPosition = boardPositionCodes.at(0);
         const governingBodyClassification = yield selectedPosition.appliesTo;
         const classificationOptions =
           yield governingBodyClassification.appliesWithin;
 
-        // If we found one, we use it as the only allowed code
+        // If we find one, we use it as the only allowed code
         classificationOptions.forEach((classificationOption) => {
           if (
             classificationCodes.find((code) => code == classificationOption.id)
           ) {
-            allowedClassificationCodes.push(classificationOption.id);
+            classificationCodes.push(classificationOption.id);
           }
         });
       }
-    } else {
-      allowedClassificationCodes = classificationCodes;
     }
-
-    let code = CLASSIFICATION.MUNICIPALITY.id;
 
     if (classificationCodes && classificationCodes.length) {
-      code = classificationCodes.join();
-    }
-
-    query = {
-      filter: {
-        classification: {
-          id: code,
+      query = {
+        filter: {
+          classification: {
+            id: classificationCodes.join(),
+          },
+          'organization-status': {
+            id: this.args.limitToActiveOrganizations
+              ? ORGANIZATION_STATUS.ACTIVE
+              : undefined,
+          },
         },
-      },
-      sort: 'name',
-      include: 'classification',
-    };
-
-    const selectedProvinceId = this.args.selectedProvince?.get('id');
-    // If a province is selected, load the municipalities in it
-    if (selectedProvinceId && selectedProvinceId.length) {
-      query.filter['is-sub-organization-of'] = {
-        id: selectedProvinceId,
+        sort: 'name',
+        include: 'classification',
       };
     }
 
@@ -105,7 +86,9 @@ export default class OrganizationSelectComponent extends Component {
       query['filter[name]'] = searchParams;
     }
 
-    searchResults = yield this.store.query('organization', query);
+    if (query) {
+      searchResults = yield this.store.query('organization', query);
+    }
 
     if (typeof this.args.filter === 'function') {
       return this.args.filter(searchResults);

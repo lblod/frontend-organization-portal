@@ -9,6 +9,7 @@ import fetch from 'fetch';
 import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
+import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 
 export default class OrganizationsNewController extends Controller {
   @service router;
@@ -17,6 +18,18 @@ export default class OrganizationsNewController extends Controller {
 
   @tracked currentOrganizationModel;
 
+  @tracked memberships = [];
+  @tracked membershipsOfOrganizations = [];
+
+  @tracked founders = [];
+  @tracked participants = [];
+  @tracked municipality;
+  @tracked province;
+
+  @tracked worshipServices = [];
+  @tracked centralWorshipService;
+  @tracked representativeBody;
+
   get hasValidationErrors() {
     return (
       this.currentOrganizationModel.error ||
@@ -24,33 +37,89 @@ export default class OrganizationsNewController extends Controller {
       this.model.contact.error ||
       this.model.secondaryContact.error ||
       this.model.identifierKBO.error ||
-      this.model.identifierSharepoint.error
+      this.model.identifierSharepoint.error ||
+      this.memberships.some((membership) => membership.error) ||
+      this.membershipsOfOrganizations.some((membership) => membership.error)
     );
   }
 
   @action
-  setRelation(organization) {
-    this.currentOrganizationModel.isSubOrganizationOf = Array.isArray(
-      organization
-    )
-      ? organization[0]
-      : organization;
+  async setMunicipality(municipality) {
+    this.municipality = municipality;
 
-    if (
-      this.currentOrganizationModel.isAgb ||
-      this.currentOrganizationModel.isApb ||
-      this.currentOrganizationModel.isOcmwAssociation ||
-      this.currentOrganizationModel.isPevaMunicipality ||
-      this.currentOrganizationModel.isPevaProvince
-    ) {
-      this.currentOrganizationModel.wasFoundedByOrganizations = Array.isArray(
-        organization
-      )
-        ? organization
-        : organization
-        ? [organization]
-        : [];
+    if (municipality) {
+      this.setProvince(
+        (
+          await this.store.query('organization', {
+            filter: {
+              memberships: {
+                member: {
+                  id: municipality.id,
+                },
+              },
+              classification: {
+                id: CLASSIFICATION.PROVINCE.id,
+              },
+            },
+          })
+        )[0]
+      );
+
+      if (this.currentOrganizationModel.isAgb) {
+        this.addFounders(municipality);
+      }
     }
+  }
+
+  #getErrorMessageForMembershipField(field) {
+    const membershipWithError = this.memberships.find(
+      (membership) => membership.error
+    );
+
+    if (!field || field.length === 0) {
+      return membershipWithError
+        ? membershipWithError.error.role.message
+        : this.currentOrganizationModel.error?.memberships?.message;
+    }
+  }
+
+  get municipalityError() {
+    return this.#getErrorMessageForMembershipField(this.municipality);
+  }
+
+  @action
+  setProvince(province) {
+    this.province = province;
+
+    if (this.currentOrganizationModel.isApb) {
+      this.addFounders(province);
+    }
+  }
+
+  get provinceError() {
+    return this.#getErrorMessageForMembershipField(this.province);
+  }
+
+  @action
+  addFounders(organizations) {
+    if (organizations) {
+      organizations = Array.isArray(organizations)
+        ? organizations
+        : [organizations];
+    }
+    this.founders = organizations;
+  }
+
+  get foundersError() {
+    return this.#getErrorMessageForMembershipField(this.founders);
+  }
+
+  get participantsError() {
+    return this.#getErrorMessageForMembershipField(this.participants);
+  }
+
+  get representativeBodyError() {
+    return this.#getErrorMessageForMembershipField(this.representativeBody);
   }
 
   @action
@@ -64,11 +133,6 @@ export default class OrganizationsNewController extends Controller {
   }
 
   @action
-  setHasParticipants(organizations) {
-    this.currentOrganizationModel.hasParticipants = organizations;
-  }
-
-  @action
   setKbo(value) {
     this.model.structuredIdentifierKBO.localId = value;
   }
@@ -77,9 +141,9 @@ export default class OrganizationsNewController extends Controller {
   setRecognizedWorshipType(recognizedWorshipType) {
     this.currentOrganizationModel.recognizedWorshipType = recognizedWorshipType;
 
-    // Remove the relation to any set central worship service since not all
+    // Remove the relation to any selected central worship service since not all
     // kinds of worship services require this.
-    this.currentOrganizationModel.isSubOrganizationOf = null;
+    this.centralWorshipService = null;
   }
 
   /**
@@ -120,6 +184,15 @@ export default class OrganizationsNewController extends Controller {
       // error seems to be specific to the plugin and does not seem to occur
       // otherwise.
       this.currentOrganizationModel.deleteRecord();
+      // Delete any created memberships
+      this.founders = [];
+      this.participants = [];
+      this.municipality = null;
+      this.province = null;
+
+      this.worshipServices = [];
+      this.centralWorshipService = null;
+      this.representativeBody = null;
 
       // Update the organization model instance used by this controller
       this.currentOrganizationModel = newOrganizationModelInstance;
@@ -229,6 +302,35 @@ export default class OrganizationsNewController extends Controller {
     }
   }
 
+  /**
+   * Create a model for new membership between the current organization model
+   * and each of the provided organizations.
+   * @param {@link OrganizationModel} organizations - The organizations to
+   *     create memberships for.
+   * @param {@link MembershipRoleModel} roleId - The role of the memberships
+   *     to create.
+   * @param {*} inverse - If truthy set the current organization as member,
+   *     otherwise the provided organizations are set as members.
+   * @returns {@link MembershipModel} A new membership model.
+   */
+  #createMembershipModels(organizations, roleId, inverse) {
+    if (organizations) {
+      const roleModel = this.model.roles.find((r) => r.id === roleId);
+      const memberships = [];
+
+      organizations.forEach((organization) => {
+        const membership = this.store.createRecord('membership', {
+          member: inverse ? this.currentOrganizationModel : organization,
+          organization: inverse ? organization : this.currentOrganizationModel,
+          role: roleModel,
+        });
+        memberships.push(membership);
+      });
+      return memberships;
+    }
+    return [];
+  }
+
   @dropTask
   *createOrganizationTask(event) {
     event.preventDefault();
@@ -244,8 +346,93 @@ export default class OrganizationsNewController extends Controller {
       structuredIdentifierKBO,
     } = this.model;
 
+    this.memberships = [];
+    this.membershipsOfOrganizations = [];
+
+    if (this.municipality && !this.currentOrganizationModel.isAgb) {
+      this.memberships.push(
+        ...this.#createMembershipModels(
+          [this.municipality],
+          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id
+        )
+      );
+    }
+
+    if (
+      this.province &&
+      !this.currentOrganizationModel.isApb &&
+      !this.currentOrganizationModel.isIgs
+    ) {
+      this.memberships.push(
+        ...this.#createMembershipModels(
+          [this.province],
+          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id
+        )
+      );
+    }
+
+    this.memberships.push(
+      ...this.#createMembershipModels(
+        this.founders,
+        MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id
+      ),
+      ...this.#createMembershipModels(
+        this.participants,
+        MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id
+      )
+    );
+
+    if (this.currentOrganizationModel.isCentralWorshipService) {
+      this.memberships.push(
+        ...this.#createMembershipModels(
+          this.worshipServices,
+          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id
+        )
+      );
+    }
+
+    if (this.currentOrganizationModel.isWorshipAdministrativeUnit) {
+      if (
+        this.currentOrganizationModel.hasCentralWorshipService &&
+        this.centralWorshipService
+      ) {
+        this.membershipsOfOrganizations.push(
+          ...this.#createMembershipModels(
+            [this.centralWorshipService],
+            MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+            true
+          )
+        );
+      }
+
+      if (this.representativeBody) {
+        this.memberships.push(
+          ...this.#createMembershipModels(
+            [this.representativeBody],
+            MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id
+          )
+        );
+      }
+    }
+
+    this.currentOrganizationModel.memberships = this.memberships;
+    this.currentOrganizationModel.membershipsOfOrganizations =
+      this.membershipsOfOrganizations;
+
+    yield Promise.all(
+      this.memberships.map((membership) =>
+        membership.validate({ creatingNewOrganization: true })
+      )
+    );
+
+    yield Promise.all(
+      this.membershipsOfOrganizations.map((membership) =>
+        membership.validate({ creatingNewOrganization: true })
+      )
+    );
+
     yield Promise.all([
-      this.currentOrganizationModel.validate(),
+      this.currentOrganizationModel.validate({ creatingNewOrganization: true }),
       identifierKBO.validate(),
       identifierSharepoint.validate(),
     ]);
@@ -316,7 +503,6 @@ export default class OrganizationsNewController extends Controller {
         yield primarySite.save();
         this.currentOrganizationModel.primarySite = primarySite;
       }
-
       (yield this.currentOrganizationModel.identifiers).push(
         identifierKBO,
         identifierSharepoint
@@ -327,6 +513,18 @@ export default class OrganizationsNewController extends Controller {
       );
 
       yield this.currentOrganizationModel.save();
+
+      let membershipSavePromises =
+        this.currentOrganizationModel.memberships.map((membership) =>
+          membership.save()
+        );
+      yield Promise.all(membershipSavePromises);
+
+      let membershipsOfOrganizationsSavePromises =
+        this.currentOrganizationModel.membershipsOfOrganizations.map(
+          (membership) => membership.save()
+        );
+      yield Promise.all(membershipsOfOrganizationsSavePromises);
 
       const createRelationshipsEndpoint = `/construct-organization-relationships/${this.currentOrganizationModel.id}`;
       yield fetch(createRelationshipsEndpoint, {
@@ -355,5 +553,12 @@ export default class OrganizationsNewController extends Controller {
     this.model.contact.reset();
     this.model.secondaryContact.reset();
     this.model.address.reset();
+    this.memberships = [];
+    this.membershipsOfOrganizations = [];
+    this.municipality = null;
+    this.province = null;
+    this.worshipServices = [];
+    this.centralWorshipService = null;
+    this.representativeBody = null;
   }
 }

@@ -1,4 +1,5 @@
 import { attr, hasMany, belongsTo } from '@ember-data/model';
+import { action } from '@ember/object';
 import AgentModel from './agent';
 import Joi from 'joi';
 import {
@@ -7,6 +8,7 @@ import {
   validateHasManyOptional,
   validateStringOptional,
 } from '../validators/schema';
+import getOppositeClassifications from '../constants/memberships';
 
 export default class OrganizationModel extends AgentModel {
   @attr name;
@@ -76,69 +78,21 @@ export default class OrganizationModel extends AgentModel {
   })
   positions;
 
-  @hasMany('organization', {
-    inverse: 'isSubOrganizationOf',
+  @hasMany('membership', {
+    inverse: 'member',
     async: true,
     polymorphic: true,
     as: 'organization',
   })
-  subOrganizations;
+  membershipsOfOrganizations;
 
-  @belongsTo('organization', {
-    inverse: 'subOrganizations',
+  @hasMany('membership', {
+    inverse: 'organization',
     async: true,
     polymorphic: true,
     as: 'organization',
   })
-  isSubOrganizationOf;
-
-  @hasMany('organization', {
-    inverse: 'isAssociatedWith',
-    async: true,
-    polymorphic: true,
-    as: 'organization',
-  })
-  associatedOrganizations;
-
-  @belongsTo('organization', {
-    inverse: 'associatedOrganizations',
-    async: true,
-    polymorphic: true,
-    as: 'organization',
-  })
-  isAssociatedWith;
-
-  @hasMany('organization', {
-    inverse: 'wasFoundedByOrganizations',
-    async: true,
-    polymorphic: true,
-    as: 'organization',
-  })
-  foundedOrganizations;
-
-  @hasMany('organization', {
-    inverse: 'foundedOrganizations',
-    async: true,
-    polymorphic: true,
-    as: 'organization',
-  })
-  wasFoundedByOrganizations;
-
-  @hasMany('organization', {
-    inverse: 'hasParticipants',
-    async: true,
-    polymorphic: true,
-    as: 'organization',
-  })
-  participatesIn;
-
-  @hasMany('organization', {
-    inverse: 'participatesIn',
-    async: true,
-    polymorphic: true,
-    as: 'organization',
-  })
-  hasParticipants;
+  memberships;
 
   @belongsTo('kbo-organization', {
     inverse: 'organization',
@@ -166,14 +120,8 @@ export default class OrganizationModel extends AgentModel {
       resultedFrom: validateHasManyOptional(),
       changeEventResults: validateHasManyOptional(),
       positions: validateHasManyOptional(),
-      subOrganizations: validateHasManyOptional(),
-      isSubOrganizationOf: validateBelongsToOptional(),
-      associatedOrganizations: validateHasManyOptional(),
-      isAssociatedWith: validateBelongsToOptional(),
-      foundedOrganizations: validateHasManyOptional(),
-      wasFoundedByOrganizations: validateHasManyOptional(),
-      participatesIn: validateHasManyOptional(),
-      hasParticipants: validateHasManyOptional(),
+      membershipsOfOrganizations: validateHasManyOptional(),
+      memberships: validateHasManyOptional(),
       kboOrganization: validateBelongsToOptional(),
     });
   }
@@ -196,5 +144,22 @@ export default class OrganizationModel extends AgentModel {
 
   _hasClassificationId(classificationIds) {
     return classificationIds.includes(this.classification?.get('id'));
+  }
+
+  /**
+   * Get the list of organization's classification codes which can have the
+   * given membership relation with this organization. The direction of the
+   * membership relation is determined based on whether this organization acts
+   * as member or organization in the provided membership.
+   * @param {{@link MembershipModel}} membership - The membership for which to
+   *     determine the appropriate classification codes.
+   * @returns {[string]} A list of classifications codes specifying the kinds of
+   *     organizations that are allowed to act as the other organization in the
+   *     membership with this organization. If this organization is not involved
+   *     in the provided membership, the result is an empty list.
+   */
+  @action
+  getClassificationCodesForMembership(membership) {
+    return getOppositeClassifications(membership, this);
   }
 }

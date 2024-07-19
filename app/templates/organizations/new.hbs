@@ -320,15 +320,14 @@
             <Card.Columns>
               <:left as |Item|>
                 {{#if this.currentOrganizationModel.isCentralWorshipService}}
-                  <Item @labelFor="related-worship-service">
+                  <Item @labelFor="related-worship-services">
                     <:label>Bestuur van de eredienst</:label>
                     <:content>
                       <WorshipServiceMultipleSelect
-                        @selected={{this.currentOrganizationModel.subOrganizations}}
-                        @onChange={{fn
-                          (mut this.currentOrganizationModel.subOrganizations)
-                        }}
-                        id="related-worship-service"
+                        @selected={{this.worshipServices}}
+                        @onChange={{fn (mut this.worshipServices)}}
+                        @limitToActiveOrganizations={{true}}
+                        id="related-worship-services"
                       />
                     </:content>
                   </Item>
@@ -337,17 +336,13 @@
                   <Item
                     @labelFor="related-central-worship-service"
                     @required={{false}}
-                    @errorMessage={{this.currentOrganizationModel.error.isSubOrganizationOf.message}}
                   >
                     <:label>Centraal bestuur</:label>
                     <:content as |hasError|>
                       <CentralWorshipSelect
-                        @selected={{this.currentOrganizationModel.isSubOrganizationOf}}
-                        @onChange={{fn
-                          (mut
-                            this.currentOrganizationModel.isSubOrganizationOf
-                          )
-                        }}
+                        @selected={{this.centralWorshipService}}
+                        @onChange={{fn (mut this.centralWorshipService)}}
+                        @limitToActiveOrganizations={{true}}
                         @error={{hasError}}
                         @id="related-central-worship-service"
                       />
@@ -357,15 +352,17 @@
                 <Item
                   @labelFor="related-representative-body"
                   @required={{true}}
-                  @errorMessage={{this.currentOrganizationModel.error.isAssociatedWith.message}}
+                  @errorMessage={{this.representativeBodyError}}
                 >
                   <:label>Representatief orgaan</:label>
                   <:content as |hasError|>
+                    {{! NOTE: No need to explicitly filter for active
+                      organizations. There is currently only one inactive
+                      representative body and that is blacklisted in the
+                      component. }}
                     <RepresentativeBodySelect
-                      @selected={{this.currentOrganizationModel.isAssociatedWith}}
-                      @onChange={{fn
-                        (mut this.currentOrganizationModel.isAssociatedWith)
-                      }}
+                      @selected={{this.representativeBody}}
+                      @onChange={{fn (mut this.representativeBody)}}
                       @error={{hasError}}
                       @id="related-representative-body"
                     />
@@ -378,7 +375,6 @@
               <:left as |Item|>
                 {{#if
                   (or
-                    this.currentOrganizationModel.isOCMW
                     this.currentOrganizationModel.isAgb
                     this.currentOrganizationModel.isDistrict
                     this.currentOrganizationModel.isIgs
@@ -394,83 +390,49 @@
                       this.currentOrganizationModel.isPoliceZone
                       this.currentOrganizationModel.isAssistanceZone
                     )}}
-                    @errorMessage={{this.currentOrganizationModel.error.isSubOrganizationOf.message}}
+                    @errorMessage={{this.municipalityError}}
                   >
                     <:label>Gemeente</:label>
                     <:content as |hasError|>
-                      <OrganizationSelect
-                        @selected={{this.currentOrganizationModel.isSubOrganizationOf}}
-                        @onChange={{this.setRelation}}
-                        @classificationCodes={{this.currentOrganizationModel.municipalityClassificationCode}}
+                      <MunicipalitySelect
+                        @selected={{this.municipality}}
+                        @onChange={{this.setMunicipality}}
                         @error={{hasError}}
+                        @limitToActiveOrganizations={{true}}
                         @id="related-gemeente"
                       />
                     </:content>
                   </Item>
 
-                  {{#if this.currentOrganizationModel.isSubOrganizationOf}}
+                  {{#if this.municipality}}
                     <Item>
-                      <:label>
-                        Provincie
-                      </:label>
-                      <:content>
-                        {{this.currentOrganizationModel.isSubOrganizationOf.isSubOrganizationOf.abbName}}
-                      </:content>
+                      <:label>Provincie</:label>
+                      <:content>{{this.province.abbName}}</:content>
                     </Item>
                   {{/if}}
 
                   {{#if this.currentOrganizationModel.isAgb}}
-                    <Item
-                      @labelFor="oprichting-gemeente"
-                      @required={{true}}
-                      @errorMessage={{this.currentOrganizationModel.error.wasFoundedByOrganizations.message}}
-                    >
+                    <Item @required={{true}}>
                       <:label>Werd opgericht door</:label>
-                      <:content as |hasError|>
-                        <OrganizationSelect
-                          @disabled={{true}}
-                          @selected={{this.currentOrganizationModel.isSubOrganizationOf}}
-                          @onChange={{this.setRelation}}
-                          @classificationCodes={{this.currentOrganizationModel.founderClassifications}}
-                          @error={{hasError}}
-                          @id="oprichting-gemeente"
-                        />
-                      </:content>
+                      <:content>{{this.municipality.abbName}}</:content>
                     </Item>
                   {{/if}}
 
                   {{#if this.currentOrganizationModel.isIgs}}
                     <Item
-                      @labelFor="has-participants"
+                      @labelFor="participants-igs"
                       @required={{true}}
-                      @errorMessage={{this.currentOrganizationModel.error.hasParticipants.message}}
+                      @errorMessage={{this.participantsError}}
                     >
                       <:label>Heeft als participanten</:label>
                       <:content as |hasError|>
                         <OrganizationMultipleSelect
-                          @selected={{this.currentOrganizationModel.hasParticipants}}
-                          @onChange={{this.setHasParticipants}}
+                          @selected={{this.participants}}
+                          @onChange={{fn (mut this.participants)}}
                           @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
+                          @limitToActiveOrganizations={{true}}
                           @error={{hasError}}
-                          @id="has-participants"
-                        />
-                      </:content>
-                    </Item>
-                  {{/if}}
-
-                  {{#if this.currentOrganizationModel.isPevaMunicipality}}
-                    <Item
-                      @labelFor="has-participants-peva-municipality"
-                      @errorMessage={{this.currentOrganizationModel.error.hasParticipants.message}}
-                    >
-                      <:label>Heeft als participanten</:label>
-                      <:content as |hasError|>
-                        <OrganizationMultipleSelect
-                          @selected={{this.currentOrganizationModel.hasParticipants}}
-                          @onChange={{this.setHasParticipants}}
-                          @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
-                          @error={{hasError}}
-                          @id="has-participants-peva-municipality"
+                          @id="participants-igs"
                         />
                       </:content>
                     </Item>
@@ -484,95 +446,80 @@
                     )
                   }}
                     <Item
-                      @labelFor="oprichting-ocmw-association-peva"
+                      @labelFor="founders-ocmw-association-peva"
                       @required={{true}}
-                      @errorMessage={{this.currentOrganizationModel.error.wasFoundedByOrganizations.message}}
+                      @errorMessage={{this.foundersError}}
                     >
                       <:label>Werd opgericht door</:label>
                       <:content as |hasError|>
                         <OrganizationMultipleSelect
-                          @selected={{this.currentOrganizationModel.wasFoundedByOrganizations}}
-                          @onChange={{this.setRelation}}
+                          @selected={{this.founders}}
+                          @onChange={{this.addFounders}}
                           @classificationCodes={{this.currentOrganizationModel.founderClassifications}}
+                          @limitToActiveOrganizations={{true}}
                           @error={{hasError}}
-                          @id="oprichting-ocmw-association-peva"
+                          @id="founders-ocmw-association-peva"
                         />
                       </:content>
                     </Item>
 
-                    <Item
-                      @labelFor="has-participants-ocmw-association-peva"
-                      @errorMessage={{this.currentOrganizationModel.error.hasParticipants.message}}
-                    >
+                    <Item @labelFor="participants-ocmw-association-peva">
                       <:label>Heeft als participanten</:label>
                       <:content as |hasError|>
                         <OrganizationMultipleSelect
-                          @selected={{this.currentOrganizationModel.hasParticipants}}
-                          @onChange={{this.setHasParticipants}}
+                          @selected={{this.participants}}
+                          @onChange={{fn (mut this.participants)}}
                           @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
+                          @limitToActiveOrganizations={{true}}
                           @error={{hasError}}
-                          @id="has-participants-ocmw-association-peva"
+                          @id="participants-ocmw-association-peva"
                         />
                       </:content>
                     </Item>
                   {{else}}
                     {{! Only APBs remain here }}
                     <Item
-                      @labelFor="related-provincie"
-                      @required={{this.currentOrganizationModel.isApb}}
-                      @errorMessage={{this.currentOrganizationModel.error.isSubOrganizationOf.message}}
+                      @labelFor="related-province"
+                      @required={{true}}
+                      @errorMessage={{this.provinceError}}
                     >
                       <:label>Provincie</:label>
                       <:content as |hasError|>
+                        {{! NOTE: No need to explicitly filter for active
+                          provinces as they are all active. }}
                         <ProvinceOrganizationSelect
-                          @selected={{this.currentOrganizationModel.isSubOrganizationOf}}
-                          @selectedMunicipality={{this.currentOrganizationModel.isAssociatedWith}}
-                          @allowClear={{(not
-                            this.currentOrganizationModel.isAssociatedWith
-                          )}}
-                          @onChange={{this.setRelation}}
+                          @selected={{this.province}}
+                          @selectedMunicipality={{this.municipality}}
+                          @allowClear={{(not this.municipality)}}
+                          @onChange={{this.setProvince}}
                           @error={{hasError}}
-                          @id="related-provincie"
+                          @id="related-province"
                         />
                       </:content>
                     </Item>
 
                     <Item
-                      @labelFor="related-gemeente"
+                      @labelFor="related-municipality"
                       @required={{true}}
-                      @errorMessage={{this.currentOrganizationModel.error.isAssociatedWith.message}}
+                      @errorMessage={{this.municipalityError}}
                     >
                       <:label>Gemeente</:label>
                       <:content as |hasError|>
-                        <OrganizationSelect
-                          @selected={{this.currentOrganizationModel.isAssociatedWith}}
-                          @selectedProvince={{this.currentOrganizationModel.isSubOrganizationOf}}
+                        <MunicipalitySelect
+                          @selected={{this.municipality}}
+                          @selectedProvince={{this.province}}
                           @allowClear={{true}}
-                          @onChange={{fn
-                            (mut this.currentOrganizationModel.isAssociatedWith)
-                          }}
-                          @classificationCodes={{this.currentOrganizationModel.municipalityClassificationCode}}
+                          @onChange={{this.setMunicipality}}
+                          @limitToActiveOrganizations={{true}}
                           @error={{hasError}}
-                          @id="related-gemeente"
+                          @id="related-municipality"
                         />
                       </:content>
                     </Item>
 
-                    <Item
-                      @labelFor="opgericht-provincie"
-                      @required={{true}}
-                      @errorMessage={{this.currentOrganizationModel.error.isSubOrganizationOf.message}}
-                    >
+                    <Item @labelFor="founder-province" @required={{true}}>
                       <:label>Werd opgericht door</:label>
-                      <:content as |hasError|>
-                        <ProvinceOrganizationSelect
-                          @disabled={{true}}
-                          @selected={{this.currentOrganizationModel.isSubOrganizationOf}}
-                          @onChange={{this.setRelation}}
-                          @error={{hasError}}
-                          @id="opgericht-provincie"
-                        />
-                      </:content>
+                      <:content>{{this.province.abbName}}</:content>
                     </Item>
                   {{/if}}
                 {{/if}}

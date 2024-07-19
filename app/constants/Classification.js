@@ -47,6 +47,10 @@ export const DistrictCodeList = [CLASSIFICATION.DISTRICT.id];
 
 export const PevaMunicipalityCodeList = [CLASSIFICATION.PEVA_MUNICIPALITY.id];
 export const PevaProvinceCodeList = [CLASSIFICATION.PEVA_PROVINCE.id];
+export const PevaCodeList = [
+  ...PevaMunicipalityCodeList,
+  ...PevaProvinceCodeList,
+];
 
 export const AssociationOtherCodeList = [CLASSIFICATION.ASSOCIATION_OTHER.id];
 export const CorporationOtherCodeList = [CLASSIFICATION.CORPORATION_OTHER.id];

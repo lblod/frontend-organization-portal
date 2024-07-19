@@ -1,67 +1,73 @@
-{{#if (or @elements.length @displayWhenEmpty)}}
-  <div>
-    <AuHeading @level="3" @skin="5" class="au-u-margin-bottom-tiny">
-      {{or @label "Heeft relatie met"}}
-    </AuHeading>
-    <AuDataTable
-      @content={{@elements}}
-      @sort={{@sort}}
-      @page={{@page}}
-      @size={{@size}}
-      @isLoading={{@isLoading}}
-      @noDataMessage={{or @noDataMessage "Geen organisatie"}}
-      as |t|
-    >
-      {{#if @allowHidingInactiveOrganizations}}
-        <t.menu as |menu|>
-          <menu.general>
-            <div class="au-o-box">
-              <AuToggleSwitch
-                @label="Verberg niet actieve organisaties"
-                @checked={{@organizationStatus}}
-              />
-            </div>
-          </menu.general>
-        </t.menu>
-      {{/if}}
-      <t.content as |c|>
-        <c.header>
-          <AuDataTableThSortable
-            @field="classification.label"
-            @label="Type organisatie"
-            @currentSorting={{@sort}}
-          />
-          <AuDataTableThSortable
-            @field="name"
-            @label="Organisatie"
-            @currentSorting={{@sort}}
-          />
-          <AuDataTableThSortable
-            @field="organizationStatus.label"
-            @label="Status"
-            @currentSorting={{@sort}}
-          />
-        </c.header>
-        <c.body as |organization|>
-          <td>
-            {{organization.classification.label}}
-          </td>
-          <td>
-            <AuLink
-              @route="organizations.organization"
-              @model={{organization.id}}
-            >
-              {{organization.abbName}}
-            </AuLink>
-          </td>
-          <td>
-            <OrganizationStatus
-              @id={{organization.organizationStatus.id}}
-              @label={{organization.organizationStatus.label}}
-            />
-          </td>
-        </c.body>
-      </t.content>
-    </AuDataTable>
-  </div>
-{{/if}}
+<AuDataTable
+  @content={{@model.relatedOrganizations}}
+  @sort={{@sort}}
+  @page={{@page}}
+  @size={{@size}}
+  @isLoading={{@isLoading}}
+  @noDataMessage={{or @noDataMessage "Geen organisatie"}}
+  as |t|
+>
+  <t.menu as |menu|>
+    <menu.general>
+      {{! TODO: place next to each other }}
+      <div class="au-o-box">
+        <AuToggleSwitch
+          @label="Verberg niet actieve organisaties"
+          @checked={{@organizationStatus}}
+        />
+
+        <MembershipRoleSelect
+          @options={{@model.roles}}
+          @selected={{@selectedRole}}
+          @onChange={{fn (mut @selectedRole)}}
+          @allowClear={{true}}
+        />
+      </div>
+    </menu.general>
+  </t.menu>
+
+  <t.content as |c|>
+    <c.header>
+      <AuDataTableThSortable
+        @field="role.label"
+        @label="Type relatie"
+        @currentSorting={{@sort}}
+      />
+      <AuDataTableThSortable
+        @field="classification.label"
+        @label="Type organisatie"
+        @currentSorting={{@sort}}
+      />
+      <AuDataTableThSortable
+        @field="name"
+        @label="Organisatie"
+        @currentSorting={{@sort}}
+      />
+      {{! TODO: Use same grey as other non-sorted columns}}
+      <th>Status</th>
+    </c.header>
+
+    <c.body as |organization|>
+      <td>
+        {{organization.role}}
+      </td>
+      <td>
+        {{organization.organizationType}}
+      </td>
+      <td>
+        <AuLink
+          @route="organizations.organization"
+          @model={{organization.organizationId}}
+        >
+          {{organization.organizationName}}
+        </AuLink>
+      </td>
+      <td>
+        <OrganizationStatus
+          @id={{organization.organizationStatus.id}}
+          @label={{organization.organizationStatus.label}}
+        />
+      </td>
+    </c.body>
+  </t.content>
+</AuDataTable>

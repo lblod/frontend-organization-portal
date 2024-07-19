@@ -5,6 +5,7 @@ import {
   createSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
+import { MEMBERSHIP_ROLES_MAPPING } from '../../models/membership-role';
 
 export default class OrganizationsNewRoute extends Route {
   @service store;
@@ -38,6 +39,14 @@ export default class OrganizationsNewRoute extends Route {
       structuredIdentifier: structuredIdentifierSharepoint,
     });
 
+    let roles = this.store.query('membership-role', {
+      'filter[:id:]': [
+        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+        MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
+        MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id,
+      ].join(','),
+    });
+
     return {
       primarySite: this.store.createRecord('site'),
       address: this.store.createRecord('address', {
@@ -49,6 +58,7 @@ export default class OrganizationsNewRoute extends Route {
       structuredIdentifierKBO,
       identifierSharepoint,
       structuredIdentifierSharepoint,
+      roles,
     };
   }
 

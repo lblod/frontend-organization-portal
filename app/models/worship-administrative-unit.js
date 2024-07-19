@@ -34,10 +34,11 @@ export default class WorshipAdministrativeUnitModel extends AdministrativeUnitMo
   involvements;
 
   get validationSchema() {
+    const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({
       recognizedWorshipType: validateRequiredWhenClassificationId(
         [...WorshipServiceCodeList, ...CentralWorshipServiceCodeList],
-        'Selecteer een optie'
+        REQUIRED_MESSAGE
       ),
       ministerPositions: validateHasManyOptional(),
       involvements: validateHasManyOptional(),

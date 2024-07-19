@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import getFiltersForRoleLabel from 'frontend-organization-portal/utils/get-filters-for-role-label';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditRoute extends Route {
   @service currentSession;
@@ -8,6 +9,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
 
   queryParams = {
     sort: { refreshModel: true },
+    page: { refreshModel: true },
+    selectedRoleLabel: { refreshModel: true, replace: true },
   };
 
   beforeModel() {
@@ -18,26 +21,37 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
     }
   }
 
-  async model() {
-    const { id: organizationId } = this.paramsFor('organizations.organization');
-
-    const organization = await this.store.findRecord(
-      'organization',
-      organizationId,
-      {
-        reload: true,
-        include: 'organization-status,was-founded-by-organizations',
-      }
+  async model(params) {
+    const { organization, roles } = this.modelFor(
+      'organizations.organization.related-organizations'
     );
 
-    const subOrganizations = await organization.subOrganizations;
-    const hasParticipants = await organization.hasParticipants;
+    let query = {
+      include: 'role,member,organization',
+      // sort: params.sort,
+      page: { size: params.size, number: params.page },
+    };
+
+    const filters = getFiltersForRoleLabel({
+      roles,
+      organization,
+      roleLabel: params.selectedRoleLabel,
+    });
+
+    filters.forEach((value, key) => (query[key] = value));
+
+    const memberships = await this.store.query('membership', query);
 
     return {
       organization,
-      subOrganizations,
-      hasParticipants,
+      memberships,
+      roles,
     };
+  }
+
+  setupController(controller, model) {
+    super.setupController(...arguments);
+    controller.setup(model);
   }
 
   resetController(controller) {

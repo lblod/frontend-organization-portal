@@ -33,6 +33,18 @@ export const validateHasManyRequired = (
 };
 
 /**
+ * Validate and require an array for "has many" relationships that contains at
+ * least one element.
+ * @param {string} [message] - Custom error message for validation failure.
+ * @returns {Joi.ArraySchema} - Joi schema for required "has many" relationships.
+ */
+export const validateHasManyNotEmptyRequired = (
+  message = 'This field is required.'
+) => {
+  return Joi.array().required().min(1).messages({ '*': message });
+};
+
+/**
  * Validate an array for optional "has many" relationships.
  * @returns {Joi.ArraySchema} - Joi schema for optional "has many" relationships.
  */

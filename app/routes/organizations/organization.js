@@ -5,6 +5,11 @@ export default class OrganizationsOrganizationRoute extends Route {
   @service store;
 
   async model(params) {
-    return this.store.findRecord('organization', params.id);
+    // Note: Already include status, otherwise the validations can fail when the
+    // user tries to save edits without that they previously visited the core
+    // data page.
+    return this.store.findRecord('organization', params.id, {
+      include: 'organization-status',
+    });
   }
 }

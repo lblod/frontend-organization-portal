@@ -1,7 +1,9 @@
 import { belongsTo, hasMany } from '@ember-data/model';
+import Joi from 'joi';
 import OrganizationModel from './organization';
 import {
   validateBelongsToOptional,
+  validateHasManyNotEmptyRequired,
   validateHasManyOptional,
 } from '../validators/schema';
 import { RepresentativeBodyCodeList } from '../constants/Classification';
@@ -27,6 +29,18 @@ export default class RepresentativeBodyModel extends OrganizationModel {
     return super.validationSchema.append({
       recognizedWorshipType: validateBelongsToOptional(),
       ministerPositions: validateHasManyOptional(),
+      // NOTE: The requested functionality was to *not* validate memberships of
+      // already existing organizations. When creating a new organization a
+      // mandatory membership is enforced by providing a `true` value for
+      // `creatingNewOrganization`.
+      membershipsOfOrganizations: Joi.when(
+        Joi.ref('$creatingNewOrganization'),
+        {
+          is: Joi.exist().valid(true),
+          then: validateHasManyNotEmptyRequired('Selecteer een optie'),
+          otherwise: validateHasManyOptional(),
+        }
+      ),
     });
   }
 

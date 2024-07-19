@@ -1,6 +1,12 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
+import {
+  IGSCodeList,
+  OcmwAssociationCodeList,
+  PevaCodeList,
+} from 'frontend-organization-portal/constants/Classification';
 
 module('Unit | Model | organization', function (hooks) {
   setupTest(hooks);
@@ -136,6 +142,365 @@ module('Unit | Model | organization', function (hooks) {
       });
 
       assert.deepEqual(model.abbName, 'some legal name');
+    });
+  });
+
+  module('getClassificationCodesForMembership', function () {
+    const igsParticipants = [
+      CLASSIFICATION.MUNICIPALITY.id,
+      CLASSIFICATION.OCMW.id,
+      CLASSIFICATION.AGB.id,
+      CLASSIFICATION.PROJECTVERENIGING.id,
+      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
+      CLASSIFICATION.POLICE_ZONE.id,
+      CLASSIFICATION.ASSISTANCE_ZONE.id,
+      CLASSIFICATION.PEVA_MUNICIPALITY.id,
+      CLASSIFICATION.PEVA_PROVINCE.id,
+      CLASSIFICATION.WELZIJNSVERENIGING.id,
+      CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
+      CLASSIFICATION.ZIEKENHUISVERENIGING.id,
+      CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
+      CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
+      CLASSIFICATION.ASSOCIATION_OTHER.id,
+      CLASSIFICATION.CORPORATION_OTHER.id,
+    ];
+
+    const ocmwAssociationParticipants = OcmwAssociationCodeList.concat([
+      CLASSIFICATION.MUNICIPALITY.id,
+      CLASSIFICATION.OCMW.id,
+      CLASSIFICATION.ASSOCIATION_OTHER.id,
+      CLASSIFICATION.CORPORATION_OTHER.id,
+    ]);
+
+    const pevaParticipants = [
+      CLASSIFICATION.PROJECTVERENIGING.id,
+      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
+      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
+    ];
+
+    [
+      [CLASSIFICATION.PROJECTVERENIGING, igsParticipants],
+      [CLASSIFICATION.DIENSTVERLENENDE_VERENIGING, igsParticipants],
+      [CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING, igsParticipants],
+      [
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+        igsParticipants,
+      ],
+      [CLASSIFICATION.PEVA_MUNICIPALITY, pevaParticipants],
+      [CLASSIFICATION.PEVA_PROVINCE, pevaParticipants],
+      [CLASSIFICATION.WELZIJNSVERENIGING, ocmwAssociationParticipants],
+      [
+        CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
+        ocmwAssociationParticipants,
+      ],
+      [CLASSIFICATION.ZIEKENHUISVERENIGING, ocmwAssociationParticipants],
+      [
+        CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+        ocmwAssociationParticipants,
+      ],
+    ].forEach(([cl, classificationCodes]) => {
+      test(`it should allow valid participants for ${cl.label}`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          id: '123',
+          classification,
+        });
+        const participantRole = this.store().createRecord(
+          'membership-role',
+          MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN
+        );
+        const membership = this.store().createRecord('membership', {
+          role: participantRole,
+          organization: model,
+        });
+
+        const result = model.getClassificationCodesForMembership(membership);
+
+        assert.deepEqual(result.sort(), classificationCodes.sort());
+      });
+    });
+
+    [
+      [
+        CLASSIFICATION.MUNICIPALITY,
+        [...IGSCodeList, ...OcmwAssociationCodeList],
+      ],
+      [CLASSIFICATION.OCMW, [...IGSCodeList, ...OcmwAssociationCodeList]],
+      [CLASSIFICATION.AGB, [...IGSCodeList]],
+      [CLASSIFICATION.PROJECTVERENIGING, [...IGSCodeList, ...PevaCodeList]],
+      [
+        CLASSIFICATION.DIENSTVERLENENDE_VERENIGING,
+        [...IGSCodeList, ...PevaCodeList],
+      ],
+      [
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
+        [...IGSCodeList, ...PevaCodeList],
+      ],
+      [
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+        [...IGSCodeList, ...PevaCodeList],
+      ],
+      [CLASSIFICATION.POLICE_ZONE, [...IGSCodeList]],
+      [CLASSIFICATION.ASSISTANCE_ZONE, [...IGSCodeList]],
+      [CLASSIFICATION.PEVA_MUNICIPALITY, [...IGSCodeList]],
+      [CLASSIFICATION.PEVA_PROVINCE, [...IGSCodeList]],
+      [
+        CLASSIFICATION.WELZIJNSVERENIGING,
+        [...IGSCodeList, ...OcmwAssociationCodeList],
+      ],
+      [
+        CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
+        [...IGSCodeList, ...OcmwAssociationCodeList],
+      ],
+      [
+        CLASSIFICATION.ZIEKENHUISVERENIGING,
+        [...IGSCodeList, ...OcmwAssociationCodeList],
+      ],
+      [
+        CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+        [...IGSCodeList, ...OcmwAssociationCodeList],
+      ],
+      [
+        CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
+        [...IGSCodeList, ...OcmwAssociationCodeList],
+      ],
+      [
+        CLASSIFICATION.ASSOCIATION_OTHER,
+        [...IGSCodeList, ...OcmwAssociationCodeList],
+      ],
+      [
+        CLASSIFICATION.CORPORATION_OTHER,
+        [...IGSCodeList, ...OcmwAssociationCodeList],
+      ],
+    ].forEach(([cl, classificationCodes]) => {
+      test(`it should allow a(n) ${cl.label} to participate in the correct kind of organizations`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          id: '123',
+          classification,
+        });
+        const participantRole = this.store().createRecord(
+          'membership-role',
+          MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN
+        );
+        const membership = this.store().createRecord('membership', {
+          role: participantRole,
+          member: model,
+        });
+
+        const result = model.getClassificationCodesForMembership(membership);
+
+        assert.deepEqual(result.sort(), classificationCodes.sort());
+      });
+    });
+
+    [
+      [CLASSIFICATION.APB, [CLASSIFICATION.MUNICIPALITY.id]],
+      [CLASSIFICATION.AGB, [CLASSIFICATION.MUNICIPALITY.id]],
+      [
+        CLASSIFICATION.PEVA_MUNICIPALITY,
+        [
+          CLASSIFICATION.MUNICIPALITY.id,
+          CLASSIFICATION.ASSOCIATION_OTHER.id,
+          CLASSIFICATION.CORPORATION_OTHER.id,
+        ],
+      ],
+      [
+        CLASSIFICATION.PEVA_PROVINCE,
+        [
+          CLASSIFICATION.PROVINCE.id,
+          CLASSIFICATION.ASSOCIATION_OTHER.id,
+          CLASSIFICATION.CORPORATION_OTHER.id,
+        ],
+      ],
+      [
+        CLASSIFICATION.WELZIJNSVERENIGING,
+        [
+          ...OcmwAssociationCodeList,
+          CLASSIFICATION.MUNICIPALITY.id,
+          CLASSIFICATION.OCMW.id,
+          CLASSIFICATION.ASSOCIATION_OTHER.id,
+          CLASSIFICATION.CORPORATION_OTHER.id,
+        ],
+      ],
+      [
+        CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
+        [
+          ...OcmwAssociationCodeList,
+          CLASSIFICATION.MUNICIPALITY.id,
+          CLASSIFICATION.OCMW.id,
+          CLASSIFICATION.ASSOCIATION_OTHER.id,
+          CLASSIFICATION.CORPORATION_OTHER.id,
+        ],
+      ],
+      [
+        CLASSIFICATION.ZIEKENHUISVERENIGING,
+        [
+          ...OcmwAssociationCodeList,
+          CLASSIFICATION.MUNICIPALITY.id,
+          CLASSIFICATION.OCMW.id,
+          CLASSIFICATION.ASSOCIATION_OTHER.id,
+          CLASSIFICATION.CORPORATION_OTHER.id,
+        ],
+      ],
+      [
+        CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+        [
+          ...OcmwAssociationCodeList,
+          CLASSIFICATION.MUNICIPALITY.id,
+          CLASSIFICATION.OCMW.id,
+          CLASSIFICATION.ASSOCIATION_OTHER.id,
+          CLASSIFICATION.CORPORATION_OTHER.id,
+        ],
+      ],
+      [
+        CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
+        [
+          ...OcmwAssociationCodeList,
+          CLASSIFICATION.MUNICIPALITY.id,
+          CLASSIFICATION.OCMW.id,
+          CLASSIFICATION.ASSOCIATION_OTHER.id,
+          CLASSIFICATION.CORPORATION_OTHER.id,
+        ],
+      ],
+    ].forEach(([cl, classificationCodes]) => {
+      test(`it should allow a(n) ${cl.label} to be founded by the correct organizations`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          id: '123',
+          classification,
+        });
+        const founderRole = this.store().createRecord(
+          'membership-role',
+          MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF
+        );
+        const membership = this.store().createRecord('membership', {
+          role: founderRole,
+          organization: model,
+        });
+
+        const result = model.getClassificationCodesForMembership(membership);
+
+        assert.deepEqual(result.sort(), classificationCodes.sort());
+      });
+    });
+
+    [
+      [
+        CLASSIFICATION.MUNICIPALITY,
+        [
+          CLASSIFICATION.AGB.id,
+          CLASSIFICATION.APB.id,
+          CLASSIFICATION.PEVA_MUNICIPALITY.id,
+          ...OcmwAssociationCodeList,
+        ],
+      ],
+      [CLASSIFICATION.OCMW, [...OcmwAssociationCodeList]],
+      [
+        CLASSIFICATION.ASSOCIATION_OTHER,
+        [...PevaCodeList, ...OcmwAssociationCodeList],
+      ],
+      [
+        CLASSIFICATION.CORPORATION_OTHER,
+        [...PevaCodeList, ...OcmwAssociationCodeList],
+      ],
+    ].forEach(([cl, classificationCodes]) => {
+      test(`it should allow a(n) ${cl.label} to found the correct organizations`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          id: '123',
+          classification,
+        });
+        const founderRole = this.store().createRecord(
+          'membership-role',
+          MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF
+        );
+        const membership = this.store().createRecord('membership', {
+          role: founderRole,
+          member: model,
+        });
+
+        const result = model.getClassificationCodesForMembership(membership);
+
+        assert.deepEqual(result.sort(), classificationCodes.sort());
+      });
+    });
+
+    test(`it should return an empty array when the organization is not involved in the membership relation`, async function (assert) {
+      const model = this.store().createRecord('administrative-unit', {
+        id: '123',
+      });
+      const founderRole = this.store().createRecord(
+        'membership-role',
+        MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF
+      );
+      const membership = this.store().createRecord('membership', {
+        role: founderRole,
+      });
+
+      const result = model.getClassificationCodesForMembership(membership);
+
+      assert.deepEqual(result, []);
+    });
+
+    test(`it should return an empty array when the membership has no role`, async function (assert) {
+      const model = this.store().createRecord('administrative-unit', {
+        id: '123',
+      });
+      const membership = this.store().createRecord('membership', {
+        member: model,
+      });
+
+      const result = model.getClassificationCodesForMembership(membership);
+
+      assert.deepEqual(result, []);
+    });
+
+    test(`it should return an empty array when the membership role has no id`, async function (assert) {
+      const model = this.store().createRecord('administrative-unit', {
+        id: '123',
+      });
+      const role = this.store().createRecord('membership-role');
+      const membership = this.store().createRecord('membership', {
+        role: role,
+        member: model,
+      });
+
+      const result = model.getClassificationCodesForMembership(membership);
+
+      assert.deepEqual(result, []);
+    });
+
+    test(`it should return an empty array when the membership role has no valid id`, async function (assert) {
+      const model = this.store().createRecord('administrative-unit', {
+        id: '123',
+      });
+      const role = this.store().createRecord('membership-role', {
+        id: 'IncorrectMembershipRoleIdentifier',
+      });
+      const membership = this.store().createRecord('membership', {
+        role: role,
+        member: model,
+      });
+
+      const result = model.getClassificationCodesForMembership(membership);
+
+      assert.deepEqual(result, []);
     });
   });
 });
