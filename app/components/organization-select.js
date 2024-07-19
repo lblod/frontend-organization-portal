@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 import { timeout, task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { ORGANIZATION_STATUS } from '../models/organization-status-code';
 
 export default class OrganizationSelectComponent extends Component {
   @service store;
@@ -69,6 +70,11 @@ export default class OrganizationSelectComponent extends Component {
         filter: {
           classification: {
             id: classificationCodes.join(),
+          },
+          'organization-status': {
+            id: this.args.limitToActiveOrganizations
+              ? ORGANIZATION_STATUS.ACTIVE
+              : undefined,
           },
         },
         sort: 'name',

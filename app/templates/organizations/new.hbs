@@ -326,6 +326,7 @@
                       <WorshipServiceMultipleSelect
                         @selected={{this.worshipServices}}
                         @onChange={{fn (mut this.worshipServices)}}
+                        @limitToActiveOrganizations={{true}}
                         id="related-worship-services"
                       />
                     </:content>
@@ -341,6 +342,7 @@
                       <CentralWorshipSelect
                         @selected={{this.centralWorshipService}}
                         @onChange={{fn (mut this.centralWorshipService)}}
+                        @limitToActiveOrganizations={{true}}
                         @error={{hasError}}
                         @id="related-central-worship-service"
                       />
@@ -354,6 +356,10 @@
                 >
                   <:label>Representatief orgaan</:label>
                   <:content as |hasError|>
+                    {{! NOTE: No need to explicitly filter for active
+                      organizations. There is currently only one inactive
+                      representative body and that is blacklisted in the
+                      component. }}
                     <RepresentativeBodySelect
                       @selected={{this.representativeBody}}
                       @onChange={{fn (mut this.representativeBody)}}
@@ -392,6 +398,7 @@
                         @selected={{this.municipality}}
                         @onChange={{this.setMunicipality}}
                         @error={{hasError}}
+                        @limitToActiveOrganizations={{true}}
                         @id="related-gemeente"
                       />
                     </:content>
@@ -423,6 +430,7 @@
                           @selected={{this.participants}}
                           @onChange={{fn (mut this.participants)}}
                           @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
+                          @limitToActiveOrganizations={{true}}
                           @error={{hasError}}
                           @id="participants-igs"
                         />
@@ -448,6 +456,7 @@
                           @selected={{this.founders}}
                           @onChange={{this.addFounders}}
                           @classificationCodes={{this.currentOrganizationModel.founderClassifications}}
+                          @limitToActiveOrganizations={{true}}
                           @error={{hasError}}
                           @id="founders-ocmw-association-peva"
                         />
@@ -461,6 +470,7 @@
                           @selected={{this.participants}}
                           @onChange={{fn (mut this.participants)}}
                           @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
+                          @limitToActiveOrganizations={{true}}
                           @error={{hasError}}
                           @id="participants-ocmw-association-peva"
                         />
@@ -475,6 +485,8 @@
                     >
                       <:label>Provincie</:label>
                       <:content as |hasError|>
+                        {{! NOTE: No need to explicitly filter for active
+                          provinces as they are all active. }}
                         <ProvinceOrganizationSelect
                           @selected={{this.province}}
                           @selectedMunicipality={{this.municipality}}
@@ -498,6 +510,7 @@
                           @selectedProvince={{this.province}}
                           @allowClear={{true}}
                           @onChange={{this.setMunicipality}}
+                          @limitToActiveOrganizations={{true}}
                           @error={{hasError}}
                           @id="related-municipality"
                         />

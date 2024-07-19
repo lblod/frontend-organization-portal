@@ -66,6 +66,7 @@
                 @classificationCodes={{(@model.organization.getClassificationCodesForMembership
                   membership
                 )}}
+                @limitToActiveOrganizations={{true}}
               />
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
@@ -81,6 +82,7 @@
                 @classificationCodes={{(@model.organization.getClassificationCodesForMembership
                   membership
                 )}}
+                @limitToActiveOrganizations={{true}}
               />
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>

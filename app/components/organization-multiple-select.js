@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { restartableTask, timeout } from 'ember-concurrency';
+import { ORGANIZATION_STATUS } from '../models/organization-status-code';
 
 export default class OrganizationMultipleSelectComponent extends Component {
   @service store;
@@ -18,6 +19,11 @@ export default class OrganizationMultipleSelectComponent extends Component {
       query.filter = {
         classification: {
           ':id:': classificationCodes.join(),
+        },
+        'organization-status': {
+          id: this.args.limitToActiveOrganizations
+            ? ORGANIZATION_STATUS.ACTIVE
+            : undefined,
         },
       };
     }
