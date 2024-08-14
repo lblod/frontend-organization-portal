@@ -82,7 +82,7 @@
                 <Item>
                   <:label>Alternatieve naam</:label>
                   <:content>
-                    {{@model.organization.alternativeName}}
+                    {{join-array @model.organization.alternativeName}}
                   </:content>
                 </Item>
               {{/if}}
