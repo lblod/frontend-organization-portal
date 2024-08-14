@@ -146,34 +146,16 @@
                   <Item>
                     <:label>Grensoverschrijvend</:label>
                     <:content>
-                      <ul class="au-c-list-inline">
-                        <li class="au-c-list-inline__item">
-                          <AuControlRadio
-                            @label="Ja"
-                            @name="is-cross-border"
-                            @value={{@model.organization.crossBorder}}
-                            @identifier="cross-border-true"
-                            @onChange={{fn
-                              (mut @model.organization.crossBorder)
-                              true
-                            }}
-                            checked={{@model.organization.crossBorder}}
-                          />
-                        </li>
-                        <li class="au-c-list-inline__item">
-                          <AuControlRadio
-                            @label="Nee"
-                            @name="is-cross-border"
-                            @value={{@model.organization.crossBorder}}
-                            @identifier="cross-border-false"
-                            @onChange={{fn
-                              (mut @model.organization.crossBorder)
-                              false
-                            }}
-                            checked={{not @model.organization.crossBorder}}
-                          />
-                        </li>
-                      </ul>
+                      <AuRadioGroup
+                        @alignment="inline"
+                        @name="is-cross-border"
+                        @selected={{boolean @model.organization.crossBorder}}
+                        @onChange={{fn (mut @model.organization.crossBorder)}}
+                        as |Group|
+                      >
+                        <Group.Radio @value={{true}}>Ja</Group.Radio>
+                        <Group.Radio @value={{false}}>Nee</Group.Radio>
+                      </AuRadioGroup>
                     </:content>
                   </Item>
                 {{/if}}

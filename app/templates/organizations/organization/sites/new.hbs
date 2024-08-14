@@ -69,28 +69,16 @@
                 <Item>
                   <:label>Primair correspondentieadres</:label>
                   <:content>
-                    <ul class="au-c-list-inline">
-                      <li class="au-c-list-inline__item">
-                        <AuControlRadio
-                          @label="Ja"
-                          @name="is-primary-site"
-                          @value={{this.isPrimarySite}}
-                          @identifier="site-true"
-                          @onChange={{fn (mut this.isPrimarySite) true}}
-                          checked={{this.isPrimarySite}}
-                        />
-                      </li>
-                      <li class="au-c-list-inline__item">
-                        <AuControlRadio
-                          @label="Nee"
-                          @name="is-primary-site"
-                          @value={{this.isPrimarySite}}
-                          @identifier="site-false"
-                          @onChange={{fn (mut this.isPrimarySite) false}}
-                          checked={{not this.isPrimarySite}}
-                        />
-                      </li>
-                    </ul>
+                    <AuRadioGroup
+                      @alignment="inline"
+                      @name="is-primary-site"
+                      @selected={{this.isPrimarySite}}
+                      @onChange={{fn (mut this.isPrimarySite)}}
+                      as |Group|
+                    >
+                      <Group.Radio @value={{true}}>Ja</Group.Radio>
+                      <Group.Radio @value={{false}}>Nee</Group.Radio>
+                    </AuRadioGroup>
                   </:content>
                 </Item>
               </:right>

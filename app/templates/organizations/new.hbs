@@ -143,36 +143,20 @@
               <Item @alignTop={{true}}>
                 <:label>Grensoverschrijvend</:label>
                 <:content>
-                  <ul class="au-c-list-inline">
-                    <li class="au-c-list-inline__item">
-                      <AuControlRadio
-                        @label="Ja"
-                        @name="is-cross-border"
-                        @value={{this.currentOrganizationModel.crossBorder}}
-                        @identifier="cross-border-true"
-                        @onChange={{fn
-                          (mut this.currentOrganizationModel.crossBorder)
-                          true
-                        }}
-                        checked={{this.currentOrganizationModel.crossBorder}}
-                      />
-                    </li>
-                    <li class="au-c-list-inline__item">
-                      <AuControlRadio
-                        @label="Nee"
-                        @name="is-cross-border"
-                        @value={{this.currentOrganizationModel.crossBorder}}
-                        @identifier="cross-border-false"
-                        @onChange={{fn
-                          (mut this.currentOrganizationModel.crossBorder)
-                          false
-                        }}
-                        checked={{not
-                          this.currentOrganizationModel.crossBorder
-                        }}
-                      />
-                    </li>
-                  </ul>
+                  <AuRadioGroup
+                    @alignment="inline"
+                    @name="is-cross-border"
+                    @selected={{boolean
+                      this.currentOrganizationModel.crossBorder
+                    }}
+                    @onChange={{fn
+                      (mut this.currentOrganizationModel.crossBorder)
+                    }}
+                    as |Group|
+                  >
+                    <Group.Radio @value={{true}}>Ja</Group.Radio>
+                    <Group.Radio @value={{false}}>Nee</Group.Radio>
+                  </AuRadioGroup>
                 </:content>
               </Item>
             {{/if}}
