@@ -44,7 +44,6 @@
     "@lblod/ember-rdfa-editor": "^6.1.0",
     "@release-it-plugins/lerna-changelog": "^6.1.0",
     "@triply/yasgui": "^4.2.20",
-    "@zestia/ember-auto-focus": "^4.1.7",
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^8.0.1",
     "ember-auto-import": "^2.6.3",
