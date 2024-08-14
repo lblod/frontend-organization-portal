@@ -78,9 +78,11 @@
           </PageHeader>
           <div class="au-o-box">
             <AuToggleSwitch
-              @label="Verberg niet actieve posities"
               @checked={{this.status}}
-            />
+              @onChange={{fn (mut this.status) (not this.status)}}
+            >
+              Verberg niet actieve posities
+            </AuToggleSwitch>
           </div>
         </menu.general>
       </t.menu>
