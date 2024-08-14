@@ -19,6 +19,7 @@ $toolbar-height: 3.2rem; // TODO: we decrease the toolbar size so more icons fit
     font-size: 1.2rem;
     height: $toolbar-height;
     width: $toolbar-height;
+    min-width: $toolbar-height;
   }
 
   .say-dropdown__button {
@@ -33,6 +34,10 @@ $toolbar-height: 3.2rem; // TODO: we decrease the toolbar size so more icons fit
 
   .say-container__main {
     overflow: initial;
+  }
+
+  .say-toolbar__group {
+    height: $toolbar-height;
   }
 
   .say-editor {
