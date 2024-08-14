@@ -8,12 +8,6 @@ module.exports = function (defaults) {
     'ember-simple-auth': {
       useSessionSetupMethod: true,
     },
-    sassOptions: {
-      sourceMapEmbed: true,
-      includePaths: [
-        'node_modules/@appuniversum/ember-appuniversum/app/styles',
-      ],
-    },
     autoprefixer: {
       enabled: true,
       cascade: true,
