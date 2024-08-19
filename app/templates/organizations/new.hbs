@@ -225,15 +225,17 @@
               <:label>{{@model.identifierKBO.idName}}</:label>
               <:content as |hasError|>
                 <AuInput
-                  @maskPlaceholder="_"
-                  autocomplete="off"
-                  @mask="####.###.###"
-                  @onChange={{this.setKbo}}
                   @width="block"
-                  @value={{@model.structuredIdentifierKBO.localId}}
                   @error={{hasError}}
+                  autocomplete="off"
+                  value={{@model.structuredIdentifierKBO.localId}}
                   id="kbo-identifier"
+                  class="au-c-input--mask"
                   placeholder="____.___.___"
+                  {{au-inputmask
+                    options=(hash mask="####.###.###" placeholder="_")
+                  }}
+                  {{on "input" this.setKbo}}
                 />
               </:content>
               <:error as |error|>

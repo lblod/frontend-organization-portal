@@ -34,8 +34,9 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
   }
 
   @action
-  setKbo(value) {
-    this.model.structuredIdentifierKBO.localId = value;
+  setKbo(event) {
+    this.model.structuredIdentifierKBO.localId =
+      event.target.inputmask.unmaskedvalue();
   }
 
   @dropTask
