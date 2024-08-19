@@ -8,10 +8,6 @@ module.exports = function (defaults) {
     'ember-simple-auth': {
       useSessionSetupMethod: true,
     },
-    // TODO: remove when updating to Appuniversum v3
-    '@appuniversum/ember-appuniversum': {
-      disableWormholeElement: true,
-    },
     autoprefixer: {
       enabled: true,
       cascade: true,
