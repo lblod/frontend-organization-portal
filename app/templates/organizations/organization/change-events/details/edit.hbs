@@ -53,9 +53,13 @@
               <:label>Beschrijving</:label>
               <:content>
                 <AuTextarea
-                  @value={{@model.changeEvent.description}}
                   @width="block"
+                  value={{@model.changeEvent.description}}
                   id="change-event-description"
+                  {{on
+                    "input"
+                    (event-value (fn (mut @model.changeEvent.description)))
+                  }}
                 />
               </:content>
             </Item>
