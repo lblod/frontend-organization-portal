@@ -9,7 +9,7 @@ export default class EditableContactDataHelper extends Helper {
   compute(positional) {
     assert(
       'editable-contact-data expects exactly one argument',
-      positional.length === 1
+      positional.length === 1,
     );
     return (
       this.features.isEnabled('edit-contact-data') ||

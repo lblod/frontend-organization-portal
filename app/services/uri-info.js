@@ -19,7 +19,7 @@ export default class UriInfoService extends Service {
     validateSubject(subject);
 
     return await this._getInfo(
-      this._buildUrl({ path: '/direct', subject, page, pageSize })
+      this._buildUrl({ path: '/direct', subject, page, pageSize }),
     );
   }
 
@@ -27,14 +27,14 @@ export default class UriInfoService extends Service {
     validateSubject(subject);
 
     return await this._getInfo(
-      this._buildUrl({ path: '/inverse', subject, page, pageSize })
+      this._buildUrl({ path: '/inverse', subject, page, pageSize }),
     );
   }
 
   _buildUrl({ path = '', subject, page, pageSize }) {
     assert(
       '`uriInfoServiceUrl` needs to be configured in the config/environment.js file',
-      typeof config.uriInfoServiceUrl === 'string'
+      typeof config.uriInfoServiceUrl === 'string',
     );
 
     let url = `${config.uriInfoServiceUrl}${path}?subject=${subject}`;

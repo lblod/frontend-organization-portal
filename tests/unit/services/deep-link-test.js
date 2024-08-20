@@ -21,7 +21,7 @@ module('Unit | Service | deep-link', function (hooks) {
           assert.strictEqual(uuid, '12345');
           assert.strictEqual(resourceUri, 'http://data.test/12345');
         }
-      }
+      },
     );
 
     this.owner.register(
@@ -41,7 +41,7 @@ module('Unit | Service | deep-link', function (hooks) {
             ],
           };
         }
-      }
+      },
     );
 
     await deepLink.redirect('http://data.test/12345');

@@ -28,7 +28,7 @@ function getClassificationCodes(
 
   if (organizationTypes?.length > 0) {
     classifications = classifications.filter((classification) =>
-      organizationTypes.includes(classification.organizationType)
+      organizationTypes.includes(classification.organizationType),
     );
   }
 
@@ -47,18 +47,18 @@ function getClassificationCodes(
 
   if (hasWorshipRole) {
     classifications = classifications.filter((classification) =>
-      worshipClassifications.includes(classification.id)
+      worshipClassifications.includes(classification.id),
     );
   } else {
     classifications = classifications.filter(
-      (classification) => !worshipClassifications.includes(classification.id)
+      (classification) => !worshipClassifications.includes(classification.id),
     );
   }
 
   if (restrictForCreation) {
     classifications = classifications.filter(
       (classification) =>
-        !uncreateableClassifications.includes(classification.id)
+        !uncreateableClassifications.includes(classification.id),
     );
   }
 
@@ -90,7 +90,7 @@ export function getClassificationIdsForRole(
   return getClassificationCodes(
     hasWorshipRole,
     restrictForCreation,
-    ...organizationTypes
+    ...organizationTypes,
   ).map((classification) => classification.id);
 }
 

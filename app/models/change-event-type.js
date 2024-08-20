@@ -105,7 +105,7 @@ export const MultipleOrganizationTypeIdList = [
 ];
 
 export const RequiresDecisionTypeIdList = Object.values(
-  CHANGE_EVENT_TYPE
+  CHANGE_EVENT_TYPE,
 ).filter((id) => id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED);
 
 export default class ChangeEventTypeModel extends Model {

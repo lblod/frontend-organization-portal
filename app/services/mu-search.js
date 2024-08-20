@@ -76,8 +76,8 @@ export default class MuSearchService extends Service {
       sortParams.forEach((sortParam) => {
         params.push(
           `sort[${this.stripSort(sortParam)}.field]=${this.sortOrder(
-            sortParam
-          )}`
+            sortParam,
+          )}`,
         );
       });
     }

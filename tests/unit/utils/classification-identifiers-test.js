@@ -24,9 +24,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
               CLASSIFICATION.WORSHIP_SERVICE.id,
               CLASSIFICATION.REPRESENTATIVE_BODY.id,
-            ].includes(id)
+            ].includes(id),
           )
-          .join(', ')
+          .join(', '),
       );
     });
 
@@ -42,9 +42,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                 CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
                 CLASSIFICATION.WORSHIP_SERVICE.id,
                 CLASSIFICATION.REPRESENTATIVE_BODY.id,
-              ].includes(id)
+              ].includes(id),
           )
-          .join(', ')
+          .join(', '),
       );
     });
 
@@ -62,9 +62,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                 CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
                 CLASSIFICATION.WORSHIP_SERVICE.id,
                 CLASSIFICATION.REPRESENTATIVE_BODY.id,
-              ].includes(id)
+              ].includes(id),
           )
-          .join(', ')
+          .join(', '),
       );
     });
   });
@@ -79,7 +79,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
           CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
           CLASSIFICATION.WORSHIP_SERVICE.id,
           CLASSIFICATION.REPRESENTATIVE_BODY.id,
-        ].sort()
+        ].sort(),
       );
     });
 
@@ -92,7 +92,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
           CLASSIFICATION.WORSHIP_SERVICE.id,
           CLASSIFICATION.REPRESENTATIVE_BODY.id,
         ].sort(),
-        result.sort()
+        result.sort(),
       );
     });
 
@@ -104,7 +104,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
         [
           CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
           CLASSIFICATION.WORSHIP_SERVICE.id,
-        ].sort()
+        ].sort(),
       );
 
       assert.notOk(result.includes(CLASSIFICATION.REPRESENTATIVE_BODY.id));
@@ -123,9 +123,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                 CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
                 CLASSIFICATION.WORSHIP_SERVICE.id,
                 CLASSIFICATION.REPRESENTATIVE_BODY.id,
-              ].includes(id)
+              ].includes(id),
           )
-          .sort()
+          .sort(),
       );
 
       assert.notOk(result.includes(CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id));
@@ -149,9 +149,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                 CLASSIFICATION.PROVINCE.id,
                 CLASSIFICATION.OCMW.id,
                 CLASSIFICATION.REPRESENTATIVE_BODY.id,
-              ].includes(id)
+              ].includes(id),
           )
-          .sort()
+          .sort(),
       );
 
       assert.notOk(result.includes(CLASSIFICATION.MUNICIPALITY.id));
@@ -172,9 +172,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                 CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
                 CLASSIFICATION.WORSHIP_SERVICE.id,
                 CLASSIFICATION.REPRESENTATIVE_BODY.id,
-              ].includes(id)
+              ].includes(id),
           )
-          .sort()
+          .sort(),
       );
 
       assert.notOk(result.includes(CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id));
@@ -188,7 +188,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
           let result = getClassificationIdsForRole(
             false,
             false,
-            ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT
+            ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
           );
 
           assert.deepEqual(
@@ -211,9 +211,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       .id,
                     CLASSIFICATION.ASSOCIATION_OTHER.id,
                     CLASSIFICATION.CORPORATION_OTHER.id,
-                  ].includes(id)
+                  ].includes(id),
               )
-              .sort()
+              .sort(),
           );
         });
 
@@ -221,7 +221,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
           let result = getClassificationIdsForRole(
             false,
             false,
-            ORGANIZATION_TYPES.ASSOCIATION
+            ORGANIZATION_TYPES.ASSOCIATION,
           );
 
           assert.deepEqual(
@@ -232,7 +232,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                 .VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
               CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
               CLASSIFICATION.ASSOCIATION_OTHER.id,
-            ].sort()
+            ].sort(),
           );
         });
 
@@ -240,7 +240,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
           let result = getClassificationIdsForRole(
             false,
             false,
-            ORGANIZATION_TYPES.CORPORATION
+            ORGANIZATION_TYPES.CORPORATION,
           );
 
           assert.deepEqual(result.sort(), [
@@ -253,7 +253,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             false,
             false,
             ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
-            ORGANIZATION_TYPES.ASSOCIATION
+            ORGANIZATION_TYPES.ASSOCIATION,
           );
 
           assert.deepEqual(
@@ -269,9 +269,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.REPRESENTATIVE_BODY.id,
                     // Non administrative units
                     CLASSIFICATION.CORPORATION_OTHER.id,
-                  ].includes(id)
+                  ].includes(id),
               )
-              .sort()
+              .sort(),
           );
         });
 
@@ -280,7 +280,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             false,
             false,
             ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
-            ORGANIZATION_TYPES.CORPORATION
+            ORGANIZATION_TYPES.CORPORATION,
           );
 
           assert.deepEqual(
@@ -302,9 +302,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
                       .id,
                     CLASSIFICATION.ASSOCIATION_OTHER.id,
-                  ].includes(id)
+                  ].includes(id),
               )
-              .sort()
+              .sort(),
           );
         });
 
@@ -313,7 +313,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             false,
             false,
             ORGANIZATION_TYPES.ASSOCIATION,
-            ORGANIZATION_TYPES.CORPORATION
+            ORGANIZATION_TYPES.CORPORATION,
           );
 
           assert.deepEqual(
@@ -329,9 +329,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                   CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
                   CLASSIFICATION.ASSOCIATION_OTHER.id,
                   CLASSIFICATION.CORPORATION_OTHER.id,
-                ].includes(id)
+                ].includes(id),
               )
-              .sort()
+              .sort(),
           );
         });
 
@@ -341,7 +341,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             false,
             ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
             ORGANIZATION_TYPES.ASSOCIATION,
-            ORGANIZATION_TYPES.CORPORATION
+            ORGANIZATION_TYPES.CORPORATION,
           );
 
           assert.deepEqual(
@@ -355,9 +355,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
                     CLASSIFICATION.WORSHIP_SERVICE.id,
                     CLASSIFICATION.REPRESENTATIVE_BODY.id,
-                  ].includes(id)
+                  ].includes(id),
               )
-              .sort()
+              .sort(),
           );
         });
 
@@ -366,7 +366,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             let result = getClassificationIdsForRole(
               false,
               true,
-              ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT
+              ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
             );
 
             assert.deepEqual(
@@ -393,9 +393,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.MUNICIPALITY.id,
                       CLASSIFICATION.PROVINCE.id,
                       CLASSIFICATION.OCMW.id,
-                    ].includes(id)
+                    ].includes(id),
                 )
-                .sort()
+                .sort(),
             );
           });
 
@@ -403,7 +403,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             let result = getClassificationIdsForRole(
               false,
               true,
-              ORGANIZATION_TYPES.ASSOCIATION
+              ORGANIZATION_TYPES.ASSOCIATION,
             );
 
             assert.deepEqual(
@@ -414,7 +414,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                   .VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
                 CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
                 CLASSIFICATION.ASSOCIATION_OTHER.id,
-              ].sort()
+              ].sort(),
             );
           });
 
@@ -422,7 +422,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             let result = getClassificationIdsForRole(
               false,
               true,
-              ORGANIZATION_TYPES.CORPORATION
+              ORGANIZATION_TYPES.CORPORATION,
             );
 
             assert.deepEqual(result.sort(), [
@@ -435,7 +435,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               false,
               true,
               ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
-              ORGANIZATION_TYPES.ASSOCIATION
+              ORGANIZATION_TYPES.ASSOCIATION,
             );
 
             assert.deepEqual(
@@ -455,9 +455,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.MUNICIPALITY.id,
                       CLASSIFICATION.PROVINCE.id,
                       CLASSIFICATION.OCMW.id,
-                    ].includes(id)
+                    ].includes(id),
                 )
-                .sort()
+                .sort(),
             );
           });
 
@@ -466,7 +466,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               false,
               true,
               ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
-              ORGANIZATION_TYPES.CORPORATION
+              ORGANIZATION_TYPES.CORPORATION,
             );
 
             assert.deepEqual(
@@ -492,9 +492,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.MUNICIPALITY.id,
                       CLASSIFICATION.PROVINCE.id,
                       CLASSIFICATION.OCMW.id,
-                    ].includes(id)
+                    ].includes(id),
                 )
-                .sort()
+                .sort(),
             );
           });
 
@@ -503,7 +503,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               false,
               true,
               ORGANIZATION_TYPES.ASSOCIATION,
-              ORGANIZATION_TYPES.CORPORATION
+              ORGANIZATION_TYPES.CORPORATION,
             );
 
             assert.deepEqual(
@@ -521,9 +521,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       .id,
                     CLASSIFICATION.ASSOCIATION_OTHER.id,
                     CLASSIFICATION.CORPORATION_OTHER.id,
-                  ].includes(id)
+                  ].includes(id),
                 )
-                .sort()
+                .sort(),
             );
           });
 
@@ -533,7 +533,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               true,
               ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
               ORGANIZATION_TYPES.ASSOCIATION,
-              ORGANIZATION_TYPES.CORPORATION
+              ORGANIZATION_TYPES.CORPORATION,
             );
 
             assert.deepEqual(
@@ -551,9 +551,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.MUNICIPALITY.id,
                       CLASSIFICATION.PROVINCE.id,
                       CLASSIFICATION.OCMW.id,
-                    ].includes(id)
+                    ].includes(id),
                 )
-                .sort()
+                .sort(),
             );
           });
         });
@@ -564,7 +564,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
           let result = getClassificationIdsForRole(
             true,
             false,
-            ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT
+            ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
           );
 
           assert.deepEqual(
@@ -573,7 +573,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
               CLASSIFICATION.WORSHIP_SERVICE.id,
               CLASSIFICATION.REPRESENTATIVE_BODY.id,
-            ].sort()
+            ].sort(),
           );
         });
 
@@ -581,7 +581,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
           let result = getClassificationIdsForRole(
             true,
             false,
-            ORGANIZATION_TYPES.ASSOCIATION
+            ORGANIZATION_TYPES.ASSOCIATION,
           );
 
           assert.deepEqual(result.sort(), [].sort());
@@ -591,7 +591,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
           let result = getClassificationIdsForRole(
             true,
             false,
-            ORGANIZATION_TYPES.CORPORATION
+            ORGANIZATION_TYPES.CORPORATION,
           );
 
           assert.deepEqual(result.sort(), []);
@@ -602,7 +602,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             true,
             false,
             ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
-            ORGANIZATION_TYPES.ASSOCIATION
+            ORGANIZATION_TYPES.ASSOCIATION,
           );
 
           assert.deepEqual(
@@ -611,7 +611,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
               CLASSIFICATION.WORSHIP_SERVICE.id,
               CLASSIFICATION.REPRESENTATIVE_BODY.id,
-            ].sort()
+            ].sort(),
           );
         });
 
@@ -620,7 +620,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             true,
             false,
             ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
-            ORGANIZATION_TYPES.CORPORATION
+            ORGANIZATION_TYPES.CORPORATION,
           );
 
           assert.deepEqual(
@@ -629,7 +629,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
               CLASSIFICATION.WORSHIP_SERVICE.id,
               CLASSIFICATION.REPRESENTATIVE_BODY.id,
-            ].sort()
+            ].sort(),
           );
         });
 
@@ -639,7 +639,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             false,
             ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
             ORGANIZATION_TYPES.ASSOCIATION,
-            ORGANIZATION_TYPES.CORPORATION
+            ORGANIZATION_TYPES.CORPORATION,
           );
 
           assert.deepEqual(
@@ -648,7 +648,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
               CLASSIFICATION.WORSHIP_SERVICE.id,
               CLASSIFICATION.REPRESENTATIVE_BODY.id,
-            ].sort()
+            ].sort(),
           );
         });
 
@@ -657,7 +657,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             let result = getClassificationIdsForRole(
               true,
               true,
-              ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT
+              ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
             );
 
             assert.deepEqual(
@@ -665,7 +665,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               [
                 CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
                 CLASSIFICATION.WORSHIP_SERVICE.id,
-              ].sort()
+              ].sort(),
             );
           });
 
@@ -673,7 +673,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             let result = getClassificationIdsForRole(
               true,
               true,
-              ORGANIZATION_TYPES.ASSOCIATION
+              ORGANIZATION_TYPES.ASSOCIATION,
             );
 
             assert.deepEqual(result.sort(), [].sort());
@@ -683,7 +683,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             let result = getClassificationIdsForRole(
               true,
               true,
-              ORGANIZATION_TYPES.CORPORATION
+              ORGANIZATION_TYPES.CORPORATION,
             );
 
             assert.deepEqual(result.sort(), []);
@@ -694,7 +694,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               true,
               true,
               ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
-              ORGANIZATION_TYPES.ASSOCIATION
+              ORGANIZATION_TYPES.ASSOCIATION,
             );
 
             assert.deepEqual(
@@ -702,7 +702,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               [
                 CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
                 CLASSIFICATION.WORSHIP_SERVICE.id,
-              ].sort()
+              ].sort(),
             );
           });
 
@@ -711,7 +711,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               true,
               true,
               ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
-              ORGANIZATION_TYPES.CORPORATION
+              ORGANIZATION_TYPES.CORPORATION,
             );
 
             assert.deepEqual(
@@ -719,7 +719,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               [
                 CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
                 CLASSIFICATION.WORSHIP_SERVICE.id,
-              ].sort()
+              ].sort(),
             );
           });
 
@@ -729,7 +729,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               true,
               ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
               ORGANIZATION_TYPES.ASSOCIATION,
-              ORGANIZATION_TYPES.CORPORATION
+              ORGANIZATION_TYPES.CORPORATION,
             );
 
             assert.deepEqual(
@@ -737,7 +737,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               [
                 CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
                 CLASSIFICATION.WORSHIP_SERVICE.id,
-              ].sort()
+              ].sort(),
             );
           });
         });
@@ -754,7 +754,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
           true,
           undefined,
           ORGANIZATION_TYPES.CORPORATION,
-          123
+          123,
         );
 
         assert.deepEqual(
@@ -768,9 +768,9 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                   CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
                   CLASSIFICATION.WORSHIP_SERVICE.id,
                   CLASSIFICATION.REPRESENTATIVE_BODY.id,
-                ].includes(id)
+                ].includes(id),
             )
-            .sort()
+            .sort(),
         );
       });
 
@@ -782,7 +782,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
           [
             CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
             CLASSIFICATION.WORSHIP_SERVICE.id,
-          ].sort()
+          ].sort(),
         );
       });
     });

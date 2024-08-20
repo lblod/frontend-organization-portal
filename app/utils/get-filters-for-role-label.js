@@ -2,7 +2,7 @@ import { ORGANIZATION_STATUS } from '../models/organization-status-code';
 
 function getRoleModel(roleLabel, roles) {
   return roles.find(
-    (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel
+    (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel,
   );
 }
 
@@ -38,11 +38,11 @@ export default function getFiltersForRoleLabel({
   if (status) {
     filters.set(
       'filter[member][organization-status][:id:]',
-      ORGANIZATION_STATUS.ACTIVE
+      ORGANIZATION_STATUS.ACTIVE,
     );
     filters.set(
       'filter[organization][organization-status][:id:]',
-      ORGANIZATION_STATUS.ACTIVE
+      ORGANIZATION_STATUS.ACTIVE,
     );
   }
   return filters;

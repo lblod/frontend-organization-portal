@@ -136,7 +136,7 @@ export default class PeopleIndexController extends Controller {
           ![
             CLASSIFICATION.WORSHIP_SERVICE.id,
             CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
-          ].includes(id)
+          ].includes(id),
       );
     } else {
       allowedIds = [

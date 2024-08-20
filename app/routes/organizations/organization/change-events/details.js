@@ -8,7 +8,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsRoute extends R
     let organization = this.modelFor('organizations.organization');
 
     let { changeEventId } = this.paramsFor(
-      'organizations.organization.change-events.details'
+      'organizations.organization.change-events.details',
     );
     let changeEvent = await this.store.findRecord(
       'change-event',
@@ -23,7 +23,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsRoute extends R
           'results.resulting-organization',
           'results.status',
         ].join(),
-      }
+      },
     );
 
     // resolve the first resulting organization here as workaround
@@ -35,7 +35,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsRoute extends R
 
     let currentChangeEventResult = await findCurrentChangeEventResult(
       organization,
-      changeEvent
+      changeEvent,
     );
 
     return {

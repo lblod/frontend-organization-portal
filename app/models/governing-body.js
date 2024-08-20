@@ -69,7 +69,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
           // external check instead of using Joi.date().max().
           if (this.endDate && value > this.endDate) {
             return helpers.message(
-              'Kies een startdatum die vóór de einddatum plaatsvindt'
+              'Kies een startdatum die vóór de einddatum plaatsvindt',
             );
           }
 
@@ -95,7 +95,7 @@ export default class GoverningBodyModel extends AbstractValidationModel {
           // external check instead of using Joi.date().min().
           if (this.startDate && value < this.startDate) {
             return helpers.message(
-              'Kies een einddatum die na de startdatum plaatsvindt'
+              'Kies een einddatum die na de startdatum plaatsvindt',
             );
           }
 

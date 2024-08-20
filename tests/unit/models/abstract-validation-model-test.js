@@ -48,7 +48,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
       assert.strictEqual(
         model.error.name.message,
         '"name" is required',
-        'error is set'
+        'error is set',
       );
 
       model.name = 'test';
@@ -62,7 +62,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
     test('it returns an error when required belongsTo is missing', async function (assert) {
       this.owner.register(
         'model:test-validation-model',
-        BelongsToValidationModel
+        BelongsToValidationModel,
       );
       const model = this.store().createRecord('test-validation-model');
 
@@ -72,14 +72,14 @@ module('Unit | Model | abstract validation model', function (hooks) {
       assert.strictEqual(Object.keys(model.error).length, 1);
       assert.strictEqual(
         model.error.oneRequired.message,
-        'Selecteer een optie'
+        'Selecteer een optie',
       );
     });
 
     test('it returns no error when required belongsTo is fulfilled', async function (assert) {
       this.owner.register(
         'model:test-validation-model',
-        BelongsToValidationModel
+        BelongsToValidationModel,
       );
       const oneRequired = this.store().createRecord('test-validation-model');
       const model = this.store().createRecord('test-validation-model', {
@@ -95,7 +95,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
     test('it returns no error when an optional belongsTo is provided', async function (assert) {
       this.owner.register(
         'model:test-validation-model',
-        BelongsToValidationModel
+        BelongsToValidationModel,
       );
 
       const oneRequired = this.store().createRecord('test-validation-model');
@@ -116,7 +116,7 @@ module('Unit | Model | abstract validation model', function (hooks) {
     test('it returns error when required hasMany is missing', async function (assert) {
       this.owner.register(
         'model:test-validation-model',
-        HasManyValidationModel
+        HasManyValidationModel,
       );
       const model = this.store().createRecord('test-validation-model');
 
@@ -126,14 +126,14 @@ module('Unit | Model | abstract validation model', function (hooks) {
       assert.strictEqual(Object.keys(model.error).length, 1);
       assert.strictEqual(
         model.error.manyRequired.message,
-        'Selecteer een optie'
+        'Selecteer een optie',
       );
     });
 
     test('it returns no error when required hasMany is fulfilled', async function (assert) {
       this.owner.register(
         'model:test-validation-model',
-        HasManyValidationModel
+        HasManyValidationModel,
       );
       const manyRequired = this.store().createRecord('test-validation-model');
       const model = this.store().createRecord('test-validation-model', {

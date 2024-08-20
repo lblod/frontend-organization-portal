@@ -42,7 +42,7 @@ export default class OrganizationSelectComponent extends Component {
           filter: {
             ':id:': selectedPositionId,
           },
-        }
+        },
       );
 
       if (ministerPositions.length) {
@@ -111,7 +111,7 @@ export default class OrganizationSelectComponent extends Component {
     if (typeof selectedOrganization === 'string') {
       this.loadedRecord = yield this.store.findRecord(
         'organization',
-        selectedOrganization
+        selectedOrganization,
       );
     }
   }

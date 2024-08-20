@@ -7,7 +7,7 @@ import {
 export default class PeoplePersonPositionsMinisterIndexRoute extends Route {
   async model() {
     let { person, minister } = this.modelFor(
-      'people.person.positions.minister'
+      'people.person.positions.minister',
     );
 
     let contacts = await minister.contacts;

@@ -77,7 +77,7 @@ export default class AbstractValidationModel extends Model {
         } else {
           assert(`Unknown field type: ${type}`);
         }
-      }
+      },
     );
 
     return Object.fromEntries(entries);

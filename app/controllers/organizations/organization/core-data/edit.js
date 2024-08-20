@@ -114,7 +114,7 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
           let isNewContact = secondaryContact.isNew;
 
           secondaryContact.telephone = transformPhoneNumbers(
-            secondaryContact.telephone
+            secondaryContact.telephone,
           );
           secondaryContact = setEmptyStringsToNull(secondaryContact);
           yield secondaryContact.save();
@@ -151,7 +151,7 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
       this.router.refresh();
       this.router.transitionTo(
         'organizations.organization.core-data',
-        organization.id
+        organization.id,
       );
     }
   }

@@ -26,7 +26,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   get hasUnsavedEdits() {
     return this.memberships.some(
-      (membership) => membership.isNew || membership.isDeleted
+      (membership) => membership.isNew || membership.isDeleted,
     );
   }
 
@@ -76,7 +76,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     // Find the role model matching the label
     // Note: this assumes that each membership role has unique labels
     const roleModel = this.model.roles.find(
-      (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel
+      (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel,
     );
     membership.role = roleModel;
 
@@ -128,7 +128,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
         } else {
           return membership;
         }
-      })
+      }),
     );
 
     let organization = this.model.organization;
@@ -136,7 +136,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     yield organization.validate();
 
     let validationPromises = this.memberships.map((membership) =>
-      membership.validate()
+      membership.validate(),
     );
     yield Promise.all(validationPromises);
 
@@ -150,7 +150,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
       this.router.transitionTo(
         'organizations.organization.related-organizations',
-        organization.id
+        organization.id,
       );
     }
   }
