@@ -482,7 +482,6 @@ module('Unit | Model | governing body', function (hooks) {
       const timedBody = this.store().createRecord('governing-body', {
         isTimeSpecializationOf: untimedBody,
       });
-      (await untimedBody.hasTimeSpecializations).push(timedBody);
 
       const queryStub = sinon.stub(this.owner.lookup('service:store'), 'query');
       queryStub.resolves(A([untimedBody]));
@@ -520,7 +519,6 @@ module('Unit | Model | governing body', function (hooks) {
       const timedBody = this.store().createRecord('governing-body', {
         isTimeSpecializationOf: untimedBody,
       });
-      (await untimedBody.hasTimeSpecializations).push(timedBody);
 
       const governingBodies = await timedBody.getOtherTimedGoverningBodies();
       assert.strictEqual(governingBodies.length, 0);
@@ -538,7 +536,6 @@ module('Unit | Model | governing body', function (hooks) {
       const timedBody = this.store().createRecord('governing-body', {
         isTimeSpecializationOf: untimedBody,
       });
-      (await untimedBody.hasTimeSpecializations).push(timedBody);
 
       const governingBodies = await timedBody.getOtherTimedGoverningBodies();
       assert.strictEqual(governingBodies.length, 0);
@@ -560,17 +557,13 @@ module('Unit | Model | governing body', function (hooks) {
       });
 
       const timedBodyOne = this.store().createRecord('governing-body', {
-        id: 1,
+        id: '1',
         isTimeSpecializationOf: untimedBody,
       });
       const timedBodyTwo = this.store().createRecord('governing-body', {
-        id: 2,
+        id: '2',
         isTimeSpecializationOf: untimedBody,
       });
-      (await untimedBody.hasTimeSpecializations).push(
-        timedBodyOne,
-        timedBodyTwo,
-      );
 
       const queryStub = sinon.stub(this.owner.lookup('service:store'), 'query');
       queryStub.resolves(A([untimedBody]));
@@ -597,10 +590,9 @@ module('Unit | Model | governing body', function (hooks) {
         administrativeUnit: administrativeUnit,
       });
       const timedBody = this.store().createRecord('governing-body', {
-        id: 1,
+        id: '1',
         isTimeSpecializationOf: untimedBody,
       });
-      (await untimedBody.hasTimeSpecializations).push(timedBody);
 
       const classificationCodeOther = this.store().createRecord(
         'governing-body-classification-code',
@@ -611,10 +603,9 @@ module('Unit | Model | governing body', function (hooks) {
         administrativeUnit: administrativeUnit,
       });
       const timedBodyOther = this.store().createRecord('governing-body', {
-        id: 2,
+        id: '2',
         isTimeSpecializationOf: untimedBodyOther,
       });
-      (await untimedBodyOther.hasTimeSpecializations).push(timedBodyOther);
 
       const queryStub = sinon.stub(this.owner.lookup('service:store'), 'query');
       queryStub.resolves(A([untimedBody, untimedBodyOther]));
@@ -641,10 +632,9 @@ module('Unit | Model | governing body', function (hooks) {
         administrativeUnit: administrativeUnit,
       });
       const timedBody = this.store().createRecord('governing-body', {
-        id: 1,
+        id: '1',
         isTimeSpecializationOf: untimedBody,
       });
-      (await untimedBody.hasTimeSpecializations).push(timedBody);
 
       const classificationCodeOther = this.store().createRecord(
         'governing-body-classification-code',
@@ -654,11 +644,11 @@ module('Unit | Model | governing body', function (hooks) {
         classification: classificationCodeOther,
         administrativeUnit: administrativeUnit,
       });
-      const timedBodyOther = this.store().createRecord('governing-body', {
-        id: 2,
+
+      this.store().createRecord('governing-body', {
+        id: '2',
         isTimeSpecializationOf: untimedBodyOther,
       });
-      (await untimedBodyOther.hasTimeSpecializations).push(timedBodyOther);
 
       const queryStub = sinon.stub(this.owner.lookup('service:store'), 'query');
       queryStub.resolves(A([untimedBody, untimedBodyOther]));
@@ -684,10 +674,9 @@ module('Unit | Model | governing body', function (hooks) {
         administrativeUnit: administrativeUnit,
       });
       const timedBody = this.store().createRecord('governing-body', {
-        id: 1,
+        id: '1',
         isTimeSpecializationOf: untimedBody,
       });
-      (await untimedBody.hasTimeSpecializations).push(timedBody);
 
       const classificationCodeOther = this.store().createRecord(
         'governing-body-classification-code',
@@ -698,17 +687,13 @@ module('Unit | Model | governing body', function (hooks) {
         administrativeUnit: administrativeUnit,
       });
       const timedBodyOther = this.store().createRecord('governing-body', {
-        id: 2,
+        id: '2',
         isTimeSpecializationOf: untimedBodyOther,
       });
       const timedBodyOtherTwo = this.store().createRecord('governing-body', {
-        id: 3,
+        id: '3',
         isTimeSpecializationOf: untimedBodyOther,
       });
-      (await untimedBodyOther.hasTimeSpecializations).push(
-        timedBodyOther,
-        timedBodyOtherTwo,
-      );
 
       const classificationCodeExec = this.store().createRecord(
         'governing-body-classification-code',
@@ -718,9 +703,7 @@ module('Unit | Model | governing body', function (hooks) {
         classification: classificationCodeExec,
         administrativeUnit: administrativeUnit,
       });
-      const timedBodyExec = this.store().createRecord('governing-body', {
-        isTimeSpecializationOf: untimedBodyExec,
-      });
+      const timedBodyExec = this.store().createRecord('governing-body');
       (await untimedBodyExec.hasTimeSpecializations).push(timedBodyExec);
 
       const queryStub = sinon.stub(this.owner.lookup('service:store'), 'query');

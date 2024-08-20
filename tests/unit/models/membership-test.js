@@ -69,7 +69,6 @@ module('Unit | Model | membership', function (hooks) {
           });
 
           (await organization.memberships).push(participant);
-          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -108,8 +107,6 @@ module('Unit | Model | membership', function (hooks) {
             member: member,
             role: role,
           });
-
-          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -151,8 +148,6 @@ module('Unit | Model | membership', function (hooks) {
             role: role,
           });
 
-          (await organization.memberships).push(model);
-
           const isValid = await model.validate({
             creatingNewOrganization: true,
           });
@@ -185,8 +180,6 @@ module('Unit | Model | membership', function (hooks) {
             member: member,
             role: role,
           });
-
-          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -229,8 +222,6 @@ module('Unit | Model | membership', function (hooks) {
             member: member,
             role: founderRole,
           });
-
-          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -275,7 +266,6 @@ module('Unit | Model | membership', function (hooks) {
           });
 
           (await organization.memberships).push(founder);
-          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -307,8 +297,6 @@ module('Unit | Model | membership', function (hooks) {
               member: member,
               role: role,
             });
-
-            (await organization.memberships).push(model);
 
             const isValid = await model.validate({
               creatingNewOrganization: true,
@@ -349,8 +337,6 @@ module('Unit | Model | membership', function (hooks) {
               role: relationRole,
             });
 
-            (await organization.memberships).push(model);
-
             const isValid = await model.validate({
               creatingNewOrganization: true,
             });
@@ -386,8 +372,6 @@ module('Unit | Model | membership', function (hooks) {
             member: member,
             role: role,
           });
-
-          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -430,8 +414,6 @@ module('Unit | Model | membership', function (hooks) {
             member: member,
             role: relationRole,
           });
-
-          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
