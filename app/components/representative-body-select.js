@@ -16,7 +16,7 @@ export default class RepresentativeBodySelectComponent extends Component {
   @task
   *loadRepresentativeBodiesTask() {
     const representativeBodies = yield this.store.findAll(
-      'representative-body'
+      'representative-body',
     );
 
     const filteredRepresentativeBodies = representativeBodies.filter((body) => {

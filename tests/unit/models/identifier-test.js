@@ -45,7 +45,7 @@ module('Unit | Model | identifier', function (hooks) {
     module('KBO nummer', function () {
       test('it returns error when localId is empty', async function (assert) {
         const structuredIdentifier = this.store().createRecord(
-          'structured-identifier'
+          'structured-identifier',
         );
         const model = this.store().createRecord('identifier', {
           idName: 'KBO nummer',
@@ -58,7 +58,7 @@ module('Unit | Model | identifier', function (hooks) {
         assert.strictEqual(Object.keys(model.error).length, 1);
         assert.strictEqual(
           model.error.structuredIdentifier.message,
-          'Vul het KBO nummer in'
+          'Vul het KBO nummer in',
         );
       });
 
@@ -67,7 +67,7 @@ module('Unit | Model | identifier', function (hooks) {
           'structured-identifier',
           {
             localId: '123',
-          }
+          },
         );
         const model = this.store().createRecord('identifier', {
           idName: 'KBO nummer',
@@ -80,7 +80,7 @@ module('Unit | Model | identifier', function (hooks) {
         assert.strictEqual(Object.keys(model.error).length, 1);
         assert.strictEqual(
           model.error.structuredIdentifier.message,
-          'Vul het (tiencijferige) KBO nummer in.'
+          'Vul het (tiencijferige) KBO nummer in.',
         );
       });
 
@@ -89,7 +89,7 @@ module('Unit | Model | identifier', function (hooks) {
           'structured-identifier',
           {
             localId: '0123456789',
-          }
+          },
         );
         const model = this.store().createRecord('identifier', {
           idName: 'KBO nummer',
@@ -111,7 +111,7 @@ module('Unit | Model | identifier', function (hooks) {
           'structured-identifier',
           {
             localId: '0123456789',
-          }
+          },
         );
         const model = this.store().createRecord('identifier', {
           idName: 'KBO nummer',
@@ -119,7 +119,7 @@ module('Unit | Model | identifier', function (hooks) {
         });
         const queryStub = sinon.stub(
           this.owner.lookup('service:store'),
-          'query'
+          'query',
         );
         queryStub.resolves(A([]));
 
@@ -140,7 +140,7 @@ module('Unit | Model | identifier', function (hooks) {
           'structured-identifier',
           {
             localId: '0123456789',
-          }
+          },
         );
         const model = this.store().createRecord('identifier', {
           idName: 'KBO nummer',
@@ -148,7 +148,7 @@ module('Unit | Model | identifier', function (hooks) {
         });
         const queryStub = sinon.stub(
           this.owner.lookup('service:store'),
-          'query'
+          'query',
         );
         queryStub.resolves(A([organization]));
 
@@ -158,11 +158,11 @@ module('Unit | Model | identifier', function (hooks) {
         assert.strictEqual(Object.keys(model.error).length, 1);
         assert.strictEqual(
           model.error.structuredIdentifier.message,
-          'Dit KBO nummer is al in gebruik.'
+          'Dit KBO nummer is al in gebruik.',
         );
         assert.strictEqual(
           model.error.structuredIdentifier.context.organization.id,
-          organization.id
+          organization.id,
         );
 
         queryStub.restore();
@@ -172,7 +172,7 @@ module('Unit | Model | identifier', function (hooks) {
     module('SharePoint identificator', function () {
       test('it returns no error when localId is empty', async function (assert) {
         const structuredIdentifier = this.store().createRecord(
-          'structured-identifier'
+          'structured-identifier',
         );
         const model = this.store().createRecord('identifier', {
           idName: 'SharePoint identificator',
@@ -189,7 +189,7 @@ module('Unit | Model | identifier', function (hooks) {
           'structured-identifier',
           {
             localId: '123abc',
-          }
+          },
         );
         const model = this.store().createRecord('identifier', {
           idName: 'SharePoint identificator',
@@ -211,7 +211,7 @@ module('Unit | Model | identifier', function (hooks) {
           'structured-identifier',
           {
             localId: 'abc',
-          }
+          },
         );
         const model = this.store().createRecord('identifier', {
           idName: 'SharePoint identificator',
@@ -224,7 +224,7 @@ module('Unit | Model | identifier', function (hooks) {
         assert.strictEqual(Object.keys(model.error).length, 1);
         assert.strictEqual(
           model.error.structuredIdentifier.message,
-          'De SharePoint identificator mag enkel cijfers bevatten'
+          'De SharePoint identificator mag enkel cijfers bevatten',
         );
       });
 
@@ -233,7 +233,7 @@ module('Unit | Model | identifier', function (hooks) {
           'structured-identifier',
           {
             localId: '',
-          }
+          },
         );
         const model = this.store().createRecord('identifier', {
           idName: 'SharePoint identificator',
@@ -250,7 +250,7 @@ module('Unit | Model | identifier', function (hooks) {
           'structured-identifier',
           {
             localId: undefined,
-          }
+          },
         );
         const model = this.store().createRecord('identifier', {
           idName: 'SharePoint identificator',

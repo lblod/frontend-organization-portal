@@ -60,7 +60,7 @@ module('Unit | Model | organization', function (hooks) {
       test(`it should return false for ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'organization-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('organization', {
           classification,
@@ -75,7 +75,7 @@ module('Unit | Model | organization', function (hooks) {
       test(`it should return false for whether ${cl.label} has a central worship service`, async function (assert) {
         const classification = this.store().createRecord(
           'organization-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('organization', {
           classification,
@@ -109,7 +109,7 @@ module('Unit | Model | organization', function (hooks) {
         'kboOrganization',
         {
           name: 'kbo organization',
-        }
+        },
       );
       const model = this.store().createRecord('organization', {
         kboOrganization: kboOrganizationModel,
@@ -133,7 +133,7 @@ module('Unit | Model | organization', function (hooks) {
         'kboOrganization',
         {
           name: 'kbo organization',
-        }
+        },
       );
       const model = this.store().createRecord('organization', {
         legalName: 'some legal name',
@@ -205,7 +205,7 @@ module('Unit | Model | organization', function (hooks) {
       test(`it should allow valid participants for ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('administrative-unit', {
           id: '123',
@@ -213,7 +213,7 @@ module('Unit | Model | organization', function (hooks) {
         });
         const participantRole = this.store().createRecord(
           'membership-role',
-          MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN
+          MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
         );
         const membership = this.store().createRecord('membership', {
           role: participantRole,
@@ -282,7 +282,7 @@ module('Unit | Model | organization', function (hooks) {
       test(`it should allow a(n) ${cl.label} to participate in the correct kind of organizations`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('administrative-unit', {
           id: '123',
@@ -290,7 +290,7 @@ module('Unit | Model | organization', function (hooks) {
         });
         const participantRole = this.store().createRecord(
           'membership-role',
-          MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN
+          MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
         );
         const membership = this.store().createRecord('membership', {
           role: participantRole,
@@ -376,7 +376,7 @@ module('Unit | Model | organization', function (hooks) {
       test(`it should allow a(n) ${cl.label} to be founded by the correct organizations`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('administrative-unit', {
           id: '123',
@@ -384,7 +384,7 @@ module('Unit | Model | organization', function (hooks) {
         });
         const founderRole = this.store().createRecord(
           'membership-role',
-          MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF
+          MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
         );
         const membership = this.store().createRecord('membership', {
           role: founderRole,
@@ -420,7 +420,7 @@ module('Unit | Model | organization', function (hooks) {
       test(`it should allow a(n) ${cl.label} to found the correct organizations`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('administrative-unit', {
           id: '123',
@@ -428,7 +428,7 @@ module('Unit | Model | organization', function (hooks) {
         });
         const founderRole = this.store().createRecord(
           'membership-role',
-          MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF
+          MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
         );
         const membership = this.store().createRecord('membership', {
           role: founderRole,
@@ -447,7 +447,7 @@ module('Unit | Model | organization', function (hooks) {
       });
       const founderRole = this.store().createRecord(
         'membership-role',
-        MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF
+        MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
       );
       const membership = this.store().createRecord('membership', {
         role: founderRole,

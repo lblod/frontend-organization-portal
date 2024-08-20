@@ -3,7 +3,7 @@ import Route from '@ember/routing/route';
 export default class PeoplePersonPositionsFunctionaryIndexRoute extends Route {
   async model() {
     let { person, functionary } = this.modelFor(
-      'people.person.positions.functionary'
+      'people.person.positions.functionary',
     );
 
     let boardPosition = await functionary.boardPosition;

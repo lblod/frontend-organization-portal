@@ -11,7 +11,7 @@ export default class RecognizedWorshipTypeSelect extends Component {
   recognizedWorshipTypes = trackedTask(
     this,
     this.loadRecognizedWorshipTypesTask,
-    () => [this.args.selectedClassificationId]
+    () => [this.args.selectedClassificationId],
   );
 
   get selectedRecognizedWorshipType() {
@@ -28,7 +28,7 @@ export default class RecognizedWorshipTypeSelect extends Component {
     }
 
     return this.recognizedWorshipTypes.value.find(
-      (worshipType) => worshipType.id === id
+      (worshipType) => worshipType.id === id,
     );
   }
 
@@ -40,7 +40,7 @@ export default class RecognizedWorshipTypeSelect extends Component {
 
     let recognizedWorshipTypes = yield this.store.query(
       'recognized-worship-type',
-      { sort: 'label' }
+      { sort: 'label' },
     );
 
     if (
@@ -49,7 +49,7 @@ export default class RecognizedWorshipTypeSelect extends Component {
     ) {
       // Filter out blacklisted types for central worship services
       recognizedWorshipTypes = recognizedWorshipTypes.filter(
-        (t) => !this.isIdInBlacklist(t.id)
+        (t) => !this.isIdInBlacklist(t.id),
       );
     }
 

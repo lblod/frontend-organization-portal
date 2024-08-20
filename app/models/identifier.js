@@ -69,7 +69,7 @@ export default class IdentifierModel extends AbstractValidationModel {
             ).changedAttributes();
             if (changedAttributes?.localId && !localId.match(/^\d*$/)) {
               return helpers.message(
-                'De SharePoint identificator mag enkel cijfers bevatten'
+                'De SharePoint identificator mag enkel cijfers bevatten',
               );
             }
           }

@@ -35,7 +35,7 @@ export default class AddressRegisterSelectorComponent extends Component {
       if (!this.sourceCrab) {
         this.sourceCrab = yield this.store.findRecord(
           'concept',
-          'e59c97a9-4e95-4d65-9696-756de47fbc1f'
+          'e59c97a9-4e95-4d65-9696-756de47fbc1f',
         );
       }
       // TODO: this should probably be fixed in the API itself (, if possible)
@@ -47,7 +47,7 @@ export default class AddressRegisterSelectorComponent extends Component {
             addresses.map((a) => [
               `${a.street}${a.housenumber}${a.busNumber}`,
               a,
-            ])
+            ]),
           ).values(),
         ],
       });

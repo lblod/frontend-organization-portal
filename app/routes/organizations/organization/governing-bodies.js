@@ -15,7 +15,7 @@ export default class OrganizationsOrganizationGoverningBodiesRoute extends Route
         reload: true,
         include:
           'governing-bodies.has-time-specializations,governing-bodies.classification',
-      }
+      },
     );
 
     let untimedGoverningBodies = await organization.governingBodies;

@@ -101,7 +101,7 @@ export default class MembershipModel extends AbstractValidationModel {
             }
 
             return value;
-          }
+          },
         ),
         otherwise: validateBelongsToRequired(REQUIRED_MESSAGE),
       }),
@@ -111,7 +111,7 @@ export default class MembershipModel extends AbstractValidationModel {
 
   #containsMembershipForRoles(memberships, roles) {
     return roles.every((role) =>
-      memberships.some((membership) => membership.role.id === role.id)
+      memberships.some((membership) => membership.role.id === role.id),
     );
   }
 

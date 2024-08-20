@@ -34,9 +34,8 @@ export default class PeopleIndexRoute extends Route {
     }
     if (params.status) {
       let date = new Date().toISOString().slice(0, -5);
-      filter[
-        ':query:end_date'
-      ] = `(NOT (_exists_:end_date))  OR (end_date:[${date} TO *] ) `;
+      filter[':query:end_date'] =
+        `(NOT (_exists_:end_date))  OR (end_date:[${date} TO *] ) `;
     }
     if (params.position) {
       filter['position_id'] = params.position;

@@ -56,7 +56,7 @@ export default class OrganizationsIndexRoute extends Route {
       const idsFromOrganizationType = getClassificationIdsForRole(
         this.currentSession.hasWorshipRole,
         false,
-        ...params.organizationTypes.split(',')
+        ...params.organizationTypes.split(','),
       );
 
       const idsFromClassifications = params.classificationIds.split(',');
@@ -69,7 +69,7 @@ export default class OrganizationsIndexRoute extends Route {
       queryClassifications = getClassificationIdsForRole(
         this.currentSession.hasWorshipRole,
         false,
-        ...params.organizationTypes.split(',')
+        ...params.organizationTypes.split(','),
       ).join(' OR ');
     } else if (params.classificationIds) {
       queryClassifications = params.classificationIds
@@ -78,7 +78,7 @@ export default class OrganizationsIndexRoute extends Route {
         .join(' OR ');
     } else {
       queryClassifications = getClassificationIds(
-        this.currentSession.hasWorshipRole
+        this.currentSession.hasWorshipRole,
       );
     }
     filter[':query:classification_id'] = queryClassifications;

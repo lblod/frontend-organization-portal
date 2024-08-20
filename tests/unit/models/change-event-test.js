@@ -284,15 +284,15 @@ module('Unit | Model | change event', function (hooks) {
         await this.model.addOriginalOrganization(this.organization);
         assert.strictEqual((await this.model.originalOrganizations).length, 1);
         assert.true(
-          (await this.model.originalOrganizations).includes(this.organization)
+          (await this.model.originalOrganizations).includes(this.organization),
         );
 
         await this.model.addOriginalOrganization(this.otherOrganization);
         assert.strictEqual((await this.model.originalOrganizations).length, 2);
         assert.true(
           (await this.model.originalOrganizations).includes(
-            this.otherOrganization
-          )
+            this.otherOrganization,
+          ),
         );
       });
 
@@ -300,13 +300,13 @@ module('Unit | Model | change event', function (hooks) {
         await this.model.addOriginalOrganization(this.organization);
         assert.strictEqual((await this.model.originalOrganizations).length, 1);
         assert.true(
-          (await this.model.originalOrganizations).includes(this.organization)
+          (await this.model.originalOrganizations).includes(this.organization),
         );
 
         await this.model.addOriginalOrganization(this.organization);
         assert.strictEqual((await this.model.originalOrganizations).length, 1);
         assert.true(
-          (await this.model.originalOrganizations).includes(this.organization)
+          (await this.model.originalOrganizations).includes(this.organization),
         );
       });
 
@@ -325,12 +325,12 @@ module('Unit | Model | change event', function (hooks) {
         await this.model.removeOriginalOrganization(this.organization);
         assert.strictEqual((await this.model.originalOrganizations).length, 1);
         assert.false(
-          (await this.model.originalOrganizations).includes(this.organization)
+          (await this.model.originalOrganizations).includes(this.organization),
         );
         assert.true(
           (await this.model.originalOrganizations).includes(
-            this.otherOrganization
-          )
+            this.otherOrganization,
+          ),
         );
       });
 
@@ -342,18 +342,20 @@ module('Unit | Model | change event', function (hooks) {
 
         assert.strictEqual((await this.model.originalOrganizations).length, 2);
         assert.false(
-          (await this.model.originalOrganizations).includes(removedOrganisation)
+          (await this.model.originalOrganizations).includes(
+            removedOrganisation,
+          ),
         );
 
         await this.model.removeOriginalOrganization(removedOrganisation);
         assert.strictEqual((await this.model.originalOrganizations).length, 2);
         assert.true(
-          (await this.model.originalOrganizations).includes(this.organization)
+          (await this.model.originalOrganizations).includes(this.organization),
         );
         assert.true(
           (await this.model.originalOrganizations).includes(
-            this.otherOrganization
-          )
+            this.otherOrganization,
+          ),
         );
       });
 
@@ -388,7 +390,7 @@ module('Unit | Model | change event', function (hooks) {
 
         assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.true(
-          (await this.model.resultingOrganizations).includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization),
         );
       });
 
@@ -396,13 +398,13 @@ module('Unit | Model | change event', function (hooks) {
         await this.model.addResultingOrganization(this.organization);
         assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.true(
-          (await this.model.resultingOrganizations).includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization),
         );
 
         await this.model.addResultingOrganization(this.organization);
         assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.true(
-          (await this.model.resultingOrganizations).includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization),
         );
       });
 
@@ -410,18 +412,18 @@ module('Unit | Model | change event', function (hooks) {
         await this.model.addResultingOrganization(this.organization);
         assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.true(
-          (await this.model.resultingOrganizations).includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization),
         );
 
         await this.model.addResultingOrganization(this.otherOrganization);
         assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.true(
           (await this.model.resultingOrganizations).includes(
-            this.otherOrganization
-          )
+            this.otherOrganization,
+          ),
         );
         assert.false(
-          (await this.model.resultingOrganizations).includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization),
         );
       });
 
@@ -439,7 +441,7 @@ module('Unit | Model | change event', function (hooks) {
         await this.model.removeResultingOrganization(this.organization);
         assert.strictEqual((await this.model.resultingOrganizations).length, 0);
         assert.false(
-          (await this.model.resultingOrganizations).includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization),
         );
       });
 
@@ -451,14 +453,14 @@ module('Unit | Model | change event', function (hooks) {
         assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.false(
           (await this.model.resultingOrganizations).includes(
-            removedOrganisation
-          )
+            removedOrganisation,
+          ),
         );
 
         await this.model.removeResultingOrganization(removedOrganisation);
         assert.strictEqual((await this.model.resultingOrganizations).length, 1);
         assert.true(
-          (await this.model.resultingOrganizations).includes(this.organization)
+          (await this.model.resultingOrganizations).includes(this.organization),
         );
       });
 

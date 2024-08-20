@@ -16,7 +16,7 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyIndexR
   async model(params) {
     let { organization, governingBodyClassification, governingBody } =
       this.modelFor(
-        'organizations.organization.governing-bodies.governing-body'
+        'organizations.organization.governing-bodies.governing-body',
       );
 
     let query = {

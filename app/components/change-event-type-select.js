@@ -30,17 +30,17 @@ export default class ChangeEventTypeSelectComponent extends Component {
     let classification = yield this.args.organizationClassification;
     if (classification.id == CLASSIFICATION.WORSHIP_SERVICE.id) {
       types = types.filter((t) =>
-        this.isIdInList(t.id, CHANGE_EVENTS_WORSHIP_SERVICE)
+        this.isIdInList(t.id, CHANGE_EVENTS_WORSHIP_SERVICE),
       );
     }
     if (classification.id == CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id) {
       types = types.filter((t) =>
-        this.isIdInList(t.id, CHANGE_EVENTS_CENTRAL_WORSHIP_SERVICE)
+        this.isIdInList(t.id, CHANGE_EVENTS_CENTRAL_WORSHIP_SERVICE),
       );
     }
     if (classification.id == CLASSIFICATION.MUNICIPALITY.id) {
       types = types.filter((t) =>
-        this.isIdInList(t.id, CHANGE_EVENTS_MUNICIPALITY)
+        this.isIdInList(t.id, CHANGE_EVENTS_MUNICIPALITY),
       );
     }
     if (classification.id == CLASSIFICATION.OCMW.id) {
@@ -48,7 +48,7 @@ export default class ChangeEventTypeSelectComponent extends Component {
     }
     if (classification.id == CLASSIFICATION.DISTRICT.id) {
       types = types.filter((t) =>
-        this.isIdInList(t.id, CHANGE_EVENTS_DISTRICT)
+        this.isIdInList(t.id, CHANGE_EVENTS_DISTRICT),
       );
     }
     if (
@@ -83,7 +83,7 @@ export default class ChangeEventTypeSelectComponent extends Component {
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id
     ) {
       types = types.filter((t) =>
-        this.isIdInList(t.id, CHANGE_EVENTS_OCMW_ASSOCIATION)
+        this.isIdInList(t.id, CHANGE_EVENTS_OCMW_ASSOCIATION),
       );
     }
     if (

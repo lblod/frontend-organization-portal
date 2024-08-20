@@ -40,7 +40,7 @@ export default class ClassificationSelectComponent extends Component {
 
     let allowedIds = getClassificationIdsForRole(
       this.currentSession.hasWorshipRole,
-      this.args.restrictForNewOrganizations
+      this.args.restrictForNewOrganizations,
     );
 
     let selectedRecognizedWorshipTypeId =
@@ -51,7 +51,7 @@ export default class ClassificationSelectComponent extends Component {
       this.#isIdInBlacklist(selectedRecognizedWorshipTypeId)
     ) {
       allowedIds = allowedIds.filter(
-        (id) => id === CLASSIFICATION.WORSHIP_SERVICE.id
+        (id) => id === CLASSIFICATION.WORSHIP_SERVICE.id,
       );
     }
 

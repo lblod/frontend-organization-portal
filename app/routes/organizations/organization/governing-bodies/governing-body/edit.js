@@ -16,7 +16,7 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyEditRo
   async model() {
     const { organization, governingBodyClassification, governingBody } =
       await this.modelFor(
-        'organizations.organization.governing-bodies.governing-body'
+        'organizations.organization.governing-bodies.governing-body',
       );
 
     return {

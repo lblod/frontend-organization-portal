@@ -21,7 +21,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
    */
   getRoleModel(roleLabel, roles) {
     return roles.find(
-      (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel
+      (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel,
     );
   }
 
@@ -41,7 +41,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
     organizationId,
     matchMemberRelation,
     params,
-    roleModel
+    roleModel,
   ) {
     return {
       [`filter[${matchMemberRelation ? 'member' : 'organization'}][:id:]`]:
@@ -65,12 +65,12 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
     // to the backend instead of doing these in the frontend.
 
     const { organization, roles } = this.modelFor(
-      'organizations.organization.related-organizations'
+      'organizations.organization.related-organizations',
     );
 
     const selectedRoleModel = this.getRoleModel(
       params.selectedRoleLabel,
-      roles
+      roles,
     );
 
     // If the user has not selected a role or selected the general "Has a
@@ -94,8 +94,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
           organization.id,
           true,
           params,
-          selectedRoleModel
-        )
+          selectedRoleModel,
+        ),
       );
     }
 
@@ -109,8 +109,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
           organization.id,
           false,
           params,
-          selectedRoleModel
-        )
+          selectedRoleModel,
+        ),
       );
     }
 

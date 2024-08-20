@@ -23,7 +23,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
 
   async model(params) {
     const { organization, roles } = this.modelFor(
-      'organizations.organization.related-organizations'
+      'organizations.organization.related-organizations',
     );
 
     let query = {

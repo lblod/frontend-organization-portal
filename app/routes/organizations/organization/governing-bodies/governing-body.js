@@ -13,7 +13,7 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyRoute 
       {
         reload: true,
         include: 'mandates.role-board,mandates.held-by.governing-alias',
-      }
+      },
     );
 
     const untimedGoverningBodiy = await governingBody.isTimeSpecializationOf;

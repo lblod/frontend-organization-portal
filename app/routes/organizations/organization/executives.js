@@ -14,7 +14,7 @@ export default class OrganizationsOrganizationExecutivesRoute extends Route {
 
     let organization = await this.store.findRecord(
       'organization',
-      organizationId
+      organizationId,
     );
 
     let functionaries = await this.store.query('functionary', {

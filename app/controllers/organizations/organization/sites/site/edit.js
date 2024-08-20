@@ -76,7 +76,7 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
 
       if (secondaryContact.hasDirtyAttributes) {
         secondaryContact.telephone = transformPhoneNumbers(
-          secondaryContact.telephone
+          secondaryContact.telephone,
         );
         if (secondaryContact.isNew) {
           (yield site.contacts).push(secondaryContact);
@@ -103,7 +103,7 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
 
         organization.primarySite = site;
         const oldSite = nonPrimarySites.find(
-          (nonPrimarySite) => nonPrimarySite.id === site.id
+          (nonPrimarySite) => nonPrimarySite.id === site.id,
         );
         const oldSiteIndex = nonPrimarySites.indexOf(oldSite);
         if (oldSiteIndex > -1) {
@@ -125,7 +125,7 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
 
       this.router.transitionTo(
         'organizations.organization.sites.site',
-        site.id
+        site.id,
       );
     }
   }

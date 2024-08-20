@@ -30,23 +30,23 @@ Router.map(function () {
         { path: '/contactgegevens' },
         function () {
           this.route('request-sensitive-data');
-        }
+        },
       );
       this.route('positions', { path: '/posities' }, function () {
         this.route(
           'mandatory',
           { path: '/mandataris/:mandatoryId/' },
-          function () {}
+          function () {},
         );
         this.route(
           'minister',
           { path: '/bedienaar/:ministerId/' },
-          function () {}
+          function () {},
         );
         this.route(
           'functionary',
           { path: '/functionaris/:functionaryId/' },
-          function () {}
+          function () {},
         );
       });
     });
@@ -71,7 +71,7 @@ Router.map(function () {
           { path: '/:governingBodyId/' },
           function () {
             this.route('edit');
-          }
+          },
         );
       });
 
@@ -84,7 +84,7 @@ Router.map(function () {
         { path: '/betrokken-lokale-besturen' },
         function () {
           this.route('edit');
-        }
+        },
       );
 
       this.route(
@@ -95,7 +95,7 @@ Router.map(function () {
             this.route('edit');
           });
           this.route('new', { path: '/nieuw' });
-        }
+        },
       );
 
       this.route(
@@ -103,7 +103,7 @@ Router.map(function () {
         { path: '/gerelateerde-organisaties' },
         function () {
           this.route('edit');
-        }
+        },
       );
     });
     this.route('new', { path: '/nieuwe-organisatie' });
@@ -135,6 +135,6 @@ Router.map(function () {
     function () {
       this.route('index', { path: '/' });
       this.route('wildcard', { path: '/*path' });
-    }
+    },
   );
 });

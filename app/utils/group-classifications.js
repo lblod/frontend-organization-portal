@@ -20,7 +20,7 @@ export function convertClassificationToGroups(codes) {
     createGroup(
       'Bestuurseenheden',
       ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
-      codes
+      codes,
     ),
     createGroup('Verenigingen', ORGANIZATION_TYPES.ASSOCIATION, codes),
     createGroup('Vennootschappen', ORGANIZATION_TYPES.CORPORATION, codes),
@@ -42,7 +42,7 @@ function createGroup(name, filter, codes) {
       Object.values(CLASSIFICATION)
         .filter((cl) => cl.organizationType === filter)
         .map((cl) => cl.id)
-        .includes(code.id)
+        .includes(code.id),
     ),
   };
 }

@@ -27,7 +27,7 @@ export default class PeoplePersonPersonalInformationRequestSensitiveDataControll
     await this.sensitivePersonalInformation.getInformation(
       person,
       this.reasonCode,
-      organizationPersonType
+      organizationPersonType,
     );
     this.router.refresh();
     this.router.transitionTo(`${this.redirectUrl}`);

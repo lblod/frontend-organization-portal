@@ -15,7 +15,7 @@ export default class ParamsForHelper extends Helper {
     if (paramName) {
       assert(
         `The "${routeName}" route doesn't have a "${paramName}" param`,
-        Boolean(routeParams[paramName])
+        Boolean(routeParams[paramName]),
       );
 
       return routeParams ? routeParams[paramName] : null;
@@ -31,7 +31,7 @@ export default class ParamsForHelper extends Helper {
 
     assert(
       `The "${routeName}" route doesn't exist or isn't currently active`,
-      Boolean(routeInfo) || this.routeParamsCache
+      Boolean(routeInfo) || this.routeParamsCache,
     );
 
     if (routeInfo) {

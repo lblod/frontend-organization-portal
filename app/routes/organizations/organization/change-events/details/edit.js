@@ -17,7 +17,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditRoute exten
 
   async model() {
     let { changeEvent, organization, ...detailsPageModel } = this.modelFor(
-      'organizations.organization.change-events.details'
+      'organizations.organization.change-events.details',
     );
 
     let changeEventType = await changeEvent.type;

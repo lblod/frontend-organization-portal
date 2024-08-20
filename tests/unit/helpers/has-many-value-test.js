@@ -15,7 +15,7 @@ module('Unit | Helper | hasManyValue', function (hooks) {
           inverse: null,
         })
         bars;
-      }
+      },
     );
 
     this.owner.register('model:bar', class Bar extends Model {});
@@ -38,7 +38,7 @@ module('Unit | Helper | hasManyValue', function (hooks) {
           inverse: null,
         })
         bars;
-      }
+      },
     );
 
     this.owner.register('model:bar', class Bar extends Model {});
@@ -82,7 +82,7 @@ module('Unit | Helper | hasManyValue', function (hooks) {
           inverse: null,
         })
         bars;
-      }
+      },
     );
 
     this.owner.register('model:bar', class Bar extends Model {});

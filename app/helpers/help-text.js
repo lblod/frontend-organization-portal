@@ -19,7 +19,7 @@ const HELP_TEXT = {
 export default helper(function helpText([key]) {
   assert(
     `{{help-text}}: No help text value found for "${key}"`,
-    Boolean(HELP_TEXT[key])
+    Boolean(HELP_TEXT[key]),
   );
   return HELP_TEXT[key];
 });

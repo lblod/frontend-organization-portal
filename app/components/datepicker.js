@@ -47,7 +47,7 @@ export default class DatepickerComponent extends Component {
       }
 
       date = new Date(
-        `${dt.substring(4, 8)}-${dt.substring(2, 4)}-${dt.substring(0, 2)}`
+        `${dt.substring(4, 8)}-${dt.substring(2, 4)}-${dt.substring(0, 2)}`,
       );
     }
 

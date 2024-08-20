@@ -237,7 +237,7 @@ module('Unit | Model | governing body', function (hooks) {
 
         const otherBodiesStub = sinon.stub(
           model,
-          'getOtherTimedGoverningBodies'
+          'getOtherTimedGoverningBodies',
         );
         otherBodiesStub.resolves([otherModel]);
 
@@ -467,12 +467,12 @@ module('Unit | Model | governing body', function (hooks) {
     test('it returns an empty array when there are no other timed governing bodies', async function (assert) {
       const administrativeUnit = this.store().createRecord(
         'administrative-unit',
-        { id: '1234' }
+        { id: '1234' },
       );
 
       const classificationCode = this.store().createRecord(
         'governing-body-classification-code',
-        { id: '5ab0e9b8a3b2ca7c5e000005' }
+        { id: '5ab0e9b8a3b2ca7c5e000005' },
       );
       const untimedBody = this.store().createRecord('governing-body', {
         classification: classificationCode,
@@ -503,7 +503,7 @@ module('Unit | Model | governing body', function (hooks) {
     test('it returns an empty array when the model is not a time specialisation of another governing body', async function (assert) {
       const administrativeUnit = this.store().createRecord(
         'administrative-unit',
-        { id: '1234' }
+        { id: '1234' },
       );
 
       const model = this.store().createRecord('governing-body', {
@@ -528,7 +528,7 @@ module('Unit | Model | governing body', function (hooks) {
 
     test('it returns an empty array when the related administrative unit has no identifier', async function (assert) {
       const administrativeUnit = this.store().createRecord(
-        'administrative-unit'
+        'administrative-unit',
       );
 
       const untimedBody = this.store().createRecord('governing-body', {
@@ -547,12 +547,12 @@ module('Unit | Model | governing body', function (hooks) {
     test('it returns an array containing the other timed governing bodies when there is one of the same classification', async function (assert) {
       const administrativeUnit = this.store().createRecord(
         'administrative-unit',
-        { id: '1234' }
+        { id: '1234' },
       );
 
       const classificationCode = this.store().createRecord(
         'governing-body-classification-code',
-        { id: '5ab0e9b8a3b2ca7c5e000005' }
+        { id: '5ab0e9b8a3b2ca7c5e000005' },
       );
       const untimedBody = this.store().createRecord('governing-body', {
         classification: classificationCode,
@@ -569,7 +569,7 @@ module('Unit | Model | governing body', function (hooks) {
       });
       (await untimedBody.hasTimeSpecializations).push(
         timedBodyOne,
-        timedBodyTwo
+        timedBodyTwo,
       );
 
       const queryStub = sinon.stub(this.owner.lookup('service:store'), 'query');
@@ -585,12 +585,12 @@ module('Unit | Model | governing body', function (hooks) {
     test('it returns an array containing a governing body with a different classification', async function (assert) {
       const administrativeUnit = this.store().createRecord(
         'administrative-unit',
-        { id: '1234' }
+        { id: '1234' },
       );
 
       const classificationCode = this.store().createRecord(
         'governing-body-classification-code',
-        { id: 'model' }
+        { id: 'model' },
       );
       const untimedBody = this.store().createRecord('governing-body', {
         classification: classificationCode,
@@ -604,7 +604,7 @@ module('Unit | Model | governing body', function (hooks) {
 
       const classificationCodeOther = this.store().createRecord(
         'governing-body-classification-code',
-        { id: 'other' }
+        { id: 'other' },
       );
       const untimedBodyOther = this.store().createRecord('governing-body', {
         classification: classificationCodeOther,
@@ -629,12 +629,12 @@ module('Unit | Model | governing body', function (hooks) {
     test('it returns an empty array when all other governing bodies are executive organs', async function (assert) {
       const administrativeUnit = this.store().createRecord(
         'administrative-unit',
-        { id: '1234' }
+        { id: '1234' },
       );
 
       const classificationCode = this.store().createRecord(
         'governing-body-classification-code',
-        { id: 'model' }
+        { id: 'model' },
       );
       const untimedBody = this.store().createRecord('governing-body', {
         classification: classificationCode,
@@ -648,7 +648,7 @@ module('Unit | Model | governing body', function (hooks) {
 
       const classificationCodeOther = this.store().createRecord(
         'governing-body-classification-code',
-        { id: EXECUTIVE_ORGANEN[0] }
+        { id: EXECUTIVE_ORGANEN[0] },
       );
       const untimedBodyOther = this.store().createRecord('governing-body', {
         classification: classificationCodeOther,
@@ -672,12 +672,12 @@ module('Unit | Model | governing body', function (hooks) {
     test('it returns all other timed governing bodies that are not executive organs', async function (assert) {
       const administrativeUnit = this.store().createRecord(
         'administrative-unit',
-        { id: '1234' }
+        { id: '1234' },
       );
 
       const classificationCode = this.store().createRecord(
         'governing-body-classification-code',
-        { id: 'model' }
+        { id: 'model' },
       );
       const untimedBody = this.store().createRecord('governing-body', {
         classification: classificationCode,
@@ -691,7 +691,7 @@ module('Unit | Model | governing body', function (hooks) {
 
       const classificationCodeOther = this.store().createRecord(
         'governing-body-classification-code',
-        { id: 'other' }
+        { id: 'other' },
       );
       const untimedBodyOther = this.store().createRecord('governing-body', {
         classification: classificationCodeOther,
@@ -707,12 +707,12 @@ module('Unit | Model | governing body', function (hooks) {
       });
       (await untimedBodyOther.hasTimeSpecializations).push(
         timedBodyOther,
-        timedBodyOtherTwo
+        timedBodyOtherTwo,
       );
 
       const classificationCodeExec = this.store().createRecord(
         'governing-body-classification-code',
-        { id: EXECUTIVE_ORGANEN[0] }
+        { id: EXECUTIVE_ORGANEN[0] },
       );
       const untimedBodyExec = this.store().createRecord('governing-body', {
         classification: classificationCodeExec,

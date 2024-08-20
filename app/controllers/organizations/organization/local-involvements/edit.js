@@ -84,7 +84,7 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
     let involvements = yield this.model.involvements;
 
     let validationPromises = involvements.map((involvement) =>
-      involvement.validate()
+      involvement.validate(),
     );
     yield Promise.all(validationPromises);
 
@@ -101,7 +101,7 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
 
       this.router.transitionTo(
         'organizations.organization.local-involvements',
-        this.model.organization.id
+        this.model.organization.id,
       );
     }
   }

@@ -50,7 +50,7 @@ module('Unit | Model | registered organization', function (hooks) {
       test(`it should return an extra error when there are no memberships when creating a  new ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'registered-organization-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('registered-organization', {
           classification,
@@ -76,7 +76,7 @@ module('Unit | Model | registered organization', function (hooks) {
       test(`it should return an extra error when memberships is an empty when creating a new ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'registered-organization-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('registered-organization', {
           classification,
@@ -103,7 +103,7 @@ module('Unit | Model | registered organization', function (hooks) {
       test(`it should not return an extra error when there are memberships when creating a new ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'registered-organization-classification-code',
-          cl
+          cl,
         );
         const membership = this.store().createRecord('membership');
         const model = this.store().createRecord('registered-organization', {
@@ -130,7 +130,7 @@ module('Unit | Model | registered organization', function (hooks) {
       test(`it should not return an extra error for missing memberships when editing an existing ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'registered-organization-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('registered-organization', {
           classification,
@@ -155,7 +155,7 @@ module('Unit | Model | registered organization', function (hooks) {
       test(`it should not return an extra error memberships is an empty array when editing an existing ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'registered-organization-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('registered-organization', {
           classification,
@@ -181,7 +181,7 @@ module('Unit | Model | registered organization', function (hooks) {
       test(`it should not return an extra error for editing an existing ${cl.label} that has a membership`, async function (assert) {
         const classification = this.store().createRecord(
           'registered-organization-classification-code',
-          cl
+          cl,
         );
         const membership = this.store().createRecord('membership');
         const model = this.store().createRecord('registered-organization', {

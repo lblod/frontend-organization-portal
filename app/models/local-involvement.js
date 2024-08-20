@@ -35,10 +35,10 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
   get validationSchema() {
     return Joi.object({
       administrativeUnit: validateBelongsToRequired(
-        'Selecteer een lokaal bestuur'
+        'Selecteer een lokaal bestuur',
       ),
       involvementType: validateBelongsToRequired(
-        'Selecteer een type betrokkenheid'
+        'Selecteer een type betrokkenheid',
       ).external(async (value, helpers) => {
         const administrativeUnit = await this.administrativeUnit;
         if (
@@ -46,7 +46,7 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
           value.id === INVOLVEMENT_TYPE.ADVISORY
         ) {
           return helpers.message(
-            'Adviserend is geen geldige keuze voor een provincie'
+            'Adviserend is geen geldige keuze voor een provincie',
           );
         }
 
@@ -56,13 +56,13 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
         // Is there already a supervisory local involvement?
         if (this.isSupervisory && existsOtherSupervisory) {
           return helpers.message(
-            'Er kan slechts één gemeente- of provincieoverheid optreden als hoofdtoezichthouder'
+            'Er kan slechts één gemeente- of provincieoverheid optreden als hoofdtoezichthouder',
           );
         }
         // Is there at least one supervisory local involvement?
         if (!(this.isSupervisory || existsOtherSupervisory)) {
           return helpers.message(
-            'U dient een toezichthoudende overheid aan te duiden'
+            'U dient een toezichthoudende overheid aan te duiden',
           );
         }
 
@@ -71,7 +71,7 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
       percentage: Joi.when('involvementType.id', {
         is: Joi.exist().valid(
           INVOLVEMENT_TYPE.SUPERVISORY,
-          INVOLVEMENT_TYPE.MID_FINANCIAL
+          INVOLVEMENT_TYPE.MID_FINANCIAL,
         ),
         then: Joi.number()
           .min(1)
@@ -83,7 +83,7 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
             const sumOtherPercentages = otherLocalInvolvements.reduce(
               (percentageAcc, involvement) =>
                 percentageAcc + Number(involvement.percentage),
-              0
+              0,
             );
 
             if (
@@ -91,7 +91,7 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
               sumOtherPercentages + Number(value) !== 100
             ) {
               return helpers.message(
-                'Het totaal van alle percentages moet gelijk zijn aan 100'
+                'Het totaal van alle percentages moet gelijk zijn aan 100',
               );
             }
 
@@ -133,7 +133,7 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
    */
   async existsOtherSupervisoryLocalInvolvement() {
     return (await this.getOtherLocalInvolvements()).some(
-      (elem) => elem.isSupervisory
+      (elem) => elem.isSupervisory,
     );
   }
 

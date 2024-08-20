@@ -16,7 +16,7 @@ export default class PeoplePersonPositionsFunctionaryRoute extends Route {
           'board-position.governing-bodies.is-time-specialization-of.classification',
           'board-position.governing-bodies.is-time-specialization-of.administrative-unit',
         ].join(),
-      }
+      },
     );
 
     return {
