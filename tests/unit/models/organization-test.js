@@ -106,7 +106,7 @@ module('Unit | Model | organization', function (hooks) {
 
     test('it should return the KBO organization name when no legal name is set', async function (assert) {
       const kboOrganizationModel = this.store().createRecord(
-        'kboOrganization',
+        'kbo-organization',
         {
           name: 'kbo organization',
         },
@@ -119,7 +119,8 @@ module('Unit | Model | organization', function (hooks) {
     });
 
     test('it should return the name when no legal name is set and KBO organization has no name', async function (assert) {
-      const kboOrganizationModel = this.store().createRecord('kboOrganization');
+      const kboOrganizationModel =
+        this.store().createRecord('kbo-organization');
       const model = this.store().createRecord('organization', {
         kboOrganization: kboOrganizationModel,
         name: 'some name',
@@ -130,7 +131,7 @@ module('Unit | Model | organization', function (hooks) {
 
     test('it should return the legal name even if a KBO organization and name are set', async function (assert) {
       const kboOrganizationModel = this.store().createRecord(
-        'kboOrganization',
+        'kbo-organization',
         {
           name: 'kbo organization',
         },

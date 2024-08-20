@@ -37,7 +37,7 @@ export const MEMBERSHIP_ROLES_MAPPING = {
 };
 
 export default class MembershipRoleModel extends Model {
-  @attr('string') label;
+  @attr label;
 
   @belongsTo('concept', {
     async: true,

@@ -1,5 +1,3 @@
-import Inflector from 'ember-inflector';
+import { irregular } from '@ember-data/request-utils/string';
 
-const inflector = Inflector.inflector;
-
-inflector.irregular('date-of-birth', 'dates-of-birth');
+irregular('date-of-birth', 'dates-of-birth');

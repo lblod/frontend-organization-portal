@@ -42,7 +42,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditRoute exten
       }
 
       if (!decisionActivity) {
-        decisionActivity = this.store.createRecord('decisionActivity');
+        decisionActivity = this.store.createRecord('decision-activity');
       }
 
       model.decision = decision;

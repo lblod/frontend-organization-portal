@@ -19,7 +19,7 @@ export default class RepresentativeBodyModel extends OrganizationModel {
   })
   recognizedWorshipType;
 
-  @hasMany('minister-positions', {
+  @hasMany('minister-position', {
     inverse: 'representativeBody',
     async: true,
   })
