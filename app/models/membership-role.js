@@ -40,11 +40,13 @@ export default class MembershipRoleModel extends Model {
   @attr('string') label;
 
   @belongsTo('concept', {
+    async: true,
     inverse: null,
   })
   topConceptOf;
 
   @belongsTo('membership-role', {
+    async: true,
     inverse: null,
   })
   hasBroaderRole;

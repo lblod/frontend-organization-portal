@@ -161,11 +161,13 @@ class BasicValidationModel extends AbstractValidationModel {
 class BelongsToValidationModel extends AbstractValidationModel {
   @belongsTo('test-validation-model', {
     inverse: null,
+    async: true,
   })
   oneRequired;
 
   @belongsTo('test-validation-model', {
     inverse: null,
+    async: true,
   })
   oneOptional;
 
@@ -180,11 +182,13 @@ class BelongsToValidationModel extends AbstractValidationModel {
 class HasManyValidationModel extends AbstractValidationModel {
   @hasMany('test-validation-model', {
     inverse: null,
+    async: true,
   })
   manyRequired;
 
   @hasMany('test-validation-model', {
     inverse: null,
+    async: true,
   })
   manyOptional;
 

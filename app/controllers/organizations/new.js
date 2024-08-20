@@ -268,8 +268,9 @@ export default class OrganizationsNewController extends Controller {
     newOrganizationModel.legalName = this.currentOrganizationModel.legalName;
     newOrganizationModel.alternativeName =
       this.currentOrganizationModel.alternativeName;
-    newOrganizationModel.organizationStatus =
-      this.currentOrganizationModel.organizationStatus;
+    newOrganizationModel.organizationStatus = this.currentOrganizationModel
+      .belongsTo('organizationStatus')
+      .value();
 
     if (newOrganizationModel.isWorshipAdministrativeUnit) {
       newOrganizationModel.recognizedWorshipType =
@@ -285,7 +286,9 @@ export default class OrganizationsNewController extends Controller {
       newOrganizationModel.isAdministrativeUnit &&
       this.currentOrganizationModel.scope
     ) {
-      newOrganizationModel.scope = this.currentOrganizationModel.scope;
+      newOrganizationModel.scope = this.currentOrganizationModel
+        .belongsTo('scope')
+        .value();
       if (this.currentOrganizationModel.scope.locatedWithin) {
         newOrganizationModel.scope.locatedWithin =
           this.currentOrganizationModel.scope.locatedWithin;
@@ -515,16 +518,13 @@ export default class OrganizationsNewController extends Controller {
 
       yield this.currentOrganizationModel.save();
 
-      let membershipSavePromises =
-        this.currentOrganizationModel.memberships.map((membership) =>
-          membership.save()
-        );
+      let membershipSavePromises = this.memberships.map((membership) =>
+        membership.save()
+      );
       yield Promise.all(membershipSavePromises);
 
       let membershipsOfOrganizationsSavePromises =
-        this.currentOrganizationModel.membershipsOfOrganizations.map(
-          (membership) => membership.save()
-        );
+        this.membershipsOfOrganizations.map((membership) => membership.save());
       yield Promise.all(membershipsOfOrganizationsSavePromises);
 
       const createRelationshipsEndpoint = `/construct-organization-relationships/${this.currentOrganizationModel.id}`;
