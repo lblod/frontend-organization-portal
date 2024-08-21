@@ -21,6 +21,7 @@ import {
   WorshipServiceCodeList,
   PevaMunicipalityCodeList,
   PevaProvinceCodeList,
+  VlaamseGemeenschapscommissieCodeList,
 } from '../constants/Classification';
 import { CLASSIFICATION } from './administrative-unit-classification-code';
 
@@ -178,6 +179,10 @@ export default class AdministrativeUnitModel extends OrganizationModel {
 
   get isPevaProvince() {
     return this._hasClassificationId(PevaProvinceCodeList);
+  }
+
+  get isVlaamseGemeenschapscommissie() {
+    return this._hasClassificationId(VlaamseGemeenschapscommissieCodeList);
   }
 
   get isAdministrativeUnit() {

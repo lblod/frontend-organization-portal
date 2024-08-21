@@ -50,3 +50,7 @@ export const PevaProvinceCodeList = [CLASSIFICATION.PEVA_PROVINCE.id];
 
 export const AssociationOtherCodeList = [CLASSIFICATION.ASSOCIATION_OTHER.id];
 export const CorporationOtherCodeList = [CLASSIFICATION.CORPORATION_OTHER.id];
+
+export const VlaamseGemeenschapscommissieCodeList = [
+  CLASSIFICATION.VLAAMSE_GEMEENSCHAPSCOMMISSIE.id,
+];

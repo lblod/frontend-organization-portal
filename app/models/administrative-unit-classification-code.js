@@ -128,6 +128,11 @@ export const CLASSIFICATION = {
     label: 'PEVA provincie',
     organizationType: ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
   },
+  VLAAMSE_GEMEENSCHAPSCOMMISSIE: {
+    id: 'd90c511e-f827-488c-84ba-432c8f69561c',
+    label: 'Vlaamse gemeenschapscommissie',
+    organizationType: ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
+  },
 };
 
 export default class AdministrativeUnitClassificationCodeModel extends OrganizationClassificationCodeModel {}
