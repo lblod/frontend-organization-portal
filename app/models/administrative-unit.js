@@ -273,7 +273,8 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       this.isOcmwAssociation ||
       this.isPevaMunicipality ||
       this.isPevaProvince ||
-      this.isRepresentativeBody
+      this.isRepresentativeBody ||
+      this.isVlaamseGemeenschapscommissie
     );
   }
 
@@ -285,7 +286,8 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       this.isAssistanceZone ||
       this.isPevaMunicipality ||
       this.isPevaProvince ||
-      this.isRepresentativeBody
+      this.isRepresentativeBody ||
+      this.isVlaamseGemeenschapscommissie
     );
   }
 }
