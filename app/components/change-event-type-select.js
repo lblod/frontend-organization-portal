@@ -25,7 +25,7 @@ export default class ChangeEventTypeSelectComponent extends Component {
   }
 
   @task *loadChangeEventTypesTask() {
-    let types = yield this.store.findAll('change-event-type');
+    let types = yield this.store.findAll('change-event-type', { reload: true });
 
     let classification = yield this.args.organizationClassification;
     if (classification.id == CLASSIFICATION.WORSHIP_SERVICE.id) {
