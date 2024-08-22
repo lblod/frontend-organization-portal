@@ -12,9 +12,11 @@
       {{! TODO: place next to each other }}
       <div class="au-o-box">
         <AuToggleSwitch
-          @label="Verberg niet actieve organisaties"
           @checked={{@organizationStatus}}
-        />
+          @onChange={{fn @onOrganizationStatusChange (not @organizationStatus)}}
+        >
+          Verberg niet actieve organisaties
+        </AuToggleSwitch>
 
         <MembershipRoleSelect
           @options={{@model.roles}}

@@ -86,8 +86,8 @@
           <td>
             <AuInput
               @width="block"
-              @value={{involvement.administrativeUnit.classification.label}}
               @disabled={{true}}
+              value={{involvement.administrativeUnit.classification.label}}
               aria-labelledby="classification"
             />
           </td>
@@ -116,8 +116,8 @@
                 {{else}}
                   <AuInput
                     @width="block"
-                    @value={{involvement.involvementType.label}}
                     @disabled={{true}}
+                    value={{involvement.involvementType.label}}
                     aria-labelledby="involvement-type"
                   />
                 {{/if}}
@@ -133,10 +133,10 @@
                 <AuInput
                   @disabled={{this.isDisabledPercentage involvement}}
                   @error={{errorMessage}}
-                  @type="number"
+                  type="number"
                   step="any"
                   aria-labelledby="financial-percentage"
-                  @value={{involvement.percentage}}
+                  value={{involvement.percentage}}
                   {{on "input" (fn this.handlePercentageChange involvement)}}
                 />
                 {{#if errorMessage}}

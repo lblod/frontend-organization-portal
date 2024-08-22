@@ -133,8 +133,9 @@ export default class OrganizationsNewController extends Controller {
   }
 
   @action
-  setKbo(value) {
-    this.model.structuredIdentifierKBO.localId = value;
+  setKbo(event) {
+    this.model.structuredIdentifierKBO.localId =
+      event.target.inputmask.unmaskedvalue();
   }
 
   @action

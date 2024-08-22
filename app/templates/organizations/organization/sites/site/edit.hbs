@@ -76,28 +76,16 @@
                 <Item @errorMessage={{this.isNoPrimarySiteErrorMessage}}>
                   <:label>Primair correspondentieadres</:label>
                   <:content>
-                    <ul class="au-c-list-inline">
-                      <li class="au-c-list-inline__item">
-                        <AuControlRadio
-                          @label="Ja"
-                          @name="is-primary-site"
-                          @value={{this.isPrimarySite}}
-                          @identifier="primary-site-true"
-                          @onChange={{this.updateIsPrimarySite true}}
-                          checked={{this.isPrimarySite}}
-                        />
-                      </li>
-                      <li class="au-c-list-inline__item">
-                        <AuControlRadio
-                          @label="Nee"
-                          @name="is-primary-site"
-                          @value={{this.isPrimarySite}}
-                          @identifier="primary-site-false"
-                          @onChange={{this.updateIsPrimarySite false}}
-                          checked={{not this.isPrimarySite}}
-                        />
-                      </li>
-                    </ul>
+                    <AuRadioGroup
+                      @alignment="inline"
+                      @name="is-primary-site"
+                      @selected={{this.isPrimarySite}}
+                      @onChange={{this.updateIsPrimarySite}}
+                      as |Group|
+                    >
+                      <Group.Radio @value={{true}}>Ja</Group.Radio>
+                      <Group.Radio @value={{false}}>Nee</Group.Radio>
+                    </AuRadioGroup>
                   </:content>
                 </Item>
               </:right>
