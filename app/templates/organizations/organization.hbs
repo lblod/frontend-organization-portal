@@ -60,13 +60,15 @@
             </AuNavigationLink>
           </li>
         {{/unless}}
-        <li class="au-c-list-navigation__item">
-          <AuNavigationLink
-            @route="organizations.organization.related-organizations"
-          >
-            Gerelateerde organisaties
-          </AuNavigationLink>
-        </li>
+        {{#unless @model.isVlaamseGemeenschapscommissie}}
+          <li class="au-c-list-navigation__item">
+            <AuNavigationLink
+              @route="organizations.organization.related-organizations"
+            >
+              Gerelateerde organisaties
+            </AuNavigationLink>
+          </li>
+        {{/unless}}
       </ul>
     </div>
   </:sidebar>
