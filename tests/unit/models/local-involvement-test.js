@@ -102,6 +102,150 @@ module('Unit | Model | local involvement', function (hooks) {
       });
     });
 
+    test('it does not return an error when the percentage is 100', async function (assert) {
+      const administrativeUnit = this.store().createRecord(
+        'administrative-unit'
+      );
+      const involvementType = this.store().createRecord('involvement-type', {
+        id: INVOLVEMENT_TYPE.SUPERVISORY,
+      });
+      const model = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        involvementType,
+        percentage: 100,
+      });
+
+      const getOtherLocalInvolvementsStub = sinon.stub(
+        model,
+        'getOtherLocalInvolvements'
+      );
+      getOtherLocalInvolvementsStub.resolves([]);
+
+      const isValid = await model.validate();
+
+      assert.true(isValid);
+    });
+
+    test('it does not return an error when the sum of percentages is 100', async function (assert) {
+      const administrativeUnit = this.store().createRecord(
+        'administrative-unit'
+      );
+      const involvementType = this.store().createRecord('involvement-type', {
+        id: INVOLVEMENT_TYPE.SUPERVISORY,
+      });
+      const model = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        involvementType,
+        percentage: 50,
+      });
+
+      const midFinancialInvolvementType = this.store().createRecord(
+        'involvement-type',
+        {
+          id: INVOLVEMENT_TYPE.MID_FINANCIAL,
+        }
+      );
+      const otherModel = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        midFinancialInvolvementType,
+        percentage: 50,
+      });
+
+      const getOtherLocalInvolvementsStub = sinon.stub(
+        model,
+        'getOtherLocalInvolvements'
+      );
+      getOtherLocalInvolvementsStub.resolves([otherModel]);
+
+      const isValid = await model.validate();
+
+      assert.true(isValid);
+    });
+
+    test('it does return an error when the sum of percentages is above 100', async function (assert) {
+      const administrativeUnit = this.store().createRecord(
+        'administrative-unit'
+      );
+      const involvementType = this.store().createRecord('involvement-type', {
+        id: INVOLVEMENT_TYPE.SUPERVISORY,
+      });
+      const model = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        involvementType,
+        percentage: 50,
+      });
+
+      const midFinancialInvolvementType = this.store().createRecord(
+        'involvement-type',
+        {
+          id: INVOLVEMENT_TYPE.MID_FINANCIAL,
+        }
+      );
+      const otherModel = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        midFinancialInvolvementType,
+        percentage: 70,
+      });
+
+      const getOtherLocalInvolvementsStub = sinon.stub(
+        model,
+        'getOtherLocalInvolvements'
+      );
+      getOtherLocalInvolvementsStub.resolves([otherModel]);
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.propContains(model.error, {
+        percentage: {
+          message: 'Het totaal van alle percentages moet gelijk zijn aan 100',
+        },
+      });
+    });
+
+    test('it does return an error when the sum of percentages is below 100', async function (assert) {
+      const administrativeUnit = this.store().createRecord(
+        'administrative-unit'
+      );
+      const involvementType = this.store().createRecord('involvement-type', {
+        id: INVOLVEMENT_TYPE.SUPERVISORY,
+      });
+      const model = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        involvementType,
+        percentage: 10,
+      });
+
+      const midFinancialInvolvementType = this.store().createRecord(
+        'involvement-type',
+        {
+          id: INVOLVEMENT_TYPE.MID_FINANCIAL,
+        }
+      );
+      const otherModel = this.store().createRecord('local-involvement', {
+        administrativeUnit,
+        midFinancialInvolvementType,
+        percentage: 20,
+      });
+
+      const getOtherLocalInvolvementsStub = sinon.stub(
+        model,
+        'getOtherLocalInvolvements'
+      );
+      getOtherLocalInvolvementsStub.resolves([otherModel]);
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.propContains(model.error, {
+        percentage: {
+          message: 'Het totaal van alle percentages moet gelijk zijn aan 100',
+        },
+      });
+    });
+
     module('existsOtherSupervisoryLocalInvolvement', function () {
       test('it returns true when there is another SUPERVISORY local involvement', async function (assert) {
         const administrativeUnit = this.store().createRecord(
