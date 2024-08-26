@@ -12,6 +12,7 @@ import {
   CHANGE_EVENTS_PZ_HPZ,
   CHANGE_EVENTS_OCMW_ASSOCIATION,
   CHANGE_EVENTS_PEVA,
+  CHANGE_EVENTS_VLAAMSE_GEMEENSCHAPSCOMMISSIE,
 } from 'frontend-organization-portal/models/change-event-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
@@ -28,6 +29,7 @@ export default class ChangeEventTypeSelectComponent extends Component {
     let types = yield this.store.findAll('change-event-type');
 
     let classification = yield this.args.organizationClassification;
+
     if (classification.id == CLASSIFICATION.WORSHIP_SERVICE.id) {
       types = types.filter((t) =>
         this.isIdInList(t.id, CHANGE_EVENTS_WORSHIP_SERVICE)
@@ -91,6 +93,11 @@ export default class ChangeEventTypeSelectComponent extends Component {
       classification.id == CLASSIFICATION.PEVA_PROVINCE.id
     ) {
       types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_PEVA));
+    }
+    if (classification.id === CLASSIFICATION.VLAAMSE_GEMEENSCHAPSCOMMISSIE.id) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_VLAAMSE_GEMEENSCHAPSCOMMISSIE)
+      );
     }
 
     return types;
