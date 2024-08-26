@@ -1,24 +1,4 @@
-
-
-
-
-
-
-
-
-
-
-
-
 ## v1.27.0-0 (2024-08-26)
-
-#### :rocket: Enhancement
-* [#640](https://github.com/lblod/frontend-organization-portal/pull/640) feat: add Vlaamse Gemeenschapscommissie as organisation ([@mirdono](https://github.com/mirdono))
-
-#### Committers: 1
-- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
-
-## v1.27.0 (2024-08-26)
 
 #### :rocket: Enhancement
 * [#640](https://github.com/lblod/frontend-organization-portal/pull/640) feat: add Vlaamse Gemeenschapscommissie as organisation ([@mirdono](https://github.com/mirdono))
