@@ -20,7 +20,7 @@ export default class OrganizationsNewRoute extends Route {
     }
   }
 
-  model() {
+  async model() {
     const structuredIdentifierKBO = this.store.createRecord(
       'structured-identifier'
     );
@@ -39,7 +39,7 @@ export default class OrganizationsNewRoute extends Route {
       structuredIdentifier: structuredIdentifierSharepoint,
     });
 
-    let roles = this.store.query('membership-role', {
+    let roles = await this.store.query('membership-role', {
       'filter[:id:]': [
         MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
         MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,

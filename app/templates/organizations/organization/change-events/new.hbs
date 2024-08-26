@@ -304,7 +304,7 @@
                     {{else}}
                       <div class={{if hasError "ember-power-select--error"}}>
                         <PowerSelect
-                          @options={{@model.changeEvent.originalOrganizations}}
+                          @options={{has-many-value @model.changeEvent "originalOrganizations"}}
                           @selected={{this.selectedResultingOrganization}}
                           @onChange={{this.updateResultingOrganizations}}
                           as |organization|

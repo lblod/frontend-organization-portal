@@ -51,26 +51,28 @@ export default class OrganizationsOrganizationCoreDataIndexController extends Co
     return identifier?.idName === ID_NAME.OVO;
   }
 
+  get organizationIdentifiers() {
+    return this.model.organization.hasMany('identifiers').value();
+  }
+
   get sharepointIdentifier() {
-    return this.model.organization.identifiers.find((id) =>
+    return this.organizationIdentifiers.find((id) =>
       this.isSharePointIdentifier(id)
     );
   }
 
   get kboIdentifier() {
-    return this.model.organization.identifiers.find((id) =>
-      this.isKboIdentifier(id)
-    );
+    return this.organizationIdentifiers.find((id) => this.isKboIdentifier(id));
   }
 
   get nisIdentifier() {
-    return this.model.organization.identifiers.find((id) =>
+    return this.organizationIdentifiers.find((id) =>
       this.isNisCodeIdentifier(id)
     );
   }
 
   get ovoIdentifier() {
-    return this.model.organization.identifiers.find((id) =>
+    return this.organizationIdentifiers.find((id) =>
       this.isOvoCodeIdentifier(id)
     );
   }

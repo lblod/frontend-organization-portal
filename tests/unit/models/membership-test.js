@@ -68,8 +68,8 @@ module('Unit | Model | membership', function (hooks) {
             role: relationRole,
           });
 
-          organization.memberships.pushObject(participant);
-          organization.memberships.pushObject(model);
+          (await organization.memberships).push(participant);
+          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -109,7 +109,7 @@ module('Unit | Model | membership', function (hooks) {
             role: role,
           });
 
-          organization.memberships.pushObject(model);
+          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -151,7 +151,7 @@ module('Unit | Model | membership', function (hooks) {
             role: role,
           });
 
-          organization.memberships.pushObject(model);
+          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -186,7 +186,7 @@ module('Unit | Model | membership', function (hooks) {
             role: role,
           });
 
-          organization.memberships.pushObject(model);
+          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -230,7 +230,7 @@ module('Unit | Model | membership', function (hooks) {
             role: founderRole,
           });
 
-          organization.memberships.pushObject(model);
+          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -274,8 +274,8 @@ module('Unit | Model | membership', function (hooks) {
             role: role,
           });
 
-          organization.memberships.pushObject(founder);
-          organization.memberships.pushObject(model);
+          (await organization.memberships).push(founder);
+          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -308,7 +308,7 @@ module('Unit | Model | membership', function (hooks) {
               role: role,
             });
 
-            organization.memberships.pushObject(model);
+            (await organization.memberships).push(model);
 
             const isValid = await model.validate({
               creatingNewOrganization: true,
@@ -349,7 +349,7 @@ module('Unit | Model | membership', function (hooks) {
               role: relationRole,
             });
 
-            organization.memberships.pushObject(model);
+            (await organization.memberships).push(model);
 
             const isValid = await model.validate({
               creatingNewOrganization: true,
@@ -387,7 +387,7 @@ module('Unit | Model | membership', function (hooks) {
             role: role,
           });
 
-          organization.memberships.pushObject(model);
+          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -431,7 +431,7 @@ module('Unit | Model | membership', function (hooks) {
             role: relationRole,
           });
 
-          organization.memberships.pushObject(model);
+          (await organization.memberships).push(model);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
