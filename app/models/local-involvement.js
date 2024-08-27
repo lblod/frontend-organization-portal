@@ -80,6 +80,7 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
           .external(async (value, helpers) => {
             const otherLocalInvolvements =
               await this.getOtherLocalInvolvements();
+
             const sumOtherPercentages = otherLocalInvolvements.reduce(
               (percentageAcc, involvement) =>
                 percentageAcc + Number(involvement.percentage),
@@ -144,14 +145,11 @@ export default class LocalInvolvementModel extends AbstractValidationModel {
    */
   async getOtherLocalInvolvements() {
     const worshipAdministrativeUnit = await this.worshipAdministrativeUnit;
-    let relatedLocalInvolvements = await this.store.query('local-involvement', {
-      filter: {
-        'worship-administrative-unit': {
-          id: worshipAdministrativeUnit.get('id'),
-        },
-      },
-    });
+    const relatedLocalInvolvements =
+      await worshipAdministrativeUnit.involvements;
 
-    return relatedLocalInvolvements.filter((elem) => elem.id !== this.id);
+    // Note: do not filter on id as this also deals with unsaved elements that
+    // do not have an id yet.
+    return relatedLocalInvolvements.filter((elem) => elem !== this);
   }
 }
