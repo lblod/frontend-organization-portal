@@ -1,3 +1,12 @@
+
+## v1.27.0-1 (2024-08-27)
+
+#### :bug: Bug Fix
+* [#641](https://github.com/lblod/frontend-organization-portal/pull/641) fix: correctly calculate total sum of finance percentages for local involvements ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
 ## v1.27.0-0 (2024-08-26)
 
 #### :rocket: Enhancement
