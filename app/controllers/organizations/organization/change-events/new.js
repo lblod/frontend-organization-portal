@@ -50,9 +50,10 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
 
   @action
   filterSelectedOriginalOrganizations(searchResults) {
+    const originalOrganizations =
+      this.model.changeEvent.hasMany('originalOrganizations').value() ?? [];
     return searchResults.filter(
-      (organization) =>
-        !this.model.changeEvent.originalOrganizations.includes(organization),
+      (organization) => !originalOrganizations.includes(organization),
     );
   }
 
