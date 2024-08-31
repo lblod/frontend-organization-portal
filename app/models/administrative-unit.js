@@ -21,6 +21,7 @@ import {
   PevaMunicipalityCodeList,
   PevaProvinceCodeList,
   WorshipServiceCodeList,
+  VlaamseGemeenschapscommissieCodeList,
 } from '../constants/Classification';
 import {
   allowedfoundingMemberships,
@@ -92,7 +93,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
             ...PoliceZoneCodeList,
             ...AssistanceZoneCodeList,
             ...WorshipServiceCodeList,
-            ...CentralWorshipServiceCodeList
+            ...CentralWorshipServiceCodeList,
           ),
           then: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
           otherwise: validateHasManyOptional(),
@@ -158,6 +159,10 @@ export default class AdministrativeUnitModel extends OrganizationModel {
     return this._hasClassificationId(PevaProvinceCodeList);
   }
 
+  get isVlaamseGemeenschapscommissie() {
+    return this._hasClassificationId(VlaamseGemeenschapscommissieCodeList);
+  }
+
   get isAdministrativeUnit() {
     return true;
   }
@@ -184,7 +189,8 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       this.isOcmwAssociation ||
       this.isPevaMunicipality ||
       this.isPevaProvince ||
-      this.isRepresentativeBody
+      this.isRepresentativeBody ||
+      this.isVlaamseGemeenschapscommissie
     );
   }
 
@@ -196,7 +202,8 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       this.isAssistanceZone ||
       this.isPevaMunicipality ||
       this.isPevaProvince ||
-      this.isRepresentativeBody
+      this.isRepresentativeBody ||
+      this.isVlaamseGemeenschapscommissie
     );
   }
 }
