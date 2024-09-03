@@ -466,7 +466,6 @@ module('Unit | Model | organization', function (hooks) {
           ...AssistanceZoneCodeList,
         ],
       ],
-      [CLASSIFICATION.DISTRICT, [...ProvinceCodeList]],
       [
         CLASSIFICATION.PROVINCE,
         [
