@@ -8,7 +8,7 @@ export default class IsFeatureEnabledHelper extends Helper {
   compute(positional) {
     assert(
       'is-feature-enabled expects exactly one argument',
-      positional.length === 1
+      positional.length === 1,
     );
     return this.features.isEnabled(positional[0] || '');
   }

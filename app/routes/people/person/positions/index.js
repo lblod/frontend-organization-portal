@@ -109,13 +109,13 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
       } else if (params.sort == 'position.administrative-unit.name') {
         positions = positions.sort(function (a, b) {
           return a.administrativeUnit.name.localeCompare(
-            b.administrativeUnit.name
+            b.administrativeUnit.name,
           );
         });
       } else if (params.sort == '-position.administrative-unit.name') {
         positions = positions.sort(function (a, b) {
           return b.administrativeUnit.name.localeCompare(
-            a.administrativeUnit.name
+            a.administrativeUnit.name,
           );
         });
       }

@@ -37,7 +37,7 @@ export default class WorshipServiceModel extends WorshipAdministrativeUnitModel 
 
   #hasRecognizedWorshipTypeId(recognizedWorshipTypeIds) {
     return recognizedWorshipTypeIds.includes(
-      this.recognizedWorshipType?.get('id')
+      this.recognizedWorshipType?.get('id'),
     );
   }
 }

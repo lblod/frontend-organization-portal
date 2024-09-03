@@ -22,7 +22,7 @@ export default class OrganizationsNewRoute extends Route {
 
   async model() {
     const structuredIdentifierKBO = this.store.createRecord(
-      'structured-identifier'
+      'structured-identifier',
     );
 
     const identifierKBO = this.store.createRecord('identifier', {
@@ -31,7 +31,7 @@ export default class OrganizationsNewRoute extends Route {
     });
 
     const structuredIdentifierSharepoint = this.store.createRecord(
-      'structured-identifier'
+      'structured-identifier',
     );
 
     const identifierSharepoint = this.store.createRecord('identifier', {
@@ -72,7 +72,7 @@ export default class OrganizationsNewRoute extends Route {
 
     controller.set(
       'currentOrganizationModel',
-      this.store.createRecord('organization')
+      this.store.createRecord('organization'),
     );
   }
 }

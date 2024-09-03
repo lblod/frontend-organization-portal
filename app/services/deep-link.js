@@ -22,7 +22,7 @@ export default class DeepLinkService extends Service {
     } else {
       throw new ResourceNotFoundError(
         `No data found for ${resourceUri}`,
-        resourceUri
+        resourceUri,
       );
     }
   }
@@ -36,7 +36,7 @@ export default class DeepLinkService extends Service {
       let handlerName = this.REDIRECT_HANDLER[type];
 
       redirectHandler = getOwner(this).lookup(
-        `redirect-handler:${handlerName}`
+        `redirect-handler:${handlerName}`,
       );
     }
 
@@ -49,7 +49,7 @@ export default class DeepLinkService extends Service {
           types,
           uuid,
           resourceUri,
-        }
+        },
       );
     }
   }
@@ -59,7 +59,7 @@ function getRdfTypes(uriInfo) {
   const RDF_TYPE_URL = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 
   let triples = uriInfo.triples.filter(
-    ({ predicate }) => predicate === RDF_TYPE_URL
+    ({ predicate }) => predicate === RDF_TYPE_URL,
   );
 
   return triples.map((triple) => triple.object.value);
@@ -68,7 +68,7 @@ function getRdfTypes(uriInfo) {
 function getUuid(uriInfo) {
   const MU_UUID_URL = 'http://mu.semte.ch/vocabularies/core/uuid';
   let triple = uriInfo.triples.find(
-    ({ predicate }) => predicate === MU_UUID_URL
+    ({ predicate }) => predicate === MU_UUID_URL,
   );
 
   return triple?.object?.value;

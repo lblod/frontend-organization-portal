@@ -16,7 +16,7 @@ export default class OrganizationsOrganizationMinistersIndexRoute extends Route 
           'minister-positions.function',
           'minister-positions.held-by-ministers.person',
         ].join(),
-      }
+      },
     );
 
     let ministerPositions = await organization.ministerPositions;

@@ -10,16 +10,16 @@ import { assert } from '@ember/debug';
 export default function hasManyValue(record, relationshipName) {
   assert(
     'The record argument should be an EmberData model instance',
-    Boolean(record.hasMany)
+    Boolean(record.hasMany),
   );
   assert(
     'A relationship name is required',
-    typeof relationshipName === 'string' && Boolean(relationshipName)
+    typeof relationshipName === 'string' && Boolean(relationshipName),
   );
   assert(
     `The "${record.constructor.name}" class doesn't have a "${relationshipName}" hasMany relationship.`,
     record.constructor.relationshipsByName?.get(relationshipName)?.kind ===
-      'hasMany'
+      'hasMany',
   );
   return record.hasMany(relationshipName).value();
 }

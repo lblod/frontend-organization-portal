@@ -23,7 +23,7 @@ export default class OrganizationSelectByIdentifierComponent extends Component {
     }
 
     filter['classification_id'] = getClassificationIds(
-      this.currentSession.hasWorshipRole
+      this.currentSession.hasWorshipRole,
     );
 
     const result = yield this.muSearch.search({
@@ -40,8 +40,8 @@ export default class OrganizationSelectByIdentifierComponent extends Component {
         if (Array.isArray(entry)) {
           return entry.filter((id) =>
             formatIdentifier([id.toLowerCase()]).startsWith(
-              searchParams.toLowerCase()
-            )
+              searchParams.toLowerCase(),
+            ),
           );
         } else {
           return entry;

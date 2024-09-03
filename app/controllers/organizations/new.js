@@ -62,7 +62,7 @@ export default class OrganizationsNewController extends Controller {
               },
             },
           })
-        )[0]
+        )[0],
       );
 
       if (this.currentOrganizationModel.isAgb) {
@@ -73,7 +73,7 @@ export default class OrganizationsNewController extends Controller {
 
   #getErrorMessageForMembershipField(field) {
     const membershipWithError = this.memberships.find(
-      (membership) => membership.error
+      (membership) => membership.error,
     );
 
     if (!field || field.length === 0) {
@@ -171,7 +171,7 @@ export default class OrganizationsNewController extends Controller {
     ) {
       // Create new model instance based on the provided classification
       let newOrganizationModelInstance = this.#createNewModelInstance(
-        classificationCode.id
+        classificationCode.id,
       );
 
       // Copy attributes and relationships to new model instance
@@ -357,8 +357,8 @@ export default class OrganizationsNewController extends Controller {
       this.memberships.push(
         ...this.#createMembershipModels(
           [this.municipality],
-          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id
-        )
+          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+        ),
       );
     }
 
@@ -370,28 +370,28 @@ export default class OrganizationsNewController extends Controller {
       this.memberships.push(
         ...this.#createMembershipModels(
           [this.province],
-          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id
-        )
+          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+        ),
       );
     }
 
     this.memberships.push(
       ...this.#createMembershipModels(
         this.founders,
-        MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id
+        MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
       ),
       ...this.#createMembershipModels(
         this.participants,
-        MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id
-      )
+        MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id,
+      ),
     );
 
     if (this.currentOrganizationModel.isCentralWorshipService) {
       this.memberships.push(
         ...this.#createMembershipModels(
           this.worshipServices,
-          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id
-        )
+          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+        ),
       );
     }
 
@@ -404,8 +404,8 @@ export default class OrganizationsNewController extends Controller {
           ...this.#createMembershipModels(
             [this.centralWorshipService],
             MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
-            true
-          )
+            true,
+          ),
         );
       }
 
@@ -413,8 +413,8 @@ export default class OrganizationsNewController extends Controller {
         this.memberships.push(
           ...this.#createMembershipModels(
             [this.representativeBody],
-            MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id
-          )
+            MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+          ),
         );
       }
     }
@@ -425,14 +425,14 @@ export default class OrganizationsNewController extends Controller {
 
     yield Promise.all(
       this.memberships.map((membership) =>
-        membership.validate({ creatingNewOrganization: true })
-      )
+        membership.validate({ creatingNewOrganization: true }),
+      ),
     );
 
     yield Promise.all(
       this.membershipsOfOrganizations.map((membership) =>
-        membership.validate({ creatingNewOrganization: true })
-      )
+        membership.validate({ creatingNewOrganization: true }),
+      ),
     );
 
     yield Promise.all([
@@ -458,7 +458,7 @@ export default class OrganizationsNewController extends Controller {
       yield identifierKBO.save();
 
       structuredIdentifierSharepoint = setEmptyStringsToNull(
-        structuredIdentifierSharepoint
+        structuredIdentifierSharepoint,
       );
       yield structuredIdentifierSharepoint.save();
       yield identifierSharepoint.save();
@@ -473,7 +473,7 @@ export default class OrganizationsNewController extends Controller {
 
         secondaryContact = setEmptyStringsToNull(secondaryContact);
         secondaryContact.telephone = transformPhoneNumbers(
-          secondaryContact.telephone
+          secondaryContact.telephone,
         );
         yield secondaryContact.save();
 
@@ -501,7 +501,7 @@ export default class OrganizationsNewController extends Controller {
         ) {
           const siteTypes = yield this.store.findAll('site-type');
           primarySite.siteType = siteTypes.find(
-            (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd'
+            (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd',
           );
         }
         yield primarySite.save();
@@ -509,17 +509,17 @@ export default class OrganizationsNewController extends Controller {
       }
       (yield this.currentOrganizationModel.identifiers).push(
         identifierKBO,
-        identifierSharepoint
+        identifierSharepoint,
       );
 
       this.currentOrganizationModel = setEmptyStringsToNull(
-        this.currentOrganizationModel
+        this.currentOrganizationModel,
       );
 
       yield this.currentOrganizationModel.save();
 
       let membershipSavePromises = this.memberships.map((membership) =>
-        membership.save()
+        membership.save(),
       );
       yield Promise.all(membershipSavePromises);
 
@@ -539,7 +539,7 @@ export default class OrganizationsNewController extends Controller {
 
       this.router.replaceWith(
         'organizations.organization',
-        this.currentOrganizationModel.id
+        this.currentOrganizationModel.id,
       );
     }
   }

@@ -7,7 +7,7 @@ import {
 export default class PeoplePersonPositionsMandatoryIndexRoute extends Route {
   async model() {
     let { person, mandatory } = this.modelFor(
-      'people.person.positions.mandatory'
+      'people.person.positions.mandatory',
     );
 
     let contacts = await mandatory.contacts;

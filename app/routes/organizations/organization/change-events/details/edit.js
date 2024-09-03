@@ -17,7 +17,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditRoute exten
 
   async model() {
     let { changeEvent, organization, ...detailsPageModel } = this.modelFor(
-      'organizations.organization.change-events.details'
+      'organizations.organization.change-events.details',
     );
 
     let changeEventType = await changeEvent.type;
@@ -42,7 +42,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditRoute exten
       }
 
       if (!decisionActivity) {
-        decisionActivity = this.store.createRecord('decisionActivity');
+        decisionActivity = this.store.createRecord('decision-activity');
       }
 
       model.decision = decision;

@@ -7,8 +7,6 @@ module('Unit | Service | deep-link', function (hooks) {
   setupTest(hooks);
 
   test('it uses the correct RedirectHandler based on the type of a resource', async function (assert) {
-    assert.expect(2);
-
     let deepLink = this.owner.lookup('service:deep-link');
     deepLink.REDIRECT_HANDLER = {
       'http://data.test/vocabularies/test': 'test',
@@ -18,10 +16,10 @@ module('Unit | Service | deep-link', function (hooks) {
       'redirect-handler:test',
       class extends RedirectHandler {
         redirect(uuid, resourceUri) {
-          assert.strictEqual(uuid, '12345');
-          assert.strictEqual(resourceUri, 'http://data.test/12345');
+          assert.step(uuid);
+          assert.step(resourceUri);
         }
-      }
+      },
     );
 
     this.owner.register(
@@ -41,9 +39,10 @@ module('Unit | Service | deep-link', function (hooks) {
             ],
           };
         }
-      }
+      },
     );
 
     await deepLink.redirect('http://data.test/12345');
+    assert.verifySteps(['12345', 'http://data.test/12345']);
   });
 });

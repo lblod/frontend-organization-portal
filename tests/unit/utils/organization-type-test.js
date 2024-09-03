@@ -62,7 +62,7 @@ module('Unit | Utility | organization-type', function (hooks) {
       const result = getOrganizationTypes(
         CLASSIFICATION.MUNICIPALITY.id,
         CLASSIFICATION.PROVINCE.id,
-        CLASSIFICATION.OCMW.id
+        CLASSIFICATION.OCMW.id,
       );
       assert.deepEqual(result, [ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT]);
     });
@@ -73,7 +73,7 @@ module('Unit | Utility | organization-type', function (hooks) {
         CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
           .id,
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-        CLASSIFICATION.ASSOCIATION_OTHER.id
+        CLASSIFICATION.ASSOCIATION_OTHER.id,
       );
       assert.deepEqual(result, [ORGANIZATION_TYPES.ASSOCIATION]);
     });
@@ -81,28 +81,28 @@ module('Unit | Utility | organization-type', function (hooks) {
     test('it returns the administrative unit and association organization types when provided classifications for both', async function (assert) {
       const result = getOrganizationTypes(
         CLASSIFICATION.MUNICIPALITY.id,
-        CLASSIFICATION.ZIEKENHUISVERENIGING.id
+        CLASSIFICATION.ZIEKENHUISVERENIGING.id,
       );
       assert.deepEqual(
         result.sort(),
         [
           ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
           ORGANIZATION_TYPES.ASSOCIATION,
-        ].sort()
+        ].sort(),
       );
     });
 
     test('it returns the administrative unit and corporation organization types when provided classifications for both', async function (assert) {
       const result = getOrganizationTypes(
         CLASSIFICATION.MUNICIPALITY.id,
-        CLASSIFICATION.CORPORATION_OTHER.id
+        CLASSIFICATION.CORPORATION_OTHER.id,
       );
       assert.deepEqual(
         result.sort(),
         [
           ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
           ORGANIZATION_TYPES.CORPORATION,
-        ].sort()
+        ].sort(),
       );
     });
 
@@ -110,7 +110,7 @@ module('Unit | Utility | organization-type', function (hooks) {
       const result = getOrganizationTypes(
         CLASSIFICATION.MUNICIPALITY.id,
         CLASSIFICATION.CORPORATION_OTHER.id,
-        CLASSIFICATION.ZIEKENHUISVERENIGING.id
+        CLASSIFICATION.ZIEKENHUISVERENIGING.id,
       );
       assert.deepEqual(
         result.sort(),
@@ -118,7 +118,7 @@ module('Unit | Utility | organization-type', function (hooks) {
           ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
           ORGANIZATION_TYPES.ASSOCIATION,
           ORGANIZATION_TYPES.CORPORATION,
-        ].sort()
+        ].sort(),
       );
     });
   });

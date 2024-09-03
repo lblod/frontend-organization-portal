@@ -29,7 +29,7 @@ module('Unit | Model | administrative unit', function (hooks) {
     test("it returns an extra error when it's a PROJECTVERENIGING and the expectedEndDate is earlier than now", async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
-        CLASSIFICATION.PROJECTVERENIGING
+        CLASSIFICATION.PROJECTVERENIGING,
       );
       const model = this.store().createRecord('administrative-unit', {
         classification,
@@ -68,7 +68,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       test(`it should return an extra error when a new  ${cl.label} is created without memberships`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
 
         const model = this.store().createRecord('administrative-unit', {
@@ -106,7 +106,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       test(`it should return an extra error when a new  ${cl.label} is created with an empty memberships array`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
 
         const model = this.store().createRecord('administrative-unit', {
@@ -145,7 +145,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       test(`it should not return an extra error when a membership is defined present when creating an new ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
         const membership = this.store().createRecord('membership');
 
@@ -184,7 +184,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       test(`it should not return an extra error when editing an existing ${cl.label} without memberships`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('administrative-unit', {
           classification,
@@ -220,7 +220,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       test(`it should not return an extra error when editing an ${cl.label} with an empty memberships array`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('administrative-unit', {
           classification,
@@ -257,7 +257,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       test(`it should not return an extra error when editing an existing with memberships ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
         const membership = this.store().createRecord('membership');
 
@@ -303,7 +303,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       test(`it should return true for ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('administrative-unit', {
           classification,
@@ -318,7 +318,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       test(`it should return false for whether ${cl.label} has a central worship service`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('administrative-unit', {
           classification,
@@ -385,7 +385,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       test(`it should allow valid participants for ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('administrative-unit', {
           classification,
@@ -441,7 +441,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       test(`it should allow a(n) ${cl.label} to be founded by the correct organizations`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
-          cl
+          cl,
         );
         const model = this.store().createRecord('administrative-unit', {
           classification,

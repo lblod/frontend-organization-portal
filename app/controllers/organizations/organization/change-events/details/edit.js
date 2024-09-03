@@ -59,7 +59,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
 
       this.router.transitionTo(
         'organizations.organization.change-events.details',
-        changeEvent.id
+        changeEvent.id,
       );
     }
   }

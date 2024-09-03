@@ -50,9 +50,10 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
 
   @action
   filterSelectedOriginalOrganizations(searchResults) {
+    const originalOrganizations =
+      this.model.changeEvent.hasMany('originalOrganizations').value() ?? [];
     return searchResults.filter(
-      (organization) =>
-        !this.model.changeEvent.originalOrganizations.includes(organization)
+      (organization) => !originalOrganizations.includes(organization),
     );
   }
 
@@ -157,7 +158,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       changeEvent.decision = yield saveDecision(
         shouldSaveDecision,
         decision,
-        decisionActivity
+        decisionActivity,
       );
 
       // We save the change event already so the backend assigns it an id
@@ -180,7 +181,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
               resultingStatusId = ORGANIZATION_STATUS.INACTIVE;
             } else {
               resultingStatusId = changeEvent.resultingOrganizations.includes(
-                organization
+                organization,
               )
                 ? ORGANIZATION_STATUS.ACTIVE
                 : ORGANIZATION_STATUS.INACTIVE;
@@ -198,7 +199,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
               resultingOrganization: organization,
               changeEvent,
               store: this.store,
-            })
+            }),
           );
         }
 
@@ -214,13 +215,13 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
                   resultingOrganization: organization,
                   changeEvent,
                   store: this.store,
-                })
+                }),
               );
             }
           }
         } else {
           (yield changeEvent.resultingOrganizations).push(
-            ...allOriginalOrganizations
+            ...allOriginalOrganizations,
           );
         }
 
@@ -253,7 +254,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
 
       this.router.transitionTo(
         'organizations.organization.change-events.details',
-        changeEvent.id
+        changeEvent.id,
       );
     }
   }
@@ -275,12 +276,12 @@ async function createChangeEventResult({
 }) {
   let resultingStatus = await store.findRecord(
     'organization-status-code',
-    resultingStatusId
+    resultingStatusId,
   );
 
   let mostRecentChangeEvent = await findMostRecentChangeEvent(
     store,
-    resultingOrganization
+    resultingOrganization,
   );
 
   if (

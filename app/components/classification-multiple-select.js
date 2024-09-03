@@ -60,7 +60,7 @@ export default class ClassificationMultipleSelectComponent extends Component {
       ? getClassificationIdsForRole(
           this.currentSession.hasWorshipRole,
           false,
-          ...selectedOrganizationTypes.split(',')
+          ...selectedOrganizationTypes.split(','),
         )
       : getClassificationIdsForRole(this.currentSession.hasWorshipRole);
 
@@ -73,7 +73,7 @@ export default class ClassificationMultipleSelectComponent extends Component {
       this.#isIdInBlacklist(selectedRecognizedWorshipTypeId)
     ) {
       allowedIds = allowedIds.filter(
-        (id) => id === CLASSIFICATION.WORSHIP_SERVICE.id
+        (id) => id === CLASSIFICATION.WORSHIP_SERVICE.id,
       );
     }
 

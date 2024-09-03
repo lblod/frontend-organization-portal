@@ -20,7 +20,7 @@ export default class OrganizationsOrganizationSitesIndexRoute extends Route {
           'sites.contacts',
           'sites.site-type',
         ].join(),
-      }
+      },
     );
 
     return {

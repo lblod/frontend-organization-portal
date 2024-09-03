@@ -40,7 +40,7 @@ export default class SensitivePersonalInformationService extends Service {
    */
   async askInformation(person) {
     const askEndpoint = `${this.getEndpoint(
-      PRIVACY_CENTRIC_SERVICE_ENDPOINT.ASK
+      PRIVACY_CENTRIC_SERVICE_ENDPOINT.ASK,
     )}/${person.id}`;
     let response = await this._request(askEndpoint, {});
     let data = await response.json();
@@ -62,7 +62,7 @@ export default class SensitivePersonalInformationService extends Service {
         'Vul het (elfcijferige) Rijksregisternummer in.';
     } else {
       const validateSsnEndpoint = `${this.getEndpoint(
-        PRIVACY_CENTRIC_SERVICE_ENDPOINT.VALIDATE_SSN
+        PRIVACY_CENTRIC_SERVICE_ENDPOINT.VALIDATE_SSN,
       )}/${person.id}?ssn=${ssn}`;
       let response = await this._request(validateSsnEndpoint, {});
       let data = await response.json();
@@ -105,7 +105,7 @@ export default class SensitivePersonalInformationService extends Service {
 
     let response = await this._request(
       this.getEndpoint(PRIVACY_CENTRIC_SERVICE_ENDPOINT.REQUEST),
-      body
+      body,
     );
     let data = (await response.json()).data;
     let sensitiveInfo = await this.mapSensitivePersonalInformation(data);
@@ -165,7 +165,7 @@ export default class SensitivePersonalInformationService extends Service {
   async updateInformation(sensitiveInformation, person, updateReason) {
     await this._request(
       this.getEndpoint(PRIVACY_CENTRIC_SERVICE_ENDPOINT.UPDATE),
-      generateUpdateRequestBody(sensitiveInformation, person, updateReason)
+      generateUpdateRequestBody(sensitiveInformation, person, updateReason),
     );
     STORAGE.set(person.id, sensitiveInformation);
   }

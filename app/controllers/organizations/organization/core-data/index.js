@@ -57,7 +57,7 @@ export default class OrganizationsOrganizationCoreDataIndexController extends Co
 
   get sharepointIdentifier() {
     return this.organizationIdentifiers.find((id) =>
-      this.isSharePointIdentifier(id)
+      this.isSharePointIdentifier(id),
     );
   }
 
@@ -67,13 +67,13 @@ export default class OrganizationsOrganizationCoreDataIndexController extends Co
 
   get nisIdentifier() {
     return this.organizationIdentifiers.find((id) =>
-      this.isNisCodeIdentifier(id)
+      this.isNisCodeIdentifier(id),
     );
   }
 
   get ovoIdentifier() {
     return this.organizationIdentifiers.find((id) =>
-      this.isOvoCodeIdentifier(id)
+      this.isOvoCodeIdentifier(id),
     );
   }
 

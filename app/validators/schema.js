@@ -8,7 +8,7 @@ import Joi from 'joi';
  * @returns {Joi.ObjectSchema} - Joi schema for required "belong to" relationships.
  */
 export const validateBelongsToRequired = (
-  message = 'This field is required.'
+  message = 'This field is required.',
 ) => {
   return Joi.object().required().messages({ 'any.required': message });
 };
@@ -27,7 +27,7 @@ export const validateBelongsToOptional = () => {
  * @returns {Joi.ArraySchema} - Joi schema for required "has many" relationships.
  */
 export const validateHasManyRequired = (
-  message = 'This field is required.'
+  message = 'This field is required.',
 ) => {
   return Joi.array().required().messages({ 'any.required': message });
 };
@@ -39,7 +39,7 @@ export const validateHasManyRequired = (
  * @returns {Joi.ArraySchema} - Joi schema for required "has many" relationships.
  */
 export const validateHasManyNotEmptyRequired = (
-  message = 'This field is required.'
+  message = 'This field is required.',
 ) => {
   return Joi.array().required().min(1).messages({ '*': message });
 };
@@ -92,7 +92,7 @@ export const validateUrl = (message = 'Invalid URL format.') => {
  */
 export const validateRequiredWhenClassificationId = (
   classificationCodeList,
-  message = 'This field is required.'
+  message = 'This field is required.',
 ) => {
   return Joi.when('classification.id', {
     is: Joi.exist().valid(...classificationCodeList),

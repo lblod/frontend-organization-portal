@@ -60,7 +60,7 @@ export default class PositionSelectComponent extends Component {
           'minister-position-function',
           {
             page: { size: 100 },
-          }
+          },
         );
       }
     } else {
@@ -97,7 +97,7 @@ export default class PositionSelectComponent extends Component {
           'minister-position-function',
           {
             page: { size: 100 },
-          }
+          },
         );
       }
     }

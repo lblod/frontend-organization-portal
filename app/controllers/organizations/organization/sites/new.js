@@ -39,7 +39,7 @@ export default class OrganizationsOrganizationSitesNewController extends Control
 
       secondaryContact = setEmptyStringsToNull(secondaryContact);
       secondaryContact.telephone = transformPhoneNumbers(
-        secondaryContact.telephone
+        secondaryContact.telephone,
       );
       yield secondaryContact.save();
 

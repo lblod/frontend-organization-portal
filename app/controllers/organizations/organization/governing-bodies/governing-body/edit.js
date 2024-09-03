@@ -15,7 +15,7 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyEditCo
     this.reset();
 
     this.router.transitionTo(
-      'organizations.organization.governing-bodies.governing-body'
+      'organizations.organization.governing-bodies.governing-body',
     );
   }
 
@@ -30,7 +30,7 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyEditCo
 
       this.router.transitionTo(
         'organizations.organization.governing-bodies.governing-body',
-        this.model.governingBody.id
+        this.model.governingBody.id,
       );
     }
   }

@@ -30,7 +30,7 @@ module('Unit | Model | worship administrative unit', function (hooks) {
     test(`it should return true for worship service`, async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
-        CLASSIFICATION.WORSHIP_SERVICE
+        CLASSIFICATION.WORSHIP_SERVICE,
       );
       const model = this.store().createRecord('worship-service', {
         classification,
@@ -43,7 +43,7 @@ module('Unit | Model | worship administrative unit', function (hooks) {
     test(`it should return true for a central worship service`, async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
-        CLASSIFICATION.CENTRAL_WORSHIP_SERVICE
+        CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
       );
       const model = this.store().createRecord('central-worship-service', {
         classification,
@@ -56,7 +56,7 @@ module('Unit | Model | worship administrative unit', function (hooks) {
     test('it should return false for a representative body', async function (assert) {
       const classification = this.store().createRecord(
         'administrative-unit-classification-code',
-        CLASSIFICATION.REPRESENTATIVE_BODY
+        CLASSIFICATION.REPRESENTATIVE_BODY,
       );
       const model = this.store().createRecord('representative-body', {
         classification,

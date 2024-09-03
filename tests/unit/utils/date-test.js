@@ -51,7 +51,7 @@ module('Unit | Utility | date', function () {
       test(`it throws an assertion error when ${undefinedArg} is undefined`, function (assert) {
         assert.throws(
           () => inPeriod(date, start, end),
-          'All parameters must be valid Date objects.'
+          'All parameters must be valid Date objects.',
         );
       });
     });
@@ -63,7 +63,7 @@ module('Unit | Utility | date', function () {
 
       assert.throws(
         () => inPeriod(date, start, end),
-        'Start date must be before end date.'
+        'Start date must be before end date.',
       );
     });
   });

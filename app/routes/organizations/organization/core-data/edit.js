@@ -66,23 +66,23 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
     identifiers.push(...missingIdentifiers);
 
     let identifierKBO = identifiers.find(
-      ({ idName }) => idName === ID_NAME.KBO
+      ({ idName }) => idName === ID_NAME.KBO,
     );
     let structuredIdentifierKBO = await identifierKBO.structuredIdentifier;
 
     let identifierSharepoint = identifiers.find(
-      ({ idName }) => idName === ID_NAME.SHAREPOINT
+      ({ idName }) => idName === ID_NAME.SHAREPOINT,
     );
     let structuredIdentifierSharepoint =
       await identifierSharepoint.structuredIdentifier;
 
     let identifierNIS = identifiers.find(
-      ({ idName }) => idName === ID_NAME.NIS
+      ({ idName }) => idName === ID_NAME.NIS,
     );
     let structuredIdentifierNIS = await identifierNIS.structuredIdentifier;
 
     let identifierOVO = identifiers.find(
-      ({ idName }) => idName === ID_NAME.OVO
+      ({ idName }) => idName === ID_NAME.OVO,
     );
     let structuredIdentifierOVO = await identifierOVO.structuredIdentifier;
 
@@ -139,7 +139,7 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
 
     return requiredIdNames.reduce((missingIdentifiers, requiredIdName) => {
       let identifier = currentIdentifiers.find(
-        ({ idName }) => idName === requiredIdName
+        ({ idName }) => idName === requiredIdName,
       );
 
       if (!identifier) {
@@ -148,7 +148,7 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
         });
 
         let structuredIdentifier = this.store.createRecord(
-          'structured-identifier'
+          'structured-identifier',
         );
 
         identifier.structuredIdentifier = structuredIdentifier;

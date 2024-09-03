@@ -127,7 +127,7 @@ export default class RichTextEditorComponent extends Component {
       this.hasBeenFocused = true;
       const htmlContent = this.editorController.htmlContent;
       const hasTextContent = Boolean(
-        this.editorController.mainEditorState.doc.textContent
+        this.editorController.mainEditorState.doc.textContent,
       );
       const editorValue = hasTextContent
         ? postProccessLinks(stripNbspEntities(htmlContent))
@@ -156,8 +156,8 @@ export default class RichTextEditorComponent extends Component {
           domParser.parseFromString(this.value, 'text/html'),
           {
             preserveWhitespace: true,
-          }
-        )
+          },
+        ),
       );
       tr.setSelection(Selection.atEnd(tr.doc));
       editorController.editor.mainView.dispatch(tr);
