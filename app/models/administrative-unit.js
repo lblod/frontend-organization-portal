@@ -93,7 +93,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
             ...PoliceZoneCodeList,
             ...AssistanceZoneCodeList,
             ...WorshipServiceCodeList,
-            ...CentralWorshipServiceCodeList,
+            ...CentralWorshipServiceCodeList
           ),
           then: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
           otherwise: validateHasManyOptional(),
