@@ -399,7 +399,7 @@ module('Unit | Model | administrative unit', function (hooks) {
 
   module('founderClassifications', function () {
     [
-      [CLASSIFICATION.APB, [CLASSIFICATION.MUNICIPALITY.id]],
+      [CLASSIFICATION.APB, [CLASSIFICATION.PROVINCE.id]],
       [CLASSIFICATION.AGB, [CLASSIFICATION.MUNICIPALITY.id]],
       [
         CLASSIFICATION.PEVA_MUNICIPALITY,
