@@ -62,6 +62,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   @action
   reallyRemoveMembership(membership) {
+    this.memberships.removeObject(membership);
     membership.deleteRecord();
     this.removingFounder = false;
   }
