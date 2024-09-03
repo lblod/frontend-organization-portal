@@ -96,7 +96,7 @@ export default class ChangeEventTypeSelectComponent extends Component {
     }
     if (classification.id === CLASSIFICATION.VLAAMSE_GEMEENSCHAPSCOMMISSIE.id) {
       types = types.filter((t) =>
-        this.isIdInList(t.id, CHANGE_EVENTS_VLAAMSE_GEMEENSCHAPSCOMMISSIE)
+        this.isIdInList(t.id, CHANGE_EVENTS_VLAAMSE_GEMEENSCHAPSCOMMISSIE),
       );
     }
 

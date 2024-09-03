@@ -104,7 +104,7 @@ module('Unit | Model | local involvement', function (hooks) {
 
     test('it does not return an error when the percentage is 100', async function (assert) {
       const administrativeUnit = this.store().createRecord(
-        'administrative-unit'
+        'administrative-unit',
       );
       const involvementType = this.store().createRecord('involvement-type', {
         id: INVOLVEMENT_TYPE.SUPERVISORY,
@@ -117,7 +117,7 @@ module('Unit | Model | local involvement', function (hooks) {
 
       const getOtherLocalInvolvementsStub = sinon.stub(
         model,
-        'getOtherLocalInvolvements'
+        'getOtherLocalInvolvements',
       );
       getOtherLocalInvolvementsStub.resolves([]);
 
@@ -128,7 +128,7 @@ module('Unit | Model | local involvement', function (hooks) {
 
     test('it does not return an error when the sum of percentages is 100', async function (assert) {
       const administrativeUnit = this.store().createRecord(
-        'administrative-unit'
+        'administrative-unit',
       );
       const involvementType = this.store().createRecord('involvement-type', {
         id: INVOLVEMENT_TYPE.SUPERVISORY,
@@ -143,7 +143,7 @@ module('Unit | Model | local involvement', function (hooks) {
         'involvement-type',
         {
           id: INVOLVEMENT_TYPE.MID_FINANCIAL,
-        }
+        },
       );
       const otherModel = this.store().createRecord('local-involvement', {
         administrativeUnit,
@@ -153,7 +153,7 @@ module('Unit | Model | local involvement', function (hooks) {
 
       const getOtherLocalInvolvementsStub = sinon.stub(
         model,
-        'getOtherLocalInvolvements'
+        'getOtherLocalInvolvements',
       );
       getOtherLocalInvolvementsStub.resolves([otherModel]);
 
@@ -164,7 +164,7 @@ module('Unit | Model | local involvement', function (hooks) {
 
     test('it does return an error when the sum of percentages is above 100', async function (assert) {
       const administrativeUnit = this.store().createRecord(
-        'administrative-unit'
+        'administrative-unit',
       );
       const involvementType = this.store().createRecord('involvement-type', {
         id: INVOLVEMENT_TYPE.SUPERVISORY,
@@ -179,7 +179,7 @@ module('Unit | Model | local involvement', function (hooks) {
         'involvement-type',
         {
           id: INVOLVEMENT_TYPE.MID_FINANCIAL,
-        }
+        },
       );
       const otherModel = this.store().createRecord('local-involvement', {
         administrativeUnit,
@@ -189,7 +189,7 @@ module('Unit | Model | local involvement', function (hooks) {
 
       const getOtherLocalInvolvementsStub = sinon.stub(
         model,
-        'getOtherLocalInvolvements'
+        'getOtherLocalInvolvements',
       );
       getOtherLocalInvolvementsStub.resolves([otherModel]);
 
@@ -206,7 +206,7 @@ module('Unit | Model | local involvement', function (hooks) {
 
     test('it does return an error when the sum of percentages is below 100', async function (assert) {
       const administrativeUnit = this.store().createRecord(
-        'administrative-unit'
+        'administrative-unit',
       );
       const involvementType = this.store().createRecord('involvement-type', {
         id: INVOLVEMENT_TYPE.SUPERVISORY,
@@ -221,7 +221,7 @@ module('Unit | Model | local involvement', function (hooks) {
         'involvement-type',
         {
           id: INVOLVEMENT_TYPE.MID_FINANCIAL,
-        }
+        },
       );
       const otherModel = this.store().createRecord('local-involvement', {
         administrativeUnit,
@@ -231,7 +231,7 @@ module('Unit | Model | local involvement', function (hooks) {
 
       const getOtherLocalInvolvementsStub = sinon.stub(
         model,
-        'getOtherLocalInvolvements'
+        'getOtherLocalInvolvements',
       );
       getOtherLocalInvolvementsStub.resolves([otherModel]);
 
