@@ -459,4 +459,191 @@ module('Unit | Model | membership', function (hooks) {
       });
     });
   });
+
+  module('equals', function () {
+    test('Membership equality is reflexive', function (assert) {
+      const organization = this.store().createRecord('organization', {
+        id: 'organization',
+      });
+      const member = this.store().createRecord('organization', {
+        id: 'member',
+      });
+      const role = this.store().createRecord('membership-role', { id: 'role' });
+
+      const model = this.store().createRecord('membership', {
+        organization: organization,
+        member: member,
+        role: role,
+      });
+
+      const areEqual = model.equals(model);
+      assert.true(areEqual);
+    });
+
+    test('Membership equality is symmetric', function (assert) {
+      const organization = this.store().createRecord('organization', {
+        id: 'organization',
+      });
+      const member = this.store().createRecord('organization', {
+        id: 'member',
+      });
+      const role = this.store().createRecord('membership-role', { id: 'role' });
+
+      const model = this.store().createRecord('membership', {
+        organization: organization,
+        member: member,
+        role: role,
+      });
+
+      const other = this.store().createRecord('membership', {
+        organization: organization,
+        member: member,
+        role: role,
+      });
+
+      const modelEqualsOther = model.equals(other);
+      const otherEqualsModel = other.equals(model);
+      assert.equal(modelEqualsOther, otherEqualsModel);
+    });
+
+    test('Membership equality is transitive', function (assert) {
+      const organization = this.store().createRecord('organization', {
+        id: 'organization',
+      });
+      const member = this.store().createRecord('organization', {
+        id: 'member',
+      });
+      const role = this.store().createRecord('membership-role', { id: 'role' });
+
+      const membershipOne = this.store().createRecord('membership', {
+        organization: organization,
+        member: member,
+        role: role,
+      });
+
+      const membershipTwo = this.store().createRecord('membership', {
+        organization: organization,
+        member: member,
+        role: role,
+      });
+
+      const membershipThree = this.store().createRecord('membership', {
+        organization: organization,
+        member: member,
+        role: role,
+      });
+
+      const oneEqualsTwo = membershipOne.equals(membershipTwo);
+      const twoEqualsThree = membershipTwo.equals(membershipThree);
+      assert.equal(oneEqualsTwo, twoEqualsThree);
+    });
+
+    test('it should return true when memberships have the same organization, member and role', async function (assert) {
+      const organization = this.store().createRecord('organization', {
+        id: 'organization',
+      });
+      const member = this.store().createRecord('organization', {
+        id: 'member',
+      });
+      const role = this.store().createRecord('membership-role', { id: 'role' });
+
+      const membershipOne = this.store().createRecord('membership', {
+        organization: organization,
+        member: member,
+        role: role,
+      });
+      const membershipTwo = this.store().createRecord('membership', {
+        organization: organization,
+        member: member,
+        role: role,
+      });
+
+      const areEqual = membershipOne.equals(membershipTwo);
+      assert.true(areEqual);
+    });
+
+    test('it should return false when memberships have a different role', async function (assert) {
+      const organization = this.store().createRecord('organization', {
+        id: 'organization',
+      });
+      const member = this.store().createRecord('organization', {
+        id: 'member',
+      });
+      const roleOne = this.store().createRecord('membership-role', {
+        id: 'role-one',
+      });
+      const roleTwo = this.store().createRecord('membership-role', {
+        id: 'role-two',
+      });
+
+      const membershipOne = this.store().createRecord('membership', {
+        organization: organization,
+        member: member,
+        role: roleOne,
+      });
+      const membershipTwo = this.store().createRecord('membership', {
+        organization: organization,
+        member: member,
+        role: roleTwo,
+      });
+
+      const areEqual = membershipOne.equals(membershipTwo);
+      assert.false(areEqual);
+    });
+
+    test('it should return false when memberships have a different organizations', async function (assert) {
+      const organizationOne = this.store().createRecord('organization', {
+        id: 'organization-one',
+      });
+      const organizationTwo = this.store().createRecord('organization', {
+        id: 'prganization-two',
+      });
+      const member = this.store().createRecord('organization', {
+        id: 'member',
+      });
+      const role = this.store().createRecord('membership-role', { id: 'role' });
+
+      const membershipOne = this.store().createRecord('membership', {
+        organization: organizationOne,
+        member: member,
+        role: role,
+      });
+      const membershipTwo = this.store().createRecord('membership', {
+        organization: organizationTwo,
+        member: member,
+        role: role,
+      });
+
+      const areEqual = membershipOne.equals(membershipTwo);
+      assert.false(areEqual);
+    });
+
+    test('it should return false when memberships have a different members', async function (assert) {
+      const organization = this.store().createRecord('organization', {
+        id: 'organization',
+      });
+      const memberOne = this.store().createRecord('organization', {
+        id: 'member-one',
+      });
+      const memberTwo = this.store().createRecord('organization', {
+        id: 'member-two',
+      });
+
+      const role = this.store().createRecord('membership-role', { id: 'role' });
+
+      const membershipOne = this.store().createRecord('membership', {
+        organization: organization,
+        member: memberOne,
+        role: role,
+      });
+      const membershipTwo = this.store().createRecord('membership', {
+        organization: organization,
+        member: memberTwo,
+        role: role,
+      });
+
+      const areEqual = membershipOne.equals(membershipTwo);
+      assert.false(areEqual);
+    });
+  });
 });
