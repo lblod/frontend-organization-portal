@@ -3,9 +3,20 @@ import { setupTest } from 'ember-qunit';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import {
+  AgbCodeList,
+  ApbCodeList,
+  AssistanceZoneCodeList,
+  CentralWorshipServiceCodeList,
   IGSCodeList,
+  MunicipalityCodeList,
   OcmwAssociationCodeList,
+  OCMWCodeList,
   PevaCodeList,
+  PevaProvinceCodeList,
+  PoliceZoneCodeList,
+  ProvinceCodeList,
+  RepresentativeBodyCodeList,
+  WorshipServiceCodeList,
 } from 'frontend-organization-portal/constants/Classification';
 
 module('Unit | Model | organization', function (hooks) {
@@ -230,7 +241,7 @@ module('Unit | Model | organization', function (hooks) {
     [
       [
         CLASSIFICATION.MUNICIPALITY,
-        [...IGSCodeList, ...OcmwAssociationCodeList],
+        [...IGSCodeList, ...OcmwAssociationCodeList, ...AgbCodeList],
       ],
       [CLASSIFICATION.OCMW, [...IGSCodeList, ...OcmwAssociationCodeList]],
       [CLASSIFICATION.AGB, [...IGSCodeList]],
@@ -305,7 +316,7 @@ module('Unit | Model | organization', function (hooks) {
     });
 
     [
-      [CLASSIFICATION.APB, [CLASSIFICATION.MUNICIPALITY.id]],
+      [CLASSIFICATION.APB, [CLASSIFICATION.PROVINCE.id]],
       [CLASSIFICATION.AGB, [CLASSIFICATION.MUNICIPALITY.id]],
       [
         CLASSIFICATION.PEVA_MUNICIPALITY,
@@ -403,10 +414,13 @@ module('Unit | Model | organization', function (hooks) {
         CLASSIFICATION.MUNICIPALITY,
         [
           CLASSIFICATION.AGB.id,
-          CLASSIFICATION.APB.id,
           CLASSIFICATION.PEVA_MUNICIPALITY.id,
           ...OcmwAssociationCodeList,
         ],
+      ],
+      [
+        CLASSIFICATION.PROVINCE,
+        [CLASSIFICATION.PEVA_PROVINCE.id, CLASSIFICATION.APB.id],
       ],
       [CLASSIFICATION.OCMW, [...OcmwAssociationCodeList]],
       [
@@ -434,6 +448,63 @@ module('Unit | Model | organization', function (hooks) {
         const membership = this.store().createRecord('membership', {
           role: founderRole,
           member: model,
+        });
+
+        const result = model.getClassificationCodesForMembership(membership);
+
+        assert.deepEqual(result.sort(), classificationCodes.sort());
+      });
+    });
+
+    [
+      [
+        CLASSIFICATION.MUNICIPALITY,
+        [
+          ...AgbCodeList,
+          ...IGSCodeList,
+          ...PoliceZoneCodeList,
+          ...AssistanceZoneCodeList,
+        ],
+      ],
+      [
+        CLASSIFICATION.PROVINCE,
+        [
+          ...ApbCodeList,
+          ...MunicipalityCodeList,
+          ...PevaProvinceCodeList,
+          ...OCMWCodeList,
+        ],
+      ],
+      [CLASSIFICATION.AGB, [...ProvinceCodeList]],
+      [
+        CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
+        [...WorshipServiceCodeList, ...RepresentativeBodyCodeList],
+      ],
+      [
+        CLASSIFICATION.WORSHIP_SERVICE,
+        [...CentralWorshipServiceCodeList, ...RepresentativeBodyCodeList],
+      ],
+      [
+        CLASSIFICATION.REPRESENTATIVE_BODY,
+        [...WorshipServiceCodeList, ...CentralWorshipServiceCodeList],
+      ],
+    ].forEach(([cl, classificationCodes]) => {
+      test(`it should allow a(n) ${cl.label} to have a relation with the correct organizations`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl,
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          id: '123',
+          classification,
+        });
+        const role = this.store().createRecord(
+          'membership-role',
+          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+        );
+        const membership = this.store().createRecord('membership', {
+          role: role,
+          organization: model,
         });
 
         const result = model.getClassificationCodesForMembership(membership);

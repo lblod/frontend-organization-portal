@@ -55,6 +55,14 @@ export const allowedParticipationMemberships = [
     organizations: [...PevaCodeList],
     members: [...IGSCodeList],
   },
+  {
+    organizations: [...AgbCodeList],
+    members: [...MunicipalityCodeList],
+  },
+  {
+    organizations: [...ApbCodeList],
+    members: [...ProvinceCodeList],
+  },
 ];
 
 export const allowedfoundingMemberships = [
@@ -64,7 +72,7 @@ export const allowedfoundingMemberships = [
   },
   {
     organizations: [...ApbCodeList],
-    members: [...MunicipalityCodeList],
+    members: [...ProvinceCodeList],
   },
   {
     organizations: [...PevaMunicipalityCodeList],
@@ -104,6 +112,16 @@ export const allowedHasRelationWithMemberships = [
       ...AssistanceZoneCodeList,
     ],
   },
+  {
+    organizations: [...ProvinceCodeList],
+    members: [
+      ...ApbCodeList,
+      ...MunicipalityCodeList,
+      ...PevaProvinceCodeList,
+      ...OCMWCodeList,
+    ],
+  },
+  { organizations: [...AgbCodeList], members: [...ProvinceCodeList] },
   {
     organizations: [
       ...CentralWorshipServiceCodeList,
