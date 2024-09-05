@@ -29,7 +29,7 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
         then: Joi.when('classification.id', {
           is: Joi.string().valid(
             ...CorporationOtherCodeList,
-            ...AssociationOtherCodeList
+            ...AssociationOtherCodeList,
           ),
           then: validateHasManyOptional(),
           otherwise: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
