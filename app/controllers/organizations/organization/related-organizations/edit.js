@@ -130,6 +130,9 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
         }
       }),
     );
+    // Convert back to an EmberArray, otherwise edits performed after a failed
+    // validation cause errors.
+    this.memberships = A(this.memberships.map((e) => e));
 
     let organization = this.model.organization;
 
