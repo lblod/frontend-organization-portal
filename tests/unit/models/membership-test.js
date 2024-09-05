@@ -503,7 +503,7 @@ module('Unit | Model | membership', function (hooks) {
 
       const modelEqualsOther = model.equals(other);
       const otherEqualsModel = other.equals(model);
-      assert.equal(modelEqualsOther, otherEqualsModel);
+      assert.strictEqual(modelEqualsOther, otherEqualsModel);
     });
 
     test('Membership equality is transitive', function (assert) {
@@ -535,7 +535,7 @@ module('Unit | Model | membership', function (hooks) {
 
       const oneEqualsTwo = membershipOne.equals(membershipTwo);
       const twoEqualsThree = membershipTwo.equals(membershipThree);
-      assert.equal(oneEqualsTwo, twoEqualsThree);
+      assert.strictEqual(oneEqualsTwo, twoEqualsThree);
     });
 
     test('it should return true when memberships have the same organization, member and role', async function (assert) {

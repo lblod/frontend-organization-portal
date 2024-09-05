@@ -140,6 +140,15 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     yield Promise.all(validationPromises);
 
     if (!this.hasValidationErrors) {
+      // Filter duplicate memberships, this means memberships that have the same
+      // member, organization, and role.
+      // Note: Do *not* move this filtering earlier in the function, that
+      // results in nasty interactions/errors when a validation fails.
+      this.memberships = this.memberships.filter(
+        (membership, index, memberships) =>
+          index === memberships.findIndex((m) => membership.equals(m)),
+      );
+
       let savePromises = this.memberships.map((membership) => {
         membership.save();
       });
