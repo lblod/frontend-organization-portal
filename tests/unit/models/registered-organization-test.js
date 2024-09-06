@@ -43,6 +43,30 @@ module('Unit | Model | registered organization', function (hooks) {
     });
 
     [
+      CLASSIFICATION.ASSOCIATION_OTHER,
+      CLASSIFICATION.CORPORATION_OTHER,
+    ].forEach((cl) => {
+      test(`it should not return an extra error creating an empty ${cl.label} model`, async function (assert) {
+        const classification = this.store().createRecord(
+          'registered-organization-classification-code',
+          cl,
+        );
+        const model = this.store().createRecord('registered-organization', {
+          classification,
+        });
+
+        const isValid = await model.validate({ creatingNewOrganization: true });
+
+        assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 2);
+        assert.propContains(model.error, {
+          legalName: { message: 'Vul de juridische naam in' },
+          organizationStatus: { message: 'Selecteer een optie' },
+        });
+      });
+    });
+
+    [
       CLASSIFICATION.ZIEKENHUISVERENIGING,
       CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
       CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
