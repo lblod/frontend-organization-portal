@@ -27,7 +27,7 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
       memberships: Joi.when(Joi.ref('$creatingNewOrganization'), {
         is: Joi.exist().valid(true),
         then: Joi.when('classification.id', {
-          is: Joi.string().valid(
+          is: Joi.exist().valid(
             ...CorporationOtherCodeList,
             ...AssociationOtherCodeList,
           ),
