@@ -464,6 +464,8 @@ module('Unit | Model | organization', function (hooks) {
           ...IGSCodeList,
           ...PoliceZoneCodeList,
           ...AssistanceZoneCodeList,
+          ...ProvinceCodeList,
+          ...OCMWCodeList,
         ],
       ],
       [
@@ -473,9 +475,21 @@ module('Unit | Model | organization', function (hooks) {
           ...MunicipalityCodeList,
           ...PevaProvinceCodeList,
           ...OCMWCodeList,
+          ...AgbCodeList,
         ],
       ],
-      [CLASSIFICATION.AGB, [...ProvinceCodeList]],
+      [CLASSIFICATION.AGB, [...MunicipalityCodeList, ...ProvinceCodeList]],
+      [CLASSIFICATION.PROJECTVERENIGING, [...MunicipalityCodeList]],
+      [CLASSIFICATION.DIENSTVERLENENDE_VERENIGING, [...MunicipalityCodeList]],
+      [CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING, [...MunicipalityCodeList]],
+      [
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+        [...MunicipalityCodeList],
+      ],
+      [CLASSIFICATION.POLICE_ZONE, [...MunicipalityCodeList]],
+      [CLASSIFICATION.ASSISTANCE_ZONE, [...MunicipalityCodeList]],
+      [CLASSIFICATION.APB, [...ProvinceCodeList]],
+      [CLASSIFICATION.OCMW, [...MunicipalityCodeList, ...ProvinceCodeList]],
       [
         CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
         [...WorshipServiceCodeList, ...RepresentativeBodyCodeList],
@@ -502,12 +516,26 @@ module('Unit | Model | organization', function (hooks) {
           'membership-role',
           MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
         );
-        const membership = this.store().createRecord('membership', {
+        const membershipAsOrganization = this.store().createRecord(
+          'membership',
+          {
+            role: role,
+            organization: model,
+          },
+        );
+
+        let result = model.getClassificationCodesForMembership(
+          membershipAsOrganization,
+        );
+
+        assert.deepEqual(result.sort(), classificationCodes.sort());
+
+        const membershipAsMember = this.store().createRecord('membership', {
           role: role,
-          organization: model,
+          member: model,
         });
 
-        const result = model.getClassificationCodesForMembership(membership);
+        result = model.getClassificationCodesForMembership(membershipAsMember);
 
         assert.deepEqual(result.sort(), classificationCodes.sort());
       });

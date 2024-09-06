@@ -106,6 +106,7 @@ export const allowedHasRelationWithMemberships = [
   {
     organizations: [...MunicipalityCodeList],
     members: [
+      ...OCMWCodeList,
       ...AgbCodeList,
       ...IGSCodeList,
       ...PoliceZoneCodeList,
@@ -115,29 +116,19 @@ export const allowedHasRelationWithMemberships = [
   {
     organizations: [...ProvinceCodeList],
     members: [
-      ...ApbCodeList,
       ...MunicipalityCodeList,
+      ...ApbCodeList,
       ...PevaProvinceCodeList,
       ...OCMWCodeList,
+      ...AgbCodeList,
     ],
   },
-  { organizations: [...AgbCodeList], members: [...ProvinceCodeList] },
   {
-    organizations: [
-      ...CentralWorshipServiceCodeList,
-      ...RepresentativeBodyCodeList,
-    ],
-    members: [...WorshipServiceCodeList],
+    organizations: [...CentralWorshipServiceCodeList],
+    members: [...WorshipServiceCodeList, ...RepresentativeBodyCodeList],
   },
   {
-    organizations: [...WorshipServiceCodeList, ...RepresentativeBodyCodeList],
-    members: [...CentralWorshipServiceCodeList],
-  },
-  {
-    organizations: [
-      ...WorshipServiceCodeList,
-      ...CentralWorshipServiceCodeList,
-    ],
+    organizations: [...WorshipServiceCodeList],
     members: [...RepresentativeBodyCodeList],
   },
 ];
@@ -155,32 +146,52 @@ const allowedMembershipRelations = new Map([
 ]);
 
 /**
- * Get the list of organization's classification codes which can have the given
- * membership relation with this provided organization. The direction of the
- * membership relation is determined based on whether the provided organization
- * acts as member or organization in the provided membership.
+ * Get the list of organization classification codes that are allowed to be
+ * involved in the given membership and organization. For most membership roles
+ * the direction of the membership relation is determined based on whether the
+ * provided organization acts as `member` or `organization` in the provided
+ * membership.
+ * The exception is the HAS_RELATION_WITH role were all possibilities are
+ * returned irrelevant of whether the provided organization acts as `member` or
+ * `organization`.
+ *
  * @param {{@link MembershipModel}} membership - The membership for which to
  *     determine the appropriate classification codes.
  * @param {{@link OrganizationModel}} organization - The organization that is
  *     involved in the provided membership.
  * @returns {[string]} A list of classifications codes specifying the kinds of
  *     organizations that are allowed to act as the other organization in the
- *     membership with this organization. If this organization is not involved
- *     in the provided membership, the result is an empty list.
+ *     membership with the provided one. An empty list if the provided
+ *     membership has no role or the the provided organization is not involved
+ *     in the provided membership.
  */
 export default function getOppositeClassifications(membership, organization) {
-  let membershipRoleMap = allowedMembershipRelations.get(membership.role.id);
-
-  if (membershipRoleMap && organization) {
-    if (membership.member.id === organization.id) {
-      return membershipRoleMap
-        .filter((e) => e.members.includes(organization.classification.id))
-        .flatMap((e) => e.organizations);
-    }
-    if (membership.organization.id === organization.id) {
-      return membershipRoleMap
+  if (membership.role.id && organization) {
+    if (membership.role.id === MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id) {
+      const members = allowedHasRelationWithMemberships
         .filter((e) => e.organizations.includes(organization.classification.id))
         .flatMap((e) => e.members);
+      const organizations = allowedHasRelationWithMemberships
+        .filter((e) => e.members.includes(organization.classification.id))
+        .flatMap((e) => e.organizations);
+
+      return [...new Set([...members, ...organizations])];
+    } else {
+      let membershipRoleMap =
+        allowedMembershipRelations.get(membership.role.id) || [];
+
+      if (membership.member.id === organization.id) {
+        return membershipRoleMap
+          .filter((e) => e.members.includes(organization.classification.id))
+          .flatMap((e) => e.organizations);
+      }
+      if (membership.organization.id === organization.id) {
+        return membershipRoleMap
+          .filter((e) =>
+            e.organizations.includes(organization.classification.id),
+          )
+          .flatMap((e) => e.members);
+      }
     }
   }
 
