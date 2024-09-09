@@ -173,31 +173,25 @@ const allowedMembershipRelations = new Map([
  *     in the provided membership.
  */
 export default function getOppositeClassifications(membership, organization) {
-  if (membership.role.id && organization) {
-    if (membership.role.id === MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id) {
-      const members = allowedHasRelationWithMemberships
-        .filter((e) => e.organizations.includes(organization.classification.id))
-        .flatMap((e) => e.members);
-      const organizations = allowedHasRelationWithMemberships
-        .filter((e) => e.members.includes(organization.classification.id))
-        .flatMap((e) => e.organizations);
+  const membershipRoleMap =
+    allowedMembershipRelations.get(membership.role.id) || [];
 
+  if (membershipRoleMap && organization) {
+    const members = membershipRoleMap
+      .filter((e) => e.organizations.includes(organization.classification.id))
+      .flatMap((e) => e.members);
+    const organizations = membershipRoleMap
+      .filter((e) => e.members.includes(organization.classification.id))
+      .flatMap((e) => e.organizations);
+
+    if (membership.role.id === MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id) {
       return [...new Set([...members, ...organizations])];
     } else {
-      let membershipRoleMap =
-        allowedMembershipRelations.get(membership.role.id) || [];
-
       if (membership.member.id === organization.id) {
-        return membershipRoleMap
-          .filter((e) => e.members.includes(organization.classification.id))
-          .flatMap((e) => e.organizations);
+        return organizations;
       }
       if (membership.organization.id === organization.id) {
-        return membershipRoleMap
-          .filter((e) =>
-            e.organizations.includes(organization.classification.id),
-          )
-          .flatMap((e) => e.members);
+        return members;
       }
     }
   }
