@@ -16,13 +16,24 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
   get validationSchema() {
     const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({
-      // NOTE:The requested functionality was to *not* validate memberships of
-      // already existing organizations. When creating a new organization a
-      // mandatory membership is enforced by providing a `true` value for
-      // `creatingNewOrganization`.
+      // NOTE: The requested functionality was to *not* validate memberships of
+      // already existing organizations.
+      // 1. For existing organizations: memberships are not validated (optional).
+      // 2. For new organizations:
+      //    a. 'Vennootschappen' and 'Verenigingen' (corporations and associations):
+      //       memberships are optional.
+      //    b. All other types: memberships are mandatory.
+      // The creatingNewOrganization flag (set to true) triggers validation for new organizations.'
       memberships: Joi.when(Joi.ref('$creatingNewOrganization'), {
         is: Joi.exist().valid(true),
-        then: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
+        then: Joi.when('classification.id', {
+          is: Joi.exist().valid(
+            ...CorporationOtherCodeList,
+            ...AssociationOtherCodeList,
+          ),
+          then: validateHasManyOptional(),
+          otherwise: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
+        }),
         otherwise: validateHasManyOptional(),
       }),
     });
