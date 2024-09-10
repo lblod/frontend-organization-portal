@@ -62,8 +62,18 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   @action
   reallyRemoveMembership(membership) {
-    this.memberships.removeObject(membership);
-    membership.deleteRecord();
+    // Note, The `save` function below depends on the contents of the
+    // memberships array to persist the necessary changes:
+    // - do *not* remove any already persisted memberships from the array as
+    //   this will cause their deletion to "forgotten" in the `save` function.
+    // - do remove newly added memberships that have not been persisted yet.
+    //   Otherwise, they can result in failing validations or errors.
+    if (membership.isNew) {
+      this.memberships.removeObject(membership);
+      membership.destroyRecord();
+    } else {
+      membership.deleteRecord();
+    }
     this.removingFounder = false;
   }
 
