@@ -24,7 +24,7 @@ import {
   VlaamseGemeenschapscommissieCodeList,
 } from '../constants/Classification';
 import {
-  allowedfoundingMemberships,
+  allowedFoundingMemberships,
   allowedParticipationMemberships,
 } from '../constants/memberships';
 
@@ -174,7 +174,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   }
 
   get founderClassifications() {
-    return allowedfoundingMemberships
+    return allowedFoundingMemberships
       .filter((e) => e.organizations.includes(this.classification.id))
       .flatMap((e) => e.members);
   }

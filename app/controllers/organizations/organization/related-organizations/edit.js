@@ -5,6 +5,7 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { A } from '@ember/array';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
+import { allowedHasRelationWithMemberships } from 'frontend-organization-portal/constants/memberships';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditController extends Controller {
   @service router;
@@ -79,34 +80,44 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   @action
   updateMembershipRole(membership, roleLabel) {
-    // Remove any previously assigned relations
+    // Remove any previous assignments
     membership.member = null;
     membership.organization = null;
 
     // Find the role model matching the label
-    // Note: this assumes that each membership role has unique labels
+    // Note: this assumes that each different membership role has unique labels
     const roleModel = this.model.roles.find(
       (r) => r.opLabel === roleLabel || r.inverseOpLabel === roleLabel,
     );
     membership.role = roleModel;
 
-    // (Re-)assign the active organisation to the appropriate relation Note:
-    // when the label and inverse label are identical, this prioritises setting
-    // the active organisation as member. The exceptions are municipalities and
-    // central worship services which *currently* always act as organisation in
-    // memberships with the "has relation with" role.
     const currentOrganization = this.model.organization;
     if (
-      roleLabel === roleModel.opLabel &&
-      !(
-        membership.role.get('hasRelationWith') &&
-        (currentOrganization.isCentralWorshipService ||
-          currentOrganization.isMunicipality)
-      )
+      membership.role.get('id') !==
+      MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id
     ) {
-      membership.member = currentOrganization;
-    } else if (roleLabel === roleModel.inverseOpLabel) {
-      membership.organization = currentOrganization;
+      // Determine the correct assignment for the current organization based on
+      // "direction" of the label.  This implies that the user decides who
+      // becomes the `member` and `organization` by selecting the right label.
+      if (roleLabel === roleModel.opLabel) {
+        membership.member = currentOrganization;
+      } else if (roleLabel === roleModel.inverseOpLabel) {
+        membership.organization = currentOrganization;
+      }
+    } else {
+      // For "has relation with" memberships, assign the current organization
+      // according to the configuration of allowed relations.  For the user a
+      // "has a relation with" has no direction, we do enforce one to ensure
+      // consistent data.
+      let orgClasses = allowedHasRelationWithMemberships.flatMap(
+        (e) => e.organizations,
+      );
+      let currentOrgClass = currentOrganization.classification.get('id');
+      if (orgClasses.includes(currentOrgClass)) {
+        membership.organization = currentOrganization;
+      } else {
+        membership.member = currentOrganization;
+      }
     }
   }
 
@@ -118,31 +129,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   @dropTask
   *save(event) {
     event.preventDefault();
-
-    // In case the membership concerns a HAS_RELATION_WITH between a worship
-    // service and representative body, make sure the involved organizations
-    // are assigned to the correct side of the membership.
-    this.memberships = yield Promise.all(
-      this.memberships.map(async (membership) => {
-        if (
-          membership.role.get('id') ===
-            MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id &&
-          membership.organization.get('isRepresentativeBody') &&
-          membership.member.get('isWorshipService')
-        ) {
-          [membership.member, membership.organization] = [
-            await membership.organization,
-            await membership.member,
-          ];
-          return membership;
-        } else {
-          return membership;
-        }
-      }),
-    );
-    // Convert back to an EmberArray, otherwise edits performed after a failed
-    // validation cause errors.
-    this.memberships = A(this.memberships.map((e) => e));
 
     let organization = this.model.organization;
 

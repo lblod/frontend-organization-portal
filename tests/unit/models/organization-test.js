@@ -7,11 +7,13 @@ import {
   ApbCodeList,
   AssistanceZoneCodeList,
   CentralWorshipServiceCodeList,
+  DistrictCodeList,
   IGSCodeList,
   MunicipalityCodeList,
   OcmwAssociationCodeList,
   OCMWCodeList,
   PevaCodeList,
+  PevaMunicipalityCodeList,
   PevaProvinceCodeList,
   PoliceZoneCodeList,
   ProvinceCodeList,
@@ -460,22 +462,47 @@ module('Unit | Model | organization', function (hooks) {
       [
         CLASSIFICATION.MUNICIPALITY,
         [
+          ...OCMWCodeList,
+          ...ProvinceCodeList,
+          ...DistrictCodeList,
           ...AgbCodeList,
+          ...ApbCodeList,
           ...IGSCodeList,
           ...PoliceZoneCodeList,
           ...AssistanceZoneCodeList,
+          ...PevaMunicipalityCodeList,
         ],
       ],
       [
         CLASSIFICATION.PROVINCE,
         [
-          ...ApbCodeList,
           ...MunicipalityCodeList,
-          ...PevaProvinceCodeList,
           ...OCMWCodeList,
+          ...ApbCodeList,
+          ...AgbCodeList,
+          ...PoliceZoneCodeList,
+          ...AssistanceZoneCodeList,
+          ...PevaProvinceCodeList,
         ],
       ],
-      [CLASSIFICATION.AGB, [...ProvinceCodeList]],
+      [CLASSIFICATION.AGB, [...MunicipalityCodeList, ...ProvinceCodeList]],
+      [CLASSIFICATION.PROJECTVERENIGING, [...MunicipalityCodeList]],
+      [CLASSIFICATION.DIENSTVERLENENDE_VERENIGING, [...MunicipalityCodeList]],
+      [CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING, [...MunicipalityCodeList]],
+      [
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+        [...MunicipalityCodeList],
+      ],
+      [
+        CLASSIFICATION.POLICE_ZONE,
+        [...MunicipalityCodeList, ...ProvinceCodeList],
+      ],
+      [
+        CLASSIFICATION.ASSISTANCE_ZONE,
+        [...MunicipalityCodeList, ...ProvinceCodeList],
+      ],
+      [CLASSIFICATION.APB, [...ProvinceCodeList, ...MunicipalityCodeList]],
+      [CLASSIFICATION.OCMW, [...MunicipalityCodeList, ...ProvinceCodeList]],
       [
         CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
         [...WorshipServiceCodeList, ...RepresentativeBodyCodeList],
@@ -502,12 +529,26 @@ module('Unit | Model | organization', function (hooks) {
           'membership-role',
           MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
         );
-        const membership = this.store().createRecord('membership', {
+        const membershipAsOrganization = this.store().createRecord(
+          'membership',
+          {
+            role: role,
+            organization: model,
+          },
+        );
+
+        let result = model.getClassificationCodesForMembership(
+          membershipAsOrganization,
+        );
+
+        assert.deepEqual(result.sort(), classificationCodes.sort());
+
+        const membershipAsMember = this.store().createRecord('membership', {
           role: role,
-          organization: model,
+          member: model,
         });
 
-        const result = model.getClassificationCodesForMembership(membership);
+        result = model.getClassificationCodesForMembership(membershipAsMember);
 
         assert.deepEqual(result.sort(), classificationCodes.sort());
       });

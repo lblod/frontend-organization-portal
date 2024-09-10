@@ -147,16 +147,7 @@ export default class OrganizationModel extends AgentModel {
   }
 
   /**
-   * Get the list of organization's classification codes which can have the
-   * given membership relation with this organization. The direction of the
-   * membership relation is determined based on whether this organization acts
-   * as member or organization in the provided membership.
-   * @param {{@link MembershipModel}} membership - The membership for which to
-   *     determine the appropriate classification codes.
-   * @returns {[string]} A list of classifications codes specifying the kinds of
-   *     organizations that are allowed to act as the other organization in the
-   *     membership with this organization. If this organization is not involved
-   *     in the provided membership, the result is an empty list.
+   * @see {@link getOppositeClassifications}
    */
   @action
   getClassificationCodesForMembership(membership) {
