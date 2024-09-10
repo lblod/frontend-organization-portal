@@ -2,9 +2,13 @@
   <:title>Bevestig</:title>
   <:body>Weet je zeker dat je de relatie
     {{#if (eq @membership.member.id @organizationId)}}
-      "{{@membership.role.opLabel}}"
+      "{{@membership.member.abbName}}
+      {{@membership.role.opLabel}}
+      {{@membership.organization.abbName}}"
     {{else}}
-      "{{@membership.role.inverseOpLabel}}"
+      "{{@membership.organization.abbName}}
+      {{@membership.role.inverseOpLabel}}
+      {{@membership.member.abbName}}"
     {{/if}}
     wilt verwijderen?
   </:body>
