@@ -83,7 +83,7 @@ export const allowedParticipationMemberships = [
 // ```
 // means "an AGB can have as founding organisation a municipality" and "a
 // municipality can found an AGB".
-export const allowedfoundingMemberships = [
+export const allowedFoundingMemberships = [
   {
     organizations: [...AgbCodeList],
     members: [...MunicipalityCodeList],
@@ -172,7 +172,7 @@ const allowedMembershipRelations = new Map([
     MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id,
     allowedParticipationMemberships,
   ],
-  [MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id, allowedfoundingMemberships],
+  [MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id, allowedFoundingMemberships],
   [
     MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
     allowedHasRelationWithMemberships,
