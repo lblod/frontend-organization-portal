@@ -53,7 +53,7 @@ export default class MembershipModel extends AbstractValidationModel {
         //     ```
         //     someMembership.validate({creatingNewOrganization: true})
         //     ```
-        // - If this validation for use during editing: For OCMW associations
+        // - If this validation is used during editing: For OCMW associations
         //   and PEVAs a founding organisation is normally mandatory. But the
         //   available business data when onboarding them was incomplete in this
         //   respect. Therefore, we opted to relax this rule for the OCMW
@@ -134,5 +134,20 @@ export default class MembershipModel extends AbstractValidationModel {
         return this.role.get('inverseOpLabel');
       }
     }
+  }
+
+  /**
+   * Check whether this membership is equal to a given one. Two memberships are
+   * considered equal their respective organizatios, members, and roles have the
+   * same id.
+   * @param {MembershipModel} membership - The membership to compare with.
+   * @return True if this membership are equal, false otherwise.
+   */
+  equals(membership) {
+    return (
+      this.organization.id === membership.organization.id &&
+      this.member.id === membership.member.id &&
+      this.role.id === membership.role.id
+    );
   }
 }
