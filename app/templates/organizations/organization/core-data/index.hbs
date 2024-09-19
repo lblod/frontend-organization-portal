@@ -141,22 +141,21 @@
                 </Item>
               {{/if}}
               {{#if
-                (and
                   (or
                     @model.organization.isIgs
                     @model.organization.isOcmwAssociation
                     @model.organization.isPevaMunicipality
                     @model.organization.isPevaProvince
                   )
-                  @model.region.label
-                )
               }}
-                <Item>
-                  <:label>Regio</:label>
-                  <:content>
-                    {{@model.region.label}}
-                  </:content>
-                </Item>
+                {{#if @model.region.label}}
+                  <Item>
+                    <:label>Regio</:label>
+                    <:content>
+                      {{@model.region.label}}
+                    </:content>
+                  </Item>
+                {{/if}}
                 {{#if @model.organization.expectedEndDate}}
                   <Item>
                     <:label>Geplande einddatum</:label>
