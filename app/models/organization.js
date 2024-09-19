@@ -94,6 +94,38 @@ export default class OrganizationModel extends AgentModel {
   })
   memberships;
 
+  @hasMany('organization', {
+    inverse: 'isSubOrganizationOf',
+    async: true,
+    polymorphic: true,
+    as: 'organization',
+  })
+  subOrganizations;
+
+  @belongsTo('organization', {
+    inverse: 'subOrganizations',
+    async: true,
+    polymorphic: true,
+    as: 'organization',
+  })
+  isSubOrganizationOf;
+
+  @hasMany('organization', {
+    inverse: 'isAssociatedWith',
+    async: true,
+    polymorphic: true,
+    as: 'organization',
+  })
+  associatedOrganizations;
+
+  @belongsTo('organization', {
+    inverse: 'associatedOrganizations',
+    async: true,
+    polymorphic: true,
+    as: 'organization',
+  })
+  isAssociatedWith;
+
   @belongsTo('kbo-organization', {
     inverse: 'organization',
     async: true,
@@ -122,6 +154,10 @@ export default class OrganizationModel extends AgentModel {
       positions: validateHasManyOptional(),
       membershipsOfOrganizations: validateHasManyOptional(),
       memberships: validateHasManyOptional(),
+      subOrganizations: validateHasManyOptional(),
+      isSubOrganizationOf: validateBelongsToOptional(),
+      associatedOrganizations: validateHasManyOptional(),
+      isAssociatedWith: validateBelongsToOptional(),
       kboOrganization: validateBelongsToOptional(),
     });
   }
