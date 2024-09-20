@@ -159,6 +159,10 @@ export default class AdministrativeUnitModel extends OrganizationModel {
     return this._hasClassificationId(PevaProvinceCodeList);
   }
 
+  get isPeva() {
+    return this.isPevaMunicipality || this.isPevaProvince;
+  }
+
   get isVlaamseGemeenschapscommissie() {
     return this._hasClassificationId(VlaamseGemeenschapscommissieCodeList);
   }
