@@ -335,6 +335,54 @@ export default class OrganizationsNewController extends Controller {
     return [];
   }
 
+  async #setLegacyRelations() {
+    if (
+      this.municipality &&
+      (this.currentOrganizationModel.isAgb ||
+        this.currentOrganizationModel.isIgs ||
+        this.currentOrganizationModel.isPoliceZone ||
+        this.currentOrganizationModel.isAssistanceZone)
+    ) {
+      this.currentOrganizationModel.isSubOrganizationOf = this.municipality;
+    }
+
+    if (
+      this.province &&
+      (this.currentOrganizationModel.isApb ||
+        this.currentOrganizationModel.isPeva)
+    ) {
+      this.currentOrganizationModel.isSubOrganizationOf = this.province;
+    }
+
+    if (this.municipality && this.currentOrganizationModel.isApb) {
+      this.currentOrganizationModel.isAssociatedWith = this.municipality;
+    }
+
+    if (
+      this.centralWorshipService &&
+      this.currentOrganizationModel.isWorshipService
+    ) {
+      this.currentOrganizationModel.isSubOrganizationOf =
+        this.centralWorshipService;
+    }
+
+    if (
+      this.currentOrganizationModel.isCentralWorshipService &&
+      this.worshipServices
+    ) {
+      (await this.currentOrganizationModel.subOrganizations).push(
+        ...this.worshipServices,
+      );
+    }
+
+    if (
+      this.representativeBody &&
+      this.currentOrganizationModel.isWorshipAdministrativeUnit
+    ) {
+      this.currentOrganizationModel.isAssociatedWith = this.representativeBody;
+    }
+  }
+
   @dropTask
   *createOrganizationTask(event) {
     event.preventDefault();
@@ -453,6 +501,8 @@ export default class OrganizationsNewController extends Controller {
     }
 
     if (!this.hasValidationErrors) {
+      this.#setLegacyRelations();
+
       structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
       yield structuredIdentifierKBO.save();
       yield identifierKBO.save();
@@ -526,6 +576,12 @@ export default class OrganizationsNewController extends Controller {
       let membershipsOfOrganizationsSavePromises =
         this.membershipsOfOrganizations.map((membership) => membership.save());
       yield Promise.all(membershipsOfOrganizationsSavePromises);
+
+      if (this.worshipServices.length > 0) {
+        yield Promise.all(
+          this.worshipServices.map((service) => service.save()),
+        );
+      }
 
       const createRelationshipsEndpoint = `/construct-organization-relationships/${this.currentOrganizationModel.id}`;
       yield fetch(createRelationshipsEndpoint, {
