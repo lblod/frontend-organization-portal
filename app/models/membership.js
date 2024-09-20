@@ -150,8 +150,8 @@ export default class MembershipModel extends AbstractValidationModel {
 
   /**
    * Check whether this membership is equal to a given one. Two memberships are
-   * considered equal their respective organizatios, members, and roles have the
-   * same id.
+   * considered equal their respective organizations, members, and roles have
+   * the same id.
    * @param {MembershipModel} membership - The membership to compare with.
    * @return True if this membership are equal, false otherwise.
    */
