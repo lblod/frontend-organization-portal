@@ -136,10 +136,22 @@ export default class MembershipModel extends AbstractValidationModel {
     }
   }
 
+  get isHasRelationWithMembership() {
+    return this.role?.get('hasRelationWith');
+  }
+
+  get isFounderOfMembership() {
+    return this.role?.get('isFounderOf');
+  }
+
+  get isParticipatesMembership() {
+    return this.role?.get('participatesIn');
+  }
+
   /**
    * Check whether this membership is equal to a given one. Two memberships are
-   * considered equal their respective organizatios, members, and roles have the
-   * same id.
+   * considered equal their respective organizations, members, and roles have
+   * the same id.
    * @param {MembershipModel} membership - The membership to compare with.
    * @return True if this membership are equal, false otherwise.
    */
