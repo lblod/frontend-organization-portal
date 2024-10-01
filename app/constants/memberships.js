@@ -167,6 +167,32 @@ export const allowedHasRelationWithMemberships = [
   },
 ];
 
+/**
+ * Check whether the organization assignments in the given membership should be
+ * swapped in order become a valid "has a relation with" membership.
+ * The result of this function is only meaningful when applied to a membership
+ * - with the "has a relation with" role; and
+ * - there is an assignment of the involved organizations which constitutes a
+ *   relation according to {@link allowedHasRelationWithMemberships}.
+ * If either of these conditions is not satisfied, the result of this function
+ * should not be used.
+ * @param {{@link MembershipModel}} membership - the membership to be checked
+ * @returns {boolean} True if the `member` and `organization` should be
+ *     swapped, false otherwise.
+ */
+export function shouldSwapAssignments(membership) {
+  const organizationClass = membership.organization
+    .get('classification')
+    .get('id');
+  const memberClass = membership.member.get('classification').get('id');
+
+  return allowedHasRelationWithMemberships.some(
+    (elem) =>
+      elem.organizations.includes(memberClass) &&
+      elem.members.includes(organizationClass),
+  );
+}
+
 const allowedMembershipRelations = new Map([
   [
     MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id,
