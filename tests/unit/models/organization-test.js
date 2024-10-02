@@ -14,7 +14,6 @@ import {
   OCMWCodeList,
   PevaCodeList,
   PevaMunicipalityCodeList,
-  PevaProvinceCodeList,
   PoliceZoneCodeList,
   ProvinceCodeList,
   RepresentativeBodyCodeList,
@@ -482,7 +481,7 @@ module('Unit | Model | organization', function (hooks) {
           ...AgbCodeList,
           ...PoliceZoneCodeList,
           ...AssistanceZoneCodeList,
-          ...PevaProvinceCodeList,
+          ...PevaCodeList,
         ],
       ],
       [CLASSIFICATION.AGB, [...MunicipalityCodeList, ...ProvinceCodeList]],
@@ -515,6 +514,11 @@ module('Unit | Model | organization', function (hooks) {
         CLASSIFICATION.REPRESENTATIVE_BODY,
         [...WorshipServiceCodeList, ...CentralWorshipServiceCodeList],
       ],
+      [
+        CLASSIFICATION.PEVA_MUNICIPALITY,
+        [...MunicipalityCodeList, ...ProvinceCodeList],
+      ],
+      [CLASSIFICATION.PEVA_PROVINCE, [...ProvinceCodeList]],
     ].forEach(([cl, classificationCodes]) => {
       test(`it should allow a(n) ${cl.label} to have a relation with the correct organizations`, async function (assert) {
         const classification = this.store().createRecord(

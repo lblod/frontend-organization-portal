@@ -135,7 +135,6 @@ export const allowedHasRelationWithMemberships = [
     organizations: [...MunicipalityCodeList],
     members: [
       ...OCMWCodeList,
-      ...ProvinceCodeList,
       ...DistrictCodeList,
       ...AgbCodeList,
       ...ApbCodeList,
@@ -154,7 +153,7 @@ export const allowedHasRelationWithMemberships = [
       ...AgbCodeList,
       ...PoliceZoneCodeList,
       ...AssistanceZoneCodeList,
-      ...PevaProvinceCodeList,
+      ...PevaCodeList,
     ],
   },
   {
