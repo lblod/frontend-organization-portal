@@ -460,6 +460,102 @@ module('Unit | Model | membership', function (hooks) {
     });
   });
 
+  module('isHasRelationWithMembership', function () {
+    test('it should return truthy for a membership with the relation role', async function (assert) {
+      const role = this.store().createRecord('membership-role', {
+        id: MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+      });
+
+      const model = this.store().createRecord('membership', {
+        role: role,
+      });
+
+      assert.ok(model.isHasRelationWithMembership);
+    });
+
+    test('it should return falsy for a membership with another role', async function (assert) {
+      const role = this.store().createRecord('membership-role', {
+        id: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
+      });
+
+      const model = this.store().createRecord('membership', {
+        role: role,
+      });
+
+      assert.notOk(model.isHasRelationWithMembership);
+    });
+
+    test('it should return falsy for a membership without a role', async function (assert) {
+      const model = this.store().createRecord('membership', {});
+
+      assert.notOk(model.isHasRelationWithMembership);
+    });
+  });
+
+  module('isFounderOfMembership', function () {
+    test('it should return truthy for a membership with the founder role', async function (assert) {
+      const role = this.store().createRecord('membership-role', {
+        id: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
+      });
+
+      const model = this.store().createRecord('membership', {
+        role: role,
+      });
+
+      assert.ok(model.isFounderOfMembership);
+    });
+
+    test('it should return falsy for a membership with another role', async function (assert) {
+      const role = this.store().createRecord('membership-role', {
+        id: MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+      });
+
+      const model = this.store().createRecord('membership', {
+        role: role,
+      });
+
+      assert.notOk(model.isFounderOfMembership);
+    });
+
+    test('it should return falsy for a membership without a role', async function (assert) {
+      const model = this.store().createRecord('membership', {});
+
+      assert.notOk(model.isFounderOfMembership);
+    });
+  });
+
+  module('isParticipatesMembership', function () {
+    test('it should return truthy for a membership with the participates role', async function (assert) {
+      const role = this.store().createRecord('membership-role', {
+        id: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id,
+      });
+
+      const model = this.store().createRecord('membership', {
+        role: role,
+      });
+
+      assert.ok(model.isParticipatesMembership);
+    });
+
+    test('it should return falsy for a membership with another role', async function (assert) {
+      const role = this.store().createRecord('membership-role', {
+        id: MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+      });
+
+      const model = this.store().createRecord('membership', {
+        role: role,
+      });
+
+      assert.notOk(model.isParticipatesMembership);
+    });
+
+    test('it should return falsy for a membership without a role', async function (assert) {
+      const model = this.store().createRecord('membership', {});
+
+      assert.notOk(model.isParticipatesMembership);
+    });
+  });
+
   module('equals', function () {
     test('Membership equality is reflexive', function (assert) {
       const organization = this.store().createRecord('organization', {

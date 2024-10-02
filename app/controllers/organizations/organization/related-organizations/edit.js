@@ -5,7 +5,7 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { A } from '@ember/array';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
-import { allowedHasRelationWithMemberships } from 'frontend-organization-portal/constants/memberships';
+import { shouldSwapAssignments } from 'frontend-organization-portal/constants/memberships';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditController extends Controller {
   @service router;
@@ -91,33 +91,17 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     );
     membership.role = roleModel;
 
-    const currentOrganization = this.model.organization;
-    if (
-      membership.role.get('id') !==
-      MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id
-    ) {
-      // Determine the correct assignment for the current organization based on
-      // "direction" of the label.  This implies that the user decides who
-      // becomes the `member` and `organization` by selecting the right label.
-      if (roleLabel === roleModel.opLabel) {
-        membership.member = currentOrganization;
-      } else if (roleLabel === roleModel.inverseOpLabel) {
-        membership.organization = currentOrganization;
-      }
-    } else {
-      // For "has relation with" memberships, assign the current organization
-      // according to the configuration of allowed relations.  For the user a
-      // "has a relation with" has no direction, we do enforce one to ensure
-      // consistent data.
-      let orgClasses = allowedHasRelationWithMemberships.flatMap(
-        (e) => e.organizations,
-      );
-      let currentOrgClass = currentOrganization.classification.get('id');
-      if (orgClasses.includes(currentOrgClass)) {
-        membership.organization = currentOrganization;
-      } else {
-        membership.member = currentOrganization;
-      }
+    // Determine the correct assignment for the current organization based on
+    // "direction" of the label.  This implies that the user decides who
+    // becomes the `member` and `organization` by selecting the right label.
+    // Note, for memberships with the "has a relation with" role, the 'right'
+    // assignment depends on the classification of the other involved
+    // organization and it will be corrected, if necessary, upon saving the
+    // membership.
+    if (roleLabel === roleModel.opLabel) {
+      membership.member = this.model.organization;
+    } else if (roleLabel === roleModel.inverseOpLabel) {
+      membership.organization = this.model.organization;
     }
   }
 
@@ -131,7 +115,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     event.preventDefault();
 
     let organization = this.model.organization;
-
     yield organization.validate();
 
     let validationPromises = this.memberships.map((membership) =>
@@ -147,6 +130,35 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
       this.memberships = this.memberships.filter(
         (membership, index, memberships) =>
           index === memberships.findIndex((m) => membership.equals(m)),
+      );
+
+      // For "has relation with" memberships, assign the current organization
+      // according to the configuration of allowed relations. For the user a "has
+      // a relation with" has no direction, but we do enforce one to ensure
+      // consistent data.
+      // Notes:
+      // - The form ensures that the user cannot select organizations kinds
+      //   that would result in a disallowed relation. So at this point each
+      //   membership should have valid involved organizations, except that the
+      //   `member` and `organization` may need to be swapped.
+      // - Currently the membership validations only check whether required
+      //   values are present, not whether the memberships are correct allowed,
+      //   see notes in `membership.validationSchema`. If this changes any swap
+      //   should be performed validation.
+      this.memberships = yield Promise.all(
+        this.memberships.map(async (membership) => {
+          if (
+            membership.isHasRelationWithMembership &&
+            shouldSwapAssignments(membership) &&
+            membership.isNew
+          ) {
+            [membership.member, membership.organization] = [
+              await membership.organization,
+              await membership.member,
+            ];
+          }
+          return membership;
+        }),
       );
 
       let savePromises = this.memberships.map((membership) => {
