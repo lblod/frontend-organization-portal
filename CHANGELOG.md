@@ -1,4 +1,13 @@
 
+
+## v1.27.1-0 (2024-10-31)
+
+#### :bug: Bug Fix
+* [#656](https://github.com/lblod/frontend-organization-portal/pull/656) fix: filter duplicate worship mandatories in route ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
 ## v1.27.0 (2024-08-31)
 
 #### :rocket: Enhancement
