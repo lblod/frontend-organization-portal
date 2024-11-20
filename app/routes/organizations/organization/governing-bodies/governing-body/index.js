@@ -49,7 +49,7 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyIndexR
     // without. This can be removed again once the data is cleaned up.
     memberMandatories = memberMandatories.filter(
       (mandatory, index, memberMandatories) =>
-        index === memberMandatories.findIndex((m) => mandatory.id === m.id)
+        index === memberMandatories.findIndex((m) => mandatory.id === m.id),
     );
 
     let otherMandatories = await this.store.query('mandatory', {
@@ -65,7 +65,7 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyIndexR
     // without. This can be removed again once the data is cleaned up.
     otherMandatories = otherMandatories.filter(
       (mandatory, index, otherMandatories) =>
-        index === otherMandatories.findIndex((m) => mandatory.id === m.id)
+        index === otherMandatories.findIndex((m) => mandatory.id === m.id),
     );
 
     return {

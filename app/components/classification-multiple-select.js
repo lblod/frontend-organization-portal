@@ -80,6 +80,9 @@ export default class ClassificationMultipleSelectComponent extends Component {
     const codes = yield this.store.query('organization-classification-code', {
       'filter[:id:]': allowedIds.join(),
       sort: 'label',
+      page: {
+        size: allowedIds.length,
+      },
     });
 
     // Auto-selects the type if there is only one option
