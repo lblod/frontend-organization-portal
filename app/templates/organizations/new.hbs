@@ -370,12 +370,7 @@
                 }}
                   <Item
                     @labelFor="related-gemeente"
-                    @required={{(or
-                      this.currentOrganizationModel.isAgb
-                      this.currentOrganizationModel.isIgs
-                      this.currentOrganizationModel.isPoliceZone
-                      this.currentOrganizationModel.isAssistanceZone
-                    )}}
+                    @required={{or this.currentOrganizationModel.isAgb this.currentOrganizationModel.isIgs this.currentOrganizationModel.isPoliceZone this.currentOrganizationModel.isAssistanceZone}}
                     @errorMessage={{this.municipalityError}}
                   >
                     <:label>Gemeente</:label>
@@ -476,7 +471,7 @@
                         <ProvinceOrganizationSelect
                           @selected={{this.province}}
                           @selectedMunicipality={{this.municipality}}
-                          @allowClear={{(not this.municipality)}}
+                          @allowClear={{not this.municipality}}
                           @onChange={{this.setProvince}}
                           @error={{hasError}}
                           @id="related-province"

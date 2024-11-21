@@ -64,10 +64,7 @@
                   <:content as |hasError|>
                     <TrimInput
                       @width="block"
-                      @disabled={{(or
-                        @model.organization.isMunicipality
-                        @model.organization.isProvince
-                      )}}
+                      @disabled={{or @model.organization.isMunicipality @model.organization.isProvince}}
                       @value={{@model.organization.legalName}}
                       @onUpdate={{this.setNames}}
                       @error={{hasError}}
