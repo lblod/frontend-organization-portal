@@ -1,45 +1,45 @@
 // SETTINGS: Project settings and variables
-@import '@appuniversum/ember-appuniversum/styles/a-settings';
+@import "@appuniversum/ember-appuniversum/styles/a-settings";
 
 // TOOLS: Mixins
-@import '@appuniversum/ember-appuniversum/styles/a-tools';
+@import "@appuniversum/ember-appuniversum/styles/a-tools";
 
 // GENERIC: Reset, global box-sizing and font-styles
-@import '@appuniversum/ember-appuniversum/styles/a-generic';
+@import "@appuniversum/ember-appuniversum/styles/a-generic";
 
 // ELEMENTS: Plain html tag styling
-@import '@appuniversum/ember-appuniversum/styles/a-elements';
+@import "@appuniversum/ember-appuniversum/styles/a-elements";
 
 // OBJECTS: OOCSS unstyled objects (namespace: '.au-o-...')
-@import '@appuniversum/ember-appuniversum/styles/a-objects';
+@import "@appuniversum/ember-appuniversum/styles/a-objects";
 
 // COMPONENTS: Components (namespace: '.au-c-...')
-@import '@appuniversum/ember-appuniversum/styles/a-components';
-@import 'components/cards';
-@import 'components/sidebar-container';
-@import 'components/table-message';
-@import 'components/c-rich-text-editor';
+@import "@appuniversum/ember-appuniversum/styles/a-components";
+@import "components/cards";
+@import "components/sidebar-container";
+@import "components/table-message";
+@import "components/c-rich-text-editor";
 
 // PLUGINS
-@import '@appuniversum/ember-appuniversum/styles/a-plugins';
+@import "@appuniversum/ember-appuniversum/styles/a-plugins";
 
 // UTILITIES: Single function helper classes (namespace: '.au-u-...')
-@import '@appuniversum/ember-appuniversum/styles/a-utilities';
+@import "@appuniversum/ember-appuniversum/styles/a-utilities";
 
 // ember-rdfa-editor styles
 // TODO: `@import "ember-rdfa-editor";` imports annotation styles which are _huge_ when compiled
 // so we only import the base component styles for now.
-@import 'ember-rdfa-editor/c-container';
-@import 'ember-rdfa-editor/c-dropdown';
-@import 'ember-rdfa-editor/c-content';
-@import 'ember-rdfa-editor/c-editor';
-@import 'ember-rdfa-editor/c-editor-hints';
-@import 'ember-rdfa-editor/c-icon';
-@import 'ember-rdfa-editor/c-toast';
-@import 'ember-rdfa-editor/c-toolbar';
-@import 'ember-rdfa-editor/c-table';
-@import 'ember-rdfa-editor/c-ember-node';
-@import 'ember-rdfa-editor/shame';
+@import "ember-rdfa-editor/c-container";
+@import "ember-rdfa-editor/c-dropdown";
+@import "ember-rdfa-editor/c-content";
+@import "ember-rdfa-editor/c-editor";
+@import "ember-rdfa-editor/c-editor-hints";
+@import "ember-rdfa-editor/c-icon";
+@import "ember-rdfa-editor/c-toast";
+@import "ember-rdfa-editor/c-toolbar";
+@import "ember-rdfa-editor/c-table";
+@import "ember-rdfa-editor/c-ember-node";
+@import "ember-rdfa-editor/shame";
 
 // TEMPORARY HACKS AND QUICKFIXES
-@import 'shame';
+@import "shame";
