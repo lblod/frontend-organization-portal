@@ -36,9 +36,9 @@
           {{#let membership.error.role.message as |errorMessage|}}
             <MembershipRoleSelect
               @disabled={{not membership.isNew}}
-              @selected={{(fn @displayRoleLabel membership)}}
+              @selected={{fn @displayRoleLabel membership}}
               @options={{@model.roles}}
-              @onChange={{(fn @updateMembershipRole membership)}}
+              @onChange={{fn @updateMembershipRole membership}}
               @error={{errorMessage}}
               @id="membership-role"
             />
@@ -63,9 +63,7 @@
                 @selected={{membership.organization}}
                 @error={{errorMessage}}
                 @onChange={{fn (mut membership.organization)}}
-                @classificationCodes={{(@model.organization.getClassificationCodesForMembership
-                  membership
-                )}}
+                @classificationCodes={{@model.organization.getClassificationCodesForMembership membership}}
                 @limitToActiveOrganizations={{true}}
               />
               {{#if errorMessage}}
@@ -79,9 +77,7 @@
                 @selected={{membership.member}}
                 @onChange={{fn (mut membership.member)}}
                 @error={{errorMessage}}
-                @classificationCodes={{(@model.organization.getClassificationCodesForMembership
-                  membership
-                )}}
+                @classificationCodes={{@model.organization.getClassificationCodesForMembership membership}}
                 @limitToActiveOrganizations={{true}}
               />
               {{#if errorMessage}}

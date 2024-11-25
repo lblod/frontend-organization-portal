@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-runloop */
+// TODO: remove runloop usage.
 import Component from '@glimmer/component';
 import { scheduleOnce, later } from '@ember/runloop';
 import { action } from '@ember/object';

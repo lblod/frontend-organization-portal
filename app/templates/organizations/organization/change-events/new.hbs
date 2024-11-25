@@ -176,7 +176,7 @@
                 @model.changeEvent.originalOrganizations
                 as |organization|
               }}
-                <Item @required={{(eq @model.organization organization)}}>
+                <Item @required={{eq @model.organization organization}}>
                   <:label>Betrokken organisatie</:label>
                   <:content>
                     <div class="flex items-center">
@@ -225,10 +225,7 @@
                 )
               }}
                 <Item
-                  @required={{(and
-                    @model.changeEvent.isMergerChangeEvent
-                    (lt @model.changeEvent.originalOrganizations.length 2)
-                  )}}
+                  @required={{and @model.changeEvent.isMergerChangeEvent (lt @model.changeEvent.originalOrganizations.length 2)}}
                   @errorMessage={{@model.changeEvent.error.originalOrganizations.message}}
                 >
                   <:label>Betrokken organisatie</:label>
