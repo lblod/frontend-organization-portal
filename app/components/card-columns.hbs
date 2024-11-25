@@ -1,14 +1,14 @@
 <div class="au-c-card-columns" ...attributes>
   <div class="au-c-card-columns__column">
     {{#if @itemComponent}}
-      {{yield (component @itemComponent) to="left"}}
+      {{yield @itemComponent to="left"}}
     {{else}}
       {{yield to="left"}}
     {{/if}}
   </div>
   <div class="au-c-card-columns__column">
     {{#if @itemComponent}}
-      {{yield (component @itemComponent) to="right"}}
+      {{yield @itemComponent to="right"}}
     {{else}}
       {{yield to="right"}}
     {{/if}}

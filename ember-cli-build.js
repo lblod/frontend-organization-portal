@@ -4,23 +4,35 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
-    // Add options here
     'ember-simple-auth': {
       useSessionSetupMethod: true,
+    },
+    'ember-fetch': {
+      preferNative: true,
+      nativePromise: true,
     },
     autoprefixer: {
       enabled: true,
       cascade: true,
       sourcemap: true,
     },
-    babel: {
-      plugins: [require.resolve('ember-auto-import/babel-plugin')],
-    },
-    // Disable chunk css fingerprinting until the config is included in ember-auto-import: https://github.com/ef4/ember-auto-import/pull/496
-    fingerprint: {
-      exclude: ['assets/chunk.*.css'],
-    },
   });
 
-  return app.toTree();
+  const { Webpack } = require('@embroider/webpack');
+  return require('@embroider/compat').compatBuild(app, Webpack, {
+    staticAddonTestSupportTrees: true,
+    staticAddonTrees: true,
+    staticHelpers: true,
+    staticModifiers: true,
+    staticComponents: true,
+    staticEmberSource: true,
+    skipBabel: [
+      {
+        package: 'qunit',
+      },
+    ],
+    packagerOptions: {
+      webpackConfig: require('@lblod/ember-rdfa-editor/webpack-config'),
+    },
+  });
 };
