@@ -26,13 +26,6 @@ export default class OrganizationsOrganizationChangeEventsDetailsRoute extends R
       },
     );
 
-    // resolve the first resulting organization here as workaround
-    // the get helper does not work with async relationships in the template
-    // https://github.com/emberjs/ember.js/issues/20510
-    const firstResultingOrganization = (
-      await changeEvent.resultingOrganizations
-    )[0];
-
     let currentChangeEventResult = await findCurrentChangeEventResult(
       organization,
       changeEvent,
@@ -42,7 +35,6 @@ export default class OrganizationsOrganizationChangeEventsDetailsRoute extends R
       organization,
       changeEvent,
       currentChangeEventResult,
-      firstResultingOrganization,
     };
   }
 }

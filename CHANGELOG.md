@@ -1,5 +1,14 @@
 
 
+
+## v1.28.0 (2024-12-13)
+
+#### :rocket: Enhancement
+* [#661](https://github.com/lblod/frontend-organization-portal/pull/661) feat: display all resulting organisations for merger change events ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
 ## v1.27.1 (2024-11-05)
 
 #### :bug: Bug Fix

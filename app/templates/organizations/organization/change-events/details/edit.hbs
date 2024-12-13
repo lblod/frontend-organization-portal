@@ -163,12 +163,22 @@
             </:left>
             <:right as |Item|>
               {{#if @model.changeEvent.isMergerChangeEvent}}
-                <Item>
-                  <:label>Resulterende organisatie</:label>
-                  <:content>
-                    {{@model.firstResultingOrganization.name}}
-                  </:content>
-                </Item>
+                {{#each
+                  @model.changeEvent.resultingOrganizations
+                  as |organization|
+                }}
+                  <Item>
+                    <:label>Resulterende organisatie</:label>
+                    <:content>
+                      <AuLink
+                        @route="organizations.organization"
+                        @model={{organization.id}}
+                      >
+                        {{organization.name}}
+                      </AuLink>
+                    </:content>
+                  </Item>
+                {{/each}}
                 <Item>
                   <:label>Resulterende status</:label>
                   <:content>
