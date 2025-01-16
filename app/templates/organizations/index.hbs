@@ -42,7 +42,7 @@
               @id="filter-province"
             />
           </div>
-          {{#unless this.modelHasOnlyWorshipOrganizations}}
+          {{#if this.currentSession.hasUnitRole}}
             <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
               <AuLabel for="organization-type">Type organisatie</AuLabel>
               <OrganizationTypeMultipleSelect
@@ -53,7 +53,7 @@
                 @id="organization-type"
               />
             </div>
-          {{/unless}}
+          {{/if}}
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="classification">Type</AuLabel>
             <ClassificationMultipleSelect
@@ -65,7 +65,7 @@
               @id="classification"
             />
           </div>
-          {{#if this.modelHasOnlyWorshipOrganizations}}
+          {{#if this.currentSession.hasWorshipRole}}
             <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
               <AuLabel for="recognized-worship-types">Soort eredienst</AuLabel>
               <RecognizedWorshipTypeSelect
@@ -137,7 +137,7 @@
             @currentSorting={{this.sort}}
             @label="Type"
           />
-          {{#if this.modelHasOnlyWorshipOrganizations}}
+          {{#if this.currentSession.hasWorshipRole}}
             <AuDataTableThSortable
               @field="recognized_worship_type_name"
               @currentSorting={{this.sort}}
@@ -188,7 +188,7 @@
               </AuLink>
             </td>
             <td>{{organization.classification_name}}</td>
-            {{#if this.modelHasOnlyWorshipOrganizations}}
+            {{#if this.currentSession.hasWorshipRole}}
               <td>{{organization.recognized_worship_type_name}}</td>
             {{/if}}
             <td>{{organization.province}}</td>
