@@ -21,7 +21,7 @@ export default class OrganizationsOrganizationExecutivesRoute extends Route {
       'filter[board-position][governing-bodies][is-time-specialization-of][administrative-unit][:id:]':
         organizationId,
       sort: params.sort,
-      page: { number: params.number, size: params.size },
+      page: { number: params.page, size: params.size },
     });
 
     return {
