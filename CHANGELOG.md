@@ -2,6 +2,15 @@
 
 
 
+
+## v1.28.2 (2025-01-21)
+
+#### :bug: Bug Fix
+* [#663](https://github.com/lblod/frontend-organization-portal/pull/663) [OP-3536] Fix some pagination issues ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 1
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
 ## v1.28.1 (2025-01-21)
 
 #### :bug: Bug Fix
