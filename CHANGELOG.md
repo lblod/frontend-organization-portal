@@ -1,6 +1,15 @@
 
 
 
+
+## v1.28.1 (2025-01-21)
+
+#### :bug: Bug Fix
+* [#662](https://github.com/lblod/frontend-organization-portal/pull/662) fix: determine filters on organisations page based on user's role ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
 ## v1.28.0 (2024-12-13)
 
 #### :rocket: Enhancement
