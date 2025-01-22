@@ -3,6 +3,15 @@
 
 
 
+
+## v1.28.3 (2025-01-22)
+
+#### :bug: Bug Fix
+* [#664](https://github.com/lblod/frontend-organization-portal/pull/664) [OP-3538]: Revert fixes for positions tables ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
 ## v1.28.2 (2025-01-21)
 
 #### :bug: Bug Fix
