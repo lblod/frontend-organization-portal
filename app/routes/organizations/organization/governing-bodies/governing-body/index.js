@@ -44,14 +44,6 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyIndexR
       },
     });
 
-    // NOTE (29/10/24): Workaround for the data issue that for some mandatories
-    // their name is stored twice, once with a language tag and once
-    // without. This can be removed again once the data is cleaned up.
-    memberMandatories = memberMandatories.filter(
-      (mandatory, index, memberMandatories) =>
-        index === memberMandatories.findIndex((m) => mandatory.id === m.id),
-    );
-
     let otherMandatories = await this.store.query('mandatory', {
       ...query,
       // mu-cl-resources doesn't support the inverse of `:id:` yet,
@@ -59,14 +51,6 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyIndexR
       // https://github.com/mu-semtech/mu-cl-resources/issues/22
       ['filter[mandate][role-board][:id:]']: MANDATARIES_ROLES.join(),
     });
-
-    // NOTE (29/10/24): Workaround for the data issue that for some mandatories
-    // their name is stored twice, once with a language tag and once
-    // without. This can be removed again once the data is cleaned up.
-    otherMandatories = otherMandatories.filter(
-      (mandatory, index, otherMandatories) =>
-        index === otherMandatories.findIndex((m) => mandatory.id === m.id),
-    );
 
     return {
       organization,

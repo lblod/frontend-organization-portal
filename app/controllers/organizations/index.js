@@ -2,10 +2,11 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class OrganizationsIndexController extends Controller {
   @service router;
+  @service currentSession;
+
   queryParams = [
     'page',
     'size',
@@ -62,19 +63,6 @@ export default class OrganizationsIndexController extends Controller {
 
   get hasErrored() {
     return this.model.loadOrganizationsTaskInstance.isError;
-  }
-
-  get modelHasOnlyWorshipOrganizations() {
-    if (this.organizations && this.organizations.length) {
-      return !this.organizations.slice().some((org) => {
-        return (
-          org.classification_id !== CLASSIFICATION.WORSHIP_SERVICE.id &&
-          org.classification_id !== CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id &&
-          org.classification_id !== CLASSIFICATION.REPRESENTATIVE_BODY.id
-        );
-      });
-    }
-    return false;
   }
 
   @action

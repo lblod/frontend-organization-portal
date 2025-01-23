@@ -1,6 +1,33 @@
 
 
 
+
+
+
+## v1.28.3 (2025-01-22)
+
+#### :bug: Bug Fix
+* [#664](https://github.com/lblod/frontend-organization-portal/pull/664) [OP-3538]: Revert fixes for positions tables ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
+## v1.28.2 (2025-01-21)
+
+#### :bug: Bug Fix
+* [#663](https://github.com/lblod/frontend-organization-portal/pull/663) [OP-3536] Fix some pagination issues ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 1
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+## v1.28.1 (2025-01-21)
+
+#### :bug: Bug Fix
+* [#662](https://github.com/lblod/frontend-organization-portal/pull/662) fix: determine filters on organisations page based on user's role ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
 ## v1.28.0 (2024-12-13)
 
 #### :rocket: Enhancement
