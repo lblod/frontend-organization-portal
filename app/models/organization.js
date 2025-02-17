@@ -126,6 +126,19 @@ export default class OrganizationModel extends AgentModel {
     });
   }
 
+  get kboNumber() {
+    const identifiers = this.identifiers.content;
+
+    for (const identifier of identifiers) {
+      const structuredIdentifier = identifier.get('structuredIdentifier');
+      if (identifier.idName === 'KBO nummer') {
+        return structuredIdentifier.get('localId');
+      }
+    }
+
+    return null;
+  }
+
   get abbName() {
     return this.legalName ?? this.kboOrganization?.get('name') ?? this.name;
   }
