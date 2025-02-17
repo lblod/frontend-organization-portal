@@ -1,7 +1,10 @@
 import { attr } from '@ember-data/model';
 import Joi from 'joi';
 import WorshipAdministrativeUnitModel from './worship-administrative-unit';
-import { validateStringOptional } from '../validators/schema';
+import {
+  validateHasManyOptional,
+  validateStringOptional,
+} from '../validators/schema';
 import { WorshipServiceCodeList } from '../constants/Classification';
 import { WITH_CENTRAL_WORSHIP_SERVICE } from './recognized-worship-type';
 
@@ -21,6 +24,26 @@ export default class WorshipServiceModel extends WorshipAdministrativeUnitModel 
     return super.validationSchema.append({
       denomination: validateStringOptional(),
       crossBorder: Joi.boolean(),
+      involvements: Joi.when(Joi.ref('$involvementsPercentage'), {
+        is: Joi.exist().valid(true),
+        then: Joi.array().external(async (_value, helpers) => {
+          console.log('hello');
+          const involvements = await this.involvements;
+
+          const sumPercentages = involvements.reduce(
+            (percentageAcc, involvement) =>
+              percentageAcc + Number(involvement.percentage),
+            0,
+          );
+
+          if (Number.isNaN(sumPercentages) || sumPercentages !== 100) {
+            return helpers.message(
+              'Het totaal van alle percentages moet gelijk zijn aan 100',
+            );
+          }
+        }),
+        otherwise: validateHasManyOptional(),
+      }),
     });
   }
 
