@@ -24,6 +24,7 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
   reset() {
     this.deleteAllUnsavedLocalInvolvements();
     this.model.involvements.map((involvement) => involvement.reset());
+    this.model.organization.reset();
   }
 
   deleteAllUnsavedLocalInvolvements() {
