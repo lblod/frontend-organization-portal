@@ -84,12 +84,6 @@ module('Unit | Model | local involvement', function (hooks) {
           percentage,
         });
 
-        const getOtherLocalInvolvementsStub = sinon.stub(
-          model,
-          'getOtherLocalInvolvements',
-        );
-        getOtherLocalInvolvementsStub.resolves([]);
-
         const isValid = await model.validate();
 
         assert.false(isValid);
