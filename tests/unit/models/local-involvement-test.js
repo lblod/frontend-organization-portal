@@ -66,6 +66,7 @@ module('Unit | Model | local involvement', function (hooks) {
 
     [
       ['0', 'Het percentage moet groter zijn dan 0'],
+      ['101', 'Het percentage mag niet groter zijn dan 100'],
       ['not a number', 'Vul het percentage in'],
       ['', 'Vul het percentage in'],
       [undefined, 'Vul het percentage in'],
