@@ -131,8 +131,8 @@
             <td>
               {{#let
                 (or
-                  @model.organization.error.involvements.message
                   involvement.error.percentage.message
+                  @model.organization.error.involvements.message
                 )
                 as |errorMessage|
               }}
