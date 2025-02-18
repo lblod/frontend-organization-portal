@@ -1,5 +1,7 @@
 import { module, test } from 'qunit';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
+import { RECOGNIZED_WORSHIP_TYPE } from 'frontend-organization-portal/models/recognized-worship-type';
 
 import { setupTest } from 'frontend-organization-portal/tests/helpers';
 
@@ -110,6 +112,58 @@ module('Unit | Model | worship service', function (hooks) {
         organizationStatus: { message: 'Selecteer een optie' },
         recognizedWorshipType: { message: 'Selecteer een optie' },
       });
+    });
+
+    test('it validates the sum of the local involvements percentages', async function (assert) {
+      const classification = this.store().createRecord(
+        'administrative-unit-classification-code',
+        CLASSIFICATION.WORSHIP_SERVICE,
+      );
+      const recognizedWorshipType = this.store().createRecord(
+        'recognized-worship-type',
+        RECOGNIZED_WORSHIP_TYPE.ROMAN_CATHOLIC,
+      );
+      const organizationStatus = this.store().createRecord(
+        'organization-status-code',
+        ORGANIZATION_STATUS.ACTIVE,
+      );
+      const localInvolvementA = this.store().createRecord('local-involvement', {
+        percentage: 51,
+      });
+      const localInvolvementB = this.store().createRecord('local-involvement', {
+        percentage: 50,
+      });
+      const worshipService = this.store().createRecord('worship-service', {
+        legalName: 'Foo',
+        classification,
+        organizationStatus,
+        recognizedWorshipType,
+        involvements: [localInvolvementA, localInvolvementB],
+      });
+
+      let isValid = await worshipService.validate();
+
+      assert.true(
+        isValid,
+        "it doesn't validate the involvement percentages by default",
+      );
+
+      isValid = await worshipService.validate({
+        involvementsPercentage: true,
+      });
+
+      assert.false(isValid);
+      assert.propContains(worshipService.error, {
+        involvements: {
+          message: 'Het totaal van alle percentages moet gelijk zijn aan 100',
+        },
+      });
+
+      localInvolvementA.percentage = 50;
+      isValid = await worshipService.validate({
+        involvementsPercentage: true,
+      });
+      assert.true(isValid);
     });
   });
 
