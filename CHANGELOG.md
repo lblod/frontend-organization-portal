@@ -1,8 +1,103 @@
+## v1.29.0-0 (2025-02-18)
+
+#### :rocket: Enhancement
+* [632](https://github.com/lblod/frontend-organization-portal/pull/632) feature: related organizations as memberships ([@mirdono](https://github.com/mirdono))
+
+#### :bug: Bug Fix
+* [#657](https://github.com/lblod/frontend-organization-portal/pull/657) [OP-3384] Fix an issue with the "Type" filter on the organizations page ([@Windvis](https://github.com/Windvis))
+* [#654](https://github.com/lblod/frontend-organization-portal/pull/654) fix: corrections to allowed "has a relation with" memberships ([@mirdono](https://github.com/mirdono))
+* [#653](https://github.com/lblod/frontend-organization-portal/pull/653) fix: ensure correct assignment of involved organizations for "has a relation with" memberships ([@mirdono](https://github.com/mirdono))
+* [#652](https://github.com/lblod/frontend-organization-portal/pull/652) fix: 'meldt' typo ([@wolfderechter](https://github.com/wolfderechter))
+* [651](https://github.com/lblod/frontend-organization-portal/pull/651) fix: show expected enddate ([@wolfderechter](https://github.com/wolfderechter))
+* [#650](https://github.com/lblod/frontend-organization-portal/pull/650) fix: correctly remove founding relations between organisations ([@mirdono](https://github.com/mirdono))
+* [#648](https://github.com/lblod/frontend-organization-portal/pull/648) fix: prevent the deletion of a membership being forgotten ([@mirdono](https://github.com/mirdono))
+* [#646](https://github.com/lblod/frontend-organization-portal/pull/646) fix: ensure `memberships` is an EmberArray while it can be edited ([@mirdono](https://github.com/mirdono))
+* [#645](https://github.com/lblod/frontend-organization-portal/pull/645) fix: do not save duplicate relationships between organizations ([@mirdono](https://github.com/mirdono))
+* [644](https://github.com/lblod/frontend-organization-portal/pull/644) fix: loosen up membership validations for vereniging en vennootschap ([@wolfderechter](https://github.com/wolfderechter))
+* [#643](https://github.com/lblod/frontend-organization-portal/pull/643) fix: corrected the possible relationships between provinces and other organisations ([@mirdono](https://github.com/mirdono))
+* [#642](https://github.com/lblod/frontend-organization-portal/pull/642) fix: remove membership from array before destroying record ([@mirdono](https://github.com/mirdono))
+* [639](https://github.com/lblod/frontend-organization-portal/pull/639) [OP-3352] Fix an issue where the change event select options weren't always properly loaded ([@Windvis](https://github.com/Windvis))
+* [634](https://github.com/lblod/frontend-organization-portal/pull/634) [OP-3325] Add whitespace between each alternative name item ([@Windvis](https://github.com/Windvis))
+8 [633](https://github.com/lblod/frontend-organization-portal/pull/633) [OP-3327] Use "Organisatie" as the title in the "KBO gegevens" tab ([@Windvis](https://github.com/Windvis))
+
+#### :house: Internal
+* [#655](https://github.com/lblod/frontend-organization-portal/pull/655) chore: enable contact data editing in development environment ([@mirdono](https://github.com/mirdono))
+* [#660](https://github.com/lblod/frontend-organization-portal/pull/660) [OP-3487] Update to Ember v5.12 ([@Windvis](https://github.com/Windvis))
+* [#659](https://github.com/lblod/frontend-organization-portal/pull/659) [OP-3486] Enable route splitting ([@Windvis](https://github.com/Windvis))
+* [#658](https://github.com/lblod/frontend-organization-portal/pull/658) [OP-3485] Enable embroider ([@Windvis](https://github.com/Windvis))
+* [#647](https://github.com/lblod/frontend-organization-portal/pull/647) refactor: "has a relationship with" memberships code ([@mirdono](https://github.com/mirdono))
+* [#649](https://github.com/lblod/frontend-organization-portal/pull/649) fix: add embroider/macros as dependency ([@mirdono](https://github.com/mirdono))
+* [#638](https://github.com/lblod/frontend-organization-portal/pull/638) [OP-3042] Ember v5 update ([@Windvis](https://github.com/Windvis))
+* [637](https://github.com/lblod/frontend-organization-portal/pull/637) [OP-3042] Resolve ember v4 deprecations ([@Windvis](https://github.com/Windvis))
+* [636](https://github.com/lblod/frontend-organization-portal/pull/636) [OP-3343] Appuniversum v3 update ([@Windvis](https://github.com/Windvis))
+* [635](https://github.com/lblod/frontend-organization-portal/pull/635) [OP-3334] Dependency maintenance ([@Windvis](https://github.com/Windvis))
+* [631](https://github.com/lblod/frontend-organization-portal/pull/631) refactor: unify related organizations components ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 3
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+- [@wolfderechter](https://github.com/wolfderechter))
 
 
+## v1.28.3 (2025-01-22)
+
+#### :bug: Bug Fix
+* [#664](https://github.com/lblod/frontend-organization-portal/pull/664) [OP-3538]: Revert fixes for positions tables ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
 
 
+## v1.28.2 (2025-01-21)
 
+#### :bug: Bug Fix
+* [#663](https://github.com/lblod/frontend-organization-portal/pull/663) [OP-3536] Fix some pagination issues ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 1
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+
+## v1.28.1 (2025-01-21)
+
+#### :bug: Bug Fix
+* [#662](https://github.com/lblod/frontend-organization-portal/pull/662) fix: determine filters on organisations page based on user's role ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
+
+## v1.28.0 (2024-12-13)
+
+#### :rocket: Enhancement
+* [#661](https://github.com/lblod/frontend-organization-portal/pull/661) feat: display all resulting organisations for merger change events ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 2
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
+
+## v1.27.1 (2024-11-05)
+
+#### :bug: Bug Fix
+* [#656](https://github.com/lblod/frontend-organization-portal/pull/656) fix: filter duplicate worship mandatories in route ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 3
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
+
+## v1.27.0 (2024-08-31)
+
+#### :rocket: Enhancement
+* [#640](https://github.com/lblod/frontend-organization-portal/pull/640) feat: add Vlaamse Gemeenschapscommissie as organisation ([@mirdono](https://github.com/mirdono))
+
+#### :bug: Bug Fix
+* [#641](https://github.com/lblod/frontend-organization-portal/pull/641) fix: correctly calculate total sum of finance percentages for local involvements ([@mirdono](https://github.com/mirdono))
+
+#### :house: Internal
+* [#637](https://github.com/lblod/frontend-organization-portal/pull/637) [OP-3042] Resolve ember v4 deprecations ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
 
 ## v1.28.3 (2025-01-22)
 
