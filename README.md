@@ -116,3 +116,25 @@ Or in template files by using the `is-feature-enabled` helper:
 
 | Name | Description |
 | edit-contact-data | Enable the edition of contact site |
+
+## Releasing a new version
+
+We use [`release-it`](https://github.com/release-it/release-it) to handle our release flow.
+
+### Generating the changelog
+
+We use [`lerna-changelog`](https://github.com/lerna/lerna-changelog) to generate a basic changelog based on the merged PRs. Make sure all relevant PRs have a label, otherwise they will not be included in the changelog.
+
+> `lerna-changelog` requires a Github [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) to work properly.
+
+The following command can be used to generate the changelog:
+
+`GITHUB_AUTH=your-access-token npx lerna-changelog`
+
+### Creating a new release
+
+Simply run `GITHUB_AUTH=your-access-token npm run release` and follow the prompts.
+
+> If you generated the changelog using lerna-changelog you can add it to the changelog file and add it to the staged changes when release-it asks if you want to commit the changes. This will ensure that the changelog change is part of the release commit.
+
+After the new tag is created and pushed CI will take care of building the docker image.
