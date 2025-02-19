@@ -9,6 +9,7 @@ import {
   validateStringOptional,
 } from '../validators/schema';
 import getOppositeClassifications from '../constants/memberships';
+import { ID_NAME } from './identifier';
 
 export default class OrganizationModel extends AgentModel {
   @attr name;
@@ -127,11 +128,13 @@ export default class OrganizationModel extends AgentModel {
   }
 
   get kboNumber() {
-    const identifiers = this.identifiers.content;
+    const identifiers = this.hasMany('identifiers').value();
 
     for (const identifier of identifiers) {
-      const structuredIdentifier = identifier.get('structuredIdentifier');
-      if (identifier.idName === 'KBO nummer') {
+      const structuredIdentifier = identifier
+        .belongsTo('structuredIdentifier')
+        .value();
+      if (identifier.idName === ID_NAME.KBO) {
         return structuredIdentifier.get('localId');
       }
     }
