@@ -1,4 +1,4 @@
-## v1.29.0-0 (2025-02-18)
+## v1.29.0 (2025-02-19)
 
 #### :rocket: Enhancement
 * [632](https://github.com/lblod/frontend-organization-portal/pull/632) feature: related organizations as memberships ([@mirdono](https://github.com/mirdono))
