@@ -21,21 +21,8 @@
     {{else}}
       {{organization.abbName}}
     {{/if}}
-    {{#if
-      (and
-        (not
-          (or
-            (eq
-              organization.classification.label
-              "Centraal bestuur van de eredienst"
-            )
-            (eq organization.classification.label "Bestuur van de eredienst")
-          )
-        )
-        organization.classification
-      )
-    }}
+    {{#unless organization.isWorshipAdministrativeUnit}}
       ({{organization.classification.label}})
-    {{/if}}
+    {{/unless}}
   </PowerSelect>
 </div>
