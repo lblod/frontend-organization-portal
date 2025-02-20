@@ -27,7 +27,6 @@ export default class WorshipServiceModel extends WorshipAdministrativeUnitModel 
       involvements: Joi.when(Joi.ref('$involvementsPercentage'), {
         is: Joi.exist().valid(true),
         then: Joi.array().external(async (_value, helpers) => {
-          console.log('hello');
           const involvements = await this.involvements;
 
           const sumPercentages = involvements.reduce(
