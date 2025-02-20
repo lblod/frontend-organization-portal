@@ -129,6 +129,7 @@ export default class OrganizationModel extends AgentModel {
 
   get kboNumber() {
     const identifiers = this.hasMany('identifiers').value();
+    if (!identifiers) return null;
 
     for (const identifier of identifiers) {
       const structuredIdentifier = identifier
