@@ -170,4 +170,8 @@ export default class OrganizationModel extends AgentModel {
   getClassificationCodesForMembership(membership) {
     return getOppositeClassifications(membership, this);
   }
+
+  get isActive() {
+    return this.belongsTo('organizationStatus').value().isActive;
+  }
 }
