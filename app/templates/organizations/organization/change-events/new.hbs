@@ -309,7 +309,11 @@
                           @onChange={{this.updateResultingOrganizations}}
                           as |organization|
                         >
-                          {{organization.abbName}}
+                          {{#if organization.kboNumber}}
+                            {{organization.kboNumber}} - {{organization.abbName}}
+                          {{else}}
+                            {{organization.abbName}} (geen kbo gevonden)
+                          {{/if}}
                         </PowerSelect>
                       </div>
                     {{/if}}
