@@ -62,7 +62,7 @@
                 @disabled={{not (and membership.role membership.isNew)}}
                 @selected={{membership.organization}}
                 @error={{errorMessage}}
-                @onChange={{fn (mut membership.organization)}}
+                @onChange={{fn @setOtherRelatedOrganization membership}}
                 @classificationCodes={{@model.organization.getClassificationCodesForMembership
                   membership
                 }}
@@ -76,7 +76,7 @@
               <OrganizationSelect
                 @disabled={{not (and membership.role membership.isNew)}}
                 @selected={{membership.member}}
-                @onChange={{fn (mut membership.member)}}
+                @onChange={{fn @setOtherRelatedOrganization membership}}
                 @error={{errorMessage}}
                 @classificationCodes={{@model.organization.getClassificationCodesForMembership
                   membership
@@ -112,6 +112,13 @@
             Verwijder
           </AuButton>
         </td>
+
+        {{#if @confirmNonActiveRelatedOrganization}}
+          <ConfirmRelationWithInactiveOrganizationModal
+            @onConfirm={{fn @confirmNonActionRelatedOrganization membership}}
+            @onCancel={{@cancelNonActionRelatedOrganization}}
+          />
+        {{/if}}
       {{/unless}}
     </c.body>
   </t.content>
