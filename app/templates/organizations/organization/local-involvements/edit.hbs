@@ -68,7 +68,7 @@
             }}
               <OrganizationSelect
                 @selected={{involvement.administrativeUnit}}
-                @onChange={{fn (mut involvement.administrativeUnit)}}
+                @onChange={{fn this.setInvolvedOrganization involvement}}
                 @allowClear={{involvement.isNew}}
                 @ariaLabelledBy="organization"
                 @error={{errorMessage}}
@@ -78,8 +78,19 @@
                 {{organization.abbName}}
                 ({{organization.classification.label}})
               </OrganizationSelect>
+
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+              {{/if}}
+
+              {{#if this.nonActiveInvolvedOrganization}}
+                <ConfirmRelationWithInactiveOrganizationModal
+                  @onConfirm={{fn
+                    this.confirmSetInvolvedOrganization
+                    involvement
+                  }}
+                  @onCancel={{this.cancelSetInvolvedOrganization}}
+                />
               {{/if}}
             {{/let}}
           </td>

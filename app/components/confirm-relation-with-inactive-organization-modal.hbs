@@ -1,0 +1,16 @@
+<AuModal @modalOpen={{true}} @closeModal={{@onCancel}}>
+  <:title>Bevestig</:title>
+  <:body>Opgelet, je hebt een niet actieve organisatie geselecteerd. Ben je
+    zeker dat je deze relatie wenst toe te voegen?
+  </:body>
+  <:footer>
+    <AuButtonGroup>
+      <AuButton @alert={{true}} {{on "click" @onConfirm}}>Ja</AuButton>
+      <AuButton
+        @icon="bin"
+        @iconAlignment="left"
+        {{on "click" @onCancel}}
+      >Nee</AuButton>
+    </AuButtonGroup>
+  </:footer>
+</AuModal>{{yield}}
