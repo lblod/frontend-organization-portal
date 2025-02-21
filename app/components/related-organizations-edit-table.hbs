@@ -63,8 +63,9 @@
                 @selected={{membership.organization}}
                 @error={{errorMessage}}
                 @onChange={{fn (mut membership.organization)}}
-                @classificationCodes={{@model.organization.getClassificationCodesForMembership membership}}
-                @limitToActiveOrganizations={{true}}
+                @classificationCodes={{@model.organization.getClassificationCodesForMembership
+                  membership
+                }}
               />
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
@@ -77,8 +78,9 @@
                 @selected={{membership.member}}
                 @onChange={{fn (mut membership.member)}}
                 @error={{errorMessage}}
-                @classificationCodes={{@model.organization.getClassificationCodesForMembership membership}}
-                @limitToActiveOrganizations={{true}}
+                @classificationCodes={{@model.organization.getClassificationCodesForMembership
+                  membership
+                }}
               />
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
