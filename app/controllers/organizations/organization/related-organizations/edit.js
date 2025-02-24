@@ -82,11 +82,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   @action
   setRelatedOrganizationMembership(membership, organization) {
     if (organization.isActive) {
-      if (membership.member.id === this.model.organization.id) {
-        membership.organization = organization;
-      } else {
-        membership.member = organization;
-      }
+      this.#setOtherMembershipResource(membership, organization);
     } else {
       this.nonActiveRelatedOrganization = organization;
     }
@@ -94,17 +90,24 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   @action
   confirmNonActiveRelatedOrganization(membership) {
-    if (membership.member.id === this.model.organization.id) {
-      membership.organization = this.nonActiveRelatedOrganization;
-    } else {
-      membership.member = this.nonActiveRelatedOrganization;
-    }
+    this.#setOtherMembershipResource(
+      membership,
+      this.nonActiveRelatedOrganization,
+    );
     this.nonActiveRelatedOrganization = undefined;
   }
 
   @action
   cancelNonActiveRelatedOrganization() {
     this.nonActiveRelatedOrganization = undefined;
+  }
+
+  #setOtherMembershipResource(membership, organization) {
+    if (membership.member.id === this.model.organization.id) {
+      membership.organization = organization;
+    } else {
+      membership.member = organization;
+    }
   }
 
   @action
