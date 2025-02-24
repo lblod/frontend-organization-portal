@@ -8,4 +8,8 @@ export const ORGANIZATION_STATUS = {
 
 export default class OrganizationStatusCodeModel extends Model {
   @attr label;
+
+  get isActive() {
+    return this.id === ORGANIZATION_STATUS.ACTIVE;
+  }
 }

@@ -1,12 +1,15 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 
 export default class OrganizationsOrganizationLocalInvolvementsEditController extends Controller {
   @service router;
   @service store;
+
+  @tracked nonActiveInvolvedOrganization;
 
   get hasValidationErrors() {
     return (
@@ -48,6 +51,7 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
   @action
   addNewLocalInvolvement() {
     let involvement;
+
     if (this.model.organization.isWorshipService) {
       involvement = this.store.createRecord('local-involvement', {
         organization: this.model.organization,
@@ -62,6 +66,31 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
     }
 
     this.model.involvements.push(involvement);
+  }
+
+  @action
+  setInvolvedOrganization(involvement, organization) {
+    if (organization) {
+      if (organization.isActive) {
+        involvement.administrativeUnit = organization;
+      } else {
+        this.nonActiveInvolvedOrganization = organization;
+      }
+    } else {
+      involvement.administrativeUnit = undefined;
+    }
+  }
+
+  @action
+  confirmSetInvolvedOrganization(involvement) {
+    involvement.administrativeUnit = this.nonActiveInvolvedOrganization;
+    this.nonActiveInvolvedOrganization = undefined;
+  }
+
+  @action
+  cancelSetInvolvedOrganization(involvement) {
+    involvement.administrativeUnit = undefined;
+    this.nonActiveInvolvedOrganization = undefined;
   }
 
   @action

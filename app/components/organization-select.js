@@ -78,7 +78,11 @@ export default class OrganizationSelectComponent extends Component {
           },
         },
         sort: 'name',
-        include: ['classification', 'identifiers.structured-identifier'].join(),
+        include: [
+          'classification',
+          'identifiers.structured-identifier',
+          'organization-status',
+        ].join(),
       };
     }
 
