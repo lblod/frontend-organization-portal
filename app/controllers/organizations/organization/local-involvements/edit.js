@@ -88,7 +88,8 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
   }
 
   @action
-  cancelSetInvolvedOrganization() {
+  cancelSetInvolvedOrganization(involvement) {
+    involvement.administrativeUnit = undefined;
     this.nonActiveInvolvedOrganization = undefined;
   }
 

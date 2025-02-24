@@ -89,7 +89,10 @@
                     this.confirmSetInvolvedOrganization
                     involvement
                   }}
-                  @onCancel={{this.cancelSetInvolvedOrganization}}
+                  @onCancel={{fn
+                    this.cancelSetInvolvedOrganization
+                    involvement
+                  }}
                 />
               {{/if}}
             {{/let}}
