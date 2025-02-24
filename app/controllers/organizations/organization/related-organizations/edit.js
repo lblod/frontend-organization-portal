@@ -20,6 +20,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   @tracked selectedRoleLabel;
 
   @tracked founderToRemove;
+  @tracked nonActiveRelatedOrganization;
 
   get hasValidationErrors() {
     return this.memberships.some((membership) => membership.error);
@@ -76,6 +77,38 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
       membership.deleteRecord();
     }
     this.founderToRemove = false;
+  }
+
+  @action
+  setRelatedOrganizationMembership(membership, organization) {
+    if (organization.isActive) {
+      this.#setOtherMembershipResource(membership, organization);
+    } else {
+      this.nonActiveRelatedOrganization = organization;
+    }
+  }
+
+  @action
+  confirmNonActiveRelatedOrganization(membership) {
+    this.#setOtherMembershipResource(
+      membership,
+      this.nonActiveRelatedOrganization,
+    );
+    this.nonActiveRelatedOrganization = undefined;
+  }
+
+  @action
+  cancelNonActiveRelatedOrganization(membership) {
+    this.#setOtherMembershipResource(membership, undefined);
+    this.nonActiveRelatedOrganization = undefined;
+  }
+
+  #setOtherMembershipResource(membership, organization) {
+    if (membership.member.id === this.model.organization.id) {
+      membership.organization = organization;
+    } else {
+      membership.member = organization;
+    }
   }
 
   @action
@@ -180,5 +213,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     this.memberships = null;
     this.selectedRoleLabel = null;
     this.founderToRemove = null;
+    this.nonActiveRelatedOrganization = null;
   }
 }
