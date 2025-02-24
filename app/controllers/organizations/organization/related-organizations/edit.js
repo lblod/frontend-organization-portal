@@ -98,7 +98,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   }
 
   @action
-  cancelNonActiveRelatedOrganization() {
+  cancelNonActiveRelatedOrganization(membership) {
+    this.#setOtherMembershipResource(membership, undefined);
     this.nonActiveRelatedOrganization = undefined;
   }
 

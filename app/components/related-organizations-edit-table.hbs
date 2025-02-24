@@ -116,7 +116,7 @@
         {{#if @confirmNonActiveRelatedOrganization}}
           <ConfirmRelationWithInactiveOrganizationModal
             @onConfirm={{fn @confirmNonActionRelatedOrganization membership}}
-            @onCancel={{@cancelNonActionRelatedOrganization}}
+            @onCancel={{fn @cancelNonActionRelatedOrganization membership}}
           />
         {{/if}}
       {{/unless}}
