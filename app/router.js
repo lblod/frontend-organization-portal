@@ -121,6 +121,7 @@ Router.map(function () {
 
   this.route('sparql');
 
+  this.route('error', { path: '*path' });
   this.route('route-not-found', {
     path: '/*wildcard',
   });

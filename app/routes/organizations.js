@@ -14,12 +14,4 @@ export default class OrganizationsRoute extends Route {
       return this.router.transitionTo('select-role');
     }
   }
-
-  @action
-  error(error) {
-    console.log(error);
-    this.router.transitionTo('route-not-found', {
-      wildcard: 'pagina-niet-gevonden',
-    });
-  }
 }
