@@ -181,7 +181,6 @@ export default class AdministrativeUnitModel extends OrganizationModel {
 
   get requiresGoverningBodies() {
     return !(
-      this.isAgb ||
       this.isApb ||
       this.isIgs ||
       this.isPoliceZone ||
