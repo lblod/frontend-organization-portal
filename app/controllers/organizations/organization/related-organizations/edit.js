@@ -20,6 +20,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   @tracked selectedRoleLabel;
 
   @tracked founderToRemove;
+
+  @tracked nonActiveMembership;
   @tracked nonActiveRelatedOrganization;
 
   get hasValidationErrors() {
@@ -84,22 +86,25 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     if (organization.isActive) {
       this.#setOtherMembershipResource(membership, organization);
     } else {
+      this.nonActiveMembership = membership;
       this.nonActiveRelatedOrganization = organization;
     }
   }
 
   @action
-  confirmNonActiveRelatedOrganization(membership) {
+  confirmNonActiveRelatedOrganization() {
     this.#setOtherMembershipResource(
-      membership,
+      this.nonActiveMembership,
       this.nonActiveRelatedOrganization,
     );
+    this.nonActiveMembership = undefined;
     this.nonActiveRelatedOrganization = undefined;
   }
 
   @action
-  cancelNonActiveRelatedOrganization(membership) {
-    this.#setOtherMembershipResource(membership, undefined);
+  cancelNonActiveRelatedOrganization() {
+    this.#setOtherMembershipResource(this.nonActiveMembership, undefined);
+    this.nonActiveMembership = undefined;
     this.nonActiveRelatedOrganization = undefined;
   }
 
@@ -213,6 +218,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     this.memberships = null;
     this.selectedRoleLabel = null;
     this.founderToRemove = null;
+    this.nonActiveMembership = null;
     this.nonActiveRelatedOrganization = null;
   }
 }

@@ -112,13 +112,6 @@
             Verwijder
           </AuButton>
         </td>
-
-        {{#if @confirmNonActiveRelatedOrganization}}
-          <ConfirmRelationWithInactiveOrganizationModal
-            @onConfirm={{fn @confirmNonActionRelatedOrganization membership}}
-            @onCancel={{fn @cancelNonActionRelatedOrganization membership}}
-          />
-        {{/if}}
       {{/unless}}
     </c.body>
   </t.content>
