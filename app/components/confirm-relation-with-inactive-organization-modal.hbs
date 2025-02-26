@@ -4,13 +4,17 @@
     zeker dat je deze relatie wenst toe te voegen?
   </:body>
   <:footer>
-    <AuButtonGroup>
-      <AuButton @alert={{true}} {{on "click" @onConfirm}}>Ja</AuButton>
-      <AuButton
-        @icon="bin"
-        @iconAlignment="left"
-        {{on "click" @onCancel}}
-      >Nee</AuButton>
-    </AuButtonGroup>
+    <AuToolbar as |Group|>
+      <Group />
+      <Group>
+        <AuButton
+          @skin="secondary"
+          @icon="bin"
+          @iconAlignment="left"
+          {{on "click" @onCancel}}
+        >Nee</AuButton>
+        <AuButton {{on "click" @onConfirm}}>Ja</AuButton>
+      </Group>
+    </AuToolbar>
   </:footer>
 </AuModal>{{yield}}
