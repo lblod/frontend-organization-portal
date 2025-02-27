@@ -13,14 +13,17 @@
     wilt verwijderen?
   </:body>
   <:footer>
-    <AuButtonGroup>
-      <AuButton
-        @alert={{true}}
-        @icon="bin"
-        @iconAlignment="left"
-        {{on "click" (fn @onConfirm @membership)}}
-      >Ja</AuButton>
-      <AuButton {{on "click" @onCancel}}>Nee</AuButton>
-    </AuButtonGroup>
+    <AuToolbar as |Group|>
+      <Group />
+      <Group>
+        <AuButton
+          @skin="secondary"
+          @icon="bin"
+          @iconAlignment="left"
+          {{on "click" @onCancel}}
+        >Nee</AuButton>
+        <AuButton {{on "click" (fn @onConfirm @membership)}}>Ja</AuButton>
+      </Group>
+    </AuToolbar>
   </:footer>
 </AuModal>
