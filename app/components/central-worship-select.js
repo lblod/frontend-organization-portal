@@ -17,6 +17,7 @@ export default class CentralWorshipSelectComponent extends Component {
   *loadCentralWorshipServicesTask(searchParams = '') {
     const query = {
       sort: 'name',
+      include: 'organization-status',
       filter: {
         'organization-status': {
           id: this.args.limitToActiveOrganizations
