@@ -47,9 +47,6 @@
           @displayRoleLabel={{this.displayRoleLabel}}
           @selectedRole={{this.selectedRoleLabel}}
           @unsavedEdit={{this.hasUnsavedEdits}}
-          @showConfirmMembershipRemoval={{this.founderToRemove}}
-          @confirmMembershipRemoval={{this.reallyRemoveMembership}}
-          @cancelMembershipRemoval={{this.cancelMembershipRemoval}}
           @setOtherRelatedOrganization={{this.setRelatedOrganizationMembership}}
           id="edit-related-organizations"
         />
@@ -62,5 +59,14 @@
   <ConfirmRelationWithNonActiveOrganizationModal
     @onConfirm={{this.confirmNonActiveRelatedOrganization}}
     @onCancel={{this.cancelNonActiveRelatedOrganization}}
+  />
+{{/if}}
+
+{{#if this.founderToRemove}}
+  <DeleteConfirmationModal
+    @onConfirm={{this.reallyRemoveMembership}}
+    @onCancel={{this.cancelMembershipRemoval}}
+    @membership={{this.founderToRemove}}
+    @organizationId={{@model.organization.id}}
   />
 {{/if}}
