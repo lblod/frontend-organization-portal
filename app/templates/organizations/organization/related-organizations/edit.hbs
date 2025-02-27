@@ -59,7 +59,7 @@
 </div>
 
 {{#if this.nonActiveRelatedOrganization}}
-  <ConfirmRelationWithInactiveOrganizationModal
+  <ConfirmRelationWithNonActiveOrganizationModal
     @onConfirm={{this.confirmNonActiveRelatedOrganization}}
     @onCancel={{this.cancelNonActiveRelatedOrganization}}
   />

@@ -84,7 +84,7 @@
               {{/if}}
 
               {{#if this.nonActiveInvolvedOrganization}}
-                <ConfirmRelationWithInactiveOrganizationModal
+                <ConfirmRelationWithNonActiveOrganizationModal
                   @onConfirm={{fn
                     this.confirmSetInvolvedOrganization
                     involvement
