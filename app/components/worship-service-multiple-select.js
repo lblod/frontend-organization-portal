@@ -12,6 +12,7 @@ export default class WorshipServiceSelectComponent extends Component {
 
     const query = {
       sort: 'name',
+      include: 'organization-status',
       filter: {
         'organization-status': {
           id: this.args.limitToActiveOrganizations
