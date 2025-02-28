@@ -63,10 +63,9 @@
 {{/if}}
 
 {{#if this.founderToRemove}}
-  <DeleteConfirmationModal
+  <ConfirmationModal
+    @message={{this.confirmationMessageForFounderDeletion}}
     @onConfirm={{this.reallyRemoveMembership}}
     @onCancel={{this.cancelMembershipRemoval}}
-    @membership={{this.founderToRemove}}
-    @organizationId={{@model.organization.id}}
   />
 {{/if}}
