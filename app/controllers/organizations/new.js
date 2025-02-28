@@ -30,6 +30,9 @@ export default class OrganizationsNewController extends Controller {
   @tracked centralWorshipService;
   @tracked representativeBody;
 
+  @tracked relatedNonActiveOrganization;
+  @tracked setRelatedOrganizationFunction;
+
   get hasValidationErrors() {
     return (
       this.currentOrganizationModel.error ||
@@ -44,29 +47,78 @@ export default class OrganizationsNewController extends Controller {
   }
 
   @action
-  async setMunicipality(municipality) {
+  confirmRelateNonActiveOrganization() {
+    this.setRelatedOrganizationFunction(this.relatedNonActiveOrganization);
+    this.#unsetNonActiveRelationVariables();
+  }
+
+  @action
+  cancelRelateNonActiveOrganization() {
+    this.#unsetNonActiveRelationVariables();
+  }
+
+  get isRelatedNonActiveOrganization() {
+    return (
+      this.relatedNonActiveOrganization && this.setRelatedOrganizationFunction
+    );
+  }
+
+  #setNonActiveRelationVariables(fn, value) {
+    this.setRelatedOrganizationFunction = fn;
+    this.relatedNonActiveOrganization = value;
+  }
+
+  #unsetNonActiveRelationVariables() {
+    this.setRelatedOrganizationFunction = undefined;
+    this.relatedNonActiveOrganization = undefined;
+  }
+
+  #getNewOrganization(original, altered) {
+    if (altered) {
+      return altered.filter((org) => !original.includes(org)).pop();
+    }
+  }
+
+  @action
+  setMunicipality(municipality) {
+    if (!municipality || municipality.isActive) {
+      this.#reallySetMunicipality(municipality);
+    } else {
+      this.#setNonActiveRelationVariables(
+        this.#reallySetMunicipality,
+        municipality,
+      );
+    }
+  }
+
+  async #getProvinceForMunicipality(municipality) {
+    const provinces = await this.store.query('organization', {
+      filter: {
+        memberships: {
+          member: {
+            id: municipality.id,
+          },
+        },
+        classification: {
+          id: CLASSIFICATION.PROVINCE.id,
+        },
+      },
+    });
+    return provinces[0];
+  }
+
+  async #reallySetMunicipality(municipality) {
     this.municipality = municipality;
 
     if (municipality) {
-      this.setProvince(
-        (
-          await this.store.query('organization', {
-            filter: {
-              memberships: {
-                member: {
-                  id: municipality.id,
-                },
-              },
-              classification: {
-                id: CLASSIFICATION.PROVINCE.id,
-              },
-            },
-          })
-        )[0],
-      );
+      this.setProvince(await this.#getProvinceForMunicipality(municipality));
 
       if (this.currentOrganizationModel.isAgb) {
-        this.addFounders(municipality);
+        // NOTE (27/02/2025) We set the founder here directly instead of using the
+        // `addFounders` function. Using the function would result in two
+        // confirmation modals popping up when the user sets a non-active
+        // municipality.
+        this.founders = [municipality];
       }
     }
   }
@@ -89,10 +141,16 @@ export default class OrganizationsNewController extends Controller {
 
   @action
   setProvince(province) {
+    // NOTE (26/02/2025) All Flemish provinces are active. Therefore, in
+    // contrast to the case with municipalities, we do not check the status of
+    // the set province nor ask the user for confirmation when trying to set an
+    // inactive organisation.
     this.province = province;
 
     if (this.currentOrganizationModel.isApb) {
-      this.addFounders(province);
+      // NOTE (27/02/2025) Set the founder directly to avoid the organization
+      // status logic gets executed.
+      this.founders = [province];
     }
   }
 
@@ -101,25 +159,47 @@ export default class OrganizationsNewController extends Controller {
   }
 
   @action
-  addFounders(organizations) {
-    if (organizations) {
-      organizations = Array.isArray(organizations)
-        ? organizations
-        : [organizations];
+  addFounders(founders) {
+    const newFounder = this.#getNewOrganization(this.founders, founders);
+
+    if (!newFounder || newFounder.isActive) {
+      this.#reallySetFounders(founders);
+    } else {
+      this.#setNonActiveRelationVariables(this.#reallySetFounders, founders);
     }
-    this.founders = organizations;
+  }
+
+  #reallySetFounders(founders) {
+    this.founders = founders;
   }
 
   get foundersError() {
     return this.#getErrorMessageForMembershipField(this.founders);
   }
 
-  get participantsError() {
-    return this.#getErrorMessageForMembershipField(this.participants);
+  @action
+  addParticipants(participants) {
+    const newParticipant = this.#getNewOrganization(
+      this.participants,
+      participants,
+    );
+
+    if (!newParticipant || newParticipant.isActive) {
+      this.#reallySetParticipants(participants);
+    } else {
+      this.#setNonActiveRelationVariables(
+        this.#reallySetParticipants,
+        participants,
+      );
+    }
   }
 
-  get representativeBodyError() {
-    return this.#getErrorMessageForMembershipField(this.representativeBody);
+  #reallySetParticipants(participants) {
+    this.participants = participants;
+  }
+
+  get participantsError() {
+    return this.#getErrorMessageForMembershipField(this.participants);
   }
 
   @action
@@ -145,6 +225,63 @@ export default class OrganizationsNewController extends Controller {
     // Remove the relation to any selected central worship service since not all
     // kinds of worship services require this.
     this.centralWorshipService = null;
+  }
+
+  @action
+  addCentralWorshipService(centralWorshipService) {
+    if (!centralWorshipService || centralWorshipService.isActive) {
+      this.#reallySetCentralWorshipService(centralWorshipService);
+    } else {
+      this.#setNonActiveRelationVariables(
+        this.#reallySetCentralWorshipService,
+        centralWorshipService,
+      );
+    }
+  }
+
+  #reallySetCentralWorshipService(centralWorshipService) {
+    this.centralWorshipService = centralWorshipService;
+  }
+
+  @action
+  addRepresentativeBody(representativeBody) {
+    if (!representativeBody || representativeBody.isActive) {
+      this.#reallySetRepresentativeBody(representativeBody);
+    } else {
+      this.#setNonActiveRelationVariables(
+        this.#reallySetRepresentativeBody,
+        representativeBody,
+      );
+    }
+  }
+
+  #reallySetRepresentativeBody(representativeBody) {
+    this.representativeBody = representativeBody;
+  }
+
+  get representativeBodyError() {
+    return this.#getErrorMessageForMembershipField(this.representativeBody);
+  }
+
+  @action
+  addWorshipServices(worshipServices) {
+    const newWorshipService = this.#getNewOrganization(
+      this.worshipServices,
+      worshipServices,
+    );
+
+    if (!newWorshipService || newWorshipService.isActive) {
+      this.#reallySetWorshipServices(worshipServices);
+    } else {
+      this.#setNonActiveRelationVariables(
+        this.#reallySetWorshipServices,
+        worshipServices,
+      );
+    }
+  }
+
+  #reallySetWorshipServices(worshipServices) {
+    this.worshipServices = worshipServices;
   }
 
   /**
@@ -561,5 +698,7 @@ export default class OrganizationsNewController extends Controller {
     this.worshipServices = [];
     this.centralWorshipService = null;
     this.representativeBody = null;
+    this.relatedNonActiveOrganization = null;
+    this.setRelatedOrganizationFunction = null;
   }
 }

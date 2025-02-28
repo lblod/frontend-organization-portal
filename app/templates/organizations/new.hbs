@@ -311,8 +311,7 @@
                     <:content>
                       <WorshipServiceMultipleSelect
                         @selected={{this.worshipServices}}
-                        @onChange={{fn (mut this.worshipServices)}}
-                        @limitToActiveOrganizations={{true}}
+                        @onChange={{this.addWorshipServices}}
                         id="related-worship-services"
                       />
                     </:content>
@@ -327,8 +326,7 @@
                     <:content as |hasError|>
                       <CentralWorshipSelect
                         @selected={{this.centralWorshipService}}
-                        @onChange={{fn (mut this.centralWorshipService)}}
-                        @limitToActiveOrganizations={{true}}
+                        @onChange={{this.addCentralWorshipService}}
                         @error={{hasError}}
                         @id="related-central-worship-service"
                       />
@@ -342,13 +340,9 @@
                 >
                   <:label>Representatief orgaan</:label>
                   <:content as |hasError|>
-                    {{! NOTE: No need to explicitly filter for active
-                      organizations. There is currently only one inactive
-                      representative body and that is blacklisted in the
-                      component. }}
                     <RepresentativeBodySelect
                       @selected={{this.representativeBody}}
-                      @onChange={{fn (mut this.representativeBody)}}
+                      @onChange={{this.addRepresentativeBody}}
                       @error={{hasError}}
                       @id="related-representative-body"
                     />
@@ -370,7 +364,12 @@
                 }}
                   <Item
                     @labelFor="related-gemeente"
-                    @required={{or this.currentOrganizationModel.isAgb this.currentOrganizationModel.isIgs this.currentOrganizationModel.isPoliceZone this.currentOrganizationModel.isAssistanceZone}}
+                    @required={{or
+                      this.currentOrganizationModel.isAgb
+                      this.currentOrganizationModel.isIgs
+                      this.currentOrganizationModel.isPoliceZone
+                      this.currentOrganizationModel.isAssistanceZone
+                    }}
                     @errorMessage={{this.municipalityError}}
                   >
                     <:label>Gemeente</:label>
@@ -379,7 +378,6 @@
                         @selected={{this.municipality}}
                         @onChange={{this.setMunicipality}}
                         @error={{hasError}}
-                        @limitToActiveOrganizations={{true}}
                         @id="related-gemeente"
                       />
                     </:content>
@@ -409,9 +407,8 @@
                       <:content as |hasError|>
                         <OrganizationMultipleSelect
                           @selected={{this.participants}}
-                          @onChange={{fn (mut this.participants)}}
+                          @onChange={{this.addParticipants}}
                           @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
-                          @limitToActiveOrganizations={{true}}
                           @error={{hasError}}
                           @id="participants-igs"
                         />
@@ -437,7 +434,6 @@
                           @selected={{this.founders}}
                           @onChange={{this.addFounders}}
                           @classificationCodes={{this.currentOrganizationModel.founderClassifications}}
-                          @limitToActiveOrganizations={{true}}
                           @error={{hasError}}
                           @id="founders-ocmw-association-peva"
                         />
@@ -449,9 +445,8 @@
                       <:content as |hasError|>
                         <OrganizationMultipleSelect
                           @selected={{this.participants}}
-                          @onChange={{fn (mut this.participants)}}
+                          @onChange={{this.addParticipants}}
                           @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
-                          @limitToActiveOrganizations={{true}}
                           @error={{hasError}}
                           @id="participants-ocmw-association-peva"
                         />
@@ -466,8 +461,6 @@
                     >
                       <:label>Provincie</:label>
                       <:content as |hasError|>
-                        {{! NOTE: No need to explicitly filter for active
-                          provinces as they are all active. }}
                         <ProvinceOrganizationSelect
                           @selected={{this.province}}
                           @selectedMunicipality={{this.municipality}}
@@ -491,7 +484,6 @@
                           @selectedProvince={{this.province}}
                           @allowClear={{true}}
                           @onChange={{this.setMunicipality}}
-                          @limitToActiveOrganizations={{true}}
                           @error={{hasError}}
                           @id="related-municipality"
                         />
@@ -512,3 +504,10 @@
     {{/if}}
   </form>
 </div>
+
+{{#if this.isRelatedNonActiveOrganization}}
+  <ConfirmRelationWithInactiveOrganizationModal
+    @onConfirm={{this.confirmRelateNonActiveOrganization}}
+    @onCancel={{this.cancelRelateNonActiveOrganization}}
+  />
+{{/if}}

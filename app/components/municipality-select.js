@@ -30,6 +30,7 @@ export default class MunicipalitySelectComponent extends Component {
         },
       },
       sort: 'name',
+      include: 'organization-status',
       page: {
         size: 400,
       },
