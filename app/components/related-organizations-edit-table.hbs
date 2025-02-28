@@ -128,12 +128,3 @@
     Voeg nieuwe gerelateerde organisatie toe
   </AuButton>
 </div>
-
-{{#if @showConfirmMembershipRemoval}}
-  <DeleteConfirmationModal
-    @onConfirm={{@confirmMembershipRemoval}}
-    @onCancel={{@cancelMembershipRemoval}}
-    @membership={{@showConfirmMembershipRemoval}}
-    @organizationId={{@model.organization.id}}
-  />
-{{/if}}

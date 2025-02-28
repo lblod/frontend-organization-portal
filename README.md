@@ -114,7 +114,8 @@ Or in template files by using the `is-feature-enabled` helper:
 
 ### List of feature flags
 
-| Name | Description |
+| Name              | Description                        |
+|-------------------|------------------------------------|
 | edit-contact-data | Enable the edition of contact site |
 
 ## Releasing a new version
