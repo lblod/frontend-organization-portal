@@ -106,7 +106,7 @@ Or in template files by using the `is-feature-enabled` helper:
 
 ```handlebars
 {{#if (is-feature-enabled "new-feature")}}
-  <p>New feature is enabled!</p>
+  <p>New feature is enabled!</p>a
 {{else}}
   <p>New feature is disabled!</p>
 {{/if}}
@@ -114,7 +114,8 @@ Or in template files by using the `is-feature-enabled` helper:
 
 ### List of feature flags
 
-| Name | Description |
+| Name              | Description                        |
+|-------------------|------------------------------------|
 | edit-contact-data | Enable the edition of contact site |
 
 ## Releasing a new version
