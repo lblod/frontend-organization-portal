@@ -505,9 +505,7 @@
   </form>
 </div>
 
-{{#if
-  (and this.relatedNonActiveOrganization this.setRelatedOrganizationFunction)
-}}
+{{#if this.isRelatedNonActiveOrganization}}
   <ConfirmRelationWithInactiveOrganizationModal
     @onConfirm={{this.confirmRelateNonActiveOrganization}}
     @onCancel={{this.cancelRelateNonActiveOrganization}}

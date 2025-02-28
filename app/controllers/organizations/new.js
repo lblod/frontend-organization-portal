@@ -57,6 +57,12 @@ export default class OrganizationsNewController extends Controller {
     this.#unsetNonActiveRelationVariables();
   }
 
+  get isRelatedNonActiveOrganization() {
+    return (
+      this.relatedNonActiveOrganization && this.setRelatedOrganizationFunction
+    );
+  }
+
   #setNonActiveRelationVariables(fn, value) {
     this.setRelatedOrganizationFunction = fn;
     this.relatedNonActiveOrganization = value;
