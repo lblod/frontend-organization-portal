@@ -66,7 +66,13 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   @action
   reallyRemoveMembership(membership) {
-    // Note, The `save` function below depends on the contents of the
+    // NOTE (28/02/2025): If `this.founderToRemove` is set the call comes via
+    // the confirmation modal, in that case ignore any value provided for
+    // `membership`.
+    if (this.founderToRemove) {
+      membership = this.founderToRemove;
+    }
+    // NOTE The `save` function below depends on the contents of the
     // memberships array to persist the necessary changes:
     // - do *not* remove any already persisted memberships from the array as
     //   this will cause their deletion to "forgotten" in the `save` function.
@@ -78,7 +84,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     } else {
       membership.deleteRecord();
     }
-    this.founderToRemove = false;
+    this.founderToRemove = undefined;
   }
 
   @action
@@ -146,6 +152,12 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   @action
   displayRoleLabel(membership) {
     return membership.getRoleLabelForPerspective(this.model.organization);
+  }
+
+  @action
+  getConfirmationMessageForFounderDeletion() {
+    const membershipText = this.displayRoleLabel(this.founderToRemove);
+    return `Weet je zeker dat je de relatie "${membershipText}" wilt verwijderen?`;
   }
 
   @dropTask
