@@ -56,7 +56,8 @@
 </div>
 
 {{#if this.nonActiveRelatedOrganization}}
-  <ConfirmRelationWithNonActiveOrganizationModal
+  <ConfirmationModal
+    @message={{confirmation-message-text "nonActiveRelatedOrganization"}}
     @onConfirm={{this.confirmNonActiveRelatedOrganization}}
     @onCancel={{this.cancelNonActiveRelatedOrganization}}
   />
