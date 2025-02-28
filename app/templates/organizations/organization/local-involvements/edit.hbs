@@ -82,19 +82,6 @@
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
               {{/if}}
-
-              {{#if this.nonActiveInvolvedOrganization}}
-                <ConfirmRelationWithNonActiveOrganizationModal
-                  @onConfirm={{fn
-                    this.confirmSetInvolvedOrganization
-                    involvement
-                  }}
-                  @onCancel={{fn
-                    this.cancelSetInvolvedOrganization
-                    involvement
-                  }}
-                />
-              {{/if}}
             {{/let}}
           </td>
           <td>
@@ -213,3 +200,11 @@
     </div>
   {{/if}}
 </div>
+
+{{#if this.hasNonActiveInvolvement}}
+  <ConfirmationModal
+    @message={{confirmation-message-text "nonActiveRelatedOrganization"}}
+    @onConfirm={{this.confirmSetInvolvedOrganization}}
+    @onCancel={{this.cancelSetInvolvedOrganization}}
+  />
+{{/if}}
