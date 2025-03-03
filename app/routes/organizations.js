@@ -1,6 +1,5 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
 
 export default class OrganizationsRoute extends Route {
   @service session;
@@ -13,13 +12,5 @@ export default class OrganizationsRoute extends Route {
     if (!this.role.activeRole) {
       return this.router.transitionTo('select-role');
     }
-  }
-
-  @action
-  error(error) {
-    console.log(error);
-    this.router.transitionTo('route-not-found', {
-      wildcard: 'pagina-niet-gevonden',
-    });
   }
 }

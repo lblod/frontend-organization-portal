@@ -8,6 +8,7 @@ export default class OrganizationsOrganizationRoute extends Route {
     // Note: Already include status, otherwise the validations can fail when the
     // user tries to save edits without that they previously visited the core
     // data page.
+    throw new Error('sorry');
     return this.store.findRecord('organization', params.id, {
       include: 'organization-status',
     });

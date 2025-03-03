@@ -31,7 +31,7 @@ module.exports = function (defaults) {
         package: 'qunit',
       },
     ],
-    splitAtRoutes: ['mock-login', 'people', 'organizations', 'sparql'],
+    // splitAtRoutes: ['mock-login', 'people', 'organizations', 'sparql'],
     packagerOptions: {
       webpackConfig: require('@lblod/ember-rdfa-editor/webpack-config'),
     },

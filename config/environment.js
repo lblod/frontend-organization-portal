@@ -5,7 +5,7 @@ module.exports = function (environment) {
     modulePrefix: 'frontend-organization-portal',
     environment,
     rootURL: '/',
-    locationType: 'history',
+    locationType: 'optimistic-history',
     EmberENV: {
       EXTEND_PROTOTYPES: false,
       FEATURES: {
