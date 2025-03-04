@@ -62,9 +62,10 @@
                 @disabled={{not (and membership.role membership.isNew)}}
                 @selected={{membership.organization}}
                 @error={{errorMessage}}
-                @onChange={{fn (mut membership.organization)}}
-                @classificationCodes={{@model.organization.getClassificationCodesForMembership membership}}
-                @limitToActiveOrganizations={{true}}
+                @onChange={{fn @setOtherRelatedOrganization membership}}
+                @classificationCodes={{@model.organization.getClassificationCodesForMembership
+                  membership
+                }}
               />
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
@@ -75,10 +76,11 @@
               <OrganizationSelect
                 @disabled={{not (and membership.role membership.isNew)}}
                 @selected={{membership.member}}
-                @onChange={{fn (mut membership.member)}}
+                @onChange={{fn @setOtherRelatedOrganization membership}}
                 @error={{errorMessage}}
-                @classificationCodes={{@model.organization.getClassificationCodesForMembership membership}}
-                @limitToActiveOrganizations={{true}}
+                @classificationCodes={{@model.organization.getClassificationCodesForMembership
+                  membership
+                }}
               />
               {{#if errorMessage}}
                 <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>

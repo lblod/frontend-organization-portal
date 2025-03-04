@@ -50,9 +50,17 @@
           @showConfirmMembershipRemoval={{this.founderToRemove}}
           @confirmMembershipRemoval={{this.reallyRemoveMembership}}
           @cancelMembershipRemoval={{this.cancelMembershipRemoval}}
+          @setOtherRelatedOrganization={{this.setRelatedOrganizationMembership}}
           id="edit-related-organizations"
         />
       </div>
     </form>
   </div>
 </div>
+
+{{#if this.nonActiveRelatedOrganization}}
+  <ConfirmRelationWithInactiveOrganizationModal
+    @onConfirm={{this.confirmNonActiveRelatedOrganization}}
+    @onCancel={{this.cancelNonActiveRelatedOrganization}}
+  />
+{{/if}}
