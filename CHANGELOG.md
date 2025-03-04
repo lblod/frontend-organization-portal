@@ -1,3 +1,17 @@
+
+## v1.29.1 (2025-03-04)
+
+#### :bug: Bug Fix
+* [#673](https://github.com/lblod/frontend-organization-portal/pull/673) fix: correctly retrieve resulting organisations for new change event ([@mirdono](https://github.com/mirdono))
+
+## v1.29.1-0 (2025-03-04)
+
+#### :bug: Bug Fix
+* [#673](https://github.com/lblod/frontend-organization-portal/pull/673) fix: correctly retrieve resulting organisations for new change event ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 1
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
 ## v1.29.0 (2025-02-19)
 
 #### :rocket: Enhancement

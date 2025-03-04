@@ -180,11 +180,12 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
             if (currentOrganization.isCentralWorshipService) {
               resultingStatusId = ORGANIZATION_STATUS.INACTIVE;
             } else {
-              resultingStatusId = changeEvent.resultingOrganizations.includes(
-                organization,
-              )
-                ? ORGANIZATION_STATUS.ACTIVE
-                : ORGANIZATION_STATUS.INACTIVE;
+              resultingStatusId =
+                (yield changeEvent.resultingOrganizations).includes(
+                  organization,
+                )
+                  ? ORGANIZATION_STATUS.ACTIVE
+                  : ORGANIZATION_STATUS.INACTIVE;
             }
           } else {
             resultingStatusId =
@@ -208,7 +209,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
             // Central worship services should always select a *new*
             // organization as the resulting organization, so we also create a
             // change event result for that organization
-            for (let organization of changeEvent.resultingOrganizations.slice()) {
+            for (let organization of (yield changeEvent.resultingOrganizations).slice()) {
               createChangeEventResultsPromises.push(
                 createChangeEventResult({
                   resultingStatusId: ORGANIZATION_STATUS.ACTIVE,
