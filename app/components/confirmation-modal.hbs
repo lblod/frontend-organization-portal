@@ -1,9 +1,6 @@
-{{! TODO: This model should be renamed from "inactive" to "non-active". Or it should be merged with the other confirmation modal into a single general confirmation modal.}}
 <AuModal @modalOpen={{true}} @closeModal={{@onCancel}}>
   <:title>Bevestig</:title>
-  <:body>Opgelet, je hebt een niet actieve organisatie geselecteerd. Ben je
-    zeker dat je deze relatie wenst toe te voegen?
-  </:body>
+  <:body>{{@message}}</:body>
   <:footer>
     <AuToolbar @reverse={{true}} as |Group|>
       <Group>

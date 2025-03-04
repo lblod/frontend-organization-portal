@@ -9,6 +9,7 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
   @service router;
   @service store;
 
+  @tracked localInvolvementToConfirm;
   @tracked nonActiveInvolvedOrganization;
 
   get hasValidationErrors() {
@@ -28,6 +29,9 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
     this.deleteAllUnsavedLocalInvolvements();
     this.model.involvements.map((involvement) => involvement.reset());
     this.model.organization.reset();
+
+    this.localInvolvementToConfirm = undefined;
+    this.nonActiveInvolvedOrganization = undefined;
   }
 
   deleteAllUnsavedLocalInvolvements() {
@@ -70,27 +74,40 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
 
   @action
   setInvolvedOrganization(involvement, organization) {
-    if (organization) {
-      if (organization.isActive) {
-        involvement.administrativeUnit = organization;
-      } else {
-        this.nonActiveInvolvedOrganization = organization;
-      }
+    if (!organization || organization.isActive) {
+      involvement.administrativeUnit = organization;
     } else {
-      involvement.administrativeUnit = undefined;
+      this.#setNonActiveLocalInvolvement(involvement, organization);
     }
   }
 
   @action
   confirmSetInvolvedOrganization(involvement) {
+    if (this.hasNonActiveInvolvement) {
+      involvement = this.localInvolvementToConfirm;
+    }
     involvement.administrativeUnit = this.nonActiveInvolvedOrganization;
-    this.nonActiveInvolvedOrganization = undefined;
+
+    this.#setNonActiveLocalInvolvement();
   }
 
   @action
   cancelSetInvolvedOrganization(involvement) {
+    if (this.hasNonActiveInvolvement) {
+      involvement = this.localInvolvementToConfirm;
+    }
     involvement.administrativeUnit = undefined;
-    this.nonActiveInvolvedOrganization = undefined;
+
+    this.#setNonActiveLocalInvolvement();
+  }
+
+  #setNonActiveLocalInvolvement(involvement, organization) {
+    this.localInvolvementToConfirm = involvement;
+    this.nonActiveInvolvedOrganization = organization;
+  }
+
+  get hasNonActiveInvolvement() {
+    return this.localInvolvementToConfirm && this.nonActiveInvolvedOrganization;
   }
 
   @action
