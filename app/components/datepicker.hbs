@@ -5,5 +5,11 @@
   @width={{this.width}}
   id={{@id}}
   {{au-date-input value=@value onChange=this.onChange}}
+  {{!
+    inputmask.js has a bug that makes it throw an error in Chrome, when autocomplete feature is used: https://github.com/RobinHerbots/Inputmask/issues/2809
+    That bug has been fixed, but the fix hasn't been released yet in a stable release.
+    It also seems there is a second bug that probably needs to be fixed before we can revert this: https://github.com/RobinHerbots/Inputmask/issues/2832
+  }}
+  autocomplete="off"
   ...attributes
 />
