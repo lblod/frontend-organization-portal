@@ -16,7 +16,7 @@ export const CONTACT_TYPE = {
 
 export default class ContactPointModel extends AbstractValidationModel {
   @attr email;
-  @attr telephone;
+  @attr('phone') telephone;
   @attr fax;
   @attr website;
   @attr type;
