@@ -1,4 +1,23 @@
 
+
+## v1.30.0-0 (2025-03-26)
+
+#### :rocket: Enhancement
+* [#670](https://github.com/lblod/frontend-organization-portal/pull/670) feat: require confirmation to add a local involvement with an non-active organisation ([@mirdono](https://github.com/mirdono))
+* [#666](https://github.com/lblod/frontend-organization-portal/pull/666) [OP-3539]: show kbo numbers for organizations in the dropdown ([@wolfderechter](https://github.com/wolfderechter))
+
+#### :bug: Bug Fix
+* [#676](https://github.com/lblod/frontend-organization-portal/pull/676) [OP-3556]: disable datepicker autocomplete ([@wolfderechter](https://github.com/wolfderechter))
+* [#668](https://github.com/lblod/frontend-organization-portal/pull/668) [OP-3550] Fix kbo numbers ([@wolfderechter](https://github.com/wolfderechter))
+
+#### :house: Internal
+* [#665](https://github.com/lblod/frontend-organization-portal/pull/665) [OP-3386] Improve the local involvements percentage validation ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 3
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+- [@wolfderechter](https://github.com/wolfderechter)
+
 ## v1.29.1 (2025-03-04)
 
 #### :bug: Bug Fix
