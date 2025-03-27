@@ -6,7 +6,6 @@ import { combineFullAddress } from 'frontend-organization-portal/models/address'
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import fetch from 'fetch';
-import { transformPhoneNumbers } from 'frontend-organization-portal/utils/transform-phone-numbers';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
@@ -605,13 +604,9 @@ export default class OrganizationsNewController extends Controller {
         isContactEditableOrganization(this.currentOrganizationModel)
       ) {
         contact = setEmptyStringsToNull(contact);
-        contact.telephone = transformPhoneNumbers(contact.telephone);
         yield contact.save();
 
         secondaryContact = setEmptyStringsToNull(secondaryContact);
-        secondaryContact.telephone = transformPhoneNumbers(
-          secondaryContact.telephone,
-        );
         yield secondaryContact.save();
 
         if (!address.isCountryBelgium) {
