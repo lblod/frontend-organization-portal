@@ -1,6 +1,6 @@
 
 
-## v1.30.0-0 (2025-03-26)
+## v1.30.0 (2025-03-27)
 
 #### :rocket: Enhancement
 * [#670](https://github.com/lblod/frontend-organization-portal/pull/670) feat: require confirmation to add a local involvement with an non-active organisation ([@mirdono](https://github.com/mirdono))
