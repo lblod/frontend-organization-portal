@@ -8,6 +8,7 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
 
 export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
   @service store;
+  @service scopeOfOperation;
 
   async model() {
     let organization = this.modelFor('organizations.organization.core-data');
@@ -63,6 +64,8 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
       }
     }
 
+    const scopeLabel = await this.scopeOfOperation.getScopeLabel(organization);
+
     const kboOrganization = await organization.kboOrganization;
     const kboContacts = (await kboOrganization?.contacts) ?? [];
 
@@ -74,6 +77,7 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
       primaryContact: findPrimaryContact(contacts),
       secondaryContact: findSecondaryContact(contacts),
       region,
+      scopeLabel,
       kboContact: findPrimaryContact(kboContacts),
     };
   }
