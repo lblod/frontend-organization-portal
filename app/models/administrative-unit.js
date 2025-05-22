@@ -3,6 +3,7 @@ import OrganizationModel from './organization';
 import Joi from 'joi';
 import {
   validateBelongsToOptional,
+  validateBelongsToRequired,
   validateHasManyNotEmptyRequired,
   validateHasManyOptional,
 } from '../validators/schema';
@@ -72,7 +73,7 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       governingBodies: validateHasManyOptional(),
       involvedBoards: validateHasManyOptional(),
       exactMatch: validateBelongsToOptional(),
-      scope: validateBelongsToOptional(),
+      scope: validateBelongsToRequired(REQUIRED_MESSAGE),
       // Notes:
       // - The requested functionality was to *not* validate memberships of
       //   already existing organizations. When creating a new organization a
