@@ -17,6 +17,9 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
   @service store;
   @service currentSession;
   @service router;
+  @service scopeOfOperation;
+
+  locationsInScope = [];
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
@@ -112,6 +115,14 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
       }
     }
 
+    const provinceLocations = await this.store.query('location', {
+      sort: 'label',
+      filter: { level: 'Provincie' },
+    });
+
+    this.locationsInScope =
+      await this.scopeOfOperation.getLocationsInScope(organization);
+
     return {
       organization,
       address,
@@ -126,6 +137,7 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
       structuredIdentifierNIS,
       structuredIdentifierOVO,
       region,
+      provinceLocations,
     };
   }
 
@@ -157,5 +169,16 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
 
       return missingIdentifiers;
     }, []);
+  }
+
+  resetController(controller) {
+    super.resetController(...arguments);
+    controller.reset();
+  }
+
+  setupController(controller) {
+    super.setupController(...arguments);
+
+    controller.set('locationsInScope', this.locationsInScope);
   }
 }

@@ -64,7 +64,10 @@
                   <:content as |hasError|>
                     <TrimInput
                       @width="block"
-                      @disabled={{or @model.organization.isMunicipality @model.organization.isProvince}}
+                      @disabled={{or
+                        @model.organization.isMunicipality
+                        @model.organization.isProvince
+                      }}
                       @value={{@model.organization.legalName}}
                       @onUpdate={{this.setNames}}
                       @error={{hasError}}
@@ -180,6 +183,28 @@
                         @value={{@model.region.label}}
                         @disabled="true"
                         id="igs-regio"
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#if @model.organization.isAdministrativeUnit}}
+                  <Item
+                    @labelFor="scope"
+                    @required={{true}}
+                    @errorMessage={{@model.organization.error.scope.message}}
+                  >
+                    <:label>Werkingsgebied</:label>
+                    <:content>
+                      <LocationMultipleSelect
+                        @selected={{this.locationsInScope}}
+                        @onChange={{fn (mut this.locationsInScope)}}
+                        @disabled={{or
+                          @model.organization.isMunicipality
+                          @model.organization.isProvince
+                        }}
+                        @provinceLocations={{@model.provinceLocations}}
+                        @error={{@model.organization.error.scope}}
+                        @id="locations-select"
                       />
                     </:content>
                   </Item>
