@@ -5,11 +5,15 @@ import { combineFullAddress } from 'frontend-organization-portal/models/address'
 import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
+import { tracked } from '@glimmer/tracking';
 
 export default class OrganizationsOrganizationCoreDataEditController extends Controller {
   @service router;
   @service store;
   @service features;
+  @service scopeOfOperation;
+
+  @tracked locationsInScope;
 
   get hasValidationErrors() {
     return (
@@ -52,6 +56,16 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
       structuredIdentifierSharepoint,
       structuredIdentifierKBO,
     } = this.model;
+
+    // NOTE (05/06/2025): Explicitly set the scope to `undefined` when the user
+    // did not select any locations, or removed all originally set
+    // locations. Otherwise the any previously set scope just be kept.
+    organization.scope =
+      this.locationsInScope?.length > 0
+        ? yield this.scopeOfOperation.getScopeForLocations(
+            ...this.locationsInScope,
+          )
+        : undefined;
 
     yield Promise.all([
       organization.validate({ relaxMandatoryFoundingOrganization: true }),
@@ -164,5 +178,6 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
 
   reset() {
     this.resetUnsavedRecords();
+    this.locationsInScope = [];
   }
 }
