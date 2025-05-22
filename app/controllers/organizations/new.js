@@ -14,6 +14,7 @@ export default class OrganizationsNewController extends Controller {
   @service router;
   @service store;
   @service features;
+  @service scopeOfOperation;
 
   @tracked currentOrganizationModel;
 
@@ -31,6 +32,8 @@ export default class OrganizationsNewController extends Controller {
 
   @tracked relatedNonActiveOrganization;
   @tracked setRelatedOrganizationFunction;
+
+  @tracked locations;
 
   get hasValidationErrors() {
     return (
@@ -571,6 +574,11 @@ export default class OrganizationsNewController extends Controller {
       ),
     );
 
+    this.currentOrganizationModel.scope =
+      this.locations?.length > 0
+        ? yield this.scopeOfOperation.getScopeForLocations(...this.locations)
+        : null;
+
     yield Promise.all([
       this.currentOrganizationModel.validate({ creatingNewOrganization: true }),
       identifierKBO.validate(),
@@ -695,5 +703,6 @@ export default class OrganizationsNewController extends Controller {
     this.representativeBody = null;
     this.relatedNonActiveOrganization = null;
     this.setRelatedOrganizationFunction = null;
+    this.locations = null;
   }
 }
