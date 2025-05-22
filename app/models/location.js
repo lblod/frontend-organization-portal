@@ -29,4 +29,8 @@ export default class LocationModel extends Model {
     async: true,
   })
   exactMatch;
+
+  isLocatedWithin(location) {
+    return this.hasMany('locatedWithin').ids().includes(location.id);
+  }
 }
