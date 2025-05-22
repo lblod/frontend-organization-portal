@@ -127,6 +127,7 @@
                   </:content>
                 </Item>
               {{/if}}
+              {{! FIXME: This broke after changing the `locatedWithin` to `hasMany` }}
               {{#if
                 (and
                   @model.organization.scope.locatedWithin

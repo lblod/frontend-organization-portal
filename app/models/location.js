@@ -12,7 +12,7 @@ export default class LocationModel extends Model {
   })
   administrativeUnits;
 
-  @belongsTo('location', {
+  @hasMany('location', {
     inverse: 'locations',
     async: true,
   })
