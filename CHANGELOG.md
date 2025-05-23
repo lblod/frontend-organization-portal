@@ -1,7 +1,7 @@
 
 
 
-## v1.31.0-0 (2025-05-23)
+## v1.31.0 (2025-05-23)
 
 #### :rocket: Enhancement
 * [#677](https://github.com/lblod/frontend-organization-portal/pull/677) [OP-3563] Human readable phone numbers ([@Windvis](https://github.com/Windvis))
