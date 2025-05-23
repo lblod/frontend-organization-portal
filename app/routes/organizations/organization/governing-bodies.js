@@ -8,6 +8,11 @@ export default class OrganizationsOrganizationGoverningBodiesRoute extends Route
   async model() {
     let { id: organizationId } = this.paramsFor('organizations.organization');
 
+    // NOTE (23/05/2025): The `governingBodies` property is defined in the
+    // `AdministrativeUnit` model, not the `Organization` model. Should this
+    // route be visited with a non-administrative unit organization as argument
+    // the following will fail. This should probably be rewritten to a query for
+    // governing bodies that are linked to the organization with the given id.
     let organization = await this.store.findRecord(
       'organization',
       organizationId,
