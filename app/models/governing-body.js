@@ -5,7 +5,6 @@ import {
   validateBelongsToOptional,
   validateHasManyOptional,
 } from '../validators/schema';
-import { inPeriod } from '../utils/date';
 import { EXECUTIVE_ORGANEN } from './governing-body-classification-code';
 
 export default class GoverningBodyModel extends AbstractValidationModel {
@@ -73,13 +72,6 @@ export default class GoverningBodyModel extends AbstractValidationModel {
             );
           }
 
-          if (
-            this.changedAttributes().startDate &&
-            (await this.hasOverlapWithOtherGoverningBodies())
-          ) {
-            return helpers.message('Geen overlap');
-          }
-
           return value;
         })
         .messages({
@@ -97,13 +89,6 @@ export default class GoverningBodyModel extends AbstractValidationModel {
             return helpers.message(
               'Kies een einddatum die na de startdatum plaatsvindt',
             );
-          }
-
-          if (
-            this.changedAttributes().endDate &&
-            (await this.hasOverlapWithOtherGoverningBodies())
-          ) {
-            return helpers.message('Geen overlap');
           }
 
           return value;
@@ -181,37 +166,5 @@ export default class GoverningBodyModel extends AbstractValidationModel {
     }
 
     return governingBodies.filter((body) => body.id !== this.id);
-  }
-
-  /**
-   * Check whether this governing body overlaps with any other timed governing
-   * body for the same administrative unit. Note that the start and end dates of
-   * governing bodies are allowed to be the same. For example, a governing body
-   * may start on the same data as another one ends.
-   * @todo Currently, it is allowed for the start and end date of this governing
-   * body to be between the start and end date of another governing body. This
-   * is not considered to be overlapping in order to preserve functional
-   * equivalence with the implementation as it was before migrating to Joi for
-   * model validations.
-   * @return {Promise<Boolean>} true if the start or end date of another governing body
-   * between the start and end date of this this governing body
-   */
-  async hasOverlapWithOtherGoverningBodies() {
-    let governingBodies = await this.getOtherTimedGoverningBodies();
-
-    for (const body of governingBodies) {
-      // Note, this check is written this way to match the behaviour of the
-      // pre-Joi validation. That validation checked whether the dates of other
-      // governing bodies overlap with the period set for this governing body,
-      // not the other way around. Furthermore, the pre-Joi validation resulted
-      // in error messages for both date form fields, hence the check of the
-      // other body's end date here as well.
-      if (
-        inPeriod(body.startDate, this.startDate, this.endDate) ||
-        inPeriod(body.endDate, this.startDate, this.endDate)
-      ) {
-        return true;
-      }
-    }
   }
 }
