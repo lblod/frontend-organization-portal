@@ -159,30 +159,17 @@
                     </:content>
                   </Item>
                 {{/if}}
-                {{#if @model.organization.isMunicipality}}
-                  <Item @labelFor="regio">
-                    <:label>Regio</:label>
-                    <:content>
-                      {{@model.organization.scope.locatedWithin.label}}
-                    </:content>
-                  </Item>
-                {{/if}}
                 {{#if
-                  (or
-                    @model.organization.isIgs
-                    @model.organization.isOcmwAssociation
-                    @model.organization.isPevaProvince
-                    @model.organization.isPevaMunicipality
-                  )
+                  (and @model.organization.displayRegion @model.region.label)
                 }}
-                  <Item @labelFor="igs-regio">
+                  <Item>
                     <:label>Regio</:label>
                     <:content>
                       <TrimInput
                         @width="block"
                         @value={{@model.region.label}}
                         @disabled="true"
-                        id="igs-regio"
+                        id="region"
                       />
                     </:content>
                   </Item>
