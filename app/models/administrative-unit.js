@@ -168,6 +168,15 @@ export default class AdministrativeUnitModel extends OrganizationModel {
     return true;
   }
 
+  get displayRegion() {
+    return (
+      this.isMunicipality ||
+      this.isIgs ||
+      this.isPevaMunicipality ||
+      this.isPevaProvince
+    );
+  }
+
   get participantClassifications() {
     return allowedParticipationMemberships
       .filter((e) => e.organizations.includes(this.classification.id))
