@@ -127,17 +127,13 @@
                   </:content>
                 </Item>
               {{/if}}
-              {{! FIXME: This broke after changing the `locatedWithin` to `hasMany` }}
               {{#if
-                (and
-                  @model.organization.scope.locatedWithin
-                  @model.organization.isMunicipality
-                )
+                (and @model.organization.displayRegion @model.region.label)
               }}
                 <Item>
                   <:label>Regio</:label>
                   <:content>
-                    {{@model.organization.scope.locatedWithin.label}}
+                    {{@model.region.label}}
                   </:content>
                 </Item>
               {{/if}}
@@ -155,14 +151,6 @@
                   @model.organization.isPevaProvince
                 )
               }}
-                {{#if @model.region.label}}
-                  <Item>
-                    <:label>Regio</:label>
-                    <:content>
-                      {{@model.region.label}}
-                    </:content>
-                  </Item>
-                {{/if}}
                 {{#if @model.organization.expectedEndDate}}
                   <Item>
                     <:label>Geplande einddatum</:label>
