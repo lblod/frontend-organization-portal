@@ -1,6 +1,15 @@
 
 
 
+
+## v1.32.0 (2025-06-05)
+
+#### :bug: Bug Fix
+* [#679](https://github.com/lblod/frontend-organization-portal/pull/679) [OP-3611]: remove date overlap validations ([@wolfderechter](https://github.com/wolfderechter))
+
+#### Committers: 1
+- [@wolfderechter](https://github.com/wolfderechter)
+
 ## v1.31.0 (2025-05-23)
 
 #### :rocket: Enhancement
