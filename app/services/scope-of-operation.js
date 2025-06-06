@@ -1,4 +1,5 @@
 import Service, { service } from '@ember/service';
+import splitArrayIntoGroups from '../utils/split-array-in-groups';
 
 export default class ScopeOfOperationService extends Service {
   @service store;
@@ -47,23 +48,43 @@ export default class ScopeOfOperationService extends Service {
   async getLocationsInScope(organization) {
     const scope = await organization.scope;
 
-    let locations;
+    let locations = [];
     if (organization.isAdministrativeUnit && scope) {
       const resp = await fetch(
         this.getScopeServiceEndpoint('locations-in-scope', scope),
       );
 
       if (resp.status === 200) {
-        const jsonResponse = await resp.json();
-        locations = await this.store.query('location', {
-          filter: {
-            ':id:': jsonResponse.join(','),
-          },
-          sort: 'label',
-        });
+        const uuidList = await resp.json();
+        // NOTE (06/06/2025): For some cases the number of UUIDs can be very
+        // long leading to `414 Request-URI Too Long` errors from the
+        // backend. For example, for a province organisation the UUIDs of all
+        // municipalities in that province would be returned. To avoid this
+        // issue we manually split up the requests to the backend.
+        const groupedUuids = splitArrayIntoGroups(uuidList, 20);
+        for (let uuids of groupedUuids) {
+          locations.push(...(await this.#fetchLocations(uuids)));
+        }
+        // NOTE (06/06/2025): In case multiple requests were performed, ensure
+        // the combined result is sorted alphabetically.
+        if (groupedUuids.length > 1) {
+          locations = locations.sort((a, b) =>
+            a.label.localeCompare(b.label, 'nl'),
+          );
+        }
       }
     }
+
     return locations;
+  }
+
+  async #fetchLocations(locationUuids) {
+    return await this.store.query('location', {
+      filter: {
+        ':id:': locationUuids.join(','),
+      },
+      sort: 'label',
+    });
   }
 
   /**
