@@ -20,11 +20,12 @@ module('Unit | Model | worship service', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 3);
+      assert.strictEqual(Object.keys(model.error).length, 4);
       assert.propContains(model.error, {
         legalName: { message: 'Vul de juridische naam in' },
         classification: { message: 'Selecteer een optie' },
         organizationStatus: { message: 'Selecteer een optie' },
+        scope: { message: 'Selecteer een optie' },
       });
     });
 
@@ -40,13 +41,14 @@ module('Unit | Model | worship service', function (hooks) {
       const isValid = await model.validate({ creatingNewOrganization: true });
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 4);
+      assert.strictEqual(Object.keys(model.error).length, 5);
 
       assert.propContains(model.error, {
         legalName: { message: 'Vul de juridische naam in' },
         organizationStatus: { message: 'Selecteer een optie' },
         recognizedWorshipType: { message: 'Selecteer een optie' },
         memberships: { message: 'Selecteer een optie' },
+        scope: { message: 'Selecteer een optie' },
       });
     });
 
@@ -64,11 +66,12 @@ module('Unit | Model | worship service', function (hooks) {
       const isValid = await model.validate({ creatingNewOrganization: true });
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 3);
+      assert.strictEqual(Object.keys(model.error).length, 4);
       assert.propContains(model.error, {
         legalName: { message: 'Vul de juridische naam in' },
         organizationStatus: { message: 'Selecteer een optie' },
         recognizedWorshipType: { message: 'Selecteer een optie' },
+        scope: { message: 'Selecteer een optie' },
       });
     });
 
@@ -84,11 +87,12 @@ module('Unit | Model | worship service', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 3);
+      assert.strictEqual(Object.keys(model.error).length, 4);
       assert.propContains(model.error, {
         legalName: { message: 'Vul de juridische naam in' },
         organizationStatus: { message: 'Selecteer een optie' },
         recognizedWorshipType: { message: 'Selecteer een optie' },
+        scope: { message: 'Selecteer een optie' },
       });
     });
 
@@ -106,11 +110,12 @@ module('Unit | Model | worship service', function (hooks) {
       const isValid = await model.validate({ creatingNewOrganization: true });
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 3);
+      assert.strictEqual(Object.keys(model.error).length, 4);
       assert.propContains(model.error, {
         legalName: { message: 'Vul de juridische naam in' },
         organizationStatus: { message: 'Selecteer een optie' },
         recognizedWorshipType: { message: 'Selecteer een optie' },
+        scope: { message: 'Selecteer een optie' },
       });
     });
 
@@ -133,11 +138,16 @@ module('Unit | Model | worship service', function (hooks) {
       const localInvolvementB = this.store().createRecord('local-involvement', {
         percentage: 50,
       });
+      const scope = this.store().createRecord('location', {
+        label: 'scope label',
+        level: 'scope level',
+      });
       const worshipService = this.store().createRecord('worship-service', {
         legalName: 'Foo',
         classification,
         organizationStatus,
         recognizedWorshipType,
+        scope,
         involvements: [localInvolvementA, localInvolvementB],
       });
 
