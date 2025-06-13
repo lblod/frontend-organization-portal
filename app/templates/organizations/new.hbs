@@ -173,6 +173,25 @@
                 </:content>
               </Item>
             {{/if}}
+            {{#if this.currentOrganizationModel.isAdministrativeUnit}}
+              <Item
+                @labelFor="scope"
+                @required={{true}}
+                @errorMessage={{this.currentOrganizationModel.error.scope.message}}
+              >
+                <:label>Werkingsgebied</:label>
+                <:content>
+                  <LocationMultipleSelect
+                    @selected={{this.locations}}
+                    @onChange={{fn (mut this.locations)}}
+                    @disabled={{false}}
+                    @provinceLocations={{@model.provinceLocations}}
+                    @error={{this.currentOrganizationModel.error.scope}}
+                    @id="locations-select"
+                  />
+                </:content>
+              </Item>
+            {{/if}}
             {{#if this.currentOrganizationModel.isIgs}}
               <Item
                 @labelFor="expectedEndDate"

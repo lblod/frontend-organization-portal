@@ -12,7 +12,7 @@ export default class LocationModel extends Model {
   })
   administrativeUnits;
 
-  @belongsTo('location', {
+  @hasMany('location', {
     inverse: 'locations',
     async: true,
   })
@@ -29,4 +29,8 @@ export default class LocationModel extends Model {
     async: true,
   })
   exactMatch;
+
+  isLocatedWithin(location) {
+    return this.hasMany('locatedWithin').ids().includes(location.id);
+  }
 }
