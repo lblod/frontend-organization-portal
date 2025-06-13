@@ -183,11 +183,6 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
     }, []);
   }
 
-  resetController(controller) {
-    super.resetController(...arguments);
-    controller.reset();
-  }
-
   setupController(controller) {
     super.setupController(...arguments);
 
