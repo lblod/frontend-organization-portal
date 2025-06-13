@@ -59,7 +59,8 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
 
     // NOTE (05/06/2025): Explicitly set the scope to `undefined` when the user
     // did not select any locations, or removed all originally set
-    // locations. Otherwise the any previously set scope just be kept.
+    // locations. Otherwise, any edits are ignored and the previously set scope
+    // of operation is just silently kept.
     organization.scope =
       this.locationsInScope?.length > 0
         ? yield this.scopeOfOperation.getScopeForLocations(
