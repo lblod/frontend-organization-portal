@@ -34,7 +34,11 @@
             />
           </div>
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
-            <AuLabel for="filter-province">Provincie</AuLabel>
+            <AuLabel for="filter-province">
+              Provincie
+              <AuIcon @icon="circle-question" @alignment="right" />
+              <EmberTooltip @text="Kies een Vlaamse provincie of het Brussels Hoofdstedelijk gewest" />
+            </AuLabel>
             <ProvinceSelect
               @selected={{this.province}}
               @onChange={{this.setProvince}}

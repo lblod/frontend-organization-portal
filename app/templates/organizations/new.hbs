@@ -385,7 +385,11 @@
 
                   {{#if this.municipality}}
                     <Item>
-                      <:label>Provincie</:label>
+                      <:label>
+                        Provincie
+                        <AuIcon @icon="circle-question" @alignment="right"/>
+                        <EmberTooltip @text="Kies een Vlaamse provincie of het Brussels Hoofdstedelijk gewest" />
+                      </:label>
                       <:content>{{this.province.abbName}}</:content>
                     </Item>
                   {{/if}}
@@ -459,7 +463,11 @@
                       @required={{true}}
                       @errorMessage={{this.provinceError}}
                     >
-                      <:label>Provincie</:label>
+                      <:label>
+                        Provincie
+                        <AuIcon @icon="circle-question" @alignment="right"/>
+                        <EmberTooltip @text="Kies een Vlaamse provincie of het Brussels Hoofdstedelijk gewest" />
+                      </:label>
                       <:content as |hasError|>
                         <ProvinceOrganizationSelect
                           @selected={{this.province}}

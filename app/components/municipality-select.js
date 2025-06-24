@@ -18,6 +18,16 @@ export default class MunicipalitySelectComponent extends Component {
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
     yield Promise.resolve();
 
+    // If we removed the selected municipality, we don't want it to be auto-selected again by
+    // default to avoid ending up in a loop where we can never delete the province
+    if (
+      !this.selected &&
+      this.previousProvince &&
+      this.args.selectedProvince === this.previousProvince
+    ) {
+      return [this.previousMunicipality];
+    }
+
     let query = {
       filter: {
         classification: {
@@ -43,6 +53,17 @@ export default class MunicipalitySelectComponent extends Component {
         selectedProvinceId;
     }
 
-    return yield this.store.query('organization', query);
+    const municipalities = yield this.store.query('organization', query);
+
+    // Auto-selects the municipality when there is only once choice
+    if (!this.args.selected && municipalities.slice().length === 1) {
+      this.previousProvince = this.args.selectedProvince;
+      this.previousMunicipality = municipalities.slice()[0];
+    } else {
+      this.previousProvince = null;
+      this.previousMunicipality = null;
+    }
+
+    return municipalities;
   }
 }

@@ -18,7 +18,11 @@
         {{/if}}
         {{#if @address.province}}
           <Item>
-            <:label>Provincie</:label>
+            <:label>
+              Provincie
+              <AuIcon @icon="circle-question" />
+              <EmberTooltip @text="Kies een Vlaamse provincie of het Brussels Hoofdstedelijk gewest" />
+            </:label>
             <:content>
               {{@address.province}}
             </:content>

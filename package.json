@@ -93,6 +93,7 @@
     "ember-simple-auth": "^6.0.0",
     "ember-source": "~5.12.0",
     "ember-template-lint": "^6.0.0",
+    "ember-tooltips": "^4.0.0",
     "ember-truth-helpers": "^3.0.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",

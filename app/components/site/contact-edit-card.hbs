@@ -130,7 +130,11 @@
                 @required={{true}}
                 @errorMessage={{@address.error.province.message}}
               >
-                <:label>Provincie</:label>
+                <:label>
+                  Provincie
+                  <AuIcon @icon="circle-question" @alignment="right"/>
+                  <EmberTooltip @text="Kies een Vlaamse provincie of het Brussels Hoofdstedelijk gewest" />
+                </:label>
                 <:content as |hasError|>
                   <ProvinceSelect
                     @selected={{@address.province}}

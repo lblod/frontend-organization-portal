@@ -17,9 +17,21 @@ export default class MunicipalitySelectByNameComponent extends Component {
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
     yield Promise.resolve();
 
+    let municipalities = [];
+
     if (this.args.selectedProvince && this.args.selectedProvince.length) {
+      // If we removed the selected municipality, we don't want it to be auto-selected again by
+      // default to avoid ending up in a loop where we can never delete the province
+      if (
+        !this.selected &&
+        this.previousProvince &&
+        this.args.selectedProvince === this.previousProvince
+      ) {
+        return [this.previousMunicipality.name];
+      }
+
       // If a province is selected, load the municipalities in it
-      let municipalities = yield this.store.query('organization', {
+      municipalities = yield this.store.query('organization', {
         filter: {
           'memberships-of-organizations': {
             organization: {
@@ -35,8 +47,6 @@ export default class MunicipalitySelectByNameComponent extends Component {
           size: 400,
         },
       });
-
-      return municipalities.map(({ name }) => name);
     } else {
       // Else load all the municipalities
       const query = {
@@ -51,9 +61,19 @@ export default class MunicipalitySelectByNameComponent extends Component {
         },
       };
 
-      const municipalities = yield this.store.query('organization', query);
-
-      return municipalities.map(({ name }) => name);
+      municipalities = yield this.store.query('organization', query);
     }
+
+    // Auto-selects the municipality when there is only once choice
+    if (!this.args.selected && municipalities.slice().length === 1) {
+      this.previousProvince = this.args.selectedProvince;
+      this.previousMunicipality = municipalities.slice()[0];
+      this.args.onChange(this.previousMunicipality.name);
+    } else {
+      this.previousProvince = null;
+      this.previousMunicipality = null;
+    }
+
+    return municipalities.map(({ name }) => name);
   }
 }

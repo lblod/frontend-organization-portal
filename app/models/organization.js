@@ -17,6 +17,7 @@ export default class OrganizationModel extends AgentModel {
   @attr('string-set') alternativeName; // Note: changing to plural breaks stuff
   @attr('date') expectedEndDate;
   @attr purpose;
+  @attr note;
 
   @belongsTo('organization-classification-code', {
     inverse: null,
