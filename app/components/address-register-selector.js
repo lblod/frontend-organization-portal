@@ -58,6 +58,16 @@ export default class AddressRegisterSelectorComponent extends Component {
   *search(searchData) {
     yield timeout(400);
     const addressSuggestions = yield this.addressRegister.suggest(searchData);
-    return addressSuggestions;
+
+    /*
+      Filtering out addresses from Brussel's province.
+      They can be suggested by the service but the address will then not be found in
+      the Basisregister, which only lists addresses in Flanders, causing validation errors.
+    */
+    const filteredAddressSuggestions = addressSuggestions.filter((address) => {
+      return address.zipCode > 1000 || address.zipCode > 1299;
+    });
+
+    return filteredAddressSuggestions;
   }
 }
