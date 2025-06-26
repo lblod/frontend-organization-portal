@@ -65,7 +65,7 @@ export default class AddressRegisterSelectorComponent extends Component {
       the Basisregister, which only lists addresses in Flanders, causing validation errors.
     */
     const filteredAddressSuggestions = addressSuggestions.filter((address) => {
-      return address.zipCode > 1000 || address.zipCode > 1299;
+      return address.zipCode < 1000 || address.zipCode > 1299;
     });
 
     return filteredAddressSuggestions;
