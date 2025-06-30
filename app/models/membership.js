@@ -148,6 +148,14 @@ export default class MembershipModel extends AbstractValidationModel {
     return this.role?.get('participatesIn');
   }
 
+  get isNotRemovableByUser() {
+    const org = this.belongsTo('organization').value();
+    const member = this.belongsTo('member').value();
+    const role = this.belongsTo('role').value();
+
+    return org?.isProvince && member?.isMunicipality && role?.hasRelationWith;
+  }
+
   /**
    * Check whether this membership is equal to a given one. Two memberships are
    * considered equal their respective organizations, members, and roles have
