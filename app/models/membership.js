@@ -153,7 +153,12 @@ export default class MembershipModel extends AbstractValidationModel {
     const member = this.belongsTo('member').value();
     const role = this.belongsTo('role').value();
 
-    return org?.isProvince && member?.isMunicipality && role?.hasRelationWith;
+    return (
+      role?.hasRelationWith &&
+      ((org?.isProvince && member?.isMunicipality) ||
+        (org?.isProvince && member?.isOCMW) ||
+        (org?.isMunicipality && member?.isOCMW))
+    );
   }
 
   /**
