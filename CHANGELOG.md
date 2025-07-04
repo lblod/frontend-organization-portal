@@ -2,6 +2,19 @@
 
 
 
+
+## v1.33.0 (2025-07-04)
+
+#### :rocket: Enhancement
+* [#683](https://github.com/lblod/frontend-organization-portal/pull/683) feat: do not allow users to remove relationships between certain classes of organisations ([@mirdono](https://github.com/mirdono))
+
+#### :bug: Bug Fix
+* [#681](https://github.com/lblod/frontend-organization-portal/pull/681) Prevent suggesting addresses outside of Flanders ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### Committers: 1
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+
 ## v1.32.0 (2025-06-05)
 
 #### :bug: Bug Fix
