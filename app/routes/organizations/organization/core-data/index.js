@@ -8,6 +8,7 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
 
 export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
   @service store;
+  @service scopeOfOperation;
 
   async model() {
     let organization = this.modelFor('organizations.organization.core-data');
@@ -38,30 +39,45 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
       }
     }
 
+    // Determine reference region for some classes of organizations
+    // TODO: this is duplicate from the edit route
     let region;
-    if (
-      organization.isIgs ||
-      organization.isOcmwAssociation ||
-      organization.isPevaProvince ||
-      organization.isPevaMunicipality
-    ) {
-      const address = await primarySite?.address;
-      const municipalityString = address?.municipality;
-      if (municipalityString) {
-        const municipalityUnit = (
-          await this.store.query('organization', {
-            filter: {
-              ':exact:name': municipalityString,
-              classification: {
-                ':id:': CLASSIFICATION.MUNICIPALITY.id,
+    if (organization.displayRegion) {
+      let scope;
+      if (organization.isMunicipality) {
+        scope = await organization.scope;
+      } else if (
+        organization.isIgs ||
+        organization.isOcmwAssociation ||
+        organization.isPevaProvince ||
+        organization.isPevaMunicipality
+      ) {
+        const address = await primarySite?.address;
+        const municipalityString = address?.municipality;
+        if (municipalityString) {
+          const municipalityUnit = (
+            await this.store.query('organization', {
+              filter: {
+                ':exact:name': municipalityString,
+                classification: {
+                  ':id:': CLASSIFICATION.MUNICIPALITY.id,
+                },
               },
-            },
-          })
-        ).at(0);
-        const scope = await municipalityUnit.scope;
-        region = await scope.locatedWithin;
+            })
+          ).at(0);
+          scope = await municipalityUnit.scope;
+        }
       }
+      const containingLocations = await scope.locatedWithin;
+      // NOTE (03/06/2025): This relies on the fact that reference regions do
+      // *not* overlap. In other words, an organisation cannot be located in
+      // multiple reference regions.
+      region = await containingLocations.find(
+        (location) => location.level === 'Referentieregio',
+      );
     }
+
+    const scopeLabel = await this.scopeOfOperation.getScopeLabel(organization);
 
     const kboOrganization = await organization.kboOrganization;
     const kboContacts = (await kboOrganization?.contacts) ?? [];
@@ -74,6 +90,7 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
       primaryContact: findPrimaryContact(contacts),
       secondaryContact: findSecondaryContact(contacts),
       region,
+      scopeLabel,
       kboContact: findPrimaryContact(kboContacts),
     };
   }
