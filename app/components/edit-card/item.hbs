@@ -11,6 +11,7 @@
         @requiredLabel="*"
         @inline={{true}}
         @error={{@errorMessage}}
+        @warning={{@warningMessage}}
         class={{@labelClass}}
         for={{@labelFor}}
       >
@@ -33,6 +34,8 @@
         {{else}}
           <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
         {{/if}}
+      {{else if @warningMessage}}
+        <AuHelpText @warning={{true}}>{{@warningMessage}}</AuHelpText>
       {{/if}}
 
       {{#if (has-block "helpText")}}
