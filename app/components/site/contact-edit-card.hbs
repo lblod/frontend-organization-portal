@@ -146,47 +146,53 @@
         </AddressSearch>
       </:left>
       <:right as |Item|>
-        <Item
-          @labelFor="site-contact-phone-number"
-          @errorMessage={{@primaryContact.error.telephone.message}}
+        <PhoneInput
+          @value={{@primaryContact.telephone}}
+          @onUpdate={{fn (mut @primaryContact.telephone)}}
+          as |phone|
         >
-          <:label>Primair telefoonnummer</:label>
-          <:content as |hasError|>
-            <TrimInput
-              @width="block"
-              @value={{@primaryContact.telephone}}
-              @onUpdate={{fn (mut @primaryContact.telephone)}}
-              @error={{hasError}}
-              id="site-contact-phone-number"
-              type="tel"
-              {{inputmaskTel}}
-            />
-          </:content>
-          <:helpText>
-            {{help-text "phone-number"}}
-          </:helpText>
-        </Item>
+          <Item
+            @labelFor="site-contact-phone-number"
+            @errorMessage={{@primaryContact.error.telephone.message}}
+            @warningMessage={{phone.warning}}
+          >
+            <:label>Primair telefoonnummer</:label>
+            <:content as |hasError|>
+              <phone.Input
+                @width="block"
+                @error={{hasError}}
+                id="site-contact-phone-number"
+              />
+            </:content>
+            <:helpText>
+              {{help-text "phone-number"}}
+            </:helpText>
+          </Item>
+        </PhoneInput>
 
-        <Item
-          @labelFor="site-contact-secondary-phone-number"
-          @errorMessage={{@secondaryContact.error.telephone.message}}
+        <PhoneInput
+          @value={{@secondaryContact.telephone}}
+          @onUpdate={{fn (mut @secondaryContact.telephone)}}
+          as |phone|
         >
-          <:label>Secundair telefoonnummer</:label>
-          <:content as |hasError|>
-            <TrimInput
-              @width="block"
-              @value={{@secondaryContact.telephone}}
-              @onUpdate={{fn (mut @secondaryContact.telephone)}}
-              @error={{hasError}}
-              id="site-contact-secondary-phone-number"
-              type="tel"
-               {{inputmaskTel}}
-            />
-          </:content>
-          <:helpText>
-            {{help-text "phone-number"}}
-          </:helpText>
-        </Item>
+          <Item
+            @labelFor="site-contact-secondary-phone-number"
+            @errorMessage={{@secondaryContact.error.telephone.message}}
+            @warningMessage={{phone.warning}}
+          >
+            <:label>Secundair telefoonnummer</:label>
+            <:content as |hasError|>
+              <phone.Input
+                @width="block"
+                @error={{hasError}}
+                id="site-contact-secondary-phone-number"
+              />
+            </:content>
+            <:helpText>
+              {{help-text "phone-number"}}
+            </:helpText>
+          </Item>
+        </PhoneInput>
         <Item
           @labelFor="site-contact-email"
           @errorMessage={{@primaryContact.error.email.message}}
