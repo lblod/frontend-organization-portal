@@ -47,6 +47,11 @@ export default class OrganizationsNewRoute extends Route {
       ].join(','),
     });
 
+    const provinceLocations = await this.store.query('location', {
+      sort: 'label',
+      filter: { level: 'Provincie' },
+    });
+
     return {
       primarySite: this.store.createRecord('site'),
       address: this.store.createRecord('address', {
@@ -59,6 +64,7 @@ export default class OrganizationsNewRoute extends Route {
       identifierSharepoint,
       structuredIdentifierSharepoint,
       roles,
+      provinceLocations,
     };
   }
 

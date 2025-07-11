@@ -43,6 +43,10 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
     return this._hasClassificationId(OcmwAssociationCodeList);
   }
 
+  get displayRegion() {
+    return this.isOcmwAssociation;
+  }
+
   get isPrivateOcmwAssociation() {
     return this._hasClassificationId(PrivateOcmwAssociationCodeList);
   }

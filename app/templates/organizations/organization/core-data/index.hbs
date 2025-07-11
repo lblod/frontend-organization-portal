@@ -128,34 +128,29 @@
                 </Item>
               {{/if}}
               {{#if
-                (and
-                  @model.organization.scope.locatedWithin
-                  @model.organization.isMunicipality
-                )
+                (and @model.organization.displayRegion @model.region.label)
               }}
                 <Item>
                   <:label>Regio</:label>
                   <:content>
-                    {{@model.organization.scope.locatedWithin.label}}
+                    {{@model.region.label}}
                   </:content>
                 </Item>
               {{/if}}
+              {{#if @model.organization.isAdministrativeUnit}}
+                <Item>
+                  <:label>Werkingsgebied</:label>
+                  <:content>{{@model.scopeLabel}}</:content>
+                </Item>
+              {{/if}}
               {{#if
-                  (or
-                    @model.organization.isIgs
-                    @model.organization.isOcmwAssociation
-                    @model.organization.isPevaMunicipality
-                    @model.organization.isPevaProvince
-                  )
+                (or
+                  @model.organization.isIgs
+                  @model.organization.isOcmwAssociation
+                  @model.organization.isPevaMunicipality
+                  @model.organization.isPevaProvince
+                )
               }}
-                {{#if @model.region.label}}
-                  <Item>
-                    <:label>Regio</:label>
-                    <:content>
-                      {{@model.region.label}}
-                    </:content>
-                  </Item>
-                {{/if}}
                 {{#if @model.organization.expectedEndDate}}
                   <Item>
                     <:label>Geplande einddatum</:label>
