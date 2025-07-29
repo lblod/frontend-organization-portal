@@ -216,4 +216,8 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       this.isVlaamseGemeenschapscommissie
     );
   }
+
+  get disableScopeEdits() {
+    return this.isDistrict || this.isMunicipality || this.isProvince;
+  }
 }

@@ -185,10 +185,7 @@
                       <LocationMultipleSelect
                         @selected={{this.locationsInScope}}
                         @onChange={{fn (mut this.locationsInScope)}}
-                        @disabled={{or
-                          @model.organization.isMunicipality
-                          @model.organization.isProvince
-                        }}
+                        @disabled={{@model.organization.disableScopeEdits}}
                         @provinceLocations={{@model.provinceLocations}}
                         @error={{@model.organization.error.scope}}
                         @id="locations-select"
