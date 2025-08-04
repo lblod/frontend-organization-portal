@@ -3,6 +3,21 @@
 
 
 
+
+## v1.34.0 (2025-08-04)
+
+#### :rocket: Enhancement
+* [#680](https://github.com/lblod/frontend-organization-portal/pull/680) feat: consult and edit an administrative unit's scope of operation ([@mirdono](https://github.com/mirdono))
+* [#685](https://github.com/lblod/frontend-organization-portal/pull/685) [OP-3601] Improve the phone input experience ([@Windvis](https://github.com/Windvis))
+
+#### :bug: Bug Fix
+* [#686](https://github.com/lblod/frontend-organization-portal/pull/686) fix: disable editing scope of operation for districts ([@mirdono](https://github.com/mirdono))
+* [#687](https://github.com/lblod/frontend-organization-portal/pull/687) fix: disallow creating district organisations ([@mirdono](https://github.com/mirdono))
+
+#### Committers: 2
+- Alexander van den Berghe ([@mirdono](https://github.com/mirdono))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
 ## v1.33.0 (2025-07-04)
 
 #### :rocket: Enhancement
