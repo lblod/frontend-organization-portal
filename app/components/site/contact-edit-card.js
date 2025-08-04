@@ -8,4 +8,11 @@ export default class ContactEditCard extends Component {
     this.args.address.municipality = null;
     this.args.address.province = null;
   }
+
+  @action
+  updatePostCode(value) {
+    this.args.address.postcode = value;
+    this.args.address.municipality = null;
+    this.args.address.province = null;
+  }
 }

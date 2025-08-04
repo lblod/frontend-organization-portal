@@ -68,6 +68,7 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
           scope = await municipalityUnit.scope;
         }
       }
+
       const containingLocations = await scope.locatedWithin;
       // NOTE (03/06/2025): This relies on the fact that reference regions do
       // *not* overlap. In other words, an organisation cannot be located in

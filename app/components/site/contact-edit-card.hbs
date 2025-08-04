@@ -81,7 +81,7 @@
                 <TrimInput
                   @width="block"
                   @value={{@address.postcode}}
-                  @onUpdate={{fn (mut @address.postcode)}}
+                  @onUpdate={{this.updatePostCode}}
                   @error={{hasError}}
                   id="site-address-postal-code"
                 />
@@ -124,7 +124,7 @@
             {{/if}}
           </:manualAddressInput>
           <:commonInput>
-            {{#if @address.isCountryBelgium}}
+            {{#if (and @address.isCountryBelgium @address.isPostcodeInFlanders)}}
               <Item
                 @labelFor="site-address-province"
                 @required={{true}}
