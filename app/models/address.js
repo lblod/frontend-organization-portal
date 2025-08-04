@@ -30,7 +30,10 @@ export default class AddressModel extends AbstractValidationModel {
   }
 
   get isPostcodeInFlanders() {
-    return (this.postcode >= 1500 && this.postcode <= 3999) || (this.postcode >= 8000 && this.postcode <= 9999);
+    return (
+      (this.postcode >= 1500 && this.postcode <= 3999) ||
+      (this.postcode >= 8000 && this.postcode <= 9999)
+    );
   }
 
   get validationSchema() {
@@ -56,17 +59,18 @@ export default class AddressModel extends AbstractValidationModel {
         .empty('')
         .required()
         .messages({ '*': REQUIRED_MESSAGE }),
-      province: Joi.string().empty('').allow(null).external(async (value, helpers) => {
-        if (this.isCountryBelgium && this.isPostcodeInFlanders) {
-          if (!value) {
-            return helpers.message(
-              REQUIRED_MESSAGE
-            );
+      province: Joi.string()
+        .empty('')
+        .allow(null)
+        .external(async (value, helpers) => {
+          if (this.isCountryBelgium && this.isPostcodeInFlanders) {
+            if (!value) {
+              return helpers.message(REQUIRED_MESSAGE);
+            }
           }
-        }
 
-        return value;
-      }),
+          return value;
+        }),
       boxNumber: validateStringOptional(),
       fullAddress: validateStringOptional(),
       addressRegisterUri: validateStringOptional(),
