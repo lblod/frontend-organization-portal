@@ -30,10 +30,12 @@ export default class AddressModel extends AbstractValidationModel {
   }
 
   get isPostcodeInFlanders() {
-    return (
+    const isPostcodeFourDigits = this.postcode.match(/^\d{4}$/);
+    const isPostcodeWithinFlanders =
       (this.postcode >= 1500 && this.postcode <= 3999) ||
-      (this.postcode >= 8000 && this.postcode <= 9999)
-    );
+      (this.postcode >= 8000 && this.postcode <= 9999);
+
+    return isPostcodeFourDigits && isPostcodeWithinFlanders;
   }
 
   get validationSchema() {
