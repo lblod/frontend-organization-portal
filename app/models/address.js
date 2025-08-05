@@ -38,7 +38,7 @@ export default class AddressModel extends AbstractValidationModel {
 
   get validationSchema() {
     const REQUIRED_MESSAGE = 'Vul het volledige adres in';
-    const schema = Joi.object({
+    return Joi.object({
       street: Joi.string()
         .empty('')
         .required()
@@ -76,8 +76,6 @@ export default class AddressModel extends AbstractValidationModel {
       addressRegisterUri: validateStringOptional(),
       source: validateBelongsToOptional(),
     });
-
-    return schema;
   }
 }
 
