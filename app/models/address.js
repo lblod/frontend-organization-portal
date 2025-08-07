@@ -30,12 +30,19 @@ export default class AddressModel extends AbstractValidationModel {
   }
 
   get isPostcodeInFlanders() {
-    const isPostcodeFourDigits = this.postcode.match(/^\d{4}$/);
-    const isPostcodeWithinFlanders =
-      (this.postcode >= 1500 && this.postcode <= 3999) ||
-      (this.postcode >= 8000 && this.postcode <= 9999);
+    if (this.country && this.postcode) {
+      const isPostcodeFourDigits = this.postcode.match(/^\d{4}$/);
+      const isPostcodeWithinFlanders =
+        (this.postcode >= 1500 && this.postcode <= 3999) ||
+        (this.postcode >= 8000 && this.postcode <= 9999);
 
-    return isPostcodeFourDigits && isPostcodeWithinFlanders;
+      return (
+        this.isCountryBelgium &&
+        isPostcodeFourDigits &&
+        isPostcodeWithinFlanders
+      );
+    }
+    return false;
   }
 
   get validationSchema() {
@@ -65,7 +72,7 @@ export default class AddressModel extends AbstractValidationModel {
         .empty('')
         .allow(null)
         .external(async (value, helpers) => {
-          if (this.isCountryBelgium && this.isPostcodeInFlanders) {
+          if (this.isPostcodeInFlanders) {
             if (!value) {
               return helpers.message(REQUIRED_MESSAGE);
             }

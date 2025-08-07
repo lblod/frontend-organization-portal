@@ -87,7 +87,7 @@
                 />
               </:content>
             </Item>
-            {{#if @address.isCountryBelgium}}
+            {{#if @address.isPostcodeInFlanders}}
               <Item
                 @labelFor="site-address-municipality"
                 @required={{true}}
@@ -124,7 +124,7 @@
             {{/if}}
           </:manualAddressInput>
           <:commonInput>
-            {{#if (and @address.isCountryBelgium @address.isPostcodeInFlanders)}}
+            {{#if @address.isPostcodeInFlanders}}
               <Item
                 @labelFor="site-address-province"
                 @required={{true}}

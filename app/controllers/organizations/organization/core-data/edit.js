@@ -101,7 +101,7 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
         }
 
         if (address.hasDirtyAttributes) {
-          if (!address.isCountryBelgium) {
+          if (!address.isPostcodeInFlanders) {
             address.province = '';
           }
           address.fullAddress = combineFullAddress(address);
