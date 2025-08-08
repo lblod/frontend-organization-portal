@@ -29,6 +29,22 @@ export default class AddressModel extends AbstractValidationModel {
     return this.country === BELGIUM;
   }
 
+  get isPostcodeInFlanders() {
+    if (this.country && this.postcode) {
+      const isPostcodeFourDigits = this.postcode.match(/^\d{4}$/);
+      const isPostcodeWithinFlanders =
+        (this.postcode >= 1500 && this.postcode <= 3999) ||
+        (this.postcode >= 8000 && this.postcode <= 9999);
+
+      return (
+        this.isCountryBelgium &&
+        isPostcodeFourDigits &&
+        isPostcodeWithinFlanders
+      );
+    }
+    return false;
+  }
+
   get validationSchema() {
     const REQUIRED_MESSAGE = 'Vul het volledige adres in';
     return Joi.object({
@@ -54,13 +70,15 @@ export default class AddressModel extends AbstractValidationModel {
         .messages({ '*': REQUIRED_MESSAGE }),
       province: Joi.string()
         .empty('')
-        .when('country', {
-          is: Joi.valid(BELGIUM),
-          then: Joi.string()
-            .empty('')
-            .required()
-            .messages({ '*': REQUIRED_MESSAGE }),
-          otherwise: validateStringOptional(),
+        .allow(null)
+        .external(async (value, helpers) => {
+          if (this.isPostcodeInFlanders) {
+            if (!value) {
+              return helpers.message(REQUIRED_MESSAGE);
+            }
+          }
+
+          return value;
         }),
       boxNumber: validateStringOptional(),
       fullAddress: validateStringOptional(),

@@ -54,7 +54,7 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
 
     if (!this.hasValidationErrors) {
       if (address.hasDirtyAttributes) {
-        if (!address.isCountryBelgium) {
+        if (!address.isPostcodeInFlanders) {
           address.province = '';
         }
         address.fullAddress = combineFullAddress(address);

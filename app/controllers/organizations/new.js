@@ -617,7 +617,7 @@ export default class OrganizationsNewController extends Controller {
         secondaryContact = setEmptyStringsToNull(secondaryContact);
         yield secondaryContact.save();
 
-        if (!address.isCountryBelgium) {
+        if (!address.isPostcodeInFlanders) {
           address.province = '';
         }
 
