@@ -1,8 +1,7 @@
 
-
-
-
-
+## Unreleased
+#### :bug: Bug Fix
+* [#689](https://github.com/lblod/frontend-organization-portal/pull/689) [OP-3655] don't clear the address when postcode value is unchanged ([@wolfderechter](https://github.com/wolfderechter))
 
 ## v1.34.0 (2025-08-04)
 
