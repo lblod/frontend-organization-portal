@@ -11,8 +11,6 @@ export default class ContactEditCard extends Component {
 
   @action
   updatePostCode(value) {
-    if (this.args.address.postcode === value) return;
-
     this.args.address.postcode = value;
     this.args.address.municipality = null;
     this.args.address.province = null;

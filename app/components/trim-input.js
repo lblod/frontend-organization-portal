@@ -5,6 +5,6 @@ export default class TrimInputComponent extends Component {
   @restartableTask
   *trimInput(event) {
     const input = yield event.target.value;
-    this.args.onUpdate(input.trim());
+    if (this.args.value !== input) this.args.onUpdate(input.trim());
   }
 }
