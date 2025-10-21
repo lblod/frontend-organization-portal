@@ -29,9 +29,25 @@ export default class LocationMultipleSelectComponent extends Component {
   }
 
   extractProvinceGroups(provinces, municipalities) {
-    return provinces
+     // Existing grouped provinces
+    const provinceGroups = provinces
       .map((province) => this.createGroupForProvince(province, municipalities))
       .filter((group) => group.options.length > 0);
+
+    // 🆕 Handle municipalities that aren't located within any province
+    const unlinkedMunicipalities = municipalities.filter(
+      (municipality) =>
+        !provinces.some((province) => municipality.isLocatedWithin(province))
+    );
+
+    if (unlinkedMunicipalities.length > 0) {
+      provinceGroups.push({
+        groupName: 'Buiten Vlaams Gewest',
+        options: unlinkedMunicipalities,
+      });
+    }
+
+    return provinceGroups;
   }
 
   createGroupForProvince(province, municipalities) {
