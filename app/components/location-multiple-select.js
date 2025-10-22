@@ -29,15 +29,13 @@ export default class LocationMultipleSelectComponent extends Component {
   }
 
   extractProvinceGroups(provinces, municipalities) {
-     // Existing grouped provinces
     const provinceGroups = provinces
       .map((province) => this.createGroupForProvince(province, municipalities))
       .filter((group) => group.options.length > 0);
 
-    // 🆕 Handle municipalities that aren't located within any province
     const unlinkedMunicipalities = municipalities.filter(
       (municipality) =>
-        !provinces.some((province) => municipality.isLocatedWithin(province))
+        !provinces.some((province) => municipality.isLocatedWithin(province)),
     );
 
     if (unlinkedMunicipalities.length > 0) {
