@@ -101,6 +101,8 @@ export default class OrganizationsIndexRoute extends Route {
       filter[':query:status_id'] = `(_exists_:status_id)`;
     }
 
+    filter[':has-no:source'] = true;
+
     return yield this.muSearch.search({
       index: 'organizations',
       page: params.page,
