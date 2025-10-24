@@ -1,4 +1,14 @@
 
+
+## v1.35.0 (2025-10-24)
+
+#### :rocket: Enhancement
+* [#690](https://github.com/lblod/frontend-organization-portal/pull/690) OP-3668: Frontend - Improvements on creating new organisation in Brussel municipality  ([@kikef98](https://github.com/kikef98))
+
+#### Committers: 1
+- Kike Franssen ([@kikef98](https://github.com/kikef98))
+
+
 ## v1.34.1 (2025-08-13)
 #### :bug: Bug Fix
 * [#689](https://github.com/lblod/frontend-organization-portal/pull/689) [OP-3655] don't clear the address when postcode value is unchanged ([@wolfderechter](https://github.com/wolfderechter))
