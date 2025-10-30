@@ -121,6 +121,9 @@ Router.map(function () {
 
   this.route('sparql');
 
+  this.route('error', { path: '/*path' });
+  this.route('unauthorized', { path: '/geen-toegang' });
+  // eslint-disable-next-line ember/no-shadow-route-definition -- We need to shadow the error page, we don't want users to reach it by accident.
   this.route('route-not-found', {
     path: '/*wildcard',
   });
