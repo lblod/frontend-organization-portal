@@ -121,6 +121,7 @@ Router.map(function () {
 
   this.route('sparql');
 
+  this.route('unauthorized', { path: '/geen-toegang' });
   this.route('route-not-found', {
     path: '/*wildcard',
   });
