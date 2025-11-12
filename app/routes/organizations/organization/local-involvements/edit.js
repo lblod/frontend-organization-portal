@@ -25,7 +25,7 @@ export default class OrganizationsOrganizationLocalInvolvementsEditRoute extends
       {
         reload: true,
         include:
-          'recognized-worship-type,involvements.involvement-type,involvements.administrative-unit.classification,involvements.administrative-unit.scope',
+          'recognized-worship-type,involvements.involvement-type,involvements.administrative-unit.classification,scope',
       },
     );
 
