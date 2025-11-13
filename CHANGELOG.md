@@ -1,5 +1,15 @@
 
 
+## v1.36.0 (2025-11-13)
+
+#### :rocket: Enhancement
+* [#692](https://github.com/lblod/frontend-organization-portal/pull/692) [OP-3641] Improve the error handling setup ([@Windvis](https://github.com/Windvis))
+
+#### :bug: Bug Fix
+* [#693](https://github.com/lblod/frontend-organization-portal/pull/693) Include scope in local involvement edit route ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#691](https://github.com/lblod/frontend-organization-portal/pull/691) Fix the app name in the page titles ([@Windvis](https://github.com/Windvis))
+
+
 ## v1.35.0 (2025-10-24)
 
 #### :rocket: Enhancement
