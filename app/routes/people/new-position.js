@@ -7,9 +7,7 @@ export default class PeopleNewPositionRoute extends Route {
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
-      this.router.transitionTo('route-not-found', {
-        wildcard: 'pagina-niet-gevonden',
-      });
+      this.router.transitionTo('unauthorized');
     }
   }
 }
