@@ -18,6 +18,7 @@ export default class OrganizationSelectByNameComponent extends Component {
       filter[`:phrase_prefix:legal_name,alternative_name,name`] = searchParams;
     }
 
+    // Determine classification codes based on user selection, if any
     let queryClassifications = [];
     if (
       this.args.selectedClassificationIds &&

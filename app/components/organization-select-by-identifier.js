@@ -25,6 +25,7 @@ export default class OrganizationSelectByIdentifierComponent extends Component {
       filter[`:prefix:identifier.index`] = searchParams.toLowerCase();
     }
 
+    // Determine classification codes based on user selection, if any
     let queryClassifications = [];
     if (
       this.args.selectedClassificationIds &&
