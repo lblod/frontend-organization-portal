@@ -126,6 +126,17 @@
                     {{@model.organization.crossBorderNominal}}
                   </:content>
                 </Item>
+                {{#if @model.vendor}}
+                  <Item>
+                    <:label>Vendor</:label>
+                    <:content>ReligioPoint</:content>
+                  </Item>
+                {{else}}
+                  <Item>
+                    <:label>Vendor</:label>
+                    <:content>Loket voor Lokale Besturen</:content>
+                  </Item>
+                {{/if}}
               {{/if}}
               {{#if
                 (and @model.organization.displayRegion @model.region.label)
