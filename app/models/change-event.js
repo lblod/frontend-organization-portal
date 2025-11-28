@@ -55,10 +55,12 @@ export default class ChangeEventModel extends AbstractValidationModel {
 
   get validationSchema() {
     return Joi.object({
-      date: Joi.date()
-        .empty(null)
-        .required()
-        .messages({ 'any.required': 'Vul de datum in' }),
+      date: this.isNew
+        ? Joi.date()
+            .empty(null)
+            .required()
+            .messages({ 'any.required': 'Vul de datum in' })
+        : Joi.date().empty(null).optional(),
       description: validateStringOptional(),
       type: validateBelongsToRequired('Selecteer een type'),
       decision: validateBelongsToOptional(),
