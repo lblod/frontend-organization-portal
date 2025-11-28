@@ -247,7 +247,9 @@
                 {{#if @model.vendor}}
                   <Item>
                     <:label>Vendor</:label>
-                    <:content>ReligioPoint</:content>
+                    <:content>
+                      {{@model.vendor.name}}
+                    </:content>
                   </Item>
                 {{else}}
                   <Item>
