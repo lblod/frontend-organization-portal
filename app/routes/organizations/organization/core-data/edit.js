@@ -133,6 +133,11 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
     this.locationsInScope =
       await this.scopeOfOperation.getLocationsInScope(organization);
 
+    let vendor;
+    if (organization.isWorshipService) {
+      vendor = await organization.vendor;
+    }
+
     return {
       organization,
       address,
@@ -148,6 +153,7 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
       structuredIdentifierOVO,
       region,
       provinceLocations,
+      vendor,
     };
   }
 

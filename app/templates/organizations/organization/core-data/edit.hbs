@@ -302,6 +302,21 @@
                     </:content>
                   </Item>
                 {{/if}}
+                {{#if @model.organization.isWorshipService}}
+                  {{#if @model.vendor}}
+                    <Item>
+                      <:label>Vendor</:label>
+                      <:content>
+                        {{@model.vendor.name}}
+                      </:content>
+                    </Item>
+                  {{else}}
+                    <Item>
+                      <:label>Vendor</:label>
+                      <:content>Loket voor Lokale Besturen</:content>
+                    </Item>
+                  {{/if}}
+                {{/if}}
               </:right>
             </Card.Columns>
           </:card>
