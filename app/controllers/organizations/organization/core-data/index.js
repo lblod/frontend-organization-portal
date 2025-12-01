@@ -113,6 +113,14 @@ export default class OrganizationsOrganizationCoreDataIndexController extends Co
     return expectedEndDate && expectedEndDate < new Date();
   }
 
+  get vendorsString() {
+    const vendors = this.model.organization.hasMany('vendors').value();
+    if (!vendors || !vendors.length) {
+      return 'Loket voor Lokale Besturen';
+    }
+    return vendors.map((item) => item.name).join(', ');
+  }
+
   @action
   setShowAbbData(value) {
     this.showAbbData = value;

@@ -1,4 +1,4 @@
-import { attr, belongsTo } from '@ember-data/model';
+import { attr } from '@ember-data/model';
 import Joi from 'joi';
 import WorshipAdministrativeUnitModel from './worship-administrative-unit';
 import {
@@ -11,12 +11,6 @@ import { WITH_CENTRAL_WORSHIP_SERVICE } from './recognized-worship-type';
 export default class WorshipServiceModel extends WorshipAdministrativeUnitModel {
   @attr denomination;
   @attr crossBorder;
-
-  @belongsTo('vendor', {
-    inverse: 'worshipServices',
-    async: true,
-  })
-  vendor;
 
   get crossBorderNominal() {
     if (this.crossBorder) {

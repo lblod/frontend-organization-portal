@@ -102,6 +102,13 @@ export default class OrganizationModel extends AgentModel {
   })
   kboOrganization;
 
+  @hasMany('vendor', {
+    inverse: 'organizations',
+    async: true,
+    as: 'organization',
+  })
+  vendors;
+
   get validationSchema() {
     const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({

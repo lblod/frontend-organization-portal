@@ -133,10 +133,7 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
     this.locationsInScope =
       await this.scopeOfOperation.getLocationsInScope(organization);
 
-    let vendor;
-    if (organization.isWorshipService) {
-      vendor = await organization.vendor;
-    }
+    const vendors = await organization.vendors;
 
     return {
       organization,
@@ -153,7 +150,7 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
       structuredIdentifierOVO,
       region,
       provinceLocations,
-      vendor,
+      vendors,
     };
   }
 

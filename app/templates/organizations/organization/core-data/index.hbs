@@ -243,21 +243,12 @@
                   </:content>
                 </Item>
               {{/if}}
-              {{#if @model.organization.isWorshipService}}
-                {{#if @model.vendor}}
-                  <Item>
-                    <:label>Vendor</:label>
-                    <:content>
-                      {{@model.vendor.name}}
-                    </:content>
-                  </Item>
-                {{else}}
-                  <Item>
-                    <:label>Vendor</:label>
-                    <:content>Loket voor Lokale Besturen</:content>
-                  </Item>
-                {{/if}}
-              {{/if}}
+              <Item>
+                <:label>Vendors</:label>
+                <:content>
+                  {{this.vendorsString}}
+                </:content>
+              </Item>
             </:right>
           </Card.Columns>
         </:card>
