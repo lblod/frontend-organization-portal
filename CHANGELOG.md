@@ -3,7 +3,8 @@
 ## unreleased
 
 #### :rocket: Enhancement
-* [#694](https://github.com/lblod/frontend-organization-portal/pull/694) [OP-3623] edited organization-select-by-identifier/name to use already… ([@DamonKennes](https://github.com/DamonKennes))
+* [#694](https://github.com/lblod/frontend-organization-portal/pull/694) [OP-3623] Edited organization-select-by-identifier/name to use already… ([@DamonKennes](https://github.com/DamonKennes))
+* [#695](https://github.com/lblod/frontend-organization-portal/pull/695) [OP-3681] Show vendor for worshipservice in core data. Added vendor model ([@DamonKennes](https://github.com/DamonKennes))
 
 #### :bug: Bug Fix
 * [#696](https://github.com/lblod/frontend-organization-portal/pull/696) [OP-2712] validation on save doesn't allow user to make changes ([@DamonKennes](https://github.com/DamonKennes))
