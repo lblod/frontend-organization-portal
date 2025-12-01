@@ -22,9 +22,8 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
     }
 
     if (
-      !changeEvent.error && changeEvent.requiresDecisionInformation
-        ? !decision.error
-        : true
+      !changeEvent.error &&
+      (changeEvent.requiresDecisionInformation ? !decision.error : true)
     ) {
       if (changeEvent.requiresDecisionInformation) {
         if (

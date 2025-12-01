@@ -12,6 +12,13 @@
               @id="filter-name"
               @selected={{this.name}}
               @onChange={{this.setName}}
+              @selectedProvince={{this.province}}
+              @selectedMunicipality={{this.municipality}}
+              @selectedOrganizationTypes={{this.organizationTypes}}
+              @selectedClassificationIds={{this.classificationIds}}
+              @selectedRecognizedWorshipTypeId={{this.recognizedWorshipTypeId}}
+              @selectedOrganizationStatus={{this.organizationStatus}}
+              @selectedIdentifier={{this.identifier}}
               class="grow"
             />
           </div>
@@ -21,6 +28,13 @@
               @id="filter-identifier"
               @selected={{this.identifier}}
               @onChange={{this.setIdentifier}}
+              @selectedProvince={{this.province}}
+              @selectedMunicipality={{this.municipality}}
+              @selectedOrganizationTypes={{this.organizationTypes}}
+              @selectedClassificationIds={{this.classificationIds}}
+              @selectedRecognizedWorshipTypeId={{this.recognizedWorshipTypeId}}
+              @selectedOrganizationStatus={{this.organizationStatus}}
+              @selectedName={{this.name}}
               class="grow"
             />
           </div>
