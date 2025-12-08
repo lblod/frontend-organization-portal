@@ -26,6 +26,14 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
     );
   }
 
+  get vendorsString() {
+    const vendors = this.model.organization.hasMany('vendors').value();
+    if (!vendors || !vendors.length) {
+      return 'Loket voor Lokale Besturen';
+    }
+    return vendors.map((item) => item.name).join(', ');
+  }
+
   @action
   setNames(name) {
     this.model.organization.setAbbName(name);

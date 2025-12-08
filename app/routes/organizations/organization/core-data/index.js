@@ -83,6 +83,8 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
     const kboOrganization = await organization.kboOrganization;
     const kboContacts = (await kboOrganization?.contacts) ?? [];
 
+    const vendors = await organization.vendors;
+
     return {
       organization,
       kboOrganization,
@@ -93,6 +95,7 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
       region,
       scopeLabel,
       kboContact: findPrimaryContact(kboContacts),
+      vendors,
     };
   }
 }
