@@ -1,4 +1,3 @@
-
 // Inlined from the ember-data-table package
 // TODO, remove all usage of this
 /* eslint-disable ember/no-new-mixins */
