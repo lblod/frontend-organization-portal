@@ -131,6 +131,7 @@ export default class OrganizationModel extends AgentModel {
       membershipsOfOrganizations: validateHasManyOptional(),
       memberships: validateHasManyOptional(),
       kboOrganization: validateBelongsToOptional(),
+      vendors: validateHasManyOptional(),
     });
   }
 
