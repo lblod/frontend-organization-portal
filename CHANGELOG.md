@@ -1,3 +1,8 @@
+## v1.36.2 (2026-01-07)
+
+#### :rocket: Enhancement
+* [#699](https://github.com/lblod/frontend-organization-portal/pull/699) [OP-3681]: Change Vendors label to Digitaal Platform (edit from business) ([@DamonKennes](https://github.com/DamonKennes))
+
 ## v1.36.1 (2025-12-12)
 
 #### :rocket: Enhancement
