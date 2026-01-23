@@ -42,6 +42,14 @@ export default class OrganizationsOrganizationGoverningBodiesRoute extends Route
     }
 
     const sortedTimesGoverningBodies = governingBodies.sort((a, b) => {
+      const now = new Date();
+      const aStatusIsActive = !a.endDate || a.endDate > now;
+      const bStatusIsActive = !b.endDate || b.endDate > now;
+
+      if (aStatusIsActive !== bStatusIsActive) {
+        return aStatusIsActive ? -1 : 1;
+      }
+
       if (a.endDate && b.endDate) {
         return b.endDate - a.endDate;
       } else if (a.startDate && b.startDate) {
