@@ -1,3 +1,8 @@
+## v1.36.3 (2026-01-27)
+
+#### :rocket: Enhancement
+* [#700](https://github.com/lblod/frontend-organization-portal/pull/700) [OP-3428]: sort governing-bodies first based on stats than on periode ([@DamonKennes](https://github.com/DamonKennes))
+
 ## v1.36.2 (2026-01-07)
 
 #### :rocket: Enhancement
