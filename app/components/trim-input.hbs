@@ -6,5 +6,6 @@
   id={{@id}}
   value={{@value}}
   {{on "focusout" (perform this.trimInput)}}
+  {{on "keydown" this.handleKeydown}}
   ...attributes
 />
