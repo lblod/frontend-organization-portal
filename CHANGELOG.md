@@ -1,3 +1,8 @@
+## v1.36.4 (2026-02-11)
+
+#### :bug: Bug Fix
+* [#701](https://github.com/lblod/frontend-organization-portal/pull/701) [OP-3726] make trimInput work on enter keypress ([@DamonKennes](https://github.com/DamonKennes))
+
 ## v1.36.3 (2026-01-27)
 
 #### :rocket: Enhancement
