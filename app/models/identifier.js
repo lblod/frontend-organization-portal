@@ -54,9 +54,13 @@ export default class IdentifierModel extends AbstractValidationModel {
                 include: 'identifiers.structured-identifier',
               });
 
-              if (records.length > 0) {
+            let conflicts = records.filter(
+                (r) => r.constructor.modelName !== 'kbo-organization'
+              );
+
+              if (conflicts.length > 0) {
                 return helpers.message('Dit KBO nummer is al in gebruik.', {
-                  organization: records.at(0),
+                  organization: conflicts.at(0),
                 });
               }
             }
