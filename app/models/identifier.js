@@ -54,8 +54,8 @@ export default class IdentifierModel extends AbstractValidationModel {
                 include: 'identifiers.structured-identifier',
               });
 
-            let conflicts = records.filter(
-                (r) => r.constructor.modelName !== 'kbo-organization'
+              let conflicts = records.filter(
+                (r) => r.constructor.modelName !== 'kbo-organization',
               );
 
               if (conflicts.length > 0) {
