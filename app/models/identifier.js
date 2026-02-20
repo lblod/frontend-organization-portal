@@ -37,7 +37,7 @@ export default class IdentifierModel extends AbstractValidationModel {
             if (!localId.match(/^\d{10}$/)) {
               return helpers.message('Vul het (tiencijferige) KBO nummer in.');
             }
-            // KBO must be unique (valid only when changed)
+            // KBO must be unique (valid only when changed) #TODO: Move this check to the backend. Frontend does not have access to the full dataset.
             const changedAttributes = (
               await this.structuredIdentifier
             ).changedAttributes();
@@ -54,9 +54,13 @@ export default class IdentifierModel extends AbstractValidationModel {
                 include: 'identifiers.structured-identifier',
               });
 
-              if (records.length > 0) {
+              let conflicts = records.filter(
+                (r) => r.constructor.modelName !== 'kbo-organization',
+              );
+
+              if (conflicts.length > 0) {
                 return helpers.message('Dit KBO nummer is al in gebruik.', {
-                  organization: records.at(0),
+                  organization: conflicts.at(0),
                 });
               }
             }
