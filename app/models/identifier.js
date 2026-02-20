@@ -37,7 +37,7 @@ export default class IdentifierModel extends AbstractValidationModel {
             if (!localId.match(/^\d{10}$/)) {
               return helpers.message('Vul het (tiencijferige) KBO nummer in.');
             }
-            // KBO must be unique (valid only when changed)
+            // KBO must be unique (valid only when changed) #TODO: Move this check to the backend. Frontend does not have access to the full dataset and cannot reliably validate this.
             const changedAttributes = (
               await this.structuredIdentifier
             ).changedAttributes();
