@@ -1,3 +1,8 @@
+## Unreleased
+
+#### :bug: Bug fix
+* [#703](https://github.com/lblod/frontend-organization-portal/pull/703) Fixed typo in a variable ([@bdevloed](https://github.com/bdevloed))
+
 ## v1.36.4 (2026-02-11)
 
 #### :bug: Bug Fix
@@ -1701,10 +1706,10 @@ Sort names depending on insert ([@claire-lovisa](https://github.com/claire-lovis
 #### :bug: Bug Fix
 *  Handle special characters in search (#279)
 * Fix contact gegevens title not shown (#271)
-* split first name / last name in filter search person (#270) 
+* split first name / last name in filter search person (#270)
 * Remove additional scope parameters
 * Remove werkingsgebieden from the app
-* fix position details not shown (#268) 
+* fix position details not shown (#268)
 
 
 #### Committers: 3
@@ -1730,7 +1735,7 @@ Sort names depending on insert ([@claire-lovisa](https://github.com/claire-lovis
 ## 1.6.4-3 (2022-03-21)
 
 #### :bug: Bug Fix
-*  Handle special characters in search (#279)  
+*  Handle special characters in search (#279)
 
 ## 1.6.4-2 (2022-03-21)
 
@@ -1740,15 +1745,15 @@ Sort names depending on insert ([@claire-lovisa](https://github.com/claire-lovis
 ## 1.6.4-1 (2022-03-14)
 
 #### :bug: Bug Fix
-* Fix contact gegevens title not shown (#271) 
+* Fix contact gegevens title not shown (#271)
 
 
 ## 1.6.4-0 (2022-03-10)
 #### :bug: Bug Fix
-* split first name / last name in filter search person (#270) 
+* split first name / last name in filter search person (#270)
 * Remove additional scope parameters
 * Remove werkingsgebieden from the app
-* fix position details not shown (#268) 
+* fix position details not shown (#268)
 
 
 ## 1.6.3 (2022-03-03)
@@ -1777,7 +1782,7 @@ Sort names depending on insert ([@claire-lovisa](https://github.com/claire-lovis
 ## 1.6.0 (2022-02-10)
 
 #### :bug: Bug Fix
-*  Cancel flow on creating new 'Vestiging' gives error 
+*  Cancel flow on creating new 'Vestiging' gives error
 
 
 ## 1.5.4 (2022-02-10)

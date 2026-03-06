@@ -38,7 +38,7 @@ export default class AddressSearchComponent extends Component {
 
     if (this.isManualInputMode) {
       this.args.address.source = null;
-      this.args.address.addressRegisterUrl = null;
+      this.args.address.addressRegisterUri = null;
     }
   }
 
