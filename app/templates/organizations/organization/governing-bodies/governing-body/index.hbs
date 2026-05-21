@@ -107,10 +107,11 @@
               @currentSorting={{this.sort}}
               @label="Start mandaat"
             />
+            <th>Einde mandaat</th>
             <AuDataTableThSortable
               @field="end-date"
               @currentSorting={{this.sort}}
-              @label="Einde mandaat"
+              @label="Einddatum"
             />
           </c.header>
           <c.body as |mandatory|>
@@ -147,10 +148,13 @@
               {{/if}}
             </td>
             <td>
+              {{#if mandatory.expectedEndDate}}
+                {{date-format mandatory.expectedEndDate}}
+              {{/if}}
+            </td>
+            <td>
               {{#if mandatory.endDate}}
                 {{date-format mandatory.endDate}}
-              {{else if mandatory.expectedEndDate}}
-                {{date-format mandatory.expectedEndDate}}
               {{/if}}
             </td>
           </c.body>
@@ -194,10 +198,11 @@
               @currentSorting={{this.sort}}
               @label="Start mandaat"
             />
+            <th>Einde mandaat</th>
             <AuDataTableThSortable
               @field="end-date"
               @currentSorting={{this.sort}}
-              @label="Einde mandaat"
+              @label="Einddatum"
             />
           </c.header>
           <c.body as |mandatory|>
@@ -234,10 +239,13 @@
               {{/if}}
             </td>
             <td>
+              {{#if mandatory.expectedEndDate}}
+                {{date-format mandatory.expectedEndDate}}
+              {{/if}}
+            </td>
+            <td>
               {{#if mandatory.endDate}}
                 {{date-format mandatory.endDate}}
-              {{else if mandatory.expectedEndDate}}
-                {{date-format mandatory.expectedEndDate}}
               {{/if}}
             </td>
           </c.body>
