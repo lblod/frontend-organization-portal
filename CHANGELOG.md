@@ -1,6 +1,9 @@
-## Unreleased
+## v1.37.0 (2026-05-27)
 
-#### :bug: Bug fix
+#### :rocket: Enhancement
+* [#704](https://github.com/lblod/frontend-organization-portal/pull/704) [OP-3804] Add a "einddatum" column to the bestuursorgaan details page ([@Windvis](https://github.com/Windvis))
+
+#### :bug: Bug Fix
 * [#703](https://github.com/lblod/frontend-organization-portal/pull/703) Fixed typo in a variable ([@bdevloed](https://github.com/bdevloed))
 
 ## v1.36.4 (2026-02-11)
