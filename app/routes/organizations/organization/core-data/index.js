@@ -4,10 +4,8 @@ import {
   findSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
 import { inject as service } from '@ember/service';
-import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
-  @service store;
   @service scopeOfOperation;
 
   async model() {
@@ -39,44 +37,14 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
       }
     }
 
-    // Determine reference region for some classes of organizations
-    // TODO: this is duplicate from the edit route
-    let region;
-    if (organization.displayRegion) {
-      let scope;
-      if (organization.isMunicipality) {
-        scope = await organization.scope;
-      } else if (
-        organization.isIgs ||
-        organization.isOcmwAssociation ||
-        organization.isPevaProvince ||
-        organization.isPevaMunicipality
-      ) {
-        const address = await primarySite?.address;
-        const municipalityString = address?.municipality;
-        if (municipalityString) {
-          const municipalityUnit = (
-            await this.store.query('organization', {
-              filter: {
-                ':exact:name': municipalityString,
-                classification: {
-                  ':id:': CLASSIFICATION.MUNICIPALITY.id,
-                },
-              },
-            })
-          ).at(0);
-          scope = await municipalityUnit.scope;
-        }
-      }
+    // `displayRegion` is derived from the organization's classification, so make
+    // sure that relationship is loaded before render (incl. in-app navigation).
+    await organization.classification;
 
-      const containingLocations = await scope.locatedWithin;
-      // NOTE (03/06/2025): This relies on the fact that reference regions do
-      // *not* overlap. In other words, an organisation cannot be located in
-      // multiple reference regions.
-      region = await containingLocations.find(
-        (location) => location.level === 'Referentieregio',
-      );
-    }
+    // Reference regions (nl. referentieregio's) are derived from the
+    // organization's werkingsgebied; an organization can cover multiple of them.
+    const regions =
+      await this.scopeOfOperation.getReferentieregiosInScope(organization);
 
     const scopeLabel = await this.scopeOfOperation.getScopeLabel(organization);
 
@@ -92,7 +60,7 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
       isCity,
       primaryContact: findPrimaryContact(contacts),
       secondaryContact: findSecondaryContact(contacts),
-      region,
+      regions,
       scopeLabel,
       kboContact: findPrimaryContact(kboContacts),
       vendors,

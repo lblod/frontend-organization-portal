@@ -173,7 +173,15 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       this.isMunicipality ||
       this.isIgs ||
       this.isPevaMunicipality ||
-      this.isPevaProvince
+      this.isPevaProvince ||
+      this.isProvince ||
+      this.isOCMW ||
+      this.isDistrict ||
+      this.isAgb ||
+      this.isApb ||
+      this.isPoliceZone ||
+      this.isAssistanceZone ||
+      this.isOcmwAssociation
     );
   }
 

@@ -78,6 +78,34 @@ export default class ScopeOfOperationService extends Service {
     return locations;
   }
 
+  /**
+   * Retrieve the reference regions (nl. referentieregio's) covered by the
+   * provided organization's scope of operation. An organization can cover
+   * multiple reference regions; they are derived server-side from the
+   * organization's werkingsgebied.
+   * @param {Organization} organization - The organization for which to retrieve
+   *     the reference regions.
+   * @returns {Promise<Array<{uri: string, uuid: string, label: string}>>} The
+   *     reference regions covered by the organization's scope, empty if none.
+   */
+  async getReferentieregiosInScope(organization) {
+    const scope = await organization.scope;
+
+    if (!organization.isAdministrativeUnit || !scope) {
+      return [];
+    }
+
+    const resp = await fetch(
+      this.getScopeServiceEndpoint('referentieregios-in-scope', scope),
+    );
+
+    if (resp.status === 200) {
+      return await resp.json();
+    }
+
+    return [];
+  }
+
   async #fetchLocations(locationUuids) {
     return await this.store.query('location', {
       filter: {

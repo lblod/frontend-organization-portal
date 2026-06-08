@@ -160,17 +160,15 @@
                   </Item>
                 {{/if}}
                 {{#if
-                  (and @model.organization.displayRegion @model.region.label)
+                  (and @model.organization.displayRegion @model.regions.length)
                 }}
                   <Item>
                     <:label>Regio</:label>
                     <:content>
-                      <TrimInput
-                        @width="block"
-                        @value={{@model.region.label}}
-                        @disabled="true"
-                        id="region"
-                      />
+                      {{#each @model.regions as |region index|}}{{if
+                          index
+                          ", "
+                        }}{{region.label}}{{/each}}
                     </:content>
                   </Item>
                 {{/if}}
