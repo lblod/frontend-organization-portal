@@ -107,7 +107,9 @@
               @currentSorting={{this.sort}}
               @label="Start mandaat"
             />
-            <th>Geplande einddatum</th>
+            {{#if @model.organization.isWorshipAdministrativeUnit}}
+              <th>Geplande einddatum</th>
+            {{/if}}
             <AuDataTableThSortable
               @field="end-date"
               @currentSorting={{this.sort}}
@@ -147,11 +149,13 @@
                 {{date-format mandatory.startDate}}
               {{/if}}
             </td>
-            <td>
-              {{#if mandatory.expectedEndDate}}
-                {{date-format mandatory.expectedEndDate}}
-              {{/if}}
-            </td>
+            {{#if @model.organization.isWorshipAdministrativeUnit}}
+              <td>
+                {{#if mandatory.expectedEndDate}}
+                  {{date-format mandatory.expectedEndDate}}
+                {{/if}}
+              </td>
+            {{/if}}
             <td>
               {{#if mandatory.endDate}}
                 {{date-format mandatory.endDate}}
@@ -198,7 +202,9 @@
               @currentSorting={{this.sort}}
               @label="Start mandaat"
             />
-            <th>Geplande einddatum</th>
+            {{#if @model.organization.isWorshipAdministrativeUnit}}
+              <th>Geplande einddatum</th>
+            {{/if}}
             <AuDataTableThSortable
               @field="end-date"
               @currentSorting={{this.sort}}
@@ -238,11 +244,13 @@
                 {{date-format mandatory.startDate}}
               {{/if}}
             </td>
-            <td>
-              {{#if mandatory.expectedEndDate}}
-                {{date-format mandatory.expectedEndDate}}
-              {{/if}}
-            </td>
+            {{#if @model.organization.isWorshipAdministrativeUnit}}
+              <td>
+                {{#if mandatory.expectedEndDate}}
+                  {{date-format mandatory.expectedEndDate}}
+                {{/if}}
+              </td>
+            {{/if}}
             <td>
               {{#if mandatory.endDate}}
                 {{date-format mandatory.endDate}}
