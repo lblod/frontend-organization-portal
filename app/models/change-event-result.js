@@ -7,6 +7,12 @@ export default class ChangeEventResultModel extends Model {
   })
   status;
 
+  @belongsTo('legal-form-code', {
+    inverse: null,
+    async: true,
+  })
+  resultingLegalForm;
+
   @belongsTo('change-event', {
     inverse: 'results',
     async: true,

@@ -111,6 +111,22 @@
                     </PowerSelect>
                   </:content>
                 </Item>
+                <Item
+                  @labelFor="legal-form"
+                >
+                  <:label>Juridische vorm</:label>
+                  <:content>
+                    <PowerSelect
+                      @disabled={{true}}
+                      @selected={{@model.organization.legalForm}}
+                      @onChange={{fn (mut @model.organization.legalForm)}}
+                      @triggerId="legal-form"
+                      as |legalForm|
+                    >
+                      {{legalForm.label}}
+                    </PowerSelect>
+                  </:content>
+                </Item>
                 {{#if @model.organization.isWorshipAdministrativeUnit}}
                   <Item
                     @labelFor="recognized-worship-type-select"

@@ -71,6 +71,23 @@
                 />
               </:content>
             </Item>
+            {{#if this.isLegalFormChange}}
+              <Item
+                @labelFor="change-event-legal-form"
+                @required={{true}}
+                @errorMessage={{@model.changeEvent.error.resultingLegalForm.message}}
+              >
+                <:label>Nieuwe juridische vorm</:label>
+                <:content as |hasError|>
+                  <LegalFormSelect
+                    @id="change-event-legal-form"
+                    @selected={{this.selectedResultingLegalForm}}
+                    @onChange={{this.updateResultingLegalForm}}
+                    @error={{hasError}}
+                  />
+                </:content>
+              </Item>
+            {{/if}}
             {{#if @model.changeEvent.requiresDecisionInformation}}
               <Item
                 @labelFor="change-event-decision-link"

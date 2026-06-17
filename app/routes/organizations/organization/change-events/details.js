@@ -22,6 +22,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsRoute extends R
           'resulting-organizations',
           'results.resulting-organization',
           'results.status',
+          'results.resulting-legal-form',
         ].join(),
       },
     );

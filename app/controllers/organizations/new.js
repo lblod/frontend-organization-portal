@@ -230,6 +230,11 @@ export default class OrganizationsNewController extends Controller {
   }
 
   @action
+  setLegalForm(legalForm) {
+    this.currentOrganizationModel.legalForm = legalForm;
+  }
+
+  @action
   addCentralWorshipService(centralWorshipService) {
     if (!centralWorshipService || centralWorshipService.isActive) {
       this.#reallySetCentralWorshipService(centralWorshipService);
@@ -409,6 +414,9 @@ export default class OrganizationsNewController extends Controller {
       this.currentOrganizationModel.alternativeName;
     newOrganizationModel.organizationStatus = this.currentOrganizationModel
       .belongsTo('organizationStatus')
+      .value();
+    newOrganizationModel.legalForm = this.currentOrganizationModel
+      .belongsTo('legalForm')
       .value();
 
     if (newOrganizationModel.isWorshipAdministrativeUnit) {
