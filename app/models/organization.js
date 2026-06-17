@@ -25,6 +25,12 @@ export default class OrganizationModel extends AgentModel {
   })
   classification;
 
+  @belongsTo('legal-form-code', {
+    inverse: null,
+    async: true,
+  })
+  legalForm;
+
   @belongsTo('site', {
     inverse: null,
     async: true,
@@ -120,6 +126,7 @@ export default class OrganizationModel extends AgentModel {
       expectedEndDate: Joi.date().allow(null),
       purpose: validateStringOptional(),
       classification: validateBelongsToRequired(REQUIRED_MESSAGE),
+      legalForm: validateBelongsToRequired(REQUIRED_MESSAGE),
       primarySite: validateBelongsToOptional(),
       organizationStatus: validateBelongsToRequired(REQUIRED_MESSAGE),
       identifiers: validateHasManyOptional(),

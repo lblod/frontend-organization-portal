@@ -21,6 +21,7 @@ const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.SANCTIONED]: ORGANIZATION_STATUS.ACTIVE,
   [CHANGE_EVENT_TYPE.CITY]: ORGANIZATION_STATUS.ACTIVE,
   [CHANGE_EVENT_TYPE.GEOGRAPHICAL_AREA_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
+  [CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
   // MERGER and FUSIE aren't added here since they have multiple resulting
   // statuses based on the resulting organization
 };
@@ -35,12 +36,22 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
   @tracked
   selectedResultingOrganization;
 
+  @tracked
+  selectedResultingLegalForm;
+
   get hasValidationErrors() {
     return this.model.changeEvent.error || this.model.decision?.error;
   }
 
   get classificationCodes() {
     return [this.model.organization.classification.get('id')];
+  }
+
+  get isLegalFormChange() {
+    return (
+      this.model.changeEvent.type?.get('id') ===
+      CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE
+    );
   }
 
   // TODO: replace this with a `url-for` helper.
@@ -135,6 +146,15 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     this.selectedResultingOrganization = organization;
   }
 
+  /**
+   * Update the selected resulting legal form for a legal form change event
+   * @param {LegalFormCodeModel} legalForm - the legal form to be set
+   */
+  @action
+  updateResultingLegalForm(legalForm) {
+    this.selectedResultingLegalForm = legalForm;
+  }
+
   @dropTask
   *createNewChangeEventTask(event) {
     event.preventDefault();
@@ -152,6 +172,19 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
 
     if (shouldSaveDecision) {
       yield decision.validate();
+    }
+
+    const isLegalFormChange =
+      changeEvent.type?.get('id') === CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE;
+    if (isLegalFormChange && !this.selectedResultingLegalForm) {
+      if (!changeEvent.error) {
+        changeEvent.error = {};
+      }
+      changeEvent.error.resultingLegalForm = {
+        message: 'Selecteer een juridische vorm',
+      };
+    } else if (changeEvent.error?.resultingLegalForm) {
+      delete changeEvent.error.resultingLegalForm;
     }
 
     if (!changeEvent.error && (shouldSaveDecision ? !decision.error : true)) {
@@ -247,6 +280,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           resultingOrganization: currentOrganization,
           changeEvent,
           store: this.store,
+          resultingLegalForm: this.selectedResultingLegalForm,
         });
       }
 
@@ -266,6 +300,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     this.model.decisionActivity?.rollbackAttributes();
     this.model.organization.reset();
     this.selectedResultingOrganization = null;
+    this.selectedResultingLegalForm = null;
   }
 }
 
@@ -274,6 +309,7 @@ async function createChangeEventResult({
   resultingOrganization,
   changeEvent,
   store,
+  resultingLegalForm = null,
 }) {
   let resultingStatus = await store.findRecord(
     'organization-status-code',
@@ -287,16 +323,25 @@ async function createChangeEventResult({
 
   if (
     !mostRecentChangeEvent ||
+    !mostRecentChangeEvent.date ||
     mostRecentChangeEvent.date <= changeEvent.date
   ) {
     // This is the first change event or the new change event is newer
     // so we should update the organization status as well
     resultingOrganization.organizationStatus = resultingStatus;
+
+    if (resultingLegalForm) {
+      resultingOrganization.legalForm = resultingLegalForm;
+    }
+
     await resultingOrganization.save();
   }
 
   let changeEventResult = store.createRecord('change-event-result');
   changeEventResult.status = resultingStatus;
+  if (resultingLegalForm) {
+    changeEventResult.resultingLegalForm = resultingLegalForm;
+  }
   changeEventResult.resultingOrganization = resultingOrganization;
   changeEventResult.resultFrom = changeEvent;
   await changeEventResult.save();

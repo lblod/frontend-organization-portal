@@ -1,0 +1,17 @@
+<div class={{if @error "ember-power-select--error"}}>
+  <PowerSelect
+    @allowClear={{@allowClear}}
+    @loadingMessage="Aan het laden..."
+    @noMatchesMessage="Geen resultaten"
+    @searchMessage="Typ om te zoeken"
+    @searchEnabled={{true}}
+    @searchField="label"
+    @options={{this.loadLegalFormsTask.last}}
+    @selected={{this.selectedLegalForm}}
+    @onChange={{@onChange}}
+    @triggerId={{@id}}
+    as |legalForm|
+  >
+    {{legalForm.label}}
+  </PowerSelect>
+</div>

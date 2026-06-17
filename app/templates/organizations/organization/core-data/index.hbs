@@ -91,6 +91,12 @@
                     {{@model.organization.classification.label}}
                   </:content>
                 </Item>
+                <Item>
+                  <:label>Juridische vorm</:label>
+                  <:content>
+                    {{@model.organization.legalForm.label}}
+                  </:content>
+                </Item>
               {{/unless}}
 
               {{#if @model.organization.isMunicipality}}
