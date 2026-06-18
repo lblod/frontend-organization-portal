@@ -126,7 +126,7 @@ export default class OrganizationModel extends AgentModel {
       expectedEndDate: Joi.date().allow(null),
       purpose: validateStringOptional(),
       classification: validateBelongsToRequired(REQUIRED_MESSAGE),
-      legalForm: validateBelongsToRequired(REQUIRED_MESSAGE),
+      legalForm: validateBelongsToOptional(),
       primarySite: validateBelongsToOptional(),
       organizationStatus: validateBelongsToRequired(REQUIRED_MESSAGE),
       identifiers: validateHasManyOptional(),
