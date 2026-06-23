@@ -29,6 +29,9 @@ export default class LegalFormSelectComponent extends Component {
   }
 
   @task *loadLegalFormsTask() {
-    return yield this.store.query('legal-form-code', { 'page[size]': 30 });
+    return yield this.store.query('legal-form-code', {
+      sort: 'order',
+      'page[size]': 30,
+    });
   }
 }

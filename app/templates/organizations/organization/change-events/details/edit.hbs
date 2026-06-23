@@ -138,6 +138,21 @@
                 {{date-format @model.changeEvent.date}}
               </:content>
             </Item>
+            {{#if @model.changeEvent.isLegalFormChangeEvent}}
+              {{#let
+                @model.currentChangeEventResult.resultingLegalForm.label
+                as |legalFormLabel|
+              }}
+                {{#if legalFormLabel}}
+                  <Item>
+                    <:label>Nieuwe juridische vorm</:label>
+                    <:content>
+                      {{legalFormLabel}}
+                    </:content>
+                  </Item>
+                {{/if}}
+              {{/let}}
+            {{/if}}
           </:right>
         </Card.Columns>
       </:card>
