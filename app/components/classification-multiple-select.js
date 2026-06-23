@@ -6,6 +6,7 @@ import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { tracked } from '@glimmer/tracking';
 import { getClassificationIdsForRole } from 'frontend-organization-portal/utils/classification-identifiers';
+import { convertClassificationToGroups } from '../utils/group-classifications';
 
 export default class ClassificationMultipleSelectComponent extends Component {
   @service store;
@@ -98,7 +99,8 @@ export default class ClassificationMultipleSelectComponent extends Component {
     }
     this.oldId = this.newId;
 
-    return codes;
+    // return codes;
+    return convertClassificationToGroups(codes);
   }
 
   #isIdInBlacklist(id) {

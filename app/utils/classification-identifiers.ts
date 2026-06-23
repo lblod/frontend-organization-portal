@@ -17,9 +17,9 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
  *     identifiers.
  */
 function getClassificationCodes(
-  hasWorshipRole,
-  restrictForCreation,
-  ...organizationTypes
+  hasWorshipRole?: boolean,
+  restrictForCreation?: boolean,
+  ...organizationTypes: string[]
 ) {
   let classifications = Object.values(CLASSIFICATION);
 
@@ -38,6 +38,7 @@ function getClassificationCodes(
     CLASSIFICATION.REPRESENTATIVE_BODY.id,
   ];
 
+  // TODO: double check if some of the new types can not be created from the frontend in which case we need to add them here
   const uncreateableClassifications = [
     CLASSIFICATION.MUNICIPALITY.id,
     CLASSIFICATION.PROVINCE.id,
@@ -84,9 +85,9 @@ function getClassificationCodes(
  *     identifiers.
  */
 export function getClassificationIdsForRole(
-  hasWorshipRole,
-  restrictForCreation,
-  ...organizationTypes
+  hasWorshipRole?: boolean,
+  restrictForCreation?: boolean,
+  ...organizationTypes: string[]
 ) {
   return getClassificationCodes(
     hasWorshipRole,
@@ -104,6 +105,6 @@ export function getClassificationIdsForRole(
  * @returns {string} A string containing all applicable identifiers separated by
  *     a comma and space.
  */
-export function selectByRole(hasWorshipRole) {
+export function selectByRole(hasWorshipRole: boolean) {
   return getClassificationIdsForRole(hasWorshipRole).join(', ');
 }

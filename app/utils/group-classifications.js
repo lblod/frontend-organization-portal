@@ -24,6 +24,8 @@ export function convertClassificationToGroups(codes) {
     ),
     createGroup('Verenigingen', ORGANIZATION_TYPES.ASSOCIATION, codes),
     createGroup('Vennootschappen', ORGANIZATION_TYPES.CORPORATION, codes),
+    createGroup('Samenwerkingsverband', ORGANIZATION_TYPES.PARTNERSHIP, codes),
+    createGroup('Andere', ORGANIZATION_TYPES.OTHER, codes),
   ].filter((group) => group.options.length > 0);
 }
 

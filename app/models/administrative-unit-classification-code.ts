@@ -112,10 +112,20 @@ export const CLASSIFICATION = {
     label: 'Ander type vereniging',
     organizationType: ORGANIZATION_TYPES.ASSOCIATION,
   },
+  WOONMAATSCHAPPIJ: {
+    id: 'todo1',
+    label: 'Woonmaatschappij',
+    organizationType: ORGANIZATION_TYPES.CORPORATION,
+  },
+  ENERGIEHOLDING_EN_PARTICIPATIE: {
+    id: 'todo2',
+    label: 'Energieholdings en -participaties',
+    organizationType: ORGANIZATION_TYPES.CORPORATION,
+  },
   CORPORATION_OTHER: {
     // FIXME this is not an administrative unit
     id: 'b9ed22af-3661-4c3e-b07f-b641d80ebf61',
-    label: 'Vennootschap',
+    label: 'Vennootschap algemeen',
     organizationType: ORGANIZATION_TYPES.CORPORATION,
   },
   PEVA_MUNICIPALITY: {
@@ -133,6 +143,37 @@ export const CLASSIFICATION = {
     label: 'Vlaamse gemeenschapscommissie',
     organizationType: ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
   },
+  // Samenwerkingsverbanden
+  INTERLOKALE_VERENIGING: {
+    id: '3a2649ef-7345-4d3a-8709-f89fc9b44f58',
+    label: 'Interlokale vereniging',
+    organizationType: ORGANIZATION_TYPES.PARTNERSHIP,
+  },
+  EERSTELIJNSZONE: {
+    id: '8392b885-a875-4b0d-b6a2-b52e53bda454',
+    label: 'Eerstelijnszone',
+    organizationType: ORGANIZATION_TYPES.PARTNERSHIP,
+  },
+  VERVOERREGIO: {
+    id: 'b2133b86-24f0-44f0-9d10-5b4c7f944a9d',
+    label: 'Vervoerregio',
+    organizationType: ORGANIZATION_TYPES.PARTNERSHIP,
+  },
+
+  // TODO, add regionale landschappen
+  BOSGROUP: {
+    id: 'b22948f9-e695-4f24-a530-b6bf3af3b37f',
+    label: 'Bosgroep',
+    organizationType: ORGANIZATION_TYPES.ASSOCIATION,
+  },
+
+  OTHER: {
+    id: 'todo',
+    label: 'Andere',
+    organizationType: ORGANIZATION_TYPES.OTHER
+  }
+
+
 };
 
-export default class AdministrativeUnitClassificationCodeModel extends OrganizationClassificationCodeModel {}
+export default class AdministrativeUnitClassificationCodeModel extends OrganizationClassificationCodeModel { }
