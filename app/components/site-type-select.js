@@ -51,6 +51,12 @@ export default class SiteTypeSelectComponent extends Component {
 
     filteredTypes.push(
       allTypes.find(
+        (type) => type.id == '019ef8b6-ba27-7388-a5cc-faf74f357963', // Bezoekadres
+      ),
+    );
+
+    filteredTypes.push(
+      allTypes.find(
         (type) => type.id == 'dcc01338-842c-4fbd-ba68-3ca6f3af975c', // Andere vestiging
       ),
     );
