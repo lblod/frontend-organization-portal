@@ -4,5 +4,4 @@ export default class ConceptsModel extends Model {
   @attr label;
   @attr altLabel;
   @attr notation;
-  @attr order;
 }
