@@ -25,7 +25,7 @@ export default class OrganizationModel extends AgentModel {
   })
   classification;
 
-  @belongsTo('legal-form-code', {
+  @belongsTo('concept', {
     inverse: null,
     async: true,
   })
