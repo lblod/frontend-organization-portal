@@ -1,6 +1,15 @@
-## v1.37.1 (2026-06-25)
+## v1.39.0 (2026-06-25)
+
 #### :rocket: Enhancement
+* [#705](https://github.com/lblod/frontend-organization-portal/pull/705) [OP-3799] Region(s) based on werkingsgebied ([@bdevloed](https://github.com/bdevloed))
 * [#707](https://github.com/lblod/frontend-organization-portal/pull/707) [OP-3816] [OP-3820] Add juridische vorm ([@DamonKennes](https://github.com/DamonKennes))
+* [#709](https://github.com/lblod/frontend-organization-portal/pull/709) [OP-3818] Site type changes ([@Windvis](https://github.com/Windvis))
+
+#### :bug: Bug Fix
+* [#706](https://github.com/lblod/frontend-organization-portal/pull/706) [OP-3814] Only display the "geplande einddatum" column for worship organizations ([@Windvis](https://github.com/Windvis))
+
+#### :house: Internal
+* [#708](https://github.com/lblod/frontend-organization-portal/pull/708) Switch to the Typescript blueprint ([@Windvis](https://github.com/Windvis))
 
 ## v1.37.0 (2026-05-27)
 
