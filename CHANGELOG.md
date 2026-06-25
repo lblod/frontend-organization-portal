@@ -1,3 +1,7 @@
+## v1.37.1 (2026-06-25)
+#### :rocket: Enhancement
+* [#707](https://github.com/lblod/frontend-organization-portal/pull/707) [OP-3816] [OP-3820] Add juridische vorm ([@DamonKennes](https://github.com/DamonKennes))
+
 ## v1.37.0 (2026-05-27)
 
 #### :rocket: Enhancement
