@@ -235,6 +235,11 @@ export default class OrganizationsNewController extends Controller {
   }
 
   @action
+  setContentThemes(contentThemes) {
+    this.currentOrganizationModel.contentThemes = contentThemes;
+  }
+
+  @action
   addCentralWorshipService(centralWorshipService) {
     if (!centralWorshipService || centralWorshipService.isActive) {
       this.#reallySetCentralWorshipService(centralWorshipService);

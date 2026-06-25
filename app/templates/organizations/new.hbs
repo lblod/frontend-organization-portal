@@ -124,6 +124,26 @@
                     @error={{hasError}}
                     @id="legal-form-select"
                   />
+               </:content>
+              </Item>
+            {{/if}}
+            {{#if (and
+                    this.currentOrganizationModel.classification
+                    this.currentOrganizationModel.requiresContentThemes
+                  )}}
+              <Item
+                @labelFor="content-theme-select"
+                @required={{true}}
+                @errorMessage={{this.currentOrganizationModel.error.contentThemes.message}}
+              >
+                <:label>Inhoudelijk thema</:label>
+                <:content as |hasError|>
+                  <ContentThemeSelect
+                    @selected={{this.currentOrganizationModel.contentThemes}}
+                    @onChange={{this.setContentThemes}}
+                    @error={{hasError}}
+                    @id="content-theme-select"
+                  />
                 </:content>
               </Item>
             {{/if}}
