@@ -6,10 +6,17 @@ import {
   validateBelongsToOptional,
   validateBelongsToRequired,
   validateHasManyOptional,
+  validateHasManyNotEmptyRequired,
   validateStringOptional,
 } from '../validators/schema';
 import getOppositeClassifications from '../constants/memberships';
 import { ID_NAME } from './identifier';
+import {
+  MunicipalityCodeList,
+  OCMWCodeList,
+  DistrictCodeList,
+  ProvinceCodeList,
+} from '../constants/Classification';
 
 export default class OrganizationModel extends AgentModel {
   @attr name;
@@ -30,6 +37,12 @@ export default class OrganizationModel extends AgentModel {
     async: true,
   })
   legalForm;
+
+  @hasMany('concept', {
+    inverse: null,
+    async: true,
+  })
+  contentThemes;
 
   @belongsTo('site', {
     inverse: null,
@@ -127,6 +140,16 @@ export default class OrganizationModel extends AgentModel {
       purpose: validateStringOptional(),
       classification: validateBelongsToRequired(REQUIRED_MESSAGE),
       legalForm: validateBelongsToOptional(),
+      contentThemes: Joi.when('classification.id', {
+        is: Joi.exist().valid(
+          ...MunicipalityCodeList,
+          ...OCMWCodeList,
+          ...DistrictCodeList,
+          ...ProvinceCodeList,
+        ),
+        then: validateHasManyOptional(),
+        otherwise: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
+      }),
       primarySite: validateBelongsToOptional(),
       organizationStatus: validateBelongsToRequired(REQUIRED_MESSAGE),
       identifiers: validateHasManyOptional(),
@@ -176,6 +199,15 @@ export default class OrganizationModel extends AgentModel {
 
   _hasClassificationId(classificationIds) {
     return classificationIds.includes(this.classification?.get('id'));
+  }
+
+  get requiresContentThemes() {
+    return !this._hasClassificationId([
+      ...MunicipalityCodeList,
+      ...OCMWCodeList,
+      ...DistrictCodeList,
+      ...ProvinceCodeList,
+    ]);
   }
 
   /**

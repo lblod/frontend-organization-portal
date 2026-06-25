@@ -99,6 +99,14 @@
                     </:content>
                   </Item>
                 {{/unless}}
+                {{#if @model.organization.requiresContentThemes}}
+                    <Item>
+                      <:label>Inhoudelijk thema</:label>
+                      <:content>
+                        {{this.contentThemesString}}
+                      </:content>
+                    </Item>
+                {{/if}}
               {{/unless}}
 
               {{#if @model.organization.isMunicipality}}
