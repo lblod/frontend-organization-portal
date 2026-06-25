@@ -107,6 +107,26 @@
                 />
               </:content>
             </Item>
+            {{#if (and
+                    this.currentOrganizationModel.classification
+                    (not this.currentOrganizationModel.isWorshipAdministrativeUnit)
+                  )}}
+              <Item
+                @labelFor="legal-form-select"
+                @required={{false}}
+                @errorMessage={{this.currentOrganizationModel.error.legalForm.message}}
+              >
+                <:label>Juridische vorm</:label>
+                <:content as |hasError|>
+                  <LegalFormSelect
+                    @selected={{this.currentOrganizationModel.legalForm}}
+                    @onChange={{this.setLegalForm}}
+                    @error={{hasError}}
+                    @id="legal-form-select"
+                  />
+                </:content>
+              </Item>
+            {{/if}}
             {{#if this.currentOrganizationModel.isWorshipAdministrativeUnit}}
               <Item
                 @labelFor="recognized-worship-type-select"
