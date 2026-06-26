@@ -35,13 +35,19 @@ export default class OrganizationsNewController extends Controller {
 
   @tracked locations;
 
+  // ILV and Vervoerregioraad have no KBO number, so KBO is optional for them.
+  get requiresKbo() {
+    const model = this.currentOrganizationModel;
+    return !(model?.isInterlokaleVereniging || model?.isVervoerregioraad);
+  }
+
   get hasValidationErrors() {
     return (
       this.currentOrganizationModel.error ||
       this.model.address.error ||
       this.model.contact.error ||
       this.model.secondaryContact.error ||
-      this.model.identifierKBO.error ||
+      (this.requiresKbo && this.model.identifierKBO.error) ||
       this.model.identifierSharepoint.error ||
       this.memberships.some((membership) => membership.error) ||
       this.membershipsOfOrganizations.some((membership) => membership.error)
@@ -368,6 +374,9 @@ export default class OrganizationsNewController extends Controller {
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
         CLASSIFICATION.ASSOCIATION_OTHER.id,
         CLASSIFICATION.CORPORATION_OTHER.id,
+        CLASSIFICATION.ZORGRAAD.id,
+        CLASSIFICATION.BOSGROEP.id,
+        CLASSIFICATION.WOONMAATSCHAPPIJ.id,
       ].includes(classificationCodeId)
     ) {
       return this.store.createRecord('registered-organization');
@@ -389,6 +398,8 @@ export default class OrganizationsNewController extends Controller {
         CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
         CLASSIFICATION.PEVA_MUNICIPALITY.id,
         CLASSIFICATION.PEVA_PROVINCE.id,
+        CLASSIFICATION.INTERLOKALE_VERENIGING.id,
+        CLASSIFICATION.VERVOERREGIORAAD.id,
       ].includes(classificationCodeId)
     ) {
       return this.store.createRecord('administrative-unit');
@@ -589,7 +600,7 @@ export default class OrganizationsNewController extends Controller {
 
     yield Promise.all([
       this.currentOrganizationModel.validate({ creatingNewOrganization: true }),
-      identifierKBO.validate(),
+      this.requiresKbo ? identifierKBO.validate() : Promise.resolve(),
       identifierSharepoint.validate(),
     ]);
 
@@ -605,9 +616,13 @@ export default class OrganizationsNewController extends Controller {
     }
 
     if (!this.hasValidationErrors) {
-      structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
-      yield structuredIdentifierKBO.save();
-      yield identifierKBO.save();
+      if (this.requiresKbo) {
+        structuredIdentifierKBO = setEmptyStringsToNull(
+          structuredIdentifierKBO,
+        );
+        yield structuredIdentifierKBO.save();
+        yield identifierKBO.save();
+      }
 
       structuredIdentifierSharepoint = setEmptyStringsToNull(
         structuredIdentifierSharepoint,
@@ -655,10 +670,11 @@ export default class OrganizationsNewController extends Controller {
         yield primarySite.save();
         this.currentOrganizationModel.primarySite = primarySite;
       }
-      (yield this.currentOrganizationModel.identifiers).push(
-        identifierKBO,
-        identifierSharepoint,
-      );
+      const identifiers = yield this.currentOrganizationModel.identifiers;
+      if (this.requiresKbo) {
+        identifiers.push(identifierKBO);
+      }
+      identifiers.push(identifierSharepoint);
 
       this.currentOrganizationModel = setEmptyStringsToNull(
         this.currentOrganizationModel,
@@ -680,10 +696,12 @@ export default class OrganizationsNewController extends Controller {
         method: 'POST',
       });
 
-      const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
-      yield fetch(syncKboData, {
-        method: 'POST',
-      });
+      if (this.requiresKbo) {
+        const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
+        yield fetch(syncKboData, {
+          method: 'POST',
+        });
+      }
 
       this.router.replaceWith(
         'organizations.organization',
