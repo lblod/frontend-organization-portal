@@ -10,6 +10,10 @@ import {
 } from '../validators/schema';
 import getOppositeClassifications from '../constants/memberships';
 import { ID_NAME } from './identifier';
+import {
+  WorshipServiceCodeList,
+  CentralWorshipServiceCodeList,
+} from '../constants/Classification';
 
 export default class OrganizationModel extends AgentModel {
   @attr name;
@@ -126,7 +130,14 @@ export default class OrganizationModel extends AgentModel {
       expectedEndDate: Joi.date().allow(null),
       purpose: validateStringOptional(),
       classification: validateBelongsToRequired(REQUIRED_MESSAGE),
-      legalForm: validateBelongsToOptional(),
+      legalForm: Joi.when('classification.id', {
+        is: Joi.exist().valid(
+          ...WorshipServiceCodeList,
+          ...CentralWorshipServiceCodeList,
+        ),
+        then: Joi.optional(),
+        otherwise: validateBelongsToRequired(REQUIRED_MESSAGE),
+      }),
       primarySite: validateBelongsToOptional(),
       organizationStatus: validateBelongsToRequired(REQUIRED_MESSAGE),
       identifiers: validateHasManyOptional(),
