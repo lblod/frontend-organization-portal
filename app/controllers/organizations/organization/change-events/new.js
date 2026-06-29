@@ -5,6 +5,7 @@ import { dropTask } from 'ember-concurrency';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import { tracked } from '@glimmer/tracking';
+import fetch from 'fetch';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.NAME_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
@@ -328,6 +329,8 @@ async function createChangeEventResult({
   ) {
     // This is the first change event or the new change event is newer
     // so we should update the organization status as well
+
+    const previousStatus = await resultingOrganization.organizationStatus;
     resultingOrganization.organizationStatus = resultingStatus;
 
     if (resultingLegalForm) {
@@ -335,6 +338,18 @@ async function createChangeEventResult({
     }
 
     await resultingOrganization.save();
+
+    if (
+      resultingOrganization.isWorshipService &&
+      previousStatus?.id === ORGANIZATION_STATUS.IN_FORMATION &&
+      (resultingStatusId === ORGANIZATION_STATUS.ACTIVE ||
+        resultingStatusId === ORGANIZATION_STATUS.INACTIVE)
+    ) {
+      const constructRelationshipsEndpoint = `/construct-organization-relationships/update-relationships/${resultingOrganization.id}`;
+      await fetch(constructRelationshipsEndpoint, {
+        method: 'POST',
+      });
+    }
   }
 
   let changeEventResult = store.createRecord('change-event-result');
