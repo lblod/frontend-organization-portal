@@ -675,7 +675,7 @@ export default class OrganizationsNewController extends Controller {
         this.membershipsOfOrganizations.map((membership) => membership.save());
       yield Promise.all(membershipsOfOrganizationsSavePromises);
 
-      const createRelationshipsEndpoint = `/construct-organization-relationships/${this.currentOrganizationModel.id}`;
+      const createRelationshipsEndpoint = `/construct-organization-relationships/create-relationships/${this.currentOrganizationModel.id}`;
       yield fetch(createRelationshipsEndpoint, {
         method: 'POST',
       });
