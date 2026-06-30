@@ -193,7 +193,14 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if this.currentOrganizationModel.isAdministrativeUnit}}
+            {{#if
+              (or
+                this.currentOrganizationModel.isAdministrativeUnit
+                this.currentOrganizationModel.isZorgraad
+                this.currentOrganizationModel.isBosgroep
+                this.currentOrganizationModel.isWoonmaatschappij
+              )
+            }}
               <Item
                 @labelFor="scope"
                 @required={{true}}
@@ -259,7 +266,7 @@
             <Item
               @labelFor="kbo-identifier"
               @errorMessage={{@model.identifierKBO.error.structuredIdentifier}}
-              @required={{true}}
+              @required={{this.requiresKbo}}
             >
               <:label>{{@model.identifierKBO.idName}}</:label>
               <:content as |hasError|>

@@ -37,7 +37,9 @@ export default class OrganizationsIndexRoute extends Route {
       let filterType = 'phrase_prefix';
       let name = params.name.trim();
 
-      filter[`:${filterType}:legal_name,alternative_name,name`] = name;
+      filter[
+        `:${filterType}:legal_name,alternative_name,name,classification_alternative_name`
+      ] = name;
     }
 
     if (params.identifier) {
