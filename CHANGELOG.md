@@ -1,3 +1,8 @@
+## v1.39.1 (2026-06-30)
+
+#### :rocket: Enhancement
+* [#711](https://github.com/lblod/frontend-organization-portal/pull/711) [OP-3816] Make juridische vorm mandatory + editable ([@DamonKennes](https://github.com/DamonKennes))
+
 ## v1.39.0 (2026-06-25)
 
 #### :rocket: Enhancement
