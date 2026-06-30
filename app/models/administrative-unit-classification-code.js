@@ -136,18 +136,18 @@ export const CLASSIFICATION = {
   INTERLOKALE_VERENIGING: {
     id: '3a2649ef-7345-4d3a-8709-f89fc9b44f58',
     label: 'Interlokale vereniging',
-    organizationType: ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
+    organizationType: ORGANIZATION_TYPES.PARTNERSHIP,
   },
   VERVOERREGIORAAD: {
     id: 'b2133b86-24f0-44f0-9d10-5b4c7f944a9d',
     label: 'Vervoerregioraad',
-    organizationType: ORGANIZATION_TYPES.ADMINISTRATIVE_UNIT,
+    organizationType: ORGANIZATION_TYPES.PARTNERSHIP,
   },
   ZORGRAAD: {
     // FIXME this is not an administrative unit
     id: '8392b885-a875-4b0d-b6a2-b52e53bda454',
     label: 'Zorgraad',
-    organizationType: ORGANIZATION_TYPES.ASSOCIATION,
+    organizationType: ORGANIZATION_TYPES.PARTNERSHIP,
   },
   BOSGROEP: {
     // FIXME this is not an administrative unit
