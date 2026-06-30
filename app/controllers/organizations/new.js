@@ -600,7 +600,7 @@ export default class OrganizationsNewController extends Controller {
 
     yield Promise.all([
       this.currentOrganizationModel.validate({ creatingNewOrganization: true }),
-      this.requiresKbo ? identifierKBO.validate() : Promise.resolve(),
+      this.requiresKbo ? identifierKBO.validate() : identifierKBO.resetErrors(),
       identifierSharepoint.validate(),
     ]);
 
