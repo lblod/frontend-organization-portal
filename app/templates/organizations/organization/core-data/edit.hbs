@@ -114,18 +114,19 @@
                 {{#unless @model.organization.isWorshipAdministrativeUnit}}
                   <Item
                     @labelFor="legal-form"
+                    @required={{true}}
+                    @errorMessage={{@model.organization.error.legalForm.message}}
                   >
                     <:label>Juridische vorm</:label>
-                    <:content>
-                      <PowerSelect
-                        @disabled={{true}}
+                    <:content as |hasError|>
+                      <LegalFormSelect
                         @selected={{@model.organization.legalForm}}
                         @onChange={{fn (mut @model.organization.legalForm)}}
+                        @disabled={{not (is-feature-enabled "legal-form-editable")}}
+                        @error={{hasError}}
                         @triggerId="legal-form"
-                        as |legalForm|
-                      >
-                        {{legalForm.label}}
-                      </PowerSelect>
+                        @id="legal-form-select"
+                      />
                     </:content>
                   </Item>
                 {{/unless}}
