@@ -6,6 +6,7 @@ import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 import { tracked } from '@glimmer/tracking';
+import requiresKbo from '../../../../helpers/requires-kbo';
 
 export default class OrganizationsOrganizationCoreDataEditController extends Controller {
   @service router;
@@ -21,7 +22,8 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
       this.model.address.error ||
       this.model.contact.error ||
       this.model.secondaryContact.error ||
-      this.model.identifierKBO.error ||
+      (requiresKbo(this.model.organization) &&
+        this.model.identifierKBO?.error) ||
       this.model.identifierSharepoint.error
     );
   }
@@ -78,9 +80,14 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
 
     yield Promise.all([
       organization.validate({ relaxMandatoryFoundingOrganization: true }),
-      identifierKBO.validate(),
       identifierSharepoint.validate(),
     ]);
+
+    const requiresKboNumber = requiresKbo(organization);
+
+    if (requiresKboNumber) {
+      yield identifierKBO.validate();
+    }
 
     if (
       this.features.isEnabled('edit-contact-data') ||
@@ -144,9 +151,13 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
         }
       }
 
-      structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
-      yield structuredIdentifierKBO.save();
-      yield identifierKBO.save();
+      if (requiresKboNumber) {
+        structuredIdentifierKBO = setEmptyStringsToNull(
+          structuredIdentifierKBO,
+        );
+        yield structuredIdentifierKBO.save();
+        yield identifierKBO.save();
+      }
 
       // FIXME: If uncommented existing SharePoint identifier is not removed
       // when user removes the value in the form. Commenting it a quick, dirty
@@ -161,10 +172,12 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
       organization = setEmptyStringsToNull(organization);
       yield organization.save();
 
-      const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
-      yield fetch(syncKboData, {
-        method: 'POST',
-      });
+      if (requiresKboNumber) {
+        const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
+        yield fetch(syncKboData, {
+          method: 'POST',
+        });
+      }
 
       this.router.refresh();
       this.router.transitionTo(

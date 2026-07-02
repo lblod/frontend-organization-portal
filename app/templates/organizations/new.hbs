@@ -265,7 +265,12 @@
                 />
               </:content>
             </Item>
-            {{#if (and this.currentOrganizationModel.classification this.requiresKbo)}}
+            {{#if
+              (and
+                this.currentOrganizationModel.classification
+                (requires-kbo this.currentOrganizationModel)
+              )
+            }}
               <Item
                 @labelFor="kbo-identifier"
                 @errorMessage={{@model.identifierKBO.error.structuredIdentifier}}

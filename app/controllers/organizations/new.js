@@ -9,6 +9,7 @@ import fetch from 'fetch';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
+import requiresKbo from '../../helpers/requires-kbo';
 
 export default class OrganizationsNewController extends Controller {
   @service router;
@@ -35,19 +36,14 @@ export default class OrganizationsNewController extends Controller {
 
   @tracked locations;
 
-  // ILV and Vervoerregioraad have no KBO number, so KBO is optional for them.
-  get requiresKbo() {
-    const model = this.currentOrganizationModel;
-    return !(model?.isInterlokaleVereniging || model?.isVervoerregioraad);
-  }
-
   get hasValidationErrors() {
     return (
       this.currentOrganizationModel.error ||
       this.model.address.error ||
       this.model.contact.error ||
       this.model.secondaryContact.error ||
-      (this.requiresKbo && this.model.identifierKBO.error) ||
+      (requiresKbo(this.currentOrganizationModel) &&
+        this.model.identifierKBO.error) ||
       this.model.identifierSharepoint.error ||
       this.memberships.some((membership) => membership.error) ||
       this.membershipsOfOrganizations.some((membership) => membership.error)
@@ -598,9 +594,13 @@ export default class OrganizationsNewController extends Controller {
         ? yield this.scopeOfOperation.getScopeForLocations(...this.locations)
         : null;
 
+    const requiresKboNumber = requiresKbo(this.currentOrganizationModel);
+
     yield Promise.all([
       this.currentOrganizationModel.validate({ creatingNewOrganization: true }),
-      this.requiresKbo ? identifierKBO.validate() : identifierKBO.resetErrors(),
+      requiresKboNumber
+        ? identifierKBO.validate()
+        : identifierKBO.resetErrors(),
       identifierSharepoint.validate(),
     ]);
 
@@ -616,7 +616,7 @@ export default class OrganizationsNewController extends Controller {
     }
 
     if (!this.hasValidationErrors) {
-      if (this.requiresKbo) {
+      if (requiresKboNumber) {
         structuredIdentifierKBO = setEmptyStringsToNull(
           structuredIdentifierKBO,
         );
@@ -671,7 +671,7 @@ export default class OrganizationsNewController extends Controller {
         this.currentOrganizationModel.primarySite = primarySite;
       }
       const identifiers = yield this.currentOrganizationModel.identifiers;
-      if (this.requiresKbo) {
+      if (requiresKboNumber) {
         identifiers.push(identifierKBO);
       }
       identifiers.push(identifierSharepoint);
@@ -696,7 +696,7 @@ export default class OrganizationsNewController extends Controller {
         method: 'POST',
       });
 
-      if (this.requiresKbo) {
+      if (requiresKboNumber) {
         const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
         yield fetch(syncKboData, {
           method: 'POST',
