@@ -350,8 +350,17 @@
     {{#if
       (and
         this.currentOrganizationModel.classification
-        (not this.currentOrganizationModel.isAssociationOther)
-        (not this.currentOrganizationModel.isCorporationOther)
+        (or
+          this.currentOrganizationModel.isAgb
+          this.currentOrganizationModel.isDistrict
+          this.currentOrganizationModel.isIgs
+          this.currentOrganizationModel.isPoliceZone
+          this.currentOrganizationModel.isAssistanceZone
+          this.currentOrganizationModel.isOcmwAssociation
+          this.currentOrganizationModel.isPevaMunicipality
+          this.currentOrganizationModel.isPevaProvince
+          this.currentOrganizationModel.isApb
+        )
       )
     }}
       <EditCard @containsRequiredFields={{true}}>
@@ -507,8 +516,7 @@
                         />
                       </:content>
                     </Item>
-                  {{else}}
-                    {{! Only APBs remain here }}
+                  {{else if this.currentOrganizationModel.isApb}}
                     <Item
                       @labelFor="related-province"
                       @required={{true}}
