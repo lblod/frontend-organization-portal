@@ -107,10 +107,12 @@
                 />
               </:content>
             </Item>
-            {{#if (and
-                    this.currentOrganizationModel.classification
-                    (not this.currentOrganizationModel.isWorshipAdministrativeUnit)
-                  )}}
+            {{#if
+              (and
+                this.currentOrganizationModel.classification
+                (not this.currentOrganizationModel.isWorshipAdministrativeUnit)
+              )
+            }}
               <Item
                 @labelFor="legal-form-select"
                 @required={{true}}
@@ -263,31 +265,33 @@
                 />
               </:content>
             </Item>
-            <Item
-              @labelFor="kbo-identifier"
-              @errorMessage={{@model.identifierKBO.error.structuredIdentifier}}
-              @required={{this.requiresKbo}}
-            >
-              <:label>{{@model.identifierKBO.idName}}</:label>
-              <:content as |hasError|>
-                <AuInput
-                  @width="block"
-                  @error={{hasError}}
-                  autocomplete="off"
-                  value={{@model.structuredIdentifierKBO.localId}}
-                  id="kbo-identifier"
-                  class="au-c-input--mask"
-                  placeholder="____.___.___"
-                  {{au-inputmask
-                    options=(hash mask="####.###.###" placeholder="_")
-                  }}
-                  {{on "input" this.setKbo}}
-                />
-              </:content>
-              <:error as |error|>
-                <Error::KboNumber @error={{error}} />
-              </:error>
-            </Item>
+            {{#if (and this.currentOrganizationModel.classification this.requiresKbo)}}
+              <Item
+                @labelFor="kbo-identifier"
+                @errorMessage={{@model.identifierKBO.error.structuredIdentifier}}
+                @required={{true}}
+              >
+                <:label>{{@model.identifierKBO.idName}}</:label>
+                <:content as |hasError|>
+                  <AuInput
+                    @width="block"
+                    @error={{hasError}}
+                    autocomplete="off"
+                    value={{@model.structuredIdentifierKBO.localId}}
+                    id="kbo-identifier"
+                    class="au-c-input--mask"
+                    placeholder="____.___.___"
+                    {{au-inputmask
+                      options=(hash mask="####.###.###" placeholder="_")
+                    }}
+                    {{on "input" this.setKbo}}
+                  />
+                </:content>
+                <:error as |error|>
+                  <Error::KboNumber @error={{error}} />
+                </:error>
+              </Item>
+            {{/if}}
             <Item
               @labelFor="sharepoint-identifier"
               @errorMessage={{@model.identifierSharepoint.error.structuredIdentifier.message}}
