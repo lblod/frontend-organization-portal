@@ -58,3 +58,11 @@ export const CorporationOtherCodeList = [CLASSIFICATION.CORPORATION_OTHER.id];
 export const VlaamseGemeenschapscommissieCodeList = [
   CLASSIFICATION.VLAAMSE_GEMEENSCHAPSCOMMISSIE.id,
 ];
+
+export const InterlokaleVerenigingCodeList = [
+  CLASSIFICATION.INTERLOKALE_VERENIGING.id,
+];
+export const VervoerregioraadCodeList = [CLASSIFICATION.VERVOERREGIORAAD.id];
+export const ZorgraadCodeList = [CLASSIFICATION.ZORGRAAD.id];
+export const BosgroepCodeList = [CLASSIFICATION.BOSGROEP.id];
+export const WoonmaatschappijCodeList = [CLASSIFICATION.WOONMAATSCHAPPIJ.id];

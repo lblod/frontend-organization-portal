@@ -4,13 +4,13 @@
     @loadingMessage="Aan het laden..."
     @noMatchesMessage="Geen resultaten"
     @searchMessage="Typ om te zoeken"
-    @searchField="label"
+    @searchField="searchLabel"
     @options={{this.classifications.value}}
     @selected={{@selected}}
     @onChange={{@onChange}}
     @triggerId={{@id}}
     as |classification|
   >
-    {{classification.label}}
+    {{classification.label}}{{#if classification.altLabel}} ({{classification.altLabel}}){{/if}}
   </PowerSelect>
 </div>

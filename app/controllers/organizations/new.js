@@ -9,6 +9,7 @@ import fetch from 'fetch';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
+import requiresKbo from '../../helpers/requires-kbo';
 
 export default class OrganizationsNewController extends Controller {
   @service router;
@@ -41,7 +42,8 @@ export default class OrganizationsNewController extends Controller {
       this.model.address.error ||
       this.model.contact.error ||
       this.model.secondaryContact.error ||
-      this.model.identifierKBO.error ||
+      (requiresKbo(this.currentOrganizationModel) &&
+        this.model.identifierKBO.error) ||
       this.model.identifierSharepoint.error ||
       this.memberships.some((membership) => membership.error) ||
       this.membershipsOfOrganizations.some((membership) => membership.error)
@@ -368,6 +370,9 @@ export default class OrganizationsNewController extends Controller {
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
         CLASSIFICATION.ASSOCIATION_OTHER.id,
         CLASSIFICATION.CORPORATION_OTHER.id,
+        CLASSIFICATION.ZORGRAAD.id,
+        CLASSIFICATION.BOSGROEP.id,
+        CLASSIFICATION.WOONMAATSCHAPPIJ.id,
       ].includes(classificationCodeId)
     ) {
       return this.store.createRecord('registered-organization');
@@ -389,6 +394,8 @@ export default class OrganizationsNewController extends Controller {
         CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
         CLASSIFICATION.PEVA_MUNICIPALITY.id,
         CLASSIFICATION.PEVA_PROVINCE.id,
+        CLASSIFICATION.INTERLOKALE_VERENIGING.id,
+        CLASSIFICATION.VERVOERREGIORAAD.id,
       ].includes(classificationCodeId)
     ) {
       return this.store.createRecord('administrative-unit');
@@ -587,9 +594,13 @@ export default class OrganizationsNewController extends Controller {
         ? yield this.scopeOfOperation.getScopeForLocations(...this.locations)
         : null;
 
+    const requiresKboNumber = requiresKbo(this.currentOrganizationModel);
+
     yield Promise.all([
       this.currentOrganizationModel.validate({ creatingNewOrganization: true }),
-      identifierKBO.validate(),
+      requiresKboNumber
+        ? identifierKBO.validate()
+        : identifierKBO.resetErrors(),
       identifierSharepoint.validate(),
     ]);
 
@@ -605,9 +616,13 @@ export default class OrganizationsNewController extends Controller {
     }
 
     if (!this.hasValidationErrors) {
-      structuredIdentifierKBO = setEmptyStringsToNull(structuredIdentifierKBO);
-      yield structuredIdentifierKBO.save();
-      yield identifierKBO.save();
+      if (requiresKboNumber) {
+        structuredIdentifierKBO = setEmptyStringsToNull(
+          structuredIdentifierKBO,
+        );
+        yield structuredIdentifierKBO.save();
+        yield identifierKBO.save();
+      }
 
       structuredIdentifierSharepoint = setEmptyStringsToNull(
         structuredIdentifierSharepoint,
@@ -655,10 +670,11 @@ export default class OrganizationsNewController extends Controller {
         yield primarySite.save();
         this.currentOrganizationModel.primarySite = primarySite;
       }
-      (yield this.currentOrganizationModel.identifiers).push(
-        identifierKBO,
-        identifierSharepoint,
-      );
+      const identifiers = yield this.currentOrganizationModel.identifiers;
+      if (requiresKboNumber) {
+        identifiers.push(identifierKBO);
+      }
+      identifiers.push(identifierSharepoint);
 
       this.currentOrganizationModel = setEmptyStringsToNull(
         this.currentOrganizationModel,
@@ -680,10 +696,12 @@ export default class OrganizationsNewController extends Controller {
         method: 'POST',
       });
 
-      const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
-      yield fetch(syncKboData, {
-        method: 'POST',
-      });
+      if (requiresKboNumber) {
+        const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
+        yield fetch(syncKboData, {
+          method: 'POST',
+        });
+      }
 
       this.router.replaceWith(
         'organizations.organization',
