@@ -1,3 +1,8 @@
+## v1.40.0 (2026-07-06)
+
+#### :rocket: Enhancement
+* [#710](https://github.com/lblod/frontend-organization-portal/pull/710) [OP-3794] Add new organization types ([@bdevloed](https://github.com/bdevloed))
+
 ## v1.39.1 (2026-06-30)
 
 #### :rocket: Enhancement
