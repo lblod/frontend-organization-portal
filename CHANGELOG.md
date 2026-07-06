@@ -21,6 +21,11 @@
 #### :house: Internal
 * [#708](https://github.com/lblod/frontend-organization-portal/pull/708) Switch to the Typescript blueprint ([@Windvis](https://github.com/Windvis))
 
+## v1.38.0 (2026-06-12)
+
+#### :rocket: Enhancement
+* [#705](https://github.com/lblod/frontend-organization-portal/pull/705) [OP-3799] region(s) based on werkingsgebied ([@bdevloed](https://github.com/bdevloed))
+
 ## v1.37.0 (2026-05-27)
 
 #### :rocket: Enhancement
