@@ -27,6 +27,11 @@ const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   // statuses based on the resulting organization
 };
 
+const RECOGNITION_CHANGE_TYPES = [
+  CHANGE_EVENT_TYPE.RECOGNITION_GRANTED,
+  CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED,
+];
+
 export default class OrganizationsOrganizationChangeEventsNewController extends Controller {
   @service router;
   @service store;
@@ -343,7 +348,8 @@ async function createChangeEventResult({
       resultingOrganization.isWorshipService &&
       previousStatus?.id === ORGANIZATION_STATUS.IN_FORMATION &&
       (resultingStatusId === ORGANIZATION_STATUS.ACTIVE ||
-        resultingStatusId === ORGANIZATION_STATUS.INACTIVE)
+        resultingStatusId === ORGANIZATION_STATUS.INACTIVE) &&
+      RECOGNITION_CHANGE_TYPES.includes(changeEvent.type.get('id'))
     ) {
       const constructRelationshipsEndpoint = `/construct-organization-relationships/update-relationships/${resultingOrganization.id}`;
       await fetch(constructRelationshipsEndpoint, {
