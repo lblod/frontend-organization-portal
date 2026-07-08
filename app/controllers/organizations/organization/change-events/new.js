@@ -352,9 +352,19 @@ async function createChangeEventResult({
       RECOGNITION_CHANGE_TYPES.includes(changeEvent.type.get('id'))
     ) {
       const constructRelationshipsEndpoint = `/construct-organization-relationships/update-relationships/${resultingOrganization.id}`;
-      await fetch(constructRelationshipsEndpoint, {
+      const response = await fetch(constructRelationshipsEndpoint, {
         method: 'POST',
+        headers: {
+          Accept: 'application/vnd.api+json',
+          'Content-Type': 'application/vnd.api+json',
+        },
+        body: JSON.stringify({ date: changeEvent.date?.toISOString() }),
       });
+      if (!response.ok) {
+        throw new Error(
+          `Failed to update the governing body relationships for organization ${resultingOrganization.id}`,
+        );
+      }
     }
   }
 
