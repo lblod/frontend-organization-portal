@@ -1,3 +1,8 @@
+## v1.40.1 (2026-07-09)
+
+#### :rocket: Enhancement
+* [#712](https://github.com/lblod/frontend-organization-portal/pull/712) [OP-3810] worship service In Oprichting bestuursorgaan lifecycle ([@DamonKennes](https://github.com/DamonKennes))
+
 ## v1.40.0 (2026-07-06)
 
 #### :rocket: Enhancement
