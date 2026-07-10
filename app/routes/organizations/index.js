@@ -15,6 +15,7 @@ export default class OrganizationsIndexRoute extends Route {
     sort: { refreshModel: true },
     name: { refreshModel: true, replace: true },
     identifier: { refreshModel: true, replace: true },
+    operationArea: { refreshModel: true, replace: true },
     municipality: { refreshModel: true, replace: true },
     province: { refreshModel: true, replace: true },
     organizationTypes: { refreshModel: true, replace: true },
@@ -84,6 +85,11 @@ export default class OrganizationsIndexRoute extends Route {
       );
     }
     filter[':query:classification_id'] = queryClassifications;
+
+    // We use wildcard to handle linked operation areas that are a "samengesteld werkingsgebied"
+    if (params.operationArea) {
+      filter[':wildcard:operation_area'] = '*' + params.operationArea + '*';
+    }
 
     if (params.municipality) {
       filter[':phrase:municipality'] = params.municipality;
