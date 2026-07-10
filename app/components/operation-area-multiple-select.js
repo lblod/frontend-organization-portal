@@ -3,10 +3,27 @@ import { inject as service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 
-export default class OperationAreaSelectByNameComponent extends Component {
+export default class OperationAreaMultipleSelectComponent extends Component {
   @service store;
 
   operationAreas = trackedTask(this, this.loadOperationAreasTask);
+
+  get selectedOperationAreas() {
+    let selectionArray = [];
+
+    if (typeof this.args.selected === 'string' && this.args.selected.length) {
+      const labels = this.args.selected.split(',');
+      labels.forEach((label) => {
+        selectionArray.push(label);
+      });
+    }
+
+    if (selectionArray.length) {
+      return selectionArray;
+    }
+
+    return this.args.selected;
+  }
 
   @task
   *loadOperationAreasTask() {

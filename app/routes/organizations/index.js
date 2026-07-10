@@ -86,9 +86,11 @@ export default class OrganizationsIndexRoute extends Route {
     }
     filter[':query:classification_id'] = queryClassifications;
 
-    // We use wildcard to handle linked operation areas that are a "samengesteld werkingsgebied"
     if (params.operationArea) {
-      filter[':wildcard:operation_area'] = '*' + params.operationArea + '*';
+      filter[':query:operation_area'] = params.operationArea
+        .split(',')
+        .map((area) => `(operation_area:*${area}*)`)
+        .join(' OR ');
     }
 
     if (params.municipality) {

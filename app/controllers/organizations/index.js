@@ -125,7 +125,7 @@ export default class OrganizationsIndexController extends Controller {
   @action
   setOperationArea(selection) {
     this.page = null;
-    this.operationArea = selection;
+    this.operationArea = selection.join(',');
   }
 
   @action
