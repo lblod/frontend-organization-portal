@@ -16,6 +16,8 @@ import {
   OCMWCodeList,
   DistrictCodeList,
   ProvinceCodeList,
+  WorshipServiceCodeList,
+  CentralWorshipServiceCodeList,
 } from '../constants/Classification';
 
 export default class OrganizationModel extends AgentModel {
@@ -139,7 +141,6 @@ export default class OrganizationModel extends AgentModel {
       expectedEndDate: Joi.date().allow(null),
       purpose: validateStringOptional(),
       classification: validateBelongsToRequired(REQUIRED_MESSAGE),
-      legalForm: validateBelongsToOptional(),
       contentThemes: Joi.when('classification.id', {
         is: Joi.exist().valid(
           ...MunicipalityCodeList,
@@ -149,6 +150,14 @@ export default class OrganizationModel extends AgentModel {
         ),
         then: validateHasManyOptional(),
         otherwise: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
+      }),
+      legalForm: Joi.when('classification.id', {
+        is: Joi.exist().valid(
+          ...WorshipServiceCodeList,
+          ...CentralWorshipServiceCodeList,
+        ),
+        then: Joi.optional(),
+        otherwise: validateBelongsToRequired(REQUIRED_MESSAGE),
       }),
       primarySite: validateBelongsToOptional(),
       organizationStatus: validateBelongsToRequired(REQUIRED_MESSAGE),

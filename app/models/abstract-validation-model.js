@@ -101,6 +101,10 @@ export default class AbstractValidationModel extends Model {
     this.rollbackAttributes();
   }
 
+  resetErrors() {
+    this.#resetValidationErrors();
+  }
+
   #resetValidationErrors() {
     this._validationError = undefined;
   }

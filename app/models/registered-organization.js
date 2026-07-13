@@ -3,19 +3,42 @@ import {
   PrivateOcmwAssociationCodeList,
   CorporationOtherCodeList,
   AssociationOtherCodeList,
+  ZorgraadCodeList,
+  BosgroepCodeList,
+  WoonmaatschappijCodeList,
 } from '../constants/Classification';
 import Joi from 'joi';
 import {
   validateHasManyNotEmptyRequired,
   validateHasManyOptional,
+  validateBelongsToOptional,
+  validateBelongsToRequired,
 } from '../validators/schema';
 import { CLASSIFICATION } from './administrative-unit-classification-code';
 import OrganizationModel from './organization';
+import { belongsTo } from '@ember-data/model';
 
 export default class RegisteredOrganizationModel extends OrganizationModel {
+  // Werkingsgebied (dct:spatial on registered organizations). User-entered.
+  @belongsTo('location', {
+    inverse: null,
+    async: true,
+  })
+  scope;
+
   get validationSchema() {
     const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({
+      // Werkingsgebied: required for the new types that have one, optional for the rest.
+      scope: Joi.when('classification.id', {
+        is: Joi.exist().valid(
+          ...ZorgraadCodeList,
+          ...BosgroepCodeList,
+          ...WoonmaatschappijCodeList,
+        ),
+        then: validateBelongsToRequired(REQUIRED_MESSAGE),
+        otherwise: validateBelongsToOptional(),
+      }),
       // NOTE: The requested functionality was to *not* validate memberships of
       // already existing organizations.
       // 1. For existing organizations: memberships are not validated (optional).
@@ -30,6 +53,9 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
           is: Joi.exist().valid(
             ...CorporationOtherCodeList,
             ...AssociationOtherCodeList,
+            ...ZorgraadCodeList,
+            ...BosgroepCodeList,
+            ...WoonmaatschappijCodeList,
           ),
           then: validateHasManyOptional(),
           otherwise: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
@@ -57,6 +83,18 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
 
   get isCorporationOther() {
     return this._hasClassificationId(CorporationOtherCodeList);
+  }
+
+  get isZorgraad() {
+    return this._hasClassificationId(ZorgraadCodeList);
+  }
+
+  get isBosgroep() {
+    return this._hasClassificationId(BosgroepCodeList);
+  }
+
+  get isWoonmaatschappij() {
+    return this._hasClassificationId(WoonmaatschappijCodeList);
   }
 
   get participantClassifications() {

@@ -114,18 +114,21 @@
                 {{#unless @model.organization.isWorshipAdministrativeUnit}}
                   <Item
                     @labelFor="legal-form"
+                    @required={{true}}
+                    @errorMessage={{@model.organization.error.legalForm.message}}
                   >
                     <:label>Juridische vorm</:label>
-                    <:content>
-                      <PowerSelect
-                        @disabled={{true}}
+                    <:content as |hasError|>
+                      <LegalFormSelect
                         @selected={{@model.organization.legalForm}}
                         @onChange={{fn (mut @model.organization.legalForm)}}
+                        @disabled={{not
+                          (is-feature-enabled "legal-form-editable")
+                        }}
+                        @error={{hasError}}
                         @triggerId="legal-form"
-                        as |legalForm|
-                      >
-                        {{legalForm.label}}
-                      </PowerSelect>
+                        @id="legal-form-select"
+                      />
                     </:content>
                   </Item>
                 {{/unless}}
@@ -272,31 +275,33 @@
                     </PowerSelect>
                   </:content>
                 </Item>
-                <Item
-                  @labelFor="kbo-identifier"
-                  @errorMessage={{@model.identifierKBO.error.structuredIdentifier}}
-                  @required={{true}}
-                >
-                  <:label>{{@model.identifierKBO.idName}}</:label>
-                  <:content as |hasError|>
-                    <AuInput
-                      @width="block"
-                      @error={{hasError}}
-                      autocomplete="off"
-                      value={{@model.structuredIdentifierKBO.localId}}
-                      id="kbo-identifier"
-                      class="au-c-input--mask"
-                      placeholder="____.___.___"
-                      {{au-inputmask
-                        options=(hash mask="####.###.###" placeholder="_")
-                      }}
-                      {{on "input" this.setKbo}}
-                    />
-                  </:content>
-                  <:error as |error|>
-                    <Error::KboNumber @error={{error}} />
-                  </:error>
-                </Item>
+                {{#if (requires-kbo @model.organization)}}
+                  <Item
+                    @labelFor="kbo-identifier"
+                    @errorMessage={{@model.identifierKBO.error.structuredIdentifier}}
+                    @required={{true}}
+                  >
+                    <:label>{{@model.identifierKBO.idName}}</:label>
+                    <:content as |hasError|>
+                      <AuInput
+                        @width="block"
+                        @error={{hasError}}
+                        autocomplete="off"
+                        value={{@model.structuredIdentifierKBO.localId}}
+                        id="kbo-identifier"
+                        class="au-c-input--mask"
+                        placeholder="____.___.___"
+                        {{au-inputmask
+                          options=(hash mask="####.###.###" placeholder="_")
+                        }}
+                        {{on "input" this.setKbo}}
+                      />
+                    </:content>
+                    <:error as |error|>
+                      <Error::KboNumber @error={{error}} />
+                    </:error>
+                  </Item>
+                {{/if}}
                 <Item
                   @labelFor="sharepoint-identifier"
                   @errorMessage={{@model.identifierSharepoint.error.structuredIdentifier.message}}

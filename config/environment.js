@@ -66,6 +66,7 @@ module.exports = function (environment) {
 
     features: {
       'edit-contact-data': '{{ENABLE_EDIT_CONTACT_DATA_FEATURE}}',
+      'legal-form-editable': '{{ENABLE_LEGAL_FORM_EDITABLE_FEATURE}}',
     },
 
     yasgui: {
@@ -78,6 +79,7 @@ module.exports = function (environment) {
     ENV.showAppVersionHash = true;
     ENV.environmentName = 'development';
     ENV.features['edit-contact-data'] = true;
+    ENV.features['legal-form-editable'] = true;
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;

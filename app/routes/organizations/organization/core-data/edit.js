@@ -68,7 +68,8 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
     let identifierKBO = identifiers.find(
       ({ idName }) => idName === ID_NAME.KBO,
     );
-    let structuredIdentifierKBO = await identifierKBO.structuredIdentifier;
+    // Not all organization types have a KBO so identifierKBO can be undefined.
+    let structuredIdentifierKBO = await identifierKBO?.structuredIdentifier;
 
     let identifierSharepoint = identifiers.find(
       ({ idName }) => idName === ID_NAME.SHAREPOINT,
