@@ -155,6 +155,8 @@ export default class OrganizationModel extends AgentModel {
           ...OCMWCodeList,
           ...DistrictCodeList,
           ...ProvinceCodeList,
+          ...WorshipServiceCodeList,
+          ...CentralWorshipServiceCodeList,
         ),
         then: validateHasManyOptional(),
         otherwise: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
@@ -216,6 +218,8 @@ export default class OrganizationModel extends AgentModel {
       ...OCMWCodeList,
       ...DistrictCodeList,
       ...ProvinceCodeList,
+      ...WorshipServiceCodeList,
+      ...CentralWorshipServiceCodeList,
     ]);
   }
 
