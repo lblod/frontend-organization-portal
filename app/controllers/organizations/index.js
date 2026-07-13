@@ -13,6 +13,7 @@ export default class OrganizationsIndexController extends Controller {
     'sort',
     'name',
     'identifier',
+    'operationArea',
     'municipality',
     'province',
     'organizationTypes',
@@ -26,6 +27,7 @@ export default class OrganizationsIndexController extends Controller {
   @tracked sort = 'name';
   @tracked name = '';
   @tracked identifier = '';
+  @tracked operationArea = '';
   @tracked municipality = '';
   @tracked province = '';
   @tracked organizationTypes = '';
@@ -121,6 +123,12 @@ export default class OrganizationsIndexController extends Controller {
   }
 
   @action
+  setOperationArea(selection) {
+    this.page = null;
+    this.operationArea = selection.join(',');
+  }
+
+  @action
   setMunicipality(selection) {
     this.page = null;
     this.municipality = selection;
@@ -147,6 +155,7 @@ export default class OrganizationsIndexController extends Controller {
   resetFilters() {
     this.name = '';
     this.identifier = '';
+    this.operationArea = '';
     this.municipality = '';
     this.province = '';
     this.organizationTypes = '';

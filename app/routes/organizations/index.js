@@ -15,6 +15,7 @@ export default class OrganizationsIndexRoute extends Route {
     sort: { refreshModel: true },
     name: { refreshModel: true, replace: true },
     identifier: { refreshModel: true, replace: true },
+    operationArea: { refreshModel: true, replace: true },
     municipality: { refreshModel: true, replace: true },
     province: { refreshModel: true, replace: true },
     organizationTypes: { refreshModel: true, replace: true },
@@ -84,6 +85,13 @@ export default class OrganizationsIndexRoute extends Route {
       );
     }
     filter[':query:classification_id'] = queryClassifications;
+
+    if (params.operationArea) {
+      filter[':query:operation_area'] = params.operationArea
+        .split(',')
+        .map((area) => `(operation_area:*${area}*)`)
+        .join(' OR ');
+    }
 
     if (params.municipality) {
       filter[':phrase:municipality'] = params.municipality;
