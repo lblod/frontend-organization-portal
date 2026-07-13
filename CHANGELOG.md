@@ -1,3 +1,8 @@
+## v1.40.2 (2026-07-13)
+
+#### :rocket: Enhancement
+* [#713](https://github.com/lblod/frontend-organization-portal/pull/713) [OP-3812] Operation area filter ([@nikidevisscher](https://github.com/nikidevisscher))
+
 ## v1.40.1 (2026-07-09)
 
 #### :rocket: Enhancement
