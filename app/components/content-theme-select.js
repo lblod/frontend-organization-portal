@@ -15,7 +15,7 @@ export default class ContentThemeSelectComponent extends Component {
 
   loadContentThemesTask = task(async () => {
     return await this.store.query('concept', {
-      sort: 'order',
+      sort: 'label',
       'page[size]': 30,
       'filter[in-scheme][:id:]': CONTENT_THEME_SCHEME_ID,
       include: 'in-scheme',
