@@ -10,7 +10,7 @@
           {{#unless @model.organization.isRepresentativeBody}}
             <SecuredArea>
               <:edit>
-                <div class="au-u-flex--column">
+                <div class="au-u-text-right">
                   <AuLink
                     @route="organizations.organization.core-data.edit"
                     @skin="button-secondary"
@@ -24,8 +24,8 @@
               </:edit>
             </SecuredArea>
           {{/unless}}
-        {{else}}
-          <div class="au-u-flex--column">
+        {{else if @model.kboOrganization.modified}}
+          <div class="au-u-text-right">
             <AuPill @icon="clock-rewind">
               Laatst Gewijzigd op
               {{date-format @model.kboOrganization.modified}}
@@ -37,7 +37,7 @@
     </PageHeader>
 
     <AuTabs as |Tab|>
-      <Tab class="au-u-1-1">
+      <Tab>
         <AuLink
           @width="block"
           class={{if
@@ -49,7 +49,7 @@
         >ABB Gegevens</AuLink>
       </Tab>
 
-      <Tab class="au-u-1-1">
+      <Tab>
         <AuLink
           @width="block"
           class={{if
