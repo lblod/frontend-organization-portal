@@ -58,6 +58,7 @@ export default class ClassificationSelectComponent extends Component {
     const codes = yield this.store.query('organization-classification-code', {
       'filter[:id:]': allowedIds.join(),
       sort: 'label',
+      'page[size]': 100, // Ensure this number is high enough to return all types in a single page
     });
 
     // Auto-selects the type if there is only one option
