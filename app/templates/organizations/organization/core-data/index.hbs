@@ -24,8 +24,8 @@
               </:edit>
             </SecuredArea>
           {{/unless}}
-        {{else}}
-          <div class="au-u-flex--column">
+        {{else if @model.kboOrganization.modified}}
+          <div class="au-u-text-right">
             <AuPill @icon="clock-rewind">
               Laatst Gewijzigd op
               {{date-format @model.kboOrganization.modified}}
