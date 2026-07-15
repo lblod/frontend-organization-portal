@@ -20,6 +20,15 @@ import {
   ProvinceCodeList,
 } from '../constants/Classification';
 
+const CLASSIFICATION_CODES_WITHOUT_REQUIRED_CONTENT_THEMES = [
+  ...MunicipalityCodeList,
+  ...OCMWCodeList,
+  ...DistrictCodeList,
+  ...ProvinceCodeList,
+  ...WorshipServiceCodeList,
+  ...CentralWorshipServiceCodeList,
+];
+
 export default class OrganizationModel extends AgentModel {
   @attr name;
   @attr legalName;
@@ -151,12 +160,7 @@ export default class OrganizationModel extends AgentModel {
       }),
       contentThemes: Joi.when('classification.id', {
         is: Joi.exist().valid(
-          ...MunicipalityCodeList,
-          ...OCMWCodeList,
-          ...DistrictCodeList,
-          ...ProvinceCodeList,
-          ...WorshipServiceCodeList,
-          ...CentralWorshipServiceCodeList,
+          ...CLASSIFICATION_CODES_WITHOUT_REQUIRED_CONTENT_THEMES,
         ),
         then: validateHasManyOptional(),
         otherwise: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
@@ -213,14 +217,9 @@ export default class OrganizationModel extends AgentModel {
   }
 
   get requiresContentThemes() {
-    return !this._hasClassificationId([
-      ...MunicipalityCodeList,
-      ...OCMWCodeList,
-      ...DistrictCodeList,
-      ...ProvinceCodeList,
-      ...WorshipServiceCodeList,
-      ...CentralWorshipServiceCodeList,
-    ]);
+    return !this._hasClassificationId(
+      CLASSIFICATION_CODES_WITHOUT_REQUIRED_CONTENT_THEMES,
+    );
   }
 
   /**

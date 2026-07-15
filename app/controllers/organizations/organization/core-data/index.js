@@ -122,9 +122,7 @@ export default class OrganizationsOrganizationCoreDataIndexController extends Co
   }
 
   get contentThemesString() {
-    const contentThemes = this.model.organization
-      .hasMany('contentThemes')
-      .value();
+    const contentThemes = this.model.contentThemes;
     if (!contentThemes || !contentThemes.length) {
       return '';
     }
