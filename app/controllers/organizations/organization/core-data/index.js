@@ -121,6 +121,14 @@ export default class OrganizationsOrganizationCoreDataIndexController extends Co
     return vendors.map((item) => item.name).join(', ');
   }
 
+  get contentThemesString() {
+    const contentThemes = this.model.contentThemes;
+    if (!contentThemes || !contentThemes.length) {
+      return '';
+    }
+    return contentThemes.map((theme) => theme.label).join(', ');
+  }
+
   @action
   setShowAbbData(value) {
     this.showAbbData = value;

@@ -132,6 +132,23 @@
                     </:content>
                   </Item>
                 {{/unless}}
+                {{#if @model.organization.requiresContentThemes}}
+                  <Item
+                    @labelFor="content-theme-select"
+                    @required={{true}}
+                    @errorMessage={{@model.organization.error.contentThemes.message}}
+                  >
+                    <:label>Inhoudelijk thema</:label>
+                    <:content as |hasError|>
+                      <ContentThemeSelect
+                        @selected={{@model.organization.contentThemes}}
+                        @onChange={{fn (mut @model.organization.contentThemes)}}
+                        @error={{hasError}}
+                        @id="content-theme-select"
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
                 {{#if @model.organization.isWorshipAdministrativeUnit}}
                   <Item
                     @labelFor="recognized-worship-type-select"

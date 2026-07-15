@@ -19,6 +19,7 @@ export default class OrganizationsOrganizationCoreDataRoute extends Route {
         'kbo-organization',
         'memberships-of-organizations',
         'memberships',
+        'content-themes',
       ].join(),
     });
   }

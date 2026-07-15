@@ -6,14 +6,28 @@ import {
   validateBelongsToOptional,
   validateBelongsToRequired,
   validateHasManyOptional,
+  validateHasManyNotEmptyRequired,
   validateStringOptional,
 } from '../validators/schema';
 import getOppositeClassifications from '../constants/memberships';
 import { ID_NAME } from './identifier';
 import {
+  MunicipalityCodeList,
+  OCMWCodeList,
+  DistrictCodeList,
+  ProvinceCodeList,
   WorshipServiceCodeList,
   CentralWorshipServiceCodeList,
 } from '../constants/Classification';
+
+const CLASSIFICATION_CODES_WITHOUT_REQUIRED_CONTENT_THEMES = [
+  ...MunicipalityCodeList,
+  ...OCMWCodeList,
+  ...DistrictCodeList,
+  ...ProvinceCodeList,
+  ...WorshipServiceCodeList,
+  ...CentralWorshipServiceCodeList,
+];
 
 export default class OrganizationModel extends AgentModel {
   @attr name;
@@ -34,6 +48,12 @@ export default class OrganizationModel extends AgentModel {
     async: true,
   })
   legalForm;
+
+  @hasMany('concept', {
+    inverse: null,
+    async: true,
+  })
+  contentThemes;
 
   @belongsTo('site', {
     inverse: null,
@@ -130,6 +150,13 @@ export default class OrganizationModel extends AgentModel {
       expectedEndDate: Joi.date().allow(null),
       purpose: validateStringOptional(),
       classification: validateBelongsToRequired(REQUIRED_MESSAGE),
+      contentThemes: Joi.when('classification.id', {
+        is: Joi.exist().valid(
+          ...CLASSIFICATION_CODES_WITHOUT_REQUIRED_CONTENT_THEMES,
+        ),
+        then: validateHasManyOptional(),
+        otherwise: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
+      }),
       legalForm: Joi.when('classification.id', {
         is: Joi.exist().valid(
           ...WorshipServiceCodeList,
@@ -187,6 +214,12 @@ export default class OrganizationModel extends AgentModel {
 
   _hasClassificationId(classificationIds) {
     return classificationIds.includes(this.classification?.get('id'));
+  }
+
+  get requiresContentThemes() {
+    return !this._hasClassificationId(
+      CLASSIFICATION_CODES_WITHOUT_REQUIRED_CONTENT_THEMES,
+    );
   }
 
   /**
