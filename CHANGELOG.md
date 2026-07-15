@@ -1,3 +1,12 @@
+## v1.40.3 (2026-07-15)
+
+#### :rocket: Enhancement
+* [#715](https://github.com/lblod/frontend-organization-portal/pull/715) OP-3817 inhoudelijk thema ([@DamonKennes](https://github.com/DamonKennes))
+
+#### :bug: Bug Fix
+* [#717](https://github.com/lblod/frontend-organization-portal/pull/717) Small UI fixes ([@Windvis](https://github.com/Windvis))
+* [#716](https://github.com/lblod/frontend-organization-portal/pull/716) [OP-3794] Fix some "Type organisatie" field issues ([@Windvis](https://github.com/Windvis))
+
 ## v1.40.2 (2026-07-13)
 
 #### :rocket: Enhancement
