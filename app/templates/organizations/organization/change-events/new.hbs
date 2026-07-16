@@ -25,6 +25,7 @@
             </AuLink>
             <AuButton
               @loading={{this.createNewChangeEventTask.isRunning}}
+              @loadingMessage="Opslaan"
               @disabled={{this.createNewChangeEventTask.isRunning}}
               type="submit"
             >

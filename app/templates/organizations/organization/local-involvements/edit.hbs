@@ -14,6 +14,7 @@
           </AuLink>
           <AuButton
             @loading={{this.save.isRunning}}
+            @loadingMessage="Opslaan"
             @disabled={{this.save.isRunning}}
             form="local-involvements-edit-creation"
             type="submit"
