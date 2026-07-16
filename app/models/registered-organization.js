@@ -35,6 +35,7 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
           ...ZorgraadCodeList,
           ...BosgroepCodeList,
           ...WoonmaatschappijCodeList,
+          ...PrivateOcmwAssociationCodeList,
         ),
         then: validateBelongsToRequired(REQUIRED_MESSAGE),
         otherwise: validateBelongsToOptional(),
