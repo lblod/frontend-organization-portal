@@ -11,9 +11,7 @@ export default class ScopeOfOperationService extends Service {
 
   /**
    * Retrieve the label to be displayed for the provided organization's scope of
-   * operation. Only organizations that have a scope (werkingsgebied) relation
-   * defined, e.g. administrative units and some registered organizations, can
-   * have a scope of operation.
+   * operation.
    * @param {Organization} organization - The organization for which to retrieve
    *     the label.
    * @returns {Promise<string | null>} The appropriate label that should be
