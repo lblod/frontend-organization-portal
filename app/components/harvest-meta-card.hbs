@@ -1,0 +1,70 @@
+{{#if (has-harvest-meta @harvestable)}}
+  <AuAccordion
+    @buttonLabel="Meer informatie over de bron"
+    @disableAuContent={{true}}
+    @reverse={{true}}
+  >
+    <DataCard>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <Item>
+              <:label>Vendor</:label>
+              <:content>
+                {{#if @harvestable.vendor}}
+                  {{@harvestable.vendor}}
+                {{else}}
+                  -
+                {{/if}}
+              </:content>
+            </Item>
+            <Item>
+              <:label>Bron</:label>
+              <:content>
+                {{#if @harvestable.source}}
+                  {{@harvestable.source}}
+                {{else}}
+                  -
+                {{/if}}
+              </:content>
+            </Item>
+            <Item>
+              <:label>Bron ID</:label>
+              <:content>
+                {{#if @harvestable.sourceId}}
+                  {{@harvestable.sourceId}}
+                {{else}}
+                  -
+                {{/if}}
+              </:content>
+            </Item>
+          </:left>
+          <:right as |Item|>
+            <Item>
+              <:label>Datum van harvesting</:label>
+              <:content>
+                {{#if @harvestable.harvestDate}}
+                  {{date-format @harvestable.harvestDate}}
+                {{else}}
+                  -
+                {{/if}}
+              </:content>
+            </Item>
+            <Item>
+              <:label>Job</:label>
+              <:content>
+                {{#if @harvestable.harvestLink}}
+                  <AuLinkExternal href={{@harvestable.harvestLink}}>
+                    {{@harvestable.harvestJob}}
+                  </AuLinkExternal>
+                {{else}}
+                  -
+                {{/if}}
+              </:content>
+            </Item>
+          </:right>
+        </Card.Columns>
+      </:card>
+    </DataCard>
+  </AuAccordion>
+{{/if}}

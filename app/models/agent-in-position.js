@@ -4,6 +4,12 @@ import AgentModel from './agent';
 export default class AgentInPositionModel extends AgentModel {
   @attr('date') agentStartDate;
   @attr('date') agentEndDate;
+  @attr vendor;
+  @attr source;
+  @attr sourceId;
+  @attr('date') harvestDate;
+  @attr harvestJob;
+  @attr harvestLink;
 
   @belongsTo('person', {
     inverse: 'agentsInPosition',
