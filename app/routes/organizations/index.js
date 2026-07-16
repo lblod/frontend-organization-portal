@@ -87,7 +87,6 @@ export default class OrganizationsIndexRoute extends Route {
     filter[':query:classification_id'] = queryClassifications;
 
     if (params.operationArea) {
-
       filter[':query:operation_area'] = params.operationArea
         .split(',')
         .map(
