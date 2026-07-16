@@ -42,7 +42,7 @@
     "@ember/string": "power-select v7 still brings in @ember/string v3"
   },
   "devDependencies": {
-    "@appuniversum/ember-appuniversum": "^3.5.0",
+    "@appuniversum/ember-appuniversum": "^3.19.0",
     "@babel/core": "^7.25.2",
     "@ember/optional-features": "^2.1.0",
     "@ember/string": "^4.0.0",
