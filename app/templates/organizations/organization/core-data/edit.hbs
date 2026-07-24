@@ -210,7 +210,15 @@
                     </:content>
                   </Item>
                 {{/if}}
-                {{#if @model.organization.isAdministrativeUnit}}
+                {{#if
+                  (or
+                    @model.organization.isAdministrativeUnit
+                    @model.organization.isZorgraad
+                    @model.organization.isBosgroep
+                    @model.organization.isWoonmaatschappij
+                    @model.organization.isPrivateOcmwAssociation
+                  )
+                }}
                   <Item
                     @labelFor="scope"
                     @required={{true}}
