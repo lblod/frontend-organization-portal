@@ -281,10 +281,7 @@ module('Unit | Model | organization', function (hooks) {
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
         [...IGSCodeList, ...OcmwAssociationCodeList],
       ],
-      [
-        CLASSIFICATION.ANDERE,
-        [...IGSCodeList, ...OcmwAssociationCodeList],
-      ],
+      [CLASSIFICATION.ANDERE, [...IGSCodeList, ...OcmwAssociationCodeList]],
     ].forEach(([cl, classificationCodes]) => {
       test(`it should allow a(n) ${cl.label} to participate in the correct kind of organizations`, async function (assert) {
         const classification = this.store().createRecord(
@@ -315,17 +312,11 @@ module('Unit | Model | organization', function (hooks) {
       [CLASSIFICATION.AGB, [CLASSIFICATION.MUNICIPALITY.id]],
       [
         CLASSIFICATION.PEVA_MUNICIPALITY,
-        [
-          CLASSIFICATION.MUNICIPALITY.id,
-          CLASSIFICATION.ANDERE.id,
-        ],
+        [CLASSIFICATION.MUNICIPALITY.id, CLASSIFICATION.ANDERE.id],
       ],
       [
         CLASSIFICATION.PEVA_PROVINCE,
-        [
-          CLASSIFICATION.PROVINCE.id,
-          CLASSIFICATION.ANDERE.id,
-        ],
+        [CLASSIFICATION.PROVINCE.id, CLASSIFICATION.ANDERE.id],
       ],
       [
         CLASSIFICATION.WELZIJNSVERENIGING,
@@ -411,10 +402,7 @@ module('Unit | Model | organization', function (hooks) {
         [CLASSIFICATION.PEVA_PROVINCE.id, CLASSIFICATION.APB.id],
       ],
       [CLASSIFICATION.OCMW, [...OcmwAssociationCodeList]],
-      [
-        CLASSIFICATION.ANDERE,
-        [...PevaCodeList, ...OcmwAssociationCodeList],
-      ],
+      [CLASSIFICATION.ANDERE, [...PevaCodeList, ...OcmwAssociationCodeList]],
     ].forEach(([cl, classificationCodes]) => {
       test(`it should allow a(n) ${cl.label} to found the correct organizations`, async function (assert) {
         const classification = this.store().createRecord(

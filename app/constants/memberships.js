@@ -91,17 +91,11 @@ export const allowedFoundingMemberships = [
   },
   {
     organizations: [...PevaMunicipalityCodeList],
-    members: [
-      ...MunicipalityCodeList,
-      ...AndereCodeList,
-    ],
+    members: [...MunicipalityCodeList, ...AndereCodeList],
   },
   {
     organizations: [...PevaProvinceCodeList],
-    members: [
-      ...ProvinceCodeList,
-      ...AndereCodeList,
-    ],
+    members: [...ProvinceCodeList, ...AndereCodeList],
   },
   {
     organizations: [...OcmwAssociationCodeList],

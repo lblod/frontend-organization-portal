@@ -409,17 +409,11 @@ module('Unit | Model | administrative unit', function (hooks) {
       [CLASSIFICATION.AGB, [CLASSIFICATION.MUNICIPALITY.id]],
       [
         CLASSIFICATION.PEVA_MUNICIPALITY,
-        [
-          CLASSIFICATION.MUNICIPALITY.id,
-          CLASSIFICATION.ANDERE.id,
-        ],
+        [CLASSIFICATION.MUNICIPALITY.id, CLASSIFICATION.ANDERE.id],
       ],
       [
         CLASSIFICATION.PEVA_PROVINCE,
-        [
-          CLASSIFICATION.PROVINCE.id,
-          CLASSIFICATION.ANDERE.id,
-        ],
+        [CLASSIFICATION.PROVINCE.id, CLASSIFICATION.ANDERE.id],
       ],
       [
         CLASSIFICATION.WELZIJNSVERENIGING,

@@ -248,9 +248,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             ORGANIZATION_TYPES.CORPORATION,
           );
 
-          assert.deepEqual(result.sort(), [
-            CLASSIFICATION.WOONMAATSCHAPPIJ.id,
-          ]);
+          assert.deepEqual(result.sort(), [CLASSIFICATION.WOONMAATSCHAPPIJ.id]);
         });
 
         test('it should return all non-worship other classification code identifiers', async function (assert) {
