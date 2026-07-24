@@ -176,15 +176,13 @@ module('Unit | Model | organization', function (hooks) {
       CLASSIFICATION.ZIEKENHUISVERENIGING.id,
       CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
       CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-      CLASSIFICATION.ASSOCIATION_OTHER.id,
-      CLASSIFICATION.CORPORATION_OTHER.id,
+      CLASSIFICATION.ANDERE.id,
     ];
 
     const ocmwAssociationParticipants = OcmwAssociationCodeList.concat([
       CLASSIFICATION.MUNICIPALITY.id,
       CLASSIFICATION.OCMW.id,
-      CLASSIFICATION.ASSOCIATION_OTHER.id,
-      CLASSIFICATION.CORPORATION_OTHER.id,
+      CLASSIFICATION.ANDERE.id,
     ]);
 
     const pevaParticipants = [
@@ -284,11 +282,7 @@ module('Unit | Model | organization', function (hooks) {
         [...IGSCodeList, ...OcmwAssociationCodeList],
       ],
       [
-        CLASSIFICATION.ASSOCIATION_OTHER,
-        [...IGSCodeList, ...OcmwAssociationCodeList],
-      ],
-      [
-        CLASSIFICATION.CORPORATION_OTHER,
+        CLASSIFICATION.ANDERE,
         [...IGSCodeList, ...OcmwAssociationCodeList],
       ],
     ].forEach(([cl, classificationCodes]) => {
@@ -323,16 +317,14 @@ module('Unit | Model | organization', function (hooks) {
         CLASSIFICATION.PEVA_MUNICIPALITY,
         [
           CLASSIFICATION.MUNICIPALITY.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
       [
         CLASSIFICATION.PEVA_PROVINCE,
         [
           CLASSIFICATION.PROVINCE.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
       [
@@ -341,8 +333,7 @@ module('Unit | Model | organization', function (hooks) {
           ...OcmwAssociationCodeList,
           CLASSIFICATION.MUNICIPALITY.id,
           CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
       [
@@ -351,8 +342,7 @@ module('Unit | Model | organization', function (hooks) {
           ...OcmwAssociationCodeList,
           CLASSIFICATION.MUNICIPALITY.id,
           CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
       [
@@ -361,8 +351,7 @@ module('Unit | Model | organization', function (hooks) {
           ...OcmwAssociationCodeList,
           CLASSIFICATION.MUNICIPALITY.id,
           CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
       [
@@ -371,8 +360,7 @@ module('Unit | Model | organization', function (hooks) {
           ...OcmwAssociationCodeList,
           CLASSIFICATION.MUNICIPALITY.id,
           CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
       [
@@ -381,8 +369,7 @@ module('Unit | Model | organization', function (hooks) {
           ...OcmwAssociationCodeList,
           CLASSIFICATION.MUNICIPALITY.id,
           CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
     ].forEach(([cl, classificationCodes]) => {
@@ -425,11 +412,7 @@ module('Unit | Model | organization', function (hooks) {
       ],
       [CLASSIFICATION.OCMW, [...OcmwAssociationCodeList]],
       [
-        CLASSIFICATION.ASSOCIATION_OTHER,
-        [...PevaCodeList, ...OcmwAssociationCodeList],
-      ],
-      [
-        CLASSIFICATION.CORPORATION_OTHER,
+        CLASSIFICATION.ANDERE,
         [...PevaCodeList, ...OcmwAssociationCodeList],
       ],
     ].forEach(([cl, classificationCodes]) => {

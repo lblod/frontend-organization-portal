@@ -1,11 +1,10 @@
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import {
   AgbCodeList,
+  AndereCodeList,
   ApbCodeList,
   AssistanceZoneCodeList,
-  AssociationOtherCodeList,
   CentralWorshipServiceCodeList,
-  CorporationOtherCodeList,
   DistrictCodeList,
   IGSCodeList,
   MunicipalityCodeList,
@@ -46,8 +45,7 @@ export const allowedParticipationMemberships = [
       ...AssistanceZoneCodeList,
       ...PevaCodeList,
       ...OcmwAssociationCodeList,
-      ...AssociationOtherCodeList,
-      ...CorporationOtherCodeList,
+      ...AndereCodeList,
     ],
   },
   {
@@ -56,8 +54,7 @@ export const allowedParticipationMemberships = [
       ...OcmwAssociationCodeList,
       ...MunicipalityCodeList,
       ...OCMWCodeList,
-      ...AssociationOtherCodeList,
-      ...CorporationOtherCodeList,
+      ...AndereCodeList,
     ],
   },
   {
@@ -96,16 +93,14 @@ export const allowedFoundingMemberships = [
     organizations: [...PevaMunicipalityCodeList],
     members: [
       ...MunicipalityCodeList,
-      ...AssociationOtherCodeList,
-      ...CorporationOtherCodeList,
+      ...AndereCodeList,
     ],
   },
   {
     organizations: [...PevaProvinceCodeList],
     members: [
       ...ProvinceCodeList,
-      ...AssociationOtherCodeList,
-      ...CorporationOtherCodeList,
+      ...AndereCodeList,
     ],
   },
   {
@@ -114,8 +109,7 @@ export const allowedFoundingMemberships = [
       ...OcmwAssociationCodeList,
       ...MunicipalityCodeList,
       ...OCMWCodeList,
-      ...AssociationOtherCodeList,
-      ...CorporationOtherCodeList,
+      ...AndereCodeList,
     ],
   },
 ];

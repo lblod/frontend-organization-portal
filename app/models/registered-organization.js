@@ -1,9 +1,9 @@
 import {
   OcmwAssociationCodeList,
   PrivateOcmwAssociationCodeList,
-  CorporationOtherCodeList,
-  AssociationOtherCodeList,
+  AndereCodeList,
   ZorgraadCodeList,
+  RegionaalZorgplatformCodeList,
   BosgroepCodeList,
   WoonmaatschappijCodeList,
 } from '../constants/Classification';
@@ -33,6 +33,7 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
       scope: Joi.when('classification.id', {
         is: Joi.exist().valid(
           ...ZorgraadCodeList,
+          ...RegionaalZorgplatformCodeList,
           ...BosgroepCodeList,
           ...WoonmaatschappijCodeList,
           ...PrivateOcmwAssociationCodeList,
@@ -52,9 +53,9 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
         is: Joi.exist().valid(true),
         then: Joi.when('classification.id', {
           is: Joi.exist().valid(
-            ...CorporationOtherCodeList,
-            ...AssociationOtherCodeList,
+            ...AndereCodeList,
             ...ZorgraadCodeList,
+            ...RegionaalZorgplatformCodeList,
             ...BosgroepCodeList,
             ...WoonmaatschappijCodeList,
           ),
@@ -78,16 +79,16 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
     return this._hasClassificationId(PrivateOcmwAssociationCodeList);
   }
 
-  get isAssociationOther() {
-    return this._hasClassificationId(AssociationOtherCodeList);
-  }
-
-  get isCorporationOther() {
-    return this._hasClassificationId(CorporationOtherCodeList);
+  get isAndere() {
+    return this._hasClassificationId(AndereCodeList);
   }
 
   get isZorgraad() {
     return this._hasClassificationId(ZorgraadCodeList);
+  }
+
+  get isRegionaalZorgplatform() {
+    return this._hasClassificationId(RegionaalZorgplatformCodeList);
   }
 
   get isBosgroep() {
@@ -103,8 +104,7 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
       return OcmwAssociationCodeList.concat([
         CLASSIFICATION.MUNICIPALITY.id,
         CLASSIFICATION.OCMW.id,
-        CLASSIFICATION.ASSOCIATION_OTHER.id,
-        CLASSIFICATION.CORPORATION_OTHER.id,
+        CLASSIFICATION.ANDERE.id,
       ]);
     }
     return [];
@@ -115,8 +115,7 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
       return OcmwAssociationCodeList.concat([
         CLASSIFICATION.MUNICIPALITY.id,
         CLASSIFICATION.OCMW.id,
-        CLASSIFICATION.ASSOCIATION_OTHER.id,
-        CLASSIFICATION.CORPORATION_OTHER.id,
+        CLASSIFICATION.ANDERE.id,
       ]);
     }
     return [];

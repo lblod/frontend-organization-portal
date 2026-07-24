@@ -209,8 +209,13 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       .id,
                     CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
                       .id,
-                    CLASSIFICATION.ASSOCIATION_OTHER.id,
-                    CLASSIFICATION.CORPORATION_OTHER.id,
+                    CLASSIFICATION.BOSGROEP.id,
+                    CLASSIFICATION.WOONMAATSCHAPPIJ.id,
+                    CLASSIFICATION.INTERLOKALE_VERENIGING.id,
+                    CLASSIFICATION.VERVOERREGIORAAD.id,
+                    CLASSIFICATION.ZORGRAAD.id,
+                    CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                    CLASSIFICATION.ANDERE.id,
                   ].includes(id),
               )
               .sort(),
@@ -231,7 +236,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
               CLASSIFICATION
                 .VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
               CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-              CLASSIFICATION.ASSOCIATION_OTHER.id,
+              CLASSIFICATION.BOSGROEP.id,
             ].sort(),
           );
         });
@@ -244,8 +249,18 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
           );
 
           assert.deepEqual(result.sort(), [
-            CLASSIFICATION.CORPORATION_OTHER.id,
+            CLASSIFICATION.WOONMAATSCHAPPIJ.id,
           ]);
+        });
+
+        test('it should return all non-worship other classification code identifiers', async function (assert) {
+          let result = getClassificationIdsForRole(
+            false,
+            false,
+            ORGANIZATION_TYPES.OTHER,
+          );
+
+          assert.deepEqual(result.sort(), [CLASSIFICATION.ANDERE.id]);
         });
 
         test('it should return all non-worship administrative unit and association classification code identifiers', async function (assert) {
@@ -268,7 +283,12 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.WORSHIP_SERVICE.id,
                     CLASSIFICATION.REPRESENTATIVE_BODY.id,
                     // Non administrative units
-                    CLASSIFICATION.CORPORATION_OTHER.id,
+                    CLASSIFICATION.WOONMAATSCHAPPIJ.id,
+                    CLASSIFICATION.INTERLOKALE_VERENIGING.id,
+                    CLASSIFICATION.VERVOERREGIORAAD.id,
+                    CLASSIFICATION.ZORGRAAD.id,
+                    CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                    CLASSIFICATION.ANDERE.id,
                   ].includes(id),
               )
               .sort(),
@@ -301,7 +321,12 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       .id,
                     CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
                       .id,
-                    CLASSIFICATION.ASSOCIATION_OTHER.id,
+                    CLASSIFICATION.BOSGROEP.id,
+                    CLASSIFICATION.INTERLOKALE_VERENIGING.id,
+                    CLASSIFICATION.VERVOERREGIORAAD.id,
+                    CLASSIFICATION.ZORGRAAD.id,
+                    CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                    CLASSIFICATION.ANDERE.id,
                   ].includes(id),
               )
               .sort(),
@@ -327,8 +352,8 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                   CLASSIFICATION
                     .VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
                   CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-                  CLASSIFICATION.ASSOCIATION_OTHER.id,
-                  CLASSIFICATION.CORPORATION_OTHER.id,
+                  CLASSIFICATION.BOSGROEP.id,
+                  CLASSIFICATION.WOONMAATSCHAPPIJ.id,
                 ].includes(id),
               )
               .sort(),
@@ -355,6 +380,12 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
                     CLASSIFICATION.WORSHIP_SERVICE.id,
                     CLASSIFICATION.REPRESENTATIVE_BODY.id,
+                    // Other UI organization types
+                    CLASSIFICATION.INTERLOKALE_VERENIGING.id,
+                    CLASSIFICATION.VERVOERREGIORAAD.id,
+                    CLASSIFICATION.ZORGRAAD.id,
+                    CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                    CLASSIFICATION.ANDERE.id,
                   ].includes(id),
               )
               .sort(),
@@ -387,8 +418,13 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                         .id,
                       CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
                         .id,
-                      CLASSIFICATION.ASSOCIATION_OTHER.id,
-                      CLASSIFICATION.CORPORATION_OTHER.id,
+                      CLASSIFICATION.BOSGROEP.id,
+                      CLASSIFICATION.WOONMAATSCHAPPIJ.id,
+                      CLASSIFICATION.INTERLOKALE_VERENIGING.id,
+                      CLASSIFICATION.VERVOERREGIORAAD.id,
+                      CLASSIFICATION.ZORGRAAD.id,
+                      CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                      CLASSIFICATION.ANDERE.id,
                       // Uncreatable administrative units
                       CLASSIFICATION.MUNICIPALITY.id,
                       CLASSIFICATION.PROVINCE.id,
@@ -413,7 +449,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                 CLASSIFICATION
                   .VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
                 CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-                CLASSIFICATION.ASSOCIATION_OTHER.id,
+                CLASSIFICATION.BOSGROEP.id,
               ].sort(),
             );
           });
@@ -426,7 +462,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             );
 
             assert.deepEqual(result.sort(), [
-              CLASSIFICATION.CORPORATION_OTHER.id,
+              CLASSIFICATION.WOONMAATSCHAPPIJ.id,
             ]);
           });
 
@@ -450,7 +486,12 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.WORSHIP_SERVICE.id,
                       CLASSIFICATION.REPRESENTATIVE_BODY.id,
                       // Non administrative units
-                      CLASSIFICATION.CORPORATION_OTHER.id,
+                      CLASSIFICATION.WOONMAATSCHAPPIJ.id,
+                      CLASSIFICATION.INTERLOKALE_VERENIGING.id,
+                      CLASSIFICATION.VERVOERREGIORAAD.id,
+                      CLASSIFICATION.ZORGRAAD.id,
+                      CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                      CLASSIFICATION.ANDERE.id,
                       // Uncreatable administrative units
                       CLASSIFICATION.MUNICIPALITY.id,
                       CLASSIFICATION.PROVINCE.id,
@@ -487,7 +528,12 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                         .id,
                       CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
                         .id,
-                      CLASSIFICATION.ASSOCIATION_OTHER.id,
+                      CLASSIFICATION.BOSGROEP.id,
+                      CLASSIFICATION.INTERLOKALE_VERENIGING.id,
+                      CLASSIFICATION.VERVOERREGIORAAD.id,
+                      CLASSIFICATION.ZORGRAAD.id,
+                      CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                      CLASSIFICATION.ANDERE.id,
                       // Uncreatable administrative units
                       CLASSIFICATION.MUNICIPALITY.id,
                       CLASSIFICATION.PROVINCE.id,
@@ -519,8 +565,8 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       .id,
                     CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
                       .id,
-                    CLASSIFICATION.ASSOCIATION_OTHER.id,
-                    CLASSIFICATION.CORPORATION_OTHER.id,
+                    CLASSIFICATION.BOSGROEP.id,
+                    CLASSIFICATION.WOONMAATSCHAPPIJ.id,
                   ].includes(id),
                 )
                 .sort(),
@@ -547,6 +593,12 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
                       CLASSIFICATION.WORSHIP_SERVICE.id,
                       CLASSIFICATION.REPRESENTATIVE_BODY.id,
+                      // Other UI organization types
+                      CLASSIFICATION.INTERLOKALE_VERENIGING.id,
+                      CLASSIFICATION.VERVOERREGIORAAD.id,
+                      CLASSIFICATION.ZORGRAAD.id,
+                      CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                      CLASSIFICATION.ANDERE.id,
                       // Uncreatable administrative units
                       CLASSIFICATION.MUNICIPALITY.id,
                       CLASSIFICATION.PROVINCE.id,
@@ -592,6 +644,16 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
             true,
             false,
             ORGANIZATION_TYPES.CORPORATION,
+          );
+
+          assert.deepEqual(result.sort(), []);
+        });
+
+        test('it should return all worship other classification code identifiers', async function (assert) {
+          let result = getClassificationIdsForRole(
+            true,
+            false,
+            ORGANIZATION_TYPES.OTHER,
           );
 
           assert.deepEqual(result.sort(), []);
@@ -768,6 +830,12 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                   CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
                   CLASSIFICATION.WORSHIP_SERVICE.id,
                   CLASSIFICATION.REPRESENTATIVE_BODY.id,
+                  // Other UI organization types
+                  CLASSIFICATION.INTERLOKALE_VERENIGING.id,
+                  CLASSIFICATION.VERVOERREGIORAAD.id,
+                  CLASSIFICATION.ZORGRAAD.id,
+                  CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                  CLASSIFICATION.ANDERE.id,
                 ].includes(id),
             )
             .sort(),

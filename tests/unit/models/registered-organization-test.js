@@ -42,10 +42,7 @@ module('Unit | Model | registered organization', function (hooks) {
       });
     });
 
-    [
-      CLASSIFICATION.ASSOCIATION_OTHER,
-      CLASSIFICATION.CORPORATION_OTHER,
-    ].forEach((cl) => {
+    [CLASSIFICATION.ANDERE].forEach((cl) => {
       test(`it should not return an extra error creating an empty ${cl.label} model`, async function (assert) {
         const classification = this.store().createRecord(
           'registered-organization-classification-code',
