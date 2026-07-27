@@ -13,24 +13,25 @@ export default class CentralWorshipSelectComponent extends Component {
     this.centralWorshipServices = this.loadCentralWorshipServicesTask.perform();
   }
 
-  @restartableTask
-  *loadCentralWorshipServicesTask(searchParams = '') {
-    const query = {
-      sort: 'name',
-      include: 'organization-status',
-      filter: {
-        'organization-status': {
-          id: this.args.limitToActiveOrganizations
-            ? ORGANIZATION_STATUS.ACTIVE
-            : undefined,
+  loadCentralWorshipServicesTask = restartableTask(
+    async (searchParams = '') => {
+      const query = {
+        sort: 'name',
+        include: 'organization-status',
+        filter: {
+          'organization-status': {
+            id: this.args.limitToActiveOrganizations
+              ? ORGANIZATION_STATUS.ACTIVE
+              : undefined,
+          },
         },
-      },
-    };
+      };
 
-    if (searchParams.length > 1) {
-      query['filter[name]'] = searchParams;
-    }
+      if (searchParams.length > 1) {
+        query['filter[name]'] = searchParams;
+      }
 
-    return yield this.store.query('central-worship-service', query);
-  }
+      return await this.store.query('central-worship-service', query);
+    },
+  );
 }

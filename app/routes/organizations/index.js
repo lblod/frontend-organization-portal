@@ -31,8 +31,7 @@ export default class OrganizationsIndexRoute extends Route {
     };
   }
 
-  @keepLatestTask({ cancelOn: 'deactivate' })
-  *loadOrganizationsTask(params) {
+  loadOrganizationsTask = keepLatestTask(async (params) => {
     const filter = {};
     if (params.name) {
       let filterType = 'phrase_prefix';
@@ -113,7 +112,7 @@ export default class OrganizationsIndexRoute extends Route {
 
     filter[':has-no:source'] = true;
 
-    return yield this.muSearch.search({
+    return await this.muSearch.search({
       index: 'organizations',
       page: params.page,
       size: params.size,
@@ -127,5 +126,5 @@ export default class OrganizationsIndexRoute extends Route {
         return entry;
       },
     });
-  }
+  });
 }

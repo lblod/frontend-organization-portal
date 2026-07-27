@@ -33,9 +33,9 @@ export default class PeoplePersonPersonalInformationRequestSensitiveDataControll
     this.router.transitionTo(`${this.redirectUrl}`);
   }
 
-  @task *loadReasonCodes() {
-    return yield this.store.findAll('request-reason');
-  }
+  loadReasonCodes = task(async () => {
+    return await this.store.findAll('request-reason');
+  });
 
   reset() {
     this.reasonCode = null;

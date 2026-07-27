@@ -11,15 +11,10 @@ export default class ProvinceSelectComponent extends Component {
   @tracked previousMunicipality;
   @tracked previousProvince;
 
-  provinces = trackedTask(this, this.loadProvincesTask, () => [
-    this.args.selectedMunicipality,
-  ]);
-
-  @task
-  *loadProvincesTask() {
+  loadProvincesTask = task(async () => {
     // Trick used to avoid infinite loop
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
-    yield Promise.resolve();
+    await Promise.resolve();
 
     let provinces = [];
     if (
@@ -37,7 +32,7 @@ export default class ProvinceSelectComponent extends Component {
       }
 
       // If a municipality is selected, load the province it belongs to
-      provinces = yield this.store.query('organization', {
+      provinces = await this.store.query('organization', {
         filter: {
           memberships: {
             member: {
@@ -59,7 +54,7 @@ export default class ProvinceSelectComponent extends Component {
         },
         sort: 'name',
       };
-      provinces = yield this.store.query('organization', query);
+      provinces = await this.store.query('organization', query);
     }
 
     if (provinces.slice().length === 1) {
@@ -71,5 +66,9 @@ export default class ProvinceSelectComponent extends Component {
       this.previousProvince = null;
     }
     return provinces.map(({ name }) => name);
-  }
+  });
+
+  provinces = trackedTask(this, this.loadProvincesTask, () => [
+    this.args.selectedMunicipality,
+  ]);
 }

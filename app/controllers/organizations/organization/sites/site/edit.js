@@ -42,15 +42,14 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
     }
   }
 
-  @dropTask
-  *save(event) {
+  save = dropTask(async (event) => {
     event.preventDefault();
     let { address, organization, contact, secondaryContact, site } = this.model;
 
-    yield site.validate();
-    yield address.validate();
-    yield contact.validate();
-    yield secondaryContact.validate();
+    await site.validate();
+    await address.validate();
+    await contact.validate();
+    await secondaryContact.validate();
 
     if (!this.hasValidationErrors) {
       if (address.hasDirtyAttributes) {
@@ -60,35 +59,35 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
         address.fullAddress = combineFullAddress(address);
         address = setEmptyStringsToNull(address);
 
-        yield address.save();
+        await address.save();
       }
 
       if (contact.hasDirtyAttributes) {
         if (contact.isNew) {
-          (yield site.contacts).push(contact);
+          (await site.contacts).push(contact);
         }
         contact = setEmptyStringsToNull(contact);
 
-        yield contact.save();
+        await contact.save();
       }
 
       if (secondaryContact.hasDirtyAttributes) {
         if (secondaryContact.isNew) {
-          (yield site.contacts).push(secondaryContact);
+          (await site.contacts).push(secondaryContact);
         }
         secondaryContact = setEmptyStringsToNull(secondaryContact);
 
-        yield secondaryContact.save();
+        await secondaryContact.save();
       }
 
-      yield site.save();
+      await site.save();
 
-      let nonPrimarySites = yield organization.sites;
+      let nonPrimarySites = await organization.sites;
 
       if (this.isCurrentPrimarySite && !this.isPrimarySite) {
         nonPrimarySites.push(site);
         organization.primarySite = null;
-        yield organization.save();
+        await organization.save();
       } else if (this.isPrimarySite && !this.isCurrentPrimarySite) {
         let previousPrimarySite = this.model.currentPrimarySite;
 
@@ -105,7 +104,7 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
           nonPrimarySites.splice(oldSiteIndex, 1);
         }
 
-        yield organization.save();
+        await organization.save();
       }
 
       // force it to be primary site if there is no primary site
@@ -115,7 +114,7 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
         if (siteIndex > -1) {
           nonPrimarySites.splice(siteIndex, 1);
         }
-        yield organization.save();
+        await organization.save();
       }
 
       this.router.transitionTo(
@@ -123,7 +122,7 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
         site.id,
       );
     }
-  }
+  });
 
   reset() {
     this.resetUnsavedRecords();

@@ -25,10 +25,10 @@ export default class ChangeEventTypeSelectComponent extends Component {
     this.loadChangeEventTypesTask.perform();
   }
 
-  @task *loadChangeEventTypesTask() {
-    let types = yield this.store.findAll('change-event-type', { reload: true });
+  loadChangeEventTypesTask = task(async () => {
+    let types = await this.store.findAll('change-event-type', { reload: true });
 
-    let classification = yield this.args.organizationClassification;
+    let classification = await this.args.organizationClassification;
 
     if (classification.id == CLASSIFICATION.WORSHIP_SERVICE.id) {
       types = types.filter((t) =>
@@ -101,7 +101,7 @@ export default class ChangeEventTypeSelectComponent extends Component {
     }
 
     return types;
-  }
+  });
 
   isIdInList(id, blacklist) {
     return blacklist.find((element) => element == id);

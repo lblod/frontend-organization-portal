@@ -24,16 +24,15 @@ export default class AddressRegisterSelectorComponent extends Component {
     }
   }
 
-  @task
-  *selectSuggestion(addressSuggestion) {
+  selectSuggestion = task(async (addressSuggestion) => {
     this.args.onChange(null);
     this.addressSuggestion = addressSuggestion;
 
     if (addressSuggestion) {
-      const addresses = yield this.addressRegister.findAll(addressSuggestion);
+      const addresses = await this.addressRegister.findAll(addressSuggestion);
 
       if (!this.sourceCrab) {
-        this.sourceCrab = yield this.store.findRecord(
+        this.sourceCrab = await this.store.findRecord(
           'concept',
           'e59c97a9-4e95-4d65-9696-756de47fbc1f',
         );
@@ -52,12 +51,11 @@ export default class AddressRegisterSelectorComponent extends Component {
         ],
       });
     }
-  }
+  });
 
-  @restartableTask
-  *search(searchData) {
-    yield timeout(400);
-    const addressSuggestions = yield this.addressRegister.suggest(searchData);
+  search = restartableTask(async (searchData) => {
+    await timeout(400);
+    const addressSuggestions = await this.addressRegister.suggest(searchData);
 
     /*
       Filtering out addresses from Brussel's province.
@@ -69,5 +67,5 @@ export default class AddressRegisterSelectorComponent extends Component {
     });
 
     return filteredAddressSuggestions;
-  }
+  });
 }

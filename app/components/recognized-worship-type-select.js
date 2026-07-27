@@ -8,12 +8,6 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
 export default class RecognizedWorshipTypeSelect extends Component {
   @service store;
 
-  recognizedWorshipTypes = trackedTask(
-    this,
-    this.loadRecognizedWorshipTypesTask,
-    () => [this.args.selectedClassificationId],
-  );
-
   get selectedRecognizedWorshipType() {
     if (typeof this.args.selected === 'string') {
       return this.getRecognizedWorshipTypeById(this.args.selected);
@@ -32,13 +26,12 @@ export default class RecognizedWorshipTypeSelect extends Component {
     );
   }
 
-  @task
-  *loadRecognizedWorshipTypesTask() {
+  loadRecognizedWorshipTypesTask = task(async () => {
     // Trick used to avoid infinite loop
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
-    yield Promise.resolve();
+    await Promise.resolve();
 
-    let recognizedWorshipTypes = yield this.store.query(
+    let recognizedWorshipTypes = await this.store.query(
       'recognized-worship-type',
       { sort: 'label' },
     );
@@ -54,7 +47,13 @@ export default class RecognizedWorshipTypeSelect extends Component {
     }
 
     return recognizedWorshipTypes;
-  }
+  });
+
+  recognizedWorshipTypes = trackedTask(
+    this,
+    this.loadRecognizedWorshipTypesTask,
+    () => [this.args.selectedClassificationId],
+  );
 
   isIdInBlacklist(id) {
     return CENTRAL_WORSHIP_SERVICE_BLACKLIST.find((element) => element == id);

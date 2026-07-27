@@ -20,23 +20,22 @@ export default class OrganizationsOrganizationSitesNewController extends Control
     );
   }
 
-  @dropTask
-  *createSiteTask(event) {
+  createSiteTask = dropTask(async (event) => {
     event.preventDefault();
 
     let { address, organization, contact, secondaryContact, site } = this.model;
 
-    yield site.validate();
-    yield address.validate();
-    yield contact.validate();
-    yield secondaryContact.validate();
+    await site.validate();
+    await address.validate();
+    await contact.validate();
+    await secondaryContact.validate();
 
     if (!this.hasValidationErrors) {
       contact = setEmptyStringsToNull(contact);
-      yield contact.save();
+      await contact.save();
 
       secondaryContact = setEmptyStringsToNull(secondaryContact);
-      yield secondaryContact.save();
+      await secondaryContact.save();
 
       if (!address.isPostcodeInFlanders) {
         address.province = '';
@@ -45,17 +44,17 @@ export default class OrganizationsOrganizationSitesNewController extends Control
       address.fullAddress = combineFullAddress(address);
       address = setEmptyStringsToNull(address);
 
-      yield address.save();
+      await address.save();
 
       site.address = address;
 
-      (yield site.contacts).push(contact, secondaryContact);
-      yield site.save();
+      (await site.contacts).push(contact, secondaryContact);
+      await site.save();
 
-      let nonPrimarySites = yield organization.sites;
+      let nonPrimarySites = await organization.sites;
 
       if (this.isPrimarySite) {
-        let previousPrimarySite = yield organization.primarySite;
+        let previousPrimarySite = await organization.primarySite;
 
         if (previousPrimarySite) {
           nonPrimarySites.push(previousPrimarySite);
@@ -66,11 +65,11 @@ export default class OrganizationsOrganizationSitesNewController extends Control
         nonPrimarySites.push(site);
       }
 
-      yield organization.save();
+      await organization.save();
 
       this.router.replaceWith('organizations.organization.sites.site', site.id);
     }
-  }
+  });
 
   reset() {
     this.isPrimarySite = false;

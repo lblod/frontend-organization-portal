@@ -494,8 +494,7 @@ export default class OrganizationsNewController extends Controller {
     return [];
   }
 
-  @dropTask
-  *createOrganizationTask(event) {
+  createOrganizationTask = dropTask(async (event) => {
     event.preventDefault();
 
     let {
@@ -582,13 +581,13 @@ export default class OrganizationsNewController extends Controller {
     this.currentOrganizationModel.membershipsOfOrganizations =
       this.membershipsOfOrganizations;
 
-    yield Promise.all(
+    await Promise.all(
       this.memberships.map((membership) =>
         membership.validate({ creatingNewOrganization: true }),
       ),
     );
 
-    yield Promise.all(
+    await Promise.all(
       this.membershipsOfOrganizations.map((membership) =>
         membership.validate({ creatingNewOrganization: true }),
       ),
@@ -596,12 +595,12 @@ export default class OrganizationsNewController extends Controller {
 
     this.currentOrganizationModel.scope =
       this.locations?.length > 0
-        ? yield this.scopeOfOperation.getScopeForLocations(...this.locations)
+        ? await this.scopeOfOperation.getScopeForLocations(...this.locations)
         : null;
 
     const requiresKboNumber = requiresKbo(this.currentOrganizationModel);
 
-    yield Promise.all([
+    await Promise.all([
       this.currentOrganizationModel.validate({ creatingNewOrganization: true }),
       requiresKboNumber
         ? identifierKBO.validate()
@@ -613,7 +612,7 @@ export default class OrganizationsNewController extends Controller {
       this.features.isEnabled('edit-contact-data') ||
       isContactEditableOrganization(this.currentOrganizationModel)
     ) {
-      yield Promise.all([
+      await Promise.all([
         address.validate(),
         contact.validate(),
         secondaryContact.validate(),
@@ -625,25 +624,25 @@ export default class OrganizationsNewController extends Controller {
         structuredIdentifierKBO = setEmptyStringsToNull(
           structuredIdentifierKBO,
         );
-        yield structuredIdentifierKBO.save();
-        yield identifierKBO.save();
+        await structuredIdentifierKBO.save();
+        await identifierKBO.save();
       }
 
       structuredIdentifierSharepoint = setEmptyStringsToNull(
         structuredIdentifierSharepoint,
       );
-      yield structuredIdentifierSharepoint.save();
-      yield identifierSharepoint.save();
+      await structuredIdentifierSharepoint.save();
+      await identifierSharepoint.save();
 
       if (
         this.features.isEnabled('edit-contact-data') ||
         isContactEditableOrganization(this.currentOrganizationModel)
       ) {
         contact = setEmptyStringsToNull(contact);
-        yield contact.save();
+        await contact.save();
 
         secondaryContact = setEmptyStringsToNull(secondaryContact);
-        yield secondaryContact.save();
+        await secondaryContact.save();
 
         if (!address.isPostcodeInFlanders) {
           address.province = '';
@@ -651,10 +650,10 @@ export default class OrganizationsNewController extends Controller {
 
         address.fullAddress = combineFullAddress(address);
         address = setEmptyStringsToNull(address);
-        yield address.save();
+        await address.save();
 
         primarySite.address = address;
-        (yield primarySite.contacts).push(contact, secondaryContact);
+        (await primarySite.contacts).push(contact, secondaryContact);
         if (
           this.currentOrganizationModel.isAgb ||
           this.currentOrganizationModel.isApb ||
@@ -667,15 +666,15 @@ export default class OrganizationsNewController extends Controller {
           this.currentOrganizationModel.isAssociationOther ||
           this.currentOrganizationModel.isCorporationOther
         ) {
-          const siteTypes = yield this.store.findAll('site-type');
+          const siteTypes = await this.store.findAll('site-type');
           primarySite.siteType = siteTypes.find(
             (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd',
           );
         }
-        yield primarySite.save();
+        await primarySite.save();
         this.currentOrganizationModel.primarySite = primarySite;
       }
-      const identifiers = yield this.currentOrganizationModel.identifiers;
+      const identifiers = await this.currentOrganizationModel.identifiers;
       if (requiresKboNumber) {
         identifiers.push(identifierKBO);
       }
@@ -685,25 +684,25 @@ export default class OrganizationsNewController extends Controller {
         this.currentOrganizationModel,
       );
 
-      yield this.currentOrganizationModel.save();
+      await this.currentOrganizationModel.save();
 
       let membershipSavePromises = this.memberships.map((membership) =>
         membership.save(),
       );
-      yield Promise.all(membershipSavePromises);
+      await Promise.all(membershipSavePromises);
 
       let membershipsOfOrganizationsSavePromises =
         this.membershipsOfOrganizations.map((membership) => membership.save());
-      yield Promise.all(membershipsOfOrganizationsSavePromises);
+      await Promise.all(membershipsOfOrganizationsSavePromises);
 
       const createRelationshipsEndpoint = `/construct-organization-relationships/create-relationships/${this.currentOrganizationModel.id}`;
-      yield fetch(createRelationshipsEndpoint, {
+      await fetch(createRelationshipsEndpoint, {
         method: 'POST',
       });
 
       if (requiresKboNumber) {
         const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
-        yield fetch(syncKboData, {
+        await fetch(syncKboData, {
           method: 'POST',
         });
       }
@@ -713,7 +712,7 @@ export default class OrganizationsNewController extends Controller {
         this.currentOrganizationModel.id,
       );
     }
-  }
+  });
 
   reset() {
     this.model.primarySite.rollbackAttributes();

@@ -125,11 +125,10 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
     involvement.percentage = newPercentage;
   }
 
-  @dropTask
-  *save(event) {
+  save = dropTask(async (event) => {
     event.preventDefault();
 
-    let involvements = yield this.model.involvements;
+    let involvements = await this.model.involvements;
 
     let validationPromises = involvements.map((involvement) =>
       involvement.validate(),
@@ -137,7 +136,7 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
     validationPromises.push(
       this.model.organization.validate({ involvementsPercentage: true }),
     );
-    yield Promise.all(validationPromises);
+    await Promise.all(validationPromises);
 
     if (!this.hasValidationErrors) {
       // isDirty was part of ember-changest and is not available in ember-data
@@ -148,14 +147,14 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
 
       let savePromises = involvements.map((involvement) => involvement.save());
 
-      yield Promise.all(savePromises);
+      await Promise.all(savePromises);
 
       this.router.transitionTo(
         'organizations.organization.local-involvements',
         this.model.organization.id,
       );
     }
-  }
+  });
 
   isDisabledPercentage(involvement) {
     return !(involvement.isSupervisory || involvement.isMidFinancial);
