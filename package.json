@@ -32,9 +32,11 @@
   "overrides": {
     "@ember/string": "^4.0.0",
     "@lblod/ember-environment-banner": {
+      "@appuniversum/ember-appuniversum": "^4.2.2",
       "ember-source": "$ember-source"
     },
     "@lblod/ember-rdfa-editor": {
+      "@appuniversum/ember-appuniversum": "^4.2.2",
       "ember-source": "$ember-source"
     },
     "ember-resources": {
@@ -45,7 +47,7 @@
     "@ember/string": "power-select v7 still brings in @ember/string v3"
   },
   "devDependencies": {
-    "@appuniversum/ember-appuniversum": "^3.19.0",
+    "@appuniversum/ember-appuniversum": "^4.2.2",
     "@babel/core": "^7.25.2",
     "@ember/optional-features": "^2.1.0",
     "@ember/string": "^4.0.0",
