@@ -1,5 +1,6 @@
 <div class={{if @error "ember-power-select--error"}}>
-  <PowerSelectMultiple
+  <PowerSelect
+    @multiple={{true}}
     @allowClear={{true}}
     @searchEnabled={{true}}
     @loadingMessage="Aan het laden..."
@@ -13,5 +14,5 @@
     as |operationArea|
   >
     {{operationArea}}
-  </PowerSelectMultiple>
+  </PowerSelect>
 </div>
