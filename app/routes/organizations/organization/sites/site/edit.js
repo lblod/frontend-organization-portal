@@ -21,12 +21,10 @@ export default class OrganizationsOrganizationSitesSiteEditRoute extends Route {
   }
 
   afterModel(model) {
-    if (
-      !(
-        this.features.isEnabled('edit-contact-data') ||
-        isContactEditableOrganization(model.organization)
-      )
-    ) {
+    if (!(
+      this.features.isEnabled('edit-contact-data') ||
+      isContactEditableOrganization(model.organization)
+    )) {
       this.router.transitionTo('unauthorized');
     }
   }

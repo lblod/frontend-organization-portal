@@ -7,10 +7,7 @@
       <:title>Nieuwe positie</:title>
       <:action>
         <AuButtonGroup class="au-c-button-group--align-right">
-          <AuLink
-              @route="people"
-              @skin="button-secondary"
-            >         
+          <AuLink @route="people" @skin="button-secondary">
             Annuleer
           </AuLink>
           <AuButton form="person-creation" type="submit" @disabled={{true}}>
@@ -20,11 +17,16 @@
       </:action>
     </PageHeader>
     <div>
-      Op dit moment kan je geen nieuwe personen aanmaken. De posities van mandatarissen, bestuursleden en
-      bedienaren (voor erediensten) worden automatisch ge-update door de bestuurseenheden zelf. Merk je dat
-      een positie of persoon niet wordt vermeld of de data is verkeerd, meld dit via onze
-      <a href="https://binnenland.atlassian.net/servicedesk/customer/portal/13" class="au-c-link">helpdesk</a>.
-      We verzoeken dan de besturen om deze data aan te passen. Samen houden we het OrganisatiePortaal up-to-date!
+      Op dit moment kan je geen nieuwe personen aanmaken. De posities van
+      mandatarissen, bestuursleden en bedienaren (voor erediensten) worden
+      automatisch ge-update door de bestuurseenheden zelf. Merk je dat een
+      positie of persoon niet wordt vermeld of de data is verkeerd, meld dit via
+      onze
+      <a
+        href="https://binnenland.atlassian.net/servicedesk/customer/portal/13"
+        class="au-c-link"
+      >helpdesk</a>. We verzoeken dan de besturen om deze data aan te passen.
+      Samen houden we het OrganisatiePortaal up-to-date!
     </div>
   </div>
 </AuBodyContainer>

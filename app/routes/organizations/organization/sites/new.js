@@ -19,12 +19,10 @@ export default class OrganizationsOrganizationSitesNewRoute extends Route {
   }
 
   afterModel(model) {
-    if (
-      !(
-        this.features.isEnabled('edit-contact-data') ||
-        isContactEditableOrganization(model.organization)
-      )
-    ) {
+    if (!(
+      this.features.isEnabled('edit-contact-data') ||
+      isContactEditableOrganization(model.organization)
+    )) {
       this.router.transitionTo('unauthorized');
     }
   }
