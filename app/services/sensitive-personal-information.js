@@ -1,6 +1,5 @@
 import Service, { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import fetch from 'fetch';
 
 const PRIVACY_CENTRIC_SERVICE_ENDPOINT = {
   REQUEST: '/person-information-requests',
