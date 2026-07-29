@@ -5,7 +5,7 @@
   </AuContent>
 {{else}}
   <div class="rich-text-editor" {{on "focusout" this.updateValue}}>
-    <EditorContainer>
+    <EditorContainer @controller={{this.editorController}}>
       <:top>
         <Toolbar as |Tb|>
           {{#if this.config.heading}}
