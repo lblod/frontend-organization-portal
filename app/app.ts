@@ -1,4 +1,3 @@
-import './deprecation-workflow';
 import Application from '@ember/application';
 import { importSync, isDevelopingApp, macroCondition } from '@embroider/macros';
 import Resolver from 'ember-resolver';
@@ -7,10 +6,9 @@ import config from 'frontend-organization-portal/config/environment';
 import './config/custom-inflector-rules';
 import { silenceEmptySyncRelationshipWarnings } from './utils/ember-data';
 
-silenceEmptySyncRelationshipWarnings();
-
 if (macroCondition(isDevelopingApp())) {
   importSync('./deprecation-workflow');
+  silenceEmptySyncRelationshipWarnings();
 }
 
 export default class App extends Application {
