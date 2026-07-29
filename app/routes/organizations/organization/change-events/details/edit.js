@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 
 export default class OrganizationsOrganizationChangeEventsDetailsEditRoute extends Route {

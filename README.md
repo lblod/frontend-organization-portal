@@ -85,7 +85,7 @@ The overriding will be saved in a cookie, so it will persist across page reloads
 The feature flags can be used in the application by injecting the `features` service and calling the `isEnabled` method.
 
 ```javascript
-import { inject as service } from "@ember/service";
+import { service } from "@ember/service";
 
 export default class ExampleComponent extends Component {
   @service features;

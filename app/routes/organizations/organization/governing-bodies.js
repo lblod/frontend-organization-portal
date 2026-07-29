@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { EXECUTIVE_ORGANEN } from 'frontend-organization-portal/models/governing-body-classification-code';
 
 export default class OrganizationsOrganizationGoverningBodiesRoute extends Route {

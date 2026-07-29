@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
 
 // TODO: remove administrative unit classifications after edit functionality
