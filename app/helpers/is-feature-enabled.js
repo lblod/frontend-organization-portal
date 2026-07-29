@@ -1,6 +1,6 @@
 import Helper from '@ember/component/helper';
 import { assert } from '@ember/debug';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class IsFeatureEnabledHelper extends Helper {
   @service features;

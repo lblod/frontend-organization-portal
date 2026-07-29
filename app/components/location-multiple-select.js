@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 
 // TODO: open dropdown with all results on focus/open

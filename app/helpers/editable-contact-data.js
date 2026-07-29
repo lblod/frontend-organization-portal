@@ -1,6 +1,6 @@
 import Helper from '@ember/component/helper';
 import { assert } from '@ember/debug';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 
 export default class EditableContactDataHelper extends Helper {
