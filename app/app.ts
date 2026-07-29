@@ -4,7 +4,6 @@ import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from 'frontend-organization-portal/config/environment';
 import './config/custom-inflector-rules';
-// @ts-expect-error: no types yet
 import { silenceEmptySyncRelationshipWarnings } from './utils/ember-data';
 
 if (macroCondition(isDevelopingApp())) {

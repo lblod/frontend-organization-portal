@@ -16,7 +16,7 @@ export default class RedirectRoute extends Route {
 
       try {
         await this.deepLink.redirect(resourceUri);
-      } catch (error) {
+      } catch {
         return this.router.replaceWith('index');
       }
     }
