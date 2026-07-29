@@ -1,5 +1,4 @@
 import Service, { inject as service } from '@ember/service';
-import fetch from 'fetch';
 
 const SUBJECT = 'organization-portal-frontend';
 const CREATOR =
