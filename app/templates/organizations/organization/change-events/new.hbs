@@ -244,7 +244,10 @@
                 )
               }}
                 <Item
-                  @required={{and @model.changeEvent.isMergerChangeEvent (lt @model.changeEvent.originalOrganizations.length 2)}}
+                  @required={{and
+                    @model.changeEvent.isMergerChangeEvent
+                    (lt @model.changeEvent.originalOrganizations.length 2)
+                  }}
                   @errorMessage={{@model.changeEvent.error.originalOrganizations.message}}
                 >
                   <:label>Betrokken organisatie</:label>
@@ -322,15 +325,21 @@
                     {{else}}
                       <div class={{if hasError "ember-power-select--error"}}>
                         <PowerSelect
-                          @options={{has-many-value @model.changeEvent "originalOrganizations"}}
+                          @options={{has-many-value
+                            @model.changeEvent
+                            "originalOrganizations"
+                          }}
                           @selected={{this.selectedResultingOrganization}}
                           @onChange={{this.updateResultingOrganizations}}
                           as |organization|
                         >
                           {{#if organization.kboNumber}}
-                            {{organization.kboNumber}} - {{organization.abbName}}
+                            {{organization.kboNumber}}
+                            -
+                            {{organization.abbName}}
                           {{else}}
-                            {{organization.abbName}} (geen kbo gevonden)
+                            {{organization.abbName}}
+                            (geen kbo gevonden)
                           {{/if}}
                         </PowerSelect>
                       </div>

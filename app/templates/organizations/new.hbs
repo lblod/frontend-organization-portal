@@ -127,13 +127,15 @@
                     @error={{hasError}}
                     @id="legal-form-select"
                   />
-               </:content>
+                </:content>
               </Item>
             {{/if}}
-            {{#if (and
-                    this.currentOrganizationModel.classification
-                    this.currentOrganizationModel.requiresContentThemes
-                  )}}
+            {{#if
+              (and
+                this.currentOrganizationModel.classification
+                this.currentOrganizationModel.requiresContentThemes
+              )
+            }}
               <Item
                 @labelFor="content-theme-select"
                 @required={{true}}

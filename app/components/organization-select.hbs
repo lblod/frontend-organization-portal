@@ -14,9 +14,12 @@
   >
     {{#if @showKbo}}
       {{#if organization.kboNumber}}
-          {{organization.kboNumber}} - {{organization.abbName}}
+        {{organization.kboNumber}}
+        -
+        {{organization.abbName}}
       {{else}}
-          {{organization.abbName}} (geen kbo gevonden)
+        {{organization.abbName}}
+        (geen kbo gevonden)
       {{/if}}
     {{else}}
       {{organization.abbName}}
