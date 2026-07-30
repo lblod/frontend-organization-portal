@@ -9,6 +9,7 @@ import {
 import { createAddress } from 'frontend-organization-portal/models/address';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { A } from '@ember/array';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 import { action } from '@ember/object';
 

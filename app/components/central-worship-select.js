@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { ORGANIZATION_STATUS } from '../models/organization-status-code';
 
 export default class CentralWorshipSelectComponent extends Component {
@@ -31,7 +32,11 @@ export default class CentralWorshipSelectComponent extends Component {
         query['filter[name]'] = searchParams;
       }
 
-      return await this.store.query('central-worship-service', query);
+      const { content } = await this.store.request(
+        queryBuilder('central-worship-service', query),
+      );
+
+      return content;
     },
   );
 }

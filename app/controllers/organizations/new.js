@@ -8,6 +8,7 @@ import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import requiresKbo from '../../helpers/requires-kbo';
 
 export default class OrganizationsNewController extends Controller {
@@ -95,18 +96,20 @@ export default class OrganizationsNewController extends Controller {
   }
 
   async #getProvinceForMunicipality(municipality) {
-    const provinces = await this.store.query('organization', {
-      filter: {
-        memberships: {
-          member: {
-            id: municipality.id,
+    const { content: provinces } = await this.store.request(
+      queryBuilder('organization', {
+        filter: {
+          memberships: {
+            member: {
+              id: municipality.id,
+            },
+          },
+          classification: {
+            id: CLASSIFICATION.PROVINCE.id,
           },
         },
-        classification: {
-          id: CLASSIFICATION.PROVINCE.id,
-        },
-      },
-    });
+      }),
+    );
     return provinces[0];
   }
 

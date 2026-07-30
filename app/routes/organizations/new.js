@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { query } from '@warp-drive/legacy/compat/builders';
 import {
   createPrimaryContact,
   createSecondaryContact,
@@ -37,13 +38,15 @@ export default class OrganizationsNewRoute extends Route {
       structuredIdentifier: structuredIdentifierSharepoint,
     });
 
-    let roles = await this.store.query('membership-role', {
-      'filter[:id:]': [
-        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
-        MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
-        MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id,
-      ].join(','),
-    });
+    const { content: roles } = await this.store.request(
+      query('membership-role', {
+        'filter[:id:]': [
+          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+          MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
+          MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id,
+        ].join(','),
+      }),
+    );
 
     return {
       primarySite: this.store.createRecord('site'),
