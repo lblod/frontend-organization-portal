@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 import {
   findPrimaryContact,
   findSecondaryContact,
@@ -11,10 +12,12 @@ export default class OrganizationsOrganizationSitesSiteRoute extends Route {
   async model({ siteId }) {
     let organization = this.modelFor('organizations.organization');
 
-    let site = await this.store.findRecord('site', siteId, {
-      reload: true,
-      include: ['address', 'contacts', 'site-type'].join(),
-    });
+    const { content: site } = await this.store.request(
+      findRecord('site', siteId, {
+        reload: true,
+        include: ['address', 'contacts', 'site-type'].join(),
+      }),
+    );
 
     let contacts = await site.contacts;
 

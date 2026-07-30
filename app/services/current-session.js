@@ -1,4 +1,5 @@
 import Service, { service } from '@ember/service';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 import { tracked } from '@glimmer/tracking';
 
 const EDITOR_ROLES = [
@@ -34,6 +35,7 @@ export default class CurrentSessionService extends Service {
   @tracked user;
   @tracked group;
   @tracked roles;
+
   async load() {
     if (this.session.isAuthenticated) {
       let sessionData = this.session.data.authenticated.relationships;
@@ -42,9 +44,12 @@ export default class CurrentSessionService extends Service {
       ];
       let accountId = sessionData.account.data.id;
 
-      this.account = await this.store.findRecord('account', accountId, {
-        include: 'user',
-      });
+      const { content: account } = await this.store.request(
+        findRecord('account', accountId, {
+          include: 'user',
+        }),
+      );
+      this.account = account;
       this.user = this.account.user;
 
       // TODO no group / roles for now. not defined for acm idm, thus break the app when using acm idm login
