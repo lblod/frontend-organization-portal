@@ -89,17 +89,18 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       mustExecuteBothQueries ||
       params.selectedRoleLabel === selectedRoleModel.opLabel
     ) {
-      const { content: membershipsOfOrganizationsResult } = await this.store.request(
-        query(
-          'membership',
-          this.constructMembershipQuery(
-            organization.id,
-            true,
-            params,
-            selectedRoleModel,
+      const { content: membershipsOfOrganizationsResult } =
+        await this.store.request(
+          query(
+            'membership',
+            this.constructMembershipQuery(
+              organization.id,
+              true,
+              params,
+              selectedRoleModel,
+            ),
           ),
-        ),
-      );
+        );
       membershipsOfOrganizations = membershipsOfOrganizationsResult;
     }
 

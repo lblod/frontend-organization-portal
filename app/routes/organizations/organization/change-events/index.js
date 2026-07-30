@@ -17,7 +17,11 @@ export default class OrganizationsOrganizationChangeEventsIndexRoute extends Rou
     const { content: changeEventResults } = await this.store.request(
       query('change-event-result', {
         'filter[resulting-organization][:id:]': organizationId,
-        include: ['result-from.type', 'status', 'resulting-organization'].join(),
+        include: [
+          'result-from.type',
+          'status',
+          'resulting-organization',
+        ].join(),
         page: {
           number: params.page,
           size: params.size,
