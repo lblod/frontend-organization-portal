@@ -12,12 +12,15 @@
  *     npx eslint --inspect-config
  *
  */
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 import globals from 'globals';
 import js from '@eslint/js';
 
 import ts from 'typescript-eslint';
 
 import ember from 'eslint-plugin-ember/recommended';
+import WarpDrive from 'eslint-plugin-warp-drive/recommended';
 
 import eslintConfigPrettier from 'eslint-config-prettier';
 import qunit from 'eslint-plugin-qunit';
@@ -42,7 +45,7 @@ const parserOptions = {
     },
     ts: {
       projectService: true,
-      tsconfigRootDir: import.meta.dirname,
+      tsconfigRootDir: dirname(fileURLToPath(import.meta.url)),
     },
   },
 };
@@ -52,6 +55,7 @@ export default ts.config(
   ember.configs.base,
   ember.configs.gjs,
   ember.configs.gts,
+  ...WarpDrive,
   eslintConfigPrettier,
   /**
    * Ignores must be in their own object
@@ -95,6 +99,7 @@ export default ts.config(
     },
   },
   {
+    ...qunit.configs.recommended,
     files: ['tests/**/*-test.{js,gjs,ts,gts}'],
     plugins: {
       qunit,
@@ -104,6 +109,7 @@ export default ts.config(
    * CJS node files
    */
   {
+    ...n.configs['flat/recommended-script'],
     files: [
       '**/*.cjs',
       'config/**/*.js',
@@ -132,6 +138,7 @@ export default ts.config(
    * ESM node files
    */
   {
+    ...n.configs['flat/recommended-module'],
     files: ['**/*.mjs'],
     plugins: {
       n,
