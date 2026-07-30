@@ -1,4 +1,5 @@
 import Service, { service } from '@ember/service';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 import { isActivePosition } from 'frontend-organization-portal/utils/position';
 import {
   findPrimaryContact,
@@ -105,9 +106,11 @@ export default class ContactDetailsService extends Service {
   }
 
   async getPersonAndAllPositions(personId) {
-    let person = await this.store.findRecord('person', personId, {
-      reload: true,
-    });
+    const { content: person } = await this.store.request(
+      findRecord('person', personId, {
+        reload: true,
+      }),
+    );
     const positions = [];
 
     const mandatories = (await person.mandatories).slice(); // mandatarissen

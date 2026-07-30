@@ -5,7 +5,10 @@ import { dropTask } from 'ember-concurrency';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import { tracked } from '@glimmer/tracking';
-import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
+import {
+  findRecord,
+  query as queryBuilder,
+} from '@warp-drive/legacy/compat/builders';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.NAME_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
@@ -318,9 +321,8 @@ async function createChangeEventResult({
   store,
   resultingLegalForm = null,
 }) {
-  let resultingStatus = await store.findRecord(
-    'organization-status-code',
-    resultingStatusId,
+  const { content: resultingStatus } = await store.request(
+    findRecord('organization-status-code', resultingStatusId),
   );
 
   let mostRecentChangeEvent = await findMostRecentChangeEvent(
