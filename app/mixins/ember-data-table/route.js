@@ -3,6 +3,7 @@
 /* eslint-disable ember/no-new-mixins */
 
 import Mixin from '@ember/object/mixin';
+import { query } from '@warp-drive/legacy/compat/builders';
 import merge from 'lodash/merge';
 
 export default Mixin.create({
@@ -15,7 +16,7 @@ export default Mixin.create({
   mergeQueryOptions() {
     return {};
   },
-  model(params) {
+  async model(params) {
     const options = {
       sort: params.sort,
       page: {
@@ -28,7 +29,10 @@ export default Mixin.create({
       options['filter'] = params.filter;
     }
     merge(options, this.mergeQueryOptions(params));
-    return this.store.query(this.modelName, options);
+    const { content } = await this.store.request(
+      query(this.modelName, options),
+    );
+    return content;
   },
   actions: {
     loading(transition) {

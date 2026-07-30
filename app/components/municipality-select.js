@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { ORGANIZATION_STATUS } from '../models/organization-status-code';
@@ -38,7 +39,11 @@ export default class MunicipalitySelectComponent extends Component {
         selectedProvinceId;
     }
 
-    return await this.store.query('organization', query);
+    const { content } = await this.store.request(
+      queryBuilder('organization', query),
+    );
+
+    return content;
   });
 
   municipalities = trackedTask(this, this.loadMunicipalitiesTask, () => [

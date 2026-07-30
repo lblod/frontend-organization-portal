@@ -9,6 +9,7 @@ import {
 import { createAddress } from 'frontend-organization-portal/models/address';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { A } from '@ember/array';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 import { action } from '@ember/object';
 
@@ -96,10 +97,12 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
     const regions =
       await this.scopeOfOperation.getReferentieregiosInScope(organization);
 
-    const provinceLocations = await this.store.query('location', {
-      sort: 'label',
-      filter: { level: 'Provincie' },
-    });
+    const { content: provinceLocations } = await this.store.request(
+      query('location', {
+        sort: 'label',
+        filter: { level: 'Provincie' },
+      }),
+    );
 
     this.locationsInScope =
       await this.scopeOfOperation.getLocationsInScope(organization);

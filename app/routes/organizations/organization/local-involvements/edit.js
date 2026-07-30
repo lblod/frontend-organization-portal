@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { query } from '@warp-drive/legacy/compat/builders';
 import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
@@ -30,13 +31,19 @@ export default class OrganizationsOrganizationLocalInvolvementsEditRoute extends
     let involvementTypes;
     const classification = await organization.classification;
     if (classification.id == CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id) {
-      involvementTypes = await this.store.query('involvement-type', {
-        filter: {
-          id: INVOLVEMENT_TYPE.SUPERVISORY, // Toezichthoundend
-        },
-      });
+      const { content: supervisoryInvolvementTypes } = await this.store.request(
+        query('involvement-type', {
+          filter: {
+            id: INVOLVEMENT_TYPE.SUPERVISORY, // Toezichthoundend
+          },
+        }),
+      );
+      involvementTypes = supervisoryInvolvementTypes;
     } else {
-      involvementTypes = await this.store.query('involvement-type', {});
+      const { content: involvementTypesResult } = await this.store.request(
+        query('involvement-type', {}),
+      );
+      involvementTypes = involvementTypesResult;
     }
     const involvements = await organization.involvements;
 

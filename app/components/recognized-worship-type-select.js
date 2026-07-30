@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
@@ -31,9 +32,8 @@ export default class RecognizedWorshipTypeSelect extends Component {
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
     await Promise.resolve();
 
-    let recognizedWorshipTypes = await this.store.query(
-      'recognized-worship-type',
-      { sort: 'label' },
+    let { content: recognizedWorshipTypes } = await this.store.request(
+      queryBuilder('recognized-worship-type', { sort: 'label' }),
     );
 
     if (

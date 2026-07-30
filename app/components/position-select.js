@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
@@ -40,26 +41,30 @@ export default class PositionSelectComponent extends Component {
     ) {
       const selectedOrganizationId = this.args.selectedOrganization;
 
-      const organization = (
-        await this.store.query('organization', {
+      const { content: organizations } = await this.store.request(
+        queryBuilder('organization', {
           'filter[:id:]': selectedOrganizationId,
           include: 'classification',
-        })
-      ).at(0);
+        }),
+      );
+      const organization = organizations.at(0);
 
       const classification = await organization.classification;
 
-      boardPositionCodes = await this.store.query('board-position-code', {
-        'filter[applies-to][applies-within][:id:]': classification.id,
-      });
+      const { content: boardPositionCodesResult } = await this.store.request(
+        queryBuilder('board-position-code', {
+          'filter[applies-to][applies-within][:id:]': classification.id,
+        }),
+      );
+      boardPositionCodes = boardPositionCodesResult;
 
       if (classification.id == CLASSIFICATION.WORSHIP_SERVICE.id) {
-        ministerPositions = await this.store.query(
-          'minister-position-function',
-          {
+        const { content: ministerPositionsResult } = await this.store.request(
+          queryBuilder('minister-position-function', {
             page: { size: 100 },
-          },
+          }),
         );
+        ministerPositions = ministerPositionsResult;
       }
     } else {
       let allowedIds = [];
@@ -85,18 +90,21 @@ export default class PositionSelectComponent extends Component {
         ];
       }
 
-      boardPositionCodes = await this.store.query('board-position-code', {
-        'filter[applies-to][applies-within][:id:]': allowedIds.join(),
-        page: { size: 100 },
-      });
+      const { content: boardPositionCodesResult } = await this.store.request(
+        queryBuilder('board-position-code', {
+          'filter[applies-to][applies-within][:id:]': allowedIds.join(),
+          page: { size: 100 },
+        }),
+      );
+      boardPositionCodes = boardPositionCodesResult;
 
       if (this.currentSession.hasWorshipRole) {
-        ministerPositions = await this.store.query(
-          'minister-position-function',
-          {
+        const { content: ministerPositionsResult } = await this.store.request(
+          queryBuilder('minister-position-function', {
             page: { size: 100 },
-          },
+          }),
         );
+        ministerPositions = ministerPositionsResult;
       }
     }
 

@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import getFiltersForRoleLabel from 'frontend-organization-portal/utils/get-filters-for-role-label';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditRoute extends Route {
@@ -38,7 +39,9 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
 
     filters.forEach((value, key) => (query[key] = value));
 
-    const memberships = await this.store.query('membership', query);
+    const { content: memberships } = await this.store.request(
+      queryBuilder('membership', query),
+    );
 
     return {
       organization,

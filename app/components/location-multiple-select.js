@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 
 // TODO: open dropdown with all results on focus/open
 // TODO: clear input after selection
@@ -22,7 +23,9 @@ export default class LocationMultipleSelectComponent extends Component {
       query['filter[label]'] = searchParams;
     }
 
-    const municipalities = await this.store.query('location', query);
+    const { content: municipalities } = await this.store.request(
+      queryBuilder('location', query),
+    );
 
     return this.extractProvinceGroups(provinces, municipalities);
   });
