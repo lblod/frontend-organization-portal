@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 import { task, restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 
@@ -32,10 +33,10 @@ export default class AddressRegisterSelectorComponent extends Component {
       const addresses = await this.addressRegister.findAll(addressSuggestion);
 
       if (!this.sourceCrab) {
-        this.sourceCrab = await this.store.findRecord(
-          'concept',
-          'e59c97a9-4e95-4d65-9696-756de47fbc1f',
+        const { content: sourceCrab } = await this.store.request(
+          findRecord('concept', 'e59c97a9-4e95-4d65-9696-756de47fbc1f'),
         );
+        this.sourceCrab = sourceCrab;
       }
       // TODO: this should probably be fixed in the API itself (, if possible)
       // avoid duplicates, e.g Liebaardstnaat 10, 8792 Waregem

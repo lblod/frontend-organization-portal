@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 import { isActivePosition } from 'frontend-organization-portal/utils/position';
 
 export default class PeoplePersonPositionsIndexRoute extends Route {
@@ -11,11 +12,13 @@ export default class PeoplePersonPositionsIndexRoute extends Route {
   };
 
   async model(params) {
-    let { id: personId } = this.paramsFor('people.person');
+    const { id: personId } = this.paramsFor('people.person');
 
-    let person = await this.store.findRecord('person', personId, {
-      reload: true,
-    });
+    const { content: person } = await this.store.request(
+      findRecord('person', personId, {
+        reload: true,
+      }),
+    );
 
     let positions = [];
 

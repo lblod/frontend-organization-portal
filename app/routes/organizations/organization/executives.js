@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class OrganizationsOrganizationExecutivesRoute extends Route {
@@ -11,11 +12,10 @@ export default class OrganizationsOrganizationExecutivesRoute extends Route {
   };
 
   async model(params) {
-    let { id: organizationId } = this.paramsFor('organizations.organization');
+    const { id: organizationId } = this.paramsFor('organizations.organization');
 
-    let organization = await this.store.findRecord(
-      'organization',
-      organizationId,
+    const { content: organization } = await this.store.request(
+      findRecord('organization', organizationId),
     );
 
     const { content: functionaries } = await this.store.request(

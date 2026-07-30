@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 import { EXECUTIVE_ORGANEN } from 'frontend-organization-portal/models/governing-body-classification-code';
 
 export default class OrganizationsOrganizationGoverningBodiesRoute extends Route {
@@ -13,14 +14,12 @@ export default class OrganizationsOrganizationGoverningBodiesRoute extends Route
     // route be visited with a non-administrative unit organization as argument
     // the following will fail. This should probably be rewritten to a query for
     // governing bodies that are linked to the organization with the given id.
-    let organization = await this.store.findRecord(
-      'organization',
-      organizationId,
-      {
+    const { content: organization } = await this.store.request(
+      findRecord('organization', organizationId, {
         reload: true,
         include:
           'governing-bodies.has-time-specializations,governing-bodies.classification',
-      },
+      }),
     );
 
     let untimedGoverningBodies = await organization.governingBodies;

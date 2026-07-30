@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 import { query } from '@warp-drive/legacy/compat/builders';
 import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
@@ -16,16 +17,14 @@ export default class OrganizationsOrganizationLocalInvolvementsEditRoute extends
   }
 
   async model() {
-    let { id: organizationId } = this.paramsFor('organizations.organization');
+    const { id: organizationId } = this.paramsFor('organizations.organization');
 
-    let organization = await this.store.findRecord(
-      'worship-administrative-unit',
-      organizationId,
-      {
+    const { content: organization } = await this.store.request(
+      findRecord('worship-administrative-unit', organizationId, {
         reload: true,
         include:
           'recognized-worship-type,involvements.involvement-type,involvements.administrative-unit.classification,scope',
-      },
+      }),
     );
 
     let involvementTypes;
