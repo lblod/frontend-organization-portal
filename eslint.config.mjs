@@ -73,6 +73,14 @@ export default ts.config(
     },
   },
   {
+    rules: {
+      // We disable this rule until we've converted the existing code to the new patterns
+      'warp-drive/no-legacy-request-patterns': 'off',
+      // We don't want to replace fetch everywhere for non-resource related API calls..
+      'warp-drive/no-external-request-patterns': 'off',
+    },
+  },
+  {
     files: ['**/*.js'],
     languageOptions: {
       parser: babelParser,
