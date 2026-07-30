@@ -1,4 +1,4 @@
-import Model, { attr } from '@ember-data/model';
+import Model, { attr } from '@warp-drive/legacy/model';
 
 export const CHANGE_EVENT_TYPE = {
   NAME_CHANGE: '6651dc69b0ae8f7ff9974e8a23db1dec',

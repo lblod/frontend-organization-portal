@@ -1,4 +1,4 @@
-import { attr, hasMany } from '@ember-data/model';
+import { attr, hasMany } from '@warp-drive/legacy/model';
 import AgentModel from './agent';
 
 export default class PersonModel extends AgentModel {

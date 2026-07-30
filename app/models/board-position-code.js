@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo } from '@warp-drive/legacy/model';
 
 export const BOARD_POSITION_CODE = {
   WORSHIP_MEMBER: '2e021095727b2464459a63e16ebeafd2',

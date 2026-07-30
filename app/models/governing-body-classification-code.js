@@ -1,4 +1,4 @@
-import Model, { attr, hasMany } from '@ember-data/model';
+import Model, { attr, hasMany } from '@warp-drive/legacy/model';
 
 export const EXECUTIVE_ORGANEN = [
   '39854196-f214-4688-87a1-d6ad12baa2fa', // Algemeen Directeur

@@ -1,4 +1,4 @@
-import { attr, belongsTo } from '@ember-data/model';
+import { attr, belongsTo } from '@warp-drive/legacy/model';
 import MandatoryModel from './mandatory';
 
 export default class WorshipMandatoryModel extends MandatoryModel {

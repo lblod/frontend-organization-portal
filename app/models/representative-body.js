@@ -1,4 +1,4 @@
-import { belongsTo, hasMany } from '@ember-data/model';
+import { belongsTo, hasMany } from '@warp-drive/legacy/model';
 import Joi from 'joi';
 import OrganizationModel from './organization';
 import {

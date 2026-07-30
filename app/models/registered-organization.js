@@ -16,7 +16,7 @@ import {
 } from '../validators/schema';
 import { CLASSIFICATION } from './administrative-unit-classification-code';
 import OrganizationModel from './organization';
-import { belongsTo } from '@ember-data/model';
+import { belongsTo } from '@warp-drive/legacy/model';
 
 export default class RegisteredOrganizationModel extends OrganizationModel {
   // Werkingsgebied (dct:spatial on registered organizations). User-entered.

@@ -1,4 +1,4 @@
-import { attr, hasMany, belongsTo } from '@ember-data/model';
+import { attr, hasMany, belongsTo } from '@warp-drive/legacy/model';
 import { tracked } from '@glimmer/tracking';
 import AgentInPositionModel from './agent-in-position';
 
