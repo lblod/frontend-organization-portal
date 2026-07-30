@@ -1,4 +1,4 @@
-import { attr } from '@ember-data/model';
+import { attr } from '@warp-drive/legacy/model';
 import Joi from 'joi';
 import WorshipAdministrativeUnitModel from './worship-administrative-unit';
 import {

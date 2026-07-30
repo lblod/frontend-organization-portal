@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'frontend-organization-portal/tests/helpers';
-import Model, { hasMany } from '@ember-data/model';
+import Model, { hasMany } from '@warp-drive/legacy/model';
 import hasManyValue from 'frontend-organization-portal/helpers/has-many-value';
 
 module('Unit | Helper | hasManyValue', function (hooks) {

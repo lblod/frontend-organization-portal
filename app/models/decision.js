@@ -1,4 +1,4 @@
-import { attr, belongsTo } from '@ember-data/model';
+import { attr, belongsTo } from '@warp-drive/legacy/model';
 import AbstractValidationModel from './abstract-validation-model';
 import Joi from 'joi';
 import { validateBelongsToOptional, validateUrl } from '../validators/schema';
