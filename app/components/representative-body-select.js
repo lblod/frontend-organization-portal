@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { BLACKLIST_RO } from '../models/representative-body';
+import { findAll } from '@warp-drive/legacy/compat/builders';
 
 export default class RepresentativeBodySelectComponent extends Component {
   @service store;
@@ -14,9 +15,8 @@ export default class RepresentativeBodySelectComponent extends Component {
   }
 
   loadRepresentativeBodiesTask = task(async () => {
-    const representativeBodies = await this.store.findAll(
-      'representative-body',
-      { include: 'organization-status' },
+    const { content: representativeBodies } = await this.store.request(
+      findAll('representative-body', { include: 'organization-status' }),
     );
 
     const filteredRepresentativeBodies = representativeBodies.filter((body) => {
