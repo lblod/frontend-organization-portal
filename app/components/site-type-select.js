@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
+import { findAll } from '@warp-drive/legacy/compat/builders';
 
 // TODO: remove administrative unit classifications after edit functionality
 // moved to CLB
@@ -17,7 +18,9 @@ export default class SiteTypeSelectComponent extends Component {
   loadSiteTypesTask = task(async () => {
     await timeout(500);
 
-    let allTypes = await this.store.findAll('site-type', { reload: true });
+    let { content: allTypes } = await this.store.request(
+      findAll('site-type', { reload: true }),
+    );
     let filteredTypes = [];
 
     filteredTypes.push(

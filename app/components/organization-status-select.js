@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
+import { findAll } from '@warp-drive/legacy/compat/builders';
 
 export default class OrganizationStatusSelectComponent extends Component {
   @service store;
@@ -29,6 +30,9 @@ export default class OrganizationStatusSelectComponent extends Component {
   }
 
   loadOrganizationStatusesTask = task(async () => {
-    return await this.store.findAll('organization-status-code');
+    const { content: statuses } = await this.store.request(
+      findAll('organization-status-code'),
+    );
+    return statuses;
   });
 }
