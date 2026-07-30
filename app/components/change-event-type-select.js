@@ -15,6 +15,7 @@ import {
   CHANGE_EVENTS_VLAAMSE_GEMEENSCHAPSCOMMISSIE,
 } from 'frontend-organization-portal/models/change-event-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { findAll } from '@warp-drive/legacy/compat/builders';
 
 export default class ChangeEventTypeSelectComponent extends Component {
   @service store;
@@ -26,7 +27,9 @@ export default class ChangeEventTypeSelectComponent extends Component {
   }
 
   loadChangeEventTypesTask = task(async () => {
-    let types = await this.store.findAll('change-event-type', { reload: true });
+    let { content: types } = await this.store.request(
+      findAll('change-event-type', { reload: true }),
+    );
 
     let classification = await this.args.organizationClassification;
 
