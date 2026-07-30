@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class MockLoginRoute extends Route {
   @service session;
@@ -16,12 +17,14 @@ export default class MockLoginRoute extends Route {
   }
 
   async model(params) {
-    let accounts = await this.store.query('account', {
-      include: 'user.groups',
-      filter: { provider: 'https://github.com/lblod/mock-login-service' },
-      page: { size: 10, number: params.page },
-    });
+    let { content } = await this.store.request(
+      query('account', {
+        include: 'user.groups',
+        filter: { provider: 'https://github.com/lblod/mock-login-service' },
+        page: { size: 10, number: params.page },
+      }),
+    );
 
-    return { accounts };
+    return { accounts: content };
   }
 }

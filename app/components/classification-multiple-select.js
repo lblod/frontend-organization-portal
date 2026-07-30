@@ -5,6 +5,7 @@ import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { tracked } from '@glimmer/tracking';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { getClassificationIdsForRole } from 'frontend-organization-portal/utils/classification-identifiers';
 import { convertClassificationToGroups } from '../utils/group-classifications';
 
@@ -80,13 +81,15 @@ export default class ClassificationMultipleSelectComponent extends Component {
       );
     }
 
-    const codes = await this.store.query('organization-classification-code', {
-      'filter[:id:]': allowedIds.join(),
-      sort: 'label',
-      page: {
-        size: allowedIds.length,
-      },
-    });
+    const { content: codes } = await this.store.request(
+      queryBuilder('organization-classification-code', {
+        'filter[:id:]': allowedIds.join(),
+        sort: 'label',
+        page: {
+          size: allowedIds.length,
+        },
+      }),
+    );
 
     // Auto-selects the type if there is only one option
     this.newId = selectedRecognizedWorshipTypeId;

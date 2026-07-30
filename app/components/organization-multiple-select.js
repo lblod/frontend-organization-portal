@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { restartableTask, timeout } from 'ember-concurrency';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { ORGANIZATION_STATUS } from '../models/organization-status-code';
 
 export default class OrganizationMultipleSelectComponent extends Component {
@@ -32,6 +33,10 @@ export default class OrganizationMultipleSelectComponent extends Component {
       query['filter[name]'] = searchParams;
     }
 
-    return await this.store.query('organization', query);
+    const { content } = await this.store.request(
+      queryBuilder('organization', query),
+    );
+
+    return content;
   });
 }

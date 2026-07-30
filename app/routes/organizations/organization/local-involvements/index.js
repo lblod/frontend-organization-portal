@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 
 export default class OrganizationsOrganizationLocalInvolvementsIndexRoute extends Route {
   @service store;
@@ -23,7 +24,9 @@ export default class OrganizationsOrganizationLocalInvolvementsIndexRoute extend
       page: { size: params.size, number: params.page },
     };
 
-    let involvements = await this.store.query('local-involvement', query);
+    const { content: involvements } = await this.store.request(
+      queryBuilder('local-involvement', query),
+    );
 
     return {
       organization,

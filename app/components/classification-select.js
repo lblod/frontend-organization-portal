@@ -4,6 +4,7 @@ import { task } from 'ember-concurrency';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { getClassificationIdsForRole } from 'frontend-organization-portal/utils/classification-identifiers';
 import { convertClassificationToGroups } from 'frontend-organization-portal/utils/group-classifications';
 
@@ -50,11 +51,13 @@ export default class ClassificationSelectComponent extends Component {
       );
     }
 
-    const codes = await this.store.query('organization-classification-code', {
-      'filter[:id:]': allowedIds.join(),
-      sort: 'label',
-      'page[size]': 100, // Ensure this number is high enough to return all types in a single page
-    });
+    const { content: codes } = await this.store.request(
+      queryBuilder('organization-classification-code', {
+        'filter[:id:]': allowedIds.join(),
+        sort: 'label',
+        'page[size]': 100, // Ensure this number is high enough to return all types in a single page
+      }),
+    );
 
     // Auto-selects the type if there is only one option
     if (codes.slice().length === 1 && codes.slice()[0] != this.args.selected) {
