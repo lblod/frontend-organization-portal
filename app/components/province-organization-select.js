@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
@@ -30,29 +31,37 @@ export default class ProvinceOrganizationSelectComponent extends Component {
       }
 
       // If a municipality is selected, load the province it belongs to
-      provinces = await this.store.query('organization', {
-        filter: {
-          memberships: {
-            member: {
-              id: selectedMunicipalityId,
+      provinces = (
+        await this.store.request(
+          queryBuilder('organization', {
+            filter: {
+              memberships: {
+                member: {
+                  id: selectedMunicipalityId,
+                },
+              },
+              classification: {
+                id: CLASSIFICATION.PROVINCE.id,
+              },
             },
-          },
-          classification: {
-            id: CLASSIFICATION.PROVINCE.id,
-          },
-        },
-        sort: 'name',
-      });
+            sort: 'name',
+          }),
+        )
+      ).content;
     } else {
       // Else load all the provinces
-      provinces = await this.store.query('organization', {
-        filter: {
-          classification: {
-            id: CLASSIFICATION.PROVINCE.id,
-          },
-        },
-        sort: 'name',
-      });
+      provinces = (
+        await this.store.request(
+          queryBuilder('organization', {
+            filter: {
+              classification: {
+                id: CLASSIFICATION.PROVINCE.id,
+              },
+            },
+            sort: 'name',
+          }),
+        )
+      ).content;
     }
 
     // Auto-selects the province when there is only once choice

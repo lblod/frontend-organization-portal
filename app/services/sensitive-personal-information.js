@@ -1,5 +1,6 @@
 import Service, { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 
 const PRIVACY_CENTRIC_SERVICE_ENDPOINT = {
   REQUEST: '/person-information-requests',
@@ -133,11 +134,13 @@ export default class SensitivePersonalInformationService extends Service {
       if (obfuscated) {
         sensitiveInformation.nationalities = idList;
       } else {
-        let nationalities = await this.store.query('nationality', {
-          filter: {
-            ':id:': idList,
-          },
-        });
+        const { content: nationalities } = await this.store.request(
+          queryBuilder('nationality', {
+            filter: {
+              ':id:': idList,
+            },
+          }),
+        );
         sensitiveInformation.nationalities = nationalities.slice();
       }
     }

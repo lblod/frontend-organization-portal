@@ -9,7 +9,6 @@ import {
 import { createAddress } from 'frontend-organization-portal/models/address';
 import { ID_NAME } from 'frontend-organization-portal/models/identifier';
 import { A } from '@ember/array';
-
 import { action } from '@ember/object';
 
 export default class OrganizationsOrganizationCoreDataEditRoute extends Route {

@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { trackedTask } from 'reactiveweb/ember-concurrency';
 
@@ -14,22 +15,24 @@ export default class MunicipalitySelectByNameComponent extends Component {
 
     if (this.args.selectedProvince && this.args.selectedProvince.length) {
       // If a province is selected, load the municipalities in it
-      let municipalities = await this.store.query('organization', {
-        filter: {
-          'memberships-of-organizations': {
-            organization: {
-              ':exact:name': this.args.selectedProvince,
+      let { content: municipalities } = await this.store.request(
+        queryBuilder('organization', {
+          filter: {
+            'memberships-of-organizations': {
+              organization: {
+                ':exact:name': this.args.selectedProvince,
+              },
+            },
+            classification: {
+              id: CLASSIFICATION.MUNICIPALITY.id,
             },
           },
-          classification: {
-            id: CLASSIFICATION.MUNICIPALITY.id,
+          sort: 'name',
+          page: {
+            size: 400,
           },
-        },
-        sort: 'name',
-        page: {
-          size: 400,
-        },
-      });
+        }),
+      );
 
       return municipalities.map(({ name }) => name);
     } else {
@@ -46,7 +49,9 @@ export default class MunicipalitySelectByNameComponent extends Component {
         },
       };
 
-      const municipalities = await this.store.query('organization', query);
+      const { content: municipalities } = await this.store.request(
+        queryBuilder('organization', query),
+      );
 
       return municipalities.map(({ name }) => name);
     }

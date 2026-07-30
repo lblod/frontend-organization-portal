@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { query } from '@warp-drive/legacy/compat/builders';
 
 export default class OrganizationsOrganizationExecutivesRoute extends Route {
   @service store;
@@ -17,12 +18,14 @@ export default class OrganizationsOrganizationExecutivesRoute extends Route {
       organizationId,
     );
 
-    let functionaries = await this.store.query('functionary', {
-      'filter[board-position][governing-bodies][is-time-specialization-of][administrative-unit][:id:]':
-        organizationId,
-      sort: params.sort,
-      page: { number: params.page, size: params.size },
-    });
+    const { content: functionaries } = await this.store.request(
+      query('functionary', {
+        'filter[board-position][governing-bodies][is-time-specialization-of][administrative-unit][:id:]':
+          organizationId,
+        sort: params.sort,
+        page: { number: params.page, size: params.size },
+      }),
+    );
 
     return {
       organization,

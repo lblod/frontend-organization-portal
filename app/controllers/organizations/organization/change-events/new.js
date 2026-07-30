@@ -5,6 +5,7 @@ import { dropTask } from 'ember-concurrency';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import { tracked } from '@glimmer/tracking';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.NAME_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
@@ -379,14 +380,16 @@ async function createChangeEventResult({
 }
 
 async function findMostRecentChangeEvent(store, organization) {
-  let mostRecentChangeEventResults = await store.query('change-event-result', {
-    'filter[resulting-organization][:id:]': organization.id,
-    include: ['result-from', 'resulting-organization'].join(),
-    page: {
-      size: 1,
-    },
-    sort: '-result-from.date',
-  });
+  const { content: mostRecentChangeEventResults } = await store.request(
+    queryBuilder('change-event-result', {
+      'filter[resulting-organization][:id:]': organization.id,
+      include: ['result-from', 'resulting-organization'].join(),
+      page: {
+        size: 1,
+      },
+      sort: '-result-from.date',
+    }),
+  );
 
   if (mostRecentChangeEventResults.length > 0) {
     return await mostRecentChangeEventResults.at(0)?.resultFrom;

@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { query } from '@warp-drive/legacy/compat/builders';
 import { ORGANIZATION_STATUS } from '../../../../models/organization-status-code';
 
 export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute extends Route {
@@ -88,30 +89,38 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       mustExecuteBothQueries ||
       params.selectedRoleLabel === selectedRoleModel.opLabel
     ) {
-      membershipsOfOrganizations = await this.store.query(
-        'membership',
-        this.constructMembershipQuery(
-          organization.id,
-          true,
-          params,
-          selectedRoleModel,
-        ),
-      );
+      membershipsOfOrganizations = (
+        await this.store.request(
+          query(
+            'membership',
+            this.constructMembershipQuery(
+              organization.id,
+              true,
+              params,
+              selectedRoleModel,
+            ),
+          ),
+        )
+      ).content;
     }
 
     if (
       mustExecuteBothQueries ||
       params.selectedRoleLabel === selectedRoleModel.inverseOpLabel
     ) {
-      memberships = await this.store.query(
-        'membership',
-        this.constructMembershipQuery(
-          organization.id,
-          false,
-          params,
-          selectedRoleModel,
-        ),
-      );
+      memberships = (
+        await this.store.request(
+          query(
+            'membership',
+            this.constructMembershipQuery(
+              organization.id,
+              false,
+              params,
+              selectedRoleModel,
+            ),
+          ),
+        )
+      ).content;
     }
 
     // Process the memberships retrieved from the backend since we need to

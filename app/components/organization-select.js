@@ -3,6 +3,7 @@ import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { timeout, task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { ORGANIZATION_STATUS } from '../models/organization-status-code';
 
@@ -30,18 +31,20 @@ export default class OrganizationSelectComponent extends Component {
     const selectedPositionId = this.args.selectedPosition;
 
     if (selectedPositionId) {
-      let boardPositionCodes = await this.store.query('board-position-code', {
-        filter: {
-          ':id:': selectedPositionId,
-        },
-      });
-      let ministerPositions = await this.store.query(
-        'minister-position-function',
-        {
+      const { content: boardPositionCodes } = await this.store.request(
+        queryBuilder('board-position-code', {
           filter: {
             ':id:': selectedPositionId,
           },
-        },
+        }),
+      );
+
+      const { content: ministerPositions } = await this.store.request(
+        queryBuilder('minister-position-function', {
+          filter: {
+            ':id:': selectedPositionId,
+          },
+        }),
       );
 
       if (ministerPositions.length) {
@@ -90,7 +93,9 @@ export default class OrganizationSelectComponent extends Component {
     }
 
     if (query) {
-      searchResults = await this.store.query('organization', query);
+      searchResults = (
+        await this.store.request(queryBuilder('organization', query))
+      ).content;
     }
 
     if (typeof this.args.filter === 'function') {
@@ -111,10 +116,15 @@ export default class OrganizationSelectComponent extends Component {
   loadRecord = task(async () => {
     let selectedOrganization = this.args.selected;
     if (typeof selectedOrganization === 'string') {
-      this.loadedRecord = await this.store.findRecord(
-        'organization',
-        selectedOrganization,
-      );
+      this.loadedRecord = (
+        await this.store.request(
+          queryBuilder('organization', {
+            filter: {
+              ':id:': selectedOrganization,
+            },
+          }),
+        )
+      ).content;
     }
   });
 }
