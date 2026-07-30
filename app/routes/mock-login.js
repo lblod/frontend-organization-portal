@@ -22,7 +22,7 @@ export default class MockLoginRoute extends Route {
         include: 'user.groups',
         filter: { provider: 'https://github.com/lblod/mock-login-service' },
         page: { size: 10, number: params.page },
-      })
+      }),
     );
 
     return { accounts: content };
