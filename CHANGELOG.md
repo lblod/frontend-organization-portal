@@ -1,3 +1,8 @@
+## v1.40.4 (2026-07-31)
+
+#### :rocket: Enhancement
+* [#718](https://github.com/lblod/frontend-organization-portal/pull/718) [OP-3832] added werkingsgebied to registered organizations ([@DamonKennes](https://github.com/DamonKennes))
+
 ## v1.40.3 (2026-07-15)
 
 #### :rocket: Enhancement
