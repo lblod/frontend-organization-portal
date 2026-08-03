@@ -30,12 +30,12 @@ export default class LegalFormSelectComponent extends Component {
     return legalForms.find((legalForm) => legalForm.id === id);
   }
 
-  @task *loadLegalFormsTask() {
-    return yield this.store.query('concept', {
+  loadLegalFormsTask = task(async () => {
+    return await this.store.query('concept', {
       sort: 'order',
       'page[size]': 30,
       'filter[in-scheme][:id:]': LEGAL_FORM_SCHEME_ID,
       include: 'in-scheme',
     });
-  }
+  });
 }

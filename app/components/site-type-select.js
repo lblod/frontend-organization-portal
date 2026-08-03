@@ -14,11 +14,10 @@ export default class SiteTypeSelectComponent extends Component {
     this.siteTypes = this.loadSiteTypesTask.perform();
   }
 
-  @task
-  *loadSiteTypesTask() {
-    yield timeout(500);
+  loadSiteTypesTask = task(async () => {
+    await timeout(500);
 
-    let allTypes = yield this.store.findAll('site-type', { reload: true });
+    let allTypes = await this.store.findAll('site-type', { reload: true });
     let filteredTypes = [];
 
     filteredTypes.push(
@@ -62,5 +61,5 @@ export default class SiteTypeSelectComponent extends Component {
     );
 
     return filteredTypes;
-  }
+  });
 }

@@ -19,21 +19,20 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyEditCo
     );
   }
 
-  @dropTask
-  *save(event) {
+  save = dropTask(async (event) => {
     event.preventDefault();
 
-    yield this.model.governingBody.validate();
+    await this.model.governingBody.validate();
 
     if (!this.hasValidationErrors) {
-      yield this.model.governingBody.save();
+      await this.model.governingBody.save();
 
       this.router.transitionTo(
         'organizations.organization.governing-bodies.governing-body',
         this.model.governingBody.id,
       );
     }
-  }
+  });
 
   reset() {
     this.model.governingBody.reset();

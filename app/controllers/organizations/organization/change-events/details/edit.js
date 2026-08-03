@@ -9,16 +9,15 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
     return this.model.changeEvent.error || this.model.decision?.error;
   }
 
-  @dropTask
-  *save(event) {
+  save = dropTask(async (event) => {
     event.preventDefault();
 
     let { changeEvent, decision, decisionActivity } = this.model;
 
-    yield changeEvent.validate();
+    await changeEvent.validate();
 
     if (changeEvent.requiresDecisionInformation) {
-      yield decision.validate();
+      await decision.validate();
     }
 
     if (
@@ -34,18 +33,18 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
             if (decisionActivity.isNew) {
               decision.hasDecisionActivity = decisionActivity;
             }
-            yield decisionActivity.save();
+            await decisionActivity.save();
           }
           if (decision.isNew) {
             changeEvent.decision = decision;
           }
 
-          yield decision.save();
+          await decision.save();
         }
 
         if (decision.isEmpty) {
           changeEvent.decision = null;
-          yield decision.destroyRecord();
+          await decision.destroyRecord();
           // Prevents errors in call to `reset()` on transition
           this.model.decision = null;
         }
@@ -54,14 +53,14 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
       // Note: always save change event as adding a decision is not detected by
       // the `hasDirtyAttributes` method, which results in the new decision to
       // be discarded on save.
-      yield changeEvent.save();
+      await changeEvent.save();
 
       this.router.transitionTo(
         'organizations.organization.change-events.details',
         changeEvent.id,
       );
     }
-  }
+  });
 
   reset() {
     this.model.organization.reset();

@@ -159,17 +159,16 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     return `Weet je zeker dat je de relatie "${membershipText}" wilt verwijderen?`;
   }
 
-  @dropTask
-  *save(event) {
+  save = dropTask(async (event) => {
     event.preventDefault();
 
     let organization = this.model.organization;
-    yield organization.validate();
+    await organization.validate();
 
     let validationPromises = this.memberships.map((membership) =>
       membership.validate(),
     );
-    yield Promise.all(validationPromises);
+    await Promise.all(validationPromises);
 
     if (!this.hasValidationErrors) {
       // Filter duplicate memberships, this means memberships that have the same
@@ -194,7 +193,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
       //   values are present, not whether the memberships are correct allowed,
       //   see notes in `membership.validationSchema`. If this changes any swap
       //   should be performed validation.
-      this.memberships = yield Promise.all(
+      this.memberships = await Promise.all(
         this.memberships.map(async (membership) => {
           if (
             membership.isHasRelationWithMembership &&
@@ -213,16 +212,16 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
       let savePromises = this.memberships.map((membership) => {
         membership.save();
       });
-      yield Promise.all(savePromises);
+      await Promise.all(savePromises);
 
-      yield organization.save();
+      await organization.save();
 
       this.router.transitionTo(
         'organizations.organization.related-organizations',
         organization.id,
       );
     }
-  }
+  });
 
   reset() {
     this.model.organization.reset();

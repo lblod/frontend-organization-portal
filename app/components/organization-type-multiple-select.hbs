@@ -1,5 +1,6 @@
 <div class={{if @error "ember-power-select--error"}}>
-  <PowerSelectMultiple
+  <PowerSelect
+    @multiple={{true}}
     @searchEnabled={{or @searchEnabled true}}
     @allowClear={{or @allowClear true}}
     @searchField="label"
@@ -13,5 +14,5 @@
     as |type|
   >
     {{type}}
-  </PowerSelectMultiple>
+  </PowerSelect>
 </div>

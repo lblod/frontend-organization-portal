@@ -7,19 +7,14 @@ import { trackedTask } from 'ember-resources/util/ember-concurrency';
 export default class MunicipalitySelectByNameComponent extends Component {
   @service store;
 
-  municipalities = trackedTask(this, this.loadMunicipalitiesTask, () => [
-    this.args.selectedProvince,
-  ]);
-
-  @task
-  *loadMunicipalitiesTask() {
+  loadMunicipalitiesTask = task(async () => {
     // Trick used to avoid infinite loop
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
-    yield Promise.resolve();
+    await Promise.resolve();
 
     if (this.args.selectedProvince && this.args.selectedProvince.length) {
       // If a province is selected, load the municipalities in it
-      let municipalities = yield this.store.query('organization', {
+      let municipalities = await this.store.query('organization', {
         filter: {
           'memberships-of-organizations': {
             organization: {
@@ -51,9 +46,13 @@ export default class MunicipalitySelectByNameComponent extends Component {
         },
       };
 
-      const municipalities = yield this.store.query('organization', query);
+      const municipalities = await this.store.query('organization', query);
 
       return municipalities.map(({ name }) => name);
     }
-  }
+  });
+
+  municipalities = trackedTask(this, this.loadMunicipalitiesTask, () => [
+    this.args.selectedProvince,
+  ]);
 }

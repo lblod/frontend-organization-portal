@@ -2,7 +2,9 @@
   <div class="au-o-layout au-o-region-large">
     <MockLogin as |login|>
       {{#if login.isLoading}}
-        <AuLoader />
+        <AuLoader>
+          Testgebruikers aan het laden
+        </AuLoader>
       {{else}}
         {{#if login.errorMessage}}
           {{login.errorMessage}}

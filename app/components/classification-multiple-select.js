@@ -15,11 +15,6 @@ export default class ClassificationMultipleSelectComponent extends Component {
   @tracked oldId;
   @tracked newId;
 
-  classifications = trackedTask(this, this.loadClassificationsTask, () => [
-    this.args.selectedOrganizationTypes,
-    this.args.selectedRecognizedWorshipTypeId,
-  ]);
-
   get groupedClassifications() {
     if (this.classifications.isRunning) {
       return [];
@@ -57,11 +52,10 @@ export default class ClassificationMultipleSelectComponent extends Component {
     return classifications.find((status) => status.id === id);
   }
 
-  @task
-  *loadClassificationsTask() {
+  loadClassificationsTask = task(async () => {
     // Trick used to avoid infinite loop
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
-    yield Promise.resolve();
+    await Promise.resolve();
 
     // Filter possible options based selected organization types, if any
     let selectedOrganizationTypes = this.args.selectedOrganizationTypes;
@@ -86,7 +80,7 @@ export default class ClassificationMultipleSelectComponent extends Component {
       );
     }
 
-    const codes = yield this.store.query('organization-classification-code', {
+    const codes = await this.store.query('organization-classification-code', {
       'filter[:id:]': allowedIds.join(),
       sort: 'label',
       page: {
@@ -108,7 +102,12 @@ export default class ClassificationMultipleSelectComponent extends Component {
     this.oldId = this.newId;
 
     return codes;
-  }
+  });
+
+  classifications = trackedTask(this, this.loadClassificationsTask, () => [
+    this.args.selectedOrganizationTypes,
+    this.args.selectedRecognizedWorshipTypeId,
+  ]);
 
   #isIdInBlacklist(id) {
     return CENTRAL_WORSHIP_SERVICE_BLACKLIST.find((element) => element == id);

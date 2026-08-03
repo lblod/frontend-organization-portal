@@ -52,8 +52,7 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
       event.target.inputmask.unmaskedvalue();
   }
 
-  @dropTask
-  *save(event) {
+  save = dropTask(async (event) => {
     event.preventDefault();
 
     let {
@@ -73,12 +72,12 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
     // of operation is just silently kept.
     organization.scope =
       this.locationsInScope?.length > 0
-        ? yield this.scopeOfOperation.getScopeForLocations(
+        ? await this.scopeOfOperation.getScopeForLocations(
             ...this.locationsInScope,
           )
         : undefined;
 
-    yield Promise.all([
+    await Promise.all([
       organization.validate({ relaxMandatoryFoundingOrganization: true }),
       identifierSharepoint.validate(),
     ]);
@@ -86,14 +85,14 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
     const requiresKboNumber = requiresKbo(organization);
 
     if (requiresKboNumber) {
-      yield identifierKBO.validate();
+      await identifierKBO.validate();
     }
 
     if (
       this.features.isEnabled('edit-contact-data') ||
       isContactEditableOrganization(this.model.organization)
     ) {
-      yield Promise.all([
+      await Promise.all([
         address.validate(),
         contact.validate(),
         secondaryContact.validate(),
@@ -105,7 +104,7 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
         this.features.isEnabled('edit-contact-data') ||
         isContactEditableOrganization(this.model.organization)
       ) {
-        let primarySite = yield organization.primarySite;
+        let primarySite = await organization.primarySite;
 
         // TODO: "if" not needed when the data of all organizations will be
         // correct they should all have a primary site on creation
@@ -121,20 +120,20 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
           }
           address.fullAddress = combineFullAddress(address);
           address = setEmptyStringsToNull(address);
-          yield address.save();
+          await address.save();
         }
 
-        let siteContacts = yield primarySite.contacts;
+        let siteContacts = await primarySite.contacts;
 
         if (contact.hasDirtyAttributes) {
           let isNewContact = contact.isNew;
 
           contact = setEmptyStringsToNull(contact);
-          yield contact.save();
+          await contact.save();
 
           if (isNewContact) {
             siteContacts.push(contact);
-            yield primarySite.save();
+            await primarySite.save();
           }
         }
 
@@ -142,11 +141,11 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
           let isNewContact = secondaryContact.isNew;
 
           secondaryContact = setEmptyStringsToNull(secondaryContact);
-          yield secondaryContact.save();
+          await secondaryContact.save();
 
           if (isNewContact) {
             siteContacts.push(secondaryContact);
-            yield primarySite.save();
+            await primarySite.save();
           }
         }
       }
@@ -155,8 +154,8 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
         structuredIdentifierKBO = setEmptyStringsToNull(
           structuredIdentifierKBO,
         );
-        yield structuredIdentifierKBO.save();
-        yield identifierKBO.save();
+        await structuredIdentifierKBO.save();
+        await identifierKBO.save();
       }
 
       // FIXME: If uncommented existing SharePoint identifier is not removed
@@ -166,15 +165,15 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
       // structuredIdentifierSharepoint = setEmptyStringsToNull(
       //   structuredIdentifierSharepoint,
       // );
-      yield structuredIdentifierSharepoint.save();
-      yield identifierSharepoint.save();
+      await structuredIdentifierSharepoint.save();
+      await identifierSharepoint.save();
 
       organization = setEmptyStringsToNull(organization);
-      yield organization.save();
+      await organization.save();
 
       if (requiresKboNumber) {
         const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
-        yield fetch(syncKboData, {
+        await fetch(syncKboData, {
           method: 'POST',
         });
       }
@@ -185,7 +184,7 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
         organization.id,
       );
     }
-  }
+  });
 
   resetUnsavedRecords() {
     this.model.organization.reset();
