@@ -21,9 +21,5 @@ setupDeprecationWorkflow({
     /* example: */
     /* { handler: 'silence', matchId: 'template-action' }, */
     // TODO: remove this before trying to update to WarpDrive v6.
-    {
-      handler: 'silence',
-      matchId: 'warp-drive:deprecate-legacy-request-methods',
-    },
   ],
 });
