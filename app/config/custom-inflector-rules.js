@@ -1,3 +1,3 @@
-import { irregular } from '@ember-data/request-utils/string';
+import { irregular } from '@warp-drive/utilities/string';
 
 irregular('date-of-birth', 'dates-of-birth');

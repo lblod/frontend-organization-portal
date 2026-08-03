@@ -1,4 +1,4 @@
-import { hasMany, belongsTo, attr } from '@ember-data/model';
+import { hasMany, belongsTo, attr } from '@warp-drive/legacy/model';
 import AbstractValidationModel from './abstract-validation-model';
 import Joi from 'joi';
 import {

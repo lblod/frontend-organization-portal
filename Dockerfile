@@ -1,4 +1,4 @@
-FROM madnificent/ember:4.12.1-node_18 AS builder
+FROM node:22 AS builder
 
 LABEL maintainer="info@redpencil.io"
 
@@ -9,7 +9,7 @@ COPY package.json .
 COPY package-lock.json .
 RUN npm ci
 COPY . .
-RUN ember build -prod
+RUN npm run build
 
 
 FROM semtech/static-file-service:0.2.0

@@ -1,5 +1,4 @@
 import Service from '@ember/service';
-import fetch from 'fetch';
 import ArrayProxy from '@ember/array/proxy';
 import { A } from '@ember/array';
 

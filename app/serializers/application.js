@@ -1,4 +1,4 @@
-import JSONAPISerializer from '@ember-data/serializer/json-api';
+import { JSONAPISerializer } from '@warp-drive/legacy/serializer/json-api';
 // eslint-disable-next-line ember/no-mixins
 import DataTableSerializerMixin from 'frontend-organization-portal/mixins/ember-data-table/serializer';
 

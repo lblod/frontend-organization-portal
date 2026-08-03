@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import {
   createPrimaryContact,
   createSecondaryContact,
@@ -21,12 +21,10 @@ export default class OrganizationsOrganizationSitesSiteEditRoute extends Route {
   }
 
   afterModel(model) {
-    if (
-      !(
-        this.features.isEnabled('edit-contact-data') ||
-        isContactEditableOrganization(model.organization)
-      )
-    ) {
+    if (!(
+      this.features.isEnabled('edit-contact-data') ||
+      isContactEditableOrganization(model.organization)
+    )) {
       this.router.transitionTo('unauthorized');
     }
   }

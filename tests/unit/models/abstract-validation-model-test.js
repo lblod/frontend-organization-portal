@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { attr, hasMany, belongsTo } from '@ember-data/model';
+import { attr, hasMany, belongsTo } from '@warp-drive/legacy/model';
 import Joi from 'joi';
 import AbstractValidationModel from 'frontend-organization-portal/models/abstract-validation-model';
 import {

@@ -3,7 +3,7 @@ import {
   findPrimaryContact,
   findSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
   @service scopeOfOperation;

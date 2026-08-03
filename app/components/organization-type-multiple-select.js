@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { ORGANIZATION_TYPES } from 'frontend-organization-portal/constants/organization-types';
 import { getOrganizationTypes } from 'frontend-organization-portal/utils/organization-type';
 

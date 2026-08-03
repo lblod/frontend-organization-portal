@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import getFiltersForRoleLabel from 'frontend-organization-portal/utils/get-filters-for-role-label';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditRoute extends Route {

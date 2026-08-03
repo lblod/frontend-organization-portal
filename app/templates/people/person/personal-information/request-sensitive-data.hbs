@@ -9,8 +9,12 @@
       <:action>
         <AuButton @skin="secondary" {{on "click" this.cancel}}>
           Annuleer
-        </AuButton>      
-        <AuButton form="request-sensitive-information" type="submit" @disabled={{not this.reasonCode}}>
+        </AuButton>
+        <AuButton
+          form="request-sensitive-information"
+          type="submit"
+          @disabled={{not this.reasonCode}}
+        >
           Volgende
         </AuButton>
       </:action>

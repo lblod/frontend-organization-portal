@@ -1,13 +1,14 @@
 {{page-title
   (concat
-    'OrganisatiePortaal' (if this.showEnvironment (concat ' - ' this.environmentName))
+    "OrganisatiePortaal"
+    (if this.showEnvironment (concat " - " this.environmentName))
   )
 }}
 
 <AuModalContainer />
 <BasicDropdownWormhole />
 
-<AuApp class='{{if this.showEnvironment 'au-c-app--environment'}}'>
+<AuApp class="{{if this.showEnvironment 'au-c-app--environment'}}">
   {{#if this.showEnvironment}}
     <EnvironmentBanner
       @applicationName="OrganisatiePortaal"
@@ -18,20 +19,36 @@
   {{/if}}
   <AppHeader />
   {{#if (eq "true" (config "announce.maintenance.enabled"))}}
-    <AuAlert @skin="warning"  @icon="alert-triangle" class="au-u-margin-bottom-none au-c-env-announcement">
+    <AuAlert
+      @skin="warning"
+      @icon="alert-triangle"
+      class="au-u-margin-bottom-none au-c-env-announcement"
+    >
       <p>{{config "announce.maintenance.message"}}</p>
     </AuAlert>
   {{else if (eq "true" (config "announce.newDeployment.enabled"))}}
-    <AuAlert @skin="warning" @icon="alert-triangle"  class="au-u-margin-bottom-none au-c-env-announcement">
+    <AuAlert
+      @skin="warning"
+      @icon="alert-triangle"
+      class="au-u-margin-bottom-none au-c-env-announcement"
+    >
       <p>{{config "announce.newDeployment.message"}}</p>
     </AuAlert>
   {{else if (eq "true" (config "announce.testing.enabled"))}}
-    <AuAlert @skin="warning" @icon="alert-triangle"  class="au-u-margin-bottom-none au-c-env-announcement">
+    <AuAlert
+      @skin="warning"
+      @icon="alert-triangle"
+      class="au-u-margin-bottom-none au-c-env-announcement"
+    >
       <p>{{config "announce.testing.message"}}</p>
     </AuAlert>
   {{/if}}
   <main id="main" class="au-c-main-container">
-    <div class="au-c-main-container__content au-c-main-container__content--scroll" id="content" tabindex="-1">
+    <div
+      class="au-c-main-container__content au-c-main-container__content--scroll"
+      id="content"
+      tabindex="-1"
+    >
       {{outlet}}
     </div>
   </main>

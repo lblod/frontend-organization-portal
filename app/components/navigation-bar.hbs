@@ -1,27 +1,27 @@
 <AuToolbar @border="bottom" @size="small" @skin="tint">
-    <nav aria-label="breadcrumbs">
-      <ol class="au-c-list-horizontal au-c-list-horizontal--breadcrumbs">
+  <nav aria-label="breadcrumbs">
+    <ol class="au-c-list-horizontal au-c-list-horizontal--breadcrumbs">
+      <li class="au-c-list-horizontal__item">
+        <AuLink @route="index" @icon="arrow-left" @iconAlignment="left">
+          Overzicht
+        </AuLink>
+      </li>
+      {{#each (breadcrumbs) as |breadcrumb|}}
         <li class="au-c-list-horizontal__item">
-          <AuLink @route="index" @icon="arrow-left" @iconAlignment="left">
-            Overzicht
-          </AuLink>
-        </li>
-        {{#each (breadcrumbs) as |breadcrumb|}}
-          <li class="au-c-list-horizontal__item">
-            {{#if (is-last breadcrumb (breadcrumbs))}}
+          {{#if (is-last breadcrumb (breadcrumbs))}}
+            {{breadcrumb.title}}
+          {{else}}
+            <AuLink
+              @route={{breadcrumb.data.route}}
+              @model={{breadcrumb.data.model}}
+              @models={{breadcrumb.data.models}}
+            >
               {{breadcrumb.title}}
-            {{else}}
-              <AuLink
-                @route={{breadcrumb.data.route}}
-                @model={{breadcrumb.data.model}}
-                @models={{breadcrumb.data.models}}
-              >
-                {{breadcrumb.title}}
-              </AuLink>
-            {{/if}}
-          </li>
-        {{/each}}
-      </ol>
-    </nav>
+            </AuLink>
+          {{/if}}
+        </li>
+      {{/each}}
+    </ol>
+  </nav>
 
 </AuToolbar>
