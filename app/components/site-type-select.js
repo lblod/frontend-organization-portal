@@ -43,8 +43,17 @@ export default class SiteTypeSelectComponent extends Component {
     } else if (this.args.organization.isPoliceZone) {
       filteredTypes.push(
         allTypes.find(
-          (type) => type.id == '0ed15289-1f3d-4172-8c46-0506de5aa2a3',
-        ), // Hoofdcommissariaat
+          (type) =>
+            // Hoofdcommissariaat
+            type.id == '0ed15289-1f3d-4172-8c46-0506de5aa2a3',
+        ),
+      );
+      filteredTypes.push(
+        allTypes.find(
+          (type) =>
+            // Wijkkantoor,
+            type.id == 'eeaf623d-9629-4de3-9c37-2dbb132b13d8',
+        ),
       );
     }
 
