@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { tracked } from '@glimmer/tracking';
@@ -32,18 +33,21 @@ export default class ProvinceSelectComponent extends Component {
       }
 
       // If a municipality is selected, load the province it belongs to
-      provinces = await this.store.query('organization', {
-        filter: {
-          memberships: {
-            member: {
-              ':exact:name': this.args.selectedMunicipality,
+      const { content: provinceResults } = await this.store.request(
+        queryBuilder('organization', {
+          filter: {
+            memberships: {
+              member: {
+                ':exact:name': this.args.selectedMunicipality,
+              },
+            },
+            classification: {
+              id: CLASSIFICATION.PROVINCE.id,
             },
           },
-          classification: {
-            id: CLASSIFICATION.PROVINCE.id,
-          },
-        },
-      });
+        }),
+      );
+      provinces = provinceResults;
     } else {
       // Else load all the provinces
       const query = {
@@ -54,7 +58,10 @@ export default class ProvinceSelectComponent extends Component {
         },
         sort: 'name',
       };
-      provinces = await this.store.query('organization', query);
+      const { content: provinceResults } = await this.store.request(
+        queryBuilder('organization', query),
+      );
+      provinces = provinceResults;
     }
 
     if (provinces.slice().length === 1) {

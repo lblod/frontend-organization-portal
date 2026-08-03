@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import {
   BOARD_MEMBER_ROLES,
   MANDATARIES_ROLES,
@@ -35,22 +36,26 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyIndexR
       sort: params.sort,
     };
 
-    let memberMandatories = await this.store.query('mandatory', {
-      ...query,
-      ['filter[mandate][role-board][:id:]']: BOARD_MEMBER_ROLES.join(),
-      page: {
-        size: params.size,
-        number: params.page,
-      },
-    });
+    const { content: memberMandatories } = await this.store.request(
+      queryBuilder('mandatory', {
+        ...query,
+        ['filter[mandate][role-board][:id:]']: BOARD_MEMBER_ROLES.join(),
+        page: {
+          size: params.size,
+          number: params.page,
+        },
+      }),
+    );
 
-    let otherMandatories = await this.store.query('mandatory', {
-      ...query,
-      // mu-cl-resources doesn't support the inverse of `:id:` yet,
-      // so we define all the other ids as a workaround
-      // https://github.com/mu-semtech/mu-cl-resources/issues/22
-      ['filter[mandate][role-board][:id:]']: MANDATARIES_ROLES.join(),
-    });
+    const { content: otherMandatories } = await this.store.request(
+      queryBuilder('mandatory', {
+        ...query,
+        // mu-cl-resources doesn't support the inverse of `:id:` yet,
+        // so we define all the other ids as a workaround
+        // https://github.com/mu-semtech/mu-cl-resources/issues/22
+        ['filter[mandate][role-board][:id:]']: MANDATARIES_ROLES.join(),
+      }),
+    );
 
     return {
       organization,

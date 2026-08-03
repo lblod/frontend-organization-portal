@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 
 export default class OperationAreaMultipleSelectComponent extends Component {
@@ -26,7 +27,7 @@ export default class OperationAreaMultipleSelectComponent extends Component {
   loadOperationAreasTask = task(async () => {
     await Promise.resolve();
 
-    const query = {
+    const queryData = {
       'filter[in-scheme][:uri:]':
         'http://lblod.data.gift/concept-schemes/3307738e-f84d-4f95-9b14-3e9162d83394',
       sort: 'label',
@@ -35,7 +36,9 @@ export default class OperationAreaMultipleSelectComponent extends Component {
       },
     };
 
-    const operationAreas = await this.store.query('concept', query);
+    const { content: operationAreas } = await this.store.request(
+      queryBuilder('concept', queryData),
+    );
 
     return operationAreas.map(({ label }) => label);
   });

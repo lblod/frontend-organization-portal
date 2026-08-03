@@ -1,21 +1,24 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 
 export default class PeoplePersonPositionsMandatoryRoute extends Route {
   @service store;
 
   async model({ mandatoryId }) {
-    let person = this.modelFor('people.person');
+    const person = this.modelFor('people.person');
 
-    let mandatory = await this.store.findRecord('mandatory', mandatoryId, {
-      reload: true,
-      include: [
-        'contacts.contact-address',
-        'mandate.role-board',
-        'mandate.governing-body.is-time-specialization-of.classification',
-        'mandate.governing-body.is-time-specialization-of.administrative-unit',
-      ].join(),
-    });
+    const { content: mandatory } = await this.store.request(
+      findRecord('mandatory', mandatoryId, {
+        reload: true,
+        include: [
+          'contacts.contact-address',
+          'mandate.role-board',
+          'mandate.governing-body.is-time-specialization-of.classification',
+          'mandate.governing-body.is-time-specialization-of.administrative-unit',
+        ].join(),
+      }),
+    );
 
     return {
       person,

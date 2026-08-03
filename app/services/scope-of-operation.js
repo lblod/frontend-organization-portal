@@ -1,4 +1,5 @@
 import Service, { service } from '@ember/service';
+import { findRecord, query } from '@warp-drive/legacy/compat/builders';
 import splitArrayIntoGroups from '../utils/split-array-in-groups';
 
 export default class ScopeOfOperationService extends Service {
@@ -107,12 +108,16 @@ export default class ScopeOfOperationService extends Service {
   }
 
   async #fetchLocations(locationUuids) {
-    return await this.store.query('location', {
-      filter: {
-        ':id:': locationUuids.join(','),
-      },
-      sort: 'label',
-    });
+    const { content } = await this.store.request(
+      query('location', {
+        filter: {
+          ':id:': locationUuids.join(','),
+        },
+        sort: 'label',
+      }),
+    );
+
+    return content;
   }
 
   /**
@@ -147,7 +152,9 @@ export default class ScopeOfOperationService extends Service {
     );
 
     const uuid = await scopeUuid.json();
-    const scopeResource = await this.store.findRecord('location', uuid);
+    const { content: scopeResource } = await this.store.request(
+      findRecord('location', uuid),
+    );
 
     return scopeResource;
   }

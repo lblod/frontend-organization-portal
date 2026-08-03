@@ -1,4 +1,5 @@
 import { attr, belongsTo } from '@warp-drive/legacy/model';
+import { query } from '@warp-drive/legacy/compat/builders';
 import Joi from 'joi';
 import AbstractValidationModel from './abstract-validation-model';
 
@@ -42,17 +43,19 @@ export default class IdentifierModel extends AbstractValidationModel {
               await this.structuredIdentifier
             ).changedAttributes();
             if (changedAttributes?.localId) {
-              let records = await this.store.query('organization', {
-                filter: {
-                  identifiers: {
-                    ':exact:id-name': ID_NAME.KBO,
-                    'structured-identifier': {
-                      ':exact:local-id': localId,
+              const { content: records } = await this.store.request(
+                query('organization', {
+                  filter: {
+                    identifiers: {
+                      ':exact:id-name': ID_NAME.KBO,
+                      'structured-identifier': {
+                        ':exact:local-id': localId,
+                      },
                     },
                   },
-                },
-                include: 'identifiers.structured-identifier',
-              });
+                  include: 'identifiers.structured-identifier',
+                }),
+              );
 
               let conflicts = records.filter(
                 (r) => r.constructor.modelName !== 'kbo-organization',

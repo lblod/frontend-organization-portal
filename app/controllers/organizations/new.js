@@ -8,6 +8,10 @@ import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
+import {
+  findAll,
+  query as queryBuilder,
+} from '@warp-drive/legacy/compat/builders';
 import requiresKbo from '../../helpers/requires-kbo';
 
 export default class OrganizationsNewController extends Controller {
@@ -95,18 +99,20 @@ export default class OrganizationsNewController extends Controller {
   }
 
   async #getProvinceForMunicipality(municipality) {
-    const provinces = await this.store.query('organization', {
-      filter: {
-        memberships: {
-          member: {
-            id: municipality.id,
+    const { content: provinces } = await this.store.request(
+      queryBuilder('organization', {
+        filter: {
+          memberships: {
+            member: {
+              id: municipality.id,
+            },
+          },
+          classification: {
+            id: CLASSIFICATION.PROVINCE.id,
           },
         },
-        classification: {
-          id: CLASSIFICATION.PROVINCE.id,
-        },
-      },
-    });
+      }),
+    );
     return provinces[0];
   }
 
@@ -665,7 +671,9 @@ export default class OrganizationsNewController extends Controller {
           this.currentOrganizationModel.isAssociationOther ||
           this.currentOrganizationModel.isCorporationOther
         ) {
-          const siteTypes = await this.store.findAll('site-type');
+          const { content: siteTypes } = await this.store.request(
+            findAll('site-type'),
+          );
           primarySite.siteType = siteTypes.find(
             (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd',
           );
