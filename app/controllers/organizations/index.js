@@ -20,6 +20,7 @@ export default class OrganizationsIndexController extends Controller {
     'classificationIds',
     'recognizedWorshipTypeId',
     'organizationStatus',
+    'vendor',
   ];
 
   @tracked page = 0;
@@ -34,6 +35,7 @@ export default class OrganizationsIndexController extends Controller {
   @tracked classificationIds = '';
   @tracked recognizedWorshipTypeId = '';
   @tracked organizationStatus = '';
+  @tracked vendor = '';
 
   get organizations() {
     return this.model.loadOrganizationsTaskInstance.isFinished
@@ -147,6 +149,12 @@ export default class OrganizationsIndexController extends Controller {
     }
   }
 
+  @action
+  setVendor(selection) {
+    this.resetPagination();
+    this.vendor = selection;
+  }
+
   resetPagination() {
     this.page = 0;
   }
@@ -164,6 +172,7 @@ export default class OrganizationsIndexController extends Controller {
     this.organizationStatus = '';
     this.page = 0;
     this.sort = 'name';
+    this.vendor = '';
 
     // Triggers a refresh of the model
     this.page = null;
