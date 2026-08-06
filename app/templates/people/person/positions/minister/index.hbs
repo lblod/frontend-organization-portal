@@ -20,8 +20,12 @@
       </:action>
     </PageHeader>
 
+
     <DataCard>
-      <:title>Positie</:title>
+      <:title>
+        Positie
+        <HarvestMetaPopup @harvestable={{@model.minister}} />
+      </:title>
       <:card as |Card|>
         <Card.Columns>
           <:left as |Item|>
@@ -108,7 +112,5 @@
         </:card>
       </DataCard>
     {{/if}}
-
-    <HarvestMetaCard @harvestable={{@model.minister}} />
   </div>
 </div>

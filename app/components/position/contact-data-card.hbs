@@ -7,7 +7,10 @@
   )
 }}
   <DataCard>
-    <:title>Contactgegevens</:title>
+    <:title>
+      Contactgegevens
+      <HarvestMetaPopup @harvestable={{@primaryContact}} />
+    </:title>
     <:card as |Card|>
       <Card.Columns>
         <:left as |Item|>
@@ -24,6 +27,7 @@
               <:label>Adres</:label>
               <:content>
                 {{@address.fullAddress}}
+                <HarvestMetaPopup @harvestable={{@address}} />
               </:content>
             </Item>
           {{/if}}
