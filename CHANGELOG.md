@@ -1,8 +1,3 @@
-## v1.40.4 (2026-07-31)
-
-#### :rocket: Enhancement
-* [#718](https://github.com/lblod/frontend-organization-portal/pull/718) [OP-3832] added werkingsgebied to registered organizations ([@DamonKennes](https://github.com/DamonKennes))
-
 ## v1.40.3 (2026-07-15)
 
 #### :rocket: Enhancement
@@ -10,25 +5,16 @@
 
 #### :bug: Bug Fix
 * [#717](https://github.com/lblod/frontend-organization-portal/pull/717) Small UI fixes ([@Windvis](https://github.com/Windvis))
-* [#716](https://github.com/lblod/frontend-organization-portal/pull/716) [OP-3794] Fix some "Type organisatie" field issues ([@Windvis](https://github.com/Windvis))
 
 ## v1.40.2 (2026-07-13)
 
 #### :rocket: Enhancement
 * [#713](https://github.com/lblod/frontend-organization-portal/pull/713) [OP-3812] Operation area filter ([@nikidevisscher](https://github.com/nikidevisscher))
 
-#### :bug: Bug Fix
-* [#714](https://github.com/lblod/frontend-organization-portal/pull/714) [OP-3840] added worship services to the related organizations conditional ([@DamonKennes](https://github.com/DamonKennes))
-
 ## v1.40.1 (2026-07-09)
 
 #### :rocket: Enhancement
 * [#712](https://github.com/lblod/frontend-organization-portal/pull/712) [OP-3810] worship service In Oprichting bestuursorgaan lifecycle ([@DamonKennes](https://github.com/DamonKennes))
-
-## v1.40.0 (2026-07-06)
-
-#### :rocket: Enhancement
-* [#710](https://github.com/lblod/frontend-organization-portal/pull/710) [OP-3794] Add new organization types ([@bdevloed](https://github.com/bdevloed))
 
 ## v1.39.1 (2026-06-30)
 
@@ -38,7 +24,6 @@
 ## v1.39.0 (2026-06-25)
 
 #### :rocket: Enhancement
-* [#705](https://github.com/lblod/frontend-organization-portal/pull/705) [OP-3799] Region(s) based on werkingsgebied ([@bdevloed](https://github.com/bdevloed))
 * [#707](https://github.com/lblod/frontend-organization-portal/pull/707) [OP-3816] [OP-3820] Add juridische vorm ([@DamonKennes](https://github.com/DamonKennes))
 * [#709](https://github.com/lblod/frontend-organization-portal/pull/709) [OP-3818] Site type changes ([@Windvis](https://github.com/Windvis))
 
