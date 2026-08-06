@@ -20,12 +20,16 @@ export default class AddressModel extends AbstractValidationModel {
   @attr fullAddress;
 
   // Harvester provenance
-  @attr vendor;
   @attr source;
   @attr sourceId;
   @attr('date') harvestDate;
   @attr harvestJob;
   @attr harvestLink;
+  @belongsTo('vendor', {
+    inverse: null,
+    async: true,
+  })
+  vendor;
 
   @belongsTo('concept', {
     inverse: null,

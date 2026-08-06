@@ -22,12 +22,16 @@ export default class ContactPointModel extends AbstractValidationModel {
   @attr type;
 
   // Harvester provenance
-  @attr vendor;
   @attr source;
   @attr sourceId;
   @attr('date') harvestDate;
   @attr harvestJob;
   @attr harvestLink;
+  @belongsTo('vendor', {
+    inverse: null,
+    async: true,
+  })
+  vendor;
 
   @belongsTo('address', {
     inverse: null,
