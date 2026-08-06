@@ -5,6 +5,7 @@ import {
   selectByRole as getClassificationIds,
   getClassificationIdsForRole,
 } from 'frontend-organization-portal/utils/classification-identifiers';
+import { NO_PROVENANCE_VENDOR_ID } from 'frontend-organization-portal/models/vendor';
 
 export default class OrganizationsIndexRoute extends Route {
   @service muSearch;
@@ -22,6 +23,7 @@ export default class OrganizationsIndexRoute extends Route {
     classificationIds: { refreshModel: true, replace: true },
     recognizedWorshipTypeId: { refreshModel: true, replace: true },
     organizationStatus: { refreshModel: true, replace: true },
+    vendor: { refreshModel: true, replace: true },
   };
 
   async model(params) {
@@ -114,6 +116,14 @@ export default class OrganizationsIndexRoute extends Route {
     }
 
     filter[':has-no:source'] = true;
+
+    if (params.vendor) {
+      if (params.vendor === NO_PROVENANCE_VENDOR_ID) {
+        filter[':has-no:vendor'] = true;
+      } else {
+        filter.vendor = params.vendor;
+      }
+    }
 
     return await this.muSearch.search({
       index: 'organizations',
