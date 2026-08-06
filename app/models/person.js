@@ -7,8 +7,8 @@ export default class PersonModel extends AgentModel {
   @attr firstNameUsed;
 
   // Harvester provenance
-  @attr source;
-  @attr sourceId;
+  @attr harvestSource;
+  @attr harvestOriginalUri;
   @attr('date') harvestDate;
   @attr harvestJob;
   @attr harvestLink;

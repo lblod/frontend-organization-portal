@@ -33,16 +33,16 @@
         </dd>
         <dt>Bron</dt>
         <dd>
-          {{#if @harvestable.source}}
-            <code class="au-c-code-inline">{{@harvestable.source}}</code>
+          {{#if @harvestable.harvestSource}}
+            <code class="au-c-code-inline">{{@harvestable.harvestSource}}</code>
           {{else}}
             <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
           {{/if}}
         </dd>
         <dt>Originele identificatie</dt>
         <dd>
-          {{#if @harvestable.sourceId}}
-            <code class="au-c-code-inline">{{@harvestable.sourceId}}</code>
+          {{#if @harvestable.harvestOriginalUri}}
+            <code class="au-c-code-inline">{{@harvestable.harvestOriginalUri}}</code>
           {{else}}
             <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
           {{/if}}

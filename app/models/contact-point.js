@@ -22,8 +22,8 @@ export default class ContactPointModel extends AbstractValidationModel {
   @attr type;
 
   // Harvester provenance
-  @attr source;
-  @attr sourceId;
+  @attr harvestSource;
+  @attr harvestOriginalUri;
   @attr('date') harvestDate;
   @attr harvestJob;
   @attr harvestLink;
