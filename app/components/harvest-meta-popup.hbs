@@ -25,7 +25,8 @@
         <dt>Vendor</dt>
         <dd>
           {{#if @harvestable.vendor.uri}}
-            {{@harvestable.vendor.name}} <br />
+            {{@harvestable.vendor.name}}
+            <br />
             <code class="au-c-code-inline">{{@harvestable.vendor.uri}}</code>
           {{else}}
             <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
@@ -42,7 +43,9 @@
         <dt>Originele identificatie</dt>
         <dd>
           {{#if @harvestable.harvestOriginalUri}}
-            <code class="au-c-code-inline">{{@harvestable.harvestOriginalUri}}</code>
+            <code
+              class="au-c-code-inline"
+            >{{@harvestable.harvestOriginalUri}}</code>
           {{else}}
             <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
           {{/if}}

@@ -27,7 +27,10 @@
               <:label>Adres</:label>
               <:content>
                 {{@address.fullAddress}}
-                <HarvestMetaPopup @harvestable={{@address}} @iconOnly={{true}} />
+                <HarvestMetaPopup
+                  @harvestable={{@address}}
+                  @iconOnly={{true}}
+                />
               </:content>
             </Item>
           {{/if}}
