@@ -2,92 +2,93 @@
   <AuButton
     @skin="naked"
     @icon="info-circle"
+    @hideText={{@iconOnly}}
     {{on "click" this.toggle}}
   >
     Herkomst van gegevens
   </AuButton>
   <AuModal
-      @modalOpen={{this.modalOpen}}
-      @closable={{true}}
-      @closeModal={{this.toggle}}
-      @size="default"
-      @padding="default"
-      @overflow={{false}}
-    >
-      <:title>Herkomst van de gegevens</:title>
-      <:body>
-        <p class="au-u-margin-bottom">
-          Deze data werd opgehaald via een automatische job. Hieronder staat, indien beschikbaar, metadata over de laatst opgehaalde updates over deze data. Dit is nuttige informatie voor de helpdesk in geval van problemen met de data.
-        </p>
-        <DataCard>
-          <:card as |Card|>
-            <Card.Columns>
-              <:left as |Item|>
-                <Item>
-                  <:label>Vendor</:label>
-                  <:content>
-                    {{#if @harvestable.vendor}}
-                      {{@harvestable.vendor}}
-                    {{else}}
-                      -
-                    {{/if}}
-                  </:content>
-                </Item>
-                <Item>
-                  <:label>Bron</:label>
-                  <:content>
-                    {{#if @harvestable.source}}
-                      {{@harvestable.source}}
-                    {{else}}
-                      -
-                    {{/if}}
-                  </:content>
-                </Item>
-                <Item>
-                  <:label>Originele identificatie</:label>
-                  <:content>
-                    {{#if @harvestable.sourceId}}
-                      {{@harvestable.sourceId}}
-                    {{else}}
-                      -
-                    {{/if}}
-                  </:content>
-                </Item>
-              </:left>
-              <:right as |Item|>
-                <Item>
-                  <:label>Datum van laatste harvesting</:label>
-                  <:content>
-                    {{#if @harvestable.harvestDate}}
-                      {{date-format @harvestable.harvestDate}}
-                    {{else}}
-                      -
-                    {{/if}}
-                  </:content>
-                </Item>
-                <Item>
-                  <:label>Laatste harvesting Job</:label>
-                  <:content>
-                    {{#if @harvestable.harvestJob}}
-                      <AuLinkExternal href={{@harvestable.harvestLink}}>
-                        {{@harvestable.harvestJob}}
-                      </AuLinkExternal>
-                    {{else}}
-                      -
-                    {{/if}}
-                  </:content>
-                </Item>
-              </:right>
-            </Card.Columns>
-          </:card>
-        </DataCard>
-      </:body>
-      <:footer>
-        <AuButton
-          {{on "click" this.toggle}}
-        >
-          Sluiten
-        </AuButton>
-      </:footer>
-    </AuModal>
+    @modalOpen={{this.modalOpen}}
+    @closable={{true}}
+    @closeModal={{this.toggle}}
+    @size="large"
+    @overflow={{false}}
+  >
+    <:title>Herkomst van de gegevens</:title>
+    <:body>
+      <p class="au-u-margin-bottom">
+        Deze data werd opgehaald via een automatische job. Hieronder staat,
+        indien beschikbaar, metadata over de laatst opgehaalde updates over deze
+        data. Dit is nuttige informatie voor de helpdesk in geval van problemen
+        met de data.
+      </p>
+      <DataCard>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item>
+                <:label>Vendor</:label>
+                <:content>
+                  {{#if @harvestable.vendor}}
+                    {{@harvestable.vendor}}
+                  {{else}}
+                    -
+                  {{/if}}
+                </:content>
+              </Item>
+              <Item>
+                <:label>Bron</:label>
+                <:content>
+                  {{#if @harvestable.source}}
+                    {{@harvestable.source}}
+                  {{else}}
+                    -
+                  {{/if}}
+                </:content>
+              </Item>
+              <Item>
+                <:label>Originele identificatie</:label>
+                <:content>
+                  {{#if @harvestable.sourceId}}
+                    {{@harvestable.sourceId}}
+                  {{else}}
+                    -
+                  {{/if}}
+                </:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item>
+                <:label>Datum van laatste harvesting</:label>
+                <:content>
+                  {{#if @harvestable.harvestDate}}
+                    {{date-format @harvestable.harvestDate}}
+                  {{else}}
+                    -
+                  {{/if}}
+                </:content>
+              </Item>
+              <Item>
+                <:label>Laatste harvesting Job</:label>
+                <:content>
+                  {{#if @harvestable.harvestJob}}
+                    <AuLinkExternal href={{@harvestable.harvestLink}}>
+                      {{@harvestable.harvestJob}}
+                    </AuLinkExternal>
+                  {{else}}
+                    -
+                  {{/if}}
+                </:content>
+              </Item>
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+    </:body>
+    <:footer>
+      <AuButton {{on "click" this.toggle}}>
+        Sluiten
+      </AuButton>
+    </:footer>
+  </AuModal>
 {{/if}}
