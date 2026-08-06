@@ -11,7 +11,6 @@
     @modalOpen={{this.modalOpen}}
     @closable={{true}}
     @closeModal={{this.toggle}}
-    @size="large"
     @overflow={{false}}
   >
     <:title>Herkomst van de gegevens</:title>
@@ -22,68 +21,51 @@
         data. Dit is nuttige informatie voor de helpdesk in geval van problemen
         met de data.
       </p>
-      <DataCard>
-        <:card as |Card|>
-          <Card.Columns>
-            <:left as |Item|>
-              <Item>
-                <:label>Vendor</:label>
-                <:content>
-                  {{#if @harvestable.vendor}}
-                    {{@harvestable.vendor}}
-                  {{else}}
-                    -
-                  {{/if}}
-                </:content>
-              </Item>
-              <Item>
-                <:label>Bron</:label>
-                <:content>
-                  {{#if @harvestable.source}}
-                    {{@harvestable.source}}
-                  {{else}}
-                    -
-                  {{/if}}
-                </:content>
-              </Item>
-              <Item>
-                <:label>Originele identificatie</:label>
-                <:content>
-                  {{#if @harvestable.sourceId}}
-                    {{@harvestable.sourceId}}
-                  {{else}}
-                    -
-                  {{/if}}
-                </:content>
-              </Item>
-            </:left>
-            <:right as |Item|>
-              <Item>
-                <:label>Datum van laatste harvesting</:label>
-                <:content>
-                  {{#if @harvestable.harvestDate}}
-                    {{date-format @harvestable.harvestDate}}
-                  {{else}}
-                    -
-                  {{/if}}
-                </:content>
-              </Item>
-              <Item>
-                <:label>Laatste harvesting Job</:label>
-                <:content>
-                  {{#if @harvestable.harvestJob}}
-                    <AuLinkExternal href={{@harvestable.harvestLink}}>
-                      {{@harvestable.harvestJob}}
-                    </AuLinkExternal>
-                  {{else}}
-                    -
-                  {{/if}}
-                </:content>
-              </Item>
-            </:right>
-          </Card.Columns>
-        </:card>
-      </DataCard>
+      <dl class="au-c-dl au-u-background-gray-100">
+        <dt>Vendor</dt>
+        <dd>
+          {{#if @harvestable.vendor.uri}}
+            {{@harvestable.vendor.name}} <br />
+            <code class="au-c-code-inline">{{@harvestable.vendor.uri}}</code>
+          {{else}}
+            <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
+          {{/if}}
+        </dd>
+        <dt>Bron</dt>
+        <dd>
+          {{#if @harvestable.source}}
+            <code class="au-c-code-inline">{{@harvestable.source}}</code>
+          {{else}}
+            <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
+          {{/if}}
+        </dd>
+        <dt>Originele identificatie</dt>
+        <dd>
+          {{#if @harvestable.sourceId}}
+            <code class="au-c-code-inline">{{@harvestable.sourceId}}</code>
+          {{else}}
+            <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
+          {{/if}}
+        </dd>
+        <dt>Datum van laatste harvesting</dt>
+        <dd>
+          {{#if @harvestable.harvestDate}}
+            {{date-format @harvestable.harvestDate}}
+          {{else}}
+            <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
+          {{/if}}
+        </dd>
+        <dt>Laatste harvesting Job</dt>
+        <dd>
+          {{#if @harvestable.harvestJob}}
+            <AuLinkExternal href={{@harvestable.harvestLink}}>
+              {{@harvestable.harvestJob}}
+            </AuLinkExternal>
+          {{else}}
+            <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
+          {{/if}}
+        </dd>
+      </dl>
     </:body>
     <:footer>
       <AuButton {{on "click" this.toggle}}>

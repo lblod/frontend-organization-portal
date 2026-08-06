@@ -24,6 +24,8 @@ $au-flex-utilities-reverse-responsive-breakpoints: true;
 @import "components/sidebar-container";
 @import "components/table-message";
 @import "components/c-rich-text-editor";
+@import "components/code";
+@import "components/dl";
 
 // PLUGINS
 @import "@appuniversum/ember-appuniversum/styles/a-plugins";
