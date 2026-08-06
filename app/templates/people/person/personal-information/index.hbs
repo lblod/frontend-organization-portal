@@ -184,20 +184,20 @@
                   </:content>
                 </Item>
               {{/if}}
-              {{#if position.primaryContact.contactAddress.fullAddress}}
+              {{#if position.contactAddress.fullAddress}}
                 <Item>
                   <:label>Adres</:label>
                   <:content>
-                    {{position.primaryContact.contactAddress.fullAddress}}
-                    {{! <HarvestMetaPopup @harvestable={{position.primaryContact.contactAddress}} /> }}
+                    {{position.contactAddress.fullAddress}}
+                      <HarvestMetaPopup @harvestable={{position.contactAddress}} />
                   </:content>
                 </Item>
               {{/if}}
-              {{#if position.primaryContact.contactAddress.province}}
+              {{#if position.contactAddress.province}}
                 <Item>
                   <:label>Provincie</:label>
                   <:content>
-                    {{position.primaryContact.contactAddress.province}}
+                    {{position.contactAddress.province}}
                   </:content>
                 </Item>
               {{/if}}

@@ -18,6 +18,7 @@ export default class ContactDetailsService extends Service {
     const mContacts = await minister.contacts;
     const primaryContact = findPrimaryContact(mContacts);
     const secondaryContact = findSecondaryContact(mContacts);
+    const contactAddress = await primaryContact.contactAddress;
 
     return {
       position: minister,
@@ -30,6 +31,7 @@ export default class ContactDetailsService extends Service {
       administrativeUnit,
       primaryContact: primaryContact,
       secondaryContact: secondaryContact,
+      contactAddress,
     };
   }
 
@@ -46,6 +48,8 @@ export default class ContactDetailsService extends Service {
     const mContacts = await mandatory.contacts;
     const primaryContact = findPrimaryContact(mContacts);
     const secondaryContact = findSecondaryContact(mContacts);
+    const contactAddress = await primaryContact.contactAddress;
+
     return {
       position: mandatory,
       title: `${role.label}, ${administrativeUnit.name}`,
@@ -58,6 +62,7 @@ export default class ContactDetailsService extends Service {
       administrativeUnit,
       primaryContact: primaryContact,
       secondaryContact: secondaryContact,
+      contactAddress,
     };
   }
 
@@ -82,6 +87,7 @@ export default class ContactDetailsService extends Service {
     }
 
     const primaryContact = await boardPosition.contactPoint;
+    const contactAddress = await primaryContact.contactAddress;
 
     return {
       position: functionary,
@@ -94,6 +100,7 @@ export default class ContactDetailsService extends Service {
       administrativeUnits,
       status,
       primaryContact,
+      contactAddress,
     };
   }
 
