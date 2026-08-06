@@ -6,6 +6,14 @@ export default class PersonModel extends AgentModel {
   @attr familyName;
   @attr firstNameUsed;
 
+  // Harvester provenance
+  @attr vendor;
+  @attr source;
+  @attr sourceId;
+  @attr('date') harvestDate;
+  @attr harvestJob;
+  @attr harvestLink;
+
   @hasMany('agent-in-position', {
     inverse: 'person',
     async: true,

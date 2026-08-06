@@ -4,6 +4,8 @@ import AgentModel from './agent';
 export default class AgentInPositionModel extends AgentModel {
   @attr('date') agentStartDate;
   @attr('date') agentEndDate;
+
+  // Harvester provenance
   @attr vendor;
   @attr source;
   @attr sourceId;
