@@ -15,7 +15,6 @@
       </:action>
     </PageHeader>
 
-
     <DataCard>
       <:title>
         Persoonlijke gegevens
@@ -189,7 +188,10 @@
                   <:label>Adres</:label>
                   <:content>
                     {{position.contactAddress.fullAddress}}
-                      <HarvestMetaPopup @harvestable={{position.contactAddress}} @iconOnly={{true}} />
+                    <HarvestMetaPopup
+                      @harvestable={{position.contactAddress}}
+                      @iconOnly={{true}}
+                    />
                   </:content>
                 </Item>
               {{/if}}
