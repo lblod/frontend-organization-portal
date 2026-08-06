@@ -12,6 +12,7 @@
           </AuLink>
           <AuButton
             @loading={{this.createOrganizationTask.isRunning}}
+            @loadingMessage="Voeg toe"
             type="submit"
             form="organization-creation-form"
             @icon="add"
@@ -126,13 +127,15 @@
                     @error={{hasError}}
                     @id="legal-form-select"
                   />
-               </:content>
+                </:content>
               </Item>
             {{/if}}
-            {{#if (and
-                    this.currentOrganizationModel.classification
-                    this.currentOrganizationModel.requiresContentThemes
-                  )}}
+            {{#if
+              (and
+                this.currentOrganizationModel.classification
+                this.currentOrganizationModel.requiresContentThemes
+              )
+            }}
               <Item
                 @labelFor="content-theme-select"
                 @required={{true}}
@@ -221,6 +224,7 @@
                 this.currentOrganizationModel.isZorgraad
                 this.currentOrganizationModel.isBosgroep
                 this.currentOrganizationModel.isWoonmaatschappij
+                this.currentOrganizationModel.isPrivateOcmwAssociation
               )
             }}
               <Item

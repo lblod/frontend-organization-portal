@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 
 export default class OrganizationStatusSelectComponent extends Component {
@@ -28,7 +28,7 @@ export default class OrganizationStatusSelectComponent extends Component {
     return organizationStatuses.find((status) => status.id === id);
   }
 
-  @task *loadOrganizationStatusesTask() {
-    return yield this.store.findAll('organization-status-code');
-  }
+  loadOrganizationStatusesTask = task(async () => {
+    return await this.store.findAll('organization-status-code');
+  });
 }

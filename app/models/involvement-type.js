@@ -1,4 +1,4 @@
-import Model, { attr } from '@ember-data/model';
+import Model, { attr } from '@warp-drive/legacy/model';
 
 export const INVOLVEMENT_TYPE = {
   SUPERVISORY: 'ac400cc9f135ac7873fb3e551ec738c1',

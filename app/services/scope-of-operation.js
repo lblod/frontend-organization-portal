@@ -11,8 +11,7 @@ export default class ScopeOfOperationService extends Service {
 
   /**
    * Retrieve the label to be displayed for the provided organization's scope of
-   * of operation. Only administrative units can have a scope of operation
-   * defined.
+   * operation.
    * @param {Organization} organization - The organization for which to retrieve
    *     the label.
    * @returns {Promise<string | null>} The appropriate label that should be
@@ -22,7 +21,7 @@ export default class ScopeOfOperationService extends Service {
     const scope = await organization.scope;
 
     let label;
-    if (organization.isAdministrativeUnit && scope) {
+    if (scope) {
       const resp = await fetch(
         this.getScopeServiceEndpoint('label-for-scope', scope),
       );
@@ -49,7 +48,7 @@ export default class ScopeOfOperationService extends Service {
     const scope = await organization.scope;
 
     let locations = [];
-    if (organization.isAdministrativeUnit && scope) {
+    if (scope) {
       const resp = await fetch(
         this.getScopeServiceEndpoint('locations-in-scope', scope),
       );
@@ -91,7 +90,7 @@ export default class ScopeOfOperationService extends Service {
   async getReferentieregiosInScope(organization) {
     const scope = await organization.scope;
 
-    if (!organization.isAdministrativeUnit || !scope) {
+    if (!scope) {
       return [];
     }
 

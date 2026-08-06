@@ -1,4 +1,4 @@
-import { belongsTo, attr } from '@ember-data/model';
+import { belongsTo, attr } from '@warp-drive/legacy/model';
 import OrganizationModel from './organization';
 
 export default class KboOrganizationtModel extends OrganizationModel {

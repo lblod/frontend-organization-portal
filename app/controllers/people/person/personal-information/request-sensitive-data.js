@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
@@ -33,9 +33,9 @@ export default class PeoplePersonPersonalInformationRequestSensitiveDataControll
     this.router.transitionTo(`${this.redirectUrl}`);
   }
 
-  @task *loadReasonCodes() {
-    return yield this.store.findAll('request-reason');
-  }
+  loadReasonCodes = task(async () => {
+    return await this.store.findAll('request-reason');
+  });
 
   reset() {
     this.reasonCode = null;

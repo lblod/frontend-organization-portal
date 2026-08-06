@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
 
 export default class PeopleIndexRoute extends Route {
@@ -23,8 +23,7 @@ export default class PeopleIndexRoute extends Route {
     };
   }
 
-  @keepLatestTask({ cancelOn: 'deactivate' })
-  *loadPeopleTask(params) {
+  loadPeopleTask = keepLatestTask(async (params) => {
     const filter = {};
     if (params.given_name) {
       filter[':phrase_prefix:given_name'] = `${params.given_name.trim()}`;
@@ -44,7 +43,7 @@ export default class PeopleIndexRoute extends Route {
       filter['organization_id'] = params.organization;
     }
 
-    const page = yield this.muSearch.search({
+    const page = await this.muSearch.search({
       index: 'people',
       filters: filter,
       sort: params.sort,
@@ -93,5 +92,5 @@ export default class PeopleIndexRoute extends Route {
       }
     }
     return page;
-  }
+  });
 }

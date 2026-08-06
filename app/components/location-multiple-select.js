@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 
 // TODO: open dropdown with all results on focus/open
@@ -7,8 +7,7 @@ import { restartableTask } from 'ember-concurrency';
 export default class LocationMultipleSelectComponent extends Component {
   @service store;
 
-  @restartableTask
-  *loadLocationsMultipleTask(searchParams = '') {
+  loadLocationsMultipleTask = restartableTask(async (searchParams = '') => {
     const provinces = this.args.provinceLocations;
 
     const query = {
@@ -23,10 +22,10 @@ export default class LocationMultipleSelectComponent extends Component {
       query['filter[label]'] = searchParams;
     }
 
-    const municipalities = yield this.store.query('location', query);
+    const municipalities = await this.store.query('location', query);
 
     return this.extractProvinceGroups(provinces, municipalities);
-  }
+  });
 
   extractProvinceGroups(provinces, municipalities) {
     const provinceGroups = provinces

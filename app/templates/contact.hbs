@@ -14,17 +14,16 @@
     >
       {{#each this.subjectOptions as |subject|}}
         <Item>
-          <AuLinkExternal 
-            href={{subject.link}} 
-            title={{subject.title}}
-          >
+          <AuLinkExternal href={{subject.link}} title={{subject.title}}>
             {{subject.title}}
           </AuLinkExternal>
         </Item>
       {{/each}}
-    </AuList>    
+    </AuList>
 
-    <p class="au-u-margin-top au-u-margin-bottom">Indien geen van bovenstaande informatiebronnen je kan helpen, klik op één van onderstaande meldingen om onze helpdesk te contacteren:</p>
+    <p class="au-u-margin-top au-u-margin-bottom">Indien geen van bovenstaande
+      informatiebronnen je kan helpen, klik op één van onderstaande meldingen om
+      onze helpdesk te contacteren:</p>
 
     <AuList
       @direction="vertical"
@@ -33,20 +32,29 @@
     >
       {{#each this.issueOptions as |issue|}}
         <Item>
-          <AuLinkExternal
-            href={{issue.link}} 
-            title={{issue.title}}
-          >
+          <AuLinkExternal href={{issue.link}} title={{issue.title}}>
             {{issue.title}}
           </AuLinkExternal>
         </Item>
       {{/each}}
-      <Item class="au-c-list__item">Merk je een fout op in data gebruik dan de meldingslink “Zie je een fout in de data? Meld het ons!” rechtsboven de pagina's met gegeven in het OP.</Item>
+      <Item class="au-c-list__item">Merk je een fout op in data gebruik dan de
+        meldingslink “Zie je een fout in de data? Meld het ons!” rechtsboven de
+        pagina's met gegeven in het OP.</Item>
     </AuList>
 
-    <p class="au-u-margin-top">Na het verzenden van het formulier wordt je melding of vraag omgezet in een ticket en wordt dit behandeld door onze helpdeskmedewerker(s). Gelieve geen vragen rechtstreeks naar het persoonlijk e-mailadres van de helpdeskmedewer(s) te sturen.</p>
+    <p class="au-u-margin-top">Na het verzenden van het formulier wordt je
+      melding of vraag omgezet in een ticket en wordt dit behandeld door onze
+      helpdeskmedewerker(s). Gelieve geen vragen rechtstreeks naar het
+      persoonlijk e-mailadres van de helpdeskmedewer(s) te sturen.</p>
 
-    <p class="au-u-margin-top">Tips om onze helpdeskmedewerker(s) te helpen, vind je in onze handleiding onder de sectie <a target="_blank" class="au-c-link" rel="nofollow noopener noreferrer" href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/ondersteuning/helpdesk">helpdesk.</a></p>
+    <p class="au-u-margin-top">Tips om onze helpdeskmedewerker(s) te helpen,
+      vind je in onze handleiding onder de sectie
+      <a
+        target="_blank"
+        class="au-c-link"
+        rel="nofollow noopener noreferrer"
+        href="https://abb-vlaanderen.gitbook.io/handleiding-organisatieportaal/ondersteuning/helpdesk"
+      >helpdesk.</a></p>
 
   </div>
 </StaticPage>

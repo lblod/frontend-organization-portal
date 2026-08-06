@@ -1,14 +1,13 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { ORGANIZATION_STATUS } from '../models/organization-status-code';
 
 export default class OrganizationMultipleSelectComponent extends Component {
   @service store;
 
-  @restartableTask
-  *loadOrganizationsMultipleTask(searchParams = '') {
-    yield timeout(500);
+  loadOrganizationsMultipleTask = restartableTask(async (searchParams = '') => {
+    await timeout(500);
 
     const query = {
       sort: 'name',
@@ -33,6 +32,6 @@ export default class OrganizationMultipleSelectComponent extends Component {
       query['filter[name]'] = searchParams;
     }
 
-    return yield this.store.query('organization', query);
-  }
+    return await this.store.query('organization', query);
+  });
 }

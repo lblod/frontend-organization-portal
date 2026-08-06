@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
@@ -7,10 +7,6 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
 export default class PositionSelectComponent extends Component {
   @service store;
   @service currentSession;
-
-  positions = trackedTask(this, this.loadPositionTask, () => [
-    this.args.selectedOrganization,
-  ]);
 
   get selectedPosition() {
     if (typeof this.args.selected === 'string') {
@@ -29,10 +25,10 @@ export default class PositionSelectComponent extends Component {
     return position.find((p) => p.id === id);
   }
 
-  @task *loadPositionTask() {
+  loadPositionTask = task(async () => {
     // Trick used to avoid infinite loop
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
-    yield Promise.resolve();
+    await Promise.resolve();
 
     let boardPositionCodes = [];
     let ministerPositions = [];
@@ -44,19 +40,21 @@ export default class PositionSelectComponent extends Component {
     ) {
       const selectedOrganizationId = this.args.selectedOrganization;
 
-      const organization = (yield this.store.query('organization', {
-        'filter[:id:]': selectedOrganizationId,
-        include: 'classification',
-      })).at(0);
+      const organization = (
+        await this.store.query('organization', {
+          'filter[:id:]': selectedOrganizationId,
+          include: 'classification',
+        })
+      ).at(0);
 
-      const classification = yield organization.classification;
+      const classification = await organization.classification;
 
-      boardPositionCodes = yield this.store.query('board-position-code', {
+      boardPositionCodes = await this.store.query('board-position-code', {
         'filter[applies-to][applies-within][:id:]': classification.id,
       });
 
       if (classification.id == CLASSIFICATION.WORSHIP_SERVICE.id) {
-        ministerPositions = yield this.store.query(
+        ministerPositions = await this.store.query(
           'minister-position-function',
           {
             page: { size: 100 },
@@ -87,13 +85,13 @@ export default class PositionSelectComponent extends Component {
         ];
       }
 
-      boardPositionCodes = yield this.store.query('board-position-code', {
+      boardPositionCodes = await this.store.query('board-position-code', {
         'filter[applies-to][applies-within][:id:]': allowedIds.join(),
         page: { size: 100 },
       });
 
       if (this.currentSession.hasWorshipRole) {
-        ministerPositions = yield this.store.query(
+        ministerPositions = await this.store.query(
           'minister-position-function',
           {
             page: { size: 100 },
@@ -117,5 +115,9 @@ export default class PositionSelectComponent extends Component {
     }
 
     return positions;
-  }
+  });
+
+  positions = trackedTask(this, this.loadPositionTask, () => [
+    this.args.selectedOrganization,
+  ]);
 }

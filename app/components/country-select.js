@@ -1,13 +1,12 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { restartableTask, timeout } from 'ember-concurrency';
 
 export default class CountrySelectComponent extends Component {
   @service store;
 
-  @restartableTask
-  *searchCountriesTask(search = '') {
-    yield timeout(500);
+  searchCountriesTask = restartableTask(async (search = '') => {
+    await timeout(500);
 
     const query = {
       sort: 'country-label',
@@ -17,7 +16,7 @@ export default class CountrySelectComponent extends Component {
       query['filter[country-label]'] = search;
     }
 
-    const nationalitues = yield this.store.query('nationality', query);
+    const nationalitues = await this.store.query('nationality', query);
     return nationalitues.map((n) => n.countryLabel);
-  }
+  });
 }

@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { task, timeout } from 'ember-concurrency';
 
 // TODO: remove administrative unit classifications after edit functionality
@@ -14,11 +14,10 @@ export default class SiteTypeSelectComponent extends Component {
     this.siteTypes = this.loadSiteTypesTask.perform();
   }
 
-  @task
-  *loadSiteTypesTask() {
-    yield timeout(500);
+  loadSiteTypesTask = task(async () => {
+    await timeout(500);
 
-    let allTypes = yield this.store.findAll('site-type', { reload: true });
+    let allTypes = await this.store.findAll('site-type', { reload: true });
     let filteredTypes = [];
 
     filteredTypes.push(
@@ -44,8 +43,17 @@ export default class SiteTypeSelectComponent extends Component {
     } else if (this.args.organization.isPoliceZone) {
       filteredTypes.push(
         allTypes.find(
-          (type) => type.id == '0ed15289-1f3d-4172-8c46-0506de5aa2a3',
-        ), // Hoofdcommissariaat
+          (type) =>
+            // Hoofdcommissariaat
+            type.id == '0ed15289-1f3d-4172-8c46-0506de5aa2a3',
+        ),
+      );
+      filteredTypes.push(
+        allTypes.find(
+          (type) =>
+            // Wijkkantoor,
+            type.id == 'eeaf623d-9629-4de3-9c37-2dbb132b13d8',
+        ),
       );
     }
 
@@ -62,5 +70,5 @@ export default class SiteTypeSelectComponent extends Component {
     );
 
     return filteredTypes;
-  }
+  });
 }

@@ -32,19 +32,7 @@ $au-flex-utilities-reverse-responsive-breakpoints: true;
 @import "@appuniversum/ember-appuniversum/styles/a-utilities";
 
 // ember-rdfa-editor styles
-// TODO: `@import "ember-rdfa-editor";` imports annotation styles which are _huge_ when compiled
-// so we only import the base component styles for now.
-@import "ember-rdfa-editor/c-container";
-@import "ember-rdfa-editor/c-dropdown";
-@import "ember-rdfa-editor/c-content";
-@import "ember-rdfa-editor/c-editor";
-@import "ember-rdfa-editor/c-editor-hints";
-@import "ember-rdfa-editor/c-icon";
-@import "ember-rdfa-editor/c-toast";
-@import "ember-rdfa-editor/c-toolbar";
-@import "ember-rdfa-editor/c-table";
-@import "ember-rdfa-editor/c-ember-node";
-@import "ember-rdfa-editor/shame";
+@import "@lblod/ember-rdfa-editor";
 
 // TEMPORARY HACKS AND QUICKFIXES
 @import "shame";

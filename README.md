@@ -48,11 +48,11 @@ Specify what it takes to deploy your app.
 
 ## Further Reading / Useful Links
 
-* [ember.js](https://emberjs.com/)
-* [ember-cli](https://cli.emberjs.com/release/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+- [ember.js](https://emberjs.com/)
+- [ember-cli](https://cli.emberjs.com/release/)
+- Development Browser Extensions
+  - [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
+  - [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
 
 ## Docker
 
@@ -85,7 +85,7 @@ The overriding will be saved in a cookie, so it will persist across page reloads
 The feature flags can be used in the application by injecting the `features` service and calling the `isEnabled` method.
 
 ```javascript
-import { inject as service } from "@ember/service";
+import { service } from "@ember/service";
 
 export default class ExampleComponent extends Component {
   @service features;
@@ -115,7 +115,7 @@ Or in template files by using the `is-feature-enabled` helper:
 ### List of feature flags
 
 | Name              | Description                        |
-|-------------------|------------------------------------|
+| ----------------- | ---------------------------------- |
 | edit-contact-data | Enable the edition of contact site |
 
 ## Releasing a new version

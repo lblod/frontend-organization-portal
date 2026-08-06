@@ -1,8 +1,12 @@
 {{#if @searchEnabled}}
   <div class="ember-power-select-search">
-    <input type="search" autocomplete="off"
-      autocorrect="off" autocapitalize="off"
-      spellcheck={{false}} class="ember-power-select-movable-cursor"
+    <input
+      type="search"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck={{false}}
+      class="ember-power-select-movable-cursor"
       value={{@addressSuggestion.fullAddress}}
       aria-label="Search text input"
       aria-activedescendant={{@ariaActiveDescendant}}
@@ -17,6 +21,6 @@
       {{!TODO: replace with a custom focus modifier and the willDestroy method}}
       {{did-insert this.focusInput}}
       {{will-destroy this.clearSearch}}
-    >
+    />
   </div>
 {{/if}}

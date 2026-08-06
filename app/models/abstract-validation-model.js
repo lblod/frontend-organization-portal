@@ -1,6 +1,6 @@
 import { tracked } from '@glimmer/tracking';
 import { assert } from '@ember/debug';
-import Model from '@ember-data/model';
+import Model from '@warp-drive/legacy/model';
 
 /**
  * Ember Data Model with Joi-based Validation

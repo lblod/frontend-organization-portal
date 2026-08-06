@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { BLACKLIST_RO } from '../models/representative-body';
 
@@ -13,9 +13,8 @@ export default class RepresentativeBodySelectComponent extends Component {
     this.representativeBodies = this.loadRepresentativeBodiesTask.perform();
   }
 
-  @task
-  *loadRepresentativeBodiesTask() {
-    const representativeBodies = yield this.store.findAll(
+  loadRepresentativeBodiesTask = task(async () => {
+    const representativeBodies = await this.store.findAll(
       'representative-body',
       { include: 'organization-status' },
     );
@@ -25,5 +24,5 @@ export default class RepresentativeBodySelectComponent extends Component {
     });
 
     return filteredRepresentativeBodies;
-  }
+  });
 }

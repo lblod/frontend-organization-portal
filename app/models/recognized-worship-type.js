@@ -1,4 +1,4 @@
-import Model, { attr } from '@ember-data/model';
+import Model, { attr } from '@warp-drive/legacy/model';
 
 export const RECOGNIZED_WORSHIP_TYPE = {
   ROMAN_CATHOLIC: 'b13d1d623626bc1ee75c7d20bc60e3c0',

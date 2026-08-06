@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 import {
   selectByRole as getClassificationIds,
@@ -10,8 +10,7 @@ export default class OrganizationSelectByNameComponent extends Component {
   @service muSearch;
   @service currentSession;
 
-  @restartableTask
-  *loadOrganizationsTask(searchParams = '') {
+  loadOrganizationsTask = restartableTask(async (searchParams = '') => {
     const filter = {};
 
     if (searchParams.trim() !== '') {
@@ -76,7 +75,7 @@ export default class OrganizationSelectByNameComponent extends Component {
       filter[':prefix:identifier.index'] = this.args.selectedIdentifier;
     }
 
-    const result = yield this.muSearch.search({
+    const result = await this.muSearch.search({
       index: 'organizations',
       sort: 'name',
       page: '0',
@@ -91,5 +90,5 @@ export default class OrganizationSelectByNameComponent extends Component {
     if (result) {
       return [...[searchParams], ...new Set(result.slice())];
     }
-  }
+  });
 }

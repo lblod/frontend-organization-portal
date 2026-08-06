@@ -10,7 +10,8 @@
             <AuLabel for="filter-name">Naam</AuLabel>
             <OrganizationSelectByName
               @id="filter-name"
-              @selected={{this.name}}
+              {{! ember-power-select v8+ introduced a regression bug related to empty string values, so we explicitly convert it to undefined if needed. More info: https://github.com/ember-power-addons/ember-power-select/issues/2082 }}
+              @selected={{if this.name this.name}}
               @onChange={{this.setName}}
               @selectedProvince={{this.province}}
               @selectedMunicipality={{this.municipality}}
@@ -26,7 +27,8 @@
             <AuLabel for="filter-identifier">Identificator</AuLabel>
             <OrganizationSelectByIdentifier
               @id="filter-identifier"
-              @selected={{this.identifier}}
+              {{! ember-power-select v8+ introduced a regression bug related to empty string values, so we explicitly convert it to undefined if needed. More info: https://github.com/ember-power-addons/ember-power-select/issues/2082 }}
+              @selected={{if this.identifier this.identifier}}
               @onChange={{this.setIdentifier}}
               @selectedProvince={{this.province}}
               @selectedMunicipality={{this.municipality}}
@@ -49,7 +51,8 @@
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-municipality">Gemeente</AuLabel>
             <MunicipalitySelectByName
-              @selected={{this.municipality}}
+              {{! ember-power-select v8+ introduced a regression bug related to empty string values, so we explicitly convert it to undefined if needed. More info: https://github.com/ember-power-addons/ember-power-select/issues/2082 }}
+              @selected={{if this.municipality this.municipality}}
               @onChange={{this.setMunicipality}}
               @selectedProvince={{this.province}}
               @id="filter-municipality"
@@ -58,7 +61,8 @@
           <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
             <AuLabel for="filter-province">Provincie</AuLabel>
             <ProvinceSelect
-              @selected={{this.province}}
+              {{! ember-power-select v8+ introduced a regression bug related to empty string values, so we explicitly convert it to undefined if needed. More info: https://github.com/ember-power-addons/ember-power-select/issues/2082 }}
+              @selected={{if this.province this.province}}
               @onChange={{this.setProvince}}
               @selectedMunicipality={{this.municipality}}
               @id="filter-province"
@@ -106,6 +110,14 @@
               @onChange={{this.setOrganizationStatus}}
               @allowClear={{true}}
               @id="statuses"
+            />
+          </div>
+          <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
+            <AuLabel for="vendor">Digitaal platform</AuLabel>
+            <VendorSelect
+              @selected={{this.vendor}}
+              @onChange={{this.setVendor}}
+              @id="vendor"
             />
           </div>
           <div class="au-o-grid__item">

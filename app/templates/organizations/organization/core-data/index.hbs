@@ -100,12 +100,12 @@
                   </Item>
                 {{/unless}}
                 {{#if @model.organization.requiresContentThemes}}
-                    <Item>
-                      <:label>Inhoudelijk thema</:label>
-                      <:content>
-                        {{this.contentThemesString}}
-                      </:content>
-                    </Item>
+                  <Item>
+                    <:label>Inhoudelijk thema</:label>
+                    <:content>
+                      {{this.contentThemesString}}
+                    </:content>
+                  </Item>
                 {{/if}}
               {{/unless}}
 
@@ -156,7 +156,15 @@
                   </:content>
                 </Item>
               {{/if}}
-              {{#if @model.organization.isAdministrativeUnit}}
+              {{#if
+                (or
+                  @model.organization.isAdministrativeUnit
+                  @model.organization.isZorgraad
+                  @model.organization.isBosgroep
+                  @model.organization.isWoonmaatschappij
+                  @model.organization.isPrivateOcmwAssociation
+                )
+              }}
                 <Item>
                   <:label>Werkingsgebied</:label>
                   <:content>{{@model.scopeLabel}}</:content>

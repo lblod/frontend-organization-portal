@@ -1,11 +1,10 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import { tracked } from '@glimmer/tracking';
-import fetch from 'fetch';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.NAME_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
@@ -161,8 +160,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     this.selectedResultingLegalForm = legalForm;
   }
 
-  @dropTask
-  *createNewChangeEventTask(event) {
+  createNewChangeEventTask = dropTask(async (event) => {
     event.preventDefault();
 
     const {
@@ -172,12 +170,12 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       decisionActivity,
     } = this.model;
 
-    const shouldSaveDecision = yield changeEvent.requiresDecisionInformation;
+    const shouldSaveDecision = await changeEvent.requiresDecisionInformation;
 
-    yield changeEvent.validate();
+    await changeEvent.validate();
 
     if (shouldSaveDecision) {
-      yield decision.validate();
+      await decision.validate();
     }
 
     const isLegalFormChange =
@@ -194,7 +192,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     }
 
     if (!changeEvent.error && (shouldSaveDecision ? !decision.error : true)) {
-      changeEvent.decision = yield saveDecision(
+      changeEvent.decision = await saveDecision(
         shouldSaveDecision,
         decision,
         decisionActivity,
@@ -202,11 +200,12 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
 
       // We save the change event already so the backend assigns it an id
       // which is needed when saving the change-event-results
-      yield changeEvent.save();
+      await changeEvent.save();
 
       if (changeEvent.canAffectMultipleOrganizations) {
-        const allOriginalOrganizations =
-          (yield changeEvent.originalOrganizations).slice();
+        const allOriginalOrganizations = (
+          await changeEvent.originalOrganizations
+        ).slice();
 
         const createChangeEventResultsPromises = [];
 
@@ -219,12 +218,11 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
             if (currentOrganization.isCentralWorshipService) {
               resultingStatusId = ORGANIZATION_STATUS.INACTIVE;
             } else {
-              resultingStatusId =
-                (yield changeEvent.resultingOrganizations).includes(
-                  organization,
-                )
-                  ? ORGANIZATION_STATUS.ACTIVE
-                  : ORGANIZATION_STATUS.INACTIVE;
+              resultingStatusId = (
+                await changeEvent.resultingOrganizations
+              ).includes(organization)
+                ? ORGANIZATION_STATUS.ACTIVE
+                : ORGANIZATION_STATUS.INACTIVE;
             }
           } else {
             resultingStatusId =
@@ -248,7 +246,9 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
             // Central worship services should always select a *new*
             // organization as the resulting organization, so we also create a
             // change event result for that organization
-            for (let organization of (yield changeEvent.resultingOrganizations).slice()) {
+            for (let organization of (
+              await changeEvent.resultingOrganizations
+            ).slice()) {
               createChangeEventResultsPromises.push(
                 createChangeEventResult({
                   resultingStatusId: ORGANIZATION_STATUS.ACTIVE,
@@ -260,15 +260,15 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
             }
           }
         } else {
-          (yield changeEvent.resultingOrganizations).push(
+          (await changeEvent.resultingOrganizations).push(
             ...allOriginalOrganizations,
           );
         }
 
-        yield Promise.all(createChangeEventResultsPromises);
+        await Promise.all(createChangeEventResultsPromises);
       } else {
         if (changeEvent.requiresDecisionInformation) {
-          (yield changeEvent.originalOrganizations).push(currentOrganization);
+          (await changeEvent.originalOrganizations).push(currentOrganization);
         }
 
         if (
@@ -277,10 +277,10 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
             CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED,
           ].includes(changeEvent.type.get('id'))
         ) {
-          (yield changeEvent.resultingOrganizations).push(currentOrganization);
+          (await changeEvent.resultingOrganizations).push(currentOrganization);
         }
 
-        yield createChangeEventResult({
+        await createChangeEventResult({
           resultingStatusId:
             RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEvent.type.get('id')],
           resultingOrganization: currentOrganization,
@@ -291,14 +291,14 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       }
 
       // Persist the original and resulting organization information
-      yield changeEvent.save();
+      await changeEvent.save();
 
       this.router.transitionTo(
         'organizations.organization.change-events.details',
         changeEvent.id,
       );
     }
-  }
+  });
 
   reset() {
     this.model.changeEvent.reset();

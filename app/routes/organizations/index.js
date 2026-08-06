@@ -1,10 +1,11 @@
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { keepLatestTask } from 'ember-concurrency';
 import {
   selectByRole as getClassificationIds,
   getClassificationIdsForRole,
 } from 'frontend-organization-portal/utils/classification-identifiers';
+import { NO_PROVENANCE_VENDOR_ID } from 'frontend-organization-portal/models/vendor';
 
 export default class OrganizationsIndexRoute extends Route {
   @service muSearch;
@@ -22,6 +23,7 @@ export default class OrganizationsIndexRoute extends Route {
     classificationIds: { refreshModel: true, replace: true },
     recognizedWorshipTypeId: { refreshModel: true, replace: true },
     organizationStatus: { refreshModel: true, replace: true },
+    vendor: { refreshModel: true, replace: true },
   };
 
   async model(params) {
@@ -31,8 +33,7 @@ export default class OrganizationsIndexRoute extends Route {
     };
   }
 
-  @keepLatestTask({ cancelOn: 'deactivate' })
-  *loadOrganizationsTask(params) {
+  loadOrganizationsTask = keepLatestTask(async (params) => {
     const filter = {};
     if (params.name) {
       let filterType = 'phrase_prefix';
@@ -89,7 +90,10 @@ export default class OrganizationsIndexRoute extends Route {
     if (params.operationArea) {
       filter[':query:operation_area'] = params.operationArea
         .split(',')
-        .map((area) => `(operation_area:*${area}*)`)
+        .map(
+          (area) =>
+            `(operation_area:*${area}*) OR (operation_area_spatial:*${area}*)`,
+        )
         .join(' OR ');
     }
 
@@ -113,7 +117,15 @@ export default class OrganizationsIndexRoute extends Route {
 
     filter[':has-no:source'] = true;
 
-    return yield this.muSearch.search({
+    if (params.vendor) {
+      if (params.vendor === NO_PROVENANCE_VENDOR_ID) {
+        filter[':has-no:vendor'] = true;
+      } else {
+        filter.vendor = params.vendor;
+      }
+    }
+
+    return await this.muSearch.search({
       index: 'organizations',
       page: params.page,
       size: params.size,
@@ -127,5 +139,5 @@ export default class OrganizationsIndexRoute extends Route {
         return entry;
       },
     });
-  }
+  });
 }

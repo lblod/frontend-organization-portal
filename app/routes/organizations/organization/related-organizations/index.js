@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { ORGANIZATION_STATUS } from '../../../../models/organization-status-code';
 
 export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute extends Route {

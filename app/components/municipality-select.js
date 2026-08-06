@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
@@ -8,15 +8,10 @@ import { ORGANIZATION_STATUS } from '../models/organization-status-code';
 export default class MunicipalitySelectComponent extends Component {
   @service store;
 
-  municipalities = trackedTask(this, this.loadMunicipalitiesTask, () => [
-    this.args.selectedProvince,
-  ]);
-
-  @task
-  *loadMunicipalitiesTask() {
+  loadMunicipalitiesTask = task(async () => {
     // Trick used to avoid infinite loop
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
-    yield Promise.resolve();
+    await Promise.resolve();
 
     let query = {
       filter: {
@@ -43,6 +38,10 @@ export default class MunicipalitySelectComponent extends Component {
         selectedProvinceId;
     }
 
-    return yield this.store.query('organization', query);
-  }
+    return await this.store.query('organization', query);
+  });
+
+  municipalities = trackedTask(this, this.loadMunicipalitiesTask, () => [
+    this.args.selectedProvince,
+  ]);
 }

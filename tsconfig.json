@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/ember/tsconfig.json",
+  "extends": "@tsconfig/ember",
   "compilerOptions": {
     // The combination of `baseUrl` with `paths` allows Ember's classic package
     // layout, which is not resolvable with the Node resolution algorithm, to
@@ -9,6 +9,7 @@
       "frontend-organization-portal/tests/*": ["tests/*"],
       "frontend-organization-portal/*": ["app/*"],
       "*": ["types/*"]
-    }
+    },
+    "types": ["ember-source/types"]
   }
 }

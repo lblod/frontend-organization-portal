@@ -1,4 +1,4 @@
-import Model, { belongsTo } from '@ember-data/model';
+import Model, { belongsTo } from '@warp-drive/legacy/model';
 
 export default class ChangeEventResultModel extends Model {
   @belongsTo('organization-status-code', {

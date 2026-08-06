@@ -1,12 +1,10 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { trackedTask } from 'ember-resources/util/ember-concurrency';
 
 export default class OperationAreaMultipleSelectComponent extends Component {
   @service store;
-
-  operationAreas = trackedTask(this, this.loadOperationAreasTask);
 
   get selectedOperationAreas() {
     let selectionArray = [];
@@ -25,9 +23,9 @@ export default class OperationAreaMultipleSelectComponent extends Component {
     return this.args.selected;
   }
 
-  @task
-  *loadOperationAreasTask() {
-    yield Promise.resolve();
+  loadOperationAreasTask = task(async () => {
+    await Promise.resolve();
+
     const query = {
       'filter[in-scheme][:uri:]':
         'http://lblod.data.gift/concept-schemes/3307738e-f84d-4f95-9b14-3e9162d83394',
@@ -37,8 +35,10 @@ export default class OperationAreaMultipleSelectComponent extends Component {
       },
     };
 
-    const operationAreas = yield this.store.query('concept', query);
+    const operationAreas = await this.store.query('concept', query);
 
     return operationAreas.map(({ label }) => label);
-  }
+  });
+
+  operationAreas = trackedTask(this, this.loadOperationAreasTask);
 }

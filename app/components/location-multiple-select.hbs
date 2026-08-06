@@ -1,5 +1,6 @@
 <div class={{if @error "ember-power-select--error"}}>
-  <PowerSelectMultiple
+  <PowerSelect
+    @multiple={{true}}
     @loadingMessage="Aan het laden..."
     @noMatchesMessage="Geen resultaten"
     @searchMessage="Typ om te zoeken"
@@ -15,5 +16,5 @@
     as |location|
   >
     {{location.label}}
-  </PowerSelectMultiple>
+  </PowerSelect>
 </div>

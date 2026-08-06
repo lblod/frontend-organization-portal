@@ -1,4 +1,4 @@
-import Model, { attr } from '@ember-data/model';
+import Model, { attr } from '@warp-drive/legacy/model';
 
 export const ORGANIZATION_STATUS = {
   ACTIVE: '63cc561de9188d64ba5840a42ae8f0d6',

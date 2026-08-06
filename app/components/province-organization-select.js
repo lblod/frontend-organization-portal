@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
@@ -10,15 +10,10 @@ export default class ProvinceOrganizationSelectComponent extends Component {
   @tracked previousMunicipality;
   @tracked previousProvince;
 
-  provinces = trackedTask(this, this.loadProvincesTask, () => [
-    this.args.selectedMunicipality,
-  ]);
-
-  @task
-  *loadProvincesTask() {
+  loadProvincesTask = task(async () => {
     // Trick used to avoid infinite loop
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
-    yield Promise.resolve();
+    await Promise.resolve();
 
     let provinces = [];
     const selectedMunicipalityId = this.args.selectedMunicipality?.get('id');
@@ -35,7 +30,7 @@ export default class ProvinceOrganizationSelectComponent extends Component {
       }
 
       // If a municipality is selected, load the province it belongs to
-      provinces = yield this.store.query('organization', {
+      provinces = await this.store.query('organization', {
         filter: {
           memberships: {
             member: {
@@ -50,7 +45,7 @@ export default class ProvinceOrganizationSelectComponent extends Component {
       });
     } else {
       // Else load all the provinces
-      provinces = yield this.store.query('organization', {
+      provinces = await this.store.query('organization', {
         filter: {
           classification: {
             id: CLASSIFICATION.PROVINCE.id,
@@ -70,5 +65,9 @@ export default class ProvinceOrganizationSelectComponent extends Component {
       this.previousProvince = null;
     }
     return provinces;
-  }
+  });
+
+  provinces = trackedTask(this, this.loadProvincesTask, () => [
+    this.args.selectedMunicipality,
+  ]);
 }

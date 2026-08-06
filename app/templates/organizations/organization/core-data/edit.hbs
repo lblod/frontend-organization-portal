@@ -15,6 +15,7 @@
             </AuLink>
             <AuButton
               @loading={{this.save.isRunning}}
+              @loadingMessage="Opslaan"
               @disabled={{this.save.isRunning}}
               form="edit-core-info-form"
               type="submit"
@@ -210,7 +211,15 @@
                     </:content>
                   </Item>
                 {{/if}}
-                {{#if @model.organization.isAdministrativeUnit}}
+                {{#if
+                  (or
+                    @model.organization.isAdministrativeUnit
+                    @model.organization.isZorgraad
+                    @model.organization.isBosgroep
+                    @model.organization.isWoonmaatschappij
+                    @model.organization.isPrivateOcmwAssociation
+                  )
+                }}
                   <Item
                     @labelFor="scope"
                     @required={{true}}
