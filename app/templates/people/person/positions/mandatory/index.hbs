@@ -27,7 +27,10 @@
       </PageHeader>
 
       <DataCard>
-        <:title>Positie</:title>
+        <:title>
+          Positie
+          <HarvestMetaPopup @harvestable={{@model.mandatory}} />
+        </:title>
         <:card as |Card|>
           <Card.Columns>
             <:left as |Item|>

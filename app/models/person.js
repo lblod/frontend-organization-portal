@@ -1,10 +1,22 @@
-import { attr, hasMany } from '@warp-drive/legacy/model';
+import { attr, hasMany, belongsTo } from '@warp-drive/legacy/model';
 import AgentModel from './agent';
 
 export default class PersonModel extends AgentModel {
   @attr givenName;
   @attr familyName;
   @attr firstNameUsed;
+
+  // Harvester provenance
+  @attr harvestSource;
+  @attr harvestOriginalUri;
+  @attr('date') harvestDate;
+  @attr harvestJob;
+  @attr harvestLink;
+  @belongsTo('vendor', {
+    inverse: null,
+    async: true,
+  })
+  vendor;
 
   @hasMany('agent-in-position', {
     inverse: 'person',

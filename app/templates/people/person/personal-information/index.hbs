@@ -16,7 +16,10 @@
     </PageHeader>
 
     <DataCard>
-      <:title>Persoonlijke gegevens</:title>
+      <:title>
+        Persoonlijke gegevens
+        <HarvestMetaPopup @harvestable={{@model.person}} />
+      </:title>
       <:card as |Card|>
         <Card.Columns>
           <:left as |Item|>
@@ -133,6 +136,7 @@
       <DataCard>
         <:title>Contactgegevens:
           {{position.title}}
+          <HarvestMetaPopup @harvestable={{position.primaryContact}} />
         </:title>
         <:card as |Card|>
           <Card.Columns>
@@ -179,19 +183,23 @@
                   </:content>
                 </Item>
               {{/if}}
-              {{#if position.primaryContact.contactAddress.fullAddress}}
+              {{#if position.contactAddress.fullAddress}}
                 <Item>
                   <:label>Adres</:label>
                   <:content>
-                    {{position.primaryContact.contactAddress.fullAddress}}
+                    {{position.contactAddress.fullAddress}}
+                    <HarvestMetaPopup
+                      @harvestable={{position.contactAddress}}
+                      @iconOnly={{true}}
+                    />
                   </:content>
                 </Item>
               {{/if}}
-              {{#if position.primaryContact.contactAddress.province}}
+              {{#if position.contactAddress.province}}
                 <Item>
                   <:label>Provincie</:label>
                   <:content>
-                    {{position.primaryContact.contactAddress.province}}
+                    {{position.contactAddress.province}}
                   </:content>
                 </Item>
               {{/if}}
