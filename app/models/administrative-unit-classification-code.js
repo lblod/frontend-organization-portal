@@ -106,18 +106,6 @@ export const CLASSIFICATION = {
     label: 'Woonzorgvereniging of woonzorgvennootschap',
     organizationType: ORGANIZATION_TYPES.ASSOCIATION,
   },
-  ASSOCIATION_OTHER: {
-    // FIXME this is not an administrative unit
-    id: '3e5c8e30-95a7-47b0-b0a4-210d5bd440a7',
-    label: 'Ander type vereniging',
-    organizationType: ORGANIZATION_TYPES.ASSOCIATION,
-  },
-  CORPORATION_OTHER: {
-    // FIXME this is not an administrative unit
-    id: 'b9ed22af-3661-4c3e-b07f-b641d80ebf61',
-    label: 'Vennootschap',
-    organizationType: ORGANIZATION_TYPES.CORPORATION,
-  },
   PEVA_MUNICIPALITY: {
     id: '2ad46df5-5c79-4d67-84d5-604c1377231e',
     label: 'PEVA gemeente',
@@ -149,6 +137,12 @@ export const CLASSIFICATION = {
     label: 'Zorgraad',
     organizationType: ORGANIZATION_TYPES.PARTNERSHIP,
   },
+  REGIONAAL_ZORGPLATFORM: {
+    // FIXME this is not an administrative unit
+    id: 'e3afe092-6ca6-4685-94c6-1ee20811efc4',
+    label: 'Regionaal zorgplatform',
+    organizationType: ORGANIZATION_TYPES.PARTNERSHIP,
+  },
   BOSGROEP: {
     // FIXME this is not an administrative unit
     id: 'b22948f9-e695-4f24-a530-b6bf3af3b37f',
@@ -160,6 +154,12 @@ export const CLASSIFICATION = {
     id: 'f4e5bb57-1007-4397-828b-b34bbf1e760d',
     label: 'Woonmaatschappij',
     organizationType: ORGANIZATION_TYPES.CORPORATION,
+  },
+  ANDERE: {
+    // FIXME this is not an administrative unit
+    id: '7a199d27-31c3-44bb-a58f-b3a64673a8b6',
+    label: 'Andere',
+    organizationType: ORGANIZATION_TYPES.OTHER,
   },
 };
 

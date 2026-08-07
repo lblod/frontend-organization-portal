@@ -176,15 +176,13 @@ module('Unit | Model | organization', function (hooks) {
       CLASSIFICATION.ZIEKENHUISVERENIGING.id,
       CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
       CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-      CLASSIFICATION.ASSOCIATION_OTHER.id,
-      CLASSIFICATION.CORPORATION_OTHER.id,
+      CLASSIFICATION.ANDERE.id,
     ];
 
     const ocmwAssociationParticipants = OcmwAssociationCodeList.concat([
       CLASSIFICATION.MUNICIPALITY.id,
       CLASSIFICATION.OCMW.id,
-      CLASSIFICATION.ASSOCIATION_OTHER.id,
-      CLASSIFICATION.CORPORATION_OTHER.id,
+      CLASSIFICATION.ANDERE.id,
     ]);
 
     const pevaParticipants = [
@@ -283,14 +281,7 @@ module('Unit | Model | organization', function (hooks) {
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
         [...IGSCodeList, ...OcmwAssociationCodeList],
       ],
-      [
-        CLASSIFICATION.ASSOCIATION_OTHER,
-        [...IGSCodeList, ...OcmwAssociationCodeList],
-      ],
-      [
-        CLASSIFICATION.CORPORATION_OTHER,
-        [...IGSCodeList, ...OcmwAssociationCodeList],
-      ],
+      [CLASSIFICATION.ANDERE, [...IGSCodeList, ...OcmwAssociationCodeList]],
     ].forEach(([cl, classificationCodes]) => {
       test(`it should allow a(n) ${cl.label} to participate in the correct kind of organizations`, async function (assert) {
         const classification = this.store().createRecord(
@@ -321,19 +312,11 @@ module('Unit | Model | organization', function (hooks) {
       [CLASSIFICATION.AGB, [CLASSIFICATION.MUNICIPALITY.id]],
       [
         CLASSIFICATION.PEVA_MUNICIPALITY,
-        [
-          CLASSIFICATION.MUNICIPALITY.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
-        ],
+        [CLASSIFICATION.MUNICIPALITY.id, CLASSIFICATION.ANDERE.id],
       ],
       [
         CLASSIFICATION.PEVA_PROVINCE,
-        [
-          CLASSIFICATION.PROVINCE.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
-        ],
+        [CLASSIFICATION.PROVINCE.id, CLASSIFICATION.ANDERE.id],
       ],
       [
         CLASSIFICATION.WELZIJNSVERENIGING,
@@ -341,8 +324,7 @@ module('Unit | Model | organization', function (hooks) {
           ...OcmwAssociationCodeList,
           CLASSIFICATION.MUNICIPALITY.id,
           CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
       [
@@ -351,8 +333,7 @@ module('Unit | Model | organization', function (hooks) {
           ...OcmwAssociationCodeList,
           CLASSIFICATION.MUNICIPALITY.id,
           CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
       [
@@ -361,8 +342,7 @@ module('Unit | Model | organization', function (hooks) {
           ...OcmwAssociationCodeList,
           CLASSIFICATION.MUNICIPALITY.id,
           CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
       [
@@ -371,8 +351,7 @@ module('Unit | Model | organization', function (hooks) {
           ...OcmwAssociationCodeList,
           CLASSIFICATION.MUNICIPALITY.id,
           CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
       [
@@ -381,8 +360,7 @@ module('Unit | Model | organization', function (hooks) {
           ...OcmwAssociationCodeList,
           CLASSIFICATION.MUNICIPALITY.id,
           CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
     ].forEach(([cl, classificationCodes]) => {
@@ -424,14 +402,7 @@ module('Unit | Model | organization', function (hooks) {
         [CLASSIFICATION.PEVA_PROVINCE.id, CLASSIFICATION.APB.id],
       ],
       [CLASSIFICATION.OCMW, [...OcmwAssociationCodeList]],
-      [
-        CLASSIFICATION.ASSOCIATION_OTHER,
-        [...PevaCodeList, ...OcmwAssociationCodeList],
-      ],
-      [
-        CLASSIFICATION.CORPORATION_OTHER,
-        [...PevaCodeList, ...OcmwAssociationCodeList],
-      ],
+      [CLASSIFICATION.ANDERE, [...PevaCodeList, ...OcmwAssociationCodeList]],
     ].forEach(([cl, classificationCodes]) => {
       test(`it should allow a(n) ${cl.label} to found the correct organizations`, async function (assert) {
         const classification = this.store().createRecord(

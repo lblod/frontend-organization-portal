@@ -43,7 +43,7 @@ module('Unit | Utility | organization-type', function (hooks) {
       CLASSIFICATION.ZIEKENHUISVERENIGING,
       CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
       CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
-      CLASSIFICATION.ASSOCIATION_OTHER,
+      CLASSIFICATION.BOSGROEP,
     ].forEach((cl) => {
       test(`it returns the association organization type for ${cl.label}`, async function (assert) {
         const result = getOrganizationTypes(cl.id);
@@ -51,10 +51,29 @@ module('Unit | Utility | organization-type', function (hooks) {
       });
     });
 
-    [CLASSIFICATION.CORPORATION_OTHER].forEach((cl) => {
+    [CLASSIFICATION.WOONMAATSCHAPPIJ].forEach((cl) => {
       test(`it returns the corporation organization type for ${cl.label}`, async function (assert) {
         const result = getOrganizationTypes(cl.id);
         assert.deepEqual(result, [ORGANIZATION_TYPES.CORPORATION]);
+      });
+    });
+
+    [
+      CLASSIFICATION.INTERLOKALE_VERENIGING,
+      CLASSIFICATION.VERVOERREGIORAAD,
+      CLASSIFICATION.ZORGRAAD,
+      CLASSIFICATION.REGIONAAL_ZORGPLATFORM,
+    ].forEach((cl) => {
+      test(`it returns the partnership organization type for ${cl.label}`, async function (assert) {
+        const result = getOrganizationTypes(cl.id);
+        assert.deepEqual(result, [ORGANIZATION_TYPES.PARTNERSHIP]);
+      });
+    });
+
+    [CLASSIFICATION.ANDERE].forEach((cl) => {
+      test(`it returns the other organization type for ${cl.label}`, async function (assert) {
+        const result = getOrganizationTypes(cl.id);
+        assert.deepEqual(result, [ORGANIZATION_TYPES.OTHER]);
       });
     });
 
@@ -73,7 +92,7 @@ module('Unit | Utility | organization-type', function (hooks) {
         CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
           .id,
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-        CLASSIFICATION.ASSOCIATION_OTHER.id,
+        CLASSIFICATION.BOSGROEP.id,
       );
       assert.deepEqual(result, [ORGANIZATION_TYPES.ASSOCIATION]);
     });
@@ -95,7 +114,7 @@ module('Unit | Utility | organization-type', function (hooks) {
     test('it returns the administrative unit and corporation organization types when provided classifications for both', async function (assert) {
       const result = getOrganizationTypes(
         CLASSIFICATION.MUNICIPALITY.id,
-        CLASSIFICATION.CORPORATION_OTHER.id,
+        CLASSIFICATION.WOONMAATSCHAPPIJ.id,
       );
       assert.deepEqual(
         result.sort(),
@@ -109,7 +128,7 @@ module('Unit | Utility | organization-type', function (hooks) {
     test('it returns all organization types when provided classifications for each', async function (assert) {
       const result = getOrganizationTypes(
         CLASSIFICATION.MUNICIPALITY.id,
-        CLASSIFICATION.CORPORATION_OTHER.id,
+        CLASSIFICATION.WOONMAATSCHAPPIJ.id,
         CLASSIFICATION.ZIEKENHUISVERENIGING.id,
       );
       assert.deepEqual(

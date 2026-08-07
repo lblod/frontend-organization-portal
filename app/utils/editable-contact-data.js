@@ -7,9 +7,5 @@
  * @returns {boolean} true if address and contact data should be editable
  */
 export default function isContactEditableOrganization(organization) {
-  return (
-    organization.isPrivateOcmwAssociation ||
-    organization.isAssociationOther ||
-    organization.isCorporationOther
-  );
+  return organization.isPrivateOcmwAssociation || organization.isAndere;
 }

@@ -3,4 +3,5 @@ export const ORGANIZATION_TYPES = Object.freeze({
   ASSOCIATION: 'Vereniging',
   CORPORATION: 'Vennootschap',
   PARTNERSHIP: 'Samenwerkingsverband',
+  OTHER: 'Andere',
 });

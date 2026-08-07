@@ -372,11 +372,11 @@ export default class OrganizationsNewController extends Controller {
         CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
           .id,
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-        CLASSIFICATION.ASSOCIATION_OTHER.id,
-        CLASSIFICATION.CORPORATION_OTHER.id,
         CLASSIFICATION.ZORGRAAD.id,
+        CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
         CLASSIFICATION.BOSGROEP.id,
         CLASSIFICATION.WOONMAATSCHAPPIJ.id,
+        CLASSIFICATION.ANDERE.id,
       ].includes(classificationCodeId)
     ) {
       return this.store.createRecord('registered-organization');
@@ -662,8 +662,7 @@ export default class OrganizationsNewController extends Controller {
           this.currentOrganizationModel.isOcmwAssociation ||
           this.currentOrganizationModel.isPevaMunicipality ||
           this.currentOrganizationModel.isPevaProvince ||
-          this.currentOrganizationModel.isAssociationOther ||
-          this.currentOrganizationModel.isCorporationOther
+          this.currentOrganizationModel.isAndere
         ) {
           const siteTypes = await this.store.findAll('site-type');
           primarySite.siteType = siteTypes.find(

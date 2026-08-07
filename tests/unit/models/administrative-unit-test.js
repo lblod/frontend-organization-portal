@@ -356,15 +356,13 @@ module('Unit | Model | administrative unit', function (hooks) {
       CLASSIFICATION.ZIEKENHUISVERENIGING.id,
       CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
       CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-      CLASSIFICATION.ASSOCIATION_OTHER.id,
-      CLASSIFICATION.CORPORATION_OTHER.id,
+      CLASSIFICATION.ANDERE.id,
     ];
 
     const ocmwAssociationParticipants = OcmwAssociationCodeList.concat([
       CLASSIFICATION.MUNICIPALITY.id,
       CLASSIFICATION.OCMW.id,
-      CLASSIFICATION.ASSOCIATION_OTHER.id,
-      CLASSIFICATION.CORPORATION_OTHER.id,
+      CLASSIFICATION.ANDERE.id,
     ]);
 
     const pevaParticipants = [
@@ -411,19 +409,11 @@ module('Unit | Model | administrative unit', function (hooks) {
       [CLASSIFICATION.AGB, [CLASSIFICATION.MUNICIPALITY.id]],
       [
         CLASSIFICATION.PEVA_MUNICIPALITY,
-        [
-          CLASSIFICATION.MUNICIPALITY.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
-        ],
+        [CLASSIFICATION.MUNICIPALITY.id, CLASSIFICATION.ANDERE.id],
       ],
       [
         CLASSIFICATION.PEVA_PROVINCE,
-        [
-          CLASSIFICATION.PROVINCE.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
-        ],
+        [CLASSIFICATION.PROVINCE.id, CLASSIFICATION.ANDERE.id],
       ],
       [
         CLASSIFICATION.WELZIJNSVERENIGING,
@@ -431,8 +421,7 @@ module('Unit | Model | administrative unit', function (hooks) {
           ...OcmwAssociationCodeList,
           CLASSIFICATION.MUNICIPALITY.id,
           CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
       [
@@ -441,8 +430,7 @@ module('Unit | Model | administrative unit', function (hooks) {
           ...OcmwAssociationCodeList,
           CLASSIFICATION.MUNICIPALITY.id,
           CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ASSOCIATION_OTHER.id,
-          CLASSIFICATION.CORPORATION_OTHER.id,
+          CLASSIFICATION.ANDERE.id,
         ],
       ],
     ].forEach(([cl, classificationCodes]) => {

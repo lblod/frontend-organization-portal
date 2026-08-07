@@ -52,8 +52,7 @@ export const PevaCodeList = [
   ...PevaProvinceCodeList,
 ];
 
-export const AssociationOtherCodeList = [CLASSIFICATION.ASSOCIATION_OTHER.id];
-export const CorporationOtherCodeList = [CLASSIFICATION.CORPORATION_OTHER.id];
+export const AndereCodeList = [CLASSIFICATION.ANDERE.id];
 
 export const VlaamseGemeenschapscommissieCodeList = [
   CLASSIFICATION.VLAAMSE_GEMEENSCHAPSCOMMISSIE.id,
@@ -64,5 +63,8 @@ export const InterlokaleVerenigingCodeList = [
 ];
 export const VervoerregioraadCodeList = [CLASSIFICATION.VERVOERREGIORAAD.id];
 export const ZorgraadCodeList = [CLASSIFICATION.ZORGRAAD.id];
+export const RegionaalZorgplatformCodeList = [
+  CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+];
 export const BosgroepCodeList = [CLASSIFICATION.BOSGROEP.id];
 export const WoonmaatschappijCodeList = [CLASSIFICATION.WOONMAATSCHAPPIJ.id];
