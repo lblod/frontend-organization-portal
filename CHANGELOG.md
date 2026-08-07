@@ -1,3 +1,12 @@
+## v1.40.5 (2026-08-07)
+
+#### :rocket: Enhancement
+* [#720](https://github.com/lblod/frontend-organization-portal/pull/720) [OP-3844] Add Regionaal zorgplatform and Andere organization types ([@bdevloed](https://github.com/bdevloed))
+* [#725](https://github.com/lblod/frontend-organization-portal/pull/725) [OP-3808] Add a vendor search filter ([@Windvis](https://github.com/Windvis))
+
+#### :house: Internal
+* [#723](https://github.com/lblod/frontend-organization-portal/pull/723) [OP-3849] Update to Ember v6.12 LTS ([@Windvis](https://github.com/Windvis))
+
 ## v1.40.4 (2026-07-31)
 
 #### :rocket: Enhancement
