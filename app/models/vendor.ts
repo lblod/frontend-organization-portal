@@ -9,7 +9,7 @@ export default class Vendor extends Model {
   declare [Type]: 'vendor';
 
   @attr declare name?: string;
-  @attr declare uri?: uri;
+  @attr declare uri?: string;
 
   @hasMany<Organization>('organization', {
     inverse: 'vendors',
