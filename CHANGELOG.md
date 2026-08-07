@@ -1,3 +1,8 @@
+## v1.41.0 (2026-08-07)
+
+#### :rocket: Enhancement
+* [#719](https://github.com/lblod/frontend-organization-portal/pull/719) [DL-7438] Display harvest information for mandatarissen and bedienaren ([@Windvis](https://github.com/Windvis), [@Ben](https://github.com/benjay10))
+
 ## v1.40.5 (2026-08-07)
 
 #### :rocket: Enhancement
