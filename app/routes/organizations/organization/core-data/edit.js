@@ -96,11 +96,6 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
     const regions =
       await this.scopeOfOperation.getReferentieregiosInScope(organization);
 
-    const provinceLocations = await this.store.query('location', {
-      sort: 'label',
-      filter: { level: 'Provincie' },
-    });
-
     this.locationsInScope =
       await this.scopeOfOperation.getLocationsInScope(organization);
 
@@ -120,7 +115,6 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
       structuredIdentifierNIS,
       structuredIdentifierOVO,
       regions,
-      provinceLocations,
       vendors,
     };
   }
