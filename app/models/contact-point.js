@@ -51,12 +51,6 @@ export default class ContactPointModel extends AbstractValidationModel {
       website: validateUrl('Geef een geldig internetadres in').allow(null),
       type: validateStringOptional(),
       contactAddress: validateBelongsToOptional(),
-      harvestSource: validateStringOptional(),
-      harvestOriginalUri: validateStringOptional(),
-      harvestDate: Joi.date().allow(null),
-      harvestJob: validateStringOptional(),
-      harvestLink: validateStringOptional(),
-      vendor: validateBelongsToOptional(),
     });
   }
 }

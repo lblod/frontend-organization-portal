@@ -36,6 +36,7 @@ export default class AbstractValidationModel extends Model {
     try {
       await this.validationSchema.validateAsync(serializedModel, {
         abortEarly: false,
+        allowUnknown: true,
         context: {
           changedAttributes: this.changedAttributes(),
           ...options,

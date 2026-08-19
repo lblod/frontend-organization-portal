@@ -96,12 +96,6 @@ export default class AddressModel extends AbstractValidationModel {
       fullAddress: validateStringOptional(),
       addressRegisterUri: validateStringOptional(),
       source: validateBelongsToOptional(),
-      harvestSource: validateStringOptional(),
-      harvestOriginalUri: validateStringOptional(),
-      harvestDate: Joi.date().allow(null),
-      harvestJob: validateStringOptional(),
-      harvestLink: validateStringOptional(),
-      vendor: validateBelongsToOptional(),
     });
   }
 }
