@@ -1,3 +1,8 @@
+## v1.41.1 (2026-08-20)
+
+#### :bug: Bug Fix
+* [#727](https://github.com/lblod/frontend-organization-portal/pull/727) [OP-3871] Fix a false-positive validation issue ([@DamonKennes](https://github.com/DamonKennes))
+
 ## v1.41.0 (2026-08-07)
 
 #### :rocket: Enhancement
