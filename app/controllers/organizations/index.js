@@ -127,7 +127,7 @@ export default class OrganizationsIndexController extends Controller {
   @action
   setOperationArea(selection) {
     this.page = null;
-    this.operationArea = selection.join(',');
+    this.operationArea = selection.map((location) => location.label).join(',');
   }
 
   @action
