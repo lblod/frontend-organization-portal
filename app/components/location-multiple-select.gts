@@ -91,6 +91,12 @@ export default class LocationMultipleSelect extends Component<Signature> {
   onChange = (selection: Location[], select: Select) => {
     // We focus the trigger after a selection change so the user can start typing to search without having to click the trigger manually (which would then close the Select first)
     select.actions.getTriggerElement()?.focus();
+    if (select.searchText) {
+      // Reset the search term so the user does not have to backspace
+      // It has the downside that they have to retype the term if they want to select similar options, but that seems less common
+      select.actions.search('');
+    }
+
     this.args.onChange(selection);
   };
 
