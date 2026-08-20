@@ -1,3 +1,9 @@
+## v1.42.0 (2026-08-20)
+
+#### :rocket: Enhancement
+* [#728](https://github.com/lblod/frontend-organization-portal/pull/728) [OP-3869] Improve the "werkingsgebied" search filter ([@Windvis](https://github.com/Windvis))
+* [#726](https://github.com/lblod/frontend-organization-portal/pull/726) [OP-3868] Improve the "werkingsgebied" field ([@Windvis](https://github.com/Windvis))
+
 ## v1.41.1 (2026-08-20)
 
 #### :bug: Bug Fix
