@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { dropTask } from 'ember-concurrency';
 import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 
@@ -146,7 +147,9 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
       //   (involvement) => involvement.isDirty
       // );
 
-      let savePromises = involvements.map((involvement) => involvement.save());
+      let savePromises = involvements.map((involvement) =>
+        this.store.request(saveRecord(involvement)),
+      );
 
       await Promise.all(savePromises);
 

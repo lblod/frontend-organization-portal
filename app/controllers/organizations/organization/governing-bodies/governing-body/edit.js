@@ -2,9 +2,11 @@ import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 export default class OrganizationsOrganizationGoverningBodiesGoverningBodyEditController extends Controller {
   @service router;
+  @service store;
 
   get hasValidationErrors() {
     return this.model.governingBody.error;
@@ -25,7 +27,7 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyEditCo
     await this.model.governingBody.validate();
 
     if (!this.hasValidationErrors) {
-      await this.model.governingBody.save();
+      await this.store.request(saveRecord(this.model.governingBody));
 
       this.router.transitionTo(
         'organizations.organization.governing-bodies.governing-body',

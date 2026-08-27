@@ -2,12 +2,14 @@ import Controller from '@ember/controller';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { dropTask } from 'ember-concurrency';
 import { combineFullAddress } from 'frontend-organization-portal/models/address';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 
 export default class OrganizationsOrganizationSitesSiteEditController extends Controller {
   @service router;
+  @service store;
   @tracked isPrimarySite;
   @tracked isNoPrimarySiteErrorMessage;
 
@@ -59,7 +61,7 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
         address.fullAddress = combineFullAddress(address);
         address = setEmptyStringsToNull(address);
 
-        await address.save();
+        await this.store.request(saveRecord(address));
       }
 
       if (contact.hasDirtyAttributes) {
@@ -68,7 +70,7 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
         }
         contact = setEmptyStringsToNull(contact);
 
-        await contact.save();
+        await this.store.request(saveRecord(contact));
       }
 
       if (secondaryContact.hasDirtyAttributes) {
@@ -77,17 +79,17 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
         }
         secondaryContact = setEmptyStringsToNull(secondaryContact);
 
-        await secondaryContact.save();
+        await this.store.request(saveRecord(secondaryContact));
       }
 
-      await site.save();
+      await this.store.request(saveRecord(site));
 
       let nonPrimarySites = await organization.sites;
 
       if (this.isCurrentPrimarySite && !this.isPrimarySite) {
         nonPrimarySites.push(site);
         organization.primarySite = null;
-        await organization.save();
+        await this.store.request(saveRecord(organization));
       } else if (this.isPrimarySite && !this.isCurrentPrimarySite) {
         let previousPrimarySite = this.model.currentPrimarySite;
 
@@ -104,7 +106,7 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
           nonPrimarySites.splice(oldSiteIndex, 1);
         }
 
-        await organization.save();
+        await this.store.request(saveRecord(organization));
       }
 
       // force it to be primary site if there is no primary site
@@ -114,7 +116,7 @@ export default class OrganizationsOrganizationSitesSiteEditController extends Co
         if (siteIndex > -1) {
           nonPrimarySites.splice(siteIndex, 1);
         }
-        await organization.save();
+        await this.store.request(saveRecord(organization));
       }
 
       this.router.transitionTo(
