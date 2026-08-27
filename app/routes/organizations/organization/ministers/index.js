@@ -1,6 +1,7 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
-import { findRecord } from '@warp-drive/legacy/compat/builders';
+// import { findRecord } from '@warp-drive/legacy/compat/builders';
+import { findRecord } from '@warp-drive/utilities/json-api';
 
 export default class OrganizationsOrganizationMinistersIndexRoute extends Route {
   @service store;
@@ -18,7 +19,7 @@ export default class OrganizationsOrganizationMinistersIndexRoute extends Route 
       }),
     );
 
-    let ministerPositions = await organization.ministerPositions;
+    let ministerPositions = await organization.data.ministerPositions;
     let ministers = [];
 
     for (const ministerPosition of ministerPositions.slice()) {
