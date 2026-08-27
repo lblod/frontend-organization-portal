@@ -11,6 +11,7 @@ import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/me
 import {
   findAll,
   query as queryBuilder,
+  saveRecord,
 } from '@warp-drive/legacy/compat/builders';
 import requiresKbo from '../../helpers/requires-kbo';
 
@@ -629,25 +630,25 @@ export default class OrganizationsNewController extends Controller {
         structuredIdentifierKBO = setEmptyStringsToNull(
           structuredIdentifierKBO,
         );
-        await structuredIdentifierKBO.save();
-        await identifierKBO.save();
+        await this.store.request(saveRecord(structuredIdentifierKBO));
+        await this.store.request(saveRecord(identifierKBO));
       }
 
       structuredIdentifierSharepoint = setEmptyStringsToNull(
         structuredIdentifierSharepoint,
       );
-      await structuredIdentifierSharepoint.save();
-      await identifierSharepoint.save();
+      await this.store.request(saveRecord(structuredIdentifierSharepoint));
+      await this.store.request(saveRecord(identifierSharepoint));
 
       if (
         this.features.isEnabled('edit-contact-data') ||
         isContactEditableOrganization(this.currentOrganizationModel)
       ) {
         contact = setEmptyStringsToNull(contact);
-        await contact.save();
+        await this.store.request(saveRecord(contact));
 
         secondaryContact = setEmptyStringsToNull(secondaryContact);
-        await secondaryContact.save();
+        await this.store.request(saveRecord(secondaryContact));
 
         if (!address.isPostcodeInFlanders) {
           address.province = '';
@@ -655,7 +656,7 @@ export default class OrganizationsNewController extends Controller {
 
         address.fullAddress = combineFullAddress(address);
         address = setEmptyStringsToNull(address);
-        await address.save();
+        await this.store.request(saveRecord(address));
 
         primarySite.address = address;
         (await primarySite.contacts).push(contact, secondaryContact);
@@ -677,7 +678,7 @@ export default class OrganizationsNewController extends Controller {
             (t) => t.id === 'f1381723dec42c0b6ba6492e41d6f5dd',
           );
         }
-        await primarySite.save();
+        await this.store.request(saveRecord(primarySite));
         this.currentOrganizationModel.primarySite = primarySite;
       }
       const identifiers = await this.currentOrganizationModel.identifiers;
@@ -690,15 +691,17 @@ export default class OrganizationsNewController extends Controller {
         this.currentOrganizationModel,
       );
 
-      await this.currentOrganizationModel.save();
+      await this.store.request(saveRecord(this.currentOrganizationModel));
 
       let membershipSavePromises = this.memberships.map((membership) =>
-        membership.save(),
+        this.store.request(saveRecord(membership)),
       );
       await Promise.all(membershipSavePromises);
 
       let membershipsOfOrganizationsSavePromises =
-        this.membershipsOfOrganizations.map((membership) => membership.save());
+        this.membershipsOfOrganizations.map((membership) =>
+          this.store.request(saveRecord(membership)),
+        );
       await Promise.all(membershipsOfOrganizationsSavePromises);
 
       const createRelationshipsEndpoint = `/construct-organization-relationships/create-relationships/${this.currentOrganizationModel.id}`;

@@ -35,19 +35,22 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
             if (decisionActivity.isNew) {
               decision.hasDecisionActivity = decisionActivity;
             }
-            await decisionActivity.save();
+            await this.store.request(saveRecord(decisionActivity));
           }
           if (decision.isNew) {
             changeEvent.decision = decision;
           }
 
-          await decision.save();
+          await this.store.request(saveRecord(decision));
         }
 
         if (decision.isEmpty) {
           changeEvent.decision = null;
           decision.deleteRecord();
-          await this.store.request(saveRecord(decision));
+          if (!decision.isNew) {
+            await this.store.request(saveRecord(decision));
+          }
+          decision.unloadRecord();
           // Prevents errors in call to `reset()` on transition
           this.model.decision = null;
         }
@@ -56,7 +59,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
       // Note: always save change event as adding a decision is not detected by
       // the `hasDirtyAttributes` method, which results in the new decision to
       // be discarded on save.
-      await changeEvent.save();
+      await this.store.request(saveRecord(changeEvent));
 
       this.router.transitionTo(
         'organizations.organization.change-events.details',

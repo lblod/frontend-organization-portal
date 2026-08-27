@@ -6,6 +6,7 @@ import { action } from '@ember/object';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 import { tracked } from '@glimmer/tracking';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import requiresKbo from '../../../../helpers/requires-kbo';
 
 export default class OrganizationsOrganizationCoreDataEditController extends Controller {
@@ -120,7 +121,7 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
           }
           address.fullAddress = combineFullAddress(address);
           address = setEmptyStringsToNull(address);
-          await address.save();
+          await this.store.request(saveRecord(address));
         }
 
         let siteContacts = await primarySite.contacts;
@@ -129,11 +130,11 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
           let isNewContact = contact.isNew;
 
           contact = setEmptyStringsToNull(contact);
-          await contact.save();
+          await this.store.request(saveRecord(contact));
 
           if (isNewContact) {
             siteContacts.push(contact);
-            await primarySite.save();
+            await this.store.request(saveRecord(primarySite));
           }
         }
 
@@ -141,11 +142,11 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
           let isNewContact = secondaryContact.isNew;
 
           secondaryContact = setEmptyStringsToNull(secondaryContact);
-          await secondaryContact.save();
+          await this.store.request(saveRecord(secondaryContact));
 
           if (isNewContact) {
             siteContacts.push(secondaryContact);
-            await primarySite.save();
+            await this.store.request(saveRecord(primarySite));
           }
         }
       }
@@ -154,8 +155,8 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
         structuredIdentifierKBO = setEmptyStringsToNull(
           structuredIdentifierKBO,
         );
-        await structuredIdentifierKBO.save();
-        await identifierKBO.save();
+        await this.store.request(saveRecord(structuredIdentifierKBO));
+        await this.store.request(saveRecord(identifierKBO));
       }
 
       // FIXME: If uncommented existing SharePoint identifier is not removed
@@ -165,11 +166,11 @@ export default class OrganizationsOrganizationCoreDataEditController extends Con
       // structuredIdentifierSharepoint = setEmptyStringsToNull(
       //   structuredIdentifierSharepoint,
       // );
-      await structuredIdentifierSharepoint.save();
-      await identifierSharepoint.save();
+      await this.store.request(saveRecord(structuredIdentifierSharepoint));
+      await this.store.request(saveRecord(identifierSharepoint));
 
       organization = setEmptyStringsToNull(organization);
-      await organization.save();
+      await this.store.request(saveRecord(organization));
 
       if (requiresKboNumber) {
         const syncKboData = `/kbo-data-sync/${structuredIdentifierKBO.id}`;
