@@ -1,9 +1,11 @@
 import Controller from '@ember/controller';
 import { service } from '@ember/service';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { dropTask } from 'ember-concurrency';
 
 export default class OrganizationsOrganizationChangeEventsDetailsEditController extends Controller {
   @service router;
+  @service store;
 
   get hasValidationErrors() {
     return this.model.changeEvent.error || this.model.decision?.error;
@@ -44,7 +46,8 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
 
         if (decision.isEmpty) {
           changeEvent.decision = null;
-          await decision.destroyRecord();
+          decision.deleteRecord();
+          await this.store.request(saveRecord(decision));
           // Prevents errors in call to `reset()` on transition
           this.model.decision = null;
         }

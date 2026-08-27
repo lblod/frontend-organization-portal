@@ -80,7 +80,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     //   Otherwise, they can result in failing validations or errors.
     if (membership.isNew) {
       this.memberships.removeObject(membership);
-      membership.destroyRecord();
+      membership.deleteRecord();
+      membership.unloadRecord();
     } else {
       membership.deleteRecord();
     }

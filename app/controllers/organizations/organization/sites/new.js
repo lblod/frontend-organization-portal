@@ -80,19 +80,23 @@ export default class OrganizationsOrganizationSitesNewController extends Control
     let { site, address, contact, secondaryContact } = this.model;
 
     if (site.isNew) {
-      site.destroyRecord();
+      site.deleteRecord();
+      site.unloadRecord();
     }
 
     if (address.isNew) {
-      address.destroyRecord();
+      address.deleteRecord();
+      address.unloadRecord();
     }
 
     if (contact.isNew) {
-      contact.destroyRecord();
+      contact.deleteRecord();
+      contact.unloadRecord();
     }
 
     if (secondaryContact.isNew) {
-      secondaryContact.destroyRecord();
+      secondaryContact.deleteRecord();
+      secondaryContact.unloadRecord();
     }
   }
 
