@@ -115,7 +115,8 @@ export default class OrganizationsOrganizationLocalInvolvementsEditController ex
     const index = this.model.involvements.indexOf(involvement);
     if (index > -1) {
       this.model.involvements.splice(index, 1);
-      involvement.destroyRecord();
+      involvement.deleteRecord();
+      involvement.unloadRecord();
     }
   }
 
