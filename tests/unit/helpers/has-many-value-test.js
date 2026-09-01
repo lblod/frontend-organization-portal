@@ -1,3 +1,4 @@
+/* eslint-disable warp-drive/no-legacy-request-patterns -- TODO: remove this once we have an alternative for peekRecord */
 import { module, test } from 'qunit';
 import { setupTest } from 'frontend-organization-portal/tests/helpers';
 import Model, { hasMany } from '@warp-drive/legacy/model';
