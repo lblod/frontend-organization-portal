@@ -274,7 +274,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
         await Promise.all(createChangeEventResultsPromises);
       } else {
         if (changeEvent.requiresDecisionInformation) {
-          (await changeEvent.originalOrganizations).push(currentOrganization);
+          await changeEvent.addOriginalOrganization(currentOrganization);
         }
 
         if (
