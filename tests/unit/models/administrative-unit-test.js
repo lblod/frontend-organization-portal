@@ -18,12 +18,14 @@ module('Unit | Model | administrative unit', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 4);
+      assert.strictEqual(Object.keys(model.error).length, 6);
       assert.propContains(model.error, {
         legalName: { message: 'Vul de juridische naam in' },
         classification: { message: 'Selecteer een optie' },
         organizationStatus: { message: 'Selecteer een optie' },
         scope: { message: 'Selecteer een optie' },
+        legalForm: { message: 'Selecteer een optie' },
+        contentThemes: { message: 'Selecteer een optie' },
       });
     });
 
@@ -40,7 +42,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 4);
+      assert.strictEqual(Object.keys(model.error).length, 6);
       assert.propContains(model.error, {
         legalName: { message: 'Vul de juridische naam in' },
         expectedEndDate: {
@@ -48,6 +50,8 @@ module('Unit | Model | administrative unit', function (hooks) {
         },
         organizationStatus: { message: 'Selecteer een optie' },
         scope: { message: 'Selecteer een optie' },
+        legalForm: { message: 'Selecteer een optie' },
+        contentThemes: { message: 'Selecteer een optie' },
       });
     });
 
@@ -64,6 +68,33 @@ module('Unit | Model | administrative unit', function (hooks) {
       CLASSIFICATION.APB,
       CLASSIFICATION.POLICE_ZONE,
       CLASSIFICATION.ASSISTANCE_ZONE,
+    ].forEach((cl) => {
+      test(`it should return an extra error when a new  ${cl.label} is created without memberships`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl,
+        );
+
+        const model = this.store().createRecord('administrative-unit', {
+          classification,
+        });
+
+        const isValid = await model.validate({ creatingNewOrganization: true });
+
+        assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 6);
+        assert.propContains(model.error, {
+          legalName: { message: 'Vul de juridische naam in' },
+          organizationStatus: { message: 'Selecteer een optie' },
+          memberships: { message: 'Selecteer een optie' },
+          scope: { message: 'Selecteer een optie' },
+          legalForm: { message: 'Selecteer een optie' },
+          contentThemes: { message: 'Selecteer een optie' },
+        });
+      });
+    });
+
+    [
       CLASSIFICATION.WORSHIP_SERVICE,
       CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
     ].forEach((cl) => {
@@ -103,6 +134,34 @@ module('Unit | Model | administrative unit', function (hooks) {
       CLASSIFICATION.APB,
       CLASSIFICATION.POLICE_ZONE,
       CLASSIFICATION.ASSISTANCE_ZONE,
+    ].forEach((cl) => {
+      test(`it should return an extra error when a new  ${cl.label} is created with an empty memberships array`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl,
+        );
+
+        const model = this.store().createRecord('administrative-unit', {
+          classification,
+          memberships: [],
+        });
+
+        const isValid = await model.validate({ creatingNewOrganization: true });
+
+        assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 6);
+        assert.propContains(model.error, {
+          legalName: { message: 'Vul de juridische naam in' },
+          organizationStatus: { message: 'Selecteer een optie' },
+          memberships: { message: 'Selecteer een optie' },
+          scope: { message: 'Selecteer een optie' },
+          legalForm: { message: 'Selecteer een optie' },
+          contentThemes: { message: 'Selecteer een optie' },
+        });
+      });
+    });
+
+    [
       CLASSIFICATION.WORSHIP_SERVICE,
       CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
     ].forEach((cl) => {
@@ -143,6 +202,34 @@ module('Unit | Model | administrative unit', function (hooks) {
       CLASSIFICATION.APB,
       CLASSIFICATION.POLICE_ZONE,
       CLASSIFICATION.ASSISTANCE_ZONE,
+    ].forEach((cl) => {
+      test(`it should not return an extra error when a membership is defined present when creating an new ${cl.label}`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl,
+        );
+        const membership = this.store().createRecord('membership');
+
+        const model = this.store().createRecord('administrative-unit', {
+          classification,
+          memberships: [membership],
+        });
+
+        const isValid = await model.validate({ creatingNewOrganization: true });
+
+        assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 5);
+        assert.propContains(model.error, {
+          legalName: { message: 'Vul de juridische naam in' },
+          organizationStatus: { message: 'Selecteer een optie' },
+          scope: { message: 'Selecteer een optie' },
+          legalForm: { message: 'Selecteer een optie' },
+          contentThemes: { message: 'Selecteer een optie' },
+        });
+      });
+    });
+
+    [
       CLASSIFICATION.WORSHIP_SERVICE,
       CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
     ].forEach((cl) => {
@@ -183,6 +270,31 @@ module('Unit | Model | administrative unit', function (hooks) {
       CLASSIFICATION.APB,
       CLASSIFICATION.POLICE_ZONE,
       CLASSIFICATION.ASSISTANCE_ZONE,
+    ].forEach((cl) => {
+      test(`it should not return an extra error when editing an existing ${cl.label} without memberships`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl,
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          classification,
+        });
+
+        const isValid = await model.validate();
+
+        assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 5);
+        assert.propContains(model.error, {
+          legalName: { message: 'Vul de juridische naam in' },
+          organizationStatus: { message: 'Selecteer een optie' },
+          scope: { message: 'Selecteer een optie' },
+          legalForm: { message: 'Selecteer een optie' },
+          contentThemes: { message: 'Selecteer een optie' },
+        });
+      });
+    });
+
+    [
       CLASSIFICATION.WORSHIP_SERVICE,
       CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
     ].forEach((cl) => {
@@ -220,6 +332,32 @@ module('Unit | Model | administrative unit', function (hooks) {
       CLASSIFICATION.APB,
       CLASSIFICATION.POLICE_ZONE,
       CLASSIFICATION.ASSISTANCE_ZONE,
+    ].forEach((cl) => {
+      test(`it should not return an extra error when editing an ${cl.label} with an empty memberships array`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl,
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          classification,
+          memberships: [],
+        });
+
+        const isValid = await model.validate();
+
+        assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 5);
+        assert.propContains(model.error, {
+          legalName: { message: 'Vul de juridische naam in' },
+          organizationStatus: { message: 'Selecteer een optie' },
+          scope: { message: 'Selecteer een optie' },
+          legalForm: { message: 'Selecteer een optie' },
+          contentThemes: { message: 'Selecteer een optie' },
+        });
+      });
+    });
+
+    [
       CLASSIFICATION.WORSHIP_SERVICE,
       CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
     ].forEach((cl) => {
@@ -258,6 +396,34 @@ module('Unit | Model | administrative unit', function (hooks) {
       CLASSIFICATION.APB,
       CLASSIFICATION.POLICE_ZONE,
       CLASSIFICATION.ASSISTANCE_ZONE,
+    ].forEach((cl) => {
+      test(`it should not return an extra error when editing an existing with memberships ${cl.label}`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl,
+        );
+        const membership = this.store().createRecord('membership');
+
+        const model = this.store().createRecord('administrative-unit', {
+          classification,
+          memberships: [membership],
+        });
+
+        const isValid = await model.validate();
+
+        assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 5);
+        assert.propContains(model.error, {
+          legalName: { message: 'Vul de juridische naam in' },
+          organizationStatus: { message: 'Selecteer een optie' },
+          scope: { message: 'Selecteer een optie' },
+          legalForm: { message: 'Selecteer een optie' },
+          contentThemes: { message: 'Selecteer een optie' },
+        });
+      });
+    });
+
+    [
       CLASSIFICATION.WORSHIP_SERVICE,
       CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
     ].forEach((cl) => {

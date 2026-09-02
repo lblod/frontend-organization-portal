@@ -35,9 +35,6 @@
     "@lblod/ember-environment-banner": {
       "@appuniversum/ember-appuniversum": "^4.2.2",
       "ember-source": "$ember-source"
-    },
-    "ember-resources": {
-      "ember-concurrency": "^5.2.0"
     }
   },
   "devDependencies": {
@@ -96,12 +93,11 @@
     "ember-power-select": "^8.0.0",
     "ember-qunit": "^9.0.4",
     "ember-resolver": "^13.2.0",
-    "ember-resources": "^6.0.0",
     "ember-simple-auth": "^8.3.1",
     "ember-source": "~6.12.0",
     "ember-template-imports": "^4.4.0",
     "ember-template-lint": "^6.1.0",
-    "ember-truth-helpers": "^4.0.0",
+    "ember-truth-helpers": "^5.0.0",
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^9.1.2",
     "eslint-plugin-ember": "^12.7.5",
@@ -115,6 +111,7 @@
     "prettier-plugin-ember-template-tag": "^2.1.4",
     "qunit": "^2.25.0",
     "qunit-dom": "^3.5.0",
+    "reactiveweb": "^1.9.3",
     "release-it": "^17.1.1",
     "sass": "^1.49.7",
     "sinon": "^17.0.1",

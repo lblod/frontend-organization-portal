@@ -46,10 +46,10 @@ module('Unit | Model | address', function (hooks) {
 
     test('it returns error when country is België and province is missing', async function (assert) {
       const model = this.store().createRecord('address', {
-        number: '1',
-        street: 'Wetstraat',
-        postcode: '1000',
-        municipality: 'Brussel',
+        number: '27',
+        street: 'Koningin Astridplein',
+        postcode: '2018',
+        municipality: 'Antwerpen',
         country: 'België',
       });
 
@@ -61,6 +61,20 @@ module('Unit | Model | address', function (hooks) {
         model.error.province.message,
         'Vul het volledige adres in',
       );
+    });
+
+    test('province is optional for non-flemish postcodes in Belgium', async function (assert) {
+      const model = this.store().createRecord('address', {
+        number: '1',
+        street: 'Wetstraat',
+        postcode: '1000',
+        municipality: 'Brussel',
+        country: 'België',
+      });
+
+      const isValid = await model.validate();
+
+      assert.true(isValid);
     });
   });
 });

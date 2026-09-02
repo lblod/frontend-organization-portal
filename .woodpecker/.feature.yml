@@ -9,5 +9,5 @@ steps:
       password:
         from_secret: docker_password
 when:
-  - event: pull_request
-    branch: [feature/*]
+  - event: push
+    branch: feature/*

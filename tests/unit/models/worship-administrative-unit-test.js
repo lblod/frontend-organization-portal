@@ -17,12 +17,14 @@ module('Unit | Model | worship administrative unit', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 4);
+      assert.strictEqual(Object.keys(model.error).length, 6);
       assert.propContains(model.error, {
         legalName: { message: 'Vul de juridische naam in' },
         classification: { message: 'Selecteer een optie' },
         organizationStatus: { message: 'Selecteer een optie' },
         scope: { message: 'Selecteer een optie' },
+        legalForm: { message: 'Selecteer een optie' },
+        contentThemes: { message: 'Selecteer een optie' },
       });
     });
   });
