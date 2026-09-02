@@ -17,11 +17,13 @@ module('Unit | Model | representative body', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 3);
+      assert.strictEqual(Object.keys(model.error).length, 5);
       assert.propContains(model.error, {
         legalName: { message: 'Vul de juridische naam in' },
         classification: { message: 'Selecteer een optie' },
         organizationStatus: { message: 'Selecteer een optie' },
+        legalForm: { message: 'Selecteer een optie' },
+        contentThemes: { message: 'Selecteer een optie' },
       });
     });
   });

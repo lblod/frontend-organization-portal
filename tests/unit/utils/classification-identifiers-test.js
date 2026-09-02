@@ -148,6 +148,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                 CLASSIFICATION.MUNICIPALITY.id,
                 CLASSIFICATION.PROVINCE.id,
                 CLASSIFICATION.OCMW.id,
+                CLASSIFICATION.DISTRICT.id,
                 CLASSIFICATION.REPRESENTATIVE_BODY.id,
               ].includes(id),
           )
@@ -427,6 +428,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.MUNICIPALITY.id,
                       CLASSIFICATION.PROVINCE.id,
                       CLASSIFICATION.OCMW.id,
+                      CLASSIFICATION.DISTRICT.id,
                     ].includes(id),
                 )
                 .sort(),
@@ -494,6 +496,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.MUNICIPALITY.id,
                       CLASSIFICATION.PROVINCE.id,
                       CLASSIFICATION.OCMW.id,
+                      CLASSIFICATION.DISTRICT.id,
                     ].includes(id),
                 )
                 .sort(),
@@ -536,6 +539,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.MUNICIPALITY.id,
                       CLASSIFICATION.PROVINCE.id,
                       CLASSIFICATION.OCMW.id,
+                      CLASSIFICATION.DISTRICT.id,
                     ].includes(id),
                 )
                 .sort(),
@@ -601,6 +605,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.MUNICIPALITY.id,
                       CLASSIFICATION.PROVINCE.id,
                       CLASSIFICATION.OCMW.id,
+                      CLASSIFICATION.DISTRICT.id,
                     ].includes(id),
                 )
                 .sort(),
