@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import { trackedTask } from 'ember-resources/util/ember-concurrency';
+import { trackedTask } from 'reactiveweb/ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 
 export default class ProvinceSelectComponent extends Component {
