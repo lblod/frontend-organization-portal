@@ -21,28 +21,36 @@ export default class WorshipServiceModel extends WorshipAdministrativeUnitModel 
   }
 
   get validationSchema() {
-    return super.validationSchema.append({
+    const defaultSchema = super.validationSchema.append({
       denomination: validateStringOptional(),
       crossBorder: Joi.boolean(),
-      involvements: Joi.when(Joi.ref('$involvementsPercentage'), {
-        is: Joi.exist().valid(true),
-        then: Joi.array().external(async (_value, helpers) => {
-          const involvements = await this.involvements;
+    });
 
-          const sumPercentages = involvements.reduce(
-            (percentageAcc, involvement) =>
-              percentageAcc + Number(involvement.percentage),
-            0,
+    // This is used by the local involvements edit page to only validate the data that can be edited there.
+    // Otherwise the user might get false-negative validation errors.
+    const involvementsSchema = Joi.object({
+      involvements: Joi.array().external(async (_value, helpers) => {
+        const involvements = await this.involvements;
+
+        const sumPercentages = involvements.reduce(
+          (percentageAcc, involvement) =>
+            percentageAcc + Number(involvement.percentage),
+          0,
+        );
+
+        if (Number.isNaN(sumPercentages) || sumPercentages !== 100) {
+          return helpers.message(
+            'Het totaal van alle percentages moet gelijk zijn aan 100',
           );
-
-          if (Number.isNaN(sumPercentages) || sumPercentages !== 100) {
-            return helpers.message(
-              'Het totaal van alle percentages moet gelijk zijn aan 100',
-            );
-          }
-        }),
-        otherwise: validateHasManyOptional(),
+        }
       }),
+      otherwise: validateHasManyOptional(),
+    });
+
+    return Joi.when(Joi.ref('$involvementsPercentage'), {
+      is: true,
+      then: involvementsSchema,
+      otherwise: defaultSchema,
     });
   }
 
