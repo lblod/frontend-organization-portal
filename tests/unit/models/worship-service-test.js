@@ -176,6 +176,22 @@ module('Unit | Model | worship service', function (hooks) {
         involvementsPercentage: true,
       });
       assert.true(isValid);
+
+      Object.assign(worshipService, {
+        legalName: undefined,
+        classification: undefined,
+        organizationStatus: undefined,
+        recognizedWorshipType: undefined,
+        scope: undefined,
+      });
+
+      isValid = await worshipService.validate({
+        involvementsPercentage: true,
+      });
+      assert.true(
+        isValid,
+        'only involvements data is validated when involvementsPercentage is set',
+      );
     });
   });
 
