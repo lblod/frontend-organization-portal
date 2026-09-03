@@ -5,6 +5,11 @@ import { dropTask } from 'ember-concurrency';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import { tracked } from '@glimmer/tracking';
+import {
+  findRecord,
+  query as queryBuilder,
+  saveRecord,
+} from '@warp-drive/legacy/compat/builders';
 
 const RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE = {
   [CHANGE_EVENT_TYPE.NAME_CHANGE]: ORGANIZATION_STATUS.ACTIVE,
@@ -196,11 +201,12 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
         shouldSaveDecision,
         decision,
         decisionActivity,
+        this.store,
       );
 
       // We save the change event already so the backend assigns it an id
       // which is needed when saving the change-event-results
-      await changeEvent.save();
+      await this.store.request(saveRecord(changeEvent));
 
       if (changeEvent.canAffectMultipleOrganizations) {
         const allOriginalOrganizations = (
@@ -268,7 +274,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
         await Promise.all(createChangeEventResultsPromises);
       } else {
         if (changeEvent.requiresDecisionInformation) {
-          (await changeEvent.originalOrganizations).push(currentOrganization);
+          await changeEvent.addOriginalOrganization(currentOrganization);
         }
 
         if (
@@ -291,7 +297,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       }
 
       // Persist the original and resulting organization information
-      await changeEvent.save();
+      await this.store.request(saveRecord(changeEvent));
 
       this.router.transitionTo(
         'organizations.organization.change-events.details',
@@ -317,9 +323,8 @@ async function createChangeEventResult({
   store,
   resultingLegalForm = null,
 }) {
-  let resultingStatus = await store.findRecord(
-    'organization-status-code',
-    resultingStatusId,
+  const { content: resultingStatus } = await store.request(
+    findRecord('organization-status-code', resultingStatusId),
   );
 
   let mostRecentChangeEvent = await findMostRecentChangeEvent(
@@ -342,7 +347,7 @@ async function createChangeEventResult({
       resultingOrganization.legalForm = resultingLegalForm;
     }
 
-    await resultingOrganization.save();
+    await store.request(saveRecord(resultingOrganization));
 
     if (
       resultingOrganization.isWorshipService &&
@@ -375,18 +380,20 @@ async function createChangeEventResult({
   }
   changeEventResult.resultingOrganization = resultingOrganization;
   changeEventResult.resultFrom = changeEvent;
-  await changeEventResult.save();
+  await store.request(saveRecord(changeEventResult));
 }
 
 async function findMostRecentChangeEvent(store, organization) {
-  let mostRecentChangeEventResults = await store.query('change-event-result', {
-    'filter[resulting-organization][:id:]': organization.id,
-    include: ['result-from', 'resulting-organization'].join(),
-    page: {
-      size: 1,
-    },
-    sort: '-result-from.date',
-  });
+  const { content: mostRecentChangeEventResults } = await store.request(
+    queryBuilder('change-event-result', {
+      'filter[resulting-organization][:id:]': organization.id,
+      include: ['result-from', 'resulting-organization'].join(),
+      page: {
+        size: 1,
+      },
+      sort: '-result-from.date',
+    }),
+  );
 
   if (mostRecentChangeEventResults.length > 0) {
     return await mostRecentChangeEventResults.at(0)?.resultFrom;
@@ -395,14 +402,19 @@ async function findMostRecentChangeEvent(store, organization) {
   }
 }
 
-async function saveDecision(shouldSaveDecision, decision, decisionActivity) {
+async function saveDecision(
+  shouldSaveDecision,
+  decision,
+  decisionActivity,
+  store,
+) {
   if (shouldSaveDecision) {
     if (!decision.isEmpty || decisionActivity.endDate) {
       if (decisionActivity.endDate) {
-        await decisionActivity.save();
+        await store.request(saveRecord(decisionActivity));
         decision.hasDecisionActivity = decisionActivity;
       }
-      await decision.save();
+      await store.request(saveRecord(decision));
       return decision;
     }
   } else {

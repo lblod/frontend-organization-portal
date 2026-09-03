@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
 
 export default class OrganizationsOrganizationChangeEventsDetailsRoute extends Route {
   @service store;
@@ -10,10 +11,8 @@ export default class OrganizationsOrganizationChangeEventsDetailsRoute extends R
     let { changeEventId } = this.paramsFor(
       'organizations.organization.change-events.details',
     );
-    let changeEvent = await this.store.findRecord(
-      'change-event',
-      changeEventId,
-      {
+    const { content: changeEvent } = await this.store.request(
+      findRecord('change-event', changeEventId, {
         reload: true,
         include: [
           'type',
@@ -24,7 +23,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsRoute extends R
           'results.status',
           'results.resulting-legal-form',
         ].join(),
-      },
+      }),
     );
 
     let currentChangeEventResult = await findCurrentChangeEventResult(

@@ -1,7 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import sinon from 'sinon';
-import { A } from '@ember/array';
 
 module('Unit | Model | identifier', function (hooks) {
   setupTest(hooks);
@@ -117,18 +116,18 @@ module('Unit | Model | identifier', function (hooks) {
           idName: 'KBO nummer',
           structuredIdentifier,
         });
-        const queryStub = sinon.stub(
+        const requestStub = sinon.stub(
           this.owner.lookup('service:store'),
-          'query',
+          'request',
         );
-        queryStub.resolves(A([]));
+        requestStub.resolves({ content: [] });
 
         const isValid = await model.validate();
 
         assert.true(isValid);
         assert.strictEqual(model.error, undefined);
 
-        queryStub.restore();
+        requestStub.restore();
       });
 
       test('it returns error when localId is already used', async function (assert) {
@@ -146,11 +145,11 @@ module('Unit | Model | identifier', function (hooks) {
           idName: 'KBO nummer',
           structuredIdentifier,
         });
-        const queryStub = sinon.stub(
+        const requestStub = sinon.stub(
           this.owner.lookup('service:store'),
-          'query',
+          'request',
         );
-        queryStub.resolves(A([organization]));
+        requestStub.resolves({ content: [organization] });
 
         const isValid = await model.validate();
 
@@ -165,7 +164,7 @@ module('Unit | Model | identifier', function (hooks) {
           organization.id,
         );
 
-        queryStub.restore();
+        requestStub.restore();
       });
     });
 

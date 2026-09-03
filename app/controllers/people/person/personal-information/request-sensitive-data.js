@@ -3,6 +3,7 @@ import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { findAll } from '@warp-drive/legacy/compat/builders';
 
 export default class PeoplePersonPersonalInformationRequestSensitiveDataController extends Controller {
   @service router;
@@ -34,7 +35,10 @@ export default class PeoplePersonPersonalInformationRequestSensitiveDataControll
   }
 
   loadReasonCodes = task(async () => {
-    return await this.store.findAll('request-reason');
+    const { content: reasons } = await this.store.request(
+      findAll('request-reason'),
+    );
+    return reasons;
   });
 
   reset() {

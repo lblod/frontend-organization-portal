@@ -1,5 +1,9 @@
 import Service, { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import {
+  findRecord,
+  query as queryBuilder,
+} from '@warp-drive/legacy/compat/builders';
 
 const PRIVACY_CENTRIC_SERVICE_ENDPOINT = {
   REQUEST: '/person-information-requests',
@@ -133,11 +137,13 @@ export default class SensitivePersonalInformationService extends Service {
       if (obfuscated) {
         sensitiveInformation.nationalities = idList;
       } else {
-        let nationalities = await this.store.query('nationality', {
-          filter: {
-            ':id:': idList,
-          },
-        });
+        const { content: nationalities } = await this.store.request(
+          queryBuilder('nationality', {
+            filter: {
+              ':id:': idList,
+            },
+          }),
+        );
         sensitiveInformation.nationalities = nationalities.slice();
       }
     }
@@ -146,7 +152,9 @@ export default class SensitivePersonalInformationService extends Service {
       if (obfuscated) {
         sensitiveInformation.gender = genderData;
       } else {
-        let gender = await this.store.findRecord('gender-code', genderData.id);
+        const { content: gender } = await this.store.request(
+          findRecord('gender-code', genderData.id),
+        );
         sensitiveInformation.gender = gender;
       }
     }

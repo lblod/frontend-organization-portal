@@ -1,5 +1,7 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+import { findRecord } from '@warp-drive/legacy/compat/builders';
+import { query } from '@warp-drive/legacy/compat/builders';
 import { INVOLVEMENT_TYPE } from 'frontend-organization-portal/models/involvement-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
@@ -15,29 +17,34 @@ export default class OrganizationsOrganizationLocalInvolvementsEditRoute extends
   }
 
   async model() {
-    let { id: organizationId } = this.paramsFor('organizations.organization');
+    const { id: organizationId } = this.paramsFor('organizations.organization');
 
-    let organization = await this.store.findRecord(
-      'worship-administrative-unit',
-      organizationId,
-      {
+    const { content: organization } = await this.store.request(
+      findRecord('worship-administrative-unit', organizationId, {
         reload: true,
         include:
           'recognized-worship-type,involvements.involvement-type,involvements.administrative-unit.classification,scope',
-      },
+      }),
     );
 
     let involvementTypes;
     const classification = await organization.classification;
     if (classification.id == CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id) {
-      involvementTypes = await this.store.query('involvement-type', {
-        filter: {
-          id: INVOLVEMENT_TYPE.SUPERVISORY, // Toezichthoundend
-        },
-      });
+      involvementTypes = (
+        await this.store.request(
+          query('involvement-type', {
+            filter: {
+              id: INVOLVEMENT_TYPE.SUPERVISORY, // Toezichthoundend
+            },
+          }),
+        )
+      ).content;
     } else {
-      involvementTypes = await this.store.query('involvement-type', {});
+      involvementTypes = (
+        await this.store.request(query('involvement-type', {}))
+      ).content;
     }
+
     const involvements = await organization.involvements;
 
     let involvementTypesProvince = involvementTypes

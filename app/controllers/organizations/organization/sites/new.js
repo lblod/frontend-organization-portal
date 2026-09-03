@@ -5,6 +5,7 @@ import { combineFullAddress } from 'frontend-organization-portal/models/address'
 import { tracked } from '@glimmer/tracking';
 import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-string-to-null';
 import { action } from '@ember/object';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 
 export default class OrganizationsOrganizationSitesNewController extends Controller {
   @service router;
@@ -32,10 +33,10 @@ export default class OrganizationsOrganizationSitesNewController extends Control
 
     if (!this.hasValidationErrors) {
       contact = setEmptyStringsToNull(contact);
-      await contact.save();
+      await this.store.request(saveRecord(contact));
 
       secondaryContact = setEmptyStringsToNull(secondaryContact);
-      await secondaryContact.save();
+      await this.store.request(saveRecord(secondaryContact));
 
       if (!address.isPostcodeInFlanders) {
         address.province = '';
@@ -44,12 +45,12 @@ export default class OrganizationsOrganizationSitesNewController extends Control
       address.fullAddress = combineFullAddress(address);
       address = setEmptyStringsToNull(address);
 
-      await address.save();
+      await this.store.request(saveRecord(address));
 
       site.address = address;
 
       (await site.contacts).push(contact, secondaryContact);
-      await site.save();
+      await this.store.request(saveRecord(site));
 
       let nonPrimarySites = await organization.sites;
 
@@ -65,7 +66,7 @@ export default class OrganizationsOrganizationSitesNewController extends Control
         nonPrimarySites.push(site);
       }
 
-      await organization.save();
+      await this.store.request(saveRecord(organization));
 
       this.router.replaceWith('organizations.organization.sites.site', site.id);
     }
@@ -80,19 +81,23 @@ export default class OrganizationsOrganizationSitesNewController extends Control
     let { site, address, contact, secondaryContact } = this.model;
 
     if (site.isNew) {
-      site.destroyRecord();
+      site.deleteRecord();
+      site.unloadRecord();
     }
 
     if (address.isNew) {
-      address.destroyRecord();
+      address.deleteRecord();
+      address.unloadRecord();
     }
 
     if (contact.isNew) {
-      contact.destroyRecord();
+      contact.deleteRecord();
+      contact.unloadRecord();
     }
 
     if (secondaryContact.isNew) {
-      secondaryContact.destroyRecord();
+      secondaryContact.deleteRecord();
+      secondaryContact.unloadRecord();
     }
   }
 

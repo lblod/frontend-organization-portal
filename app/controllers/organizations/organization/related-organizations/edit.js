@@ -4,6 +4,7 @@ import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { A } from '@ember/array';
+import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import { shouldSwapAssignments } from 'frontend-organization-portal/constants/memberships';
 
@@ -80,7 +81,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     //   Otherwise, they can result in failing validations or errors.
     if (membership.isNew) {
       this.memberships.removeObject(membership);
-      membership.destroyRecord();
+      membership.deleteRecord();
+      membership.unloadRecord();
     } else {
       membership.deleteRecord();
     }
@@ -210,11 +212,11 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
       );
 
       let savePromises = this.memberships.map((membership) => {
-        membership.save();
+        this.store.request(saveRecord(membership));
       });
       await Promise.all(savePromises);
 
-      await organization.save();
+      await this.store.request(saveRecord(organization));
 
       this.router.transitionTo(
         'organizations.organization.related-organizations',
