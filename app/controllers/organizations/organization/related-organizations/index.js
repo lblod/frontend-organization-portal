@@ -17,6 +17,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexControlle
   @tracked selectedRoleLabel;
 
   reset() {
-    this.selectedRoleLabel = '';
+    this.selectedRoleLabel = undefined;
   }
 }
