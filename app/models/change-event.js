@@ -93,6 +93,10 @@ export default class ChangeEventModel extends AbstractValidationModel {
     return this.#hasTypeId([CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE]);
   }
 
+  get isWerkingsgebiedChangeEvent() {
+    return this.#hasTypeId([CHANGE_EVENT_TYPE.WERKINGSGEBIED_CHANGE]);
+  }
+
   get isMergerChangeEvent() {
     return this.#hasTypeId(MergerTypeIdList);
   }

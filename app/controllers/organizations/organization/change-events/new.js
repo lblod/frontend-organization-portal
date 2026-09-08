@@ -39,6 +39,7 @@ const RECOGNITION_CHANGE_TYPES = [
 export default class OrganizationsOrganizationChangeEventsNewController extends Controller {
   @service router;
   @service store;
+  @service scopeOfOperation;
 
   @tracked
   isAddingOriginalOrganizations = true;
@@ -48,6 +49,9 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
 
   @tracked
   selectedResultingLegalForm;
+
+  @tracked
+  selectedResultingLocations = [];
 
   get hasValidationErrors() {
     return this.model.changeEvent.error || this.model.decision?.error;
@@ -61,6 +65,13 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     return (
       this.model.changeEvent.type?.get('id') ===
       CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE
+    );
+  }
+
+  get isWerkingsgebiedChange() {
+    return (
+      this.model.changeEvent.type?.get('id') ===
+      CHANGE_EVENT_TYPE.WERKINGSGEBIED_CHANGE
     );
   }
 
@@ -165,6 +176,17 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     this.selectedResultingLegalForm = legalForm;
   }
 
+  /**
+   * Update the locations selected as the new werkingsgebied for a
+   * werkingsgebied change event. Multiple locations can be selected; they
+   * are combined into a single scope when the change event is saved.
+   * @param {Location[]} locations - the locations to be set
+   */
+  @action
+  updateResultingLocations(locations) {
+    this.selectedResultingLocations = locations;
+  }
+
   createNewChangeEventTask = dropTask(async (event) => {
     event.preventDefault();
 
@@ -194,6 +216,22 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       };
     } else if (changeEvent.error?.resultingLegalForm) {
       delete changeEvent.error.resultingLegalForm;
+    }
+
+    const isWerkingsgebiedChange =
+      changeEvent.type?.get('id') === CHANGE_EVENT_TYPE.WERKINGSGEBIED_CHANGE;
+    if (
+      isWerkingsgebiedChange &&
+      this.selectedResultingLocations.length === 0
+    ) {
+      if (!changeEvent.error) {
+        changeEvent.error = {};
+      }
+      changeEvent.error.resultingScope = {
+        message: 'Selecteer minstens één werkingsgebied',
+      };
+    } else if (changeEvent.error?.resultingScope) {
+      delete changeEvent.error.resultingScope;
     }
 
     if (!changeEvent.error && (shouldSaveDecision ? !decision.error : true)) {
@@ -286,13 +324,23 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           (await changeEvent.resultingOrganizations).push(currentOrganization);
         }
 
+        const resultingScope = isWerkingsgebiedChange
+          ? await this.scopeOfOperation.getScopeForLocations(
+              ...this.selectedResultingLocations,
+            )
+          : null;
+
+        const resultingStatusId =
+          RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEvent.type.get('id')] ??
+          (await currentOrganization.organizationStatus)?.id;
+
         await createChangeEventResult({
-          resultingStatusId:
-            RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEvent.type.get('id')],
+          resultingStatusId,
           resultingOrganization: currentOrganization,
           changeEvent,
           store: this.store,
           resultingLegalForm: this.selectedResultingLegalForm,
+          resultingScope,
         });
       }
 
@@ -313,6 +361,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     this.model.organization.reset();
     this.selectedResultingOrganization = null;
     this.selectedResultingLegalForm = null;
+    this.selectedResultingLocations = [];
   }
 }
 
@@ -322,6 +371,7 @@ async function createChangeEventResult({
   changeEvent,
   store,
   resultingLegalForm = null,
+  resultingScope = null,
 }) {
   const { content: resultingStatus } = await store.request(
     findRecord('organization-status-code', resultingStatusId),
@@ -345,6 +395,10 @@ async function createChangeEventResult({
 
     if (resultingLegalForm) {
       resultingOrganization.legalForm = resultingLegalForm;
+    }
+
+    if (resultingScope) {
+      resultingOrganization.scope = resultingScope;
     }
 
     await store.request(saveRecord(resultingOrganization));
@@ -377,6 +431,9 @@ async function createChangeEventResult({
   changeEventResult.status = resultingStatus;
   if (resultingLegalForm) {
     changeEventResult.resultingLegalForm = resultingLegalForm;
+  }
+  if (resultingScope) {
+    changeEventResult.resultingScope = resultingScope;
   }
   changeEventResult.resultingOrganization = resultingOrganization;
   changeEventResult.resultFrom = changeEvent;

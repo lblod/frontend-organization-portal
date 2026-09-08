@@ -89,6 +89,23 @@
                 </:content>
               </Item>
             {{/if}}
+            {{#if this.isWerkingsgebiedChange}}
+              <Item
+                @labelFor="change-event-scope"
+                @required={{true}}
+                @errorMessage={{@model.changeEvent.error.resultingScope.message}}
+              >
+                <:label>Nieuw werkingsgebied</:label>
+                <:content as |hasError|>
+                  <LocationMultipleSelect
+                    @id="change-event-scope"
+                    @selected={{this.selectedResultingLocations}}
+                    @onChange={{this.updateResultingLocations}}
+                    @error={{hasError}}
+                  />
+                </:content>
+              </Item>
+            {{/if}}
             {{#if @model.changeEvent.requiresDecisionInformation}}
               <Item
                 @labelFor="change-event-decision-link"
