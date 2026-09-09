@@ -22,6 +22,7 @@ export default class OrganizationsOrganizationCoreDataRoute extends Route {
           'memberships-of-organizations',
           'memberships',
           'content-themes',
+          'additional-qualifications',
         ].join(),
       }),
     );

@@ -25,7 +25,7 @@ import {
   VlaamseGemeenschapscommissieCodeList,
   InterlokaleVerenigingCodeList,
   VervoerregioraadCodeList,
-} from '../constants/Classification';
+} from '../constants/classification';
 import {
   allowedFoundingMemberships,
   allowedParticipationMemberships,

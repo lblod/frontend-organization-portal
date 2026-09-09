@@ -71,3 +71,36 @@ export const RegionaalLandschapCodeList = [
 ];
 export const BosgroepCodeList = [CLASSIFICATION.BOSGROEP.id];
 export const WoonmaatschappijCodeList = [CLASSIFICATION.WOONMAATSCHAPPIJ.id];
+
+/**
+  The field is required only in non-worship services, in all types of organisations except for:
+  - gemeente
+  - OCMW
+  - district
+  - provincie
+  - politiezone
+  - hulpverleningszone
+  - vervoerregio’s
+  - eerstelijnszones
+  - regionale zorgzones
+  - regionale landschappen
+  - bosgroepen
+  - woonmaatschappijen
+  */
+export const CLASSIFICATION_CODES_WITHOUT_ADDITIONAL_QUALIFICATIONS = [
+  ...MunicipalityCodeList,
+  ...OCMWCodeList,
+  ...DistrictCodeList,
+  ...ProvinceCodeList,
+  ...PoliceZoneCodeList,
+  ...AssistanceZoneCodeList,
+  ...VervoerregioraadCodeList,
+  ...ZorgraadCodeList,
+  ...RegionaalZorgplatformCodeList,
+  ...RegionaalLandschapCodeList,
+  ...BosgroepCodeList,
+  ...WoonmaatschappijCodeList,
+  // Worship organizations
+  ...WorshipServiceCodeList,
+  ...CentralWorshipServiceCodeList,
+];

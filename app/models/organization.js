@@ -18,7 +18,8 @@ import {
   ProvinceCodeList,
   WorshipServiceCodeList,
   CentralWorshipServiceCodeList,
-} from '../constants/Classification';
+  CLASSIFICATION_CODES_WITHOUT_ADDITIONAL_QUALIFICATIONS,
+} from '../constants/classification';
 
 const CLASSIFICATION_CODES_WITHOUT_REQUIRED_CONTENT_THEMES = [
   ...MunicipalityCodeList,
@@ -139,6 +140,12 @@ export default class OrganizationModel extends AgentModel {
   })
   vendors;
 
+  @hasMany('additional-qualification-code', {
+    inverse: null,
+    async: false,
+  })
+  additionalQualifications;
+
   get validationSchema() {
     const REQUIRED_MESSAGE = 'Selecteer een optie';
     return super.validationSchema.append({
@@ -177,6 +184,18 @@ export default class OrganizationModel extends AgentModel {
       memberships: validateHasManyOptional(),
       kboOrganization: validateBelongsToOptional(),
       vendors: validateHasManyOptional(),
+      additionalQualifications: Joi.when('classification.id', {
+        is: Joi.exist(),
+        then: Joi.when('classification.id', {
+          is: Joi.valid(
+            ...CLASSIFICATION_CODES_WITHOUT_ADDITIONAL_QUALIFICATIONS,
+          ),
+          then: validateHasManyOptional(),
+          otherwise: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
+        }),
+        // If classification.id isn't set we make it optional as well, since we don't know which type we're dealing with yet.
+        otherwise: validateHasManyOptional(),
+      }),
     });
   }
 

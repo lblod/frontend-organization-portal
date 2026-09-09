@@ -1,5 +1,5 @@
 import WorshipAdministrativeUnitModel from './worship-administrative-unit';
-import { CentralWorshipServiceCodeList } from '../constants/Classification';
+import { CentralWorshipServiceCodeList } from '../constants/classification';
 
 export default class CentralWorshipServiceModel extends WorshipAdministrativeUnitModel {
   get isCentralWorshipService() {

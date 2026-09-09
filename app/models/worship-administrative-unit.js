@@ -7,7 +7,7 @@ import {
 import {
   CentralWorshipServiceCodeList,
   WorshipServiceCodeList,
-} from '../constants/Classification';
+} from '../constants/classification';
 import { CLASSIFICATION } from './administrative-unit-classification-code';
 
 export default class WorshipAdministrativeUnitModel extends AdministrativeUnitModel {

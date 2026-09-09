@@ -7,7 +7,7 @@ import {
   RegionaalLandschapCodeList,
   BosgroepCodeList,
   WoonmaatschappijCodeList,
-} from '../constants/Classification';
+} from '../constants/classification';
 import Joi from 'joi';
 import {
   validateHasManyNotEmptyRequired,

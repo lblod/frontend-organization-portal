@@ -5,7 +5,7 @@ import {
   validateHasManyOptional,
   validateStringOptional,
 } from '../validators/schema';
-import { WorshipServiceCodeList } from '../constants/Classification';
+import { WorshipServiceCodeList } from '../constants/classification';
 import { WITH_CENTRAL_WORSHIP_SERVICE } from './recognized-worship-type';
 
 export default class WorshipServiceModel extends WorshipAdministrativeUnitModel {
