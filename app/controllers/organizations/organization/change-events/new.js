@@ -68,13 +68,6 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     );
   }
 
-  get isWerkingsgebiedChange() {
-    return (
-      this.model.changeEvent.type?.get('id') ===
-      CHANGE_EVENT_TYPE.WERKINGSGEBIED_CHANGE
-    );
-  }
-
   // TODO: replace this with a `url-for` helper.
   get organizationCreationUrl() {
     return this.router.urlFor('organizations.new');
@@ -218,10 +211,8 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       delete changeEvent.error.resultingLegalForm;
     }
 
-    const isWerkingsgebiedChange =
-      changeEvent.type?.get('id') === CHANGE_EVENT_TYPE.WERKINGSGEBIED_CHANGE;
     if (
-      isWerkingsgebiedChange &&
+      changeEvent.isWerkingsgebiedChangeEvent &&
       this.selectedResultingLocations.length === 0
     ) {
       if (!changeEvent.error) {
@@ -324,14 +315,14 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           (await changeEvent.resultingOrganizations).push(currentOrganization);
         }
 
-        const resultingScope = isWerkingsgebiedChange
+        const resultingScope = changeEvent.isWerkingsgebiedChangeEvent
           ? await this.scopeOfOperation.getScopeForLocations(
               ...this.selectedResultingLocations,
             )
           : null;
 
         const resultingStatusId =
-          RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEvent.type.get('id')] ??
+          RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[(await changeEvent.type).id] ??
           (await currentOrganization.organizationStatus)?.id;
 
         await createChangeEventResult({

@@ -21,27 +21,25 @@ export default class ScopeOfOperationService extends Service {
   async getScopeLabel(organization) {
     const scope = await organization.scope;
 
-    return this.getLabelForLocation(scope);
+    return scope ? this.getLabelForLocation(scope) : undefined;
   }
 
   /**
    * Retrieve the label to be displayed for the provided scope-of-operation
    * location.
-   * @param {Location | null | undefined} location - The location for which
-   *     to retrieve the label.
-   * @returns {Promise<string | null>} The appropriate label that should be
-   *     displayed for the location, undefined if no location was provided.
+   * @param {Location} location - The location for which to retrieve the
+   *     label.
+   * @returns {Promise<string>} The appropriate label that should be
+   *     displayed for the location.
    */
   async getLabelForLocation(location) {
     let label;
-    if (location) {
-      const resp = await fetch(
-        this.getScopeServiceEndpoint('label-for-scope', location),
-      );
+    const resp = await fetch(
+      this.getScopeServiceEndpoint('label-for-scope', location),
+    );
 
-      if (resp.status === 200) {
-        label = await resp.json();
-      }
+    if (resp.status === 200) {
+      label = await resp.json();
     }
 
     return label;

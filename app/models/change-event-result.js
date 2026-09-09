@@ -15,7 +15,7 @@ export default class ChangeEventResultModel extends Model {
 
   @belongsTo('location', {
     inverse: null,
-    async: true,
+    async: false,
   })
   resultingScope;
 

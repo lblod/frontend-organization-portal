@@ -33,9 +33,10 @@ export default class OrganizationsOrganizationChangeEventsDetailsRoute extends R
       changeEvent,
     );
 
-    let resultingScopeLabel = await this.scopeOfOperation.getLabelForLocation(
-      await currentChangeEventResult?.resultingScope,
-    );
+    let resultingScope = currentChangeEventResult?.resultingScope;
+    let resultingScopeLabel = resultingScope
+      ? await this.scopeOfOperation.getLabelForLocation(resultingScope)
+      : undefined;
 
     return {
       organization,

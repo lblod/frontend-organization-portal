@@ -50,6 +50,16 @@
                 </Item>
               {{/if}}
             {{/let}}
+            {{#if @model.changeEvent.isWerkingsgebiedChangeEvent}}
+              {{#if @model.resultingScopeLabel}}
+                <Item>
+                  <:label>Nieuw werkingsgebied</:label>
+                  <:content>
+                    {{@model.resultingScopeLabel}}
+                  </:content>
+                </Item>
+              {{/if}}
+            {{/if}}
           </:left>
           <:right as |Item|>
             {{#let
@@ -104,16 +114,6 @@
                   </Item>
                 {{/if}}
               {{/let}}
-            {{/if}}
-            {{#if @model.changeEvent.isWerkingsgebiedChangeEvent}}
-              {{#if @model.resultingScopeLabel}}
-                <Item>
-                  <:label>Nieuw werkingsgebied</:label>
-                  <:content>
-                    {{@model.resultingScopeLabel}}
-                  </:content>
-                </Item>
-              {{/if}}
             {{/if}}
           </:right>
         </Card.Columns>

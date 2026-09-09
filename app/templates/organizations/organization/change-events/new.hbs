@@ -89,7 +89,7 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if this.isWerkingsgebiedChange}}
+            {{#if @model.changeEvent.isWerkingsgebiedChangeEvent}}
               <Item
                 @labelFor="change-event-scope"
                 @required={{true}}
