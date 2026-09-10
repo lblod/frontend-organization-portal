@@ -1,3 +1,20 @@
+## v1.43.0 (2026-09-10)
+
+#### :rocket: Enhancement
+* [#733](https://github.com/lblod/frontend-organization-portal/pull/733) OP-3905: add change event wijzigen werkingsgebied ([@DamonKennes](https://github.com/DamonKennes))
+
+#### :bug: Bug Fix
+* [#732](https://github.com/lblod/frontend-organization-portal/pull/732) [OP-3885] Fix a issue while trying to save "Betrokken lokale besturen" ([@Windvis](https://github.com/Windvis))
+* [#731](https://github.com/lblod/frontend-organization-portal/pull/731) Fix an issue where the related organization type select would look strange after a reset ([@Windvis](https://github.com/Windvis))
+
+#### :house: Internal
+* [#729](https://github.com/lblod/frontend-organization-portal/pull/729) [DL-7550] Resolve WarpDrive deprecations and linting errors ([@Windvis](https://github.com/Windvis))
+* [#730](https://github.com/lblod/frontend-organization-portal/pull/730) Fix CI issues ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Damon Kennes ([@DamonKennes](https://github.com/DamonKennes))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
 ## v1.42.0 (2026-08-20)
 
 #### :rocket: Enhancement
