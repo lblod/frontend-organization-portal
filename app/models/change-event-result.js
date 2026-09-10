@@ -13,6 +13,12 @@ export default class ChangeEventResultModel extends Model {
   })
   resultingLegalForm;
 
+  @belongsTo('location', {
+    inverse: null,
+    async: false,
+  })
+  resultingScope;
+
   @belongsTo('change-event', {
     inverse: 'results',
     async: true,

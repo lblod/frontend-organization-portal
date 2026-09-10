@@ -4,6 +4,7 @@ import { findRecord } from '@warp-drive/legacy/compat/builders';
 
 export default class OrganizationsOrganizationChangeEventsDetailsRoute extends Route {
   @service store;
+  @service scopeOfOperation;
 
   async model() {
     let organization = this.modelFor('organizations.organization');
@@ -22,6 +23,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsRoute extends R
           'results.resulting-organization',
           'results.status',
           'results.resulting-legal-form',
+          'results.resulting-scope',
         ].join(),
       }),
     );
@@ -31,10 +33,16 @@ export default class OrganizationsOrganizationChangeEventsDetailsRoute extends R
       changeEvent,
     );
 
+    let resultingScope = currentChangeEventResult?.resultingScope;
+    let resultingScopeLabel = resultingScope
+      ? await this.scopeOfOperation.getLabelForLocation(resultingScope)
+      : undefined;
+
     return {
       organization,
       changeEvent,
       currentChangeEventResult,
+      resultingScopeLabel,
     };
   }
 }
