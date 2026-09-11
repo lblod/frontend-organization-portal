@@ -4,6 +4,7 @@ import { service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
+import isAdditionalQualificationChangeEvent from 'frontend-organization-portal/helpers/is-additional-qualification-change-event';
 import { tracked } from '@glimmer/tracking';
 import {
   findRecord,
@@ -52,6 +53,9 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
 
   @tracked
   selectedResultingLocations = [];
+
+  @tracked
+  selectedResultingAdditionalQualifications = [];
 
   get hasValidationErrors() {
     return this.model.changeEvent.error || this.model.decision?.error;
@@ -180,6 +184,17 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     this.selectedResultingLocations = locations;
   }
 
+  /**
+   * Update the selected resulting additional qualifications for an
+   * additional qualification change event
+   * @param {AdditionalQualificationCode[]} qualifications - the
+   * qualifications to be set
+   */
+  @action
+  updateResultingAdditionalQualifications(qualifications) {
+    this.selectedResultingAdditionalQualifications = qualifications;
+  }
+
   createNewChangeEventTask = dropTask(async (event) => {
     event.preventDefault();
 
@@ -201,9 +216,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     const isLegalFormChange =
       changeEvent.type?.get('id') === CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE;
     if (isLegalFormChange && !this.selectedResultingLegalForm) {
-      if (!changeEvent.error) {
-        changeEvent.error = {};
-      }
+      changeEvent.removeError();
       changeEvent.error.resultingLegalForm = {
         message: 'Selecteer een juridische vorm',
       };
@@ -215,14 +228,24 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       changeEvent.isWerkingsgebiedChangeEvent &&
       this.selectedResultingLocations.length === 0
     ) {
-      if (!changeEvent.error) {
-        changeEvent.error = {};
-      }
+      changeEvent.removeError();
       changeEvent.error.resultingScope = {
         message: 'Selecteer minstens één werkingsgebied',
       };
     } else if (changeEvent.error?.resultingScope) {
       delete changeEvent.error.resultingScope;
+    }
+
+    if (
+      isAdditionalQualificationChangeEvent(changeEvent) &&
+      this.selectedResultingAdditionalQualifications.length === 0
+    ) {
+      changeEvent.removeError();
+      changeEvent.error.resultingAdditionalQualifications = {
+        message: 'Selecteer een optie',
+      };
+    } else if (changeEvent.error?.resultingAdditionalQualifications) {
+      delete changeEvent.error.resultingAdditionalQualifications;
     }
 
     if (!changeEvent.error && (shouldSaveDecision ? !decision.error : true)) {
@@ -332,6 +355,8 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           store: this.store,
           resultingLegalForm: this.selectedResultingLegalForm,
           resultingScope,
+          resultingAdditionalQualifications:
+            this.selectedResultingAdditionalQualifications,
         });
       }
 
@@ -353,6 +378,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     this.selectedResultingOrganization = null;
     this.selectedResultingLegalForm = null;
     this.selectedResultingLocations = [];
+    this.selectedResultingAdditionalQualifications = [];
   }
 }
 
@@ -363,6 +389,7 @@ async function createChangeEventResult({
   store,
   resultingLegalForm = null,
   resultingScope = null,
+  resultingAdditionalQualifications = [],
 }) {
   const { content: resultingStatus } = await store.request(
     findRecord('organization-status-code', resultingStatusId),
@@ -390,6 +417,11 @@ async function createChangeEventResult({
 
     if (resultingScope) {
       resultingOrganization.scope = resultingScope;
+    }
+
+    if (resultingAdditionalQualifications.length > 0) {
+      resultingOrganization.additionalQualifications =
+        resultingAdditionalQualifications;
     }
 
     await store.request(saveRecord(resultingOrganization));
@@ -425,6 +457,10 @@ async function createChangeEventResult({
   }
   if (resultingScope) {
     changeEventResult.resultingScope = resultingScope;
+  }
+  if (resultingAdditionalQualifications.length > 0) {
+    changeEventResult.resultingAdditionalQualifications =
+      resultingAdditionalQualifications;
   }
   changeEventResult.resultingOrganization = resultingOrganization;
   changeEventResult.resultFrom = changeEvent;

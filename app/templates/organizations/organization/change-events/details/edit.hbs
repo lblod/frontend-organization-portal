@@ -94,6 +94,47 @@
                 </Item>
               {{/if}}
             {{/if}}
+            {{#if
+              (is-additional-qualification-change-event @model.changeEvent)
+            }}
+              {{#if
+                @model.currentChangeEventResult.resultingAdditionalQualifications.length
+              }}
+                <Item>
+                  <:label>Nieuwe bijkomende kwalificatie(s)</:label>
+                  <:content>
+                    <AuList as |Item|>
+                      {{#each
+                        @model.currentChangeEventResult.resultingAdditionalQualifications
+                        as |qualification|
+                      }}
+                        <Item>
+                          {{#if qualification.definition}}
+                            <AuTooltip as |tooltip|>
+                              <div
+                                class="au-u-flex au-u-flex--inline au-u-flex--vertical-center"
+                                {{tooltip.target}}
+                              >
+                                {{qualification.label}}
+                                <AuIcon
+                                  @icon="info-circle"
+                                  class="au-u-margin-left-tiny"
+                                />
+                              </div>
+                              <tooltip.Content>
+                                {{qualification.definition}}
+                              </tooltip.Content>
+                            </AuTooltip>
+                          {{else}}
+                            {{qualification.label}}
+                          {{/if}}
+                        </Item>
+                      {{/each}}
+                    </AuList>
+                  </:content>
+                </Item>
+              {{/if}}
+            {{/if}}
           </:left>
           <:right as |Item|>
             {{#if

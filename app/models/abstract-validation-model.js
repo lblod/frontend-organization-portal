@@ -106,6 +106,12 @@ export default class AbstractValidationModel extends Model {
     this.#resetValidationErrors();
   }
 
+  removeError() {
+    if (!this._validationError) {
+      this._validationError = {};
+    }
+  }
+
   #resetValidationErrors() {
     this._validationError = undefined;
   }

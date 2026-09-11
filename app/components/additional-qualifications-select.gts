@@ -93,7 +93,7 @@ export default class AdditionalQualificationsSelect extends Component<Signature>
     <Await @promise={{this.optionsPromise}}>
       <:pending>
         <AuLoader @inline={{true}} @hideMessage={{true}} @centered={{false}}>
-          Bijkomende kwalificaties aan het laden
+          Bijkomende kwalificatie(s) aan het laden
         </AuLoader>
       </:pending>
 
