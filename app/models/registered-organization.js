@@ -4,6 +4,7 @@ import {
   AndereCodeList,
   ZorgraadCodeList,
   RegionaalZorgplatformCodeList,
+  RegionaalLandschapCodeList,
   BosgroepCodeList,
   WoonmaatschappijCodeList,
 } from '../constants/Classification';
@@ -34,6 +35,7 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
         is: Joi.exist().valid(
           ...ZorgraadCodeList,
           ...RegionaalZorgplatformCodeList,
+          ...RegionaalLandschapCodeList,
           ...BosgroepCodeList,
           ...WoonmaatschappijCodeList,
           ...PrivateOcmwAssociationCodeList,
@@ -56,6 +58,7 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
             ...AndereCodeList,
             ...ZorgraadCodeList,
             ...RegionaalZorgplatformCodeList,
+            ...RegionaalLandschapCodeList,
             ...BosgroepCodeList,
             ...WoonmaatschappijCodeList,
           ),
@@ -89,6 +92,10 @@ export default class RegisteredOrganizationModel extends OrganizationModel {
 
   get isRegionaalZorgplatform() {
     return this._hasClassificationId(RegionaalZorgplatformCodeList);
+  }
+
+  get isRegionaalLandschap() {
+    return this._hasClassificationId(RegionaalLandschapCodeList);
   }
 
   get isBosgroep() {

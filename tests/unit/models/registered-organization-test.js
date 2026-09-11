@@ -69,6 +69,30 @@ module('Unit | Model | registered organization', function (hooks) {
       });
     });
 
+    [CLASSIFICATION.REGIONAAL_LANDSCHAP].forEach((cl) => {
+      test(`it should require a werkingsgebied but no memberships when creating a new ${cl.label}`, async function (assert) {
+        const classification = this.store().createRecord(
+          'registered-organization-classification-code',
+          cl,
+        );
+        const model = this.store().createRecord('registered-organization', {
+          classification,
+        });
+
+        const isValid = await model.validate({ creatingNewOrganization: true });
+
+        assert.false(isValid);
+        assert.strictEqual(Object.keys(model.error).length, 5);
+        assert.propContains(model.error, {
+          legalName: { message: 'Vul de juridische naam in' },
+          organizationStatus: { message: 'Selecteer een optie' },
+          legalForm: { message: 'Selecteer een optie' },
+          contentThemes: { message: 'Selecteer een optie' },
+          scope: { message: 'Selecteer een optie' },
+        });
+      });
+    });
+
     [
       CLASSIFICATION.ZIEKENHUISVERENIGING,
       CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,

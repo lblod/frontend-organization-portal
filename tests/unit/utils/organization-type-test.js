@@ -63,6 +63,7 @@ module('Unit | Utility | organization-type', function (hooks) {
       CLASSIFICATION.VERVOERREGIORAAD,
       CLASSIFICATION.ZORGRAAD,
       CLASSIFICATION.REGIONAAL_ZORGPLATFORM,
+      CLASSIFICATION.REGIONAAL_LANDSCHAP,
     ].forEach((cl) => {
       test(`it returns the partnership organization type for ${cl.label}`, async function (assert) {
         const result = getOrganizationTypes(cl.id);

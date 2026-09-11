@@ -66,5 +66,8 @@ export const ZorgraadCodeList = [CLASSIFICATION.ZORGRAAD.id];
 export const RegionaalZorgplatformCodeList = [
   CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
 ];
+export const RegionaalLandschapCodeList = [
+  CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
+];
 export const BosgroepCodeList = [CLASSIFICATION.BOSGROEP.id];
 export const WoonmaatschappijCodeList = [CLASSIFICATION.WOONMAATSCHAPPIJ.id];
