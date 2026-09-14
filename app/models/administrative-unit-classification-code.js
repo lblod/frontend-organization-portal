@@ -143,6 +143,12 @@ export const CLASSIFICATION = {
     label: 'Regionaal zorgplatform',
     organizationType: ORGANIZATION_TYPES.PARTNERSHIP,
   },
+  REGIONAAL_LANDSCHAP: {
+    // FIXME this is not an administrative unit
+    id: '2de60048-ddbb-4020-ada7-4b81f98f9fe2',
+    label: 'Regionaal landschap',
+    organizationType: ORGANIZATION_TYPES.PARTNERSHIP,
+  },
   BOSGROEP: {
     // FIXME this is not an administrative unit
     id: 'b22948f9-e695-4f24-a530-b6bf3af3b37f',

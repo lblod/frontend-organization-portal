@@ -216,6 +216,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.VERVOERREGIORAAD.id,
                     CLASSIFICATION.ZORGRAAD.id,
                     CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                    CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                     CLASSIFICATION.ANDERE.id,
                   ].includes(id),
               )
@@ -287,6 +288,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.VERVOERREGIORAAD.id,
                     CLASSIFICATION.ZORGRAAD.id,
                     CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                    CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                     CLASSIFICATION.ANDERE.id,
                   ].includes(id),
               )
@@ -325,6 +327,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.VERVOERREGIORAAD.id,
                     CLASSIFICATION.ZORGRAAD.id,
                     CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                    CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                     CLASSIFICATION.ANDERE.id,
                   ].includes(id),
               )
@@ -384,6 +387,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.VERVOERREGIORAAD.id,
                     CLASSIFICATION.ZORGRAAD.id,
                     CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                    CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                     CLASSIFICATION.ANDERE.id,
                   ].includes(id),
               )
@@ -423,6 +427,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.VERVOERREGIORAAD.id,
                       CLASSIFICATION.ZORGRAAD.id,
                       CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                      CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                       CLASSIFICATION.ANDERE.id,
                       // Uncreatable administrative units
                       CLASSIFICATION.MUNICIPALITY.id,
@@ -491,6 +496,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.VERVOERREGIORAAD.id,
                       CLASSIFICATION.ZORGRAAD.id,
                       CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                      CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                       CLASSIFICATION.ANDERE.id,
                       // Uncreatable administrative units
                       CLASSIFICATION.MUNICIPALITY.id,
@@ -534,6 +540,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.VERVOERREGIORAAD.id,
                       CLASSIFICATION.ZORGRAAD.id,
                       CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                      CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                       CLASSIFICATION.ANDERE.id,
                       // Uncreatable administrative units
                       CLASSIFICATION.MUNICIPALITY.id,
@@ -600,6 +607,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.VERVOERREGIORAAD.id,
                       CLASSIFICATION.ZORGRAAD.id,
                       CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                      CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                       CLASSIFICATION.ANDERE.id,
                       // Uncreatable administrative units
                       CLASSIFICATION.MUNICIPALITY.id,
@@ -838,6 +846,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                   CLASSIFICATION.VERVOERREGIORAAD.id,
                   CLASSIFICATION.ZORGRAAD.id,
                   CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
+                  CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                   CLASSIFICATION.ANDERE.id,
                 ].includes(id),
             )
