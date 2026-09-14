@@ -152,6 +152,50 @@
                 </:content>
               </Item>
             {{/if}}
+
+            {{#if
+              (requires-additional-qualifications
+                this.currentOrganizationModel.classification
+              )
+            }}
+              <Item
+                @labelFor="additional-qualifications-select"
+                @required={{true}}
+                @errorMessage={{this.currentOrganizationModel.error.additionalQualifications.message}}
+              >
+                <:label>Bijkomende kwalificaties</:label>
+                <:content as |hasError|>
+                  <AdditionalQualificationsSelect
+                    @selected={{this.currentOrganizationModel.additionalQualifications}}
+                    @onChange={{fn
+                      (mut
+                        this.currentOrganizationModel.additionalQualifications
+                      )
+                    }}
+                    @error={{hasError}}
+                    @id="additional-qualifications-select"
+                  />
+                </:content>
+              </Item>
+              {{#if this.currentOrganizationModel.additionalQualifications}}
+                <Item>
+                  <:label>Rechtsgrond</:label>
+                  <:content>
+                    <AuList @divider={{true}} as |Item|>
+                      {{#each
+                        this.currentOrganizationModel.additionalQualifications
+                        as |qualification|
+                      }}
+                        <Item>
+                          {{qualification.legalBasis}}
+                        </Item>
+                      {{/each}}
+                    </AuList>
+                  </:content>
+                </Item>
+              {{/if}}
+            {{/if}}
+
             {{#if this.currentOrganizationModel.isWorshipAdministrativeUnit}}
               <Item
                 @labelFor="recognized-worship-type-select"

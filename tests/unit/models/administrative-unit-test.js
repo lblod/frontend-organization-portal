@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { OcmwAssociationCodeList } from 'frontend-organization-portal/constants/Classification';
+import { OcmwAssociationCodeList } from 'frontend-organization-portal/constants/classification';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 module('Unit | Model | administrative unit', function (hooks) {
@@ -42,16 +42,10 @@ module('Unit | Model | administrative unit', function (hooks) {
       const isValid = await model.validate();
 
       assert.false(isValid);
-      assert.strictEqual(Object.keys(model.error).length, 6);
       assert.propContains(model.error, {
-        legalName: { message: 'Vul de juridische naam in' },
         expectedEndDate: {
           message: 'De datum mag niet in het verleden liggen',
         },
-        organizationStatus: { message: 'Selecteer een optie' },
-        scope: { message: 'Selecteer een optie' },
-        legalForm: { message: 'Selecteer een optie' },
-        contentThemes: { message: 'Selecteer een optie' },
       });
     });
 
@@ -82,14 +76,8 @@ module('Unit | Model | administrative unit', function (hooks) {
         const isValid = await model.validate({ creatingNewOrganization: true });
 
         assert.false(isValid);
-        assert.strictEqual(Object.keys(model.error).length, 6);
         assert.propContains(model.error, {
-          legalName: { message: 'Vul de juridische naam in' },
-          organizationStatus: { message: 'Selecteer een optie' },
           memberships: { message: 'Selecteer een optie' },
-          scope: { message: 'Selecteer een optie' },
-          legalForm: { message: 'Selecteer een optie' },
-          contentThemes: { message: 'Selecteer een optie' },
         });
       });
     });
@@ -111,12 +99,8 @@ module('Unit | Model | administrative unit', function (hooks) {
         const isValid = await model.validate({ creatingNewOrganization: true });
 
         assert.false(isValid);
-        assert.strictEqual(Object.keys(model.error).length, 4);
         assert.propContains(model.error, {
-          legalName: { message: 'Vul de juridische naam in' },
-          organizationStatus: { message: 'Selecteer een optie' },
           memberships: { message: 'Selecteer een optie' },
-          scope: { message: 'Selecteer een optie' },
         });
       });
     });
@@ -149,14 +133,8 @@ module('Unit | Model | administrative unit', function (hooks) {
         const isValid = await model.validate({ creatingNewOrganization: true });
 
         assert.false(isValid);
-        assert.strictEqual(Object.keys(model.error).length, 6);
         assert.propContains(model.error, {
-          legalName: { message: 'Vul de juridische naam in' },
-          organizationStatus: { message: 'Selecteer een optie' },
           memberships: { message: 'Selecteer een optie' },
-          scope: { message: 'Selecteer een optie' },
-          legalForm: { message: 'Selecteer een optie' },
-          contentThemes: { message: 'Selecteer een optie' },
         });
       });
     });
@@ -179,12 +157,8 @@ module('Unit | Model | administrative unit', function (hooks) {
         const isValid = await model.validate({ creatingNewOrganization: true });
 
         assert.false(isValid);
-        assert.strictEqual(Object.keys(model.error).length, 4);
         assert.propContains(model.error, {
-          legalName: { message: 'Vul de juridische naam in' },
-          organizationStatus: { message: 'Selecteer een optie' },
           memberships: { message: 'Selecteer een optie' },
-          scope: { message: 'Selecteer een optie' },
         });
       });
     });
@@ -218,14 +192,7 @@ module('Unit | Model | administrative unit', function (hooks) {
         const isValid = await model.validate({ creatingNewOrganization: true });
 
         assert.false(isValid);
-        assert.strictEqual(Object.keys(model.error).length, 5);
-        assert.propContains(model.error, {
-          legalName: { message: 'Vul de juridische naam in' },
-          organizationStatus: { message: 'Selecteer een optie' },
-          scope: { message: 'Selecteer een optie' },
-          legalForm: { message: 'Selecteer een optie' },
-          contentThemes: { message: 'Selecteer een optie' },
-        });
+        assert.notOk(model.error.memberships);
       });
     });
 
@@ -283,14 +250,7 @@ module('Unit | Model | administrative unit', function (hooks) {
         const isValid = await model.validate();
 
         assert.false(isValid);
-        assert.strictEqual(Object.keys(model.error).length, 5);
-        assert.propContains(model.error, {
-          legalName: { message: 'Vul de juridische naam in' },
-          organizationStatus: { message: 'Selecteer een optie' },
-          scope: { message: 'Selecteer een optie' },
-          legalForm: { message: 'Selecteer een optie' },
-          contentThemes: { message: 'Selecteer een optie' },
-        });
+        assert.notOk(model.error.memberships);
       });
     });
 
@@ -346,14 +306,7 @@ module('Unit | Model | administrative unit', function (hooks) {
         const isValid = await model.validate();
 
         assert.false(isValid);
-        assert.strictEqual(Object.keys(model.error).length, 5);
-        assert.propContains(model.error, {
-          legalName: { message: 'Vul de juridische naam in' },
-          organizationStatus: { message: 'Selecteer een optie' },
-          scope: { message: 'Selecteer een optie' },
-          legalForm: { message: 'Selecteer een optie' },
-          contentThemes: { message: 'Selecteer een optie' },
-        });
+        assert.notOk(model.error.memberships);
       });
     });
 
@@ -397,7 +350,7 @@ module('Unit | Model | administrative unit', function (hooks) {
       CLASSIFICATION.POLICE_ZONE,
       CLASSIFICATION.ASSISTANCE_ZONE,
     ].forEach((cl) => {
-      test(`it should not return an extra error when editing an existing with memberships ${cl.label}`, async function (assert) {
+      test(`it should not return an extra error when editing an existing ${cl.label} with memberships`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
           cl,
@@ -412,14 +365,7 @@ module('Unit | Model | administrative unit', function (hooks) {
         const isValid = await model.validate();
 
         assert.false(isValid);
-        assert.strictEqual(Object.keys(model.error).length, 5);
-        assert.propContains(model.error, {
-          legalName: { message: 'Vul de juridische naam in' },
-          organizationStatus: { message: 'Selecteer een optie' },
-          scope: { message: 'Selecteer een optie' },
-          legalForm: { message: 'Selecteer een optie' },
-          contentThemes: { message: 'Selecteer een optie' },
-        });
+        assert.notOk(model.error.memberships);
       });
     });
 

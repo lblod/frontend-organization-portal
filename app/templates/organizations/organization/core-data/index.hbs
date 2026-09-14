@@ -109,6 +109,61 @@
                 {{/if}}
               {{/unless}}
 
+              {{#if
+                (requires-additional-qualifications
+                  @model.organization.classification
+                )
+              }}
+                <Item>
+                  <:label>Bijkomende kwalificaties</:label>
+                  <:content>
+                    <AuList as |Item|>
+                      {{#each
+                        @model.organization.additionalQualifications
+                        as |qualification|
+                      }}
+                        <Item>
+                          {{#if qualification.definition}}
+                            <AuTooltip as |tooltip|>
+                              <div
+                                class="au-u-flex au-u-flex--inline au-u-flex--vertical-center"
+                                {{tooltip.target}}
+                              >
+                                {{qualification.label}}
+                                <AuIcon
+                                  @icon="info-circle"
+                                  class="au-u-margin-left-tiny"
+                                />
+                              </div>
+                              <tooltip.Content>
+                                {{qualification.definition}}
+                              </tooltip.Content>
+                            </AuTooltip>
+                          {{else}}
+                            {{qualification.label}}
+                          {{/if}}
+                        </Item>
+                      {{/each}}
+                    </AuList>
+                  </:content>
+                </Item>
+                <Item>
+                  <:label>Rechtsgrond</:label>
+                  <:content>
+                    <AuList @divider={{true}} as |Item|>
+                      {{#each
+                        @model.organization.additionalQualifications
+                        as |qualification|
+                      }}
+                        <Item>
+                          {{qualification.legalBasis}}
+                        </Item>
+                      {{/each}}
+                    </AuList>
+                  </:content>
+                </Item>
+              {{/if}}
+
               {{#if @model.organization.isMunicipality}}
                 <Item>
                   <:label>Stadstitel</:label>

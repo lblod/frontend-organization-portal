@@ -18,7 +18,7 @@ import {
   ProvinceCodeList,
   RepresentativeBodyCodeList,
   WorshipServiceCodeList,
-} from 'frontend-organization-portal/constants/Classification';
+} from 'frontend-organization-portal/constants/classification';
 
 module('Unit | Model | organization', function (hooks) {
   setupTest(hooks);
@@ -43,6 +43,38 @@ module('Unit | Model | organization', function (hooks) {
         legalForm: { message: 'Selecteer een optie' },
         contentThemes: { message: 'Selecteer een optie' },
       });
+    });
+
+    test('additionalQualifications is required for some organization types', async function (assert) {
+      const organization = this.store().createRecord('organization');
+      await organization.validate();
+
+      assert.notOk(
+        organization.error.additionalQualifications,
+        'optional if there is no classification yet',
+      );
+
+      const requiredFieldClassification = this.store().createRecord(
+        'administrative-unit-classification-code',
+        { id: CLASSIFICATION.AGB.id },
+      );
+
+      organization.classification = requiredFieldClassification;
+      await organization.validate();
+
+      assert.strictEqual(
+        organization.error.additionalQualifications.message,
+        'Selecteer een optie',
+      );
+
+      const optionalFieldClassification = this.store().createRecord(
+        'administrative-unit-classification-code',
+        { id: CLASSIFICATION.MUNICIPALITY.id },
+      );
+      organization.classification = optionalFieldClassification;
+      await organization.validate();
+
+      assert.notOk(organization.error.additionalQualifications);
     });
   });
 

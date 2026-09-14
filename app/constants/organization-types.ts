@@ -4,4 +4,4 @@ export const ORGANIZATION_TYPES = Object.freeze({
   CORPORATION: 'Vennootschap',
   PARTNERSHIP: 'Samenwerkingsverband',
   OTHER: 'Andere',
-});
+} as const);

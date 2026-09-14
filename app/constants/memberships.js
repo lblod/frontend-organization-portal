@@ -17,7 +17,7 @@ import {
   ProvinceCodeList,
   RepresentativeBodyCodeList,
   WorshipServiceCodeList,
-} from 'frontend-organization-portal/constants/Classification';
+} from 'frontend-organization-portal/constants/classification';
 
 // Specifies which organization classifications are allowed as participants in
 // other organization classifications. For each classification code in an
