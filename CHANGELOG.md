@@ -1,3 +1,9 @@
+## v1.44.0 (2026-09-14)
+
+#### :rocket: Enhancement
+* [#734](https://github.com/lblod/frontend-organization-portal/pull/734) [OP-3902] Add a new "Bijkomende kwalificaties" field - #734 ([@Windvis](https://github.com/Windvis))
+* [#735](https://github.com/lblod/frontend-organization-portal/pull/735) [OP-3876] Add Regionaal landschap organization type ([@bdevloed](https://github.com/bdevloed))
+
 ## v1.43.0 (2026-09-10)
 
 #### :rocket: Enhancement
