@@ -216,36 +216,30 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     const isLegalFormChange =
       changeEvent.type?.get('id') === CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE;
     if (isLegalFormChange && !this.selectedResultingLegalForm) {
-      changeEvent.removeError();
-      changeEvent.error.resultingLegalForm = {
-        message: 'Selecteer een juridische vorm',
-      };
-    } else if (changeEvent.error?.resultingLegalForm) {
-      delete changeEvent.error.resultingLegalForm;
+      changeEvent.addError(
+        'resultingLegalForm',
+        'Selecteer een juridische vorm',
+      );
     }
 
     if (
       changeEvent.isWerkingsgebiedChangeEvent &&
       this.selectedResultingLocations.length === 0
     ) {
-      changeEvent.removeError();
-      changeEvent.error.resultingScope = {
-        message: 'Selecteer minstens één werkingsgebied',
-      };
-    } else if (changeEvent.error?.resultingScope) {
-      delete changeEvent.error.resultingScope;
+      changeEvent.addError(
+        'resultingScope',
+        'Selecteer minstens één werkingsgebied',
+      );
     }
 
     if (
       isAdditionalQualificationChangeEvent(changeEvent) &&
       this.selectedResultingAdditionalQualifications.length === 0
     ) {
-      changeEvent.removeError();
-      changeEvent.error.resultingAdditionalQualifications = {
-        message: 'Selecteer een optie',
-      };
-    } else if (changeEvent.error?.resultingAdditionalQualifications) {
-      delete changeEvent.error.resultingAdditionalQualifications;
+      changeEvent.addError(
+        'resultingAdditionalQualifications',
+        'Selecteer een optie',
+      );
     }
 
     if (!changeEvent.error && (shouldSaveDecision ? !decision.error : true)) {
