@@ -15,7 +15,7 @@ export default class OrganizationsOrganizationGoverningBodiesRoute extends Route
     // the following will fail. This should probably be rewritten to a query for
     // governing bodies that are linked to the organization with the given id.
     const { content: organization } = await this.store.request(
-      findRecord('organization', organizationId, {
+      findRecord('administrative-unit', organizationId, {
         reload: true,
         include:
           'governing-bodies.has-time-specializations,governing-bodies.classification',
