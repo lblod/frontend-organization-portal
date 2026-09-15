@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import {
+  CHANGE_EVENT_TYPE,
   CHANGE_EVENTS_WORSHIP_SERVICE,
   CHANGE_EVENTS_CENTRAL_WORSHIP_SERVICE,
   CHANGE_EVENTS_MUNICIPALITY,
@@ -15,6 +16,7 @@ import {
   CHANGE_EVENTS_VLAAMSE_GEMEENSCHAPSCOMMISSIE,
 } from 'frontend-organization-portal/models/change-event-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import requiresAdditionalQualifications from 'frontend-organization-portal/helpers/requires-additional-qualifications';
 import { findAll } from '@warp-drive/legacy/compat/builders';
 
 export default class ChangeEventTypeSelectComponent extends Component {
@@ -100,6 +102,12 @@ export default class ChangeEventTypeSelectComponent extends Component {
     if (classification.id === CLASSIFICATION.VLAAMSE_GEMEENSCHAPSCOMMISSIE.id) {
       types = types.filter((t) =>
         this.isIdInList(t.id, CHANGE_EVENTS_VLAAMSE_GEMEENSCHAPSCOMMISSIE),
+      );
+    }
+
+    if (!requiresAdditionalQualifications(classification)) {
+      types = types.filter(
+        (t) => t.id !== CHANGE_EVENT_TYPE.ADDITIONAL_QUALIFICATION_CHANGE,
       );
     }
 

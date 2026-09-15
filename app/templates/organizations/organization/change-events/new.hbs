@@ -106,6 +106,25 @@
                 </:content>
               </Item>
             {{/if}}
+            {{#if
+              (is-additional-qualification-change-event @model.changeEvent)
+            }}
+              <Item
+                @labelFor="change-event-additional-qualifications"
+                @required={{true}}
+                @errorMessage={{@model.changeEvent.error.resultingAdditionalQualifications.message}}
+              >
+                <:label>Nieuwe bijkomende kwalificatie(s)</:label>
+                <:content as |hasError|>
+                  <AdditionalQualificationsSelect
+                    @id="change-event-additional-qualifications"
+                    @selected={{this.selectedResultingAdditionalQualifications}}
+                    @onChange={{this.updateResultingAdditionalQualifications}}
+                    @error={{hasError}}
+                  />
+                </:content>
+              </Item>
+            {{/if}}
             {{#if @model.changeEvent.requiresDecisionInformation}}
               <Item
                 @labelFor="change-event-decision-link"

@@ -1,4 +1,4 @@
-import Model, { belongsTo } from '@warp-drive/legacy/model';
+import Model, { belongsTo, hasMany } from '@warp-drive/legacy/model';
 
 export default class ChangeEventResultModel extends Model {
   @belongsTo('organization-status-code', {
@@ -18,6 +18,12 @@ export default class ChangeEventResultModel extends Model {
     async: false,
   })
   resultingScope;
+
+  @hasMany('additional-qualification-code', {
+    inverse: null,
+    async: false,
+  })
+  resultingAdditionalQualifications;
 
   @belongsTo('change-event', {
     inverse: 'results',
