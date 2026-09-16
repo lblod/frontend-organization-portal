@@ -1,3 +1,4 @@
+import { Type } from '@warp-drive/core/types/symbols';
 import { ORGANIZATION_TYPES } from '../constants/organization-types';
 import OrganizationClassificationCodeModel from './organization-classification-code';
 
@@ -169,4 +170,6 @@ export const CLASSIFICATION = {
   },
 };
 
-export default class AdministrativeUnitClassificationCodeModel extends OrganizationClassificationCodeModel {}
+export default class AdministrativeUnitClassificationCode extends OrganizationClassificationCodeModel {
+  declare [Type]: 'administrative-unit-classification-code';
+}

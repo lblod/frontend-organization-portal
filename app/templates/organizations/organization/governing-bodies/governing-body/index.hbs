@@ -69,109 +69,117 @@
       </:card>
     </DataCard>
 
-    <div>
-      <AuToolbar class="au-u-margin-bottom-small">
-        <AuHeading @level="4" @skin="5">Bestuursleden</AuHeading>
-      </AuToolbar>
-      <AuDataTable
-        @content={{@model.memberMandatories}}
-        @noDataMessage="Geen bestuursleden"
-        @page={{this.page}}
-        @size={{this.size}}
-        as |t|
-      >
-        <t.content as |c|>
-          <c.header>
-            <AuDataTableThSortable
-              @field="governing-alias.given-name"
-              @currentSorting={{this.sort}}
-              @label="Voornaam"
-            />
-            <AuDataTableThSortable
-              @field="governing-alias.family-name"
-              @currentSorting={{this.sort}}
-              @label="Achternaam"
-            />
-            <AuDataTableThSortable
-              @field="mandate.role-board.label"
-              @currentSorting={{this.sort}}
-              @label="Mandaat"
-            />
-            <AuDataTableThSortable
-              @field="status"
-              @currentSorting={{this.sort}}
-              @label="Status mandaat"
-            />
-            <AuDataTableThSortable
-              @field="start-date"
-              @currentSorting={{this.sort}}
-              @label="Start mandaat"
-            />
-            {{#if @model.organization.isWorshipAdministrativeUnit}}
-              <th>Geplande einddatum</th>
-            {{/if}}
-            <AuDataTableThSortable
-              @field="end-date"
-              @currentSorting={{this.sort}}
-              @label="Einddatum"
-            />
-          </c.header>
-          <c.body as |mandatory|>
-            <td>
-              <AuLink
-                @route="people.person"
-                @model={{mandatory.governingAlias.id}}
-              >
-                {{mandatory.governingAlias.givenName}}
-              </AuLink>
-            </td>
-            <td>
-              <AuLink
-                @route="people.person"
-                @model={{mandatory.governingAlias.id}}
-              >
-                {{mandatory.governingAlias.familyName}}
-              </AuLink>
-            </td>
-            <td>
-              <AuLink
-                @route="people.person.positions.mandatory"
-                @models={{array mandatory.governingAlias.id mandatory.id}}
-              >
-                {{mandatory.mandate.roleBoard.label}}
-              </AuLink>
-            </td>
-            <td>
-              {{mandatory.status.label}}
-            </td>
-            <td>
-              {{#if mandatory.startDate}}
-                {{date-format mandatory.startDate}}
+    {{#unless this.showCombinedTable}}
+      <div>
+        <AuToolbar class="au-u-margin-bottom-small">
+          <AuHeading @level="4" @skin="5">Bestuursleden</AuHeading>
+        </AuToolbar>
+        <AuDataTable
+          @content={{@model.memberMandatories}}
+          @noDataMessage="Geen bestuursleden"
+          @page={{this.page}}
+          @size={{this.size}}
+          as |t|
+        >
+          <t.content as |c|>
+            <c.header>
+              <AuDataTableThSortable
+                @field="governing-alias.given-name"
+                @currentSorting={{this.sort}}
+                @label="Voornaam"
+              />
+              <AuDataTableThSortable
+                @field="governing-alias.family-name"
+                @currentSorting={{this.sort}}
+                @label="Achternaam"
+              />
+              <AuDataTableThSortable
+                @field="mandate.role-board.label"
+                @currentSorting={{this.sort}}
+                @label="Mandaat"
+              />
+              <AuDataTableThSortable
+                @field="status"
+                @currentSorting={{this.sort}}
+                @label="Status mandaat"
+              />
+              <AuDataTableThSortable
+                @field="start-date"
+                @currentSorting={{this.sort}}
+                @label="Start mandaat"
+              />
+              {{#if @model.organization.isWorshipAdministrativeUnit}}
+                <th>Geplande einddatum</th>
               {{/if}}
-            </td>
-            {{#if @model.organization.isWorshipAdministrativeUnit}}
+              <AuDataTableThSortable
+                @field="end-date"
+                @currentSorting={{this.sort}}
+                @label="Einddatum"
+              />
+            </c.header>
+            <c.body as |mandatory|>
               <td>
-                {{#if mandatory.expectedEndDate}}
-                  {{date-format mandatory.expectedEndDate}}
+                <AuLink
+                  @route="people.person"
+                  @model={{mandatory.governingAlias.id}}
+                >
+                  {{mandatory.governingAlias.givenName}}
+                </AuLink>
+              </td>
+              <td>
+                <AuLink
+                  @route="people.person"
+                  @model={{mandatory.governingAlias.id}}
+                >
+                  {{mandatory.governingAlias.familyName}}
+                </AuLink>
+              </td>
+              <td>
+                <AuLink
+                  @route="people.person.positions.mandatory"
+                  @models={{array mandatory.governingAlias.id mandatory.id}}
+                >
+                  {{mandatory.mandate.roleBoard.label}}
+                </AuLink>
+              </td>
+              <td>
+                {{mandatory.status.label}}
+              </td>
+              <td>
+                {{#if mandatory.startDate}}
+                  {{date-format mandatory.startDate}}
                 {{/if}}
               </td>
-            {{/if}}
-            <td>
-              {{#if mandatory.endDate}}
-                {{date-format mandatory.endDate}}
+              {{#if @model.organization.isWorshipAdministrativeUnit}}
+                <td>
+                  {{#if mandatory.expectedEndDate}}
+                    {{date-format mandatory.expectedEndDate}}
+                  {{/if}}
+                </td>
               {{/if}}
-            </td>
-          </c.body>
-        </t.content>
-      </AuDataTable>
-    </div>
+              <td>
+                {{#if mandatory.endDate}}
+                  {{date-format mandatory.endDate}}
+                {{/if}}
+              </td>
+            </c.body>
+          </t.content>
+        </AuDataTable>
+      </div>
+    {{/unless}}
 
     <div>
       <AuToolbar class="au-u-margin-bottom-small">
         <AuHeading @level="4" @skin="5">Mandatarissen</AuHeading>
       </AuToolbar>
       <AuDataTable
-        @content={{@model.otherMandatories}}
+        @content={{if
+          this.showCombinedTable
+          @model.allMandatories
+          @model.otherMandatories
+        }}
+        @page={{this.mandatoriesPage}}
+        @size={{this.size}}
         @noDataMessage="Geen mandatarissen"
         as |t|
       >
