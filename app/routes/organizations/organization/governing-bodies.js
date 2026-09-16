@@ -9,11 +9,17 @@ export default class OrganizationsOrganizationGoverningBodiesRoute extends Route
   async model() {
     let { id: organizationId } = this.paramsFor('organizations.organization');
 
-    // NOTE (23/05/2025): The `governingBodies` property is defined in the
-    // `AdministrativeUnit` model, not the `Organization` model. Should this
-    // route be visited with a non-administrative unit organization as argument
-    // the following will fail. This should probably be rewritten to a query for
-    // governing bodies that are linked to the organization with the given id.
+    // NOTE (16/09/2026): The `governingBodies` property is defined in the
+    // `AdministrativeUnit` model, not the `Organization` model, so we fetch
+    // an `administrative-unit` here directly. This route assumes every
+    // organization it is visited for is an administrative unit; visiting it
+    // for a non-administrative-unit organization will fail.
+    // We used to call `findRecord('organization', ...)` here, which only
+    // worked because of an Ember bug that silently issued a request to the
+    // `/administrative-units` endpoint instead of `/organizations`. The
+    // Ember upgrade fixed that bug, which broke this route since it started
+    // hitting `/organizations` for real and no longer got a `governingBodies`
+    // relationship back.
     const { content: organization } = await this.store.request(
       findRecord('administrative-unit', organizationId, {
         reload: true,
