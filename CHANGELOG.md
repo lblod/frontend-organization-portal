@@ -1,3 +1,11 @@
+## v1.44.1 (2026-09-16)
+
+#### :rocket: Enhancement
+* [#736](https://github.com/lblod/frontend-organization-portal/pull/736) [OP-3907] Add a "Wijziging bijkomende kwalificatie" change event type ([@DamonKennes](https://github.com/DamonKennes))
+
+#### :bug: Bug Fix
+* [#737](https://github.com/lblod/frontend-organization-portal/pull/737) [OP-3914] change findRecord for governingbodies ([@DamonKennes](https://github.com/DamonKennes))
+
 ## v1.44.0 (2026-09-14)
 
 #### :rocket: Enhancement
