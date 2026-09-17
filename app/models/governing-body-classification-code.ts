@@ -43,6 +43,15 @@ const classificationsWithUnifiedMandatories = [
   '180a2fba-6ca9-4766-9b94-82006bb9c709', // Gouverneur
   '5ab0e9b8a3b2ca7c5e00000c', // Provincieraad
   '5ab0e9b8a3b2ca7c5e00000d', // Deputatie
+
+  '0d985699479162198b889f10e4f1a8ce', // Centraal Kerkbestuur
+  '4393389e99127b68e7fc11936ba92e18', // Centraal bestuur
+
+  '90a9ec83cb93b9369bba7ff29d9ce5ce', // Bestuursraad
+  'b475fa47e17a8a05ae04a9e1fb9c9258', // Comité
+  '04f65457bf125b2dc59fd71917ac3d08', // Kerkraad
+  'af811edba97c6ec34874d0830cbb1183', // Kerkfabriekraad
+  'a0701624aefb115b7eda2ff39139c2dd', // Kathedrale kerkraad
 ];
 
 export function hasUnifiedMandatories(
