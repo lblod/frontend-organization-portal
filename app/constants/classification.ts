@@ -72,6 +72,16 @@ export const RegionaalLandschapCodeList = [
 export const BosgroepCodeList = [CLASSIFICATION.BOSGROEP.id];
 export const WoonmaatschappijCodeList = [CLASSIFICATION.WOONMAATSCHAPPIJ.id];
 
+export const WorshipCodeList = [
+  ...WorshipServiceCodeList,
+  ...CentralWorshipServiceCodeList,
+  ...RepresentativeBodyCodeList,
+];
+
+export const NonWorshipCodeList = Object.values(CLASSIFICATION)
+  .map((classification) => classification.id)
+  .filter((id) => !WorshipCodeList.includes(id));
+
 /**
   The field is required only in non-worship services, in all types of organisations except for:
   - gemeente

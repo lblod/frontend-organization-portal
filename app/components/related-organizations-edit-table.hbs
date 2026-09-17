@@ -37,7 +37,7 @@
             <MembershipRoleSelect
               @disabled={{not membership.isNew}}
               @selected={{fn @displayRoleLabel membership}}
-              @options={{@model.roles}}
+              @options={{@model.selectableRoles}}
               @onChange={{fn @updateMembershipRole membership}}
               @error={{errorMessage}}
               @id="membership-role"

@@ -499,6 +499,8 @@ module('Unit | Model | administrative unit', function (hooks) {
         CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
         ocmwAssociationParticipants,
       ],
+      [CLASSIFICATION.POLICE_ZONE, [CLASSIFICATION.MUNICIPALITY.id]],
+      [CLASSIFICATION.ASSISTANCE_ZONE, [CLASSIFICATION.MUNICIPALITY.id]],
     ].forEach(([cl, classificationCodes]) => {
       test(`it should allow valid participants for ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(

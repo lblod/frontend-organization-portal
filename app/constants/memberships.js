@@ -8,6 +8,7 @@ import {
   DistrictCodeList,
   IGSCodeList,
   MunicipalityCodeList,
+  NonWorshipCodeList,
   OcmwAssociationCodeList,
   OCMWCodeList,
   PevaCodeList,
@@ -68,6 +69,10 @@ export const allowedParticipationMemberships = [
   {
     organizations: [...ApbCodeList],
     members: [...ProvinceCodeList],
+  },
+  {
+    organizations: [...PoliceZoneCodeList, ...AssistanceZoneCodeList],
+    members: [...MunicipalityCodeList],
   },
 ];
 
@@ -154,6 +159,37 @@ export const allowedHasRelationWithMemberships = [
   },
 ];
 
+// Same as above for "serves" memberships: "a municipality is served by an
+// OCMW" and "an OCMW serves a municipality".
+export const allowedServingMemberships = [
+  {
+    organizations: [...MunicipalityCodeList],
+    members: [...OCMWCodeList],
+  },
+];
+
+// Same as above for "grants recognition to" memberships: "an organization was
+// recognised by a member organization" and "a member organization grants
+// recognition to an organization". Allowed between all non-worship
+// organizations until the business narrows it down.
+export const allowedRecognitionMemberships = [
+  {
+    organizations: [...NonWorshipCodeList],
+    members: [...NonWorshipCodeList],
+  },
+];
+
+// Same as above for "is actually represented in (no membership)" memberships:
+// "an organization has a member organization as actual representative" and "a
+// member organization is actually represented in an organization". Allowed
+// between all non-worship organizations until the business narrows it down.
+export const allowedRepresentationMemberships = [
+  {
+    organizations: [...NonWorshipCodeList],
+    members: [...NonWorshipCodeList],
+  },
+];
+
 /**
  * Check whether the organization assignments in the given membership should be
  * swapped in order become a valid "has a relation with" membership.
@@ -189,6 +225,15 @@ const allowedMembershipRelations = new Map([
   [
     MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
     allowedHasRelationWithMemberships,
+  ],
+  [MEMBERSHIP_ROLES_MAPPING.SERVES.id, allowedServingMemberships],
+  [
+    MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO.id,
+    allowedRecognitionMemberships,
+  ],
+  [
+    MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN.id,
+    allowedRepresentationMemberships,
   ],
 ]);
 

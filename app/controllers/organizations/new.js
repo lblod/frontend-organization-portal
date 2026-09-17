@@ -518,28 +518,9 @@ export default class OrganizationsNewController extends Controller {
     this.memberships = [];
     this.membershipsOfOrganizations = [];
 
-    if (this.municipality && !this.currentOrganizationModel.isAgb) {
-      this.memberships.push(
-        ...this.#createMembershipModels(
-          [this.municipality],
-          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
-        ),
-      );
-    }
-
-    if (
-      this.province &&
-      !this.currentOrganizationModel.isApb &&
-      !this.currentOrganizationModel.isIgs
-    ) {
-      this.memberships.push(
-        ...this.#createMembershipModels(
-          [this.province],
-          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
-        ),
-      );
-    }
-
+    // Note: non-worship organizations only get specific relations (founder,
+    // member, ...). The generic "has a relation with" role is reserved for
+    // worship organizations, see the related-organizations route.
     this.memberships.push(
       ...this.#createMembershipModels(
         this.founders,

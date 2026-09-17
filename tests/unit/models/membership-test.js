@@ -277,7 +277,7 @@ module('Unit | Model | membership', function (hooks) {
 
       [CLASSIFICATION.POLICE_ZONE, CLASSIFICATION.ASSISTANCE_ZONE].forEach(
         (cl) => {
-          test(`it returns an error when there is no membership  with the "has relation with" role for a ${cl.label}`, async function (assert) {
+          test(`it returns an error when there is no membership with the "member" role for a ${cl.label}`, async function (assert) {
             const classification = this.store().createRecord(
               'administrative-unit-classification-code',
               cl,
@@ -313,7 +313,38 @@ module('Unit | Model | membership', function (hooks) {
 
       [CLASSIFICATION.POLICE_ZONE, CLASSIFICATION.ASSISTANCE_ZONE].forEach(
         (cl) => {
-          test(`it returns no error when membership is a "has relation with" for a ${cl.label}`, async function (assert) {
+          test(`it returns no error when membership is a "member" for a ${cl.label}`, async function (assert) {
+            const classification = this.store().createRecord(
+              'administrative-unit-classification-code',
+              cl,
+            );
+            const organization = this.store().createRecord(
+              'administrative-unit',
+              {
+                classification,
+              },
+            );
+            const member = this.store().createRecord('organization');
+
+            const participantRole = this.store().createRecord(
+              'membership-role',
+              MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+            );
+
+            const model = this.store().createRecord('membership', {
+              organization: organization,
+              member: member,
+              role: participantRole,
+            });
+
+            const isValid = await model.validate({
+              creatingNewOrganization: true,
+            });
+
+            assert.true(isValid);
+          });
+
+          test(`it returns an error when the only membership is a "has relation with" for a ${cl.label}`, async function (assert) {
             const classification = this.store().createRecord(
               'administrative-unit-classification-code',
               cl,
@@ -341,10 +372,56 @@ module('Unit | Model | membership', function (hooks) {
               creatingNewOrganization: true,
             });
 
-            assert.true(isValid);
+            assert.false(isValid);
+            assert.propContains(model.error, {
+              role: { message: 'Selecteer een optie' },
+            });
           });
         },
       );
+
+      [
+        [CLASSIFICATION.APB, MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF],
+        [
+          CLASSIFICATION.PROJECTVERENIGING,
+          MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+        ],
+        [
+          CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
+          MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+        ],
+      ].forEach(([cl, roleMapping]) => {
+        test(`it returns no error when the only membership is a "${roleMapping.label}" for a ${cl.label}`, async function (assert) {
+          const classification = this.store().createRecord(
+            'administrative-unit-classification-code',
+            cl,
+          );
+          const organization = this.store().createRecord(
+            'administrative-unit',
+            {
+              classification,
+            },
+          );
+          const member = this.store().createRecord('organization');
+
+          const role = this.store().createRecord(
+            'membership-role',
+            roleMapping,
+          );
+
+          const model = this.store().createRecord('membership', {
+            organization: organization,
+            member: member,
+            role: role,
+          });
+
+          const isValid = await model.validate({
+            creatingNewOrganization: true,
+          });
+
+          assert.true(isValid);
+        });
+      });
 
       [
         CLASSIFICATION.WORSHIP_SERVICE,
@@ -553,6 +630,160 @@ module('Unit | Model | membership', function (hooks) {
       const model = this.store().createRecord('membership', {});
 
       assert.notOk(model.isParticipatesMembership);
+    });
+  });
+
+  module('isServesMembership', function () {
+    test('it should return truthy for a membership with the serves role', async function (assert) {
+      const role = this.store().createRecord(
+        'membership-role',
+        MEMBERSHIP_ROLES_MAPPING.SERVES,
+      );
+      const model = this.store().createRecord('membership', { role });
+
+      assert.ok(model.isServesMembership);
+      assert.notOk(model.isHasRelationWithMembership);
+    });
+
+    test('it should return falsy for a membership with another role', async function (assert) {
+      const role = this.store().createRecord(
+        'membership-role',
+        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+      );
+      const model = this.store().createRecord('membership', { role });
+
+      assert.notOk(model.isServesMembership);
+    });
+  });
+
+  module('isNotRemovableByUser', function () {
+    function pushMembership(store, { organization, member, roleMapping }) {
+      const records = store.push({
+        data: [
+          {
+            type: 'administrative-unit-classification-code',
+            id: organization.id,
+            attributes: { label: organization.label },
+          },
+          {
+            type: 'administrative-unit-classification-code',
+            id: member.id,
+            attributes: { label: member.label },
+          },
+          {
+            type: 'administrative-unit',
+            id: 'org',
+            relationships: {
+              classification: {
+                data: {
+                  type: 'administrative-unit-classification-code',
+                  id: organization.id,
+                },
+              },
+            },
+          },
+          {
+            type: 'administrative-unit',
+            id: 'member',
+            relationships: {
+              classification: {
+                data: {
+                  type: 'administrative-unit-classification-code',
+                  id: member.id,
+                },
+              },
+            },
+          },
+          {
+            type: 'membership-role',
+            id: roleMapping.id,
+            attributes: { label: roleMapping.label },
+          },
+          {
+            type: 'membership',
+            id: 'membership',
+            relationships: {
+              organization: {
+                data: { type: 'administrative-unit', id: 'org' },
+              },
+              member: { data: { type: 'administrative-unit', id: 'member' } },
+              role: { data: { type: 'membership-role', id: roleMapping.id } },
+            },
+          },
+        ],
+      });
+      return records.at(-1);
+    }
+
+    [
+      [
+        CLASSIFICATION.MUNICIPALITY,
+        CLASSIFICATION.OCMW,
+        MEMBERSHIP_ROLES_MAPPING.SERVES,
+      ],
+      [
+        CLASSIFICATION.MUNICIPALITY,
+        CLASSIFICATION.OCMW,
+        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+      ],
+      [
+        CLASSIFICATION.PROVINCE,
+        CLASSIFICATION.MUNICIPALITY,
+        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+      ],
+      [
+        CLASSIFICATION.PROVINCE,
+        CLASSIFICATION.OCMW,
+        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+      ],
+    ].forEach(([organization, member, roleMapping]) => {
+      test(`a persisted "${roleMapping.label}" membership between a ${organization.label} and a ${member.label} cannot be removed`, async function (assert) {
+        const model = pushMembership(this.store(), {
+          organization,
+          member,
+          roleMapping,
+        });
+
+        assert.true(model.isNotRemovableByUser);
+      });
+    });
+
+    [
+      [
+        CLASSIFICATION.MUNICIPALITY,
+        CLASSIFICATION.OCMW,
+        MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      ],
+      [
+        CLASSIFICATION.POLICE_ZONE,
+        CLASSIFICATION.MUNICIPALITY,
+        MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      ],
+      [
+        CLASSIFICATION.AGB,
+        CLASSIFICATION.MUNICIPALITY,
+        MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      ],
+    ].forEach(([organization, member, roleMapping]) => {
+      test(`a persisted "${roleMapping.label}" membership between a ${organization.label} and a ${member.label} can be removed`, async function (assert) {
+        const model = pushMembership(this.store(), {
+          organization,
+          member,
+          roleMapping,
+        });
+
+        assert.false(model.isNotRemovableByUser);
+      });
+    });
+
+    test('a new membership can always be removed', async function (assert) {
+      const role = this.store().createRecord(
+        'membership-role',
+        MEMBERSHIP_ROLES_MAPPING.SERVES,
+      );
+      const model = this.store().createRecord('membership', { role });
+
+      assert.false(model.isNotRemovableByUser);
     });
   });
 
