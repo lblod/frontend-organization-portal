@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import { query } from '@warp-drive/legacy/compat/builders';
-import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
+import { MEMBERSHIP_ROLES } from 'frontend-organization-portal/models/membership-role';
 
 export default class OrganizationsOrganizationRelatedOrganizationsRoute extends Route {
   @service store;
@@ -11,14 +11,21 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
 
     const { content: roles } = await this.store.request(
       query('membership-role', {
-        'filter[:id:]': [
-          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
-          MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
-          MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id,
-        ].join(','),
+        'filter[:id:]': MEMBERSHIP_ROLES.map((role) => role.id).join(','),
       }),
     );
 
-    return { organization, roles };
+    // Worship organizations only use the generic "has a relation with" role.
+    // Other organizations get the specific roles; their existing generic
+    // memberships stay visible but no new ones can be created.
+    const isWorship = Boolean(
+      organization.isWorshipAdministrativeUnit ||
+      organization.isRepresentativeBody,
+    );
+    const selectableRoles = roles.filter(
+      (role) => role.hasRelationWith === isWorship,
+    );
+
+    return { organization, roles, selectableRoles };
   }
 }

@@ -21,7 +21,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
   }
 
   async model(params) {
-    const { organization, roles } = this.modelFor(
+    const { organization, roles, selectableRoles } = this.modelFor(
       'organizations.organization.related-organizations',
     );
 
@@ -47,6 +47,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
       organization,
       memberships,
       roles,
+      selectableRoles,
     };
   }
 

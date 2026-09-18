@@ -10,6 +10,7 @@ import {
   DistrictCodeList,
   IGSCodeList,
   MunicipalityCodeList,
+  NonWorshipCodeList,
   OcmwAssociationCodeList,
   OCMWCodeList,
   PevaCodeList,
@@ -246,6 +247,8 @@ module('Unit | Model | organization', function (hooks) {
         CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
         ocmwAssociationParticipants,
       ],
+      [CLASSIFICATION.POLICE_ZONE, [...MunicipalityCodeList]],
+      [CLASSIFICATION.ASSISTANCE_ZONE, [...MunicipalityCodeList]],
     ].forEach(([cl, classificationCodes]) => {
       test(`it should allow valid participants for ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
@@ -274,7 +277,13 @@ module('Unit | Model | organization', function (hooks) {
     [
       [
         CLASSIFICATION.MUNICIPALITY,
-        [...IGSCodeList, ...OcmwAssociationCodeList, ...AgbCodeList],
+        [
+          ...IGSCodeList,
+          ...OcmwAssociationCodeList,
+          ...AgbCodeList,
+          ...PoliceZoneCodeList,
+          ...AssistanceZoneCodeList,
+        ],
       ],
       [CLASSIFICATION.OCMW, [...IGSCodeList, ...OcmwAssociationCodeList]],
       [CLASSIFICATION.AGB, [...IGSCodeList]],
@@ -560,6 +569,96 @@ module('Unit | Model | organization', function (hooks) {
         result = model.getClassificationCodesForMembership(membershipAsMember);
 
         assert.deepEqual(result.sort(), classificationCodes.sort());
+      });
+    });
+
+    test('it should allow a municipality to be served by an OCMW', async function (assert) {
+      const classification = this.store().createRecord(
+        'administrative-unit-classification-code',
+        CLASSIFICATION.MUNICIPALITY,
+      );
+      const model = this.store().createRecord('administrative-unit', {
+        id: '123',
+        classification,
+      });
+      const role = this.store().createRecord(
+        'membership-role',
+        MEMBERSHIP_ROLES_MAPPING.SERVES,
+      );
+      const membership = this.store().createRecord('membership', {
+        role,
+        organization: model,
+      });
+
+      const result = model.getClassificationCodesForMembership(membership);
+
+      assert.deepEqual(result, [...OCMWCodeList]);
+    });
+
+    test('it should allow an OCMW to serve a municipality', async function (assert) {
+      const classification = this.store().createRecord(
+        'administrative-unit-classification-code',
+        CLASSIFICATION.OCMW,
+      );
+      const model = this.store().createRecord('administrative-unit', {
+        id: '123',
+        classification,
+      });
+      const role = this.store().createRecord(
+        'membership-role',
+        MEMBERSHIP_ROLES_MAPPING.SERVES,
+      );
+      const membership = this.store().createRecord('membership', {
+        role,
+        member: model,
+      });
+
+      const result = model.getClassificationCodesForMembership(membership);
+
+      assert.deepEqual(result, [...MunicipalityCodeList]);
+    });
+
+    [
+      MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO,
+      MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+    ].forEach((roleMapping) => {
+      test(`it should allow the "${roleMapping.label}" role between all non-worship organizations`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          CLASSIFICATION.MUNICIPALITY,
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          id: '123',
+          classification,
+        });
+        const role = this.store().createRecord('membership-role', roleMapping);
+        const membershipAsOrganization = this.store().createRecord(
+          'membership',
+          {
+            role,
+            organization: model,
+          },
+        );
+
+        let result = model.getClassificationCodesForMembership(
+          membershipAsOrganization,
+        );
+
+        assert.deepEqual(result.sort(), [...NonWorshipCodeList].sort());
+        assert.notOk(result.includes(CLASSIFICATION.WORSHIP_SERVICE.id));
+        assert.notOk(
+          result.includes(CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id),
+        );
+        assert.notOk(result.includes(CLASSIFICATION.REPRESENTATIVE_BODY.id));
+
+        const membershipAsMember = this.store().createRecord('membership', {
+          role,
+          member: model,
+        });
+
+        result = model.getClassificationCodesForMembership(membershipAsMember);
+
+        assert.deepEqual(result.sort(), [...NonWorshipCodeList].sort());
       });
     });
 

@@ -71,7 +71,11 @@ export default class MembershipModel extends AbstractValidationModel {
 
             let roles = [];
 
-            if (organization.isIgs) {
+            if (
+              organization.isIgs ||
+              organization.isPoliceZone ||
+              organization.isAssistanceZone
+            ) {
               roles.push(MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN);
             }
 
@@ -86,10 +90,6 @@ export default class MembershipModel extends AbstractValidationModel {
             }
 
             if (
-              organization.isApb ||
-              organization.isIgs ||
-              organization.isPoliceZone ||
-              organization.isAssistanceZone ||
               organization.isWorshipService ||
               organization.isCentralWorshipService
             ) {
@@ -118,8 +118,8 @@ export default class MembershipModel extends AbstractValidationModel {
   /**
    * Get the label of the role as it should be read from the perspective of a
    * specific organization. For example, a membership with a participation role
-   * from the member perspective should result in 'Participeert in', while from
-   * the organization perspective it is 'Heeft als participanten'.
+   * from the member perspective should result in 'Is lid van', while from
+   * the organization perspective it is 'Heeft als leden'.
    * @param {{@link OrganizationModel}} organization - The organization whose
    *     perspective should be taken.
    * @returns {string} The role label as read from the perspective of the
@@ -148,6 +148,23 @@ export default class MembershipModel extends AbstractValidationModel {
     return this.role?.get('participatesIn');
   }
 
+  get isServesMembership() {
+    return this.role?.get('serves');
+  }
+
+  get isGrantsRecognitionMembership() {
+    return this.role?.get('grantsRecognition');
+  }
+
+  get isRepresentedInMembership() {
+    return this.role?.get('isRepresentedIn');
+  }
+
+  /**
+   * Memberships that reflect the administrative hierarchy are managed by
+   * migrations, not by users: province - municipality and province - OCMW
+   * (generic relation) and municipality - OCMW ("served by").
+   */
   get isNotRemovableByUser() {
     const org = this.belongsTo('organization').value();
     const member = this.belongsTo('member').value();
@@ -155,10 +172,11 @@ export default class MembershipModel extends AbstractValidationModel {
 
     return (
       !this.isNew &&
-      role?.hasRelationWith &&
-      ((org?.isProvince && member?.isMunicipality) ||
-        (org?.isProvince && member?.isOCMW) ||
-        (org?.isMunicipality && member?.isOCMW))
+      ((role?.hasRelationWith &&
+        ((org?.isProvince && member?.isMunicipality) ||
+          (org?.isProvince && member?.isOCMW) ||
+          (org?.isMunicipality && member?.isOCMW))) ||
+        (role?.serves && org?.isMunicipality && member?.isOCMW))
     );
   }
 

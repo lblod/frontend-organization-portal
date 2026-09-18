@@ -421,7 +421,6 @@
         this.currentOrganizationModel.classification
         (or
           this.currentOrganizationModel.isAgb
-          this.currentOrganizationModel.isDistrict
           this.currentOrganizationModel.isIgs
           this.currentOrganizationModel.isPoliceZone
           this.currentOrganizationModel.isAssistanceZone
@@ -487,23 +486,10 @@
           {{else}}
             <Card.Columns>
               <:left as |Item|>
-                {{#if
-                  (or
-                    this.currentOrganizationModel.isAgb
-                    this.currentOrganizationModel.isDistrict
-                    this.currentOrganizationModel.isIgs
-                    this.currentOrganizationModel.isPoliceZone
-                    this.currentOrganizationModel.isAssistanceZone
-                  )
-                }}
+                {{#if this.currentOrganizationModel.isAgb}}
                   <Item
                     @labelFor="related-gemeente"
-                    @required={{or
-                      this.currentOrganizationModel.isAgb
-                      this.currentOrganizationModel.isIgs
-                      this.currentOrganizationModel.isPoliceZone
-                      this.currentOrganizationModel.isAssistanceZone
-                    }}
+                    @required={{true}}
                     @errorMessage={{this.municipalityError}}
                   >
                     <:label>Gemeente</:label>
@@ -524,110 +510,91 @@
                     </Item>
                   {{/if}}
 
-                  {{#if this.currentOrganizationModel.isAgb}}
-                    <Item @required={{true}}>
-                      <:label>Werd opgericht door</:label>
-                      <:content>{{this.municipality.abbName}}</:content>
-                    </Item>
-                  {{/if}}
+                  <Item @required={{true}}>
+                    <:label>Werd opgericht door</:label>
+                    <:content>{{this.municipality.abbName}}</:content>
+                  </Item>
+                {{else if
+                  (or
+                    this.currentOrganizationModel.isIgs
+                    this.currentOrganizationModel.isPoliceZone
+                    this.currentOrganizationModel.isAssistanceZone
+                  )
+                }}
+                  <Item
+                    @labelFor="participants"
+                    @required={{true}}
+                    @errorMessage={{this.participantsError}}
+                  >
+                    <:label>Heeft als leden</:label>
+                    <:content as |hasError|>
+                      <OrganizationMultipleSelect
+                        @selected={{this.participants}}
+                        @onChange={{this.addParticipants}}
+                        @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
+                        @error={{hasError}}
+                        @id="participants"
+                      />
+                    </:content>
+                  </Item>
+                {{else if
+                  (or
+                    this.currentOrganizationModel.isOcmwAssociation
+                    this.currentOrganizationModel.isPevaMunicipality
+                    this.currentOrganizationModel.isPevaProvince
+                  )
+                }}
+                  <Item
+                    @labelFor="founders-ocmw-association-peva"
+                    @required={{true}}
+                    @errorMessage={{this.foundersError}}
+                  >
+                    <:label>Werd opgericht door</:label>
+                    <:content as |hasError|>
+                      <OrganizationMultipleSelect
+                        @selected={{this.founders}}
+                        @onChange={{this.addFounders}}
+                        @classificationCodes={{this.currentOrganizationModel.founderClassifications}}
+                        @error={{hasError}}
+                        @id="founders-ocmw-association-peva"
+                      />
+                    </:content>
+                  </Item>
 
-                  {{#if this.currentOrganizationModel.isIgs}}
-                    <Item
-                      @labelFor="participants-igs"
-                      @required={{true}}
-                      @errorMessage={{this.participantsError}}
-                    >
-                      <:label>Heeft als participanten</:label>
-                      <:content as |hasError|>
-                        <OrganizationMultipleSelect
-                          @selected={{this.participants}}
-                          @onChange={{this.addParticipants}}
-                          @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
-                          @error={{hasError}}
-                          @id="participants-igs"
-                        />
-                      </:content>
-                    </Item>
-                  {{/if}}
-                {{else}}
-                  {{#if
-                    (or
-                      this.currentOrganizationModel.isOcmwAssociation
-                      this.currentOrganizationModel.isPevaMunicipality
-                      this.currentOrganizationModel.isPevaProvince
-                    )
-                  }}
-                    <Item
-                      @labelFor="founders-ocmw-association-peva"
-                      @required={{true}}
-                      @errorMessage={{this.foundersError}}
-                    >
-                      <:label>Werd opgericht door</:label>
-                      <:content as |hasError|>
-                        <OrganizationMultipleSelect
-                          @selected={{this.founders}}
-                          @onChange={{this.addFounders}}
-                          @classificationCodes={{this.currentOrganizationModel.founderClassifications}}
-                          @error={{hasError}}
-                          @id="founders-ocmw-association-peva"
-                        />
-                      </:content>
-                    </Item>
+                  <Item @labelFor="participants-ocmw-association-peva">
+                    <:label>Heeft als leden</:label>
+                    <:content as |hasError|>
+                      <OrganizationMultipleSelect
+                        @selected={{this.participants}}
+                        @onChange={{this.addParticipants}}
+                        @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
+                        @error={{hasError}}
+                        @id="participants-ocmw-association-peva"
+                      />
+                    </:content>
+                  </Item>
+                {{else if this.currentOrganizationModel.isApb}}
+                  <Item
+                    @labelFor="related-province"
+                    @required={{true}}
+                    @errorMessage={{this.provinceError}}
+                  >
+                    <:label>Provincie</:label>
+                    <:content as |hasError|>
+                      <ProvinceOrganizationSelect
+                        @selected={{this.province}}
+                        @allowClear={{true}}
+                        @onChange={{this.setProvince}}
+                        @error={{hasError}}
+                        @id="related-province"
+                      />
+                    </:content>
+                  </Item>
 
-                    <Item @labelFor="participants-ocmw-association-peva">
-                      <:label>Heeft als participanten</:label>
-                      <:content as |hasError|>
-                        <OrganizationMultipleSelect
-                          @selected={{this.participants}}
-                          @onChange={{this.addParticipants}}
-                          @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
-                          @error={{hasError}}
-                          @id="participants-ocmw-association-peva"
-                        />
-                      </:content>
-                    </Item>
-                  {{else if this.currentOrganizationModel.isApb}}
-                    <Item
-                      @labelFor="related-province"
-                      @required={{true}}
-                      @errorMessage={{this.provinceError}}
-                    >
-                      <:label>Provincie</:label>
-                      <:content as |hasError|>
-                        <ProvinceOrganizationSelect
-                          @selected={{this.province}}
-                          @selectedMunicipality={{this.municipality}}
-                          @allowClear={{not this.municipality}}
-                          @onChange={{this.setProvince}}
-                          @error={{hasError}}
-                          @id="related-province"
-                        />
-                      </:content>
-                    </Item>
-
-                    <Item
-                      @labelFor="related-municipality"
-                      @required={{true}}
-                      @errorMessage={{this.municipalityError}}
-                    >
-                      <:label>Gemeente</:label>
-                      <:content as |hasError|>
-                        <MunicipalitySelect
-                          @selected={{this.municipality}}
-                          @selectedProvince={{this.province}}
-                          @allowClear={{true}}
-                          @onChange={{this.setMunicipality}}
-                          @error={{hasError}}
-                          @id="related-municipality"
-                        />
-                      </:content>
-                    </Item>
-
-                    <Item @labelFor="founder-province" @required={{true}}>
-                      <:label>Werd opgericht door</:label>
-                      <:content>{{this.province.abbName}}</:content>
-                    </Item>
-                  {{/if}}
+                  <Item @labelFor="founder-province" @required={{true}}>
+                    <:label>Werd opgericht door</:label>
+                    <:content>{{this.province.abbName}}</:content>
+                  </Item>
                 {{/if}}
               </:left>
             </Card.Columns>
