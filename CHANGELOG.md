@@ -1,3 +1,15 @@
+## v1.45.1 (2026-09-18)
+
+#### :rocket: Enhancement
+* [#738](https://github.com/lblod/frontend-organization-portal/pull/738) [OP-3874] Display a unified "Mandatarissen" table for some governing body types ([@Windvis](https://github.com/Windvis))
+
+#### :bug: Bug Fix
+* [#739](https://github.com/lblod/frontend-organization-portal/pull/739) OP-3911: change werkingsgebied filter to AND ([@DamonKennes](https://github.com/DamonKennes))
+
+#### Committers: 2
+- Damon Kennes ([@DamonKennes](https://github.com/DamonKennes))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
 ## v1.45.0 (2026-09-18)
 
 #### :rocket: Enhancement
