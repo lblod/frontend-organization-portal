@@ -1,3 +1,8 @@
+## v1.45.0 (2026-09-18)
+
+#### :rocket: Enhancement
+* [#740](https://github.com/lblod/frontend-organization-portal/pull/740) [OP-3903] [OP-3904] New relation types for related organisations ([@bdevloed](https://github.com/bdevloed))
+
 ## v1.44.1 (2026-09-16)
 
 #### :rocket: Enhancement
