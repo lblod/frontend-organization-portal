@@ -5,6 +5,7 @@ import {
   BOARD_MEMBER_ROLES,
   MANDATARIES_ROLES,
 } from 'frontend-organization-portal/models/board-position-code';
+import { hasUnifiedMandatories } from 'frontend-organization-portal/models/governing-body-classification-code';
 
 export default class OrganizationsOrganizationGoverningBodiesGoverningBodyIndexRoute extends Route {
   @service store;
@@ -12,6 +13,7 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyIndexR
   queryParams = {
     page: { refreshModel: true },
     sort: { refreshModel: true },
+    mandatoriesPage: { refreshModel: true },
   };
 
   async model(params) {
@@ -36,31 +38,58 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyIndexR
       sort: params.sort,
     };
 
-    const { content: memberMandatories } = await this.store.request(
-      queryBuilder('mandatory', {
-        ...query,
-        ['filter[mandate][role-board][:id:]']: BOARD_MEMBER_ROLES.join(),
-        page: {
-          size: params.size,
-          number: params.page,
-        },
-      }),
-    );
+    let allMandatories = [];
+    let memberMandatories = [];
+    let otherMandatories = [];
 
-    const { content: otherMandatories } = await this.store.request(
-      queryBuilder('mandatory', {
-        ...query,
-        // mu-cl-resources doesn't support the inverse of `:id:` yet,
-        // so we define all the other ids as a workaround
-        // https://github.com/mu-semtech/mu-cl-resources/issues/22
-        ['filter[mandate][role-board][:id:]']: MANDATARIES_ROLES.join(),
-      }),
-    );
+    if (hasUnifiedMandatories(governingBodyClassification)) {
+      allMandatories = (
+        await this.store.request(
+          queryBuilder('mandatory', {
+            ...query,
+            page: {
+              size: params.size,
+              number: params.mandatoriesPage,
+            },
+          }),
+        )
+      ).content;
+    } else {
+      memberMandatories = (
+        await this.store.request(
+          queryBuilder('mandatory', {
+            ...query,
+            ['filter[mandate][role-board][:id:]']: BOARD_MEMBER_ROLES.join(),
+            page: {
+              size: params.size,
+              number: params.page,
+            },
+          }),
+        )
+      ).content;
+
+      otherMandatories = (
+        await this.store.request(
+          queryBuilder('mandatory', {
+            ...query,
+            // mu-cl-resources doesn't support the inverse of `:id:` yet,
+            // so we define all the other ids as a workaround
+            // https://github.com/mu-semtech/mu-cl-resources/issues/22
+            ['filter[mandate][role-board][:id:]']: MANDATARIES_ROLES.join(),
+            page: {
+              size: params.size,
+              number: params.mandatoriesPage,
+            },
+          }),
+        )
+      ).content;
+    }
 
     return {
       organization,
       governingBodyClassification,
       governingBody,
+      allMandatories,
       memberMandatories,
       otherMandatories,
     };

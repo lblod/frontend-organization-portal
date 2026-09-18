@@ -33,12 +33,12 @@
   },
   "overrides": {
     "@lblod/ember-environment-banner": {
-      "@appuniversum/ember-appuniversum": "^4.2.2",
+      "@appuniversum/ember-appuniversum": "^4.4.1",
       "ember-source": "$ember-source"
     }
   },
   "devDependencies": {
-    "@appuniversum/ember-appuniversum": "^4.2.2",
+    "@appuniversum/ember-appuniversum": "^4.4.1",
     "@babel/core": "^7.29.0",
     "@babel/eslint-parser": "^7.28.6",
     "@babel/plugin-proposal-decorators": "^7.29.0",
