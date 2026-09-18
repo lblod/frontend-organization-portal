@@ -147,7 +147,7 @@ export const CLASSIFICATION = {
     // FIXME this is not an administrative unit
     id: '2de60048-ddbb-4020-ada7-4b81f98f9fe2',
     label: 'Regionaal landschap',
-    organizationType: ORGANIZATION_TYPES.PARTNERSHIP,
+    organizationType: ORGANIZATION_TYPES.ASSOCIATION,
   },
   BOSGROEP: {
     // FIXME this is not an administrative unit
