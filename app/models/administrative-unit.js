@@ -240,6 +240,8 @@ export default class AdministrativeUnitModel extends OrganizationModel {
   }
 
   get disableScopeEdits() {
-    return this.isDistrict || this.isMunicipality || this.isProvince;
+    return (
+      this.isDistrict || this.isMunicipality || this.isProvince || this.isOCMW
+    );
   }
 }
