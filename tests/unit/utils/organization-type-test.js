@@ -44,6 +44,7 @@ module('Unit | Utility | organization-type', function (hooks) {
       CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
       CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
       CLASSIFICATION.BOSGROEP,
+      CLASSIFICATION.REGIONAAL_LANDSCHAP,
     ].forEach((cl) => {
       test(`it returns the association organization type for ${cl.label}`, async function (assert) {
         const result = getOrganizationTypes(cl.id);
@@ -63,7 +64,6 @@ module('Unit | Utility | organization-type', function (hooks) {
       CLASSIFICATION.VERVOERREGIORAAD,
       CLASSIFICATION.ZORGRAAD,
       CLASSIFICATION.REGIONAAL_ZORGPLATFORM,
-      CLASSIFICATION.REGIONAAL_LANDSCHAP,
     ].forEach((cl) => {
       test(`it returns the partnership organization type for ${cl.label}`, async function (assert) {
         const result = getOrganizationTypes(cl.id);
@@ -94,6 +94,7 @@ module('Unit | Utility | organization-type', function (hooks) {
           .id,
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
         CLASSIFICATION.BOSGROEP.id,
+        CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
       );
       assert.deepEqual(result, [ORGANIZATION_TYPES.ASSOCIATION]);
     });
