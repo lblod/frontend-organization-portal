@@ -21,7 +21,7 @@ export default class ChangeEventModel extends AbstractValidationModel {
 
   @belongsTo('change-event-type', {
     inverse: null,
-    async: true,
+    async: false,
   })
   type;
 
@@ -106,7 +106,7 @@ export default class ChangeEventModel extends AbstractValidationModel {
   }
 
   #hasTypeId(typeIds) {
-    return typeIds.includes(this.type?.get('id'));
+    return typeIds.includes(this.type?.id);
   }
 
   async hasAsOriginalOrganization(organization) {

@@ -1,9 +1,10 @@
 import Route from '@ember/routing/route';
+import { service } from '@ember/service';
+import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import {
   findPrimaryContact,
   findSecondaryContact,
 } from 'frontend-organization-portal/models/contact-point';
-import { service } from '@ember/service';
 
 export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
   @service scopeOfOperation;
@@ -29,10 +30,7 @@ export default class OrganizationsOrganizationCoreDataIndexRoute extends Route {
 
     let isCity = false;
     for (const event of changeEvents) {
-      const eventType = await event.type;
-      const eventTypeId = eventType.id;
-
-      if (eventTypeId == 'e4c3d1ef-a34d-43b0-a18c-f4e60e2c8af3') {
+      if (event.type.id == CHANGE_EVENT_TYPE.CITY) {
         isCity = true;
       }
     }

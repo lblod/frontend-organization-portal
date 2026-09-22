@@ -18,9 +18,8 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditRoute exten
       'organizations.organization.change-events.details',
     );
 
-    let changeEventType = await changeEvent.type;
     let canAddDecisionInformation =
-      changeEventType.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED;
+      changeEvent.type.id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED;
 
     let model = {
       organization,

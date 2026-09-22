@@ -67,8 +67,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
 
   get isLegalFormChange() {
     return (
-      this.model.changeEvent.type?.get('id') ===
-      CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE
+      this.model.changeEvent.type?.id === CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE
     );
   }
 
@@ -214,7 +213,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     }
 
     const isLegalFormChange =
-      changeEvent.type?.get('id') === CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE;
+      changeEvent.type?.id === CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE;
     if (isLegalFormChange && !this.selectedResultingLegalForm) {
       changeEvent.addError(
         'resultingLegalForm',
@@ -278,9 +277,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
             }
           } else {
             resultingStatusId =
-              RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[
-                changeEvent.type.get('id')
-              ];
+              RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEvent.type.id];
           }
 
           createChangeEventResultsPromises.push(
@@ -327,7 +324,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           ![
             CHANGE_EVENT_TYPE.RECOGNITION_LIFTED,
             CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED,
-          ].includes(changeEvent.type.get('id'))
+          ].includes(changeEvent.type.id)
         ) {
           (await changeEvent.resultingOrganizations).push(currentOrganization);
         }
@@ -339,7 +336,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           : null;
 
         const resultingStatusId =
-          RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[(await changeEvent.type).id] ??
+          RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEvent.type.id] ??
           (await currentOrganization.organizationStatus)?.id;
 
         await createChangeEventResult({
@@ -425,7 +422,7 @@ async function createChangeEventResult({
       previousStatus?.id === ORGANIZATION_STATUS.IN_FORMATION &&
       (resultingStatusId === ORGANIZATION_STATUS.ACTIVE ||
         resultingStatusId === ORGANIZATION_STATUS.INACTIVE) &&
-      RECOGNITION_CHANGE_TYPES.includes(changeEvent.type.get('id'))
+      RECOGNITION_CHANGE_TYPES.includes(changeEvent.type.id)
     ) {
       const constructRelationshipsEndpoint = `/construct-organization-relationships/update-relationships/${resultingOrganization.id}`;
       const response = await fetch(constructRelationshipsEndpoint, {
