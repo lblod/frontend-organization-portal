@@ -1,0 +1,238 @@
+import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
+import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
+import AuLinkExternal from '@appuniversum/ember-appuniversum/components/au-link-external';
+import AuList from '@appuniversum/ember-appuniversum/components/au-list';
+import AuTooltip from '@appuniversum/ember-appuniversum/components/au-tooltip';
+import DataCard from 'frontend-organization-portal/components/data-card';
+import EditButton from 'frontend-organization-portal/components/button/edit';
+import OrganizationStatus from 'frontend-organization-portal/components/organization-status';
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
+import SecuredArea from 'frontend-organization-portal/components/secured-area';
+import isAdditionalQualificationChangeEvent from 'frontend-organization-portal/helpers/is-additional-qualification-change-event';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
+
+<template>
+  <div class="au-c-body-container au-c-body-container--scroll">
+    <div class="au-o-box au-o-flow au-o-flow--large">
+      <PageHeader>
+        <:title>
+          Veranderingsgebeurtenis:
+          {{@model.changeEvent.type.label}}
+        </:title>
+        <:subtitle>{{@model.organization.abbName}}
+          ({{@model.organization.classification.label}})</:subtitle>
+        <:action>
+          <SecuredArea>
+            <:edit>
+              <EditButton
+                @route="organizations.organization.change-events.details.edit"
+              />
+            </:edit>
+            <:readOnly>
+              <ReportWrongData />
+            </:readOnly>
+          </SecuredArea>
+        </:action>
+      </PageHeader>
+
+      <DataCard>
+        <:title>Veranderingsgebeurtenis</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item>
+                <:label>Type veranderingsgebeurtenis</:label>
+                <:content>{{@model.changeEvent.type.label}}</:content>
+              </Item>
+              {{#if @model.changeEvent.description}}
+                <Item>
+                  <:label>Beschrijving</:label>
+                  <:content>
+                    {{@model.changeEvent.description}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#let
+                @model.changeEvent.decision.documentLink
+                as |documentLink|
+              }}
+                {{#if documentLink}}
+                  <Item>
+                    <:label>Link naar besluit</:label>
+                    <:content>
+                      <AuLinkExternal href={{documentLink}}>
+                        {{documentLink}}
+                      </AuLinkExternal>
+                    </:content>
+                  </Item>
+                {{/if}}
+              {{/let}}
+              {{#if @model.changeEvent.isWerkingsgebiedChangeEvent}}
+                {{#if @model.resultingScopeLabel}}
+                  <Item>
+                    <:label>Nieuw werkingsgebied</:label>
+                    <:content>
+                      {{@model.resultingScopeLabel}}
+                    </:content>
+                  </Item>
+                {{/if}}
+              {{/if}}
+              {{#if (isAdditionalQualificationChangeEvent @model.changeEvent)}}
+                {{#if
+                  @model.currentChangeEventResult.resultingAdditionalQualifications.length
+                }}
+                  <Item>
+                    <:label>Nieuwe bijkomende kwalificatie(s)</:label>
+                    <:content>
+                      <AuList as |Item|>
+                        {{#each
+                          @model.currentChangeEventResult.resultingAdditionalQualifications
+                          as |qualification|
+                        }}
+                          <Item>
+                            {{#if qualification.definition}}
+                              <AuTooltip as |tooltip|>
+                                <div
+                                  class="au-u-flex au-u-flex--inline au-u-flex--vertical-center"
+                                  {{tooltip.target}}
+                                >
+                                  {{qualification.label}}
+                                  <AuIcon
+                                    @icon="info-circle"
+                                    class="au-u-margin-left-tiny"
+                                  />
+                                </div>
+                                <tooltip.Content>
+                                  {{qualification.definition}}
+                                </tooltip.Content>
+                              </AuTooltip>
+                            {{else}}
+                              {{qualification.label}}
+                            {{/if}}
+                          </Item>
+                        {{/each}}
+                      </AuList>
+                    </:content>
+                  </Item>
+                {{/if}}
+              {{/if}}
+            </:left>
+            <:right as |Item|>
+              {{#let
+                @model.changeEvent.decision.hasDecisionActivity.endDate
+                as |endDate|
+              }}
+                {{#if endDate}}
+                  <Item>
+                    <:label>Datum ministerieel besluit</:label>
+                    <:content>
+                      {{dateFormat endDate}}
+                    </:content>
+                  </Item>
+                {{/if}}
+              {{/let}}
+              {{#let
+                @model.changeEvent.decision.publicationDate
+                as |publicationDate|
+              }}
+                {{#if publicationDate}}
+                  <Item>
+                    <:label>
+                      {{#if @model.changeEvent.isCityChangeEvent}}
+                        Datum besluit
+                      {{else}}
+                        Datum publicatie BS
+                      {{/if}}
+                    </:label>
+                    <:content>
+                      {{dateFormat publicationDate}}
+                    </:content>
+                  </Item>
+                {{/if}}
+              {{/let}}
+              <Item>
+                <:label>Datum veranderingsgebeurtenis</:label>
+                <:content>
+                  {{dateFormat @model.changeEvent.date}}
+                </:content>
+              </Item>
+              {{#if @model.changeEvent.isLegalFormChangeEvent}}
+                {{#let
+                  @model.currentChangeEventResult.resultingLegalForm.label
+                  as |legalFormLabel|
+                }}
+                  {{#if legalFormLabel}}
+                    <Item>
+                      <:label>Nieuwe juridische vorm</:label>
+                      <:content>
+                        {{legalFormLabel}}
+                      </:content>
+                    </Item>
+                  {{/if}}
+                {{/let}}
+              {{/if}}
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+
+      {{#if @model.changeEvent.canAffectMultipleOrganizations}}
+        <DataCard>
+          <:title>{{@model.changeEvent.type.label}}</:title>
+          <:card as |Card|>
+            <Card.Columns>
+              <:left as |Item|>
+                {{#each
+                  @model.changeEvent.originalOrganizations
+                  as |organization|
+                }}
+                  <Item>
+                    <:label>Betrokken organisatie</:label>
+                    <:content>
+                      <AuLink
+                        @route="organizations.organization"
+                        @model={{organization.id}}
+                      >
+                        {{organization.abbName}}
+                      </AuLink>
+                    </:content>
+                  </Item>
+                {{/each}}
+              </:left>
+              <:right as |Item|>
+                {{#if @model.changeEvent.isMergerChangeEvent}}
+                  {{#each
+                    @model.changeEvent.resultingOrganizations
+                    as |organization|
+                  }}
+                    <Item>
+                      <:label>Resulterende organisatie</:label>
+                      <:content>
+                        <AuLink
+                          @route="organizations.organization"
+                          @model={{organization.id}}
+                        >
+                          {{organization.name}}
+                        </AuLink>
+                      </:content>
+                    </Item>
+                  {{/each}}
+                  <Item>
+                    <:label>Resulterende status</:label>
+                    <:content>
+                      <OrganizationStatus
+                        @id={{@model.currentChangeEventResult.status.id}}
+                        @label={{@model.currentChangeEventResult.status.label}}
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
+              </:right>
+            </Card.Columns>
+          </:card>
+        </DataCard>
+      {{/if}}
+    </div>
+  </div>
+</template>
