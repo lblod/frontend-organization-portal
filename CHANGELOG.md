@@ -1,3 +1,15 @@
+## v1.45.2 (2026-09-22)
+
+#### :rocket: Enhancement
+* [#743](https://github.com/lblod/frontend-organization-portal/pull/743) OP-3931: added OCMW to disableScopeEdits ([@DamonKennes](https://github.com/DamonKennes))
+
+#### :bug: Bug Fix
+* [#741](https://github.com/lblod/frontend-organization-portal/pull/741) [OP-3876] Group Regionaal landschap under Verenigingen ([@bdevloed](https://github.com/bdevloed))
+
+#### Committers: 2
+- Boris De Vloed ([@bdevloed](https://github.com/bdevloed))
+- Damon Kennes ([@DamonKennes](https://github.com/DamonKennes))
+
 ## v1.45.1 (2026-09-18)
 
 #### :rocket: Enhancement
