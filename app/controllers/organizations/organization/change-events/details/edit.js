@@ -2,10 +2,13 @@ import Controller from '@ember/controller';
 import { service } from '@ember/service';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { dropTask } from 'ember-concurrency';
+import { isNameChange } from 'frontend-organization-portal/models/change-event-type';
 
 export default class OrganizationsOrganizationChangeEventsDetailsEditController extends Controller {
   @service router;
   @service store;
+
+  isNameChange = isNameChange;
 
   get hasValidationErrors() {
     return this.model.changeEvent.error || this.model.decision?.error;

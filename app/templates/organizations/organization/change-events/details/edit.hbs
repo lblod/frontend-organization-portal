@@ -64,6 +64,14 @@
                 />
               </:content>
             </Item>
+            {{#if (this.isNameChange @model.changeEvent.type)}}
+              <Item @labelFor="change-event-resulting-name">
+                <:label>Nieuwe naam</:label>
+                <:content>
+                  {{@model.currentChangeEventResult.resultingName}}
+                </:content>
+              </Item>
+            {{/if}}
             {{#if @model.changeEvent.requiresDecisionInformation}}
               <Item
                 @labelFor="change-event-decision-link"

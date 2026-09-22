@@ -1,6 +1,8 @@
-import Model, { belongsTo, hasMany } from '@warp-drive/legacy/model';
+import Model, { attr, belongsTo, hasMany } from '@warp-drive/legacy/model';
 
 export default class ChangeEventResultModel extends Model {
+  @attr resultingName;
+
   @belongsTo('organization-status-code', {
     inverse: null,
     async: true,

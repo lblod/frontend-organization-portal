@@ -11,6 +11,7 @@ import ReportWrongData from 'frontend-organization-portal/components/report-wron
 import SecuredArea from 'frontend-organization-portal/components/secured-area';
 import isAdditionalQualificationChangeEvent from 'frontend-organization-portal/helpers/is-additional-qualification-change-event';
 import dateFormat from 'frontend-organization-portal/helpers/date-format';
+import { isNameChange } from 'frontend-organization-portal/models/change-event-type';
 
 <template>
   <div class="au-c-body-container au-c-body-container--scroll">
@@ -50,6 +51,14 @@ import dateFormat from 'frontend-organization-portal/helpers/date-format';
                   <:label>Beschrijving</:label>
                   <:content>
                     {{@model.changeEvent.description}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if (isNameChange @model.changeEvent.type)}}
+                <Item @labelFor="change-event-resulting-name">
+                  <:label>Nieuwe naam</:label>
+                  <:content>
+                    {{@model.currentChangeEventResult.resultingName}}
                   </:content>
                 </Item>
               {{/if}}

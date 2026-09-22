@@ -2,7 +2,10 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
+import {
+  CHANGE_EVENT_TYPE,
+  isNameChange,
+} from 'frontend-organization-portal/models/change-event-type';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import isAdditionalQualificationChangeEvent from 'frontend-organization-portal/helpers/is-additional-qualification-change-event';
 import { tracked } from '@glimmer/tracking';
@@ -56,6 +59,11 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
 
   @tracked
   selectedResultingAdditionalQualifications = [];
+
+  @tracked
+  resultingName = null;
+
+  isNameChange = isNameChange;
 
   get hasValidationErrors() {
     return this.model.changeEvent.error || this.model.decision?.error;
@@ -241,6 +249,10 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       );
     }
 
+    if (isNameChange(changeEvent.type) && !this.resultingName) {
+      changeEvent.addError('resultingName', 'Vul de nieuwe naam in');
+    }
+
     if (!changeEvent.error && (shouldSaveDecision ? !decision.error : true)) {
       changeEvent.decision = await saveDecision(
         shouldSaveDecision,
@@ -339,6 +351,10 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEvent.type.id] ??
           (await currentOrganization.organizationStatus)?.id;
 
+        const resultingName = isNameChange(changeEvent.type)
+          ? this.resultingName
+          : null;
+
         await createChangeEventResult({
           resultingStatusId,
           resultingOrganization: currentOrganization,
@@ -348,6 +364,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           resultingScope,
           resultingAdditionalQualifications:
             this.selectedResultingAdditionalQualifications,
+          resultingName,
         });
       }
 
@@ -370,6 +387,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     this.selectedResultingLegalForm = null;
     this.selectedResultingLocations = [];
     this.selectedResultingAdditionalQualifications = [];
+    this.resultingName = null;
   }
 }
 
@@ -381,6 +399,7 @@ async function createChangeEventResult({
   resultingLegalForm = null,
   resultingScope = null,
   resultingAdditionalQualifications = [],
+  resultingName,
 }) {
   const { content: resultingStatus } = await store.request(
     findRecord('organization-status-code', resultingStatusId),
@@ -453,6 +472,10 @@ async function createChangeEventResult({
     changeEventResult.resultingAdditionalQualifications =
       resultingAdditionalQualifications;
   }
+  if (resultingName) {
+    changeEventResult.resultingName = resultingName;
+  }
+
   changeEventResult.resultingOrganization = resultingOrganization;
   changeEventResult.resultFrom = changeEvent;
   await store.request(saveRecord(changeEventResult));
