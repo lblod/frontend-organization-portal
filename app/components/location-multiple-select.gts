@@ -103,11 +103,14 @@ class LocationGroupHeader extends Component<GroupHeaderSignature> {
   }
 
   <template>
-    <li class="ember-power-select-group" role="group" aria-labelledby={{this.uniqueId}}>
+    <li
+      class="ember-power-select-group"
+      role="group"
+      aria-labelledby={{this.uniqueId}}
+    >
       <button
         type="button"
-        class="ember-power-select-group-name
-          location-multiple-select__group-toggle"
+        class="ember-power-select-group-name location-multiple-select__group-toggle"
         id={{this.uniqueId}}
         {{on "click" this.toggleGroup}}
       >
