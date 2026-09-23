@@ -55,12 +55,15 @@ import { isNameChange } from 'frontend-organization-portal/models/change-event-t
                 </Item>
               {{/if}}
               {{#if (isNameChange @model.changeEvent.type)}}
-                <Item @labelFor="change-event-resulting-name">
-                  <:label>Nieuwe naam</:label>
-                  <:content>
-                    {{@model.currentChangeEventResult.resultingName}}
-                  </:content>
-                </Item>
+                {{! This is a new field, some change events might not have this value yet, so we hide it in that scenario }}
+                {{#if @model.currentChangeEventResult.resultingName}}
+                  <Item @labelFor="change-event-resulting-name">
+                    <:label>Nieuwe naam</:label>
+                    <:content>
+                      {{@model.currentChangeEventResult.resultingName}}
+                    </:content>
+                  </Item>
+                {{/if}}
               {{/if}}
               {{#let
                 @model.changeEvent.decision.documentLink
