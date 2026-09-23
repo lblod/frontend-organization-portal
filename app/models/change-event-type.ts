@@ -141,7 +141,7 @@ export const RequiresDecisionTypeIdList = Object.values(
 
 export default class ChangeEventType extends Model {
   @attr declare label: string;
-  declare [Type]: 'additional-qualification-code';
+  declare [Type]: 'change-event-type';
 }
 
 export function isNameChange(type?: ChangeEventType) {
