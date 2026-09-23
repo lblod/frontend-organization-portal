@@ -14,8 +14,13 @@ import {
   CHANGE_EVENTS_OCMW_ASSOCIATION,
   CHANGE_EVENTS_PEVA,
   CHANGE_EVENTS_VLAAMSE_GEMEENSCHAPSCOMMISSIE,
+  CHANGE_EVENTS_PROVINCE,
+  CHANGE_EVENTS_INTERLOKALE_VERENIGING_ANDERE,
+  CHANGE_EVENTS_REGIONAL_COOPERATION,
+  WORSHIP_ONLY_CHANGE_EVENT_TYPES,
 } from 'frontend-organization-portal/models/change-event-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { WorshipCodeList } from 'frontend-organization-portal/constants/classification';
 import requiresAdditionalQualifications from 'frontend-organization-portal/helpers/requires-additional-qualifications';
 import { findAll } from '@warp-drive/legacy/compat/builders';
 
@@ -104,10 +109,41 @@ export default class ChangeEventTypeSelectComponent extends Component {
         this.isIdInList(t.id, CHANGE_EVENTS_VLAAMSE_GEMEENSCHAPSCOMMISSIE),
       );
     }
+    if (classification.id == CLASSIFICATION.PROVINCE.id) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_PROVINCE),
+      );
+    }
+    if (
+      classification.id == CLASSIFICATION.INTERLOKALE_VERENIGING.id ||
+      classification.id == CLASSIFICATION.ANDERE.id
+    ) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_INTERLOKALE_VERENIGING_ANDERE),
+      );
+    }
+    if (
+      classification.id == CLASSIFICATION.ZORGRAAD.id ||
+      classification.id == CLASSIFICATION.VERVOERREGIORAAD.id ||
+      classification.id == CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id ||
+      classification.id == CLASSIFICATION.REGIONAAL_LANDSCHAP.id ||
+      classification.id == CLASSIFICATION.BOSGROEP.id ||
+      classification.id == CLASSIFICATION.WOONMAATSCHAPPIJ.id
+    ) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_REGIONAL_COOPERATION),
+      );
+    }
 
     if (!requiresAdditionalQualifications(classification)) {
       types = types.filter(
         (t) => t.id !== CHANGE_EVENT_TYPE.ADDITIONAL_QUALIFICATION_CHANGE,
+      );
+    }
+
+    if (!WorshipCodeList.includes(classification.id)) {
+      types = types.filter(
+        (t) => !this.isIdInList(t.id, WORSHIP_ONLY_CHANGE_EVENT_TYPES),
       );
     }
 
