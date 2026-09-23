@@ -92,7 +92,7 @@ export default class OrganizationsIndexRoute extends Route {
         .split(',')
         .map(
           (area) =>
-            `((operation_area:*${area}*) OR (operation_area_spatial:*${area}*))`,
+            `(operation_area:"${area}" OR operation_area_spatial:"${area}" OR operation_area_contained_municipalities:"${area}" OR operation_area_spatial_contained_municipalities:"${area}")`,
         )
         .join(' AND ');
     }
