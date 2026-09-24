@@ -1,3 +1,4 @@
+import type { Type } from '@warp-drive/core/types/symbols';
 import Model, { attr } from '@warp-drive/legacy/model';
 
 export const CHANGE_EVENT_TYPE = {
@@ -138,6 +139,11 @@ export const RequiresDecisionTypeIdList = Object.values(
   CHANGE_EVENT_TYPE,
 ).filter((id) => id !== CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED);
 
-export default class ChangeEventTypeModel extends Model {
-  @attr label;
+export default class ChangeEventType extends Model {
+  @attr declare label: string;
+  declare [Type]: 'change-event-type';
+}
+
+export function isNameChange(type?: ChangeEventType) {
+  return type?.id === CHANGE_EVENT_TYPE.NAME_CHANGE;
 }

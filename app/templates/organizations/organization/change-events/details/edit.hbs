@@ -64,6 +64,26 @@
                 />
               </:content>
             </Item>
+            {{#if (this.isNameChange @model.changeEvent.type)}}
+              <Item
+                @labelFor="change-event-resulting-name"
+                @required={{true}}
+                @errorMessage={{@model.changeEvent.error.resultingName.message}}
+              >
+                <:label>Nieuwe naam</:label>
+                <:content as |hasError|>
+                  <TrimInput
+                    @value={{@model.currentChangeEventResult.resultingName}}
+                    @onUpdate={{fn
+                      (mut @model.currentChangeEventResult.resultingName)
+                    }}
+                    @width="block"
+                    @error={{hasError}}
+                    id="change-event-resulting-name"
+                  />
+                </:content>
+              </Item>
+            {{/if}}
             {{#if @model.changeEvent.requiresDecisionInformation}}
               <Item
                 @labelFor="change-event-decision-link"

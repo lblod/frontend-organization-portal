@@ -2,10 +2,13 @@ import Controller from '@ember/controller';
 import { service } from '@ember/service';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { dropTask } from 'ember-concurrency';
+import { isNameChange } from 'frontend-organization-portal/models/change-event-type';
 
 export default class OrganizationsOrganizationChangeEventsDetailsEditController extends Controller {
   @service router;
   @service store;
+
+  isNameChange = isNameChange;
 
   get hasValidationErrors() {
     return this.model.changeEvent.error || this.model.decision?.error;
@@ -14,12 +17,20 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
   save = dropTask(async (event) => {
     event.preventDefault();
 
-    let { changeEvent, decision, decisionActivity } = this.model;
+    let { changeEvent, currentChangeEventResult, decision, decisionActivity } =
+      this.model;
 
     await changeEvent.validate();
 
     if (changeEvent.requiresDecisionInformation) {
       await decision.validate();
+    }
+
+    if (
+      isNameChange(changeEvent.type) &&
+      !currentChangeEventResult.resultingName
+    ) {
+      changeEvent.addError('resultingName', 'Vul de nieuwe naam in');
     }
 
     if (
@@ -56,6 +67,10 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
         }
       }
 
+      if (currentChangeEventResult.hasDirtyAttributes) {
+        await this.store.request(saveRecord(currentChangeEventResult));
+      }
+
       // Note: always save change event as adding a decision is not detected by
       // the `hasDirtyAttributes` method, which results in the new decision to
       // be discarded on save.
@@ -73,5 +88,6 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
     this.model.changeEvent.reset();
     this.model.decision?.reset();
     this.model.decisionActivity?.rollbackAttributes();
+    this.model.currentChangeEventResult.rollbackAttributes();
   }
 }
