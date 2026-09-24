@@ -1,3 +1,4 @@
+import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import { assert } from '@ember/debug';
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
@@ -66,9 +67,7 @@ class LocationGroupHeader extends Component<GroupHeaderSignature> {
 
     const selectedIds = new Set(selected.map((location) => location.id));
 
-    return this.allOptionsInGroup.every((option) =>
-      selectedIds.has(option.id),
-    );
+    return this.allOptionsInGroup.every((option) => selectedIds.has(option.id));
   }
 
   @action
@@ -102,6 +101,14 @@ class LocationGroupHeader extends Component<GroupHeaderSignature> {
     select.actions.select(newSelection, event);
   }
 
+  @action
+  clearHighlightedOption() {
+    this.args.select.actions.highlight(null);
+  }
+
+  // Structure based on ember-power-select's own group component template,
+  // extended with a clickable/toggleable header.
+  // https://github.com/ember-power-addons/ember-power-select/blob/v8.12.2/ember-power-select/src/components/power-select/power-select-group.hbs
   <template>
     <li
       class="ember-power-select-group"
@@ -110,11 +117,20 @@ class LocationGroupHeader extends Component<GroupHeaderSignature> {
     >
       <button
         type="button"
-        class="ember-power-select-group-name location-multiple-select__group-toggle"
+        class="ember-power-select-group-name location-multiple-select__group-toggle
+          {{if
+            this.isGroupFullySelected
+            'location-multiple-select__group-toggle--selected'
+          }}"
         id={{this.uniqueId}}
         {{on "click" this.toggleGroup}}
+        {{on "mouseenter" this.clearHighlightedOption}}
       >
         {{@group.groupName}}
+        <AuIcon
+          @icon="check"
+          class="location-multiple-select__group-toggle-icon"
+        />
       </button>
       {{yield}}
     </li>

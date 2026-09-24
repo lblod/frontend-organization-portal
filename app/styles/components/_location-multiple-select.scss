@@ -1,0 +1,45 @@
+.ember-power-select-group-name.location-multiple-select__group-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $au-unit-tiny;
+  width: 100%;
+  padding: $au-unit-tiny;
+  border: none;
+  border-radius: $au-radius;
+  background: none;
+  font: inherit;
+  font-weight: bold;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background-color: $au-blue-100;
+    color: $au-blue-800;
+
+    .location-multiple-select__group-toggle-icon {
+      opacity: 1;
+    }
+  }
+
+  &--selected {
+    background-color: $au-blue-100;
+    color: $au-blue-800;
+
+    .location-multiple-select__group-toggle-icon {
+      opacity: 1;
+    }
+
+    &:hover,
+    &:focus-visible {
+      background-color: $au-blue-200;
+    }
+  }
+}
+
+.location-multiple-select__group-toggle-icon {
+  flex-shrink: 0;
+  opacity: 0;
+}
