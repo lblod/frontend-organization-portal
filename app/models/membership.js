@@ -181,6 +181,19 @@ export default class MembershipModel extends AbstractValidationModel {
   }
 
   /**
+   * Whether none of the member, organization, or role have been set yet, as
+   * is the case for a row that was just added but never filled in by the
+   * user.
+   */
+  get isEmpty() {
+    const org = this.belongsTo('organization').value();
+    const member = this.belongsTo('member').value();
+    const role = this.belongsTo('role').value();
+
+    return !org && !member && !role;
+  }
+
+  /**
    * Check whether this membership is equal to a given one. Two memberships are
    * considered equal their respective organizations, members, and roles have
    * the same id.

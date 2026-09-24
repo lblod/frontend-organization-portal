@@ -164,6 +164,14 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   save = dropTask(async (event) => {
     event.preventDefault();
 
+    this.memberships
+      .filter((membership) => membership.isNew && membership.isEmpty)
+      .forEach((membership) => {
+        this.memberships.removeObject(membership);
+        membership.deleteRecord();
+        membership.unloadRecord();
+      });
+
     let organization = this.model.organization;
     await organization.validate();
 
