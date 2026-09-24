@@ -61,13 +61,13 @@ class LocationGroupHeader extends Component<GroupHeaderSignature> {
     const province = this.fullGroup?.province;
 
     if (this.filterMode && province) {
-      return selected.some((location) => location.label === province.label);
+      return selected.some((location) => location.id === province.id);
     }
 
-    const selectedLabels = new Set(selected.map((location) => location.label));
+    const selectedIds = new Set(selected.map((location) => location.id));
 
     return this.allOptionsInGroup.every((option) =>
-      selectedLabels.has(option.label),
+      selectedIds.has(option.id),
     );
   }
 
@@ -82,7 +82,7 @@ class LocationGroupHeader extends Component<GroupHeaderSignature> {
 
     if (this.filterMode && province) {
       const newSelection = this.isGroupFullySelected
-        ? selected.filter((location) => location.label !== province.label)
+        ? selected.filter((location) => location.id !== province.id)
         : [...selected, province];
 
       select.actions.select(newSelection, event);
@@ -90,9 +90,9 @@ class LocationGroupHeader extends Component<GroupHeaderSignature> {
     }
 
     const groupOptions = this.allOptionsInGroup;
-    const groupLabels = new Set(groupOptions.map((option) => option.label));
+    const groupIds = new Set(groupOptions.map((option) => option.id));
     const remainingSelection = selected.filter(
-      (location) => !groupLabels.has(location.label),
+      (location) => !groupIds.has(location.id),
     );
 
     const newSelection = this.isGroupFullySelected
@@ -139,7 +139,7 @@ interface Signature {
 export default class LocationMultipleSelect extends Component<Signature> {
   @service declare store: Store;
 
-  locationsByLabel?: Map<string, Location>;
+  locationsById?: Map<string, Location>;
 
   @cached
   get locationsPromise() {
@@ -148,7 +148,7 @@ export default class LocationMultipleSelect extends Component<Signature> {
 
   get selectedLocations() {
     if (typeof this.args.selected === 'string' && this.args.selected.length) {
-      return this.labelsToLocations(this.args.selected.split(','));
+      return this.idsToLocations(this.args.selected.split(','));
     }
 
     return this.args.selected;
@@ -188,30 +188,35 @@ export default class LocationMultipleSelect extends Component<Signature> {
     return extractProvinceGroups(provinces, municipalities);
   }
 
-  labelsToLocations(labels: string[]) {
-    if (!this.locationsByLabel) {
+  idsToLocations(ids: string[]) {
+    if (!this.locationsById) {
       const loadingState = getPromiseState(this.locationsPromise);
       if (loadingState.isPending || loadingState.isError) {
         return [];
       }
 
       const locationOptions = loadingState.value;
-      const allLocations = locationOptions.flatMap((group) =>
-        group.province ? [group.province, ...group.options] : group.options,
+      const allLocations: Location[] = locationOptions.flatMap(
+        (group): Location[] =>
+          group.province ? [group.province, ...group.options] : group.options,
       );
-      this.locationsByLabel = new Map(
-        allLocations.map((location) => [location.label, location]),
+      this.locationsById = new Map(
+        allLocations.map((location) => {
+          assert('Location is expected to have an id', location.id !== null);
+
+          return [location.id, location];
+        }),
       );
     }
 
-    const locationsByLabel = this.locationsByLabel;
+    const locationsById = this.locationsById;
     assert(
-      'this.locationsByLabel is expected to be set at this point',
-      locationsByLabel instanceof Map,
+      'this.locationsById is expected to be set at this point',
+      locationsById instanceof Map,
     );
 
-    return labels.map((label) => {
-      const location = locationsByLabel.get(label);
+    return ids.map((id) => {
+      const location = locationsById.get(id);
       assert('The location should exist', location);
 
       return location;
