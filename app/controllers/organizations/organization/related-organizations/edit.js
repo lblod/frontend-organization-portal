@@ -7,7 +7,6 @@ import { trackedArray } from '@ember/reactive/collections';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import { shouldSwapAssignments } from 'frontend-organization-portal/constants/memberships';
-import { removeItem } from 'frontend-organization-portal/utils/array';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditController extends Controller {
   @service router;
@@ -48,7 +47,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   @action
   addMembership() {
     let membership = this.store.createRecord('membership');
-    this.memberships.push(membership);
+    this.memberships = trackedArray([...this.memberships, membership]);
   }
 
   @action
@@ -80,7 +79,9 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     // - do remove newly added memberships that have not been persisted yet.
     //   Otherwise, they can result in failing validations or errors.
     if (membership.isNew) {
-      removeItem(this.memberships, membership);
+      this.memberships = trackedArray(
+        this.memberships.filter((m) => m !== membership),
+      );
       membership.deleteRecord();
       membership.unloadRecord();
     } else {
@@ -177,15 +178,18 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   save = dropTask(async (event) => {
     event.preventDefault();
 
-    this.memberships
-      .filter(
-        (membership) => membership.isNew && this.#isEmptyMembership(membership),
-      )
-      .forEach((membership) => {
-        removeItem(this.memberships, membership);
-        membership.deleteRecord();
-        membership.unloadRecord();
-      });
+    let emptyMemberships = this.memberships.filter(
+      (membership) => membership.isNew && this.#isEmptyMembership(membership),
+    );
+    emptyMemberships.forEach((membership) => {
+      membership.deleteRecord();
+      membership.unloadRecord();
+    });
+    this.memberships = trackedArray(
+      this.memberships.filter(
+        (membership) => !emptyMemberships.includes(membership),
+      ),
+    );
 
     let organization = this.model.organization;
     await organization.validate();
