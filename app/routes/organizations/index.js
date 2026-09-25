@@ -88,11 +88,11 @@ export default class OrganizationsIndexRoute extends Route {
     filter[':query:classification_id'] = queryClassifications;
 
     if (params.operationArea) {
-      filter[':query:operation_area'] = params.operationArea
+      filter[':query:operation_area_id'] = params.operationArea
         .split(',')
         .map(
-          (area) =>
-            `((operation_area:*${area}*) OR (operation_area_spatial:*${area}*))`,
+          (id) =>
+            `(operation_area_id:"${id}" OR operation_area_spatial_id:"${id}" OR operation_area_contained_municipalities_id:"${id}" OR operation_area_spatial_contained_municipalities_id:"${id}")`,
         )
         .join(' AND ');
     }

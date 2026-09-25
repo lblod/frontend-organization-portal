@@ -1,4 +1,8 @@
+import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import { assert } from '@ember/debug';
+import { action } from '@ember/object';
+import { guidFor } from '@ember/object/internals';
+import { on } from '@ember/modifier';
 import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
@@ -10,6 +14,129 @@ import PowerSelect, {
 import type Location from 'frontend-organization-portal/models/location';
 import type Store from 'frontend-organization-portal/services/store';
 
+interface LocationGroup {
+  groupName: string;
+  province?: Location;
+  options: Location[];
+}
+
+interface GroupHeaderExtra {
+  groups: LocationGroup[];
+  filterMode: boolean;
+}
+
+interface GroupHeaderSignature {
+  Args: {
+    group: LocationGroup;
+    select: Select;
+    extra?: GroupHeaderExtra;
+  };
+  Blocks: {
+    default: [];
+  };
+}
+
+function asLocationArray(selected: unknown): Location[] {
+  return Array.isArray(selected) ? (selected as Location[]) : [];
+}
+
+class LocationGroupHeader extends Component<GroupHeaderSignature> {
+  uniqueId = guidFor(this);
+
+  get filterMode(): boolean {
+    return this.args.extra?.filterMode ?? false;
+  }
+
+  get fullGroup(): LocationGroup | undefined {
+    return this.args.extra?.groups.find(
+      (group) => group.groupName === this.args.group.groupName,
+    );
+  }
+
+  get allOptionsInGroup(): Location[] {
+    return this.fullGroup?.options ?? this.args.group.options;
+  }
+
+  get isGroupFullySelected() {
+    const selected = asLocationArray(this.args.select.selected);
+    const province = this.fullGroup?.province;
+
+    if (this.filterMode && province) {
+      return selected.some((location) => location.id === province.id);
+    }
+
+    const selectedIds = new Set(selected.map((location) => location.id));
+
+    return this.allOptionsInGroup.every((option) => selectedIds.has(option.id));
+  }
+
+  @action
+  toggleGroup(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const { select } = this.args;
+    const selected = asLocationArray(select.selected);
+    const province = this.fullGroup?.province;
+
+    if (this.filterMode && province) {
+      const newSelection = this.isGroupFullySelected
+        ? selected.filter((location) => location.id !== province.id)
+        : [...selected, province];
+
+      select.actions.select(newSelection, event);
+      return;
+    }
+
+    const groupOptions = this.allOptionsInGroup;
+    const groupIds = new Set(groupOptions.map((option) => option.id));
+    const remainingSelection = selected.filter(
+      (location) => !groupIds.has(location.id),
+    );
+
+    const newSelection = this.isGroupFullySelected
+      ? remainingSelection
+      : [...remainingSelection, ...groupOptions];
+
+    select.actions.select(newSelection, event);
+  }
+
+  @action
+  clearHighlightedOption() {
+    this.args.select.actions.highlight(null);
+  }
+
+  // Structure based on ember-power-select's own group component template,
+  // extended with a clickable/toggleable header.
+  // https://github.com/ember-power-addons/ember-power-select/blob/v8.12.2/ember-power-select/src/components/power-select/power-select-group.hbs
+  <template>
+    <li
+      class="ember-power-select-group"
+      role="group"
+      aria-labelledby={{this.uniqueId}}
+    >
+      <button
+        type="button"
+        class="ember-power-select-group-name location-multiple-select__group-toggle
+          {{if
+            this.isGroupFullySelected
+            'location-multiple-select__group-toggle--selected'
+          }}"
+        id={{this.uniqueId}}
+        {{on "click" this.toggleGroup}}
+        {{on "mouseenter" this.clearHighlightedOption}}
+      >
+        {{@group.groupName}}
+        <AuIcon
+          @icon="check"
+          class="location-multiple-select__group-toggle-icon"
+        />
+      </button>
+      {{yield}}
+    </li>
+  </template>
+}
+
 interface Signature {
   Args: {
     selected?: Location[] | string;
@@ -17,13 +144,18 @@ interface Signature {
     disabled?: boolean;
     id?: string;
     onChange: (selection: Location[]) => unknown;
+    // When set, clicking a province header adds/removes just the province
+    // itself instead of all of its municipalities. Use this for filtering
+    // organizations; leave unset (all municipalities) when creating or
+    // editing an organization's werkingsgebied.
+    filterMode?: boolean;
   };
 }
 
 export default class LocationMultipleSelect extends Component<Signature> {
   @service declare store: Store;
 
-  municipalities?: Map<string, Location>;
+  locationsById?: Map<string, Location>;
 
   @cached
   get locationsPromise() {
@@ -32,10 +164,23 @@ export default class LocationMultipleSelect extends Component<Signature> {
 
   get selectedLocations() {
     if (typeof this.args.selected === 'string' && this.args.selected.length) {
-      return this.labelsToLocations(this.args.selected.split(','));
+      return this.idsToLocations(this.args.selected.split(','));
     }
 
     return this.args.selected;
+  }
+
+  get resolvedGroups(): LocationGroup[] {
+    const loadingState = getPromiseState(this.locationsPromise);
+
+    return loadingState.value ?? [];
+  }
+
+  get groupHeaderExtra(): GroupHeaderExtra {
+    return {
+      groups: this.resolvedGroups,
+      filterMode: this.args.filterMode ?? false,
+    };
   }
 
   async loadLocationOptions() {
@@ -59,32 +204,38 @@ export default class LocationMultipleSelect extends Component<Signature> {
     return extractProvinceGroups(provinces, municipalities);
   }
 
-  labelsToLocations(labels: string[]) {
-    if (!this.municipalities) {
+  idsToLocations(ids: string[]) {
+    if (!this.locationsById) {
       const loadingState = getPromiseState(this.locationsPromise);
       if (loadingState.isPending || loadingState.isError) {
         return [];
       }
 
       const locationOptions = loadingState.value;
-      this.municipalities = new Map(
-        locationOptions
-          .flatMap((group) => group.options)
-          .map((municipality) => [municipality.label, municipality]),
+      const allLocations: Location[] = locationOptions.flatMap(
+        (group): Location[] =>
+          group.province ? [group.province, ...group.options] : group.options,
+      );
+      this.locationsById = new Map(
+        allLocations.map((location) => {
+          assert('Location is expected to have an id', location.id !== null);
+
+          return [location.id, location];
+        }),
       );
     }
 
-    const municipalities = this.municipalities;
+    const locationsById = this.locationsById;
     assert(
-      'this.municipalities is expected to be set at this point',
-      municipalities instanceof Map,
+      'this.locationsById is expected to be set at this point',
+      locationsById instanceof Map,
     );
 
-    return labels.map((label) => {
-      const municipality = municipalities.get(label);
-      assert('The municipality should exist', municipality);
+    return ids.map((id) => {
+      const location = locationsById.get(id);
+      assert('The location should exist', location);
 
-      return municipality;
+      return location;
     });
   }
 
@@ -116,6 +267,8 @@ export default class LocationMultipleSelect extends Component<Signature> {
         @selected={{this.selectedLocations}}
         @onChange={{this.onChange}}
         @triggerId={{@id}}
+        @groupComponent={{LocationGroupHeader}}
+        @extra={{this.groupHeaderExtra}}
         as |location|
       >
         {{location.label}}
@@ -150,9 +303,10 @@ function extractProvinceGroups(
 function createGroupForProvince(
   province: Location,
   municipalities: Location[],
-) {
+): LocationGroup {
   return {
     groupName: province.label,
+    province,
     options: municipalities.filter((municipality) =>
       municipality.isLocatedWithin(province),
     ),
