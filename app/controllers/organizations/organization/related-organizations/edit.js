@@ -3,7 +3,6 @@ import { dropTask } from 'ember-concurrency';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { trackedArray } from '@ember/reactive/collections';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import { shouldSwapAssignments } from 'frontend-organization-portal/constants/memberships';
@@ -37,7 +36,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   setup() {
     if (!this.memberships) {
-      this.memberships = trackedArray(this.model.memberships.map((e) => e));
+      this.memberships = this.model.memberships.map((e) => e);
     }
     if (this.memberships.length === 0) {
       this.addMembership();
@@ -47,7 +46,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   @action
   addMembership() {
     let membership = this.store.createRecord('membership');
-    this.memberships = trackedArray([...this.memberships, membership]);
+    this.memberships = [...this.memberships, membership];
   }
 
   @action
@@ -79,9 +78,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     // - do remove newly added memberships that have not been persisted yet.
     //   Otherwise, they can result in failing validations or errors.
     if (membership.isNew) {
-      this.memberships = trackedArray(
-        this.memberships.filter((m) => m !== membership),
-      );
+      this.memberships = this.memberships.filter((m) => m !== membership);
       membership.deleteRecord();
       membership.unloadRecord();
     } else {
@@ -185,10 +182,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
       membership.deleteRecord();
       membership.unloadRecord();
     });
-    this.memberships = trackedArray(
-      this.memberships.filter(
-        (membership) => !emptyMemberships.includes(membership),
-      ),
+    this.memberships = this.memberships.filter(
+      (membership) => !emptyMemberships.includes(membership),
     );
 
     let organization = this.model.organization;
