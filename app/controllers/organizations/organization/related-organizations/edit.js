@@ -3,7 +3,6 @@ import { dropTask } from 'ember-concurrency';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { A } from '@ember/array';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import { shouldSwapAssignments } from 'frontend-organization-portal/constants/memberships';
@@ -37,8 +36,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   setup() {
     if (!this.memberships) {
-      // Note: use EmberArray since this variable is tracked
-      this.memberships = A(this.model.memberships.map((e) => e));
+      this.memberships = this.model.memberships.map((e) => e);
     }
     if (this.memberships.length === 0) {
       this.addMembership();
@@ -48,7 +46,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   @action
   addMembership() {
     let membership = this.store.createRecord('membership');
-    this.memberships.pushObject(membership);
+    this.memberships = [...this.memberships, membership];
   }
 
   @action
@@ -80,7 +78,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     // - do remove newly added memberships that have not been persisted yet.
     //   Otherwise, they can result in failing validations or errors.
     if (membership.isNew) {
-      this.memberships.removeObject(membership);
+      this.memberships = this.memberships.filter((m) => m !== membership);
       membership.deleteRecord();
       membership.unloadRecord();
     } else {
@@ -124,6 +122,19 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     }
   }
 
+  /**
+   * Whether none of the member, organization, or role have been set yet, as
+   * is the case for a row that was just added but never filled in by the
+   * user.
+   */
+  #isEmptyMembership(membership) {
+    const org = membership.belongsTo('organization').value();
+    const member = membership.belongsTo('member').value();
+    const role = membership.belongsTo('role').value();
+
+    return !org && !member && !role;
+  }
+
   @action
   updateMembershipRole(membership, roleLabel) {
     // Remove any previous assignments
@@ -163,6 +174,15 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   save = dropTask(async (event) => {
     event.preventDefault();
+
+    this.memberships = this.memberships.filter((membership) => {
+      if (membership.isNew && this.#isEmptyMembership(membership)) {
+        membership.deleteRecord();
+        membership.unloadRecord();
+        return false;
+      }
+      return true;
+    });
 
     let organization = this.model.organization;
     await organization.validate();
