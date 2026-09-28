@@ -72,7 +72,7 @@
                 />
               </:content>
             </Item>
-            {{#if (this.isNameChange @model.changeEvent.type)}}
+            {{#if (this.isNameChangeType @model.changeEvent.type)}}
               <Item
                 @labelFor="change-event-resulting-name"
                 @required={{true}}
@@ -166,13 +166,9 @@
           </:left>
           <:right as |Item|>
             {{#if
-              (and
-                (not @model.organization.isAgb)
-                (not @model.organization.isApb)
-                (not @model.organization.isIgs)
-                (not @model.organization.isPoliceZone)
-                (not @model.organization.isAssistanceZone)
-                @model.changeEvent.requiresDecisionInformation
+              (or
+                (this.isCityType @model.changeEvent.type)
+                (this.isNameChangeType @model.changeEvent.type)
               )
             }}
               <Item
@@ -180,17 +176,7 @@
                 @errorMessage={{@model.decision.error.publicationDate.message}}
               >
                 <:label>
-                  {{#if
-                    (and
-                      (not @model.organization.isAgb)
-                      (not @model.organization.isApb)
-                      @model.changeEvent.isCityChangeEvent
-                    )
-                  }}
-                    Datum besluit
-                  {{else}}
-                    Datum publicatie BS
-                  {{/if}}
+                  Datum besluit
                 </:label>
                 <:content as |hasError|>
                   <Datepicker

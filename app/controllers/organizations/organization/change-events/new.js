@@ -4,7 +4,8 @@ import { service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import {
   CHANGE_EVENT_TYPE,
-  isNameChange,
+  isCityType,
+  isNameChangeType,
 } from 'frontend-organization-portal/models/change-event-type';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import isAdditionalQualificationChangeEvent from 'frontend-organization-portal/helpers/is-additional-qualification-change-event';
@@ -63,7 +64,8 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
   @tracked
   resultingName = null;
 
-  isNameChange = isNameChange;
+  isNameChangeType = isNameChangeType;
+  isCityType = isCityType;
 
   get hasValidationErrors() {
     return this.model.changeEvent.error || this.model.decision?.error;
@@ -248,7 +250,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       );
     }
 
-    if (isNameChange(changeEvent.type) && !this.resultingName) {
+    if (isNameChangeType(changeEvent.type) && !this.resultingName) {
       changeEvent.addError('resultingName', 'Vul de nieuwe naam in');
     }
 
@@ -349,7 +351,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEvent.type.id] ??
           (await currentOrganization.organizationStatus)?.id;
 
-        const resultingName = isNameChange(changeEvent.type)
+        const resultingName = isNameChangeType(changeEvent.type)
           ? this.resultingName
           : null;
 
