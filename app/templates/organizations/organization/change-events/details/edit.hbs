@@ -167,22 +167,6 @@
                 @model.changeEvent.requiresDecisionInformation
               )
             }}
-              {{#unless @model.changeEvent.isCityChangeEvent}}
-                <Item
-                  @labelFor="change-event-decision-activity-date"
-                  @errorMessage={{@model.decisionActivity.error.endDate.message}}
-                >
-                  <:label>Datum ministerieel besluit</:label>
-                  <:content as |hasError|>
-                    <Datepicker
-                      @id="change-event-decision-activity-date"
-                      @value={{@model.decisionActivity.endDate}}
-                      @onChange={{fn (mut @model.decisionActivity.endDate)}}
-                      @error={{hasError}}
-                    />
-                  </:content>
-                </Item>
-              {{/unless}}
               <Item
                 @labelFor="change-event-decision-publication-date"
                 @errorMessage={{@model.decision.error.publicationDate.message}}

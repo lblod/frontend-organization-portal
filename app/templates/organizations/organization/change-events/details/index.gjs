@@ -132,19 +132,6 @@ import { isNameChange } from 'frontend-organization-portal/models/change-event-t
             </:left>
             <:right as |Item|>
               {{#let
-                @model.changeEvent.decision.hasDecisionActivity.endDate
-                as |endDate|
-              }}
-                {{#if endDate}}
-                  <Item>
-                    <:label>Datum ministerieel besluit</:label>
-                    <:content>
-                      {{dateFormat endDate}}
-                    </:content>
-                  </Item>
-                {{/if}}
-              {{/let}}
-              {{#let
                 @model.changeEvent.decision.publicationDate
                 as |publicationDate|
               }}
