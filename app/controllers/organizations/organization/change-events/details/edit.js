@@ -17,8 +17,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
   save = dropTask(async (event) => {
     event.preventDefault();
 
-    let { changeEvent, currentChangeEventResult, decision, decisionActivity } =
-      this.model;
+    let { changeEvent, currentChangeEventResult, decision } = this.model;
 
     await changeEvent.validate();
 
@@ -38,16 +37,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
       (changeEvent.requiresDecisionInformation ? !decision.error : true)
     ) {
       if (changeEvent.requiresDecisionInformation) {
-        if (
-          decisionActivity.changedAttributes().endDate ||
-          (!decision.isEmpty && decision.hasDirtyAttributes)
-        ) {
-          if (decisionActivity.changedAttributes().endDate) {
-            if (decisionActivity.isNew) {
-              decision.hasDecisionActivity = decisionActivity;
-            }
-            await this.store.request(saveRecord(decisionActivity));
-          }
+        if (!decision.isEmpty && decision.hasDirtyAttributes) {
           if (decision.isNew) {
             changeEvent.decision = decision;
           }
@@ -87,7 +77,6 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
     this.model.organization.reset();
     this.model.changeEvent.reset();
     this.model.decision?.reset();
-    this.model.decisionActivity?.rollbackAttributes();
     this.model.currentChangeEventResult.rollbackAttributes();
   }
 }

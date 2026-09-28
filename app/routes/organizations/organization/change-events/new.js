@@ -18,13 +18,11 @@ export default class OrganizationsOrganizationChangeEventsNewRoute extends Route
       originalOrganizations: [organization],
     });
     let decision = this.store.createRecord('decision');
-    let decisionActivity = this.store.createRecord('decision-activity');
 
     return {
       organization,
       changeEvent,
       decision,
-      decisionActivity,
     };
   }
 

@@ -209,7 +209,6 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       organization: currentOrganization,
       changeEvent,
       decision,
-      decisionActivity,
     } = this.model;
 
     const shouldSaveDecision = await changeEvent.requiresDecisionInformation;
@@ -257,7 +256,6 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       changeEvent.decision = await saveDecision(
         shouldSaveDecision,
         decision,
-        decisionActivity,
         this.store,
       );
 
@@ -381,7 +379,6 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
   reset() {
     this.model.changeEvent.reset();
     this.model.decision?.reset();
-    this.model.decisionActivity?.rollbackAttributes();
     this.model.organization.reset();
     this.selectedResultingOrganization = null;
     this.selectedResultingLegalForm = null;
@@ -500,18 +497,9 @@ async function findMostRecentChangeEvent(store, organization) {
   }
 }
 
-async function saveDecision(
-  shouldSaveDecision,
-  decision,
-  decisionActivity,
-  store,
-) {
+async function saveDecision(shouldSaveDecision, decision, store) {
   if (shouldSaveDecision) {
-    if (!decision.isEmpty || decisionActivity.endDate) {
-      if (decisionActivity.endDate) {
-        await store.request(saveRecord(decisionActivity));
-        decision.hasDecisionActivity = decisionActivity;
-      }
+    if (!decision.isEmpty) {
       await store.request(saveRecord(decision));
       return decision;
     }
