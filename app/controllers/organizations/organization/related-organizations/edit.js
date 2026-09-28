@@ -175,16 +175,14 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   save = dropTask(async (event) => {
     event.preventDefault();
 
-    let emptyMemberships = this.memberships.filter(
-      (membership) => membership.isNew && this.#isEmptyMembership(membership),
-    );
-    emptyMemberships.forEach((membership) => {
-      membership.deleteRecord();
-      membership.unloadRecord();
+    this.memberships = this.memberships.filter((membership) => {
+      if (membership.isNew && this.#isEmptyMembership(membership)) {
+        membership.deleteRecord();
+        membership.unloadRecord();
+        return false;
+      }
+      return true;
     });
-    this.memberships = this.memberships.filter(
-      (membership) => !emptyMemberships.includes(membership),
-    );
 
     let organization = this.model.organization;
     await organization.validate();
