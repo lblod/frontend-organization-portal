@@ -66,7 +66,7 @@
 
 {{#if this.founderToRemove}}
   <ConfirmationModal
-    @message={{confirmation-message-text "deleteRelation"}}
+    @message="Weet je zeker dat je deze relatie wilt verwijderen?"
     @onConfirm={{this.reallyRemoveMembership}}
     @onCancel={{this.cancelMembershipRemoval}}
   />
