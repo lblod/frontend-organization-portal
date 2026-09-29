@@ -30,6 +30,21 @@ module('Unit | Model | abstract validation model', function (hooks) {
       assert.strictEqual(model.error, undefined);
     });
 
+    test('it groups array item errors under their respective properties', async function (assert) {
+      this.owner.register('model:test-validation-model', BasicValidationModel);
+      const model = this.store().createRecord('test-validation-model', {
+        name: 'test',
+        firstList: ['invalid'],
+        secondList: ['invalid'],
+      });
+
+      const isValid = await model.validate();
+
+      assert.false(isValid);
+      assert.deepEqual(model.error.firstList[0].path, ['firstList', 0]);
+      assert.deepEqual(model.error.secondList[0].path, ['secondList', 0]);
+    });
+
     test('it returns default error message when name is missing', async function (assert) {
       this.owner.register('model:test-validation-model', BasicValidationModel);
       const model = this.store().createRecord('test-validation-model');
@@ -188,10 +203,14 @@ module('Unit | Model | abstract validation model', function (hooks) {
 
 class BasicValidationModel extends AbstractValidationModel {
   @attr name;
+  @attr firstList;
+  @attr secondList;
 
   get validationSchema() {
     return Joi.object({
       name: Joi.string().required(),
+      firstList: Joi.array().items(Joi.string().uri()).optional(),
+      secondList: Joi.array().items(Joi.string().uri()).optional(),
     });
   }
 }

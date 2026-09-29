@@ -66,16 +66,22 @@ import { isNameChange } from 'frontend-organization-portal/models/change-event-t
                 {{/if}}
               {{/if}}
               {{#let
-                @model.changeEvent.decision.documentLink
-                as |documentLink|
+                @model.changeEvent.decision.documentLinks
+                as |documentLinks|
               }}
-                {{#if documentLink}}
+                {{#if documentLinks.length}}
                   <Item>
-                    <:label>Link naar besluit</:label>
+                    <:label>Links naar besluiten</:label>
                     <:content>
-                      <AuLinkExternal href={{documentLink}}>
-                        {{documentLink}}
-                      </AuLinkExternal>
+                      <AuList as |Item|>
+                        {{#each documentLinks as |documentLink|}}
+                          <Item>
+                            <AuLinkExternal href={{documentLink}}>
+                              {{documentLink}}
+                            </AuLinkExternal>
+                          </Item>
+                        {{/each}}
+                      </AuList>
                     </:content>
                   </Item>
                 {{/if}}
