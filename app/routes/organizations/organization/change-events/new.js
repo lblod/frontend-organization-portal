@@ -18,6 +18,7 @@ export default class OrganizationsOrganizationChangeEventsNewRoute extends Route
       originalOrganizations: [organization],
     });
     let decision = this.store.createRecord('decision');
+    decision.documentLinks.push('');
     let decisionActivity = this.store.createRecord('decision-activity');
 
     return {
