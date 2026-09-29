@@ -224,6 +224,12 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
 
     const shouldSaveDecision = await changeEvent.requiresDecisionInformation;
 
+    if (shouldSaveDecision) {
+      decision.documentLinks = decision.documentLinks.filter((link) =>
+        link.trim(),
+      );
+    }
+
     await changeEvent.validate();
 
     if (shouldSaveDecision) {
