@@ -58,6 +58,44 @@ module('Unit | Model | abstract validation model', function (hooks) {
     });
   });
 
+  module('validation errors', function () {
+    test('addError adds an error and preserves existing errors', function (assert) {
+      this.owner.register('model:test-validation-model', BasicValidationModel);
+      const model = this.store().createRecord('test-validation-model');
+
+      model.addError('name', 'Naam ontbreekt');
+      model.addError('description', 'Beschrijving ontbreekt');
+
+      assert.deepEqual(model.error, {
+        name: { message: 'Naam ontbreekt' },
+        description: { message: 'Beschrijving ontbreekt' },
+      });
+    });
+
+    test('removeError removes only the requested error', function (assert) {
+      this.owner.register('model:test-validation-model', BasicValidationModel);
+      const model = this.store().createRecord('test-validation-model');
+      model.addError('name', 'Naam ontbreekt');
+      model.addError('description', 'Beschrijving ontbreekt');
+
+      model.removeError('name');
+
+      assert.deepEqual(model.error, {
+        description: { message: 'Beschrijving ontbreekt' },
+      });
+    });
+
+    test('removeError clears the error state when removing the final error', function (assert) {
+      this.owner.register('model:test-validation-model', BasicValidationModel);
+      const model = this.store().createRecord('test-validation-model');
+      model.addError('name', 'Naam ontbreekt');
+
+      model.removeError('name');
+
+      assert.strictEqual(model.error, undefined);
+    });
+  });
+
   module('belongsTo validation', function () {
     test('it returns an error when required belongsTo is missing', async function (assert) {
       this.owner.register(
