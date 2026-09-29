@@ -85,18 +85,12 @@
               </Item>
             {{/if}}
             {{#if @model.changeEvent.requiresDecisionInformation}}
-              <Item
-                @labelFor="change-event-decision-link"
-                @errorMessage={{@model.decision.error.documentLink.message}}
-              >
-                <:label>Link naar besluit</:label>
-                <:content as |hasError|>
-                  <TrimInput
-                    @value={{@model.decision.documentLink}}
-                    @onUpdate={{fn (mut @model.decision.documentLink)}}
-                    @width="block"
-                    @error={{hasError}}
-                    id="change-event-decision-link"
+              <Item @labelFor="change-event-decision-link">
+                <:label>Links naar besluiten</:label>
+                <:content>
+                  <ChangeEvents::DecisionDocumentLinks
+                    @decision={{@model.decision}}
+                    @errors={{@model.decision.error}}
                   />
                 </:content>
                 <:helpText>
