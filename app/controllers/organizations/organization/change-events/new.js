@@ -86,6 +86,15 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     return this.router.urlFor('organizations.new');
   }
 
+  @action updateChangeEventType(type) {
+    if (!isNameChangeType(type) && !isCityType(type)) {
+      // Clear the date just in case the user entered a value before changing the type
+      this.model.decision.publicationDate = undefined;
+    }
+
+    this.model.changeEvent.type = type;
+  }
+
   @action
   filterSelectedOriginalOrganizations(searchResults) {
     const originalOrganizations =

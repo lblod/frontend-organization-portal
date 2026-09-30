@@ -53,7 +53,7 @@
                   @id="change-event-type"
                   @selected={{@model.changeEvent.type}}
                   @organizationClassification={{@model.organization.classification}}
-                  @onChange={{fn (mut @model.changeEvent.type)}}
+                  @onChange={{this.updateChangeEventType}}
                   @error={{hasError}}
                 />
               </:content>
