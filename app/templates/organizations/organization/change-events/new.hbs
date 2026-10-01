@@ -53,7 +53,7 @@
                   @id="change-event-type"
                   @selected={{@model.changeEvent.type}}
                   @organizationClassification={{@model.organization.classification}}
-                  @onChange={{fn (mut @model.changeEvent.type)}}
+                  @onChange={{this.updateChangeEventType}}
                   @error={{hasError}}
                 />
               </:content>
@@ -72,7 +72,7 @@
                 />
               </:content>
             </Item>
-            {{#if (this.isNameChange @model.changeEvent.type)}}
+            {{#if (this.isNameChangeType @model.changeEvent.type)}}
               <Item
                 @labelFor="change-event-resulting-name"
                 @required={{true}}
@@ -166,47 +166,17 @@
           </:left>
           <:right as |Item|>
             {{#if
-              (and
-                (not @model.organization.isAgb)
-                (not @model.organization.isApb)
-                (not @model.organization.isIgs)
-                (not @model.organization.isPoliceZone)
-                (not @model.organization.isAssistanceZone)
-                @model.changeEvent.requiresDecisionInformation
+              (or
+                (this.isCityType @model.changeEvent.type)
+                (this.isNameChangeType @model.changeEvent.type)
               )
             }}
-              {{#unless @model.changeEvent.isCityChangeEvent}}
-                <Item
-                  @labelFor="change-event-decision-activity-date"
-                  @errorMessage={{@model.decisionActivity.error.endDate.message}}
-                >
-                  <:label>Datum ministerieel besluit</:label>
-                  <:content as |hasError|>
-                    <Datepicker
-                      @error={{hasError}}
-                      @id="change-event-decision-activity-date"
-                      @value={{@model.decisionActivity.endDate}}
-                      @onChange={{fn (mut @model.decisionActivity.endDate)}}
-                    />
-                  </:content>
-                </Item>
-              {{/unless}}
               <Item
                 @labelFor="change-event-decision-publication-date"
                 @errorMessage={{@model.decision.error.publicationDate.message}}
               >
                 <:label>
-                  {{#if
-                    (and
-                      (not @model.organization.isAgb)
-                      (not @model.organization.isApb)
-                      @model.changeEvent.isCityChangeEvent
-                    )
-                  }}
-                    Datum besluit
-                  {{else}}
-                    Datum publicatie BS
-                  {{/if}}
+                  Datum besluit
                 </:label>
                 <:content as |hasError|>
                   <Datepicker

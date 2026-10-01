@@ -2,13 +2,17 @@ import Controller from '@ember/controller';
 import { service } from '@ember/service';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { dropTask } from 'ember-concurrency';
-import { isNameChange } from 'frontend-organization-portal/models/change-event-type';
+import {
+  isCityType,
+  isNameChangeType,
+} from 'frontend-organization-portal/models/change-event-type';
 
 export default class OrganizationsOrganizationChangeEventsDetailsEditController extends Controller {
   @service router;
   @service store;
 
-  isNameChange = isNameChange;
+  isCityType = isCityType;
+  isNameChangeType = isNameChangeType;
 
   get hasValidationErrors() {
     return this.model.changeEvent.error || this.model.decision?.error;
@@ -17,8 +21,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
   save = dropTask(async (event) => {
     event.preventDefault();
 
-    let { changeEvent, currentChangeEventResult, decision, decisionActivity } =
-      this.model;
+    let { changeEvent, currentChangeEventResult, decision } = this.model;
 
     await changeEvent.validate();
 
@@ -27,7 +30,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
     }
 
     if (
-      isNameChange(changeEvent.type) &&
+      isNameChangeType(changeEvent.type) &&
       !currentChangeEventResult.resultingName
     ) {
       changeEvent.addError('resultingName', 'Vul de nieuwe naam in');
@@ -38,16 +41,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
       (changeEvent.requiresDecisionInformation ? !decision.error : true)
     ) {
       if (changeEvent.requiresDecisionInformation) {
-        if (
-          decisionActivity.changedAttributes().endDate ||
-          (!decision.isEmpty && decision.hasDirtyAttributes)
-        ) {
-          if (decisionActivity.changedAttributes().endDate) {
-            if (decisionActivity.isNew) {
-              decision.hasDecisionActivity = decisionActivity;
-            }
-            await this.store.request(saveRecord(decisionActivity));
-          }
+        if (!decision.isEmpty && decision.hasDirtyAttributes) {
           if (decision.isNew) {
             changeEvent.decision = decision;
           }
@@ -87,7 +81,6 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
     this.model.organization.reset();
     this.model.changeEvent.reset();
     this.model.decision?.reset();
-    this.model.decisionActivity?.rollbackAttributes();
     this.model.currentChangeEventResult.rollbackAttributes();
   }
 }

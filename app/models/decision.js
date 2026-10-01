@@ -1,17 +1,11 @@
-import { attr, belongsTo } from '@warp-drive/legacy/model';
+import { attr } from '@warp-drive/legacy/model';
 import AbstractValidationModel from './abstract-validation-model';
 import Joi from 'joi';
-import { validateBelongsToOptional, validateUrl } from '../validators/schema';
+import { validateUrl } from '../validators/schema';
 
 export default class DecisionModel extends AbstractValidationModel {
   @attr('date') publicationDate;
   @attr documentLink;
-
-  @belongsTo('decision-activity', {
-    inverse: 'givesCauseTo',
-    async: true,
-  })
-  hasDecisionActivity;
 
   get isEmpty() {
     // TODO: should this not also check for an activity?
@@ -23,7 +17,6 @@ export default class DecisionModel extends AbstractValidationModel {
       // TODO: is the date really optional?
       publicationDate: Joi.date().allow(null),
       documentLink: validateUrl('Geef een geldig internetadres in'),
-      hasDecisionActivity: validateBelongsToOptional(),
     });
   }
 }

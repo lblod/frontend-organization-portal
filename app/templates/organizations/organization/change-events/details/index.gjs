@@ -3,6 +3,7 @@ import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuLinkExternal from '@appuniversum/ember-appuniversum/components/au-link-external';
 import AuList from '@appuniversum/ember-appuniversum/components/au-list';
 import AuTooltip from '@appuniversum/ember-appuniversum/components/au-tooltip';
+import { or } from 'ember-truth-helpers';
 import DataCard from 'frontend-organization-portal/components/data-card';
 import EditButton from 'frontend-organization-portal/components/button/edit';
 import OrganizationStatus from 'frontend-organization-portal/components/organization-status';
@@ -11,7 +12,10 @@ import ReportWrongData from 'frontend-organization-portal/components/report-wron
 import SecuredArea from 'frontend-organization-portal/components/secured-area';
 import isAdditionalQualificationChangeEvent from 'frontend-organization-portal/helpers/is-additional-qualification-change-event';
 import dateFormat from 'frontend-organization-portal/helpers/date-format';
-import { isNameChange } from 'frontend-organization-portal/models/change-event-type';
+import {
+  isCityType,
+  isNameChangeType,
+} from 'frontend-organization-portal/models/change-event-type';
 
 <template>
   <div class="au-c-body-container au-c-body-container--scroll">
@@ -54,7 +58,7 @@ import { isNameChange } from 'frontend-organization-portal/models/change-event-t
                   </:content>
                 </Item>
               {{/if}}
-              {{#if (isNameChange @model.changeEvent.type)}}
+              {{#if (isNameChangeType @model.changeEvent.type)}}
                 {{! This is a new field, some change events might not have this value yet, so we hide it in that scenario }}
                 {{#if @model.currentChangeEventResult.resultingName}}
                   <Item @labelFor="change-event-resulting-name">
@@ -131,38 +135,28 @@ import { isNameChange } from 'frontend-organization-portal/models/change-event-t
               {{/if}}
             </:left>
             <:right as |Item|>
-              {{#let
-                @model.changeEvent.decision.hasDecisionActivity.endDate
-                as |endDate|
+              {{#if
+                (or
+                  (isCityType @model.changeEvent.type)
+                  (isNameChangeType @model.changeEvent.type)
+                )
               }}
-                {{#if endDate}}
-                  <Item>
-                    <:label>Datum ministerieel besluit</:label>
-                    <:content>
-                      {{dateFormat endDate}}
-                    </:content>
-                  </Item>
-                {{/if}}
-              {{/let}}
-              {{#let
-                @model.changeEvent.decision.publicationDate
-                as |publicationDate|
-              }}
-                {{#if publicationDate}}
-                  <Item>
-                    <:label>
-                      {{#if @model.changeEvent.isCityChangeEvent}}
+                {{#let
+                  @model.changeEvent.decision.publicationDate
+                  as |publicationDate|
+                }}
+                  {{#if publicationDate}}
+                    <Item>
+                      <:label>
                         Datum besluit
-                      {{else}}
-                        Datum publicatie BS
-                      {{/if}}
-                    </:label>
-                    <:content>
-                      {{dateFormat publicationDate}}
-                    </:content>
-                  </Item>
-                {{/if}}
-              {{/let}}
+                      </:label>
+                      <:content>
+                        {{dateFormat publicationDate}}
+                      </:content>
+                    </Item>
+                  {{/if}}
+                {{/let}}
+              {{/if}}
               <Item>
                 <:label>Datum veranderingsgebeurtenis</:label>
                 <:content>
