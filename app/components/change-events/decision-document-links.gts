@@ -10,21 +10,13 @@ interface Signature {
   Args: {
     decision: {
       documentLinks: string[];
-      error?: Record<string, { message: string }>;
       removeError: (propName: string) => void;
     };
-    errors?: Record<string, { message: string }>;
+    errors?: Record<string | number, { message: string }>;
   };
 }
 
 export default class DecisionDocumentLinks extends Component<Signature> {
-  @action
-  updateLink(index: number, value: string) {
-    const documentLinks = [...this.args.decision.documentLinks];
-    documentLinks[index] = value;
-    this.args.decision.documentLinks = documentLinks;
-  }
-
   @action
   addLink() {
     this.args.decision.documentLinks = [
@@ -34,46 +26,57 @@ export default class DecisionDocumentLinks extends Component<Signature> {
   }
 
   @action
+  updateLink(index: number, value: string) {
+    const documentLinks = [...this.args.decision.documentLinks];
+    documentLinks[index] = value;
+    this.args.decision.documentLinks = documentLinks;
+  }
+
+  @action
   removeLink(index: number) {
     this.args.decision.documentLinks = this.args.decision.documentLinks.filter(
       (_, linkIndex) => linkIndex !== index,
     );
 
-    for (const propName of Object.keys(this.args.decision.error ?? {})) {
-      if (/^\d+$/.test(propName)) {
-        this.args.decision.removeError(propName);
-      }
-    }
+    // We clear all errors for this field for now.
+    this.args.decision.removeError('documentLinks');
   }
 
   <template>
-    {{#each @decision.documentLinks key="@index" as |documentLink index|}}
-      {{#let (get @errors index) as |error|}}
-        <div class="au-u-flex au-u-flex--vertical-center">
-          <TrimInput
-            @value={{documentLink}}
-            @onUpdate={{fn this.updateLink index}}
-            @width="block"
-            @error={{if error true false}}
-            @id="change-event-decision-link-{{index}}"
-          />
-          <AuButton
-            @alert={{true}}
-            @skin="link"
-            @icon="bin"
-            @hideText={{true}}
-            @size="large"
-            type="button"
-            {{on "click" (fn this.removeLink index)}}
-          >
-            Verwijder link
-          </AuButton>
-        </div>
-        {{#if error}}
-          <AuHelpText @error={{true}}>{{error.message}}</AuHelpText>
-        {{/if}}
-      {{/let}}
-    {{/each}}
+    {{#if @decision.documentLinks}}
+      <ul class="au-o-flow">
+        {{#each @decision.documentLinks key="@index" as |documentLink index|}}
+          {{#let (get @errors index) as |error|}}
+            <li>
+              <div class="au-u-flex au-u-flex--vertical-center">
+                <TrimInput
+                  @value={{documentLink}}
+                  @onUpdate={{fn this.updateLink index}}
+                  @width="block"
+                  @error={{if error true false}}
+                  @id="change-event-decision-link-{{index}}"
+                  placeholder="https://vlaanderen.be"
+                />
+                <AuButton
+                  @alert={{true}}
+                  @skin="naked"
+                  @icon="bin"
+                  @hideText={{true}}
+                  {{on "click" (fn this.removeLink index)}}
+                >
+                  Verwijder link
+                </AuButton>
+              </div>
+              {{#if error}}
+                <AuHelpText @error={{true}}>{{error.message}}</AuHelpText>
+              {{/if}}
+            </li>
+          {{/let}}
+        {{/each}}
+      </ul>
+    {{else}}
+      Nog geen links toegevoegd
+    {{/if}}
 
     <AuButton
       @skin="link"
