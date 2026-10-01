@@ -34,6 +34,10 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditRoute exten
         decision = this.store.createRecord('decision');
       }
 
+      if (decision.documentLinks.length === 0) {
+        decision.documentLinks.push('');
+      }
+
       model.decision = decision;
     }
 
