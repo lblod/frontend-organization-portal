@@ -4,7 +4,6 @@ import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
-import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import { shouldSwapAssignments } from 'frontend-organization-portal/constants/memberships';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditController extends Controller {
@@ -51,11 +50,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   @action
   removeMembership(membership) {
-    if (membership.role.id === MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id) {
-      this.founderToRemove = membership;
-    } else {
-      this.reallyRemoveMembership(membership);
-    }
+    this.founderToRemove = membership;
   }
 
   @action
@@ -165,11 +160,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   @action
   displayRoleLabel(membership) {
     return membership.getRoleLabelForPerspective(this.model.organization);
-  }
-
-  get confirmationMessageForFounderDeletion() {
-    const membershipText = this.displayRoleLabel(this.founderToRemove);
-    return `Weet je zeker dat je de relatie "${membershipText}" wilt verwijderen?`;
   }
 
   save = dropTask(async (event) => {
