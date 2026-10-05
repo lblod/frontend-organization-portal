@@ -211,12 +211,12 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
                       .id,
                     CLASSIFICATION.BOSGROEP.id,
+                    CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                     CLASSIFICATION.WOONMAATSCHAPPIJ.id,
                     CLASSIFICATION.INTERLOKALE_VERENIGING.id,
                     CLASSIFICATION.VERVOERREGIORAAD.id,
                     CLASSIFICATION.ZORGRAAD.id,
                     CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
-                    CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                     CLASSIFICATION.ANDERE.id,
                   ].includes(id),
               )
@@ -239,6 +239,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                 .VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
               CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
               CLASSIFICATION.BOSGROEP.id,
+              CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
             ].sort(),
           );
         });
@@ -288,7 +289,6 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.VERVOERREGIORAAD.id,
                     CLASSIFICATION.ZORGRAAD.id,
                     CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
-                    CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                     CLASSIFICATION.ANDERE.id,
                   ].includes(id),
               )
@@ -323,11 +323,11 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
                       .id,
                     CLASSIFICATION.BOSGROEP.id,
+                    CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                     CLASSIFICATION.INTERLOKALE_VERENIGING.id,
                     CLASSIFICATION.VERVOERREGIORAAD.id,
                     CLASSIFICATION.ZORGRAAD.id,
                     CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
-                    CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                     CLASSIFICATION.ANDERE.id,
                   ].includes(id),
               )
@@ -355,6 +355,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     .VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
                   CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
                   CLASSIFICATION.BOSGROEP.id,
+                  CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                   CLASSIFICATION.WOONMAATSCHAPPIJ.id,
                 ].includes(id),
               )
@@ -387,7 +388,6 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.VERVOERREGIORAAD.id,
                     CLASSIFICATION.ZORGRAAD.id,
                     CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
-                    CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                     CLASSIFICATION.ANDERE.id,
                   ].includes(id),
               )
@@ -422,12 +422,12 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
                         .id,
                       CLASSIFICATION.BOSGROEP.id,
+                      CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                       CLASSIFICATION.WOONMAATSCHAPPIJ.id,
                       CLASSIFICATION.INTERLOKALE_VERENIGING.id,
                       CLASSIFICATION.VERVOERREGIORAAD.id,
                       CLASSIFICATION.ZORGRAAD.id,
                       CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
-                      CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                       CLASSIFICATION.ANDERE.id,
                       // Uncreatable administrative units
                       CLASSIFICATION.MUNICIPALITY.id,
@@ -455,6 +455,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                   .VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
                 CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
                 CLASSIFICATION.BOSGROEP.id,
+                CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
               ].sort(),
             );
           });
@@ -496,7 +497,6 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.VERVOERREGIORAAD.id,
                       CLASSIFICATION.ZORGRAAD.id,
                       CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
-                      CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                       CLASSIFICATION.ANDERE.id,
                       // Uncreatable administrative units
                       CLASSIFICATION.MUNICIPALITY.id,
@@ -536,11 +536,11 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
                         .id,
                       CLASSIFICATION.BOSGROEP.id,
+                      CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                       CLASSIFICATION.INTERLOKALE_VERENIGING.id,
                       CLASSIFICATION.VERVOERREGIORAAD.id,
                       CLASSIFICATION.ZORGRAAD.id,
                       CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
-                      CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                       CLASSIFICATION.ANDERE.id,
                       // Uncreatable administrative units
                       CLASSIFICATION.MUNICIPALITY.id,
@@ -575,6 +575,7 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                     CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP
                       .id,
                     CLASSIFICATION.BOSGROEP.id,
+                    CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                     CLASSIFICATION.WOONMAATSCHAPPIJ.id,
                   ].includes(id),
                 )
@@ -607,7 +608,6 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                       CLASSIFICATION.VERVOERREGIORAAD.id,
                       CLASSIFICATION.ZORGRAAD.id,
                       CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
-                      CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                       CLASSIFICATION.ANDERE.id,
                       // Uncreatable administrative units
                       CLASSIFICATION.MUNICIPALITY.id,
@@ -846,7 +846,6 @@ module('Unit | Utility | classification-identifiers', function (hooks) {
                   CLASSIFICATION.VERVOERREGIORAAD.id,
                   CLASSIFICATION.ZORGRAAD.id,
                   CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id,
-                  CLASSIFICATION.REGIONAAL_LANDSCHAP.id,
                   CLASSIFICATION.ANDERE.id,
                 ].includes(id),
             )

@@ -2,7 +2,11 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
-import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
+import {
+  CHANGE_EVENT_TYPE,
+  isCityType,
+  isNameChangeType,
+} from 'frontend-organization-portal/models/change-event-type';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import isAdditionalQualificationChangeEvent from 'frontend-organization-portal/helpers/is-additional-qualification-change-event';
 import { tracked } from '@glimmer/tracking';
@@ -57,6 +61,12 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
   @tracked
   selectedResultingAdditionalQualifications = [];
 
+  @tracked
+  resultingName = null;
+
+  isNameChangeType = isNameChangeType;
+  isCityType = isCityType;
+
   get hasValidationErrors() {
     return this.model.changeEvent.error || this.model.decision?.error;
   }
@@ -67,14 +77,22 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
 
   get isLegalFormChange() {
     return (
-      this.model.changeEvent.type?.get('id') ===
-      CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE
+      this.model.changeEvent.type?.id === CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE
     );
   }
 
   // TODO: replace this with a `url-for` helper.
   get organizationCreationUrl() {
     return this.router.urlFor('organizations.new');
+  }
+
+  @action updateChangeEventType(type) {
+    if (!isNameChangeType(type) && !isCityType(type)) {
+      // Clear the date just in case the user entered a value before changing the type
+      this.model.decision.publicationDate = undefined;
+    }
+
+    this.model.changeEvent.type = type;
   }
 
   @action
@@ -202,7 +220,6 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       organization: currentOrganization,
       changeEvent,
       decision,
-      decisionActivity,
     } = this.model;
 
     const shouldSaveDecision = await changeEvent.requiresDecisionInformation;
@@ -214,7 +231,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     }
 
     const isLegalFormChange =
-      changeEvent.type?.get('id') === CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE;
+      changeEvent.type?.id === CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE;
     if (isLegalFormChange && !this.selectedResultingLegalForm) {
       changeEvent.addError(
         'resultingLegalForm',
@@ -242,11 +259,14 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       );
     }
 
+    if (isNameChangeType(changeEvent.type) && !this.resultingName) {
+      changeEvent.addError('resultingName', 'Vul de nieuwe naam in');
+    }
+
     if (!changeEvent.error && (shouldSaveDecision ? !decision.error : true)) {
       changeEvent.decision = await saveDecision(
         shouldSaveDecision,
         decision,
-        decisionActivity,
         this.store,
       );
 
@@ -278,9 +298,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
             }
           } else {
             resultingStatusId =
-              RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[
-                changeEvent.type.get('id')
-              ];
+              RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEvent.type.id];
           }
 
           createChangeEventResultsPromises.push(
@@ -327,7 +345,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           ![
             CHANGE_EVENT_TYPE.RECOGNITION_LIFTED,
             CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED,
-          ].includes(changeEvent.type.get('id'))
+          ].includes(changeEvent.type.id)
         ) {
           (await changeEvent.resultingOrganizations).push(currentOrganization);
         }
@@ -339,8 +357,12 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           : null;
 
         const resultingStatusId =
-          RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[(await changeEvent.type).id] ??
+          RESULTING_STATUS_FOR_CHANGE_EVENT_TYPE[changeEvent.type.id] ??
           (await currentOrganization.organizationStatus)?.id;
+
+        const resultingName = isNameChangeType(changeEvent.type)
+          ? this.resultingName
+          : null;
 
         await createChangeEventResult({
           resultingStatusId,
@@ -351,6 +373,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           resultingScope,
           resultingAdditionalQualifications:
             this.selectedResultingAdditionalQualifications,
+          resultingName,
         });
       }
 
@@ -367,12 +390,12 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
   reset() {
     this.model.changeEvent.reset();
     this.model.decision?.reset();
-    this.model.decisionActivity?.rollbackAttributes();
     this.model.organization.reset();
     this.selectedResultingOrganization = null;
     this.selectedResultingLegalForm = null;
     this.selectedResultingLocations = [];
     this.selectedResultingAdditionalQualifications = [];
+    this.resultingName = null;
   }
 }
 
@@ -384,6 +407,7 @@ async function createChangeEventResult({
   resultingLegalForm = null,
   resultingScope = null,
   resultingAdditionalQualifications = [],
+  resultingName,
 }) {
   const { content: resultingStatus } = await store.request(
     findRecord('organization-status-code', resultingStatusId),
@@ -425,7 +449,7 @@ async function createChangeEventResult({
       previousStatus?.id === ORGANIZATION_STATUS.IN_FORMATION &&
       (resultingStatusId === ORGANIZATION_STATUS.ACTIVE ||
         resultingStatusId === ORGANIZATION_STATUS.INACTIVE) &&
-      RECOGNITION_CHANGE_TYPES.includes(changeEvent.type.get('id'))
+      RECOGNITION_CHANGE_TYPES.includes(changeEvent.type.id)
     ) {
       const constructRelationshipsEndpoint = `/construct-organization-relationships/update-relationships/${resultingOrganization.id}`;
       const response = await fetch(constructRelationshipsEndpoint, {
@@ -456,6 +480,10 @@ async function createChangeEventResult({
     changeEventResult.resultingAdditionalQualifications =
       resultingAdditionalQualifications;
   }
+  if (resultingName) {
+    changeEventResult.resultingName = resultingName;
+  }
+
   changeEventResult.resultingOrganization = resultingOrganization;
   changeEventResult.resultFrom = changeEvent;
   await store.request(saveRecord(changeEventResult));
@@ -480,18 +508,9 @@ async function findMostRecentChangeEvent(store, organization) {
   }
 }
 
-async function saveDecision(
-  shouldSaveDecision,
-  decision,
-  decisionActivity,
-  store,
-) {
+async function saveDecision(shouldSaveDecision, decision, store) {
   if (shouldSaveDecision) {
-    if (!decision.isEmpty || decisionActivity.endDate) {
-      if (decisionActivity.endDate) {
-        await store.request(saveRecord(decisionActivity));
-        decision.hasDecisionActivity = decisionActivity;
-      }
+    if (!decision.isEmpty) {
       await store.request(saveRecord(decision));
       return decision;
     }

@@ -21,7 +21,7 @@ export default class ChangeEventModel extends AbstractValidationModel {
 
   @belongsTo('change-event-type', {
     inverse: null,
-    async: true,
+    async: false,
   })
   type;
 
@@ -85,10 +85,6 @@ export default class ChangeEventModel extends AbstractValidationModel {
     return this.#hasTypeId(RequiresDecisionTypeIdList);
   }
 
-  get isCityChangeEvent() {
-    return this.#hasTypeId([CHANGE_EVENT_TYPE.CITY]);
-  }
-
   get isLegalFormChangeEvent() {
     return this.#hasTypeId([CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE]);
   }
@@ -106,7 +102,7 @@ export default class ChangeEventModel extends AbstractValidationModel {
   }
 
   #hasTypeId(typeIds) {
-    return typeIds.includes(this.type?.get('id'));
+    return typeIds.includes(this.type?.id);
   }
 
   async hasAsOriginalOrganization(organization) {

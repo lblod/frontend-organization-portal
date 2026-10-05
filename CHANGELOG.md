@@ -1,3 +1,26 @@
+## v1.45.3 (2026-09-28)
+
+#### :rocket: Enhancement
+* [#745](https://github.com/lblod/frontend-organization-portal/pull/745) OP-3923: added single click province selection for werkingsgebied ([@DamonKennes](https://github.com/DamonKennes))
+* [#747](https://github.com/lblod/frontend-organization-portal/pull/747) OP-3915: remove empty rows when saving related organizations ([@DamonKennes](https://github.com/DamonKennes))
+* [#746](https://github.com/lblod/frontend-organization-portal/pull/746) [OP-3927] Add a "nieuwe naam" field to the name change change event ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Damon Kennes ([@DamonKennes](https://github.com/DamonKennes))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+## v1.45.2 (2026-09-22)
+
+#### :rocket: Enhancement
+* [#743](https://github.com/lblod/frontend-organization-portal/pull/743) OP-3931: added OCMW to disableScopeEdits ([@DamonKennes](https://github.com/DamonKennes))
+
+#### :bug: Bug Fix
+* [#741](https://github.com/lblod/frontend-organization-portal/pull/741) [OP-3876] Group Regionaal landschap under Verenigingen ([@bdevloed](https://github.com/bdevloed))
+
+#### Committers: 2
+- Boris De Vloed ([@bdevloed](https://github.com/bdevloed))
+- Damon Kennes ([@DamonKennes](https://github.com/DamonKennes))
+
 ## v1.45.1 (2026-09-18)
 
 #### :rocket: Enhancement
