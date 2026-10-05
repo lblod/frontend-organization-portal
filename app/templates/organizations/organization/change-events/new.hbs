@@ -144,7 +144,6 @@
               </Item>
             {{/if}}
             {{#if @model.changeEvent.requiresDecisionInformation}}
-              {{log @model.decision.error}}
               <Item
                 @labelFor="change-event-decision-links"
                 @errorMessage={{@model.decision.error.documentLinks}}
@@ -156,6 +155,10 @@
                     @errors={{@model.decision.error}}
                   />
                 </:content>
+                <:error>{{!
+                  If we do not add the error block, the default implementation is used.
+                  Since we display the error below each field, we do not want the default implementation.
+                }}</:error>
               </Item>
             {{/if}}
           </:left>

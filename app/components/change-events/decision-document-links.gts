@@ -12,7 +12,9 @@ interface Signature {
       documentLinks: string[];
       removeError: (propName: string) => void;
     };
-    errors?: Record<string | number, { message: string }>;
+    errors?: {
+      documentLinks?: Array<{ message: string }>;
+    };
   };
 }
 
@@ -44,9 +46,9 @@ export default class DecisionDocumentLinks extends Component<Signature> {
 
   <template>
     {{#if @decision.documentLinks}}
-      <ul class="au-o-flow">
+      <ul class="au-o-flow au-o-flow--small">
         {{#each @decision.documentLinks key="@index" as |documentLink index|}}
-          {{#let (get @errors index) as |error|}}
+          {{#let (get @errors.documentLinks index) as |error|}}
             <li>
               <div class="au-u-flex au-u-flex--vertical-center">
                 <TrimInput
@@ -75,12 +77,16 @@ export default class DecisionDocumentLinks extends Component<Signature> {
         {{/each}}
       </ul>
     {{else}}
-      Nog geen links toegevoegd
+      <AuHelpText class="au-u-text-center">
+        Nog geen links toegevoegd
+      </AuHelpText>
     {{/if}}
 
     <AuButton
-      @skin="link"
+      @skin="secondary"
       @icon="add"
+      @width="block"
+      class="au-u-margin-top-small"
       type="button"
       {{on "click" this.addLink}}
     >
