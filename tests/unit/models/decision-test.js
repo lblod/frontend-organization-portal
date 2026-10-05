@@ -26,7 +26,9 @@ module('Unit | Model | decision', function (hooks) {
     assert.false(isValid);
     assert.strictEqual(Object.keys(model.error).length, 1);
     assert.propContains(model.error, {
-      1: { message: 'Geef een geldig internetadres in' },
+      documentLinks: {
+        1: { message: 'Geef een geldig internetadres in' },
+      },
     });
   });
 

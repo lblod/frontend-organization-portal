@@ -43,10 +43,7 @@ export default class AbstractValidationModel extends Model {
         },
       });
     } catch (error) {
-      this._validationError = error.details?.reduce((acc, err) => {
-        acc[err.context.key] = err;
-        return acc;
-      }, {});
+      this._validationError = generateErrors(error.details);
 
       return false;
     }
@@ -124,4 +121,21 @@ export default class AbstractValidationModel extends Model {
   #resetValidationErrors() {
     this._validationError = undefined;
   }
+}
+
+function generateErrors(details) {
+  return details?.reduce((errors, detail) => {
+    const path = detail.path.length ? detail.path : [detail.context.key];
+    let current = errors;
+
+    for (let index = 0; index < path.length - 1; index += 1) {
+      const key = path[index];
+      const nextKey = path[index + 1];
+      current[key] ??= typeof nextKey === 'number' ? [] : {};
+      current = current[key];
+    }
+
+    current[path[path.length - 1]] = detail;
+    return errors;
+  }, {});
 }
