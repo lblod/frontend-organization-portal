@@ -93,10 +93,12 @@
                     @errors={{@model.decision.error.documentLinks}}
                   />
                 </:content>
-                <:error>{{!
-                  If we do not add the error block, the default implementation is used.
-                  Since we display the error below each field, we do not want the default implementation.
-                }}</:error>
+                <:error>
+                  {{!
+                    If we do not add the error block, the default implementation is used.
+                    Since we display the error below each field, we do not want the default implementation.
+                  }}
+                </:error>
               </Item>
             {{/if}}
             {{#if @model.changeEvent.isWerkingsgebiedChangeEvent}}
