@@ -42,9 +42,9 @@ module('Unit | Model | decision', function (hooks) {
     assert.true(isValid);
   });
 
-  test('it returns no error when an empty url is provided', async function (assert) {
+  test('it returns no error when no urls were provided', async function (assert) {
     const model = this.store().createRecord('decision', {
-      documentLinks: [''],
+      documentLinks: [],
     });
 
     const isValid = await model.validate();
