@@ -12,9 +12,7 @@ interface Signature {
       documentLinks: string[];
       removeError: (propName: string) => void;
     };
-    errors?: {
-      documentLinks?: Array<{ message: string }>;
-    };
+    errors?: Array<{ message: string }>;
   };
 }
 
@@ -48,7 +46,7 @@ export default class DecisionDocumentLinks extends Component<Signature> {
     {{#if @decision.documentLinks}}
       <ul class="au-o-flow au-o-flow--small">
         {{#each @decision.documentLinks key="@index" as |documentLink index|}}
-          {{#let (get @errors.documentLinks index) as |error|}}
+          {{#let (get @errors index) as |error|}}
             <li>
               <div class="au-u-flex au-u-flex--vertical-center">
                 <TrimInput
