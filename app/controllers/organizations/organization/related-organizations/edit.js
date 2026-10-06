@@ -221,9 +221,9 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
         }),
       );
 
-      let savePromises = this.memberships.map((membership) => {
-        this.store.request(saveRecord(membership));
-      });
+      let savePromises = this.memberships.map((membership) =>
+        this.store.request(saveRecord(membership)),
+      );
       await Promise.all(savePromises);
 
       await this.store.request(saveRecord(organization));
@@ -236,11 +236,35 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   });
 
   reset() {
+    this.#rollbackMemberships();
     this.model.organization.reset();
     this.memberships = null;
     this.selectedRoleLabel = null;
     this.founderToRemove = null;
     this.nonActiveMembership = null;
     this.nonActiveRelatedOrganization = null;
+  }
+
+  /**
+   * Undo the unsaved changes: restore the persisted memberships that were
+   * removed and unload the ones that were added. Memberships whose save is
+   * still in flight are left alone (this also runs on every exit of the
+   * route, including after a save).
+   */
+  #rollbackMemberships() {
+    const memberships = this.memberships?.slice() ?? [];
+    memberships.forEach((membership) => {
+      if (
+        membership.isDestroyed ||
+        membership.isDestroying ||
+        membership.isSaving
+      ) {
+        return;
+      }
+      // `hasDirtyAttributes` is also true for an uncommitted deletion
+      if (membership.isNew || membership.hasDirtyAttributes) {
+        membership.rollbackAttributes();
+      }
+    });
   }
 }
