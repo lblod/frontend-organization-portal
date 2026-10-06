@@ -145,22 +145,22 @@
             {{/if}}
             {{#if @model.changeEvent.requiresDecisionInformation}}
               <Item
-                @labelFor="change-event-decision-link"
-                @errorMessage={{@model.decision.error.documentLink.message}}
+                @labelFor="change-event-decision-links"
+                @errorMessage={{@model.decision.error.documentLinks}}
               >
-                <:label>Link naar besluit</:label>
-                <:content as |hasError|>
-                  <TrimInput
-                    @value={{@model.decision.documentLink}}
-                    @onUpdate={{fn (mut @model.decision.documentLink)}}
-                    @width="block"
-                    @error={{hasError}}
-                    id="change-event-decision-link"
+                <:label>Links naar besluiten</:label>
+                <:content>
+                  <ChangeEvents::DecisionDocumentLinks
+                    @decision={{@model.decision}}
+                    @errors={{@model.decision.error.documentLinks}}
                   />
                 </:content>
-                <:helpText>
-                  {{help-text "url"}}
-                </:helpText>
+                <:error>
+                  {{!
+                    If we do not add the error block, the default implementation is used.
+                    Since we display the error below each field, we do not want the default implementation.
+                  }}
+                </:error>
               </Item>
             {{/if}}
           </:left>

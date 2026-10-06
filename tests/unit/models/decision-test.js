@@ -18,7 +18,7 @@ module('Unit | Model | decision', function (hooks) {
 
   test('it returns an error on an invalid url', async function (assert) {
     const model = this.store().createRecord('decision', {
-      documentLink: 'Invalid url',
+      documentLinks: ['https://www.vlaanderen.be', 'Invalid url'],
     });
 
     const isValid = await model.validate();
@@ -26,13 +26,15 @@ module('Unit | Model | decision', function (hooks) {
     assert.false(isValid);
     assert.strictEqual(Object.keys(model.error).length, 1);
     assert.propContains(model.error, {
-      documentLink: { message: 'Geef een geldig internetadres in' },
+      documentLinks: {
+        1: { message: 'Geef een geldig internetadres in' },
+      },
     });
   });
 
   test('it returns no error when a valid url is provided', async function (assert) {
     const model = this.store().createRecord('decision', {
-      documentLink: 'https://www.vlaanderen.be',
+      documentLinks: ['https://www.vlaanderen.be'],
     });
 
     const isValid = await model.validate();
@@ -40,13 +42,29 @@ module('Unit | Model | decision', function (hooks) {
     assert.true(isValid);
   });
 
-  test('it returns no error when an empty url is provided', async function (assert) {
+  test('it returns no error when no urls were provided', async function (assert) {
     const model = this.store().createRecord('decision', {
-      documentLink: '',
+      documentLinks: [],
     });
 
     const isValid = await model.validate();
 
     assert.true(isValid);
+  });
+
+  test('it is empty when all document links are empty', function (assert) {
+    const model = this.store().createRecord('decision', {
+      documentLinks: ['', ''],
+    });
+
+    assert.true(model.isEmpty);
+  });
+
+  test('it is not empty when a document link is provided', function (assert) {
+    const model = this.store().createRecord('decision', {
+      documentLinks: ['https://www.vlaanderen.be'],
+    });
+
+    assert.false(model.isEmpty);
   });
 });

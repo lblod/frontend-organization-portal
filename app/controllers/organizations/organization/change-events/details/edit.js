@@ -23,6 +23,12 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
 
     let { changeEvent, currentChangeEventResult, decision } = this.model;
 
+    if (changeEvent.requiresDecisionInformation) {
+      decision.documentLinks = decision.documentLinks.filter((link) =>
+        link.trim(),
+      );
+    }
+
     await changeEvent.validate();
 
     if (changeEvent.requiresDecisionInformation) {
