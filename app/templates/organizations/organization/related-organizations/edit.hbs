@@ -65,8 +65,10 @@
 {{/if}}
 
 {{#if this.founderToRemove}}
-  <ConfirmationModal
-    @message={{this.confirmationMessageForFounderDeletion}}
+  <DeleteModal
+    @title="Relatie verwijderen"
+    @message="Een relatie verwijderen kan je niet ongedaan maken. Wens je zeker door te gaan met het verwijderen van de relatie?"
+    @deleteLabel="Relatie verwijderen"
     @onConfirm={{this.reallyRemoveMembership}}
     @onCancel={{this.cancelMembershipRemoval}}
   />
