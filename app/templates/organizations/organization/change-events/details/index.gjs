@@ -11,7 +11,7 @@ import ReportWrongData from 'frontend-organization-portal/components/report-wron
 import SecuredArea from 'frontend-organization-portal/components/secured-area';
 import isAdditionalQualificationChangeEvent from 'frontend-organization-portal/helpers/is-additional-qualification-change-event';
 import dateFormat from 'frontend-organization-portal/helpers/date-format';
-import { isNameChange } from 'frontend-organization-portal/models/change-event-type';
+import { isNameChangeType } from 'frontend-organization-portal/models/change-event-type';
 
 <template>
   <div class="au-c-body-container au-c-body-container--scroll">
@@ -54,7 +54,7 @@ import { isNameChange } from 'frontend-organization-portal/models/change-event-t
                   </:content>
                 </Item>
               {{/if}}
-              {{#if (isNameChange @model.changeEvent.type)}}
+              {{#if (isNameChangeType @model.changeEvent.type)}}
                 {{! This is a new field, some change events might not have this value yet, so we hide it in that scenario }}
                 {{#if @model.currentChangeEventResult.resultingName}}
                   <Item @labelFor="change-event-resulting-name">

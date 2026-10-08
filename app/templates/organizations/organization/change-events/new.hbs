@@ -72,7 +72,7 @@
                 />
               </:content>
             </Item>
-            {{#if (this.isNameChange @model.changeEvent.type)}}
+            {{#if (this.isNameChangeType @model.changeEvent.type)}}
               <Item
                 @labelFor="change-event-resulting-name"
                 @required={{true}}
