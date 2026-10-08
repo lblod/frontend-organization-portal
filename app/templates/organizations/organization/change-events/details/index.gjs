@@ -151,10 +151,10 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
                 {{#if publicationDate}}
                   <Item>
                     <:label>
-                      {{#if @model.changeEvent.isCityChangeEvent}}
-                        Datum besluit
-                      {{else}}
+                      {{#if @model.organization.isWorshipAdministrativeUnit}}
                         Datum publicatie BS
+                      {{else}}
+                        Datum besluit
                       {{/if}}
                     </:label>
                     <:content>
