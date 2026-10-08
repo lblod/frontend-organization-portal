@@ -29,12 +29,21 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditRoute exten
 
     if (canAddDecisionInformation) {
       let decision = await changeEvent.decision;
+      let decisionActivity = null;
+      if (decision) {
+        decisionActivity = await decision.hasDecisionActivity;
+      }
 
       if (!decision) {
         decision = this.store.createRecord('decision');
       }
 
+      if (!decisionActivity) {
+        decisionActivity = this.store.createRecord('decision-activity');
+      }
+
       model.decision = decision;
+      model.decisionActivity = decisionActivity;
     }
 
     return model;

@@ -144,10 +144,6 @@ export default class ChangeEventType extends Model {
   declare [Type]: 'change-event-type';
 }
 
-export function isCityType(type?: ChangeEventType) {
-  return type?.id === CHANGE_EVENT_TYPE.CITY;
-}
-
-export function isNameChangeType(type?: ChangeEventType) {
+export function isNameChange(type?: ChangeEventType) {
   return type?.id === CHANGE_EVENT_TYPE.NAME_CHANGE;
 }
