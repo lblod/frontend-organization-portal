@@ -64,7 +64,7 @@
                 />
               </:content>
             </Item>
-            {{#if (this.isNameChange @model.changeEvent.type)}}
+            {{#if (this.isNameChangeType @model.changeEvent.type)}}
               <Item
                 @labelFor="change-event-resulting-name"
                 @required={{true}}
@@ -159,39 +159,44 @@
           <:right as |Item|>
             {{#if
               (and
-                (not @model.organization.isAgb)
-                (not @model.organization.isApb)
-                (not @model.organization.isIgs)
-                (not @model.organization.isPoliceZone)
-                (not @model.organization.isAssistanceZone)
+                @model.organization.isWorshipAdministrativeUnit
                 @model.changeEvent.requiresDecisionInformation
               )
             }}
-              {{#unless @model.changeEvent.isCityChangeEvent}}
-                <Item
-                  @labelFor="change-event-decision-activity-date"
-                  @errorMessage={{@model.decisionActivity.error.endDate.message}}
-                >
-                  <:label>Datum ministerieel besluit</:label>
-                  <:content as |hasError|>
-                    <Datepicker
-                      @id="change-event-decision-activity-date"
-                      @value={{@model.decisionActivity.endDate}}
-                      @onChange={{fn (mut @model.decisionActivity.endDate)}}
-                      @error={{hasError}}
-                    />
-                  </:content>
-                </Item>
-              {{/unless}}
+              <Item
+                @labelFor="change-event-decision-activity-date"
+                @errorMessage={{@model.decisionActivity.error.endDate.message}}
+              >
+                <:label>Datum ministerieel besluit</:label>
+                <:content as |hasError|>
+                  <Datepicker
+                    @id="change-event-decision-activity-date"
+                    @value={{@model.decisionActivity.endDate}}
+                    @onChange={{fn (mut @model.decisionActivity.endDate)}}
+                    @error={{hasError}}
+                  />
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if
+              (and
+                @model.changeEvent.requiresDecisionInformation
+                (or
+                  @model.organization.isWorshipAdministrativeUnit
+                  (this.isNameChangeType @model.changeEvent.type)
+                  @model.changeEvent.isCityChangeEvent
+                )
+              )
+            }}
               <Item
                 @labelFor="change-event-decision-publication-date"
                 @errorMessage={{@model.decision.error.publicationDate.message}}
               >
                 <:label>
-                  {{#if @model.changeEvent.isCityChangeEvent}}
-                    Datum besluit
-                  {{else}}
+                  {{#if @model.organization.isWorshipAdministrativeUnit}}
                     Datum publicatie BS
+                  {{else}}
+                    Datum besluit
                   {{/if}}
                 </:label>
                 <:content as |hasError|>
