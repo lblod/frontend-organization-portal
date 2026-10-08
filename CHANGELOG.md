@@ -1,3 +1,11 @@
+## v1.46.0 (2026-10-08)
+
+#### :rocket: Enhancement
+* [#748](https://github.com/lblod/frontend-organization-portal/pull/748) [OP-3913] show warning when deleting any related organizations ([@DamonKennes](https://github.com/DamonKennes))
+
+#### :bug: Bug Fix
+* [#751](https://github.com/lblod/frontend-organization-portal/pull/751) [OP-3949] Roll back unsaved related organizations when cancelling the edit page ([@bdevloed](https://github.com/bdevloed))
+
 ## v1.45.3 (2026-09-28)
 
 #### :rocket: Enhancement
