@@ -6,6 +6,7 @@ import {
   validateBelongsToRequired,
 } from '../validators/schema';
 import { MEMBERSHIP_ROLES_MAPPING } from './membership-role';
+import { SPECIAL_RELATED_ORGANIZATION_IDS } from 'frontend-organization-portal/constants/special-organizations';
 import {
   getUnsatisfiedRequiredField,
   minimumRequiredFieldMessage,
@@ -179,6 +180,9 @@ export default class MembershipModel extends AbstractValidationModel {
    * Memberships that reflect the administrative hierarchy are managed by
    * migrations, not by users: province - municipality and province - OCMW
    * (generic relation) and municipality - OCMW ("served by").
+   * The same goes for the government relations that are auto-filled:
+   * the special organizations sit on the `member` side, the memberships
+   * are created automatically and are not editable or removable.
    */
   get isNotRemovableByUser() {
     const org = this.belongsTo('organization').value();
@@ -191,7 +195,9 @@ export default class MembershipModel extends AbstractValidationModel {
         ((org?.isProvince && member?.isMunicipality) ||
           (org?.isProvince && member?.isOCMW) ||
           (org?.isMunicipality && member?.isOCMW))) ||
-        (role?.serves && org?.isMunicipality && member?.isOCMW))
+        (role?.serves && org?.isMunicipality && member?.isOCMW) ||
+        ((role?.isFounderOf || role?.grantsRecognition) &&
+          SPECIAL_RELATED_ORGANIZATION_IDS.includes(member?.id)))
     );
   }
 

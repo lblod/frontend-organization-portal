@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
+import { ABB_CLASSIFICATION_ID } from 'frontend-organization-portal/constants/classification';
 import {
   AgbCodeList,
   AndereCodeList,
@@ -547,6 +548,80 @@ module('Unit | Model | organization', function (hooks) {
         const result = model.getClassificationCodesForMembership(membership);
 
         assert.deepEqual(result.sort(), classificationCodes.sort());
+      });
+    });
+
+    // The founder and recognizer of these types are auto-filled with one of
+    // the two governments (see special-organizations), so no organization
+    // can be picked by hand for those roles.
+    [
+      CLASSIFICATION.POLICE_ZONE,
+      CLASSIFICATION.ASSISTANCE_ZONE,
+      CLASSIFICATION.VERVOERREGIORAAD,
+      CLASSIFICATION.REGIONAAL_ZORGPLATFORM,
+      CLASSIFICATION.REGIONAAL_LANDSCHAP,
+      CLASSIFICATION.WOONMAATSCHAPPIJ,
+      CLASSIFICATION.ZORGRAAD,
+    ].forEach((cl) => {
+      test(`it should not allow a hand-picked founder or recognizer for a(n) ${cl.label}`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          cl,
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          id: '123',
+          classification,
+        });
+
+        [
+          MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+          MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO,
+        ].forEach((roleMapping) => {
+          const role = this.store().createRecord(
+            'membership-role',
+            roleMapping,
+          );
+          const membership = this.store().createRecord('membership', {
+            role,
+            organization: model,
+          });
+
+          const result = model.getClassificationCodesForMembership(membership);
+
+          assert.deepEqual(result, [], roleMapping.inverseLabel);
+        });
+      });
+    });
+
+    // The other side of the same rule: an ABB-classified organization (the
+    // two governments) cannot be picked by hand as the founder or recognizer
+    // of any organization. ABB is deliberately not in the CLASSIFICATION
+    // constant, so the record is created inline.
+    [
+      MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO,
+    ].forEach((roleMapping) => {
+      test(`it should not allow a(n) ABB-classified organization to be a hand-picked "${roleMapping.inverseLabel}" of another organization`, async function (assert) {
+        const classification = this.store().createRecord(
+          'administrative-unit-classification-code',
+          {
+            id: ABB_CLASSIFICATION_ID,
+            label: 'Agentschap Binnenlands Bestuur',
+          },
+        );
+        const model = this.store().createRecord('administrative-unit', {
+          id: '123',
+          classification,
+        });
+        const role = this.store().createRecord('membership-role', roleMapping);
+        const membership = this.store().createRecord('membership', {
+          role,
+          member: model,
+        });
+
+        const result = model.getClassificationCodesForMembership(membership);
+
+        assert.deepEqual(result, []);
       });
     });
 
