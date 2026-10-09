@@ -4,21 +4,38 @@ import {
   AndereCodeList,
   ApbCodeList,
   AssistanceZoneCodeList,
+  AutonomeVerzorgingsinstellingCodeList,
+  BosgroepCodeList,
   CentralWorshipServiceCodeList,
   DistrictCodeList,
-  IGSCodeList,
+  DienstverlenendeVerenigingCodeList,
+  InterlokaleVerenigingCodeList,
   MunicipalityCodeList,
-  NonWorshipCodeList,
-  OcmwAssociationCodeList,
   OCMWCodeList,
-  PevaCodeList,
+  OpdrachthoudendeVerenigingCodeList,
+  OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
   PevaMunicipalityCodeList,
   PevaProvinceCodeList,
   PoliceZoneCodeList,
   ProvinceCodeList,
+  ProjectverenigingCodeList,
+  RegionaalLandschapCodeList,
+  RegionaalZorgplatformCodeList,
   RepresentativeBodyCodeList,
+  VerenigingOfVennootschapVoorSocialeDienstverleningCodeList,
+  VervoerregioraadCodeList,
+  WelzijnsverenigingCodeList,
+  WoonmaatschappijCodeList,
+  WoonzorgverenigingCodeList,
   WorshipServiceCodeList,
+  ZiekenhuisverenigingCodeList,
+  ZorgraadCodeList,
 } from 'frontend-organization-portal/constants/classification';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+
+// This file contains only data. The functions that read these tables to
+// validate memberships or list the allowed roles and classification codes
+// live in `frontend-organization-portal/utils/membership-rules`.
 
 // Specifies which organization classifications are allowed as participants in
 // other organization classifications. For each classification code in an
@@ -34,45 +51,152 @@ import {
 // ```
 // means "an AGB can have as participant a municipality" as well as the inverse
 // relation "a municipality can participate in an AGB".
+//
+// The tables below are derived from the OP-3929 rules file (version 3): every
+// row of that file describes both directions of one relationship, so each row
+// results in one `{ organizations, members }` pair here.
 export const allowedParticipationMemberships = [
   {
-    organizations: [...IGSCodeList],
+    organizations: [...AndereCodeList],
     members: [
-      ...MunicipalityCodeList,
-      ...OCMWCodeList,
+      ...WelzijnsverenigingCodeList,
       ...AgbCodeList,
-      ...IGSCodeList,
-      ...PoliceZoneCodeList,
-      ...AssistanceZoneCodeList,
-      ...PevaCodeList,
-      ...OcmwAssociationCodeList,
-      ...AndereCodeList,
-    ],
-  },
-  {
-    organizations: [...OcmwAssociationCodeList],
-    members: [
-      ...OcmwAssociationCodeList,
+      ...AutonomeVerzorgingsinstellingCodeList,
+      ...ApbCodeList,
+      ...DienstverlenendeVerenigingCodeList,
       ...MunicipalityCodeList,
       ...OCMWCodeList,
-      ...AndereCodeList,
+      ...OpdrachthoudendeVerenigingCodeList,
+      ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+      ...PevaMunicipalityCodeList,
+      ...PevaProvinceCodeList,
+      ...ProjectverenigingCodeList,
+      ...ProvinceCodeList,
+      ...ZiekenhuisverenigingCodeList,
     ],
   },
   {
-    organizations: [...PevaCodeList],
-    members: [...IGSCodeList],
+    organizations: [...WelzijnsverenigingCodeList],
+    members: [
+      ...AutonomeVerzorgingsinstellingCodeList,
+      ...DienstverlenendeVerenigingCodeList,
+      ...MunicipalityCodeList,
+      ...OCMWCodeList,
+    ],
   },
   {
-    organizations: [...AgbCodeList],
+    organizations: [...ZiekenhuisverenigingCodeList],
+    members: [
+      ...AutonomeVerzorgingsinstellingCodeList,
+      ...MunicipalityCodeList,
+      ...OCMWCodeList,
+      ...WelzijnsverenigingCodeList,
+    ],
+  },
+  {
+    organizations: [
+      ...AutonomeVerzorgingsinstellingCodeList,
+      ...PevaMunicipalityCodeList,
+      ...VerenigingOfVennootschapVoorSocialeDienstverleningCodeList,
+      ...WoonzorgverenigingCodeList,
+    ],
+    members: [...MunicipalityCodeList, ...OCMWCodeList],
+  },
+  {
+    organizations: [
+      ...AgbCodeList,
+      ...AssistanceZoneCodeList,
+      ...PoliceZoneCodeList,
+      ...BosgroepCodeList,
+    ],
     members: [...MunicipalityCodeList],
   },
   {
-    organizations: [...ApbCodeList],
+    organizations: [...ApbCodeList, ...PevaProvinceCodeList],
     members: [...ProvinceCodeList],
   },
   {
-    organizations: [...PoliceZoneCodeList, ...AssistanceZoneCodeList],
-    members: [...MunicipalityCodeList],
+    organizations: [...DienstverlenendeVerenigingCodeList],
+    members: [
+      ...AutonomeVerzorgingsinstellingCodeList,
+      ...AgbCodeList,
+      ...DienstverlenendeVerenigingCodeList,
+      ...MunicipalityCodeList,
+      ...AssistanceZoneCodeList,
+      ...OCMWCodeList,
+      ...OpdrachthoudendeVerenigingCodeList,
+      ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+      ...PoliceZoneCodeList,
+    ],
+  },
+  {
+    organizations: [
+      ...OpdrachthoudendeVerenigingCodeList,
+      ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+    ],
+    members: [
+      ...AutonomeVerzorgingsinstellingCodeList,
+      ...AgbCodeList,
+      ...DienstverlenendeVerenigingCodeList,
+      ...MunicipalityCodeList,
+      ...AssistanceZoneCodeList,
+      ...OCMWCodeList,
+      ...OpdrachthoudendeVerenigingCodeList,
+      ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+      ...PoliceZoneCodeList,
+      ...WelzijnsverenigingCodeList,
+    ],
+  },
+  {
+    organizations: [...InterlokaleVerenigingCodeList],
+    members: [
+      ...AndereCodeList,
+      ...AutonomeVerzorgingsinstellingCodeList,
+      ...AgbCodeList,
+      ...ApbCodeList,
+      ...BosgroepCodeList,
+      ...DienstverlenendeVerenigingCodeList,
+      ...MunicipalityCodeList,
+      ...AssistanceZoneCodeList,
+      ...OCMWCodeList,
+      ...OpdrachthoudendeVerenigingCodeList,
+      ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+      ...PevaMunicipalityCodeList,
+      ...PevaProvinceCodeList,
+      ...PoliceZoneCodeList,
+      ...ProjectverenigingCodeList,
+      ...ProvinceCodeList,
+      ...RegionaalLandschapCodeList,
+      ...RegionaalZorgplatformCodeList,
+      ...VerenigingOfVennootschapVoorSocialeDienstverleningCodeList,
+      ...VervoerregioraadCodeList,
+      ...WelzijnsverenigingCodeList,
+      ...WoonmaatschappijCodeList,
+      ...WoonzorgverenigingCodeList,
+      ...ZiekenhuisverenigingCodeList,
+      ...ZorgraadCodeList,
+    ],
+  },
+  {
+    organizations: [...ProjectverenigingCodeList],
+    members: [
+      ...MunicipalityCodeList,
+      ...AssistanceZoneCodeList,
+      ...OCMWCodeList,
+      ...PoliceZoneCodeList,
+    ],
+  },
+  {
+    organizations: [...RegionaalLandschapCodeList],
+    members: [...MunicipalityCodeList, ...ProvinceCodeList],
+  },
+  {
+    organizations: [...RegionaalZorgplatformCodeList],
+    members: [...ZorgraadCodeList],
+  },
+  {
+    organizations: [...WoonmaatschappijCodeList],
+    members: [...MunicipalityCodeList, ...OCMWCodeList, ...ProvinceCodeList],
   },
 ];
 
@@ -81,35 +205,41 @@ export const allowedParticipationMemberships = [
 // {
 //   organizations: [...AgbCodeList],
 //   members: [...MunicipalityCodeList],
-// },
+// }
 // ```
 // means "an AGB can have as founding organisation a municipality" and "a
 // municipality can found an AGB".
 export const allowedFoundingMemberships = [
   {
-    organizations: [...AgbCodeList],
+    organizations: [
+      ...AgbCodeList,
+      ...DistrictCodeList,
+      ...DienstverlenendeVerenigingCodeList,
+      ...InterlokaleVerenigingCodeList,
+      ...OpdrachthoudendeVerenigingCodeList,
+      ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+      ...ProjectverenigingCodeList,
+      ...PevaMunicipalityCodeList,
+    ],
     members: [...MunicipalityCodeList],
   },
   {
-    organizations: [...ApbCodeList],
+    organizations: [
+      ...ApbCodeList,
+      ...BosgroepCodeList,
+      ...PevaProvinceCodeList,
+    ],
     members: [...ProvinceCodeList],
   },
   {
-    organizations: [...PevaMunicipalityCodeList],
-    members: [...MunicipalityCodeList, ...AndereCodeList],
-  },
-  {
-    organizations: [...PevaProvinceCodeList],
-    members: [...ProvinceCodeList, ...AndereCodeList],
-  },
-  {
-    organizations: [...OcmwAssociationCodeList],
-    members: [
-      ...OcmwAssociationCodeList,
-      ...MunicipalityCodeList,
-      ...OCMWCodeList,
-      ...AndereCodeList,
+    organizations: [
+      ...AutonomeVerzorgingsinstellingCodeList,
+      ...VerenigingOfVennootschapVoorSocialeDienstverleningCodeList,
+      ...WelzijnsverenigingCodeList,
+      ...WoonzorgverenigingCodeList,
+      ...ZiekenhuisverenigingCodeList,
     ],
+    members: [...OCMWCodeList],
   },
 ];
 
@@ -122,33 +252,12 @@ export const allowedFoundingMemberships = [
 // We do enforce a specific direction, i.e. assignment of `organization` and
 // `member`, when storing memberships to ensure data consistency. This direction
 // is defined by the data structure below. The `getOppositeClassifications`
-// function takes care of presenting the user with the right options.
+// function in `utils/membership-rules.js` takes care of presenting the user
+// with the right options.
+//
+// The OP-3929 rules replace this generic role with the specific ones for all
+// non-worship organizations. Only the worship classifications keep it.
 export const allowedHasRelationWithMemberships = [
-  {
-    organizations: [...MunicipalityCodeList],
-    members: [
-      ...OCMWCodeList,
-      ...DistrictCodeList,
-      ...AgbCodeList,
-      ...ApbCodeList,
-      ...IGSCodeList,
-      ...PoliceZoneCodeList,
-      ...AssistanceZoneCodeList,
-      ...PevaMunicipalityCodeList,
-    ],
-  },
-  {
-    organizations: [...ProvinceCodeList],
-    members: [
-      ...MunicipalityCodeList,
-      ...OCMWCodeList,
-      ...ApbCodeList,
-      ...AgbCodeList,
-      ...PoliceZoneCodeList,
-      ...AssistanceZoneCodeList,
-      ...PevaCodeList,
-    ],
-  },
   {
     organizations: [...CentralWorshipServiceCodeList],
     members: [...WorshipServiceCodeList, ...RepresentativeBodyCodeList],
@@ -170,116 +279,622 @@ export const allowedServingMemberships = [
 
 // Same as above for "grants recognition to" memberships: "an organization was
 // recognised by a member organization" and "a member organization grants
-// recognition to an organization". Allowed between all non-worship
-// organizations until the business narrows it down.
+// recognition to an organization".
 export const allowedRecognitionMemberships = [
   {
-    organizations: [...NonWorshipCodeList],
-    members: [...NonWorshipCodeList],
+    organizations: [...BosgroepCodeList],
+    members: [...ProvinceCodeList],
   },
 ];
 
-// Same as above for "is actually represented in (no membership)" memberships:
-// "an organization has a member organization as actual representative" and "a
-// member organization is actually represented in an organization". Allowed
-// between all non-worship organizations until the business narrows it down.
+// Same as above for "is actually represented in (no membership)" memberships.
 export const allowedRepresentationMemberships = [
   {
-    organizations: [...NonWorshipCodeList],
-    members: [...NonWorshipCodeList],
+    organizations: [...RegionaalZorgplatformCodeList],
+    members: [
+      ...AutonomeVerzorgingsinstellingCodeList,
+      ...ZiekenhuisverenigingCodeList,
+    ],
+  },
+  {
+    organizations: [...VervoerregioraadCodeList],
+    members: [...MunicipalityCodeList],
+  },
+  {
+    organizations: [...WoonmaatschappijCodeList],
+    members: [...WoonmaatschappijCodeList],
+  },
+  {
+    organizations: [...ZorgraadCodeList],
+    members: [...MunicipalityCodeList, ...OCMWCodeList],
   },
 ];
-
-/**
- * Check whether the organization assignments in the given membership should be
- * swapped in order become a valid "has a relation with" membership.
- * The result of this function is only meaningful when applied to a membership
- * - with the "has a relation with" role; and
- * - there is an assignment of the involved organizations which constitutes a
- *   relation according to {@link allowedHasRelationWithMemberships}.
- * If either of these conditions is not satisfied, the result of this function
- * should not be used.
- * @param {{@link MembershipModel}} membership - the membership to be checked
- * @returns {boolean} True if the `member` and `organization` should be
- *     swapped, false otherwise.
- */
-export function shouldSwapAssignments(membership) {
-  const organizationClass = membership.organization
-    .get('classification')
-    .get('id');
-  const memberClass = membership.member.get('classification').get('id');
-
-  return allowedHasRelationWithMemberships.some(
-    (elem) =>
-      elem.organizations.includes(memberClass) &&
-      elem.members.includes(organizationClass),
-  );
-}
-
-const allowedMembershipRelations = new Map([
-  [
-    MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id,
-    allowedParticipationMemberships,
+// Which related-organization fields the create form shows, per classification
+// of the created organization. One entry per field of the OP-3929 rules file:
+//
+// - `role`/`asMember`: the membership role and the side of the membership the
+//   created organization sits on: as member (`asMember` true) or as
+//   organization (`asMember` false).
+// - `required`/`multiple`: whether the field is mandatory and allows selecting
+//   multiple organizations.
+// - `minimum`: how many organizations the field must keep, counted at creation
+//   and when deleting relations. `classifications` restricts which ones count.
+// - `skipCreateForm`: the create form renders this field itself (AGB/APB set
+//   their founder through the municipality/province select).
+//
+// The allowed organizations per field are derived from the tables above, so
+// those stay the single source of truth. The founder and recognizer fields of
+// the types handled by the autofill task are deliberately absent here.
+export const membershipFieldsByClassification = {
+  [CLASSIFICATION.MUNICIPALITY.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+      asMember: true,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.SERVES,
+      asMember: false,
+      required: true,
+      multiple: false,
+      minimum: { count: 1 },
+    },
   ],
-  [MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id, allowedFoundingMemberships],
-  [
-    MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
-    allowedHasRelationWithMemberships,
+  [CLASSIFICATION.OCMW.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.SERVES,
+      asMember: true,
+      required: true,
+      multiple: false,
+      minimum: { count: 1 },
+    },
   ],
-  [MEMBERSHIP_ROLES_MAPPING.SERVES.id, allowedServingMemberships],
-  [
-    MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO.id,
-    allowedRecognitionMemberships,
+  [CLASSIFICATION.DISTRICT.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: false,
+      minimum: { count: 1 },
+    },
   ],
-  [
-    MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN.id,
-    allowedRepresentationMemberships,
+  [CLASSIFICATION.ANDERE.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
   ],
-]);
-
-/**
- * Get the list of organization classification codes that are allowed to be
- * involved in the given membership and organization. For most membership roles
- * the direction of the membership relation is determined based on whether the
- * provided organization acts as `member` or `organization` in the provided
- * membership.
- * The exception is the HAS_RELATION_WITH role were all possibilities are
- * returned irrelevant of whether the provided organization acts as `member` or
- * `organization`.
- *
- * @param {{@link MembershipModel}} membership - The membership for which to
- *     determine the appropriate classification codes.
- * @param {{@link OrganizationModel}} organization - The organization that is
- *     involved in the provided membership.
- * @returns {[string]} A list of classification codes specifying the kinds of
- *     organizations that are allowed to act as the other organization in the
- *     membership with the provided one. An empty list if the provided
- *     membership has no role or if the provided organization is not involved
- *     in the provided membership.
- */
-export default function getOppositeClassifications(membership, organization) {
-  const membershipRoleMap =
-    allowedMembershipRelations.get(membership.role.id) || [];
-
-  if (membershipRoleMap && organization) {
-    const members = membershipRoleMap
-      .filter((e) => e.organizations.includes(organization.classification.id))
-      .flatMap((e) => e.members);
-    const organizations = membershipRoleMap
-      .filter((e) => e.members.includes(organization.classification.id))
-      .flatMap((e) => e.organizations);
-
-    if (membership.role.id === MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id) {
-      return [...new Set([...members, ...organizations])];
-    } else {
-      if (membership.member.id === organization.id) {
-        return organizations;
-      }
-      if (membership.organization.id === organization.id) {
-        return members;
-      }
-    }
-  }
-
-  return [];
-}
+  [CLASSIFICATION.BOSGROEP.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.INTERLOKALE_VERENIGING.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 2 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1, classifications: [...MunicipalityCodeList] },
+    },
+  ],
+  [CLASSIFICATION.REGIONAAL_LANDSCHAP.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+      asMember: false,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.VERVOERREGIORAAD.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.WOONMAATSCHAPPIJ.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+      asMember: false,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.ZORGRAAD.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: true,
+      multiple: true,
+      minimum: {
+        count: 1,
+        classifications: [...RegionaalZorgplatformCodeList],
+      },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+  ],
+  [CLASSIFICATION.AGB.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: false,
+      minimum: { count: 1 },
+      // The AGB form sets the founder through its municipality select.
+      skipCreateForm: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: false,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.APB.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: false,
+      minimum: { count: 1 },
+      // The APB form sets the founder through its province select.
+      skipCreateForm: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: false,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.PROVINCE.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 2, classifications: [...MunicipalityCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 2, classifications: [...MunicipalityCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 2, classifications: [...MunicipalityCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 2, classifications: [...MunicipalityCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 2, classifications: [...MunicipalityCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 2, classifications: [...MunicipalityCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.PROJECTVERENIGING.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 2, classifications: [...MunicipalityCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 2, classifications: [...MunicipalityCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.POLICE_ZONE.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: false,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.ASSISTANCE_ZONE.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.WELZIJNSVERENIGING.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1, classifications: [...OCMWCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1, classifications: [...OCMWCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.ZIEKENHUISVERENIGING.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1, classifications: [...OCMWCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1, classifications: [...OCMWCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1, classifications: [...OCMWCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.PEVA_MUNICIPALITY.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: false,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: true,
+      minimum: { count: 1, classifications: [...MunicipalityCodeList] },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+  [CLASSIFICATION.PEVA_PROVINCE.id]: [
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      asMember: false,
+      required: true,
+      multiple: false,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: false,
+      required: true,
+      multiple: false,
+      minimum: { count: 1 },
+    },
+    {
+      role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+      asMember: true,
+      required: false,
+      multiple: true,
+    },
+  ],
+};

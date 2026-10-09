@@ -21,9 +21,13 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
   }
 
   async model(params) {
-    const { organization, roles, selectableRoles } = this.modelFor(
-      'organizations.organization.related-organizations',
-    );
+    const {
+      organization,
+      roles,
+      selectableRoles,
+      selectableRoleLabels,
+      allowedRoleLabels,
+    } = this.modelFor('organizations.organization.related-organizations');
 
     let query = {
       include: 'role,member,organization',
@@ -48,6 +52,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
       memberships,
       roles,
       selectableRoles,
+      selectableRoleLabels,
+      allowedRoleLabels,
     };
   }
 

@@ -12,7 +12,7 @@
       <div class="au-o-box">
         <MembershipRoleSelect
           @disabled={{@unsavedEdit}}
-          @options={{@model.roles}}
+          @options={{@model.selectableRoleLabels}}
           @selected={{@selectedRole}}
           @onChange={{fn (mut @selectedRole)}}
           @allowClear={{true}}
@@ -37,7 +37,7 @@
             <MembershipRoleSelect
               @disabled={{not membership.isNew}}
               @selected={{fn @displayRoleLabel membership}}
-              @options={{@model.selectableRoles}}
+              @options={{@model.allowedRoleLabels}}
               @onChange={{fn @updateMembershipRole membership}}
               @error={{errorMessage}}
               @id="membership-role"

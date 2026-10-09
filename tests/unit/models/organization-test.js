@@ -4,21 +4,34 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import {
   AgbCodeList,
+  AndereCodeList,
   ApbCodeList,
   AssistanceZoneCodeList,
+  AutonomeVerzorgingsinstellingCodeList,
+  BosgroepCodeList,
   CentralWorshipServiceCodeList,
   DistrictCodeList,
-  IGSCodeList,
+  DienstverlenendeVerenigingCodeList,
+  InterlokaleVerenigingCodeList,
   MunicipalityCodeList,
-  NonWorshipCodeList,
-  OcmwAssociationCodeList,
   OCMWCodeList,
-  PevaCodeList,
+  OpdrachthoudendeVerenigingCodeList,
+  OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
   PevaMunicipalityCodeList,
+  PevaProvinceCodeList,
   PoliceZoneCodeList,
+  ProjectverenigingCodeList,
   ProvinceCodeList,
+  RegionaalLandschapCodeList,
   RepresentativeBodyCodeList,
+  VerenigingOfVennootschapVoorSocialeDienstverleningCodeList,
+  VervoerregioraadCodeList,
+  WelzijnsverenigingCodeList,
+  WoonmaatschappijCodeList,
+  WoonzorgverenigingCodeList,
   WorshipServiceCodeList,
+  ZiekenhuisverenigingCodeList,
+  ZorgraadCodeList,
 } from 'frontend-organization-portal/constants/classification';
 
 module('Unit | Model | organization', function (hooks) {
@@ -194,55 +207,71 @@ module('Unit | Model | organization', function (hooks) {
   });
 
   module('getClassificationCodesForMembership', function () {
-    const igsParticipants = [
-      CLASSIFICATION.MUNICIPALITY.id,
-      CLASSIFICATION.OCMW.id,
-      CLASSIFICATION.AGB.id,
-      CLASSIFICATION.PROJECTVERENIGING.id,
-      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
-      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
-      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
-      CLASSIFICATION.POLICE_ZONE.id,
-      CLASSIFICATION.ASSISTANCE_ZONE.id,
-      CLASSIFICATION.PEVA_MUNICIPALITY.id,
-      CLASSIFICATION.PEVA_PROVINCE.id,
-      CLASSIFICATION.WELZIJNSVERENIGING.id,
-      CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id,
-      CLASSIFICATION.ZIEKENHUISVERENIGING.id,
-      CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING.id,
-      CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id,
-      CLASSIFICATION.ANDERE.id,
+    const projectverenigingParticipants = [
+      ...MunicipalityCodeList,
+      ...AssistanceZoneCodeList,
+      ...OCMWCodeList,
+      ...PoliceZoneCodeList,
     ];
 
-    const ocmwAssociationParticipants = OcmwAssociationCodeList.concat([
-      CLASSIFICATION.MUNICIPALITY.id,
-      CLASSIFICATION.OCMW.id,
-      CLASSIFICATION.ANDERE.id,
-    ]);
+    const dienstverlenendeVerenigingParticipants = [
+      ...AutonomeVerzorgingsinstellingCodeList,
+      ...AgbCodeList,
+      ...DienstverlenendeVerenigingCodeList,
+      ...MunicipalityCodeList,
+      ...AssistanceZoneCodeList,
+      ...OCMWCodeList,
+      ...OpdrachthoudendeVerenigingCodeList,
+      ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+      ...PoliceZoneCodeList,
+    ];
 
-    const pevaParticipants = [
-      CLASSIFICATION.PROJECTVERENIGING.id,
-      CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id,
-      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id,
-      CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id,
+    const opdrachthoudendeVerenigingParticipants = [
+      ...dienstverlenendeVerenigingParticipants,
+      ...WelzijnsverenigingCodeList,
+    ];
+
+    const ocmwAssociationParticipants = [
+      ...MunicipalityCodeList,
+      ...OCMWCodeList,
+    ];
+
+    const welzijnsverenigingParticipants = [
+      ...AutonomeVerzorgingsinstellingCodeList,
+      ...DienstverlenendeVerenigingCodeList,
+      ...MunicipalityCodeList,
+      ...OCMWCodeList,
+    ];
+
+    const ziekenhuisverenigingParticipants = [
+      ...AutonomeVerzorgingsinstellingCodeList,
+      ...MunicipalityCodeList,
+      ...OCMWCodeList,
+      ...WelzijnsverenigingCodeList,
     ];
 
     [
-      [CLASSIFICATION.PROJECTVERENIGING, igsParticipants],
-      [CLASSIFICATION.DIENSTVERLENENDE_VERENIGING, igsParticipants],
-      [CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING, igsParticipants],
+      [CLASSIFICATION.PROJECTVERENIGING, projectverenigingParticipants],
+      [
+        CLASSIFICATION.DIENSTVERLENENDE_VERENIGING,
+        dienstverlenendeVerenigingParticipants,
+      ],
+      [
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
+        opdrachthoudendeVerenigingParticipants,
+      ],
       [
         CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-        igsParticipants,
+        opdrachthoudendeVerenigingParticipants,
       ],
-      [CLASSIFICATION.PEVA_MUNICIPALITY, pevaParticipants],
-      [CLASSIFICATION.PEVA_PROVINCE, pevaParticipants],
-      [CLASSIFICATION.WELZIJNSVERENIGING, ocmwAssociationParticipants],
+      [CLASSIFICATION.PEVA_MUNICIPALITY, ocmwAssociationParticipants],
+      [CLASSIFICATION.PEVA_PROVINCE, [...ProvinceCodeList]],
+      [CLASSIFICATION.WELZIJNSVERENIGING, welzijnsverenigingParticipants],
       [
         CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
         ocmwAssociationParticipants,
       ],
-      [CLASSIFICATION.ZIEKENHUISVERENIGING, ocmwAssociationParticipants],
+      [CLASSIFICATION.ZIEKENHUISVERENIGING, ziekenhuisverenigingParticipants],
       [
         CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
         ocmwAssociationParticipants,
@@ -274,57 +303,133 @@ module('Unit | Model | organization', function (hooks) {
       });
     });
 
+    const igsParticipantOrganizations = [
+      ...AndereCodeList,
+      ...DienstverlenendeVerenigingCodeList,
+      ...OpdrachthoudendeVerenigingCodeList,
+      ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+      ...InterlokaleVerenigingCodeList,
+    ];
+
     [
       [
         CLASSIFICATION.MUNICIPALITY,
         [
-          ...IGSCodeList,
-          ...OcmwAssociationCodeList,
+          ...AndereCodeList,
           ...AgbCodeList,
-          ...PoliceZoneCodeList,
           ...AssistanceZoneCodeList,
+          ...BosgroepCodeList,
+          ...AutonomeVerzorgingsinstellingCodeList,
+          ...DienstverlenendeVerenigingCodeList,
+          ...InterlokaleVerenigingCodeList,
+          ...OpdrachthoudendeVerenigingCodeList,
+          ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+          ...PevaMunicipalityCodeList,
+          ...PoliceZoneCodeList,
+          ...ProjectverenigingCodeList,
+          ...RegionaalLandschapCodeList,
+          ...VerenigingOfVennootschapVoorSocialeDienstverleningCodeList,
+          ...WelzijnsverenigingCodeList,
+          ...WoonmaatschappijCodeList,
+          ...WoonzorgverenigingCodeList,
+          ...ZiekenhuisverenigingCodeList,
         ],
       ],
-      [CLASSIFICATION.OCMW, [...IGSCodeList, ...OcmwAssociationCodeList]],
-      [CLASSIFICATION.AGB, [...IGSCodeList]],
-      [CLASSIFICATION.PROJECTVERENIGING, [...IGSCodeList, ...PevaCodeList]],
+      [
+        CLASSIFICATION.OCMW,
+        [
+          ...AndereCodeList,
+          ...AutonomeVerzorgingsinstellingCodeList,
+          ...DienstverlenendeVerenigingCodeList,
+          ...InterlokaleVerenigingCodeList,
+          ...OpdrachthoudendeVerenigingCodeList,
+          ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+          ...PevaMunicipalityCodeList,
+          ...ProjectverenigingCodeList,
+          ...VerenigingOfVennootschapVoorSocialeDienstverleningCodeList,
+          ...WelzijnsverenigingCodeList,
+          ...WoonmaatschappijCodeList,
+          ...WoonzorgverenigingCodeList,
+          ...ZiekenhuisverenigingCodeList,
+        ],
+      ],
+      [CLASSIFICATION.AGB, igsParticipantOrganizations],
+      [
+        CLASSIFICATION.PROJECTVERENIGING,
+        [...AndereCodeList, ...InterlokaleVerenigingCodeList],
+      ],
       [
         CLASSIFICATION.DIENSTVERLENENDE_VERENIGING,
-        [...IGSCodeList, ...PevaCodeList],
+        [...igsParticipantOrganizations, ...WelzijnsverenigingCodeList],
       ],
-      [
-        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
-        [...IGSCodeList, ...PevaCodeList],
-      ],
+      [CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING, igsParticipantOrganizations],
       [
         CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-        [...IGSCodeList, ...PevaCodeList],
+        igsParticipantOrganizations,
       ],
-      [CLASSIFICATION.POLICE_ZONE, [...IGSCodeList]],
-      [CLASSIFICATION.ASSISTANCE_ZONE, [...IGSCodeList]],
-      [CLASSIFICATION.PEVA_MUNICIPALITY, [...IGSCodeList]],
-      [CLASSIFICATION.PEVA_PROVINCE, [...IGSCodeList]],
+      [
+        CLASSIFICATION.POLICE_ZONE,
+        [
+          ...DienstverlenendeVerenigingCodeList,
+          ...OpdrachthoudendeVerenigingCodeList,
+          ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+          ...InterlokaleVerenigingCodeList,
+          ...ProjectverenigingCodeList,
+        ],
+      ],
+      [
+        CLASSIFICATION.ASSISTANCE_ZONE,
+        [
+          ...DienstverlenendeVerenigingCodeList,
+          ...OpdrachthoudendeVerenigingCodeList,
+          ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+          ...InterlokaleVerenigingCodeList,
+          ...ProjectverenigingCodeList,
+        ],
+      ],
+      [
+        CLASSIFICATION.PEVA_MUNICIPALITY,
+        [...AndereCodeList, ...InterlokaleVerenigingCodeList],
+      ],
+      [
+        CLASSIFICATION.PEVA_PROVINCE,
+        [...AndereCodeList, ...InterlokaleVerenigingCodeList],
+      ],
       [
         CLASSIFICATION.WELZIJNSVERENIGING,
-        [...IGSCodeList, ...OcmwAssociationCodeList],
+        [
+          ...AndereCodeList,
+          ...OpdrachthoudendeVerenigingCodeList,
+          ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+          ...InterlokaleVerenigingCodeList,
+          ...ZiekenhuisverenigingCodeList,
+        ],
       ],
       [
         CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
-        [...IGSCodeList, ...OcmwAssociationCodeList],
+        [
+          ...AndereCodeList,
+          ...DienstverlenendeVerenigingCodeList,
+          ...OpdrachthoudendeVerenigingCodeList,
+          ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+          ...InterlokaleVerenigingCodeList,
+          ...WelzijnsverenigingCodeList,
+          ...ZiekenhuisverenigingCodeList,
+        ],
       ],
       [
         CLASSIFICATION.ZIEKENHUISVERENIGING,
-        [...IGSCodeList, ...OcmwAssociationCodeList],
+        [...AndereCodeList, ...InterlokaleVerenigingCodeList],
       ],
       [
         CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
-        [...IGSCodeList, ...OcmwAssociationCodeList],
+        [...InterlokaleVerenigingCodeList],
       ],
       [
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
-        [...IGSCodeList, ...OcmwAssociationCodeList],
+        [...InterlokaleVerenigingCodeList],
       ],
-      [CLASSIFICATION.ANDERE, [...IGSCodeList, ...OcmwAssociationCodeList]],
+      [CLASSIFICATION.ANDERE, [...InterlokaleVerenigingCodeList]],
     ].forEach(([cl, classificationCodes]) => {
       test(`it should allow a(n) ${cl.label} to participate in the correct kind of organizations`, async function (assert) {
         const classification = this.store().createRecord(
@@ -351,60 +456,20 @@ module('Unit | Model | organization', function (hooks) {
     });
 
     [
-      [CLASSIFICATION.APB, [CLASSIFICATION.PROVINCE.id]],
-      [CLASSIFICATION.AGB, [CLASSIFICATION.MUNICIPALITY.id]],
-      [
-        CLASSIFICATION.PEVA_MUNICIPALITY,
-        [CLASSIFICATION.MUNICIPALITY.id, CLASSIFICATION.ANDERE.id],
-      ],
-      [
-        CLASSIFICATION.PEVA_PROVINCE,
-        [CLASSIFICATION.PROVINCE.id, CLASSIFICATION.ANDERE.id],
-      ],
-      [
-        CLASSIFICATION.WELZIJNSVERENIGING,
-        [
-          ...OcmwAssociationCodeList,
-          CLASSIFICATION.MUNICIPALITY.id,
-          CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ANDERE.id,
-        ],
-      ],
-      [
-        CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
-        [
-          ...OcmwAssociationCodeList,
-          CLASSIFICATION.MUNICIPALITY.id,
-          CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ANDERE.id,
-        ],
-      ],
-      [
-        CLASSIFICATION.ZIEKENHUISVERENIGING,
-        [
-          ...OcmwAssociationCodeList,
-          CLASSIFICATION.MUNICIPALITY.id,
-          CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ANDERE.id,
-        ],
-      ],
+      [CLASSIFICATION.APB, [...ProvinceCodeList]],
+      [CLASSIFICATION.AGB, [...MunicipalityCodeList]],
+      [CLASSIFICATION.PEVA_MUNICIPALITY, [...MunicipalityCodeList]],
+      [CLASSIFICATION.PEVA_PROVINCE, [...ProvinceCodeList]],
+      [CLASSIFICATION.WELZIJNSVERENIGING, [...OCMWCodeList]],
+      [CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING, [...OCMWCodeList]],
+      [CLASSIFICATION.ZIEKENHUISVERENIGING, [...OCMWCodeList]],
       [
         CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
-        [
-          ...OcmwAssociationCodeList,
-          CLASSIFICATION.MUNICIPALITY.id,
-          CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ANDERE.id,
-        ],
+        [...OCMWCodeList],
       ],
       [
         CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
-        [
-          ...OcmwAssociationCodeList,
-          CLASSIFICATION.MUNICIPALITY.id,
-          CLASSIFICATION.OCMW.id,
-          CLASSIFICATION.ANDERE.id,
-        ],
+        [...OCMWCodeList],
       ],
     ].forEach(([cl, classificationCodes]) => {
       test(`it should allow a(n) ${cl.label} to be founded by the correct organizations`, async function (assert) {
@@ -435,17 +500,31 @@ module('Unit | Model | organization', function (hooks) {
       [
         CLASSIFICATION.MUNICIPALITY,
         [
-          CLASSIFICATION.AGB.id,
-          CLASSIFICATION.PEVA_MUNICIPALITY.id,
-          ...OcmwAssociationCodeList,
+          ...AgbCodeList,
+          ...DistrictCodeList,
+          ...DienstverlenendeVerenigingCodeList,
+          ...InterlokaleVerenigingCodeList,
+          ...OpdrachthoudendeVerenigingCodeList,
+          ...OpdrachthoudendeVerenigingMetPrivateDeelnameCodeList,
+          ...PevaMunicipalityCodeList,
+          ...ProjectverenigingCodeList,
         ],
       ],
       [
         CLASSIFICATION.PROVINCE,
-        [CLASSIFICATION.PEVA_PROVINCE.id, CLASSIFICATION.APB.id],
+        [...ApbCodeList, ...BosgroepCodeList, ...PevaProvinceCodeList],
       ],
-      [CLASSIFICATION.OCMW, [...OcmwAssociationCodeList]],
-      [CLASSIFICATION.ANDERE, [...PevaCodeList, ...OcmwAssociationCodeList]],
+      [
+        CLASSIFICATION.OCMW,
+        [
+          ...AutonomeVerzorgingsinstellingCodeList,
+          ...VerenigingOfVennootschapVoorSocialeDienstverleningCodeList,
+          ...WelzijnsverenigingCodeList,
+          ...WoonzorgverenigingCodeList,
+          ...ZiekenhuisverenigingCodeList,
+        ],
+      ],
+      [CLASSIFICATION.ANDERE, []],
     ].forEach(([cl, classificationCodes]) => {
       test(`it should allow a(n) ${cl.label} to found the correct organizations`, async function (assert) {
         const classification = this.store().createRecord(
@@ -472,50 +551,8 @@ module('Unit | Model | organization', function (hooks) {
     });
 
     [
-      [
-        CLASSIFICATION.MUNICIPALITY,
-        [
-          ...OCMWCodeList,
-          ...ProvinceCodeList,
-          ...DistrictCodeList,
-          ...AgbCodeList,
-          ...ApbCodeList,
-          ...IGSCodeList,
-          ...PoliceZoneCodeList,
-          ...AssistanceZoneCodeList,
-          ...PevaMunicipalityCodeList,
-        ],
-      ],
-      [
-        CLASSIFICATION.PROVINCE,
-        [
-          ...MunicipalityCodeList,
-          ...OCMWCodeList,
-          ...ApbCodeList,
-          ...AgbCodeList,
-          ...PoliceZoneCodeList,
-          ...AssistanceZoneCodeList,
-          ...PevaCodeList,
-        ],
-      ],
-      [CLASSIFICATION.AGB, [...MunicipalityCodeList, ...ProvinceCodeList]],
-      [CLASSIFICATION.PROJECTVERENIGING, [...MunicipalityCodeList]],
-      [CLASSIFICATION.DIENSTVERLENENDE_VERENIGING, [...MunicipalityCodeList]],
-      [CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING, [...MunicipalityCodeList]],
-      [
-        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-        [...MunicipalityCodeList],
-      ],
-      [
-        CLASSIFICATION.POLICE_ZONE,
-        [...MunicipalityCodeList, ...ProvinceCodeList],
-      ],
-      [
-        CLASSIFICATION.ASSISTANCE_ZONE,
-        [...MunicipalityCodeList, ...ProvinceCodeList],
-      ],
-      [CLASSIFICATION.APB, [...ProvinceCodeList, ...MunicipalityCodeList]],
-      [CLASSIFICATION.OCMW, [...MunicipalityCodeList, ...ProvinceCodeList]],
+      [CLASSIFICATION.MUNICIPALITY, []],
+      [CLASSIFICATION.PROVINCE, []],
       [
         CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
         [...WorshipServiceCodeList, ...RepresentativeBodyCodeList],
@@ -528,11 +565,8 @@ module('Unit | Model | organization', function (hooks) {
         CLASSIFICATION.REPRESENTATIVE_BODY,
         [...WorshipServiceCodeList, ...CentralWorshipServiceCodeList],
       ],
-      [
-        CLASSIFICATION.PEVA_MUNICIPALITY,
-        [...MunicipalityCodeList, ...ProvinceCodeList],
-      ],
-      [CLASSIFICATION.PEVA_PROVINCE, [...ProvinceCodeList]],
+      [CLASSIFICATION.PEVA_MUNICIPALITY, []],
+      [CLASSIFICATION.PEVA_PROVINCE, []],
     ].forEach(([cl, classificationCodes]) => {
       test(`it should allow a(n) ${cl.label} to have a relation with the correct organizations`, async function (assert) {
         const classification = this.store().createRecord(
@@ -619,10 +653,14 @@ module('Unit | Model | organization', function (hooks) {
     });
 
     [
-      MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO,
-      MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
-    ].forEach((roleMapping) => {
-      test(`it should allow the "${roleMapping.label}" role between all non-worship organizations`, async function (assert) {
+      [MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO, [], []],
+      [
+        MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+        [],
+        [...VervoerregioraadCodeList, ...ZorgraadCodeList],
+      ],
+    ].forEach(([roleMapping, expectedAsOrganization, expectedAsMember]) => {
+      test(`it should allow the "${roleMapping.label}" role only between the organizations of the OP-3929 rules`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
           CLASSIFICATION.MUNICIPALITY,
@@ -644,12 +682,7 @@ module('Unit | Model | organization', function (hooks) {
           membershipAsOrganization,
         );
 
-        assert.deepEqual(result.sort(), [...NonWorshipCodeList].sort());
-        assert.notOk(result.includes(CLASSIFICATION.WORSHIP_SERVICE.id));
-        assert.notOk(
-          result.includes(CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id),
-        );
-        assert.notOk(result.includes(CLASSIFICATION.REPRESENTATIVE_BODY.id));
+        assert.deepEqual(result.sort(), expectedAsOrganization.sort());
 
         const membershipAsMember = this.store().createRecord('membership', {
           role,
@@ -658,7 +691,7 @@ module('Unit | Model | organization', function (hooks) {
 
         result = model.getClassificationCodesForMembership(membershipAsMember);
 
-        assert.deepEqual(result.sort(), [...NonWorshipCodeList].sort());
+        assert.deepEqual(result.sort(), expectedAsMember.sort());
       });
     });
 

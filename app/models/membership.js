@@ -6,6 +6,10 @@ import {
   validateBelongsToRequired,
 } from '../validators/schema';
 import { MEMBERSHIP_ROLES_MAPPING } from './membership-role';
+import {
+  getUnsatisfiedRequiredField,
+  minimumRequiredFieldMessage,
+} from '../utils/membership-rules';
 
 export default class MembershipModel extends AbstractValidationModel {
   @belongsTo('organization', {
@@ -61,43 +65,54 @@ export default class MembershipModel extends AbstractValidationModel {
         //   above note this relaxation comes automatically, but if/when the
         //   validations are also performed during editing this should again be
         //   taken into account.
+        // - Which fields are mandatory per type is defined in
+        //   `membershipFieldsByClassification` (constants/memberships.js),
+        //   with the validation logic in `utils/membership-rules.js`.
         is: Joi.exist().valid(true),
         then: validateBelongsToRequired(REQUIRED_MESSAGE).external(
           async (value, helpers) => {
+            // The organization being created is the one that is not
+            // persisted yet; the picked organizations are.
             const organization = await this.organization;
+            const member = await this.member;
+            const newOrganization =
+              member?.isNew && !organization?.isNew ? member : organization;
+
+            if (!newOrganization?.isNew) {
+              return value;
+            }
+
             // NOTE: do not rely on IDs as this is dealing with not yet
             // persisted resources
-            const allMemberships = await organization.memberships;
+            const allMemberships = [
+              ...(await newOrganization.memberships),
+              ...(await newOrganization.membershipsOfOrganizations),
+            ];
 
             let roles = [];
 
             if (
-              organization.isIgs ||
-              organization.isPoliceZone ||
-              organization.isAssistanceZone
-            ) {
-              roles.push(MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN);
-            }
-
-            if (
-              organization.isApb ||
-              organization.isAgb ||
-              organization.isOcmwAssociation ||
-              organization.isPevaMunicipality ||
-              organization.isPevaProvince
-            ) {
-              roles.push(MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF);
-            }
-
-            if (
-              organization.isWorshipService ||
-              organization.isCentralWorshipService
+              newOrganization.isWorshipService ||
+              newOrganization.isCentralWorshipService
             ) {
               roles.push(MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH);
             }
 
             if (!this.#containsMembershipForRoles(allMemberships, roles)) {
               return helpers.message('Selecteer een optie');
+            }
+
+            const unsatisfiedField = getUnsatisfiedRequiredField(
+              newOrganization,
+              allMemberships,
+            );
+            if (unsatisfiedField) {
+              return helpers.message(
+                minimumRequiredFieldMessage(
+                  unsatisfiedField,
+                  newOrganization.classification?.get('id'),
+                ),
+              );
             }
 
             return value;

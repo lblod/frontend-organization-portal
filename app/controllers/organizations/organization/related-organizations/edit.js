@@ -3,8 +3,14 @@ import { dropTask } from 'ember-concurrency';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { saveRecord } from '@warp-drive/legacy/compat/builders';
-import { shouldSwapAssignments } from 'frontend-organization-portal/constants/memberships';
+import {
+  query as queryBuilder,
+  saveRecord,
+} from '@warp-drive/legacy/compat/builders';
+import {
+  removingMembershipBreaksMinimum,
+  shouldSwapAssignments,
+} from 'frontend-organization-portal/utils/membership-rules';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditController extends Controller {
   @service router;
@@ -19,6 +25,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   @tracked selectedRoleLabel;
 
   @tracked founderToRemove;
+
+  @tracked membershipRemovalError;
 
   @tracked nonActiveMembership;
   @tracked nonActiveRelatedOrganization;
@@ -49,13 +57,94 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   }
 
   @action
-  removeMembership(membership) {
+  async removeMembership(membership) {
+    // The organization being edited must keep meeting the minimum of the
+    // field the membership belongs to.
+    if (
+      removingMembershipBreaksMinimum(
+        membership,
+        this.model.organization,
+        this.memberships ?? [],
+      )
+    ) {
+      this.membershipRemovalError = this.#removalErrorFor('je organisatie');
+      return;
+    }
+
+    // The organization on the other side of the membership must keep meeting
+    // its minimums as well. Its memberships are not on this page, so they are
+    // fetched here.
+    const otherOrganization = this.#otherOrganizationOf(membership);
+    if (otherOrganization) {
+      const otherMemberships =
+        await this.#fetchMembershipsOf(otherOrganization);
+      if (
+        otherMemberships &&
+        removingMembershipBreaksMinimum(
+          membership,
+          otherOrganization,
+          otherMemberships,
+        )
+      ) {
+        this.membershipRemovalError = this.#removalErrorFor(
+          otherOrganization.abbName,
+        );
+        return;
+      }
+    }
+
     this.founderToRemove = membership;
   }
 
   @action
   cancelMembershipRemoval() {
     this.founderToRemove = undefined;
+  }
+
+  @action
+  dismissMembershipRemovalError() {
+    this.membershipRemovalError = null;
+  }
+
+  /**
+   * The organization on the other side of the given membership. `null` for a
+   * row that was added but never filled in completely.
+   */
+  #otherOrganizationOf(membership) {
+    const organization = this.model.organization;
+    return membership.belongsTo('member').value() === organization
+      ? membership.belongsTo('organization').value()
+      : membership.belongsTo('member').value();
+  }
+
+  /**
+   * The persisted memberships of the given organization, on both the
+   * `organization` and the `member` side. `null` if they could not be loaded:
+   * the page size matches the one this page loads for the organization being
+   * edited.
+   */
+  async #fetchMembershipsOf(organization) {
+    try {
+      const { content } = await this.store.request(
+        queryBuilder('membership', {
+          'filter[:or:][member][:id:]': organization.id,
+          'filter[:or:][organization][:id:]': organization.id,
+          include:
+            'role,member,organization,member.classification,organization.classification',
+          page: { size: 500, number: 0 },
+        }),
+      );
+      return content;
+    } catch {
+      // Without the memberships the minimum of the other organization cannot
+      // be checked. Allow the removal in that case, as it was before the
+      // other side of a removal was checked at all.
+      return null;
+    }
+  }
+
+  #removalErrorFor(organizationName) {
+    return `Je kan deze relatie niet verwijderen omdat ${organizationName} anders onder het vereiste minimum aantal relaties van dit type komt.`;
   }
 
   @action
@@ -241,6 +330,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     this.memberships = null;
     this.selectedRoleLabel = null;
     this.founderToRemove = null;
+    this.membershipRemovalError = null;
     this.nonActiveMembership = null;
     this.nonActiveRelatedOrganization = null;
   }

@@ -8,6 +8,12 @@ import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
+import { membershipFieldsByClassification } from 'frontend-organization-portal/constants/memberships';
+import {
+  allowedClassificationsForMembershipField,
+  fieldMeetsMinimum,
+  minimumRequiredFieldMessage,
+} from 'frontend-organization-portal/utils/membership-rules';
 import {
   findAll,
   query as queryBuilder,
@@ -27,7 +33,6 @@ export default class OrganizationsNewController extends Controller {
   @tracked membershipsOfOrganizations = [];
 
   @tracked founders = [];
-  @tracked participants = [];
   @tracked municipality;
   @tracked province;
 
@@ -35,10 +40,46 @@ export default class OrganizationsNewController extends Controller {
   @tracked centralWorshipService;
   @tracked representativeBody;
 
+  // Keeps the organizations the user picked in each related-organization
+  // field, keyed by `${roleId}-${asMember}` (`asMember` distinguishes the
+  // field's side of the relation).
+  @tracked fieldSelections = {};
+
   @tracked relatedNonActiveOrganization;
   @tracked setRelatedOrganizationFunction;
 
   @tracked locations;
+
+  /**
+   * The related-organization fields of the "Gerelateerde organisaties" card,
+   * per classification (see `membershipFieldsByClassification`).
+   */
+  get membershipFields() {
+    const classificationId =
+      this.currentOrganizationModel.classification?.get('id');
+    const fields = membershipFieldsByClassification[classificationId] ?? [];
+
+    return fields
+      .filter((field) => !field.skipCreateForm)
+      .map((field) => ({
+        key: `${field.role.id}-${field.asMember}`,
+        label: field.asMember ? field.role.label : field.role.inverseLabel,
+        classificationCodes: allowedClassificationsForMembershipField(
+          classificationId,
+          field,
+        ),
+        required: field.required,
+        multiple: field.multiple,
+        minimum: field.minimum,
+        role: field.role,
+        asMember: field.asMember,
+        selectedOrganizations:
+          this.fieldSelections[`${field.role.id}-${field.asMember}`] ?? [],
+        selectedOrganization:
+          this.fieldSelections[`${field.role.id}-${field.asMember}`]?.[0],
+        error: this.getFieldError(field),
+      }));
+  }
 
   get hasValidationErrors() {
     return (
@@ -134,19 +175,69 @@ export default class OrganizationsNewController extends Controller {
   }
 
   #getErrorMessageForMembershipField(field) {
-    const membershipWithError = this.memberships.find(
-      (membership) => membership.error,
-    );
+    const membershipWithError = [
+      ...this.memberships,
+      ...this.membershipsOfOrganizations,
+    ].find((membership) => membership.error);
 
     if (!field || field.length === 0) {
-      return membershipWithError
-        ? membershipWithError.error.role.message
-        : this.currentOrganizationModel.error?.memberships?.message;
+      return (
+        membershipWithError?.error.role.message ??
+        this.currentOrganizationModel.error?.memberships?.message ??
+        this.currentOrganizationModel.error?.membershipsOfOrganizations?.message
+      );
     }
   }
 
   get municipalityError() {
-    return this.#getErrorMessageForMembershipField(this.municipality);
+    return this.#founderFieldError();
+  }
+
+  /**
+   * The error to show under a related-organization field: a mandatory field
+   * below its minimum gets a message naming what is missing, e.g. "Kies
+   * minstens 1 OCMW". Only shown once a save attempt failed on the
+   * memberships.
+   */
+  getFieldError(field) {
+    if (!this.#hasMembershipValidationErrors()) return;
+
+    const memberships = [
+      ...this.memberships,
+      ...this.membershipsOfOrganizations,
+    ];
+    if (
+      field.required &&
+      !fieldMeetsMinimum(field, this.currentOrganizationModel, memberships)
+    ) {
+      return minimumRequiredFieldMessage(
+        field,
+        this.currentOrganizationModel.classification?.get('id'),
+      );
+    }
+  }
+
+  #hasMembershipValidationErrors() {
+    return (
+      this.currentOrganizationModel.error?.memberships ||
+      this.memberships.some((membership) => membership.error) ||
+      this.membershipsOfOrganizations.some((membership) => membership.error)
+    );
+  }
+
+  // The AGB/APB blocks render the founder field themselves through the
+  // municipality/province select, its error comes from the same configuration.
+  #founderFieldError() {
+    const classificationId =
+      this.currentOrganizationModel.classification?.get('id');
+    const founderField = (
+      membershipFieldsByClassification[classificationId] ?? []
+    ).find(
+      (field) =>
+        field.role.id === MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id &&
+        !field.asMember,
+    );
+    return founderField && this.getFieldError(founderField);
   }
 
   @action
@@ -165,51 +256,46 @@ export default class OrganizationsNewController extends Controller {
   }
 
   get provinceError() {
-    return this.#getErrorMessageForMembershipField(this.province);
+    return this.#founderFieldError();
   }
 
   @action
-  addFounders(founders) {
-    const newFounder = this.#getNewOrganization(this.founders, founders);
-
-    if (!newFounder || newFounder.isActive) {
-      this.#reallySetFounders(founders);
-    } else {
-      this.#setNonActiveRelationVariables(this.#reallySetFounders, founders);
-    }
-  }
-
-  #reallySetFounders(founders) {
-    this.founders = founders;
-  }
-
-  get foundersError() {
-    return this.#getErrorMessageForMembershipField(this.founders);
-  }
-
-  @action
-  addParticipants(participants) {
-    const newParticipant = this.#getNewOrganization(
-      this.participants,
-      participants,
+  addOrganizationsForField(field, organizations) {
+    const newOrganization = this.#getNewOrganization(
+      this.fieldSelections[field.key] ?? [],
+      organizations,
     );
 
-    if (!newParticipant || newParticipant.isActive) {
-      this.#reallySetParticipants(participants);
+    if (!newOrganization || newOrganization.isActive) {
+      this.#reallySetOrganizationsForField(field, organizations);
     } else {
       this.#setNonActiveRelationVariables(
-        this.#reallySetParticipants,
-        participants,
+        (orgs) => this.#reallySetOrganizationsForField(field, orgs),
+        organizations,
       );
     }
   }
 
-  #reallySetParticipants(participants) {
-    this.participants = participants;
+  @action
+  setOrganizationForField(field, organization) {
+    if (!organization || organization.isActive) {
+      this.#reallySetOrganizationsForField(
+        field,
+        organization ? [organization] : [],
+      );
+    } else {
+      this.#setNonActiveRelationVariables(
+        (org) => this.#reallySetOrganizationsForField(field, org ? [org] : []),
+        organization,
+      );
+    }
   }
 
-  get participantsError() {
-    return this.#getErrorMessageForMembershipField(this.participants);
+  #reallySetOrganizationsForField(field, organizations) {
+    this.fieldSelections = {
+      ...this.fieldSelections,
+      [field.key]: organizations,
+    };
   }
 
   @action
@@ -344,7 +430,9 @@ export default class OrganizationsNewController extends Controller {
       this.currentOrganizationModel.deleteRecord();
       // Delete any created memberships
       this.founders = [];
-      this.participants = [];
+      this.memberships = [];
+      this.membershipsOfOrganizations = [];
+      this.fieldSelections = {};
       this.municipality = null;
       this.province = null;
 
@@ -521,16 +609,29 @@ export default class OrganizationsNewController extends Controller {
     // Note: non-worship organizations only get specific relations (founder,
     // member, ...). The generic "has a relation with" role is reserved for
     // worship organizations, see the related-organizations route.
+
+    // Founders are set by the AGB/APB blocks (municipality/province select).
     this.memberships.push(
       ...this.#createMembershipModels(
         this.founders,
         MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
       ),
-      ...this.#createMembershipModels(
-        this.participants,
-        MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id,
-      ),
     );
+
+    // The fields of the classification config. "Is lid van" puts the created
+    // organization on the `member` side, the other fields on the
+    // `organization` side.
+    this.membershipFields.forEach((field) => {
+      const createdMemberships = this.#createMembershipModels(
+        this.fieldSelections[field.key] ?? [],
+        field.role.id,
+        field.asMember,
+      );
+      (field.asMember
+        ? this.membershipsOfOrganizations
+        : this.memberships
+      ).push(...createdMemberships);
+    });
 
     if (this.currentOrganizationModel.isCentralWorshipService) {
       this.memberships.push(
@@ -717,6 +818,8 @@ export default class OrganizationsNewController extends Controller {
     this.model.address.reset();
     this.memberships = [];
     this.membershipsOfOrganizations = [];
+    this.founders = [];
+    this.fieldSelections = {};
     this.municipality = null;
     this.province = null;
     this.worshipServices = [];

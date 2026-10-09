@@ -13,23 +13,19 @@ import {
   AssistanceZoneCodeList,
   CentralWorshipServiceCodeList,
   DistrictCodeList,
+  InterlokaleVerenigingCodeList,
   IGSCodeList,
   MunicipalityCodeList,
   OcmwAssociationCodeList,
   OCMWCodeList,
-  PoliceZoneCodeList,
-  ProvinceCodeList,
   PevaMunicipalityCodeList,
   PevaProvinceCodeList,
-  WorshipServiceCodeList,
-  VlaamseGemeenschapscommissieCodeList,
-  InterlokaleVerenigingCodeList,
+  PoliceZoneCodeList,
+  ProvinceCodeList,
   VervoerregioraadCodeList,
+  VlaamseGemeenschapscommissieCodeList,
+  WorshipServiceCodeList,
 } from '../constants/classification';
-import {
-  allowedFoundingMemberships,
-  allowedParticipationMemberships,
-} from '../constants/memberships';
 
 export default class AdministrativeUnitModel extends OrganizationModel {
   @belongsTo('location', {
@@ -97,12 +93,33 @@ export default class AdministrativeUnitModel extends OrganizationModel {
             ...AssistanceZoneCodeList,
             ...WorshipServiceCodeList,
             ...CentralWorshipServiceCodeList,
+            ...DistrictCodeList,
+            ...MunicipalityCodeList,
+            ...InterlokaleVerenigingCodeList,
+            ...VervoerregioraadCodeList,
           ),
-          then: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
+          then: validateHasManyNotEmptyRequired(
+            'Kies minstens 1 gerelateerde organisatie',
+          ),
           otherwise: validateHasManyOptional(),
         }),
         otherwise: validateHasManyOptional(),
       }),
+      // The OCMW is the only type whose mandatory related organization, the
+      // municipality it serves ("Bedient"), sits on the member side of the
+      // membership. The `memberships` rule above does not cover that side.
+      membershipsOfOrganizations: Joi.when(
+        Joi.ref('$creatingNewOrganization'),
+        {
+          is: Joi.exist().valid(true),
+          then: Joi.when('classification.id', {
+            is: Joi.exist().valid(...OCMWCodeList),
+            then: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
+            otherwise: validateHasManyOptional(),
+          }),
+          otherwise: validateHasManyOptional(),
+        },
+      ),
       expectedEndDate: Joi.when('classification.id', {
         is: Joi.exist().valid(...IGSCodeList),
         then: Joi.date()
@@ -195,18 +212,6 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       this.isVervoerregioraad ||
       this.isInterlokaleVereniging
     );
-  }
-
-  get participantClassifications() {
-    return allowedParticipationMemberships
-      .filter((e) => e.organizations.includes(this.classification.id))
-      .flatMap((e) => e.members);
-  }
-
-  get founderClassifications() {
-    return allowedFoundingMemberships
-      .filter((e) => e.organizations.includes(this.classification.id))
-      .flatMap((e) => e.members);
   }
 
   get requiresGoverningBodies() {
