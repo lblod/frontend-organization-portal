@@ -4,6 +4,7 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import {
   allowedClassificationsForMembershipField,
+  allowedRoleLabelsForClassification,
   allowedRolesForClassification,
   hasRequiredMembershipFields,
   removingMembershipBreaksMinimum,
@@ -115,6 +116,92 @@ module('Unit | Utils | membership rules', function (hooks) {
             (role) => role.id,
           ),
           roles.map((role) => role.id),
+        );
+      });
+    });
+  });
+
+  module('allowedRoleLabelsForClassification', function () {
+    [
+      [
+        CLASSIFICATION.PROVINCE,
+        ['Is lid van', 'Is oprichter van', 'Verleent erkenning aan'],
+      ],
+      [
+        CLASSIFICATION.BOSGROEP,
+        [
+          'Is lid van',
+          'Heeft als leden',
+          'Werd erkend door',
+          'Werd opgericht door',
+        ],
+      ],
+      [
+        CLASSIFICATION.OCMW,
+        [
+          'Bedient',
+          'Is feitelijk vertegenwoordigd in (niet lidmaatschap)',
+          'Is lid van',
+          'Is oprichter van',
+        ],
+      ],
+      [
+        CLASSIFICATION.MUNICIPALITY,
+        [
+          'Is feitelijk vertegenwoordigd in (niet lidmaatschap)',
+          'Is lid van',
+          'Is oprichter van',
+          'Wordt bediend door',
+        ],
+      ],
+      [CLASSIFICATION.DISTRICT, ['Werd opgericht door']],
+    ].forEach(([classification, labels]) => {
+      test(`it should offer only the usable labels of the rules for a ${classification.label}`, function (assert) {
+        assert.deepEqual(
+          allowedRoleLabelsForClassification(classification.id).sort(),
+          labels.sort(),
+        );
+      });
+    });
+
+    [
+      CLASSIFICATION.WORSHIP_SERVICE,
+      CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
+      CLASSIFICATION.REPRESENTATIVE_BODY,
+    ].forEach((classification) => {
+      test(`a ${classification.label} keeps "Heeft een relatie met"`, function (assert) {
+        assert.true(
+          allowedRoleLabelsForClassification(classification.id).includes(
+            'Heeft een relatie met',
+          ),
+        );
+      });
+    });
+
+    test('it offers a label exactly when the rules know the classification on the side the label implies', function (assert) {
+      Object.values(CLASSIFICATION).forEach((classification) => {
+        const labels = allowedRoleLabelsForClassification(classification.id);
+        const expected = new Set();
+
+        Object.values(MEMBERSHIP_ROLES_MAPPING).forEach((role) => {
+          [true, false].forEach((asMember) => {
+            if (
+              allowedClassificationsForMembershipField(classification.id, {
+                role,
+                asMember,
+              }).length > 0
+            ) {
+              // For "has a relation with" both labels are one and the same
+              // string, so the set keeps each once whatever the directions.
+              expected.add(asMember ? role.label : role.inverseLabel);
+            }
+          });
+        });
+
+        assert.deepEqual(
+          labels,
+          Array.from(expected).sort(),
+          `labels for a ${classification.label}`,
         );
       });
     });

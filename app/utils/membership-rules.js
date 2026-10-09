@@ -80,6 +80,53 @@ export function allowedRolesForClassification(classificationId) {
 }
 
 /**
+ * The relationship labels a user may pick for a new relation row with an
+ * organization of the given classification. Each directional label implies one
+ * side of the membership for the organization being edited: `role.label`
+ * (referred to as `opLabel` on role models) puts it on the `member` side,
+ * `role.inverseLabel` on the `organization` side. A label is offered only when
+ * the rules place the classification on the side the label implies, so every
+ * offered label leads to a non-empty organization select.
+ *
+ * @param {string} classificationId - classification of the organization.
+ * @returns {string[]} sorted list of the usable labels.
+ */
+export function allowedRoleLabelsForClassification(classificationId) {
+  const labels = new Set();
+  MEMBERSHIP_ROLES.forEach((role) => {
+    const relations = allowedMembershipRelations.get(role.id) || [];
+
+    if (role.id === MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id) {
+      // This role has no direction for the user and both labels are one and
+      // the same string, so offer it once when the rules know the
+      // classification on either side.
+      if (
+        relations.some(
+          (entry) =>
+            entry.organizations.includes(classificationId) ||
+            entry.members.includes(classificationId),
+        )
+      ) {
+        labels.add(role.label);
+      }
+    } else {
+      if (relations.some((entry) => entry.members.includes(classificationId))) {
+        labels.add(role.label);
+      }
+      if (
+        relations.some((entry) =>
+          entry.organizations.includes(classificationId),
+        )
+      ) {
+        labels.add(role.inverseLabel);
+      }
+    }
+  });
+
+  return Array.from(labels).sort();
+}
+
+/**
  * The classification codes of the organizations that may be selected for a
  * related-organization field, derived from the `allowed*Memberships` tables.
  *
