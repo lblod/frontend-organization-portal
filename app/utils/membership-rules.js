@@ -272,6 +272,15 @@ export function removingMembershipBreaksMinimum(
   const field = membershipFieldFor(membership, organization);
   if (!field?.minimum) return false;
 
+  // The minimum counts only memberships whose other organization is picked
+  // and is of the minimum's classifications.
+  if (
+    !hasOtherOrganization(field, membership) ||
+    !countsTowardsMinimum(field, membership)
+  ) {
+    return false;
+  }
+
   const others = memberships.filter(
     (other) => other !== membership && !other.isDeleted,
   );

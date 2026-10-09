@@ -40,8 +40,9 @@ export default class OrganizationsNewController extends Controller {
   @tracked centralWorshipService;
   @tracked representativeBody;
 
-  // The organizations selected in the related-organization fields, keyed by
-  // field key (`${roleId}-${asMember}`).
+  // Keeps the organizations the user picked in each related-organization
+  // field, keyed by `${roleId}-${asMember}` (`asMember` distinguishes the
+  // field's side of the relation).
   @tracked fieldSelections = {};
 
   @tracked relatedNonActiveOrganization;

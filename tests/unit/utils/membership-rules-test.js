@@ -579,5 +579,62 @@ module('Unit | Utils | membership rules', function (hooks) {
         removingMembershipBreaksMinimum(founder, district, [founder, emptyRow]),
       );
     });
+
+    test('it returns false when removing an empty row with a role but no organization, below its minimum', async function (assert) {
+      const store = this.store();
+      const zorgraad = createOrganization(store, CLASSIFICATION.ZORGRAAD);
+      const emptyRow = createMembership(store, {
+        role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+        member: zorgraad,
+      });
+
+      // Legacy zorgraad below its minimum: the empty row never counted
+      // towards the minimum, so removing it cannot break it.
+      assert.false(
+        removingMembershipBreaksMinimum(emptyRow, zorgraad, [emptyRow]),
+      );
+    });
+
+    test('it returns false when removing a membership whose other organization does not count towards the restricted minimum', async function (assert) {
+      const store = this.store();
+      const zorgraad = createOrganization(store, CLASSIFICATION.ZORGRAAD);
+      const interlokaleVereniging = createOrganization(
+        store,
+        CLASSIFICATION.INTERLOKALE_VERENIGING,
+      );
+      const participatesInInterlokale = createMembership(store, {
+        role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+        organization: interlokaleVereniging,
+        member: zorgraad,
+      });
+
+      // The interlokale vereniging membership does not count towards the
+      // minimum of one regionaal zorgplatform, so removing it is fine.
+      assert.false(
+        removingMembershipBreaksMinimum(participatesInInterlokale, zorgraad, [
+          participatesInInterlokale,
+        ]),
+      );
+    });
+
+    test('it returns true when removing a membership of the minimum classifications takes a restricted field below its minimum', async function (assert) {
+      const store = this.store();
+      const zorgraad = createOrganization(store, CLASSIFICATION.ZORGRAAD);
+      const regionaalZorgplatform = createOrganization(
+        store,
+        CLASSIFICATION.REGIONAAL_ZORGPLATFORM,
+      );
+      const participatesInPlatform = createMembership(store, {
+        role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+        organization: regionaalZorgplatform,
+        member: zorgraad,
+      });
+
+      assert.true(
+        removingMembershipBreaksMinimum(participatesInPlatform, zorgraad, [
+          participatesInPlatform,
+        ]),
+      );
+    });
   });
 });
