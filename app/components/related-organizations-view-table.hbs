@@ -19,7 +19,7 @@
         </AuToggleSwitch>
 
         <MembershipRoleSelect
-          @options={{@model.roles}}
+          @options={{@model.selectableRoles}}
           @selected={{@selectedRole}}
           @onChange={{fn (mut @selectedRole)}}
           @allowClear={{true}}

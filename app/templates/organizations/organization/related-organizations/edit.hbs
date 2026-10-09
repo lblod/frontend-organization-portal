@@ -73,3 +73,16 @@
     @onCancel={{this.cancelMembershipRemoval}}
   />
 {{/if}}
+
+{{#if this.membershipRemovalError}}
+  <AuModal
+    @modalOpen={{true}}
+    @closeModal={{this.dismissMembershipRemovalError}}
+  >
+    <:title>Relatie verwijderen</:title>
+    <:body>{{this.membershipRemovalError}}</:body>
+    <:footer>
+      <AuButton {{on "click" this.dismissMembershipRemovalError}}>OK</AuButton>
+    </:footer>
+  </AuModal>
+{{/if}}

@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import { query } from '@warp-drive/legacy/compat/builders';
 import { MEMBERSHIP_ROLES } from 'frontend-organization-portal/models/membership-role';
+import { allowedRolesForClassification } from 'frontend-organization-portal/constants/memberships';
 
 export default class OrganizationsOrganizationRelatedOrganizationsRoute extends Route {
   @service store;
@@ -15,15 +16,13 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
       }),
     );
 
-    // Worship organizations only use the generic "has a relation with" role.
-    // Other organizations get the specific roles; their existing generic
-    // memberships stay visible but no new ones can be created.
-    const isWorship = Boolean(
-      organization.isWorshipAdministrativeUnit ||
-      organization.isRepresentativeBody,
-    );
-    const selectableRoles = roles.filter(
-      (role) => role.hasRelationWith === isWorship,
+    // Only offer the roles the rules allow for the classification. Memberships
+    // whose role is no longer offered keep displaying; they are live data.
+    const classificationId = organization.classification?.get('id');
+    const selectableRoles = roles.filter((role) =>
+      allowedRolesForClassification(classificationId).some(
+        (selectableRole) => selectableRole.id === role.id,
+      ),
     );
 
     return { organization, roles, selectableRoles };

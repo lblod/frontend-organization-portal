@@ -420,15 +420,10 @@
       (and
         this.currentOrganizationModel.classification
         (or
-          this.currentOrganizationModel.isAgb
-          this.currentOrganizationModel.isIgs
-          this.currentOrganizationModel.isPoliceZone
-          this.currentOrganizationModel.isAssistanceZone
-          this.currentOrganizationModel.isOcmwAssociation
-          this.currentOrganizationModel.isPevaMunicipality
-          this.currentOrganizationModel.isPevaProvince
-          this.currentOrganizationModel.isApb
           this.currentOrganizationModel.isWorshipAdministrativeUnit
+          this.currentOrganizationModel.isAgb
+          this.currentOrganizationModel.isApb
+          this.membershipFields.length
         )
       )
     }}
@@ -486,6 +481,8 @@
           {{else}}
             <Card.Columns>
               <:left as |Item|>
+                {{! The AGB/APB blocks render their founder field themselves,
+                    the other fields come from the per-type configuration. }}
                 {{#if this.currentOrganizationModel.isAgb}}
                   <Item
                     @labelFor="related-gemeente"
@@ -514,65 +511,6 @@
                     <:label>Werd opgericht door</:label>
                     <:content>{{this.municipality.abbName}}</:content>
                   </Item>
-                {{else if
-                  (or
-                    this.currentOrganizationModel.isIgs
-                    this.currentOrganizationModel.isPoliceZone
-                    this.currentOrganizationModel.isAssistanceZone
-                  )
-                }}
-                  <Item
-                    @labelFor="participants"
-                    @required={{true}}
-                    @errorMessage={{this.participantsError}}
-                  >
-                    <:label>Heeft als leden</:label>
-                    <:content as |hasError|>
-                      <OrganizationMultipleSelect
-                        @selected={{this.participants}}
-                        @onChange={{this.addParticipants}}
-                        @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
-                        @error={{hasError}}
-                        @id="participants"
-                      />
-                    </:content>
-                  </Item>
-                {{else if
-                  (or
-                    this.currentOrganizationModel.isOcmwAssociation
-                    this.currentOrganizationModel.isPevaMunicipality
-                    this.currentOrganizationModel.isPevaProvince
-                  )
-                }}
-                  <Item
-                    @labelFor="founders-ocmw-association-peva"
-                    @required={{true}}
-                    @errorMessage={{this.foundersError}}
-                  >
-                    <:label>Werd opgericht door</:label>
-                    <:content as |hasError|>
-                      <OrganizationMultipleSelect
-                        @selected={{this.founders}}
-                        @onChange={{this.addFounders}}
-                        @classificationCodes={{this.currentOrganizationModel.founderClassifications}}
-                        @error={{hasError}}
-                        @id="founders-ocmw-association-peva"
-                      />
-                    </:content>
-                  </Item>
-
-                  <Item @labelFor="participants-ocmw-association-peva">
-                    <:label>Heeft als leden</:label>
-                    <:content as |hasError|>
-                      <OrganizationMultipleSelect
-                        @selected={{this.participants}}
-                        @onChange={{this.addParticipants}}
-                        @classificationCodes={{this.currentOrganizationModel.participantClassifications}}
-                        @error={{hasError}}
-                        @id="participants-ocmw-association-peva"
-                      />
-                    </:content>
-                  </Item>
                 {{else if this.currentOrganizationModel.isApb}}
                   <Item
                     @labelFor="related-province"
@@ -596,6 +534,37 @@
                     <:content>{{this.province.abbName}}</:content>
                   </Item>
                 {{/if}}
+
+                {{! The related-organization fields per organization type }}
+                {{#each this.membershipFields as |field|}}
+                  <Item
+                    @labelFor={{field.key}}
+                    @required={{field.required}}
+                    @errorMessage={{field.error}}
+                  >
+                    <:label>{{field.label}}</:label>
+                    <:content as |hasError|>
+                      {{#if field.multiple}}
+                        <OrganizationMultipleSelect
+                          @selected={{field.selectedOrganizations}}
+                          @onChange={{fn this.addOrganizationsForField field}}
+                          @classificationCodes={{field.classificationCodes}}
+                          @error={{hasError}}
+                          @id={{field.key}}
+                        />
+                      {{else}}
+                        <OrganizationSelect
+                          @selected={{field.selectedOrganization}}
+                          @onChange={{fn this.setOrganizationForField field}}
+                          @classificationCodes={{field.classificationCodes}}
+                          @allowClear={{true}}
+                          @error={{hasError}}
+                          @id={{field.key}}
+                        />
+                      {{/if}}
+                    </:content>
+                  </Item>
+                {{/each}}
               </:left>
             </Card.Columns>
           {{/if}}

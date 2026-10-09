@@ -49,7 +49,7 @@ module('Unit | Model | worship service', function (hooks) {
         legalName: { message: 'Vul de juridische naam in' },
         organizationStatus: { message: 'Selecteer een optie' },
         recognizedWorshipType: { message: 'Selecteer een optie' },
-        memberships: { message: 'Selecteer een optie' },
+        memberships: { message: 'Kies minstens 1 gerelateerde organisatie' },
         scope: { message: 'Selecteer een optie' },
       });
     });

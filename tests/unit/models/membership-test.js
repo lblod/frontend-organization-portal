@@ -33,7 +33,7 @@ module('Unit | Model | membership', function (hooks) {
         CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
         CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
       ].forEach((cl) => {
-        test(`it should not return an error when a founder and participant are provided for ${cl.label}`, async function (assert) {
+        test(`it should not return an error when two municipal founders and participants are provided for ${cl.label}`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
             cl,
@@ -46,16 +46,61 @@ module('Unit | Model | membership', function (hooks) {
             },
           );
 
-          const member = this.store().createRecord('organization');
+          const municipalityClassification = this.store().createRecord(
+            'administrative-unit-classification-code',
+            CLASSIFICATION.MUNICIPALITY,
+          );
+          const municipalityOne = this.store().createRecord(
+            'administrative-unit',
+            {
+              classification: municipalityClassification,
+            },
+          );
+          const municipalityTwo = this.store().createRecord(
+            'administrative-unit',
+            {
+              classification: municipalityClassification,
+            },
+          );
 
+          const founderRole = this.store().createRecord(
+            'membership-role',
+            MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+          );
           const participantRole = this.store().createRecord(
             'membership-role',
             MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
           );
 
-          const participant = this.store().createRecord('membership', {
+          const founderOne = this.store().createRecord('membership', {
+            organization: organization,
+            member: municipalityOne,
+            role: founderRole,
+          });
+          const founderTwo = this.store().createRecord('membership', {
+            organization: organization,
+            member: municipalityTwo,
+            role: founderRole,
+          });
+          const participantOne = this.store().createRecord('membership', {
+            organization: organization,
+            member: municipalityOne,
             role: participantRole,
           });
+          const participantTwo = this.store().createRecord('membership', {
+            organization: organization,
+            member: municipalityTwo,
+            role: participantRole,
+          });
+
+          (await organization.memberships).push(
+            founderOne,
+            founderTwo,
+            participantOne,
+            participantTwo,
+          );
+
+          const member = this.store().createRecord('organization');
 
           const relationRole = this.store().createRecord(
             'membership-role',
@@ -68,8 +113,6 @@ module('Unit | Model | membership', function (hooks) {
             role: relationRole,
           });
 
-          (await organization.memberships).push(participant);
-
           const isValid = await model.validate({
             creatingNewOrganization: true,
           });
@@ -79,13 +122,22 @@ module('Unit | Model | membership', function (hooks) {
       });
 
       [
-        CLASSIFICATION.PROJECTVERENIGING,
-        CLASSIFICATION.DIENSTVERLENENDE_VERENIGING,
-        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
-        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
-        CLASSIFICATION.AGB,
-        CLASSIFICATION.APB,
-      ].forEach((cl) => {
+        [CLASSIFICATION.PROJECTVERENIGING, 'Kies minstens 2 gemeenten'],
+        [
+          CLASSIFICATION.DIENSTVERLENENDE_VERENIGING,
+          'Kies minstens 2 gemeenten',
+        ],
+        [
+          CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
+          'Kies minstens 2 gemeenten',
+        ],
+        [
+          CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME,
+          'Kies minstens 2 gemeenten',
+        ],
+        [CLASSIFICATION.AGB, 'Kies minstens 1 gemeente'],
+        [CLASSIFICATION.APB, 'Kies minstens 1 provincie'],
+      ].forEach(([cl, message]) => {
         test(`it should return an error when organization is a(n) ${cl.label} lacking a founder`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
@@ -115,7 +167,7 @@ module('Unit | Model | membership', function (hooks) {
           assert.false(isValid);
           assert.strictEqual(Object.keys(model.error).length, 1);
           assert.propContains(model.error, {
-            role: { message: 'Selecteer een optie' },
+            role: { message },
           });
         });
       });
@@ -155,7 +207,7 @@ module('Unit | Model | membership', function (hooks) {
           assert.false(isValid);
           assert.strictEqual(Object.keys(model.error).length, 1);
           assert.propContains(model.error, {
-            role: { message: 'Selecteer een optie' },
+            role: { message: 'Kies minstens 2 gemeenten' },
           });
         });
       });
@@ -188,17 +240,17 @@ module('Unit | Model | membership', function (hooks) {
           assert.false(isValid);
           assert.strictEqual(Object.keys(model.error).length, 1);
           assert.propContains(model.error, {
-            role: { message: 'Selecteer een optie' },
+            role: { message: 'Kies minstens 1 provincie' },
           });
         });
       });
 
       [
-        CLASSIFICATION.WELZIJNSVERENIGING,
-        CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
-        CLASSIFICATION.PEVA_MUNICIPALITY,
-        CLASSIFICATION.PEVA_PROVINCE,
-      ].forEach((cl) => {
+        [CLASSIFICATION.WELZIJNSVERENIGING, CLASSIFICATION.OCMW],
+        [CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING, CLASSIFICATION.OCMW],
+        [CLASSIFICATION.PEVA_MUNICIPALITY, CLASSIFICATION.MUNICIPALITY],
+        [CLASSIFICATION.PEVA_PROVINCE, CLASSIFICATION.PROVINCE],
+      ].forEach(([cl, participantClassification]) => {
         test(`it returns no error when membership is a founder for a ${cl.label}`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
@@ -210,6 +262,23 @@ module('Unit | Model | membership', function (hooks) {
               classification,
             },
           );
+
+          const participant = this.store().createRecord('administrative-unit', {
+            classification: this.store().createRecord(
+              'administrative-unit-classification-code',
+              participantClassification,
+            ),
+          });
+          const participantRole = this.store().createRecord(
+            'membership-role',
+            MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+          );
+          this.store().createRecord('membership', {
+            organization: organization,
+            member: participant,
+            role: participantRole,
+          });
+
           const member = this.store().createRecord('organization');
 
           const founderRole = this.store().createRecord(
@@ -232,11 +301,11 @@ module('Unit | Model | membership', function (hooks) {
       });
 
       [
-        CLASSIFICATION.WELZIJNSVERENIGING,
-        CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
-        CLASSIFICATION.PEVA_MUNICIPALITY,
-        CLASSIFICATION.PEVA_PROVINCE,
-      ].forEach((cl) => {
+        [CLASSIFICATION.WELZIJNSVERENIGING, CLASSIFICATION.OCMW],
+        [CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING, CLASSIFICATION.OCMW],
+        [CLASSIFICATION.PEVA_MUNICIPALITY, CLASSIFICATION.MUNICIPALITY],
+        [CLASSIFICATION.PEVA_PROVINCE, CLASSIFICATION.PROVINCE],
+      ].forEach(([cl, relatedClassification]) => {
         test(`it returns no error there is another founder for a ${cl.label}`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
@@ -248,15 +317,39 @@ module('Unit | Model | membership', function (hooks) {
               classification,
             },
           );
-          const member = this.store().createRecord('organization');
+
+          const relatedClassificationRecord = this.store().createRecord(
+            'administrative-unit-classification-code',
+            relatedClassification,
+          );
+          const founder = this.store().createRecord('administrative-unit', {
+            classification: relatedClassificationRecord,
+          });
+          const participant = this.store().createRecord('administrative-unit', {
+            classification: relatedClassificationRecord,
+          });
 
           const founderRole = this.store().createRecord(
             'membership-role',
             MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
           );
-          const founder = this.store().createRecord('membership', {
+          const participantRole = this.store().createRecord(
+            'membership-role',
+            MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+          );
+
+          this.store().createRecord('membership', {
+            organization: organization,
+            member: founder,
             role: founderRole,
           });
+          this.store().createRecord('membership', {
+            organization: organization,
+            member: participant,
+            role: participantRole,
+          });
+
+          const member = this.store().createRecord('organization');
 
           const role = this.store().createRecord('membership-role');
           const model = this.store().createRecord('membership', {
@@ -264,8 +357,6 @@ module('Unit | Model | membership', function (hooks) {
             member: member,
             role: role,
           });
-
-          (await organization.memberships).push(founder);
 
           const isValid = await model.validate({
             creatingNewOrganization: true,
@@ -305,7 +396,7 @@ module('Unit | Model | membership', function (hooks) {
             assert.false(isValid);
             assert.strictEqual(Object.keys(model.error).length, 1);
             assert.propContains(model.error, {
-              role: { message: 'Selecteer een optie' },
+              role: { message: 'Kies minstens 1 gemeente' },
             });
           });
         },
@@ -374,24 +465,30 @@ module('Unit | Model | membership', function (hooks) {
 
             assert.false(isValid);
             assert.propContains(model.error, {
-              role: { message: 'Selecteer een optie' },
+              role: { message: 'Kies minstens 1 gemeente' },
             });
           });
         },
       );
 
       [
-        [CLASSIFICATION.APB, MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF],
+        [
+          CLASSIFICATION.APB,
+          MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+          CLASSIFICATION.PROVINCE,
+        ],
         [
           CLASSIFICATION.PROJECTVERENIGING,
           MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+          CLASSIFICATION.MUNICIPALITY,
         ],
         [
           CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
           MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+          CLASSIFICATION.MUNICIPALITY,
         ],
-      ].forEach(([cl, roleMapping]) => {
-        test(`it returns no error when the only membership is a "${roleMapping.label}" for a ${cl.label}`, async function (assert) {
+      ].forEach(([cl, roleMapping, participantClassification]) => {
+        test(`it returns no error when a "${roleMapping.label}" and the other required memberships are provided for a ${cl.label}`, async function (assert) {
           const classification = this.store().createRecord(
             'administrative-unit-classification-code',
             cl,
@@ -402,17 +499,69 @@ module('Unit | Model | membership', function (hooks) {
               classification,
             },
           );
-          const member = this.store().createRecord('organization');
 
-          const role = this.store().createRecord(
-            'membership-role',
-            roleMapping,
+          const municipalityClassification = this.store().createRecord(
+            'administrative-unit-classification-code',
+            CLASSIFICATION.MUNICIPALITY,
           );
+          const participantClassificationRecord =
+            participantClassification === CLASSIFICATION.MUNICIPALITY
+              ? municipalityClassification
+              : this.store().createRecord(
+                  'administrative-unit-classification-code',
+                  participantClassification,
+                );
+
+          const municipalityOne = this.store().createRecord(
+            'administrative-unit',
+            {
+              classification: municipalityClassification,
+            },
+          );
+          const municipalityTwo = this.store().createRecord(
+            'administrative-unit',
+            {
+              classification: municipalityClassification,
+            },
+          );
+          const participant = this.store().createRecord('administrative-unit', {
+            classification: participantClassificationRecord,
+          });
+
+          const founderRole = this.store().createRecord(
+            'membership-role',
+            MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+          );
+          const participantRole = this.store().createRecord(
+            'membership-role',
+            MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+          );
+
+          this.store().createRecord('membership', {
+            organization: organization,
+            member: municipalityOne,
+            role: founderRole,
+          });
+          this.store().createRecord('membership', {
+            organization: organization,
+            member: municipalityTwo,
+            role: founderRole,
+          });
+          this.store().createRecord('membership', {
+            organization: organization,
+            member: participant,
+            role: participantRole,
+          });
+
+          const member = this.store().createRecord('organization');
 
           const model = this.store().createRecord('membership', {
             organization: organization,
             member: member,
-            role: role,
+            role:
+              roleMapping === MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF
+                ? founderRole
+                : participantRole,
           });
 
           const isValid = await model.validate({
@@ -497,6 +646,468 @@ module('Unit | Model | membership', function (hooks) {
           });
 
           assert.true(isValid);
+        });
+      });
+
+      module('OP-3929 minimums', function () {
+        /**
+         * Push a persisted administrative unit of the given classification,
+         * as the create form only offers persisted organizations: the unit
+         * being created must be the only new organization of a membership.
+         */
+        function pushUnit(store, classification, id) {
+          const records = store.push({
+            data: [
+              {
+                type: 'administrative-unit-classification-code',
+                id: classification.id,
+                attributes: { label: classification.label },
+              },
+              {
+                type: 'administrative-unit',
+                id,
+                relationships: {
+                  classification: {
+                    data: {
+                      type: 'administrative-unit-classification-code',
+                      id: classification.id,
+                    },
+                  },
+                },
+              },
+            ],
+          });
+          return records.at(-1);
+        }
+
+        function createOrganization(store, classification) {
+          return store.createRecord('administrative-unit', {
+            classification: store.createRecord(
+              'administrative-unit-classification-code',
+              classification,
+            ),
+          });
+        }
+
+        function createMemberships(store, organization, specs) {
+          const roles = {};
+          return specs.map((spec, index) => {
+            const other = pushUnit(store, spec.other, `unit-${index}`);
+            // A role record can only be created once per id.
+            const role = (roles[spec.role.id] ??= store.createRecord(
+              'membership-role',
+              spec.role,
+            ));
+            return store.createRecord('membership', {
+              role,
+              member: spec.asMember ? organization : other,
+              organization: spec.asMember ? other : organization,
+            });
+          });
+        }
+
+        [
+          {
+            label: 'a district with a municipality as founder',
+            organization: CLASSIFICATION.DISTRICT,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+            ],
+          },
+          {
+            label:
+              'an interlokale vereniging with two municipal founders and a municipal participant',
+            organization: CLASSIFICATION.INTERLOKALE_VERENIGING,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+            ],
+          },
+          {
+            label:
+              'a bosgroep with a province as recognizer and a municipality as participant',
+            organization: CLASSIFICATION.BOSGROEP,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO,
+                other: CLASSIFICATION.PROVINCE,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+            ],
+          },
+          {
+            label: 'an "andere" with a municipality as participant',
+            organization: CLASSIFICATION.ANDERE,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+            ],
+          },
+          {
+            label:
+              'a municipality with an OCMW serving it and a vervoerregioraad it is represented in',
+            organization: CLASSIFICATION.MUNICIPALITY,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.SERVES,
+                other: CLASSIFICATION.OCMW,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+                other: CLASSIFICATION.VERVOERREGIORAAD,
+                asMember: true,
+              },
+            ],
+          },
+          {
+            label: 'an OCMW with a municipality it serves',
+            organization: CLASSIFICATION.OCMW,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.SERVES,
+                other: CLASSIFICATION.MUNICIPALITY,
+                asMember: true,
+              },
+            ],
+          },
+          {
+            label:
+              'a vervoerregioraad with a municipality it is represented by',
+            organization: CLASSIFICATION.VERVOERREGIORAAD,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+            ],
+          },
+          {
+            label:
+              'a zorgraad with a regionaal zorgplatform it participates in and a municipality it is represented by',
+            organization: CLASSIFICATION.ZORGRAAD,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.REGIONAAL_ZORGPLATFORM,
+                asMember: true,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+            ],
+          },
+          {
+            label: 'a regionaal zorgplatform with a zorgraad as participant',
+            organization: CLASSIFICATION.REGIONAAL_ZORGPLATFORM,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.ZORGRAAD,
+              },
+            ],
+          },
+          {
+            label: 'a regionaal landschap with a municipality as participant',
+            organization: CLASSIFICATION.REGIONAAL_LANDSCHAP,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+            ],
+          },
+          ...[
+            CLASSIFICATION.ZIEKENHUISVERENIGING,
+            CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+            CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
+          ].map((cl) => ({
+            label: `a ${cl.label.toLowerCase()} with an OCMW as founder and as participant`,
+            organization: cl,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+                other: CLASSIFICATION.OCMW,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.OCMW,
+              },
+            ],
+          })),
+          {
+            label: 'a woonmaatschappij without required fields',
+            organization: CLASSIFICATION.WOONMAATSCHAPPIJ,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+                other: CLASSIFICATION.WOONMAATSCHAPPIJ,
+                asMember: true,
+              },
+            ],
+          },
+        ].forEach(({ label, organization, specs }) => {
+          test(`it returns no error when ${label} is created`, async function (assert) {
+            const store = this.store();
+            const newOrganization = createOrganization(store, organization);
+            const memberships = createMemberships(
+              store,
+              newOrganization,
+              specs,
+            );
+
+            const isValid = await memberships
+              .at(-1)
+              .validate({ creatingNewOrganization: true });
+
+            assert.true(isValid);
+          });
+        });
+
+        [
+          {
+            label: 'a district without a founder',
+            organization: CLASSIFICATION.DISTRICT,
+            specs: [],
+            message: 'Kies minstens 1 gemeente',
+          },
+          {
+            label: 'an interlokale vereniging with only one founder',
+            organization: CLASSIFICATION.INTERLOKALE_VERENIGING,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+            ],
+            message: 'Kies minstens 2 gemeenten',
+          },
+          {
+            label: 'an interlokale vereniging without a municipal participant',
+            organization: CLASSIFICATION.INTERLOKALE_VERENIGING,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.PROVINCE,
+              },
+            ],
+            message: 'Kies minstens 1 gemeente',
+          },
+          {
+            label: 'a bosgroep without a recognizer',
+            organization: CLASSIFICATION.BOSGROEP,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+            ],
+            message: 'Kies minstens 1 provincie',
+          },
+          {
+            label: 'an "andere" with only an "Is lid van" membership',
+            organization: CLASSIFICATION.ANDERE,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.INTERLOKALE_VERENIGING,
+                asMember: true,
+              },
+            ],
+            message: 'Kies minstens 1 organisatie',
+          },
+          {
+            label:
+              'a municipality without an organization it is represented in',
+            organization: CLASSIFICATION.MUNICIPALITY,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.SERVES,
+                other: CLASSIFICATION.OCMW,
+              },
+            ],
+            message: 'Kies minstens 1 vervoerregioraad of zorgraad',
+          },
+          {
+            label: 'an OCMW without a municipality it serves',
+            organization: CLASSIFICATION.OCMW,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+                other: CLASSIFICATION.WELZIJNSVERENIGING,
+                asMember: true,
+              },
+            ],
+            message: 'Kies minstens 1 gemeente',
+          },
+          {
+            label:
+              'a vervoerregioraad without a municipality it is represented by',
+            organization: CLASSIFICATION.VERVOERREGIORAAD,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.INTERLOKALE_VERENIGING,
+                asMember: true,
+              },
+            ],
+            message: 'Kies minstens 1 gemeente',
+          },
+          {
+            label: 'a zorgraad without a municipality it is represented by',
+            organization: CLASSIFICATION.ZORGRAAD,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.REGIONAAL_ZORGPLATFORM,
+                asMember: true,
+              },
+            ],
+            message: 'Kies minstens 1 gemeente of OCMW',
+          },
+          {
+            label:
+              'a zorgraad without a regionaal zorgplatform it participates in',
+            organization: CLASSIFICATION.ZORGRAAD,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+            ],
+            message: 'Kies minstens 1 regionaal zorgplatform',
+          },
+          {
+            label:
+              'a regionaal zorgplatform with only an organization it is represented by',
+            organization: CLASSIFICATION.REGIONAAL_ZORGPLATFORM,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN,
+                other: CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING,
+              },
+            ],
+            message: 'Kies minstens 1 zorgraad',
+          },
+          {
+            label: 'a regionaal landschap without a participant',
+            organization: CLASSIFICATION.REGIONAAL_LANDSCHAP,
+            specs: [],
+            message: 'Kies minstens 1 gemeente of provincie',
+          },
+          ...[
+            CLASSIFICATION.ZIEKENHUISVERENIGING,
+            CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING,
+            CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP,
+          ].map((cl) => ({
+            label: `a ${cl.label.toLowerCase()} without an OCMW participant`,
+            organization: cl,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+                other: CLASSIFICATION.OCMW,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+            ],
+            message: 'Kies minstens 1 OCMW',
+          })),
+          {
+            label: 'an opdrachthoudende vereniging with only one founder',
+            organization: CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+            ],
+            message: 'Kies minstens 2 gemeenten',
+          },
+          {
+            label: 'a welzijnsvereniging with only municipal participants',
+            organization: CLASSIFICATION.WELZIJNSVERENIGING,
+            specs: [
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+                other: CLASSIFICATION.OCMW,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+              {
+                role: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN,
+                other: CLASSIFICATION.MUNICIPALITY,
+              },
+            ],
+            message: 'Kies minstens 1 OCMW',
+          },
+        ].forEach(({ label, organization, specs, message }) => {
+          test(`it returns an error when ${label} is created`, async function (assert) {
+            const store = this.store();
+            const newOrganization = createOrganization(store, organization);
+            // A membership with the worship-only role, so it counts towards
+            // no field: the create form validates every membership of the
+            // organization being created.
+            const unrelatedMembership = store.createRecord('membership', {
+              organization: newOrganization,
+              member: pushUnit(store, CLASSIFICATION.MUNICIPALITY, 'unit'),
+              role: store.createRecord(
+                'membership-role',
+                MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+              ),
+            });
+            createMemberships(store, newOrganization, specs);
+
+            const isValid = await unrelatedMembership.validate({
+              creatingNewOrganization: true,
+            });
+
+            assert.false(isValid);
+            assert.propContains(unrelatedMembership.error, {
+              role: { message },
+            });
+          });
         });
       });
     });

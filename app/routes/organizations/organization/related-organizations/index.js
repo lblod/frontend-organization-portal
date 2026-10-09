@@ -65,7 +65,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
     // `organization`. This allows us to offload the role and inactive filtering
     // to the backend instead of doing these in the frontend.
 
-    const { organization, roles } = this.modelFor(
+    const { organization, roles, selectableRoles } = this.modelFor(
       'organizations.organization.related-organizations',
     );
 
@@ -183,6 +183,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       organization,
       relatedOrganizations,
       roles,
+      selectableRoles,
     };
   }
 
