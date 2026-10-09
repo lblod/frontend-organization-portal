@@ -9,7 +9,7 @@ import { MEMBERSHIP_ROLES_MAPPING } from './membership-role';
 import {
   getUnsatisfiedRequiredField,
   minimumRequiredFieldMessage,
-} from '../constants/memberships';
+} from '../utils/membership-rules';
 
 export default class MembershipModel extends AbstractValidationModel {
   @belongsTo('organization', {
@@ -66,7 +66,8 @@ export default class MembershipModel extends AbstractValidationModel {
         //   validations are also performed during editing this should again be
         //   taken into account.
         // - Which fields are mandatory per type is defined in
-        //   `membershipFieldsByClassification` (constants/memberships.js).
+        //   `membershipFieldsByClassification` (constants/memberships.js),
+        //   with the validation logic in `utils/membership-rules.js`.
         is: Joi.exist().valid(true),
         then: validateBelongsToRequired(REQUIRED_MESSAGE).external(
           async (value, helpers) => {

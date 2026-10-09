@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import { query } from '@warp-drive/legacy/compat/builders';
 import { MEMBERSHIP_ROLES } from 'frontend-organization-portal/models/membership-role';
-import { allowedRolesForClassification } from 'frontend-organization-portal/constants/memberships';
+import { allowedRolesForClassification } from 'frontend-organization-portal/utils/membership-rules';
 
 export default class OrganizationsOrganizationRelatedOrganizationsRoute extends Route {
   @service store;

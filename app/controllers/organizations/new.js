@@ -8,12 +8,12 @@ import { setEmptyStringsToNull } from 'frontend-organization-portal/utils/empty-
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
+import { membershipFieldsByClassification } from 'frontend-organization-portal/constants/memberships';
 import {
   allowedClassificationsForMembershipField,
   fieldMeetsMinimum,
-  membershipFieldsByClassification,
   minimumRequiredFieldMessage,
-} from 'frontend-organization-portal/constants/memberships';
+} from 'frontend-organization-portal/utils/membership-rules';
 import {
   findAll,
   query as queryBuilder,

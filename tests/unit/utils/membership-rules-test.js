@@ -6,9 +6,9 @@ import {
   allowedClassificationsForMembershipField,
   allowedRolesForClassification,
   hasRequiredMembershipFields,
-  membershipFieldsByClassification,
   removingMembershipBreaksMinimum,
-} from 'frontend-organization-portal/constants/memberships';
+} from 'frontend-organization-portal/utils/membership-rules';
+import { membershipFieldsByClassification } from 'frontend-organization-portal/constants/memberships';
 import {
   AutonomeVerzorgingsinstellingCodeList,
   DienstverlenendeVerenigingCodeList,
@@ -18,7 +18,7 @@ import {
   ZiekenhuisverenigingCodeList,
 } from 'frontend-organization-portal/constants/classification';
 
-module('Unit | Constants | memberships', function (hooks) {
+module('Unit | Utils | membership rules', function (hooks) {
   setupTest(hooks);
 
   this.store = function () {

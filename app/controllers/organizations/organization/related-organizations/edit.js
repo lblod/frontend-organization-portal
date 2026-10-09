@@ -10,7 +10,7 @@ import {
 import {
   removingMembershipBreaksMinimum,
   shouldSwapAssignments,
-} from 'frontend-organization-portal/constants/memberships';
+} from 'frontend-organization-portal/utils/membership-rules';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditController extends Controller {
   @service router;

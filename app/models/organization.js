@@ -9,7 +9,7 @@ import {
   validateHasManyNotEmptyRequired,
   validateStringOptional,
 } from '../validators/schema';
-import getOppositeClassifications from '../constants/memberships';
+import { getOppositeClassifications } from '../utils/membership-rules';
 import { ID_NAME } from './identifier';
 import {
   MunicipalityCodeList,
