@@ -9,6 +9,7 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
 import isContactEditableOrganization from 'frontend-organization-portal/utils/editable-contact-data';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import { membershipFieldsByClassification } from 'frontend-organization-portal/constants/memberships';
+import { GOVERNMENT_ID_BY_AUTO_FILL_CLASSIFICATION } from 'frontend-organization-portal/constants/special-organizations';
 import {
   allowedClassificationsForMembershipField,
   fieldMeetsMinimum,
@@ -16,6 +17,7 @@ import {
 } from 'frontend-organization-portal/utils/membership-rules';
 import {
   findAll,
+  findRecord,
   query as queryBuilder,
   saveRecord,
 } from '@warp-drive/legacy/compat/builders';
@@ -632,6 +634,29 @@ export default class OrganizationsNewController extends Controller {
         : this.memberships
       ).push(...createdMemberships);
     });
+
+    // The relations of the autofill types: created and recognized
+    // by one of the two governments, filled in automatically here, never by
+    // hand in the form.
+    const governmentId =
+      GOVERNMENT_ID_BY_AUTO_FILL_CLASSIFICATION[
+        this.currentOrganizationModel.classification?.get('id')
+      ];
+    if (governmentId) {
+      const { content: government } = await this.store.request(
+        findRecord('organization', governmentId),
+      );
+      this.memberships.push(
+        ...this.#createMembershipModels(
+          [government],
+          MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
+        ),
+        ...this.#createMembershipModels(
+          [government],
+          MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO.id,
+        ),
+      );
+    }
 
     if (this.currentOrganizationModel.isCentralWorshipService) {
       this.memberships.push(

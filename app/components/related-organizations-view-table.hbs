@@ -57,12 +57,16 @@
         {{organization.organizationType}}
       </td>
       <td>
-        <AuLink
-          @route="organizations.organization"
-          @model={{organization.organizationId}}
-        >
+        {{#if organization.isSpecialOrganization}}
           {{organization.organizationName}}
-        </AuLink>
+        {{else}}
+          <AuLink
+            @route="organizations.organization"
+            @model={{organization.organizationId}}
+          >
+            {{organization.organizationName}}
+          </AuLink>
+        {{/if}}
       </td>
       <td>
         <OrganizationStatus

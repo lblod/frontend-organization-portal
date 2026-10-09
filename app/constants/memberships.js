@@ -209,6 +209,11 @@ export const allowedParticipationMemberships = [
 // ```
 // means "an AGB can have as founding organisation a municipality" and "a
 // municipality can found an AGB".
+//
+// The rules also link the autofill types (see special-organizations) to the
+// two governments as founder and recognizer. Those relations are
+// deliberately absent: they are filled automatically, so users can never
+// pick them by hand.
 export const allowedFoundingMemberships = [
   {
     organizations: [

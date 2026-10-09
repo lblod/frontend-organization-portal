@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import { query } from '@warp-drive/legacy/compat/builders';
 import { ORGANIZATION_STATUS } from '../../../../models/organization-status-code';
+import { SPECIAL_RELATED_ORGANIZATION_IDS } from 'frontend-organization-portal/constants/special-organizations';
 
 export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute extends Route {
   @service store;
@@ -137,6 +138,11 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
         organizationId: organization.id,
         organizationName: organization.get('abbName'),
         organizationStatus: organization.get('organizationStatus'),
+        // The special organizations have no detail page, so they must not be
+        // linked to in the view table.
+        isSpecialOrganization: SPECIAL_RELATED_ORGANIZATION_IDS.includes(
+          organization.id,
+        ),
       });
     }
 
@@ -151,6 +157,9 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
         organizationId: member.id,
         organizationName: member.get('abbName'),
         organizationStatus: member.get('organizationStatus'),
+        isSpecialOrganization: SPECIAL_RELATED_ORGANIZATION_IDS.includes(
+          member.id,
+        ),
       });
     }
 

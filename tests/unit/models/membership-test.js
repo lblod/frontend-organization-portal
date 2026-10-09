@@ -2,6 +2,11 @@ import { module, test } from 'qunit';
 import { setupTest } from 'frontend-organization-portal/tests/helpers';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { ABB_CLASSIFICATION_ID } from 'frontend-organization-portal/constants/classification';
+import {
+  FEDERALE_REGERING_ID,
+  VLAAMSE_REGERING_ID,
+} from 'frontend-organization-portal/constants/special-organizations';
 
 module('Unit | Model | membership', function (hooks) {
   setupTest(hooks);
@@ -1268,7 +1273,10 @@ module('Unit | Model | membership', function (hooks) {
   });
 
   module('isNotRemovableByUser', function () {
-    function pushMembership(store, { organization, member, roleMapping }) {
+    function pushMembership(
+      store,
+      { organization, member, roleMapping, memberId = 'member' },
+    ) {
       const records = store.push({
         data: [
           {
@@ -1295,7 +1303,7 @@ module('Unit | Model | membership', function (hooks) {
           },
           {
             type: 'administrative-unit',
-            id: 'member',
+            id: memberId,
             relationships: {
               classification: {
                 data: {
@@ -1317,7 +1325,7 @@ module('Unit | Model | membership', function (hooks) {
               organization: {
                 data: { type: 'administrative-unit', id: 'org' },
               },
-              member: { data: { type: 'administrative-unit', id: 'member' } },
+              member: { data: { type: 'administrative-unit', id: memberId } },
               role: { data: { type: 'membership-role', id: roleMapping.id } },
             },
           },
@@ -1385,6 +1393,58 @@ module('Unit | Model | membership', function (hooks) {
 
         assert.false(model.isNotRemovableByUser);
       });
+    });
+
+    // The government relations of the autofill task: the two
+    // special organizations are persisted, so these memberships cannot be
+    // removed either.
+    [
+      [
+        CLASSIFICATION.POLICE_ZONE,
+        FEDERALE_REGERING_ID,
+        MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      ],
+      [
+        CLASSIFICATION.ASSISTANCE_ZONE,
+        FEDERALE_REGERING_ID,
+        MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO,
+      ],
+      [
+        CLASSIFICATION.REGIONAAL_ZORGPLATFORM,
+        VLAAMSE_REGERING_ID,
+        MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      ],
+      [
+        CLASSIFICATION.ZORGRAAD,
+        VLAAMSE_REGERING_ID,
+        MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO,
+      ],
+    ].forEach(([organization, memberId, roleMapping]) => {
+      test(`a persisted "${roleMapping.inverseLabel}" membership from a ${organization.label} to one of the two governments cannot be removed`, async function (assert) {
+        const model = pushMembership(this.store(), {
+          organization,
+          member: {
+            id: ABB_CLASSIFICATION_ID,
+            label: 'Agentschap Binnenlands Bestuur',
+          },
+          roleMapping,
+          memberId,
+        });
+
+        assert.true(model.isNotRemovableByUser);
+      });
+    });
+
+    // A "stichtend lid" or "erkenner" membership with any other member stays
+    // removable.
+    test('a persisted founder membership to a regular organization can be removed', async function (assert) {
+      const model = pushMembership(this.store(), {
+        organization: CLASSIFICATION.POLICE_ZONE,
+        member: CLASSIFICATION.MUNICIPALITY,
+        roleMapping: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      });
+
+      assert.false(model.isNotRemovableByUser);
     });
 
     test('a new membership can always be removed', async function (assert) {
