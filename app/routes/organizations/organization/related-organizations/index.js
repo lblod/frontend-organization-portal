@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import { query } from '@warp-drive/legacy/compat/builders';
 import { ORGANIZATION_STATUS } from '../../../../models/organization-status-code';
+import { getRelationStatus } from 'frontend-organization-portal/utils/relation-status';
 
 export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute extends Route {
   @service store;
@@ -44,18 +45,21 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
     params,
     roleModel,
   ) {
+    const thisSide = matchMemberRelation ? 'member' : 'organization';
+    const otherSide = matchMemberRelation ? 'organization' : 'member';
+
     return {
-      [`filter[${matchMemberRelation ? 'member' : 'organization'}][:id:]`]:
-        organizationId,
+      [`filter[${thisSide}][:id:]`]: organizationId,
       'filter[role][:id:]': roleModel ? roleModel.id : undefined,
-      [`filter[${
-        matchMemberRelation ? 'organization' : 'member'
-      }][organization-status][:id:]`]: params.organizationStatus
-        ? ORGANIZATION_STATUS.ACTIVE
-        : undefined,
-      include: `role,${
-        matchMemberRelation ? 'organization,organization' : 'member,member'
-      }.classification`,
+      [`filter[${otherSide}][organization-status][:id:]`]:
+        params.organizationStatus ? ORGANIZATION_STATUS.ACTIVE : undefined,
+      include: [
+        'role',
+        'during',
+        otherSide,
+        `${otherSide}.classification`,
+        `${otherSide}.organization-status`,
+      ].join(),
       page: { size: params.size, number: params.page },
     };
   }
@@ -127,17 +131,32 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
     // determined which involved organization display.
     let relatedOrganizations = [];
 
+    // The status of the current organization is loaded by the parent route,
+    // the one of the related organizations is included in the queries above.
+    const organizationStatusId = organization
+      .belongsTo('organizationStatus')
+      .id();
+
     for (const membership of membershipsOfOrganizations) {
-      const organization = await membership.organization;
+      const relatedOrganization = await membership.organization;
       const role = await membership.role;
-      const classification = await organization.classification;
+      const classification = await relatedOrganization.classification;
 
       relatedOrganizations.push({
         role: role.get('opLabel'),
         organizationType: classification.get('label'),
-        organizationId: organization.id,
-        organizationName: organization.get('abbName'),
-        organizationStatus: organization.get('organizationStatus'),
+        organizationId: relatedOrganization.id,
+        organizationName: relatedOrganization.get('abbName'),
+        organizationStatus: relatedOrganization.get('organizationStatus'),
+        startDate: membership.startDate,
+        endDate: membership.endDate,
+        relationStatus: getRelationStatus({
+          endDate: membership.endDate,
+          memberStatusId: organizationStatusId,
+          organizationStatusId: relatedOrganization
+            .belongsTo('organizationStatus')
+            .id(),
+        }),
       });
     }
 
@@ -152,6 +171,13 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
         organizationId: member.id,
         organizationName: member.get('abbName'),
         organizationStatus: member.get('organizationStatus'),
+        startDate: membership.startDate,
+        endDate: membership.endDate,
+        relationStatus: getRelationStatus({
+          endDate: membership.endDate,
+          memberStatusId: member.belongsTo('organizationStatus').id(),
+          organizationStatusId,
+        }),
       });
     }
 

@@ -46,7 +46,10 @@
         @currentSorting={{@sort}}
       />
       {{! TODO: Use same grey as other non-sorted columns}}
-      <th>Status</th>
+      <th>Status organisatie</th>
+      <th>Startdatum relatie</th>
+      <th>Einddatum relatie</th>
+      <th>Status relatie</th>
     </c.header>
 
     <c.body as |organization|>
@@ -68,6 +71,18 @@
         <OrganizationStatus
           @id={{organization.organizationStatus.id}}
           @label={{organization.organizationStatus.label}}
+        />
+      </td>
+      <td>
+        {{if organization.startDate (date-format organization.startDate)}}
+      </td>
+      <td>
+        {{if organization.endDate (date-format organization.endDate)}}
+      </td>
+      <td>
+        <OrganizationStatus
+          @id={{organization.relationStatus.id}}
+          @label={{organization.relationStatus.label}}
         />
       </td>
     </c.body>

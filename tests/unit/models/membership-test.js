@@ -2,6 +2,8 @@ import { module, test } from 'qunit';
 import { setupTest } from 'frontend-organization-portal/tests/helpers';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
+import { RELATION_STATUS } from 'frontend-organization-portal/utils/relation-status';
 
 module('Unit | Model | membership', function (hooks) {
   setupTest(hooks);
@@ -971,6 +973,160 @@ module('Unit | Model | membership', function (hooks) {
 
       const areEqual = membershipOne.equals(membershipTwo);
       assert.false(areEqual);
+    });
+  });
+
+  module('startDate, endDate and isEnded', function () {
+    test('it reads the dates from the period of the membership', function (assert) {
+      const period = this.store().createRecord('period-of-time', {
+        startDate: new Date('2024-01-01'),
+        endDate: new Date('2025-01-01'),
+      });
+      const model = this.store().createRecord('membership', {
+        during: period,
+      });
+
+      assert.deepEqual(model.startDate, new Date('2024-01-01'));
+      assert.deepEqual(model.endDate, new Date('2025-01-01'));
+      assert.true(model.isEnded);
+    });
+
+    test('it is not ended when the end date is in the future', function (assert) {
+      const period = this.store().createRecord('period-of-time', {
+        endDate: new Date('2999-12-31'),
+      });
+      const model = this.store().createRecord('membership', {
+        during: period,
+      });
+
+      assert.false(model.isEnded);
+    });
+
+    test('it is not ended when the period has no end date', function (assert) {
+      const period = this.store().createRecord('period-of-time', {
+        startDate: new Date('2024-01-01'),
+      });
+      const model = this.store().createRecord('membership', {
+        during: period,
+      });
+
+      assert.deepEqual(model.startDate, new Date('2024-01-01'));
+      assert.strictEqual(model.endDate, undefined);
+      assert.false(model.isEnded);
+    });
+
+    test('it has no dates when the membership has no period', function (assert) {
+      const model = this.store().createRecord('membership');
+
+      assert.strictEqual(model.startDate, undefined);
+      assert.strictEqual(model.endDate, undefined);
+      assert.false(model.isEnded);
+    });
+  });
+
+  module('relationStatus', function () {
+    /**
+     * Push a persisted membership between two organizations with the given
+     * statuses into the store, as the related organizations routes would have
+     * loaded it: the organizations with their status and the period, if any.
+     */
+    function pushMembership(
+      store,
+      { memberStatusId, organizationStatusId, endDate },
+    ) {
+      const [membership] = store.push({
+        data: [
+          {
+            type: 'membership',
+            id: 'membership',
+            relationships: {
+              member: { data: { type: 'organization', id: 'member' } },
+              organization: {
+                data: { type: 'organization', id: 'organization' },
+              },
+              during: {
+                data: endDate ? { type: 'period-of-time', id: 'period' } : null,
+              },
+            },
+          },
+        ],
+        included: [
+          {
+            type: 'organization',
+            id: 'member',
+            relationships: {
+              organizationStatus: {
+                data: { type: 'organization-status-code', id: memberStatusId },
+              },
+            },
+          },
+          {
+            type: 'organization',
+            id: 'organization',
+            relationships: {
+              organizationStatus: {
+                data: {
+                  type: 'organization-status-code',
+                  id: organizationStatusId,
+                },
+              },
+            },
+          },
+          ...(endDate
+            ? [
+                {
+                  type: 'period-of-time',
+                  id: 'period',
+                  attributes: { endDate },
+                },
+              ]
+            : []),
+        ],
+      });
+      return membership;
+    }
+
+    test('it is active when the relation has no end date and both organizations are active', function (assert) {
+      const model = pushMembership(this.store(), {
+        memberStatusId: ORGANIZATION_STATUS.ACTIVE,
+        organizationStatusId: ORGANIZATION_STATUS.ACTIVE,
+      });
+
+      assert.strictEqual(model.relationStatus, RELATION_STATUS.ACTIVE);
+    });
+
+    test('it is not active when the relation has an end date', function (assert) {
+      const model = pushMembership(this.store(), {
+        memberStatusId: ORGANIZATION_STATUS.ACTIVE,
+        organizationStatusId: ORGANIZATION_STATUS.ACTIVE,
+        endDate: new Date('2024-01-01'),
+      });
+
+      assert.strictEqual(model.relationStatus, RELATION_STATUS.INACTIVE);
+    });
+
+    test('it is not active when the member is not active', function (assert) {
+      const model = pushMembership(this.store(), {
+        memberStatusId: ORGANIZATION_STATUS.INACTIVE,
+        organizationStatusId: ORGANIZATION_STATUS.ACTIVE,
+      });
+
+      assert.strictEqual(model.relationStatus, RELATION_STATUS.INACTIVE);
+    });
+
+    test('it is not active when the organization is not active', function (assert) {
+      const model = pushMembership(this.store(), {
+        memberStatusId: ORGANIZATION_STATUS.ACTIVE,
+        organizationStatusId: ORGANIZATION_STATUS.INACTIVE,
+      });
+
+      assert.strictEqual(model.relationStatus, RELATION_STATUS.INACTIVE);
+    });
+
+    test('it is active for a new membership without organizations', function (assert) {
+      const model = this.store().createRecord('membership');
+
+      assert.strictEqual(model.relationStatus, RELATION_STATUS.ACTIVE);
     });
   });
 });
