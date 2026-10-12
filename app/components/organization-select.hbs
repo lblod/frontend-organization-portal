@@ -10,6 +10,7 @@
     @onChange={{this.triggerChange}}
     @search={{perform this.loadOrganizationsTask}}
     @selected={{this.selectedOrganization}}
+    @triggerId={{@id}}
     as |organization|
   >
     {{#if @showKbo}}

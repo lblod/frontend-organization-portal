@@ -56,8 +56,17 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     this.memberships = [...this.memberships, membership];
   }
 
-  @action
-  async removeMembership(membership) {
+  // A drop task, so a second click supersedes a removal that is still
+  // fetching the other organization's memberships instead of letting both
+  // open their confirmation.
+  removeMembership = dropTask(async (membership) => {
+    // A row that was added in this editing session was never stored, so
+    // removing it cannot take an organization below a minimum.
+    if (membership.isNew) {
+      this.founderToRemove = membership;
+      return;
+    }
+
     // The organization being edited must keep meeting the minimum of the
     // field the membership belongs to.
     if (
@@ -76,8 +85,12 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     // fetched here.
     const otherOrganization = this.#otherOrganizationOf(membership);
     if (otherOrganization) {
+      const memberships = this.memberships;
       const otherMemberships =
         await this.#fetchMembershipsOf(otherOrganization);
+      // The page was left or re-entered while fetching: opening the
+      // confirmation now would attach it to whatever is shown next.
+      if (this.memberships !== memberships) return;
       if (
         otherMemberships &&
         removingMembershipBreaksMinimum(
@@ -94,7 +107,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     }
 
     this.founderToRemove = membership;
-  }
+  });
 
   @action
   cancelMembershipRemoval() {

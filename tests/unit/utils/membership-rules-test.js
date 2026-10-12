@@ -636,5 +636,39 @@ module('Unit | Utils | membership rules', function (hooks) {
         ]),
       );
     });
+
+    test("it returns false for a relation that does not count of an organization already below its minimum, checked from the other organization's page", async function (assert) {
+      const store = this.store();
+      const vereniging = createOrganization(
+        store,
+        CLASSIFICATION.DIENSTVERLENENDE_VERENIGING,
+      );
+      const municipality = createOrganization(
+        store,
+        CLASSIFICATION.MUNICIPALITY,
+      );
+      const province = createOrganization(store, CLASSIFICATION.PROVINCE);
+      const municipalityFounder = createMembership(store, {
+        role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+        organization: vereniging,
+        member: municipality,
+      });
+      const provinceFounder = createMembership(store, {
+        role: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+        organization: vereniging,
+        member: province,
+      });
+
+      // The vereniging is below its minimum of two municipalities, but the
+      // province founder never counted towards it. On the province's page
+      // only the vereniging's stored memberships are known, and removing the
+      // relation from there must still be allowed.
+      assert.false(
+        removingMembershipBreaksMinimum(provinceFounder, vereniging, [
+          municipalityFounder,
+          provinceFounder,
+        ]),
+      );
+    });
   });
 });

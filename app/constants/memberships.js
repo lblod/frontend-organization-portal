@@ -52,9 +52,9 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
 // means "an AGB can have as participant a municipality" as well as the inverse
 // relation "a municipality can participate in an AGB".
 //
-// The tables below are derived from the OP-3929 rules file (version 3): every
-// row of that file describes both directions of one relationship, so each row
-// results in one `{ organizations, members }` pair here.
+// The tables below encode the OP-3929 rules: every relationship is given in
+// both directions at once, so each relationship results in one
+// `{ organizations, members }` pair here.
 export const allowedParticipationMemberships = [
   {
     organizations: [...AndereCodeList],
@@ -315,7 +315,7 @@ export const allowedRepresentationMemberships = [
   },
 ];
 // Which related-organization fields the create form shows, per classification
-// of the created organization. One entry per field of the OP-3929 rules file:
+// of the created organization. One entry per field of the OP-3929 rules:
 //
 // - `role`/`asMember`: the membership role and the side of the membership the
 //   created organization sits on: as member (`asMember` true) or as
@@ -329,7 +329,9 @@ export const allowedRepresentationMemberships = [
 //
 // The allowed organizations per field are derived from the tables above, so
 // those stay the single source of truth. The founder and recognizer fields of
-// the types handled by the autofill task are deliberately absent here.
+// Hulpverleningszone, Politiezone, Regionaal zorgplatform, Regionaal
+// landschap, Vervoerregioraad, Woonmaatschappij and Zorgraad are deliberately
+// absent here: users do not pick those relations on the create form.
 export const membershipFieldsByClassification = {
   [CLASSIFICATION.MUNICIPALITY.id]: [
     {
