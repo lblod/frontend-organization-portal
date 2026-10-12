@@ -104,11 +104,15 @@
         <td>
           <AuButton
             @alert={{true}}
-            @disabled={{membership.isNotRemovableByUser}}
+            @disabled={{or
+              membership.isNotRemovableByUser
+              @removeRelatedOrganization.isRunning
+            }}
+            @loading={{@removeRelatedOrganization.isRunning}}
             @icon="bin"
             @iconAlignment="left"
             @skin="link"
-            {{on "click" (fn @removeRelatedOrganization membership)}}
+            {{on "click" (perform @removeRelatedOrganization membership)}}
           >
             Verwijder
           </AuButton>

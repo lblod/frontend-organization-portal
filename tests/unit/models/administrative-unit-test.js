@@ -103,7 +103,7 @@ module('Unit | Model | administrative unit', function (hooks) {
 
         assert.false(isValid);
         assert.propContains(model.error, {
-          memberships: { message: 'Kies minstens 1 gerelateerde organisatie' },
+          memberships: { message: 'Selecteer een optie' },
         });
       });
     });
@@ -165,7 +165,7 @@ module('Unit | Model | administrative unit', function (hooks) {
 
         assert.false(isValid);
         assert.propContains(model.error, {
-          memberships: { message: 'Kies minstens 1 gerelateerde organisatie' },
+          memberships: { message: 'Selecteer een optie' },
         });
       });
     });

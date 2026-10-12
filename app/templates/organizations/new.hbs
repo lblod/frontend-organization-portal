@@ -427,7 +427,7 @@
         )
       )
     }}
-      <EditCard @containsRequiredFields={{true}}>
+      <EditCard @containsRequiredFields={{this.containsRequiredFields}}>
         <:title>Gerelateerde organisaties</:title>
         <:card as |Card|>
           {{#if this.currentOrganizationModel.isWorshipAdministrativeUnit}}
@@ -536,7 +536,7 @@
                 {{/if}}
 
                 {{! The related-organization fields per organization type }}
-                {{#each this.membershipFields as |field|}}
+                {{#each this.membershipFields key="key" as |field|}}
                   <Item
                     @labelFor={{field.key}}
                     @required={{field.required}}

@@ -82,26 +82,33 @@ export default class AdministrativeUnitModel extends OrganizationModel {
       memberships: Joi.when(Joi.ref('$creatingNewOrganization'), {
         is: Joi.exist().valid(true),
         then: Joi.when('classification.id', {
+          // The worship form shows this message under the single
+          // "Representatief orgaan" select, so it stays 'Selecteer een optie'.
           is: Joi.exist().valid(
-            ...AgbCodeList,
-            ...ApbCodeList,
-            ...IGSCodeList,
-            ...OcmwAssociationCodeList,
-            ...PevaMunicipalityCodeList,
-            ...PevaProvinceCodeList,
-            ...PoliceZoneCodeList,
-            ...AssistanceZoneCodeList,
             ...WorshipServiceCodeList,
             ...CentralWorshipServiceCodeList,
-            ...DistrictCodeList,
-            ...MunicipalityCodeList,
-            ...InterlokaleVerenigingCodeList,
-            ...VervoerregioraadCodeList,
           ),
-          then: validateHasManyNotEmptyRequired(
-            'Kies minstens 1 gerelateerde organisatie',
-          ),
-          otherwise: validateHasManyOptional(),
+          then: validateHasManyNotEmptyRequired(REQUIRED_MESSAGE),
+          otherwise: Joi.when('classification.id', {
+            is: Joi.exist().valid(
+              ...AgbCodeList,
+              ...ApbCodeList,
+              ...IGSCodeList,
+              ...OcmwAssociationCodeList,
+              ...PevaMunicipalityCodeList,
+              ...PevaProvinceCodeList,
+              ...PoliceZoneCodeList,
+              ...AssistanceZoneCodeList,
+              ...DistrictCodeList,
+              ...MunicipalityCodeList,
+              ...InterlokaleVerenigingCodeList,
+              ...VervoerregioraadCodeList,
+            ),
+            then: validateHasManyNotEmptyRequired(
+              'Kies minstens 1 gerelateerde organisatie',
+            ),
+            otherwise: validateHasManyOptional(),
+          }),
         }),
         otherwise: validateHasManyOptional(),
       }),

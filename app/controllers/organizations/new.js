@@ -95,6 +95,21 @@ export default class OrganizationsNewController extends Controller {
     );
   }
 
+  /**
+   * Whether the "Gerelateerde organisaties" card contains required fields:
+   * worship, AGB and APB render required fields of their own, the other
+   * types have them when their field configuration marks a field as
+   * required. Drives the "Verplicht veld" footnote of the card.
+   */
+  get containsRequiredFields() {
+    return (
+      this.currentOrganizationModel.isWorshipAdministrativeUnit ||
+      this.currentOrganizationModel.isAgb ||
+      this.currentOrganizationModel.isApb ||
+      this.membershipFields.some((field) => field.required)
+    );
+  }
+
   @action
   confirmRelateNonActiveOrganization() {
     this.setRelatedOrganizationFunction(this.relatedNonActiveOrganization);
@@ -165,8 +180,8 @@ export default class OrganizationsNewController extends Controller {
       this.setProvince(await this.#getProvinceForMunicipality(municipality));
 
       if (this.currentOrganizationModel.isAgb) {
-        // NOTE (27/02/2025) We set the founder here directly instead of using the
-        // `addFounders` function. Using the function would result in two
+        // NOTE (27/02/2025) We set the founder here directly. Routing it
+        // through the related-organization field logic would result in two
         // confirmation modals popping up when the user sets a non-active
         // municipality.
         this.founders = [municipality];
@@ -681,14 +696,11 @@ export default class OrganizationsNewController extends Controller {
         membership.validate({ creatingNewOrganization: true }),
       ),
     );
-
     this.currentOrganizationModel.scope =
       this.locations?.length > 0
         ? await this.scopeOfOperation.getScopeForLocations(...this.locations)
         : null;
-
     const requiresKboNumber = requiresKbo(this.currentOrganizationModel);
-
     await Promise.all([
       this.currentOrganizationModel.validate({ creatingNewOrganization: true }),
       requiresKboNumber
