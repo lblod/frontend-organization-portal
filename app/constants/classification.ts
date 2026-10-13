@@ -96,11 +96,8 @@ export const RegionaalLandschapCodeList = [
 export const BosgroepCodeList = [CLASSIFICATION.BOSGROEP.id];
 export const WoonmaatschappijCodeList = [CLASSIFICATION.WOONMAATSCHAPPIJ.id];
 
-// The ABB classification the two special organizations get: they are
-// modelled as bestuurseenheden of this code, like the Kabinet Crevits record.
-// Not an entry of the CLASSIFICATION constant, so it never shows up in the
-// classification selects.
-export const ABB_CLASSIFICATION_ID = '52cc9d8d-1c9a-4d92-9936-da9d4a622ec4';
+export const REGERING_CLASSIFICATION_ID =
+  'd4e1ca1c-668c-4316-adbf-731b5b07af1a';
 
 /**
   The field is required only in non-worship services, in all types of organisations except for:

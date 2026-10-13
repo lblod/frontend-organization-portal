@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
-import { ABB_CLASSIFICATION_ID } from 'frontend-organization-portal/constants/classification';
+import { REGERING_CLASSIFICATION_ID } from 'frontend-organization-portal/constants/classification';
 import {
   AgbCodeList,
   AndereCodeList,
@@ -593,20 +593,20 @@ module('Unit | Model | organization', function (hooks) {
       });
     });
 
-    // The other side of the same rule: an ABB-classified organization (the
-    // two governments) cannot be picked by hand as the founder or recognizer
-    // of any organization. ABB is deliberately not in the CLASSIFICATION
-    // constant, so the record is created inline.
+    // The other side of the same rule: a Regering-classified organization
+    // (the two governments) cannot be picked by hand as the founder or
+    // recognizer of any organization. 'Regering' is deliberately not in the
+    // CLASSIFICATION constant, so the record is created inline.
     [
       MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
       MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO,
     ].forEach((roleMapping) => {
-      test(`it should not allow a(n) ABB-classified organization to be a hand-picked "${roleMapping.inverseLabel}" of another organization`, async function (assert) {
+      test(`it should not allow a(n) Regering-classified organization to be a hand-picked "${roleMapping.inverseLabel}" of another organization`, async function (assert) {
         const classification = this.store().createRecord(
           'administrative-unit-classification-code',
           {
-            id: ABB_CLASSIFICATION_ID,
-            label: 'Agentschap Binnenlands Bestuur',
+            id: REGERING_CLASSIFICATION_ID,
+            label: 'Regering',
           },
         );
         const model = this.store().createRecord('administrative-unit', {

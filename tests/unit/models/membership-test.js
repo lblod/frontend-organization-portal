@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupTest } from 'frontend-organization-portal/tests/helpers';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import { ABB_CLASSIFICATION_ID } from 'frontend-organization-portal/constants/classification';
+import { REGERING_CLASSIFICATION_ID } from 'frontend-organization-portal/constants/classification';
 import {
   FEDERALE_REGERING_ID,
   VLAAMSE_REGERING_ID,
@@ -1424,8 +1424,8 @@ module('Unit | Model | membership', function (hooks) {
         const model = pushMembership(this.store(), {
           organization,
           member: {
-            id: ABB_CLASSIFICATION_ID,
-            label: 'Agentschap Binnenlands Bestuur',
+            id: REGERING_CLASSIFICATION_ID,
+            label: 'Regering',
           },
           roleMapping,
           memberId,

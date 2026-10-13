@@ -430,6 +430,10 @@
       <EditCard @containsRequiredFields={{this.containsRequiredFields}}>
         <:title>Gerelateerde organisaties</:title>
         <:card as |Card|>
+          <p class="au-u-margin-bottom-small">
+            Op de pagina ‘Gerelateerde organisaties’ worden zowel onderstaande
+            als andere relaties getoond.
+          </p>
           {{#if this.currentOrganizationModel.isWorshipAdministrativeUnit}}
             <Card.Columns>
               <:left as |Item|>

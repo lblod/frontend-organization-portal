@@ -134,16 +134,17 @@ module('Unit | Controller | organizations/new', function (hooks) {
         store,
         controller,
         'registered-organization',
-        CLASSIFICATION.ZORGRAAD,
+        // A non-autofill classification: its save task fetches no government.
+        CLASSIFICATION.ANDERE,
       );
       const [regionaalZorgplatform, municipality] = pushPickedOrganizations(
         store,
         [CLASSIFICATION.REGIONAAL_ZORGPLATFORM, CLASSIFICATION.MUNICIPALITY],
       );
 
-      // The zorgraad being created is a member of the regionaal zorgplatform
-      // ("Is lid van") and the organization side of its representatives
-      // ("Heeft als feitelijke vertegenwoordigers").
+      // The "Andere" being created is a member of the regionaal zorgplatform
+      // ("Is lid van") and the organization side of its members
+      // ("Heeft als leden").
       const fields = controller.membershipFields;
       const memberSideField = fields.find((field) => field.asMember);
       const organizationSideField = fields.find((field) => !field.asMember);
@@ -178,7 +179,7 @@ module('Unit | Controller | organizations/new', function (hooks) {
       const organizationSideMembership = controller.memberships[0];
       assert.strictEqual(
         organizationSideMembership.belongsTo('role').id(),
-        MEMBERSHIP_ROLES_MAPPING.IS_REPRESENTED_IN.id,
+        MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id,
       );
       assert.strictEqual(
         organizationSideMembership.belongsTo('organization').value(),
