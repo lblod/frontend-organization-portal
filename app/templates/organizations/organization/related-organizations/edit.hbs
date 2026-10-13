@@ -67,7 +67,7 @@
 {{#if this.founderToRemove}}
   <DeleteModal
     @title="Relatie verwijderen"
-    @message="Een relatie verwijderen kan je niet ongedaan maken. Wens je zeker door te gaan met het verwijderen van de relatie?"
+    @message="Een relatie verwijderen kan je niet ongedaan maken. Wens je zeker door te gaan met het verwijderen van de relatie? Na het opslaan van de pagina wordt de relatie pas definitief verwijderd."
     @deleteLabel="Relatie verwijderen"
     @onConfirm={{this.reallyRemoveMembership}}
     @onCancel={{this.cancelMembershipRemoval}}
