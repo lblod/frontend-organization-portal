@@ -1,3 +1,11 @@
+## v1.47.0 (2026-10-13)
+
+#### :rocket: Enhancement
+* [#742](https://github.com/lblod/frontend-organization-portal/pull/742) [OP-3928] correct change event selection based on organization types ([@DamonKennes](https://github.com/DamonKennes))
+
+#### :bug: Bug Fix
+* [#756](https://github.com/lblod/frontend-organization-portal/pull/756) [OP-3913] Clarify the deletion message ([@Windvis](https://github.com/Windvis))
+
 ## v1.46.0 (2026-10-08)
 
 #### :rocket: Enhancement
