@@ -35,13 +35,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   setup() {
     if (!this.memberships) {
-      this.memberships = this.model.memberships
-        .map((e) => e)
-        .sort((a, b) =>
-          this.#otherOrganizationOf(a).abbName.localeCompare(
-            this.#otherOrganizationOf(b).abbName,
-          ),
-        );
+      this.memberships = this.model.memberships.slice();
     }
     if (this.memberships.length === 0) {
       this.addMembership();
@@ -121,16 +115,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     } else {
       membership.member = organization;
     }
-  }
-
-  /**
-   * The organization on the other side of the given membership.
-   */
-  #otherOrganizationOf(membership) {
-    const organization = this.model.organization;
-    return membership.belongsTo('member').value() === organization
-      ? membership.belongsTo('organization').value()
-      : membership.belongsTo('member').value();
   }
 
   /**

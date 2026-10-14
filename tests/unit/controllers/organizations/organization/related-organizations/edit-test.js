@@ -69,79 +69,6 @@ module(
       return { organization, membership };
     }
 
-    /**
-     * Push a persisted organization and three persisted memberships with
-     * other organizations into the store, as the edit route would have
-     * loaded them. The current organization is on the `organization` side
-     * of one membership and on the `member` side of the others.
-     */
-    function pushOrganizationWithMemberships(store) {
-      const [organization, , , , , membershipC, membershipB, membershipA] =
-        store.push({
-          data: [
-            {
-              type: 'organization',
-              id: 'organization',
-              attributes: { name: 'Organisatie' },
-            },
-            {
-              type: 'organization',
-              id: 'a',
-              attributes: { name: 'A' },
-            },
-            {
-              type: 'organization',
-              id: 'b',
-              attributes: { name: 'B' },
-            },
-            {
-              type: 'organization',
-              id: 'c',
-              attributes: { name: 'C' },
-            },
-            {
-              type: 'membership-role',
-              id: 'role',
-              attributes: { label: 'Heeft een relatie met' },
-            },
-            {
-              type: 'membership',
-              id: 'membership-c',
-              relationships: {
-                organization: {
-                  data: { type: 'organization', id: 'organization' },
-                },
-                member: { data: { type: 'organization', id: 'c' } },
-                role: { data: { type: 'membership-role', id: 'role' } },
-              },
-            },
-            {
-              type: 'membership',
-              id: 'membership-b',
-              relationships: {
-                organization: { data: { type: 'organization', id: 'b' } },
-                member: {
-                  data: { type: 'organization', id: 'organization' },
-                },
-                role: { data: { type: 'membership-role', id: 'role' } },
-              },
-            },
-            {
-              type: 'membership',
-              id: 'membership-a',
-              relationships: {
-                organization: { data: { type: 'organization', id: 'a' } },
-                member: {
-                  data: { type: 'organization', id: 'organization' },
-                },
-                role: { data: { type: 'membership-role', id: 'role' } },
-              },
-            },
-          ],
-        });
-      return { organization, membershipA, membershipB, membershipC };
-    }
-
     module('reset', function () {
       test('it restores a persisted membership that was removed but not saved', function (assert) {
         const store = this.store();
@@ -319,27 +246,6 @@ module(
 
         assert.strictEqual(controller.memberships, null);
         assert.strictEqual(controller.selectedRoleLabel, null);
-      });
-    });
-
-    module('setup', function () {
-      test('it sorts the memberships by the name of the other organization', function (assert) {
-        const store = this.store();
-        const { organization, membershipA, membershipB, membershipC } =
-          pushOrganizationWithMemberships(store);
-        const controller = this.controller();
-        controller.model = {
-          organization,
-          memberships: [membershipC, membershipB, membershipA],
-        };
-
-        controller.setup();
-
-        assert.deepEqual(controller.memberships, [
-          membershipA,
-          membershipB,
-          membershipC,
-        ]);
       });
     });
   },
