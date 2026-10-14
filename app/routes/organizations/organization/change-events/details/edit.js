@@ -42,6 +42,11 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditRoute exten
         decisionActivity = this.store.createRecord('decision-activity');
       }
 
+      if (decision.documentLinks.length === 0) {
+        // We assign a new array instead of pushing in an empty link, so that WarpDrive notices the change and it can be rolled back with `rollbackAttributes()`
+        decision.documentLinks = [''];
+      }
+
       model.decision = decision;
       model.decisionActivity = decisionActivity;
     }
