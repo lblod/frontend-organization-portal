@@ -9,7 +9,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
   @service store;
 
   queryParams = {
-    sort: { refreshModel: true },
     page: { refreshModel: true },
     selectedRoleLabel: { refreshModel: true, replace: true },
   };
@@ -27,7 +26,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
 
     let query = {
       include: 'role,member,organization',
-      // sort: params.sort,
       page: { size: params.size, number: params.page },
     };
 
