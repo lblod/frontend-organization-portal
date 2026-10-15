@@ -1,3 +1,14 @@
+## v1.48.0 (2026-10-15)
+
+#### :rocket: Enhancement
+* [#759](https://github.com/lblod/frontend-organization-portal/pull/759) [OP-3948] Sort related organizations alphabetically in edit view ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#750](https://github.com/lblod/frontend-organization-portal/pull/750) [OP-3925] Add support for multiple decisions links when adding or editing change events ([@Windvis](https://github.com/Windvis))
+* [#753](https://github.com/lblod/frontend-organization-portal/pull/753) [OP-3926] Updates to the change event date fields ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
 ## v1.47.0 (2026-10-13)
 
 #### :rocket: Enhancement
