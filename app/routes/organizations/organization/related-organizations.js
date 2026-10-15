@@ -22,36 +22,60 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
       }),
     );
 
-    // Only offer the roles the rules allow for the classification. Memberships
-    // whose role is no longer offered keep displaying; they are live data.
     const classificationId = organization.classification?.get('id');
-    let selectableRoles = roles.filter((role) =>
+
+    // Only offer the roles the rules allow for the classification.
+    const selectableRoles = roles.filter((role) =>
       allowedRolesForClassification(classificationId).some(
         (selectableRole) => selectableRole.id === role.id,
       ),
     );
 
-    // The generic "has a relation with" role is no longer offered to
-    // non-worship types, but their stored generic relations are live data:
-    // keep the role filterable when the organization has such relations.
+    // Labels the edit page offers for new relations, including direction.
+    const allowedRoleLabels =
+      allowedRoleLabelsForClassification(classificationId);
+
+    // Labels the rules exclude. Only added if the organization already has
+    // relations with them, so they stay filterable.
+    const storedRoleLabels = [];
+
+    // Non-worship types no longer get the generic "has a relation with" role,
+    // but existing relations with it must stay filterable.
     if (
       !selectableRoles.some((role) => role.hasRelationWith) &&
-      (await this.#hasStoredGenericRelations(organization))
+      (await this.#hasStoredRelationsWithRole(
+        organization,
+        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+      ))
     ) {
-      selectableRoles = [
-        ...selectableRoles,
-        ...roles.filter((role) => role.hasRelationWith),
-      ];
+      storedRoleLabels.push(MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.label);
+    }
+
+    // The rules exclude the founder and recognition roles because they're
+    // autofilled for some types. Show "Werd opgericht door" and
+    // "Werd erkend door" only if the organization has stored relations with them.
+    for (const governmentRole of [
+      MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
+      MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO,
+    ]) {
+      if (selectableRoles.some((role) => role.id === governmentRole.id)) {
+        continue;
+      }
+      if (
+        await this.#hasStoredRelationsWithRole(
+          organization,
+          governmentRole.id,
+          'organization',
+        )
+      ) {
+        storedRoleLabels.push(governmentRole.inverseLabel);
+      }
     }
 
     // Labels for the role filters above the view and edit tables.
     const selectableRoleLabels = [
-      ...new Set(
-        selectableRoles.flatMap((role) => [role.opLabel, role.inverseOpLabel]),
-      ),
+      ...new Set([...allowedRoleLabels, ...storedRoleLabels]),
     ].sort();
-    const allowedRoleLabels =
-      allowedRoleLabelsForClassification(classificationId);
 
     return {
       organization,
@@ -63,15 +87,21 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
   }
 
   /**
-   * Whether the organization has stored memberships with the generic
-   * "has a relation with" role.
+   * Whether the organization has stored memberships with the given role,
+   * either as their member or as their organization. Pass a relation to
+   * only check the memberships on that side of the organization.
    */
-  async #hasStoredGenericRelations(organization) {
+  async #hasStoredRelationsWithRole(organization, roleId, relation) {
+    const organizationFilters = relation
+      ? { [`filter[${relation}][:id:]`]: organization.id }
+      : {
+          'filter[:or:][member][:id:]': organization.id,
+          'filter[:or:][organization][:id:]': organization.id,
+        };
     const { content } = await this.store.request(
       query('membership', {
-        'filter[:or:][member][:id:]': organization.id,
-        'filter[:or:][organization][:id:]': organization.id,
-        'filter[role][:id:]': MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+        ...organizationFilters,
+        'filter[role][:id:]': roleId,
         page: { size: 1, number: 0 },
       }),
     );

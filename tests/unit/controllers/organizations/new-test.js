@@ -13,6 +13,11 @@ import {
   MEMBERSHIP_ROLES,
   MEMBERSHIP_ROLES_MAPPING,
 } from 'frontend-organization-portal/models/membership-role';
+import { REGERING_CLASSIFICATION_ID } from 'frontend-organization-portal/constants/classification';
+import {
+  FEDERALE_REGERING_ID,
+  VLAAMSE_REGERING_ID,
+} from 'frontend-organization-portal/constants/special-organizations';
 
 module('Unit | Controller | organizations/new', function (hooks) {
   setupTest(hooks);
@@ -127,6 +132,46 @@ module('Unit | Controller | organizations/new', function (hooks) {
       );
     }
 
+    /**
+     * Push a persisted, active "Regering"-classified government, as the save
+     * task fetches it for the autofill types.
+     */
+    function pushGovernment(store, governmentId) {
+      const [, , government] = store.push({
+        data: [
+          {
+            type: 'organization-status-code',
+            id: ORGANIZATION_STATUS.ACTIVE,
+            attributes: { label: 'Actief' },
+          },
+          {
+            type: 'administrative-unit-classification-code',
+            id: REGERING_CLASSIFICATION_ID,
+            attributes: { label: 'Regering' },
+          },
+          {
+            type: 'organization',
+            id: governmentId,
+            relationships: {
+              classification: {
+                data: {
+                  type: 'administrative-unit-classification-code',
+                  id: REGERING_CLASSIFICATION_ID,
+                },
+              },
+              organizationStatus: {
+                data: {
+                  type: 'organization-status-code',
+                  id: ORGANIZATION_STATUS.ACTIVE,
+                },
+              },
+            },
+          },
+        ],
+      });
+      return government;
+    }
+
     test('it saves a member-side field on the membershipsOfOrganizations and an organization-side field on the memberships', async function (assert) {
       const store = this.store();
       const controller = this.controller();
@@ -189,6 +234,63 @@ module('Unit | Controller | organizations/new', function (hooks) {
         organizationSideMembership.belongsTo('member').value(),
         municipality,
       );
+    });
+
+    // The save task autofills the founder and recognizer memberships with
+    // the government of the type: the Federale regering for a politiezone,
+    // the Vlaamse regering for a zorgraad.
+    [
+      [CLASSIFICATION.POLICE_ZONE, 'administrative-unit', FEDERALE_REGERING_ID],
+      [CLASSIFICATION.ZORGRAAD, 'registered-organization', VLAAMSE_REGERING_ID],
+    ].forEach(([classification, modelName, governmentId]) => {
+      test(`it autofills the government memberships for a ${classification.label}`, async function (assert) {
+        const store = this.store();
+        const controller = this.controller();
+        setupController(store, controller, modelName, classification);
+        const government = pushGovernment(store, governmentId);
+
+        // The save task fetches the government with
+        // store.request(findRecord(...)), which hits the adapter even with
+        // the record in the store: serve the pushed government from the
+        // adapter instead of the network.
+        this.owner.lookup('adapter:application').findRecord = () => ({
+          data: { type: 'organizations', id: governmentId },
+        });
+
+        // The save stops on the validations of the unfinished organization;
+        // the two autofilled memberships are what is asserted here.
+        await controller.createOrganizationTask.perform({
+          preventDefault() {},
+        });
+
+        assert.strictEqual(controller.memberships.length, 2);
+        const [founderMembership, recognitionMembership] =
+          controller.memberships;
+        assert.strictEqual(
+          founderMembership.belongsTo('role').id(),
+          MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
+        );
+        assert.strictEqual(
+          founderMembership.belongsTo('member').value(),
+          government,
+        );
+        assert.strictEqual(
+          founderMembership.belongsTo('organization').value(),
+          controller.currentOrganizationModel,
+        );
+        assert.strictEqual(
+          recognitionMembership.belongsTo('role').id(),
+          MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO.id,
+        );
+        assert.strictEqual(
+          recognitionMembership.belongsTo('member').value(),
+          government,
+        );
+        assert.strictEqual(
+          recognitionMembership.belongsTo('organization').value(),
+          controller.currentOrganizationModel,
+        );
+      });
     });
   });
 
