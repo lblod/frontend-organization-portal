@@ -35,7 +35,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
   setup() {
     if (!this.memberships) {
-      this.memberships = this.model.memberships.map((e) => e);
+      this.memberships = this.model.memberships;
     }
     if (this.memberships.length === 0) {
       this.addMembership();
