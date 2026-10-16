@@ -629,6 +629,69 @@ module('Unit | Model | change event', function (hooks) {
     });
   });
 
+  module('isCityChangeEvent', function () {
+    test('it returns falsy for a model without type', function (assert) {
+      const model = this.store().createRecord('change-event');
+
+      assert.notOk(model.isCityChangeEvent);
+    });
+
+    test('it returns falsy for a model with an incorrect type', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: 'This is an invalid change event type',
+      });
+
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.notOk(model.isCityChangeEvent);
+    });
+
+    test('it returns truthy for a city event', function (assert) {
+      const eventType = this.store().createRecord('change-event-type', {
+        id: CHANGE_EVENT_TYPE.CITY,
+      });
+      const model = this.store().createRecord('change-event', {
+        type: eventType,
+      });
+
+      assert.ok(model.isCityChangeEvent);
+    });
+
+    [
+      [CHANGE_EVENT_TYPE.NAME_CHANGE, 'name change'],
+      [CHANGE_EVENT_TYPE.IN_ONTBINDING, 'dissolution'],
+      [CHANGE_EVENT_TYPE.IN_VEREFFENING, 'liquidation'],
+      [CHANGE_EVENT_TYPE.ONTBONDEN_EN_VEREFFEND, 'dissolution and liquidated'],
+      [CHANGE_EVENT_TYPE.OPRICHTING, 'establishment'],
+      [CHANGE_EVENT_TYPE.AREA_DESCRIPTION_CHANGE, 'area description change'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED, 'recognition not granted'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_LIFTED, 'recognition lifted'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_REQUESTED, 'recognition requested'],
+      [CHANGE_EVENT_TYPE.RECOGNITION_GRANTED, 'recognition granted'],
+      [CHANGE_EVENT_TYPE.MERGER, 'merger'],
+      [CHANGE_EVENT_TYPE.FUSIE, 'fusion'],
+      [
+        CHANGE_EVENT_TYPE.SUSPENSION_OF_RECOGNITION,
+        'suspension of recognition',
+      ],
+      [CHANGE_EVENT_TYPE.SANCTIONED, 'sanctioned'],
+      [CHANGE_EVENT_TYPE.GEOGRAPHICAL_AREA_CHANGE, 'geographical area change'],
+    ].forEach(([id, name]) => {
+      test(`it returns falsy for a ${name} event`, async function (assert) {
+        const eventType = this.store().createRecord('change-event-type', {
+          id,
+        });
+        const model = this.store().createRecord('change-event', {
+          type: eventType,
+        });
+
+        assert.notOk(model.isCityChangeEvent);
+      });
+    });
+  });
+
   module('requiresDecisionInformation', function () {
     test('it returns falsy for a model without type', function (assert) {
       const model = this.store().createRecord('change-event');

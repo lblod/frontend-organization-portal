@@ -85,6 +85,10 @@ export default class ChangeEventModel extends AbstractValidationModel {
     return this.#hasTypeId(RequiresDecisionTypeIdList);
   }
 
+  get isCityChangeEvent() {
+    return this.#hasTypeId([CHANGE_EVENT_TYPE.CITY]);
+  }
+
   get isLegalFormChangeEvent() {
     return this.#hasTypeId([CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE]);
   }
