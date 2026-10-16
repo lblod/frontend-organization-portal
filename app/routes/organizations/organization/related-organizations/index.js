@@ -3,6 +3,7 @@ import { service } from '@ember/service';
 import { query } from '@warp-drive/legacy/compat/builders';
 import { ORGANIZATION_STATUS } from '../../../../models/organization-status-code';
 import { getRelationStatus } from 'frontend-organization-portal/utils/relation-status';
+import { sortRelatedOrganizations } from 'frontend-organization-portal/utils/sort-related-organizations';
 
 export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute extends Route {
   @service store;
@@ -56,7 +57,6 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       include: [
         'role',
         'during',
-        otherSide,
         `${otherSide}.classification`,
         `${otherSide}.organization-status`,
       ].join(),
@@ -133,50 +133,48 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
 
     // The status of the current organization is loaded by the parent route,
     // the one of the related organizations is included in the queries above.
-    const organizationStatusId = organization
-      .belongsTo('organizationStatus')
-      .id();
+    const organizationStatus = await organization.organizationStatus;
 
     for (const membership of membershipsOfOrganizations) {
       const relatedOrganization = await membership.organization;
+      const relatedStatus = await relatedOrganization.organizationStatus;
       const role = await membership.role;
       const classification = await relatedOrganization.classification;
 
       relatedOrganizations.push({
-        role: role.get('opLabel'),
-        organizationType: classification.get('label'),
+        role: role.opLabel,
+        organizationType: classification.label,
         organizationId: relatedOrganization.id,
-        organizationName: relatedOrganization.get('abbName'),
-        organizationStatus: relatedOrganization.get('organizationStatus'),
-        startDate: membership.startDate,
-        endDate: membership.endDate,
+        organizationName: relatedOrganization.abbName,
+        organizationStatus: relatedStatus,
+        startDate: membership.during?.startDate,
+        endDate: membership.during?.endDate,
         relationStatus: getRelationStatus({
-          endDate: membership.endDate,
-          memberStatusId: organizationStatusId,
-          organizationStatusId: relatedOrganization
-            .belongsTo('organizationStatus')
-            .id(),
+          endDate: membership.during?.endDate,
+          memberStatusId: organizationStatus?.id,
+          organizationStatusId: relatedStatus?.id,
         }),
       });
     }
 
     for (const membership of memberships) {
       const member = await membership.member;
+      const memberStatus = await member.organizationStatus;
       const role = await membership.role;
       const classification = await member.classification;
 
       relatedOrganizations.push({
-        role: role.get('inverseOpLabel'),
-        organizationType: classification.get('label'),
+        role: role.inverseOpLabel,
+        organizationType: classification.label,
         organizationId: member.id,
-        organizationName: member.get('abbName'),
-        organizationStatus: member.get('organizationStatus'),
-        startDate: membership.startDate,
-        endDate: membership.endDate,
+        organizationName: member.abbName,
+        organizationStatus: memberStatus,
+        startDate: membership.during?.startDate,
+        endDate: membership.during?.endDate,
         relationStatus: getRelationStatus({
-          endDate: membership.endDate,
-          memberStatusId: member.belongsTo('organizationStatus').id(),
-          organizationStatusId,
+          endDate: membership.during?.endDate,
+          memberStatusId: memberStatus?.id,
+          organizationStatusId: organizationStatus?.id,
         }),
       });
     }
@@ -184,25 +182,11 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
     // We have sort manually instead of in the backend because it depends on the
     // direction of membership whether to use the member or organization value
     // for sorting.
-    if (params.sort.length) {
-      // [table column, attribute to sort on]
-      const sortOptions = new Map([
-        ['name', 'organizationName'],
-        ['classification.label', 'organizationType'],
-        ['role.label', 'role'],
-      ]);
-
-      if (params.sort.startsWith('-')) {
-        relatedOrganizations = relatedOrganizations.sort((a, b) => {
-          const attributeName = sortOptions.get(params.sort.slice(1));
-          return b[attributeName].localeCompare(a[attributeName]);
-        });
-      } else {
-        relatedOrganizations = relatedOrganizations.sort((a, b) => {
-          const attributeName = sortOptions.get(params.sort);
-          return a[attributeName].localeCompare(b[attributeName]);
-        });
-      }
+    if (params.sort) {
+      relatedOrganizations = sortRelatedOrganizations(
+        relatedOrganizations,
+        params.sort,
+      );
     }
 
     return {

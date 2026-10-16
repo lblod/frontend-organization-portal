@@ -107,7 +107,7 @@
         <td>
           {{#let membership.during.error.startDate.message as |errorMessage|}}
             <Datepicker
-              @value={{membership.startDate}}
+              @value={{membership.during.startDate}}
               @onChange={{fn @setStartDate membership}}
               @error={{errorMessage}}
             />
@@ -119,7 +119,7 @@
         <td>
           {{#let membership.during.error.endDate.message as |errorMessage|}}
             <Datepicker
-              @value={{membership.endDate}}
+              @value={{membership.during.endDate}}
               @onChange={{fn @setEndDate membership}}
               @error={{errorMessage}}
             />
@@ -129,10 +129,19 @@
           {{/let}}
         </td>
         <td>
-          <OrganizationStatus
-            @id={{membership.relationStatus.id}}
-            @label={{membership.relationStatus.label}}
-          />
+          {{#let
+            (relation-status
+              endDate=membership.during.endDate
+              memberStatusId=membership.member.organizationStatus.id
+              organizationStatusId=membership.organization.organizationStatus.id
+            )
+            as |relationStatus|
+          }}
+            <OrganizationStatus
+              @id={{relationStatus.id}}
+              @label={{relationStatus.label}}
+            />
+          {{/let}}
         </td>
         <td>
           <AuButton

@@ -6,7 +6,6 @@ import {
   validateBelongsToRequired,
 } from '../validators/schema';
 import { MEMBERSHIP_ROLES_MAPPING } from './membership-role';
-import { getRelationStatus, isRelationEnded } from '../utils/relation-status';
 
 export default class MembershipModel extends AbstractValidationModel {
   @belongsTo('organization', {
@@ -31,9 +30,10 @@ export default class MembershipModel extends AbstractValidationModel {
   })
   role;
 
+  // Sync: every query that reads the period includes it
   @belongsTo('period-of-time', {
     inverse: null,
-    async: true,
+    async: false,
   })
   during;
 
@@ -135,35 +135,6 @@ export default class MembershipModel extends AbstractValidationModel {
         return this.role.get('inverseOpLabel');
       }
     }
-  }
-
-  // The period and the organization statuses are read synchronously, so they
-  // must be loaded (included) or new
-  get startDate() {
-    return this.belongsTo('during').value()?.startDate;
-  }
-
-  get endDate() {
-    return this.belongsTo('during').value()?.endDate;
-  }
-
-  get isEnded() {
-    return isRelationEnded(this.endDate);
-  }
-
-  get relationStatus() {
-    return getRelationStatus({
-      endDate: this.endDate,
-      memberStatusId: this.#statusIdOf('member'),
-      organizationStatusId: this.#statusIdOf('organization'),
-    });
-  }
-
-  #statusIdOf(relationshipName) {
-    return this.belongsTo(relationshipName)
-      .value()
-      ?.belongsTo('organizationStatus')
-      .id();
   }
 
   get isHasRelationWithMembership() {

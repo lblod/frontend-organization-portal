@@ -8,30 +8,6 @@ module('Unit | Model | period of time', function (hooks) {
     return this.owner.lookup('service:store');
   };
 
-  module('isEmpty', function () {
-    test('it is true when no dates are set', function (assert) {
-      const model = this.store().createRecord('period-of-time');
-
-      assert.true(model.isEmpty);
-    });
-
-    test('it is false when a start date is set', function (assert) {
-      const model = this.store().createRecord('period-of-time', {
-        startDate: new Date('2024-01-01'),
-      });
-
-      assert.false(model.isEmpty);
-    });
-
-    test('it is false when an end date is set', function (assert) {
-      const model = this.store().createRecord('period-of-time', {
-        endDate: new Date('2025-01-01'),
-      });
-
-      assert.false(model.isEmpty);
-    });
-  });
-
   module('validate', function () {
     test('it returns no errors when no dates are set', async function (assert) {
       const model = this.store().createRecord('period-of-time');

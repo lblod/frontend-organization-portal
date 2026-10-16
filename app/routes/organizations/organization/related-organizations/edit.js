@@ -28,9 +28,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
     let query = {
       include: [
         'role',
-        'member',
         'member.organization-status',
-        'organization',
         'organization.organization-status',
         'during',
       ].join(),

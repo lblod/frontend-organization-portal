@@ -568,7 +568,7 @@ async function findMostRecentChangeEvent(store, organization) {
 // Creates the period when the relation has none, and then also saves the
 // relation to link it
 async function endRelation(membership, date, store) {
-  let period = membership.belongsTo('during').value();
+  let period = membership.during;
 
   if (period?.endDate) {
     return;

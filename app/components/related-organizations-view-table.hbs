@@ -47,9 +47,21 @@
       />
       {{! TODO: Use same grey as other non-sorted columns}}
       <th>Status organisatie</th>
-      <th>Startdatum relatie</th>
-      <th>Einddatum relatie</th>
-      <th>Status relatie</th>
+      <AuDataTableThSortable
+        @field="start-date"
+        @label="Startdatum relatie"
+        @currentSorting={{@sort}}
+      />
+      <AuDataTableThSortable
+        @field="end-date"
+        @label="Einddatum relatie"
+        @currentSorting={{@sort}}
+      />
+      <AuDataTableThSortable
+        @field="relation-status"
+        @label="Status relatie"
+        @currentSorting={{@sort}}
+      />
     </c.header>
 
     <c.body as |organization|>

@@ -11,14 +11,17 @@ export const RELATION_STATUS = Object.freeze({
 });
 
 /**
- * Whether a relation with the given end date has ended. Only an end date
- * before today ends it, a future end date keeps it active.
+ * Whether a relation with the given end date has ended. The end date is a
+ * day: the relation is still active on that day, so compare with the start of
+ * today rather than with the current time.
  */
 export function isRelationEnded(endDate) {
   if (!endDate) {
     return false;
   }
-  return toIsoDate(endDate) < toIsoDate(new Date());
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  return endDate < startOfToday;
 }
 
 /**
@@ -39,12 +42,4 @@ export function getRelationStatus({
   }
 
   return RELATION_STATUS.ACTIVE;
-}
-
-// Local calendar date, the same convention as the date transform
-function toIsoDate(value) {
-  const date = value instanceof Date ? value : new Date(value);
-  const month = `${date.getMonth() + 1}`.padStart(2, '0');
-  const day = `${date.getDate()}`.padStart(2, '0');
-  return `${date.getFullYear()}-${month}-${day}`;
 }

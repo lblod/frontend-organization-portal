@@ -6,10 +6,6 @@ export default class PeriodOfTimeModel extends AbstractValidationModel {
   @attr('date') startDate;
   @attr('date') endDate;
 
-  get isEmpty() {
-    return !this.startDate && !this.endDate;
-  }
-
   get validationSchema() {
     return Joi.object({
       startDate: Joi.date()

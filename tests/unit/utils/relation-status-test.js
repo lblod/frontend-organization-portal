@@ -12,6 +12,14 @@ function daysFromToday(days) {
   return date;
 }
 
+// Today as the date transform loads an xsd:date: midnight UTC
+function todayAsLoaded() {
+  const today = new Date();
+  const month = `${today.getMonth() + 1}`.padStart(2, '0');
+  const day = `${today.getDate()}`.padStart(2, '0');
+  return new Date(`${today.getFullYear()}-${month}-${day}`);
+}
+
 module('Unit | Utility | relation-status', function () {
   module('isRelationEnded', function () {
     test('it is ended when the end date is before today', function (assert) {
@@ -21,6 +29,7 @@ module('Unit | Utility | relation-status', function () {
 
     test('it is not ended when the end date is today or later', function (assert) {
       assert.false(isRelationEnded(new Date()));
+      assert.false(isRelationEnded(todayAsLoaded()));
       assert.false(isRelationEnded(daysFromToday(1)));
       assert.false(isRelationEnded(new Date('2999-12-31')));
     });

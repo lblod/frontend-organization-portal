@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import { recordIdentifierFor } from '@warp-drive/core';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { shouldSwapAssignments } from 'frontend-organization-portal/constants/memberships';
+import { isEmptyPeriod } from 'frontend-organization-portal/utils/period-of-time';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditController extends Controller {
   @service router;
@@ -29,14 +30,13 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     // deleted regardless of their fields and must not block the save.
     return this.memberships.some(
       (membership) =>
-        !membership.isDeleted &&
-        (membership.error || membership.belongsTo('during').value()?.error),
+        !membership.isDeleted && (membership.error || membership.during?.error),
     );
   }
 
   get hasUnsavedEdits() {
     return this.memberships.some((membership) => {
-      const period = membership.belongsTo('during').value();
+      const period = membership.during;
       return (
         membership.isNew ||
         membership.isDeleted ||
@@ -144,7 +144,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   // Creates the period on the first date; clearing a date of a membership
   // without period changes nothing
   #setPeriodDate(membership, field, date) {
-    let period = membership.belongsTo('during').value();
+    let period = membership.during;
     if (!period) {
       if (!date) {
         return;
@@ -160,9 +160,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     const org = membership.belongsTo('organization').value();
     const member = membership.belongsTo('member').value();
     const role = membership.belongsTo('role').value();
-    const period = membership.belongsTo('during').value();
 
-    return !org && !member && !role && (!period || period.isEmpty);
+    return !org && !member && !role && isEmptyPeriod(membership.during);
   }
 
   @action
@@ -214,7 +213,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     await organization.validate();
 
     let validationPromises = this.memberships.map(async (membership) => {
-      const period = membership.belongsTo('during').value();
+      const period = membership.during;
       if (membership.isDeleted) {
         // A removed row is deleted together with its period, so neither needs
         // validating; clear the errors left by an earlier save attempt.
@@ -285,7 +284,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
    * when it is new or its period is not linked yet.
    */
   async #saveMembership(membership) {
-    const period = membership.belongsTo('during').value();
+    const period = membership.during;
 
     if (membership.isDeleted) {
       await this.store.request(saveRecord(membership));
@@ -303,7 +302,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     let linkedPeriod = null;
 
     if (period?.isNew) {
-      if (period.isEmpty) {
+      if (isEmptyPeriod(period)) {
         // The user did not enter any dates, do not persist an empty period
         membership.during = null;
         period.rollbackAttributes();
@@ -386,7 +385,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   }
 
   #rollbackPeriod(membership) {
-    const period = membership.belongsTo('during').value();
+    const period = membership.during;
     if (!period || period.isDestroyed || period.isDestroying) {
       return;
     }

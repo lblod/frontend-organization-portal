@@ -6,6 +6,7 @@ import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import sinon from 'sinon';
 import { setupTest } from 'frontend-organization-portal/tests/helpers';
 import EditController from 'frontend-organization-portal/controllers/organizations/organization/related-organizations/edit';
+import { isEmptyPeriod } from 'frontend-organization-portal/utils/period-of-time';
 
 module(
   'Unit | Controller | organizations/organization/related-organizations/edit',
@@ -311,7 +312,7 @@ module(
         const period = membership.belongsTo('during').value();
 
         assert.true(period.isNew);
-        assert.deepEqual(membership.startDate, new Date('2024-01-01'));
+        assert.deepEqual(membership.during?.startDate, new Date('2024-01-01'));
         assert.true(controller.hasUnsavedEdits);
 
         controller.reset();
@@ -326,7 +327,7 @@ module(
         controller.setup();
 
         assert.deepEqual(controller.memberships, [membership]);
-        assert.strictEqual(membership.startDate, undefined);
+        assert.strictEqual(membership.during?.startDate, undefined);
         assert.false(controller.hasUnsavedEdits);
       });
 
@@ -344,14 +345,14 @@ module(
         controller.setEndDate(membership, new Date('2026-01-01'));
 
         assert.true(period.hasDirtyAttributes);
-        assert.deepEqual(membership.endDate, new Date('2026-01-01'));
+        assert.deepEqual(membership.during?.endDate, new Date('2026-01-01'));
         assert.true(controller.hasUnsavedEdits);
 
         controller.reset();
 
         assert.false(period.hasDirtyAttributes);
         assert.false(period.isDestroying);
-        assert.deepEqual(membership.endDate, new Date('2025-01-01'));
+        assert.deepEqual(membership.during?.endDate, new Date('2025-01-01'));
         assert.strictEqual(store.peekAll('period-of-time').length, 1);
 
         // Opening the edit page again shows the original dates
@@ -411,7 +412,7 @@ module(
 
         assert.strictEqual(period.error, undefined);
         assert.false(period.hasDirtyAttributes);
-        assert.deepEqual(membership.endDate, new Date('2025-01-01'));
+        assert.deepEqual(membership.during?.endDate, new Date('2025-01-01'));
 
         // Opening the edit page again shows no errors
         controller.setup();
@@ -582,7 +583,7 @@ module(
           'update organization',
         ]);
         assert.false(period.hasDirtyAttributes);
-        assert.deepEqual(membership.endDate, new Date('2026-01-01'));
+        assert.deepEqual(membership.during?.endDate, new Date('2026-01-01'));
       });
 
       test('it deletes a removed membership before its period', async function (assert) {
@@ -624,7 +625,7 @@ module(
         controller.setStartDate(membership, null);
         const period = membership.belongsTo('during').value();
 
-        assert.true(period.isEmpty);
+        assert.true(isEmptyPeriod(period));
 
         await controller.save.perform(event);
 
