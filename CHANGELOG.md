@@ -1,3 +1,30 @@
+## v1.48.0 (2026-10-15)
+
+#### :rocket: Enhancement
+* [#759](https://github.com/lblod/frontend-organization-portal/pull/759) [OP-3948] Sort related organizations alphabetically in edit view ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#750](https://github.com/lblod/frontend-organization-portal/pull/750) [OP-3925] Add support for multiple decisions links when adding or editing change events ([@Windvis](https://github.com/Windvis))
+* [#753](https://github.com/lblod/frontend-organization-portal/pull/753) [OP-3926] Updates to the change event date fields ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 2
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
+## v1.47.0 (2026-10-13)
+
+#### :rocket: Enhancement
+* [#742](https://github.com/lblod/frontend-organization-portal/pull/742) [OP-3928] correct change event selection based on organization types ([@DamonKennes](https://github.com/DamonKennes))
+
+#### :bug: Bug Fix
+* [#756](https://github.com/lblod/frontend-organization-portal/pull/756) [OP-3913] Clarify the deletion message ([@Windvis](https://github.com/Windvis))
+
+## v1.46.0 (2026-10-08)
+
+#### :rocket: Enhancement
+* [#748](https://github.com/lblod/frontend-organization-portal/pull/748) [OP-3913] show warning when deleting any related organizations ([@DamonKennes](https://github.com/DamonKennes))
+
+#### :bug: Bug Fix
+* [#751](https://github.com/lblod/frontend-organization-portal/pull/751) [OP-3949] Roll back unsaved related organizations when cancelling the edit page ([@bdevloed](https://github.com/bdevloed))
+
 ## v1.45.3 (2026-09-28)
 
 #### :rocket: Enhancement

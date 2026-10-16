@@ -3,7 +3,6 @@ import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuLinkExternal from '@appuniversum/ember-appuniversum/components/au-link-external';
 import AuList from '@appuniversum/ember-appuniversum/components/au-list';
 import AuTooltip from '@appuniversum/ember-appuniversum/components/au-tooltip';
-import { or } from 'ember-truth-helpers';
 import DataCard from 'frontend-organization-portal/components/data-card';
 import EditButton from 'frontend-organization-portal/components/button/edit';
 import OrganizationStatus from 'frontend-organization-portal/components/organization-status';
@@ -12,10 +11,7 @@ import ReportWrongData from 'frontend-organization-portal/components/report-wron
 import SecuredArea from 'frontend-organization-portal/components/secured-area';
 import isAdditionalQualificationChangeEvent from 'frontend-organization-portal/helpers/is-additional-qualification-change-event';
 import dateFormat from 'frontend-organization-portal/helpers/date-format';
-import {
-  isCityType,
-  isNameChangeType,
-} from 'frontend-organization-portal/models/change-event-type';
+import { isNameChangeType } from 'frontend-organization-portal/models/change-event-type';
 
 <template>
   <div class="au-c-body-container au-c-body-container--scroll">
@@ -70,16 +66,22 @@ import {
                 {{/if}}
               {{/if}}
               {{#let
-                @model.changeEvent.decision.documentLink
-                as |documentLink|
+                @model.changeEvent.decision.documentLinks
+                as |documentLinks|
               }}
-                {{#if documentLink}}
+                {{#if documentLinks.length}}
                   <Item>
-                    <:label>Link naar besluit</:label>
+                    <:label>Links naar besluiten</:label>
                     <:content>
-                      <AuLinkExternal href={{documentLink}}>
-                        {{documentLink}}
-                      </AuLinkExternal>
+                      <AuList as |Item|>
+                        {{#each documentLinks as |documentLink|}}
+                          <Item>
+                            <AuLinkExternal href={{documentLink}}>
+                              {{documentLink}}
+                            </AuLinkExternal>
+                          </Item>
+                        {{/each}}
+                      </AuList>
                     </:content>
                   </Item>
                 {{/if}}
@@ -135,28 +137,38 @@ import {
               {{/if}}
             </:left>
             <:right as |Item|>
-              {{#if
-                (or
-                  (isCityType @model.changeEvent.type)
-                  (isNameChangeType @model.changeEvent.type)
-                )
+              {{#let
+                @model.changeEvent.decision.hasDecisionActivity.endDate
+                as |endDate|
               }}
-                {{#let
-                  @model.changeEvent.decision.publicationDate
-                  as |publicationDate|
-                }}
-                  {{#if publicationDate}}
-                    <Item>
-                      <:label>
+                {{#if endDate}}
+                  <Item>
+                    <:label>Datum ministerieel besluit</:label>
+                    <:content>
+                      {{dateFormat endDate}}
+                    </:content>
+                  </Item>
+                {{/if}}
+              {{/let}}
+              {{#let
+                @model.changeEvent.decision.publicationDate
+                as |publicationDate|
+              }}
+                {{#if publicationDate}}
+                  <Item>
+                    <:label>
+                      {{#if @model.organization.isWorshipAdministrativeUnit}}
+                        Datum publicatie BS
+                      {{else}}
                         Datum besluit
-                      </:label>
-                      <:content>
-                        {{dateFormat publicationDate}}
-                      </:content>
-                    </Item>
-                  {{/if}}
-                {{/let}}
-              {{/if}}
+                      {{/if}}
+                    </:label>
+                    <:content>
+                      {{dateFormat publicationDate}}
+                    </:content>
+                  </Item>
+                {{/if}}
+              {{/let}}
               <Item>
                 <:label>Datum veranderingsgebeurtenis</:label>
                 <:content>

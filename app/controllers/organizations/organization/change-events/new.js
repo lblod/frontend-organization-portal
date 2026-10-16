@@ -4,7 +4,6 @@ import { service } from '@ember/service';
 import { dropTask } from 'ember-concurrency';
 import {
   CHANGE_EVENT_TYPE,
-  isCityType,
   isNameChangeType,
 } from 'frontend-organization-portal/models/change-event-type';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
@@ -65,7 +64,6 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
   resultingName = null;
 
   isNameChangeType = isNameChangeType;
-  isCityType = isCityType;
 
   get hasValidationErrors() {
     return this.model.changeEvent.error || this.model.decision?.error;
@@ -84,15 +82,6 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
   // TODO: replace this with a `url-for` helper.
   get organizationCreationUrl() {
     return this.router.urlFor('organizations.new');
-  }
-
-  @action updateChangeEventType(type) {
-    if (!isNameChangeType(type) && !isCityType(type)) {
-      // Clear the date just in case the user entered a value before changing the type
-      this.model.decision.publicationDate = undefined;
-    }
-
-    this.model.changeEvent.type = type;
   }
 
   @action
@@ -220,9 +209,16 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       organization: currentOrganization,
       changeEvent,
       decision,
+      decisionActivity,
     } = this.model;
 
     const shouldSaveDecision = await changeEvent.requiresDecisionInformation;
+
+    if (shouldSaveDecision) {
+      decision.documentLinks = decision.documentLinks.filter((link) =>
+        link.trim(),
+      );
+    }
 
     await changeEvent.validate();
 
@@ -267,6 +263,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       changeEvent.decision = await saveDecision(
         shouldSaveDecision,
         decision,
+        decisionActivity,
         this.store,
       );
 
@@ -390,6 +387,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
   reset() {
     this.model.changeEvent.reset();
     this.model.decision?.reset();
+    this.model.decisionActivity?.rollbackAttributes();
     this.model.organization.reset();
     this.selectedResultingOrganization = null;
     this.selectedResultingLegalForm = null;
@@ -508,9 +506,18 @@ async function findMostRecentChangeEvent(store, organization) {
   }
 }
 
-async function saveDecision(shouldSaveDecision, decision, store) {
+async function saveDecision(
+  shouldSaveDecision,
+  decision,
+  decisionActivity,
+  store,
+) {
   if (shouldSaveDecision) {
-    if (!decision.isEmpty) {
+    if (!decision.isEmpty || decisionActivity.endDate) {
+      if (decisionActivity.endDate) {
+        await store.request(saveRecord(decisionActivity));
+        decision.hasDecisionActivity = decisionActivity;
+      }
       await store.request(saveRecord(decision));
       return decision;
     }

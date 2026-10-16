@@ -29,12 +29,26 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditRoute exten
 
     if (canAddDecisionInformation) {
       let decision = await changeEvent.decision;
+      let decisionActivity = null;
+      if (decision) {
+        decisionActivity = await decision.hasDecisionActivity;
+      }
 
       if (!decision) {
         decision = this.store.createRecord('decision');
       }
 
+      if (!decisionActivity) {
+        decisionActivity = this.store.createRecord('decision-activity');
+      }
+
+      if (decision.documentLinks.length === 0) {
+        // We assign a new array instead of pushing in an empty link, so that WarpDrive notices the change and it can be rolled back with `rollbackAttributes()`
+        decision.documentLinks = [''];
+      }
+
       model.decision = decision;
+      model.decisionActivity = decisionActivity;
     }
 
     return model;

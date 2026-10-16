@@ -86,22 +86,22 @@
             {{/if}}
             {{#if @model.changeEvent.requiresDecisionInformation}}
               <Item
-                @labelFor="change-event-decision-link"
-                @errorMessage={{@model.decision.error.documentLink.message}}
+                @errorMessage={{@model.decision.error.documentLinks}}
+                @labelFor="change-event-decision-link-0"
               >
-                <:label>Link naar besluit</:label>
-                <:content as |hasError|>
-                  <TrimInput
-                    @value={{@model.decision.documentLink}}
-                    @onUpdate={{fn (mut @model.decision.documentLink)}}
-                    @width="block"
-                    @error={{hasError}}
-                    id="change-event-decision-link"
+                <:label>Links naar besluiten</:label>
+                <:content>
+                  <ChangeEvents::DecisionDocumentLinks
+                    @decision={{@model.decision}}
+                    @errors={{@model.decision.error.documentLinks}}
                   />
                 </:content>
-                <:helpText>
-                  {{help-text "url"}}
-                </:helpText>
+                <:error>
+                  {{!
+                    If we do not add the error block, the default implementation is used.
+                    Since we display the error below each field, we do not want the default implementation.
+                  }}
+                </:error>
               </Item>
             {{/if}}
             {{#if @model.changeEvent.isWerkingsgebiedChangeEvent}}
@@ -158,9 +158,43 @@
           </:left>
           <:right as |Item|>
             {{#if
-              (or
-                (this.isCityType @model.changeEvent.type)
-                (this.isNameChangeType @model.changeEvent.type)
+              (and
+                @model.organization.isWorshipAdministrativeUnit
+                @model.changeEvent.requiresDecisionInformation
+              )
+            }}
+              <Item
+                @labelFor="change-event-decision-activity-date"
+                @errorMessage={{@model.decisionActivity.error.endDate.message}}
+              >
+                <:label>Datum ministerieel besluit</:label>
+                <:content as |hasError|>
+                  <Datepicker
+                    @id="change-event-decision-activity-date"
+                    @value={{@model.decisionActivity.endDate}}
+                    @onChange={{fn (mut @model.decisionActivity.endDate)}}
+                    @error={{hasError}}
+                  />
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if
+              (and
+                @model.changeEvent.requiresDecisionInformation
+                (or
+                  @model.organization.isWorshipAdministrativeUnit
+                  (and
+                    (this.isNameChangeType @model.changeEvent.type)
+                    (or
+                      @model.organization.isMunicipality
+                      @model.organization.isProvince
+                    )
+                  )
+                  (and
+                    @model.changeEvent.isCityChangeEvent
+                    @model.organization.isMunicipality
+                  )
+                )
               )
             }}
               <Item
@@ -168,7 +202,11 @@
                 @errorMessage={{@model.decision.error.publicationDate.message}}
               >
                 <:label>
-                  Datum besluit
+                  {{#if @model.organization.isWorshipAdministrativeUnit}}
+                    Datum publicatie BS
+                  {{else}}
+                    Datum besluit
+                  {{/if}}
                 </:label>
                 <:content as |hasError|>
                   <Datepicker
