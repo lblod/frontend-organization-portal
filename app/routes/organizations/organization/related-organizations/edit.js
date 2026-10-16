@@ -32,8 +32,14 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
       // The classifications are needed for the minimum check on removal: a
       // minimum restricted to certain types must not count an organization
       // whose classification is not loaded.
-      include:
-        'role,member,organization,member.classification,organization.classification',
+      include: [
+        'role',
+        'member.classification',
+        'member.organization-status',
+        'organization.classification',
+        'organization.organization-status',
+        'during',
+      ].join(),
       page: { size: params.size, number: params.page },
     };
 

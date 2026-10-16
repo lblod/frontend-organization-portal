@@ -35,9 +35,10 @@ export default class MembershipModel extends AbstractValidationModel {
   })
   role;
 
+  // Sync: every query that reads the period includes it
   @belongsTo('period-of-time', {
     inverse: null,
-    async: true,
+    async: false,
   })
   during;
 

@@ -25,7 +25,10 @@
       <th>Type relatie</th>
       <th>Type organisatie</th>
       <th>Organisatie</th>
-      <th>Status</th>
+      <th>Status organisatie</th>
+      <th>Startdatum relatie</th>
+      <th>Einddatum relatie</th>
+      <th>Status relatie</th>
       <th></th>
     </c.header>
 
@@ -99,6 +102,45 @@
               @label={{membership.member.organizationStatus.label}}
             />
           {{/if}}
+        </td>
+        <td>
+          {{#let membership.during.error.startDate.message as |errorMessage|}}
+            <Datepicker
+              @value={{membership.during.startDate}}
+              @onChange={{fn @setStartDate membership}}
+              @error={{errorMessage}}
+            />
+            {{#if errorMessage}}
+              <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+            {{/if}}
+          {{/let}}
+        </td>
+        <td>
+          {{#let membership.during.error.endDate.message as |errorMessage|}}
+            <Datepicker
+              @value={{membership.during.endDate}}
+              @onChange={{fn @setEndDate membership}}
+              @error={{errorMessage}}
+            />
+            {{#if errorMessage}}
+              <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+            {{/if}}
+          {{/let}}
+        </td>
+        <td>
+          {{#let
+            (relation-status
+              endDate=membership.during.endDate
+              memberStatusId=membership.member.organizationStatus.id
+              organizationStatusId=membership.organization.organizationStatus.id
+            )
+            as |relationStatus|
+          }}
+            <OrganizationStatus
+              @id={{relationStatus.id}}
+              @label={{relationStatus.label}}
+            />
+          {{/let}}
         </td>
         <td>
           <AuButton
