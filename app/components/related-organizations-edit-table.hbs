@@ -11,7 +11,7 @@
       <div class="au-o-box">
         <MembershipRoleSelect
           @disabled={{@unsavedEdit}}
-          @options={{@model.roles}}
+          @options={{@model.selectableRoleLabels}}
           @selected={{@selectedRole}}
           @onChange={{fn (mut @selectedRole)}}
           @allowClear={{true}}
@@ -36,7 +36,7 @@
             <MembershipRoleSelect
               @disabled={{not membership.isNew}}
               @selected={{fn @displayRoleLabel membership}}
-              @options={{@model.selectableRoles}}
+              @options={{@model.allowedRoleLabels}}
               @onChange={{fn @updateMembershipRole membership}}
               @error={{errorMessage}}
               @id="membership-role"
@@ -103,11 +103,15 @@
         <td>
           <AuButton
             @alert={{true}}
-            @disabled={{membership.isNotRemovableByUser}}
+            @disabled={{or
+              membership.isNotRemovableByUser
+              @removeRelatedOrganization.isRunning
+            }}
+            @loading={{@removeRelatedOrganization.isRunning}}
             @icon="bin"
             @iconAlignment="left"
             @skin="link"
-            {{on "click" (fn @removeRelatedOrganization membership)}}
+            {{on "click" (perform @removeRelatedOrganization membership)}}
           >
             Verwijder
           </AuButton>

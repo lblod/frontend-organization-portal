@@ -20,12 +20,20 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
   }
 
   async model(params) {
-    const { organization, roles, selectableRoles } = this.modelFor(
-      'organizations.organization.related-organizations',
-    );
+    const {
+      organization,
+      roles,
+      selectableRoles,
+      selectableRoleLabels,
+      allowedRoleLabels,
+    } = this.modelFor('organizations.organization.related-organizations');
 
     let query = {
-      include: 'role,member,organization',
+      // The classifications are needed for the minimum check on removal: a
+      // minimum restricted to certain types must not count an organization
+      // whose classification is not loaded.
+      include:
+        'role,member,organization,member.classification,organization.classification',
       page: { size: params.size, number: params.page },
     };
 
@@ -62,6 +70,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
       memberships: sortedMemberships,
       roles,
       selectableRoles,
+      selectableRoleLabels,
+      allowedRoleLabels,
     };
   }
 
