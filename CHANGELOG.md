@@ -1,3 +1,11 @@
+## v1.50.0 (2026-10-16)
+
+#### :rocket: Enhancement
+* [#754](https://github.com/lblod/frontend-organization-portal/pull/754) [OP-3947] Add start date, end date and status to related organizations ([@bdevloed](https://github.com/bdevloed))
+
+#### Committers: 1
+- Boris De Vloed ([@bdevloed](https://github.com/bdevloed))
+
 ## v1.49.0 (2026-10-16)
 
 #### :rocket: Enhancement
