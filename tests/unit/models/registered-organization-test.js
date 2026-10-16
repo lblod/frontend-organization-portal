@@ -40,13 +40,13 @@ module('Unit | Model | registered organization', function (hooks) {
         legalName: { message: 'Vul de juridische naam in' },
         classification: { message: 'Selecteer een optie' },
         organizationStatus: { message: 'Selecteer een optie' },
-        memberships: { message: 'Selecteer een optie' },
+        memberships: { message: 'Kies minstens 1 gerelateerde organisatie' },
         legalForm: { message: 'Selecteer een optie' },
         contentThemes: { message: 'Selecteer een optie' },
       });
     });
 
-    test(`it should not return an error creating an empty "Andere" model without memberships`, async function (assert) {
+    test(`it should return an error when creating an "Andere" model without memberships`, async function (assert) {
       const classification = this.store().createRecord(
         'registered-organization-classification-code',
         CLASSIFICATION.ANDERE,
@@ -58,10 +58,37 @@ module('Unit | Model | registered organization', function (hooks) {
       const isValid = await model.validate({ creatingNewOrganization: true });
 
       assert.false(isValid);
-      assert.notOk(model.error.memberships);
+      assert.propContains(model.error, {
+        memberships: { message: 'Kies minstens 1 gerelateerde organisatie' },
+      });
     });
 
-    [CLASSIFICATION.REGIONAAL_LANDSCHAP].forEach((cl) => {
+    [
+      CLASSIFICATION.REGIONAAL_LANDSCHAP,
+      CLASSIFICATION.REGIONAAL_ZORGPLATFORM,
+      CLASSIFICATION.BOSGROEP,
+      CLASSIFICATION.ZORGRAAD,
+    ].forEach((cl) => {
+      test(`it should require a werkingsgebied and memberships when creating a new ${cl.label}`, async function (assert) {
+        const classification = this.store().createRecord(
+          'registered-organization-classification-code',
+          cl,
+        );
+        const model = this.store().createRecord('registered-organization', {
+          classification,
+        });
+
+        const isValid = await model.validate({ creatingNewOrganization: true });
+
+        assert.false(isValid);
+        assert.propContains(model.error, {
+          scope: { message: 'Selecteer een optie' },
+          memberships: { message: 'Kies minstens 1 gerelateerde organisatie' },
+        });
+      });
+    });
+
+    [CLASSIFICATION.WOONMAATSCHAPPIJ].forEach((cl) => {
       test(`it should require a werkingsgebied but no memberships when creating a new ${cl.label}`, async function (assert) {
         const classification = this.store().createRecord(
           'registered-organization-classification-code',
@@ -77,6 +104,7 @@ module('Unit | Model | registered organization', function (hooks) {
         assert.propContains(model.error, {
           scope: { message: 'Selecteer een optie' },
         });
+        assert.notOk(model.error.memberships);
       });
     });
 
@@ -98,7 +126,7 @@ module('Unit | Model | registered organization', function (hooks) {
 
         assert.false(isValid);
         assert.propContains(model.error, {
-          memberships: { message: 'Selecteer een optie' },
+          memberships: { message: 'Kies minstens 1 gerelateerde organisatie' },
         });
       });
     });
@@ -122,7 +150,7 @@ module('Unit | Model | registered organization', function (hooks) {
 
         assert.false(isValid);
         assert.propContains(model.error, {
-          memberships: { message: 'Selecteer een optie' },
+          memberships: { message: 'Kies minstens 1 gerelateerde organisatie' },
         });
       });
     });

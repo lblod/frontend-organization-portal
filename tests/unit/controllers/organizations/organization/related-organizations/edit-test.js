@@ -7,6 +7,8 @@ import sinon from 'sinon';
 import { setupTest } from 'frontend-organization-portal/tests/helpers';
 import EditController from 'frontend-organization-portal/controllers/organizations/organization/related-organizations/edit';
 import { isEmptyPeriod } from 'frontend-organization-portal/utils/period-of-time';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 
 module(
   'Unit | Controller | organizations/organization/related-organizations/edit',
@@ -855,6 +857,392 @@ module(
         ]);
         assert.strictEqual(membership.belongsTo('during').id(), period.id);
         assert.true(transitionTo.calledOnce);
+      });
+    });
+
+    module('removeMembership', function () {
+      /**
+       * Push a persisted district with the given number of municipalities
+       * founding it, as the edit route would have loaded them.
+       */
+      function pushDistrictWithFounders(store, founderCount) {
+        const data = [
+          {
+            type: 'administrative-unit-classification-code',
+            id: CLASSIFICATION.MUNICIPALITY.id,
+            attributes: { label: CLASSIFICATION.MUNICIPALITY.label },
+          },
+          {
+            type: 'administrative-unit-classification-code',
+            id: CLASSIFICATION.DISTRICT.id,
+            attributes: { label: CLASSIFICATION.DISTRICT.label },
+          },
+          {
+            type: 'membership-role',
+            id: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
+            attributes: { label: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.label },
+          },
+          {
+            type: 'administrative-unit',
+            id: 'district',
+            attributes: { name: 'District Aalst' },
+            relationships: {
+              classification: {
+                data: {
+                  type: 'administrative-unit-classification-code',
+                  id: CLASSIFICATION.DISTRICT.id,
+                },
+              },
+            },
+          },
+        ];
+        for (let index = 0; index < founderCount; index++) {
+          data.push(
+            {
+              type: 'administrative-unit',
+              id: `municipality-${index}`,
+              relationships: {
+                classification: {
+                  data: {
+                    type: 'administrative-unit-classification-code',
+                    id: CLASSIFICATION.MUNICIPALITY.id,
+                  },
+                },
+              },
+            },
+            {
+              type: 'membership',
+              id: `membership-${index}`,
+              relationships: {
+                organization: {
+                  data: { type: 'administrative-unit', id: 'district' },
+                },
+                member: {
+                  data: {
+                    type: 'administrative-unit',
+                    id: `municipality-${index}`,
+                  },
+                },
+                role: {
+                  data: {
+                    type: 'membership-role',
+                    id: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
+                  },
+                },
+              },
+            },
+          );
+        }
+        store.push({ data });
+        return {
+          district: store.peekRecord('administrative-unit', 'district'),
+          municipality: store.peekRecord(
+            'administrative-unit',
+            'municipality-0',
+          ),
+          memberships: Array.from({ length: founderCount }, (_, index) =>
+            store.peekRecord('membership', `membership-${index}`),
+          ),
+        };
+      }
+
+      test('it shows an error instead of the confirmation when the removal takes the organization being edited below its minimum', async function (assert) {
+        const store = this.store();
+        const { district, memberships } = pushDistrictWithFounders(store, 1);
+        const controller = this.controller();
+        controller.model = { organization: district, memberships };
+        controller.setup();
+
+        await controller.removeMembership.perform(memberships[0]);
+
+        assert.notOk(controller.founderToRemove);
+        assert.true(
+          controller.membershipRemovalError.includes('je organisatie'),
+        );
+      });
+
+      test('it shows an error naming the other organization when the removal takes that organization below its minimum', async function (assert) {
+        const store = this.store();
+        const { municipality, memberships } = pushDistrictWithFounders(
+          store,
+          1,
+        );
+        const controller = this.controller();
+        // The edit page of the municipality shows the founder membership with
+        // the district on the other side.
+        controller.model = { organization: municipality, memberships };
+        controller.setup();
+        const queryStub = sinon
+          .stub(this.owner.lookup('adapter:application'), 'query')
+          .resolves({
+            data: [
+              {
+                type: 'membership',
+                id: memberships[0].id,
+                relationships: {
+                  organization: {
+                    data: { type: 'administrative-unit', id: 'district' },
+                  },
+                  member: {
+                    data: {
+                      type: 'administrative-unit',
+                      id: 'municipality-0',
+                    },
+                  },
+                  role: {
+                    data: {
+                      type: 'membership-role',
+                      id: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
+                    },
+                  },
+                },
+              },
+            ],
+          });
+
+        await controller.removeMembership.perform(memberships[0]);
+
+        assert.notOk(controller.founderToRemove);
+        assert.true(
+          controller.membershipRemovalError.includes('District Aalst'),
+        );
+
+        queryStub.restore();
+      });
+
+      test('it shows the confirmation when both organizations keep meeting their minimums', async function (assert) {
+        const store = this.store();
+        const { municipality, memberships } = pushDistrictWithFounders(
+          store,
+          2,
+        );
+        const controller = this.controller();
+        controller.model = { organization: municipality, memberships };
+        controller.setup();
+        const queryStub = sinon
+          .stub(this.owner.lookup('adapter:application'), 'query')
+          .resolves({
+            data: memberships.map((membership) => ({
+              type: 'membership',
+              id: membership.id,
+              relationships: {
+                organization: {
+                  data: { type: 'administrative-unit', id: 'district' },
+                },
+                member: {
+                  data: {
+                    type: 'administrative-unit',
+                    id: membership.member.id,
+                  },
+                },
+                role: {
+                  data: {
+                    type: 'membership-role',
+                    id: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
+                  },
+                },
+              },
+            })),
+          });
+
+        await controller.removeMembership.perform(memberships[0]);
+
+        assert.strictEqual(controller.founderToRemove, memberships[0]);
+        assert.notOk(controller.membershipRemovalError);
+
+        queryStub.restore();
+      });
+
+      /**
+       * Push a persisted district without stored founders, plus one
+       * municipality to pick in a new row, as the edit route would have
+       * loaded them.
+       */
+      function pushDistrictWithoutFounders(store) {
+        store.push({
+          data: [
+            {
+              type: 'administrative-unit-classification-code',
+              id: CLASSIFICATION.MUNICIPALITY.id,
+              attributes: { label: CLASSIFICATION.MUNICIPALITY.label },
+            },
+            {
+              type: 'administrative-unit-classification-code',
+              id: CLASSIFICATION.DISTRICT.id,
+              attributes: { label: CLASSIFICATION.DISTRICT.label },
+            },
+            {
+              type: 'membership-role',
+              id: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
+              attributes: {
+                label: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.label,
+              },
+            },
+            {
+              type: 'administrative-unit',
+              id: 'district',
+              relationships: {
+                classification: {
+                  data: {
+                    type: 'administrative-unit-classification-code',
+                    id: CLASSIFICATION.DISTRICT.id,
+                  },
+                },
+              },
+            },
+            {
+              type: 'administrative-unit',
+              id: 'municipality-0',
+              relationships: {
+                classification: {
+                  data: {
+                    type: 'administrative-unit-classification-code',
+                    id: CLASSIFICATION.MUNICIPALITY.id,
+                  },
+                },
+              },
+            },
+          ],
+        });
+        return {
+          district: store.peekRecord('administrative-unit', 'district'),
+          municipality: store.peekRecord(
+            'administrative-unit',
+            'municipality-0',
+          ),
+        };
+      }
+
+      test('it opens the confirmation for a row that was added in this session, even below the minimum', async function (assert) {
+        const store = this.store();
+        const { district, municipality } = pushDistrictWithoutFounders(store);
+        const controller = this.controller();
+        controller.model = {
+          organization: district,
+          memberships: [],
+        };
+        controller.setup();
+
+        // A founder row was added and the wrong organization was picked in
+        // it. Nothing was stored, so the row must stay removable even though
+        // the district is below its minimum of one founder.
+        const row = controller.memberships[0];
+        assert.true(row.isNew);
+        row.role = store.peekRecord(
+          'membership-role',
+          MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
+        );
+        row.organization = district;
+        row.member = municipality;
+
+        await controller.removeMembership.perform(row);
+
+        assert.strictEqual(controller.founderToRemove, row);
+        assert.notOk(controller.membershipRemovalError);
+      });
+
+      /**
+       * Wait until a started removal reaches its fetch of the other
+       * organization's memberships. (`settled` cannot be used: it waits for
+       * that request, which only finishes once the test resolves the stub.)
+       */
+      async function untilFetched(queryStub) {
+        for (let attempts = 0; attempts < 50 && !queryStub.called; attempts++) {
+          await new Promise((resolve) => setTimeout(resolve));
+        }
+      }
+
+      test("it does not open the confirmation when the page was left while the other organization's memberships loaded", async function (assert) {
+        const store = this.store();
+        const { municipality, memberships } = pushDistrictWithFounders(
+          store,
+          1,
+        );
+        const controller = this.controller();
+        controller.model = { organization: municipality, memberships };
+        controller.setup();
+        const resolveQueries = [];
+        const queryStub = sinon
+          .stub(this.owner.lookup('adapter:application'), 'query')
+          .callsFake(
+            () =>
+              new Promise((resolve) => {
+                resolveQueries.push(resolve);
+              }),
+          );
+
+        const removal = controller.removeMembership.perform(memberships[0]);
+        // The fetch is pending now; leaving the edit page while it runs:
+        // resetController clears the page state.
+        await untilFetched(queryStub);
+        controller.reset();
+        resolveQueries[0]({ data: [] });
+        await removal;
+
+        assert.notOk(controller.founderToRemove);
+        assert.notOk(controller.membershipRemovalError);
+
+        queryStub.restore();
+      });
+
+      test('it drops a second removal click while the first is still fetching, so one confirmation opens', async function (assert) {
+        const store = this.store();
+        const { municipality, memberships } = pushDistrictWithFounders(
+          store,
+          2,
+        );
+        const controller = this.controller();
+        controller.model = { organization: municipality, memberships };
+        controller.setup();
+        // The district keeps meeting its minimum of one founder after either
+        // removal, so both would open the confirmation.
+        const storedMemberships = memberships.map((membership) => ({
+          type: 'membership',
+          id: membership.id,
+          relationships: {
+            organization: {
+              data: { type: 'administrative-unit', id: 'district' },
+            },
+            member: {
+              data: { type: 'administrative-unit', id: membership.member.id },
+            },
+            role: {
+              data: {
+                type: 'membership-role',
+                id: MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF.id,
+              },
+            },
+          },
+        }));
+        const resolveQueries = [];
+        const queryStub = sinon
+          .stub(this.owner.lookup('adapter:application'), 'query')
+          .callsFake(
+            () =>
+              new Promise((resolve) => {
+                resolveQueries.push(resolve);
+              }),
+          );
+
+        const firstRemoval = controller.removeMembership.perform(
+          memberships[0],
+        );
+        // Let the first removal reach its fetch before the second click.
+        await untilFetched(queryStub);
+        const secondRemoval = controller.removeMembership.perform(
+          memberships[1],
+        );
+
+        assert.true(secondRemoval.isDropped);
+        assert.strictEqual(queryStub.callCount, 1);
+
+        resolveQueries[0]({ data: storedMemberships });
+        await firstRemoval;
+
+        assert.strictEqual(controller.founderToRemove, memberships[0]);
+        assert.notOk(controller.membershipRemovalError);
+
+        queryStub.restore();
       });
     });
   },

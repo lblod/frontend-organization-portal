@@ -12,7 +12,7 @@ export default class OrganizationMultipleSelectComponent extends Component {
 
     const query = {
       sort: 'name',
-      include: 'organization-status',
+      include: 'organization-status,classification',
     };
 
     let classificationCodes = this.args.classificationCodes;

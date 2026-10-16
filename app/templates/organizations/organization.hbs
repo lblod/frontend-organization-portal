@@ -53,7 +53,7 @@
             </AuNavigationLink>
           </li>
         {{/if}}
-        {{#unless (or @model.isProvince @model.isRepresentativeBody)}}
+        {{#unless @model.isRepresentativeBody}}
           <li class="au-c-list-navigation__item">
             <AuNavigationLink @route="organizations.organization.change-events">
               Veranderingsgebeurtenissen

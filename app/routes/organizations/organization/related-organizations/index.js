@@ -4,6 +4,7 @@ import { query } from '@warp-drive/legacy/compat/builders';
 import { ORGANIZATION_STATUS } from '../../../../models/organization-status-code';
 import { getRelationStatus } from 'frontend-organization-portal/utils/relation-status';
 import { sortRelatedOrganizations } from 'frontend-organization-portal/utils/sort-related-organizations';
+import { SPECIAL_RELATED_ORGANIZATION_IDS } from 'frontend-organization-portal/constants/special-organizations';
 
 export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute extends Route {
   @service store;
@@ -69,9 +70,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
     // `organization`. This allows us to offload the role and inactive filtering
     // to the backend instead of doing these in the frontend.
 
-    const { organization, roles } = this.modelFor(
-      'organizations.organization.related-organizations',
-    );
+    const { organization, roles, selectableRoles, selectableRoleLabels } =
+      this.modelFor('organizations.organization.related-organizations');
 
     const selectedRoleModel = this.getRoleModel(
       params.selectedRoleLabel,
@@ -147,6 +147,11 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
         organizationId: relatedOrganization.id,
         organizationName: relatedOrganization.abbName,
         organizationStatus: relatedStatus,
+        // The special organizations have no detail page, so they must not be
+        // linked to in the view table.
+        isSpecialOrganization: SPECIAL_RELATED_ORGANIZATION_IDS.includes(
+          relatedOrganization.id,
+        ),
         startDate: membership.during?.startDate,
         endDate: membership.during?.endDate,
         relationStatus: getRelationStatus({
@@ -169,6 +174,9 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
         organizationId: member.id,
         organizationName: member.abbName,
         organizationStatus: memberStatus,
+        isSpecialOrganization: SPECIAL_RELATED_ORGANIZATION_IDS.includes(
+          member.id,
+        ),
         startDate: membership.during?.startDate,
         endDate: membership.during?.endDate,
         relationStatus: getRelationStatus({
@@ -193,6 +201,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       organization,
       relatedOrganizations,
       roles,
+      selectableRoles,
+      selectableRoleLabels,
     };
   }
 

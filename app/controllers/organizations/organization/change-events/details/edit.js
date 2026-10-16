@@ -2,13 +2,13 @@ import Controller from '@ember/controller';
 import { service } from '@ember/service';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
 import { dropTask } from 'ember-concurrency';
-import { isNameChange } from 'frontend-organization-portal/models/change-event-type';
+import { isNameChangeType } from 'frontend-organization-portal/models/change-event-type';
 
 export default class OrganizationsOrganizationChangeEventsDetailsEditController extends Controller {
   @service router;
   @service store;
 
-  isNameChange = isNameChange;
+  isNameChangeType = isNameChangeType;
 
   get hasValidationErrors() {
     return this.model.changeEvent.error || this.model.decision?.error;
@@ -20,6 +20,12 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
     let { changeEvent, currentChangeEventResult, decision, decisionActivity } =
       this.model;
 
+    if (changeEvent.requiresDecisionInformation) {
+      decision.documentLinks = decision.documentLinks.filter((link) =>
+        link.trim(),
+      );
+    }
+
     await changeEvent.validate();
 
     if (changeEvent.requiresDecisionInformation) {
@@ -27,7 +33,7 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
     }
 
     if (
-      isNameChange(changeEvent.type) &&
+      isNameChangeType(changeEvent.type) &&
       !currentChangeEventResult.resultingName
     ) {
       changeEvent.addError('resultingName', 'Vul de nieuwe naam in');

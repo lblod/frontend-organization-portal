@@ -11,7 +11,7 @@ import ReportWrongData from 'frontend-organization-portal/components/report-wron
 import SecuredArea from 'frontend-organization-portal/components/secured-area';
 import isAdditionalQualificationChangeEvent from 'frontend-organization-portal/helpers/is-additional-qualification-change-event';
 import dateFormat from 'frontend-organization-portal/helpers/date-format';
-import { isNameChange } from 'frontend-organization-portal/models/change-event-type';
+import { isNameChangeType } from 'frontend-organization-portal/models/change-event-type';
 
 <template>
   <div class="au-c-body-container au-c-body-container--scroll">
@@ -54,7 +54,7 @@ import { isNameChange } from 'frontend-organization-portal/models/change-event-t
                   </:content>
                 </Item>
               {{/if}}
-              {{#if (isNameChange @model.changeEvent.type)}}
+              {{#if (isNameChangeType @model.changeEvent.type)}}
                 {{! This is a new field, some change events might not have this value yet, so we hide it in that scenario }}
                 {{#if @model.currentChangeEventResult.resultingName}}
                   <Item @labelFor="change-event-resulting-name">
@@ -66,16 +66,22 @@ import { isNameChange } from 'frontend-organization-portal/models/change-event-t
                 {{/if}}
               {{/if}}
               {{#let
-                @model.changeEvent.decision.documentLink
-                as |documentLink|
+                @model.changeEvent.decision.documentLinks
+                as |documentLinks|
               }}
-                {{#if documentLink}}
+                {{#if documentLinks.length}}
                   <Item>
-                    <:label>Link naar besluit</:label>
+                    <:label>Links naar besluiten</:label>
                     <:content>
-                      <AuLinkExternal href={{documentLink}}>
-                        {{documentLink}}
-                      </AuLinkExternal>
+                      <AuList as |Item|>
+                        {{#each documentLinks as |documentLink|}}
+                          <Item>
+                            <AuLinkExternal href={{documentLink}}>
+                              {{documentLink}}
+                            </AuLinkExternal>
+                          </Item>
+                        {{/each}}
+                      </AuList>
                     </:content>
                   </Item>
                 {{/if}}
@@ -151,10 +157,10 @@ import { isNameChange } from 'frontend-organization-portal/models/change-event-t
                 {{#if publicationDate}}
                   <Item>
                     <:label>
-                      {{#if @model.changeEvent.isCityChangeEvent}}
-                        Datum besluit
-                      {{else}}
+                      {{#if @model.organization.isWorshipAdministrativeUnit}}
                         Datum publicatie BS
+                      {{else}}
+                        Datum besluit
                       {{/if}}
                     </:label>
                     <:content>
