@@ -1,3 +1,12 @@
+## v1.49.0 (2026-10-16)
+
+#### :rocket: Enhancement
+* [#755](https://github.com/lblod/frontend-organization-portal/pull/755) [OP-3929] Related organizations rules update ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#757](https://github.com/lblod/frontend-organization-portal/pull/757) [OP-3955] Autofill some related organizations with special organizations ([@claire-lovisa](https://github.com/claire-lovisa))
+
+#### Committers: 1
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+
 ## v1.48.0 (2026-10-15)
 
 #### :rocket: Enhancement
