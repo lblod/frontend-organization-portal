@@ -37,6 +37,12 @@ export const CentralWorshipServiceCodeList = [
   CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id,
 ];
 
+// Classifications that get the worship-only change event types
+export const WorshipCodeList = [
+  ...WorshipServiceCodeList,
+  ...CentralWorshipServiceCodeList,
+];
+
 export const RepresentativeBodyCodeList = [
   CLASSIFICATION.REPRESENTATIVE_BODY.id,
 ];
