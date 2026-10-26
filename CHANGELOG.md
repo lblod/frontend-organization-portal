@@ -1,7 +1,7 @@
 ## v1.50.1 (2026-10-26)
 
 #### :bug: Bug Fix
-* [#760](https://github.com/lblod/frontend-organization-portal/pull/760) Fix the empty type select when adding a change event ([@bdevloed](https://github.com/bdevloed))
+* [#760](https://github.com/lblod/frontend-organization-portal/pull/760) [OP-3961] Fix the empty type select when adding a change event ([@bdevloed](https://github.com/bdevloed))
 
 #### Committers: 1
 - Boris De Vloed ([@bdevloed](https://github.com/bdevloed))
