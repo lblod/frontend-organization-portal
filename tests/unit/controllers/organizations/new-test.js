@@ -1,7 +1,9 @@
 /* eslint-disable warp-drive/no-legacy-request-patterns -- TODO: remove this once we have an alternative for peekRecord and peekAll */
 import { module, test } from 'qunit';
+import sinon from 'sinon';
 import { setupTest } from 'frontend-organization-portal/tests/helpers';
 import NewController from 'frontend-organization-portal/controllers/organizations/new';
+import AbstractValidationModel from 'frontend-organization-portal/models/abstract-validation-model';
 import {
   createPrimaryContact,
   createSecondaryContact,
@@ -27,6 +29,10 @@ module('Unit | Controller | organizations/new', function (hooks) {
   // owner can look it up.
   hooks.beforeEach(function () {
     this.owner.register('controller:organizations/new', NewController);
+  });
+
+  hooks.afterEach(function () {
+    sinon.restore();
   });
 
   this.store = function () {
@@ -172,6 +178,44 @@ module('Unit | Controller | organizations/new', function (hooks) {
       return government;
     }
 
+    const MAATSCHAPPELIJKE_ZETEL_ID = 'f1381723dec42c0b6ba6492e41d6f5dd';
+
+    /**
+     * Run the save task to its end with contact data editing on, which an
+     * IGS or a gemeente needs to save its primary site. Validation is skipped
+     * and the adapter answers every request, so no backend is needed.
+     */
+    async function saveWithContactData(owner, controller) {
+      owner.lookup('service:features').setup({ 'edit-contact-data': true });
+      sinon.stub(AbstractValidationModel.prototype, 'validate').resolves(true);
+
+      const adapter = owner.lookup('adapter:application');
+      sinon.stub(adapter, 'findAll').resolves({
+        data: [
+          {
+            type: 'site-type',
+            id: MAATSCHAPPELIJKE_ZETEL_ID,
+            attributes: { label: 'Maatschappelijke zetel' },
+          },
+        ],
+      });
+      let nextId = 0;
+      sinon
+        .stub(adapter, 'createRecord')
+        .callsFake(async (store, modelClass, snapshot) => ({
+          data: {
+            type: snapshot.modelName,
+            id: `new-${snapshot.modelName}-${++nextId}`,
+          },
+        }));
+      sinon.stub(window, 'fetch').resolves(new Response(null, { status: 204 }));
+      sinon.stub(owner.lookup('service:router'), 'replaceWith');
+
+      await controller.createOrganizationTask.perform({
+        preventDefault() {},
+      });
+    }
+
     test('it saves a member-side field on the membershipsOfOrganizations and an organization-side field on the memberships', async function (assert) {
       const store = this.store();
       const controller = this.controller();
@@ -291,6 +335,43 @@ module('Unit | Controller | organizations/new', function (hooks) {
           controller.currentOrganizationModel,
         );
       });
+    });
+
+    test('it gives the primary site of a new IGS the Maatschappelijke zetel type', async function (assert) {
+      const store = this.store();
+      const controller = this.controller();
+      setupController(
+        store,
+        controller,
+        'administrative-unit',
+        CLASSIFICATION.DIENSTVERLENENDE_VERENIGING,
+      );
+
+      await saveWithContactData(this.owner, controller);
+
+      const { primarySite } = controller.model;
+      assert.false(primarySite.isNew, 'the primary site is saved');
+      assert.strictEqual(
+        primarySite.belongsTo('siteType').id(),
+        MAATSCHAPPELIJKE_ZETEL_ID,
+      );
+    });
+
+    test('it gives the primary site of a new gemeente no site type', async function (assert) {
+      const store = this.store();
+      const controller = this.controller();
+      setupController(
+        store,
+        controller,
+        'administrative-unit',
+        CLASSIFICATION.MUNICIPALITY,
+      );
+
+      await saveWithContactData(this.owner, controller);
+
+      const { primarySite } = controller.model;
+      assert.false(primarySite.isNew, 'the primary site is saved');
+      assert.strictEqual(primarySite.belongsTo('siteType').id(), null);
     });
   });
 

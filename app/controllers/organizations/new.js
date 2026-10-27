@@ -783,7 +783,7 @@ export default class OrganizationsNewController extends Controller {
         if (
           this.currentOrganizationModel.isAgb ||
           this.currentOrganizationModel.isApb ||
-          this.currentOrganizationModel.isIGS ||
+          this.currentOrganizationModel.isIgs ||
           this.currentOrganizationModel.isPoliceZone ||
           this.currentOrganizationModel.isAssistanceZone ||
           this.currentOrganizationModel.isOcmwAssociation ||
