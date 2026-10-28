@@ -74,9 +74,9 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
   // open their confirmation.
   removeMembership = dropTask(async (membership) => {
     // A row that was added in this editing session was never stored, so
-    // removing it cannot take an organization below a minimum.
+    // removing it cannot take an organization below a minimum and doesn't need confirmation.
     if (membership.isNew) {
-      this.founderToRemove = membership;
+      this.reallyRemoveMembership(membership);
       return;
     }
 
