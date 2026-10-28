@@ -512,7 +512,7 @@
                   {{/if}}
 
                   <Item @required={{true}}>
-                    <:label>Werd opgericht door</:label>
+                    <:label>Is opgericht door</:label>
                     <:content>{{this.municipality.abbName}}</:content>
                   </Item>
                 {{else if this.currentOrganizationModel.isApb}}
@@ -534,7 +534,7 @@
                   </Item>
 
                   <Item @labelFor="founder-province" @required={{true}}>
-                    <:label>Werd opgericht door</:label>
+                    <:label>Is opgericht door</:label>
                     <:content>{{this.province.abbName}}</:content>
                   </Item>
                 {{/if}}

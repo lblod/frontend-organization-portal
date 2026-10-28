@@ -8,6 +8,7 @@ import {
 import {
   allowedRoleLabelsForClassification,
   allowedRolesForClassification,
+  sortRoleLabels,
 } from 'frontend-organization-portal/utils/membership-rules';
 
 export default class OrganizationsOrganizationRelatedOrganizationsRoute extends Route {
@@ -52,8 +53,8 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
     }
 
     // The rules exclude the founder and recognition roles because they're
-    // autofilled for some types. Show "Werd opgericht door" and
-    // "Werd erkend door" only if the organization has stored relations with them.
+    // autofilled for some types. Show "Is opgericht door" and
+    // "Is erkend door" only if the organization has stored relations with them.
     for (const governmentRole of [
       MEMBERSHIP_ROLES_MAPPING.IS_FOUNDER_OF,
       MEMBERSHIP_ROLES_MAPPING.GRANTS_RECOGNITION_TO,
@@ -73,9 +74,9 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
     }
 
     // Labels for the role filters above the view and edit tables.
-    const selectableRoleLabels = [
+    const selectableRoleLabels = sortRoleLabels([
       ...new Set([...allowedRoleLabels, ...storedRoleLabels]),
-    ].sort();
+    ]);
 
     return {
       organization,
