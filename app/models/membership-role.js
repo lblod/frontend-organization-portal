@@ -10,31 +10,40 @@ export const MEMBERSHIP_ROLES_MAPPING = {
     id: '4ec7d5c39bdc4e84b4174379b9e22ad8',
     label: 'Heeft een relatie met', // has relation with
     inverseLabel: 'Heeft een relatie met', // has relation with
+    // Display order in the selects on the related-organizations pages: roles
+    // are shown in order, each with its label before its inverseLabel. Keep
+    // in sync with the related-organizations report in app-organization-portal.
+    order: 0,
   },
   IS_FOUNDER_OF: {
     id: '73d5e1cf250d42fab15926771f07505a',
     label: 'Is oprichter van', // is founder of
-    inverseLabel: 'Werd opgericht door', // was founded by
+    inverseLabel: 'Is opgericht door', // was founded by
+    order: 4,
   },
   PARTICIPATES_IN: {
     id: '2152eb830b1143bfb97a7dd9596d6c63',
     label: 'Is lid van', // is member of
     inverseLabel: 'Heeft als leden', // has as members
+    order: 1,
   },
   GRANTS_RECOGNITION_TO: {
     id: 'd44a34ed-5007-45fe-9adb-43b695740dbc',
     label: 'Verleent erkenning aan', // grants recognition to
-    inverseLabel: 'Werd erkend door', // was recognised by
+    inverseLabel: 'Is erkend door', // was recognised by
+    order: 3,
   },
   IS_REPRESENTED_IN: {
     id: '2c0994d0-5e25-4b43-b2e4-12c98028bccb',
     label: 'Is feitelijk vertegenwoordigd in (niet lidmaatschap)', // is actually represented in (no membership)
     inverseLabel: 'Heeft als feitelijke vertegenwoordigers (niet lidmaatschap)', // has as actual representatives (no membership)
+    order: 2,
   },
   SERVES: {
     id: 'de8efef6-8d5c-42aa-90e9-1b9e9d27f395',
     label: 'Bedient', // serves
     inverseLabel: 'Wordt bediend door', // is served by
+    order: 5,
   },
 };
 
