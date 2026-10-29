@@ -1,3 +1,11 @@
+## v1.50.2 (2026-10-29)
+
+#### :bug: Bug Fix
+* [#761](https://github.com/lblod/frontend-organization-portal/pull/761) [OP-3960] Give a new IGS's primary site the Maatschappelijke zetel type ([@bdevloed](https://github.com/bdevloed))
+
+#### Committers: 1
+- Boris De Vloed ([@bdevloed](https://github.com/bdevloed))
+
 ## v1.50.1 (2026-10-26)
 
 #### :bug: Bug Fix
