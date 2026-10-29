@@ -1113,7 +1113,7 @@ module(
         };
       }
 
-      test('it opens the confirmation for a row that was added in this session, even below the minimum', async function (assert) {
+      test('it immediately removes a row that was added in this session, even below the minimum', async function (assert) {
         const store = this.store();
         const { district, municipality } = pushDistrictWithoutFounders(store);
         const controller = this.controller();
@@ -1124,8 +1124,9 @@ module(
         controller.setup();
 
         // A founder row was added and the wrong organization was picked in
-        // it. Nothing was stored, so the row must stay removable even though
-        // the district is below its minimum of one founder.
+        // it. Nothing was stored, so the row is removed at once instead of
+        // opening the confirmation, even though the district is below its
+        // minimum of one founder.
         const row = controller.memberships[0];
         assert.true(row.isNew);
         row.role = store.peekRecord(
@@ -1137,8 +1138,9 @@ module(
 
         await controller.removeMembership.perform(row);
 
-        assert.strictEqual(controller.founderToRemove, row);
+        assert.notOk(controller.founderToRemove);
         assert.notOk(controller.membershipRemovalError);
+        assert.deepEqual(controller.memberships, []);
       });
 
       /**
