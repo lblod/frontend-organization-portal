@@ -14,27 +14,24 @@ export default class MunicipalitySelectByNameComponent extends Component {
     await Promise.resolve();
 
     if (this.args.selectedProvince && this.args.selectedProvince.length) {
-      // If a province is selected, load the municipalities in it
-      let { content: municipalities } = await this.store.request(
-        queryBuilder('organization', {
+      // If a province is selected, load its municipality locations: these are
+      // readable for every role and their labels are the municipality names.
+      const { content: municipalities } = await this.store.request(
+        queryBuilder('location', {
           filter: {
-            'memberships-of-organizations': {
-              organization: {
-                ':exact:name': this.args.selectedProvince,
-              },
-            },
-            classification: {
-              id: CLASSIFICATION.MUNICIPALITY.id,
+            ':exact:level': 'Gemeente',
+            'located-within': {
+              ':exact:label': this.args.selectedProvince,
             },
           },
-          sort: 'name',
+          sort: 'label',
           page: {
             size: 400,
           },
         }),
       );
 
-      return municipalities.map(({ name }) => name);
+      return municipalities.map(({ label }) => label);
     } else {
       // Else load all the municipalities
       const query = {

@@ -148,7 +148,7 @@ export default class OrganizationsNewController extends Controller {
   @action
   setMunicipality(municipality) {
     if (!municipality || municipality.isActive) {
-      this.#reallySetMunicipality(municipality);
+      return this.#reallySetMunicipality(municipality);
     } else {
       this.#setNonActiveRelationVariables(
         this.#reallySetMunicipality,
@@ -158,16 +158,22 @@ export default class OrganizationsNewController extends Controller {
   }
 
   async #getProvinceForMunicipality(municipality) {
+    const location = await municipality.scope;
+    // An undefined id would drop the filter and return every province.
+    if (!location) {
+      return undefined;
+    }
+
     const { content: provinces } = await this.store.request(
-      queryBuilder('organization', {
+      queryBuilder('administrative-unit', {
         filter: {
-          memberships: {
-            member: {
-              id: municipality.id,
-            },
-          },
           classification: {
             id: CLASSIFICATION.PROVINCE.id,
+          },
+          scope: {
+            locations: {
+              id: location.id,
+            },
           },
         },
       }),
@@ -179,14 +185,18 @@ export default class OrganizationsNewController extends Controller {
     this.municipality = municipality;
 
     if (municipality) {
-      this.setProvince(await this.#getProvinceForMunicipality(municipality));
-
       if (this.currentOrganizationModel.isAgb) {
         // NOTE (27/02/2025) We set the founder here directly. Routing it
         // through the related-organization field logic would result in two
         // confirmation modals popping up when the user sets a non-active
         // municipality.
         this.founders = [municipality];
+      }
+
+      const province = await this.#getProvinceForMunicipality(municipality);
+      // Skip the answer when another municipality was set in the meantime.
+      if (this.municipality === municipality) {
+        this.setProvince(province);
       }
     }
   }
