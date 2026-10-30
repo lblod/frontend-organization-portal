@@ -32,13 +32,6 @@ export default class MunicipalitySelectComponent extends Component {
       },
     };
 
-    const selectedProvinceId = this.args.selectedProvince?.get('id');
-    // If a province is selected, load the municipalities in it
-    if (selectedProvinceId && selectedProvinceId.length) {
-      query['filter[memberships-of-organizations][organization][:id:]'] =
-        selectedProvinceId;
-    }
-
     const { content } = await this.store.request(
       queryBuilder('organization', query),
     );
@@ -46,7 +39,5 @@ export default class MunicipalitySelectComponent extends Component {
     return content;
   });
 
-  municipalities = trackedTask(this, this.loadMunicipalitiesTask, () => [
-    this.args.selectedProvince,
-  ]);
+  municipalities = trackedTask(this, this.loadMunicipalitiesTask);
 }
