@@ -8,6 +8,7 @@ import {
   allowedRolesForClassification,
   hasRequiredMembershipFields,
   removingMembershipBreaksMinimum,
+  sortRoleLabels,
 } from 'frontend-organization-portal/utils/membership-rules';
 import { membershipFieldsByClassification } from 'frontend-organization-portal/constants/memberships';
 import {
@@ -132,8 +133,8 @@ module('Unit | Utils | membership rules', function (hooks) {
         [
           'Is lid van',
           'Heeft als leden',
-          'Werd erkend door',
-          'Werd opgericht door',
+          'Is erkend door',
+          'Is opgericht door',
         ],
       ],
       [
@@ -154,7 +155,7 @@ module('Unit | Utils | membership rules', function (hooks) {
           'Wordt bediend door',
         ],
       ],
-      [CLASSIFICATION.DISTRICT, ['Werd opgericht door']],
+      [CLASSIFICATION.DISTRICT, ['Is opgericht door']],
     ].forEach(([classification, labels]) => {
       test(`it should offer only the usable labels of the rules for a ${classification.label}`, function (assert) {
         assert.deepEqual(
@@ -200,10 +201,44 @@ module('Unit | Utils | membership rules', function (hooks) {
 
         assert.deepEqual(
           labels,
-          Array.from(expected).sort(),
+          sortRoleLabels(Array.from(expected)),
           `labels for a ${classification.label}`,
         );
       });
+    });
+  });
+
+  module('sortRoleLabels', function () {
+    test('it sorts by display order, with relationships next to their inverse', function (assert) {
+      // Deliberately shuffled, including every label of the display order.
+      assert.deepEqual(
+        sortRoleLabels([
+          'Bedient',
+          'Is opgericht door',
+          'Is lid van',
+          'Is erkend door',
+          'Wordt bediend door',
+          'Is oprichter van',
+          'Heeft als feitelijke vertegenwoordigers (niet lidmaatschap)',
+          'Verleent erkenning aan',
+          'Heeft als leden',
+          'Is feitelijk vertegenwoordigd in (niet lidmaatschap)',
+          'Heeft een relatie met',
+        ]),
+        [
+          'Heeft een relatie met',
+          'Is lid van',
+          'Heeft als leden',
+          'Is feitelijk vertegenwoordigd in (niet lidmaatschap)',
+          'Heeft als feitelijke vertegenwoordigers (niet lidmaatschap)',
+          'Verleent erkenning aan',
+          'Is erkend door',
+          'Is oprichter van',
+          'Is opgericht door',
+          'Bedient',
+          'Wordt bediend door',
+        ],
+      );
     });
   });
 

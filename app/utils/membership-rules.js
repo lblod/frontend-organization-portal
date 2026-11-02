@@ -12,6 +12,7 @@ import {
   MEMBERSHIP_ROLES_MAPPING,
 } from 'frontend-organization-portal/models/membership-role';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { assert } from '@ember/debug';
 
 /**
  * Check whether the organization assignments in the given membership should be
@@ -123,7 +124,48 @@ export function allowedRoleLabelsForClassification(classificationId) {
     }
   });
 
-  return Array.from(labels).sort();
+  return sortRoleLabels(Array.from(labels));
+}
+
+/**
+ * Sort relationship labels in their display order: roles in `order`, each with
+ * its `label` before its `inverseLabel`, so every relationship is shown
+ * together with its inverse.
+ *
+ * Every label originates from `MEMBERSHIP_ROLES_MAPPING` itself — the role ids
+ * of that map drive the backend queries, and the route only passes labels the
+ * map generates — so the lookup below always finds a role.
+ *
+ * @param {string[]} labels
+ * @returns {string[]} the labels in display order.
+ */
+export function sortRoleLabels(labels) {
+  return [...labels].sort((a, b) => displayKey(a) - displayKey(b));
+}
+
+/**
+ * A strictly increasing sort key for a label: each role occupies two slots in
+ * the sequence, its `label` first and its `inverseLabel` second. Doubling the
+ * role's `order` creates that gap; without it an inverse (slot order + 1)
+ * would tie with the next role's label and the tie-breaker would then place
+ * that next label *before* the inverse.
+ */
+function displayKey(label) {
+  const role = MEMBERSHIP_ROLES.find(
+    (r) => r.label === label || r.inverseLabel === label,
+  );
+  // Cannot happen: the labels only ever come from MEMBERSHIP_ROLES_MAPPING
+  // itself, since the role ids of that map drive the backend queries. The
+  // assert keeps this loud if the invariant is ever broken.
+  assert(
+    `Unknown membership role label "${label}". The label does not belong to any role of MEMBERSHIP_ROLES_MAPPING.`,
+    role,
+  );
+  // Roles without direction have one and the same label and inverse, so show
+  // them once at their role's own slot.
+  const position =
+    role.label === role.inverseLabel ? 0 : label === role.inverseLabel ? 1 : 0;
+  return role.order * 2 + position;
 }
 
 /**
