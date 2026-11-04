@@ -193,7 +193,10 @@ export default class LocationMultipleSelect extends Component<Signature> {
 
     const { content: municipalities } = await this.store.request(
       queryBuilder<Location>('location', {
-        filter: { level: 'Gemeente' },
+        filter: {
+          level: 'Gemeente',
+          ':has-no:inactive': true,
+        },
         sort: 'label',
         include: 'located-within',
         // NOTE (21/05/2025): Make sure to load all municipality locations
