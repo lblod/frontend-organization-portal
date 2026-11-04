@@ -412,4 +412,132 @@ module('Unit | Controller | organizations/new', function (hooks) {
       assert.true(controller.containsRequiredFields);
     });
   });
+
+  module('setMunicipality', function () {
+    function pushMunicipality(store, id, scope) {
+      const [municipality] = store.push({
+        data: [
+          {
+            type: 'administrative-unit',
+            id,
+            relationships: {
+              organizationStatus: {
+                data: {
+                  type: 'organization-status-code',
+                  id: ORGANIZATION_STATUS.ACTIVE,
+                },
+              },
+              scope: { data: scope ? { type: 'location', id: scope } : null },
+            },
+          },
+          {
+            type: 'organization-status-code',
+            id: ORGANIZATION_STATUS.ACTIVE,
+            attributes: { label: 'Actief' },
+          },
+          ...(scope ? [{ type: 'location', id: scope }] : []),
+        ],
+      });
+      return municipality;
+    }
+
+    function pushProvince(store, id) {
+      return store.push({ data: { type: 'administrative-unit', id } });
+    }
+
+    test('it looks up the province of the municipality of an AGB through the werkingsgebied of the municipality', async function (assert) {
+      const store = this.store();
+      const controller = this.controller();
+      setupController(
+        store,
+        controller,
+        'administrative-unit',
+        CLASSIFICATION.AGB,
+      );
+      const municipality = pushMunicipality(
+        store,
+        'municipality',
+        'municipality-location',
+      );
+      const province = pushProvince(store, 'province');
+      const request = sinon
+        .stub(store, 'request')
+        .resolves({ content: [province] });
+
+      await controller.setMunicipality(municipality);
+
+      assert.strictEqual(request.callCount, 1);
+      const [{ op, data }] = request.firstCall.args;
+      assert.strictEqual(op, 'query');
+      assert.strictEqual(data.type, 'administrative-unit');
+      assert.deepEqual(data.query, {
+        filter: {
+          classification: { id: CLASSIFICATION.PROVINCE.id },
+          scope: { locations: { id: 'municipality-location' } },
+        },
+      });
+      assert.strictEqual(controller.province?.id, 'province');
+      assert.deepEqual(
+        controller.founders.map(({ id }) => id),
+        ['municipality'],
+      );
+    });
+
+    test('it does not query the provinces for a municipality without werkingsgebied', async function (assert) {
+      const store = this.store();
+      const controller = this.controller();
+      setupController(
+        store,
+        controller,
+        'administrative-unit',
+        CLASSIFICATION.AGB,
+      );
+      const municipality = pushMunicipality(store, 'municipality', null);
+      const request = sinon.stub(store, 'request').resolves({ content: [] });
+
+      await controller.setMunicipality(municipality);
+
+      assert.strictEqual(request.callCount, 0);
+      assert.strictEqual(controller.province, undefined);
+      assert.deepEqual(
+        controller.founders.map(({ id }) => id),
+        ['municipality'],
+      );
+    });
+
+    test('it keeps the province of the last municipality when an earlier lookup finishes later', async function (assert) {
+      const store = this.store();
+      const controller = this.controller();
+      setupController(
+        store,
+        controller,
+        'administrative-unit',
+        CLASSIFICATION.AGB,
+      );
+      const first = pushMunicipality(store, 'first', 'first-location');
+      const second = pushMunicipality(store, 'second', 'second-location');
+      const firstProvince = pushProvince(store, 'first-province');
+      const secondProvince = pushProvince(store, 'second-province');
+      let answerFirst;
+      const firstAnswer = new Promise((resolve) => (answerFirst = resolve));
+      sinon
+        .stub(store, 'request')
+        .callsFake(({ data }) =>
+          data.query.filter.scope.locations.id === 'first-location'
+            ? firstAnswer
+            : Promise.resolve({ content: [secondProvince] }),
+        );
+
+      const firstLookup = controller.setMunicipality(first);
+      await controller.setMunicipality(second);
+      answerFirst({ content: [firstProvince] });
+      await firstLookup;
+
+      assert.strictEqual(controller.province?.id, 'second-province');
+      assert.deepEqual(
+        controller.founders.map(({ id }) => id),
+        ['second'],
+      );
+    });
+  });
 });
