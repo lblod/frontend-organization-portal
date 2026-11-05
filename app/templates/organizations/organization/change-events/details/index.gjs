@@ -57,7 +57,7 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
                 {{! Old change events didn't persist this value }}
                 {{#if @model.currentChangeEventResult.originalName}}
                   <Item>
-                    <:label>Huidige naam</:label>
+                    <:label>Oude naam</:label>
                     <:content>
                       {{@model.currentChangeEventResult.originalName}}
                     </:content>
@@ -98,7 +98,7 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
                 {{! Old change events didn't persist this value }}
                 {{#if @model.originalScopeLabel}}
                   <Item>
-                    <:label>Huidig werkingsgebied</:label>
+                    <:label>Oud werkingsgebied</:label>
                     <:content>
                       {{@model.originalScopeLabel}}
                     </:content>
@@ -119,7 +119,7 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
                   @model.currentChangeEventResult.originalAdditionalQualifications.length
                 }}
                   <Item>
-                    <:label>Huidige bijkomende kwalificatie(s)</:label>
+                    <:label>Oude bijkomende kwalificatie(s)</:label>
                     <:content>
                       <AdditionalQualificationsList
                         @qualifications={{@model.currentChangeEventResult.originalAdditionalQualifications}}
@@ -184,7 +184,7 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
                 {{! Old change events didn't persist this value }}
                 {{#if @model.currentChangeEventResult.originalLegalForm}}
                   <Item>
-                    <:label>Huidige juridische vorm</:label>
+                    <:label>Oude juridische vorm</:label>
                     <:content>
                       {{@model.currentChangeEventResult.originalLegalForm.label}}
                     </:content>
