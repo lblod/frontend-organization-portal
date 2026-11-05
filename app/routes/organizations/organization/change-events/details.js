@@ -25,6 +25,9 @@ export default class OrganizationsOrganizationChangeEventsDetailsRoute extends R
           'results.resulting-legal-form',
           'results.resulting-scope',
           'results.resulting-additional-qualifications',
+          'results.original-legal-form',
+          'results.original-scope',
+          'results.original-additional-qualifications',
         ].join(),
       }),
     );
@@ -39,11 +42,17 @@ export default class OrganizationsOrganizationChangeEventsDetailsRoute extends R
       ? await this.scopeOfOperation.getLabelForLocation(resultingScope)
       : undefined;
 
+    let originalScope = currentChangeEventResult?.originalScope;
+    let originalScopeLabel = originalScope
+      ? await this.scopeOfOperation.getLabelForLocation(originalScope)
+      : undefined;
+
     return {
       organization,
       changeEvent,
       currentChangeEventResult,
       resultingScopeLabel,
+      originalScopeLabel,
     };
   }
 }

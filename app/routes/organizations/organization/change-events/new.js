@@ -5,6 +5,7 @@ export default class OrganizationsOrganizationChangeEventsNewRoute extends Route
   @service currentSession;
   @service router;
   @service store;
+  @service scopeOfOperation;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
@@ -14,6 +15,8 @@ export default class OrganizationsOrganizationChangeEventsNewRoute extends Route
 
   async model() {
     let organization = this.modelFor('organizations.organization');
+    let currentScopeLabel =
+      await this.scopeOfOperation.getScopeLabel(organization);
     let changeEvent = this.store.createRecord('change-event', {
       originalOrganizations: [organization],
     });
@@ -26,6 +29,7 @@ export default class OrganizationsOrganizationChangeEventsNewRoute extends Route
       changeEvent,
       decision,
       decisionActivity,
+      currentScopeLabel,
     };
   }
 

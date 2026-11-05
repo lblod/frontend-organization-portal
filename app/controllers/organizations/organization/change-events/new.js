@@ -212,6 +212,14 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       decisionActivity,
     } = this.model;
 
+    // Snapshot the current value of the organization *before* it is updated
+    // by this change event, so it can be persisted on the change event result
+    // as the original value. Only the value relevant for the selected change
+    // event type is snapshotted; change event types can't be changed after
+    // saving, so nothing else needs to be kept.
+    const isLegalFormChange =
+      changeEvent.type?.id === CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE;
+
     const shouldSaveDecision = await changeEvent.requiresDecisionInformation;
 
     if (shouldSaveDecision) {
@@ -226,8 +234,6 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       await decision.validate();
     }
 
-    const isLegalFormChange =
-      changeEvent.type?.id === CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE;
     if (isLegalFormChange && !this.selectedResultingLegalForm) {
       changeEvent.addError(
         'resultingLegalForm',
@@ -260,6 +266,25 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     }
 
     if (!changeEvent.error && (shouldSaveDecision ? !decision.error : true)) {
+      // Snapshot the current value of the organization *before* it is updated
+      // by this change event, so it can be persisted on the change event
+      // result as the original value. Only the value relevant for the selected
+      // change event type is snapshotted; change event types can't be changed
+      // after saving, so nothing else needs to be kept.
+      const originalName = isNameChangeType(changeEvent.type)
+        ? currentOrganization.abbName
+        : null;
+      const originalLegalForm = isLegalFormChange
+        ? await currentOrganization.legalForm
+        : null;
+      const originalScope = changeEvent.isWerkingsgebiedChangeEvent
+        ? await currentOrganization.scope
+        : null;
+      const originalAdditionalQualifications =
+        isAdditionalQualificationChangeEvent(changeEvent)
+          ? (currentOrganization.additionalQualifications ?? []).slice()
+          : [];
+
       changeEvent.decision = await saveDecision(
         shouldSaveDecision,
         decision,
@@ -371,6 +396,10 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           resultingAdditionalQualifications:
             this.selectedResultingAdditionalQualifications,
           resultingName,
+          originalName,
+          originalLegalForm,
+          originalScope,
+          originalAdditionalQualifications,
         });
       }
 
@@ -471,6 +500,10 @@ async function createChangeEventResult({
   resultingScope = null,
   resultingAdditionalQualifications = [],
   resultingName,
+  originalName = null,
+  originalLegalForm = null,
+  originalScope = null,
+  originalAdditionalQualifications = [],
 }) {
   const { content: resultingStatus } = await store.request(
     findRecord('organization-status-code', resultingStatusId),
@@ -545,6 +578,19 @@ async function createChangeEventResult({
   }
   if (resultingName) {
     changeEventResult.resultingName = resultingName;
+  }
+  if (originalName) {
+    changeEventResult.originalName = originalName;
+  }
+  if (originalLegalForm) {
+    changeEventResult.originalLegalForm = originalLegalForm;
+  }
+  if (originalScope) {
+    changeEventResult.originalScope = originalScope;
+  }
+  if (originalAdditionalQualifications.length > 0) {
+    changeEventResult.originalAdditionalQualifications =
+      originalAdditionalQualifications;
   }
 
   changeEventResult.resultingOrganization = resultingOrganization;

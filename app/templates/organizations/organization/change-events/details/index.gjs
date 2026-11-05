@@ -1,10 +1,9 @@
-import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuLinkExternal from '@appuniversum/ember-appuniversum/components/au-link-external';
 import AuList from '@appuniversum/ember-appuniversum/components/au-list';
-import AuTooltip from '@appuniversum/ember-appuniversum/components/au-tooltip';
 import DataCard from 'frontend-organization-portal/components/data-card';
 import EditButton from 'frontend-organization-portal/components/button/edit';
+import AdditionalQualificationsList from 'frontend-organization-portal/components/additional-qualifications-list';
 import OrganizationStatus from 'frontend-organization-portal/components/organization-status';
 import PageHeader from 'frontend-organization-portal/components/page-header';
 import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
@@ -55,6 +54,15 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
                 </Item>
               {{/if}}
               {{#if (isNameChangeType @model.changeEvent.type)}}
+                {{! Old change events didn't persist this value }}
+                {{#if @model.currentChangeEventResult.originalName}}
+                  <Item>
+                    <:label>Huidige naam</:label>
+                    <:content>
+                      {{@model.currentChangeEventResult.originalName}}
+                    </:content>
+                  </Item>
+                {{/if}}
                 {{! This is a new field, some change events might not have this value yet, so we hide it in that scenario }}
                 {{#if @model.currentChangeEventResult.resultingName}}
                   <Item @labelFor="change-event-resulting-name">
@@ -87,6 +95,15 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
                 {{/if}}
               {{/let}}
               {{#if @model.changeEvent.isWerkingsgebiedChangeEvent}}
+                {{! Old change events didn't persist this value }}
+                {{#if @model.originalScopeLabel}}
+                  <Item>
+                    <:label>Huidig werkingsgebied</:label>
+                    <:content>
+                      {{@model.originalScopeLabel}}
+                    </:content>
+                  </Item>
+                {{/if}}
                 {{#if @model.resultingScopeLabel}}
                   <Item>
                     <:label>Nieuw werkingsgebied</:label>
@@ -97,40 +114,28 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
                 {{/if}}
               {{/if}}
               {{#if (isAdditionalQualificationChangeEvent @model.changeEvent)}}
+                {{! Old change events didn't persist this value }}
+                {{#if
+                  @model.currentChangeEventResult.originalAdditionalQualifications.length
+                }}
+                  <Item>
+                    <:label>Huidige bijkomende kwalificatie(s)</:label>
+                    <:content>
+                      <AdditionalQualificationsList
+                        @qualifications={{@model.currentChangeEventResult.originalAdditionalQualifications}}
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
                 {{#if
                   @model.currentChangeEventResult.resultingAdditionalQualifications.length
                 }}
                   <Item>
                     <:label>Nieuwe bijkomende kwalificatie(s)</:label>
                     <:content>
-                      <AuList as |Item|>
-                        {{#each
-                          @model.currentChangeEventResult.resultingAdditionalQualifications
-                          as |qualification|
-                        }}
-                          <Item>
-                            {{#if qualification.definition}}
-                              <AuTooltip as |tooltip|>
-                                <div
-                                  class="au-u-flex au-u-flex--inline au-u-flex--vertical-center"
-                                  {{tooltip.target}}
-                                >
-                                  {{qualification.label}}
-                                  <AuIcon
-                                    @icon="info-circle"
-                                    class="au-u-margin-left-tiny"
-                                  />
-                                </div>
-                                <tooltip.Content>
-                                  {{qualification.definition}}
-                                </tooltip.Content>
-                              </AuTooltip>
-                            {{else}}
-                              {{qualification.label}}
-                            {{/if}}
-                          </Item>
-                        {{/each}}
-                      </AuList>
+                      <AdditionalQualificationsList
+                        @qualifications={{@model.currentChangeEventResult.resultingAdditionalQualifications}}
+                      />
                     </:content>
                   </Item>
                 {{/if}}
@@ -176,6 +181,15 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
                 </:content>
               </Item>
               {{#if @model.changeEvent.isLegalFormChangeEvent}}
+                {{! Old change events didn't persist this value }}
+                {{#if @model.currentChangeEventResult.originalLegalForm}}
+                  <Item>
+                    <:label>Huidige juridische vorm</:label>
+                    <:content>
+                      {{@model.currentChangeEventResult.originalLegalForm.label}}
+                    </:content>
+                  </Item>
+                {{/if}}
                 {{#let
                   @model.currentChangeEventResult.resultingLegalForm.label
                   as |legalFormLabel|
