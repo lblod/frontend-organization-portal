@@ -93,25 +93,29 @@
                 </:content>
               </Item>
             {{/if}}
-            {{#if @model.changeEvent.requiresDecisionInformation}}
-              <Item
-                @errorMessage={{@model.decision.error.documentLinks}}
-                @labelFor="change-event-decision-link-0"
-              >
-                <:label>Links naar besluiten</:label>
-                <:content>
-                  <ChangeEvents::DecisionDocumentLinks
-                    @decision={{@model.decision}}
-                    @errors={{@model.decision.error.documentLinks}}
-                  />
-                </:content>
-                <:error>
-                  {{!
-                    If we do not add the error block, the default implementation is used.
-                    Since we display the error below each field, we do not want the default implementation.
-                  }}
-                </:error>
-              </Item>
+            {{#if @model.changeEvent.isLegalFormChangeEvent}}
+              {{! Old change events didn't persist this value }}
+              {{#if @model.currentChangeEventResult.originalLegalForm}}
+                <Item>
+                  <:label>Oude juridische vorm</:label>
+                  <:content>
+                    {{@model.currentChangeEventResult.originalLegalForm.label}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#let
+                @model.currentChangeEventResult.resultingLegalForm.label
+                as |legalFormLabel|
+              }}
+                {{#if legalFormLabel}}
+                  <Item>
+                    <:label>Nieuwe juridische vorm</:label>
+                    <:content>
+                      {{legalFormLabel}}
+                    </:content>
+                  </Item>
+                {{/if}}
+              {{/let}}
             {{/if}}
             {{#if @model.changeEvent.isWerkingsgebiedChangeEvent}}
               {{! Old change events didn't persist this value }}
@@ -160,6 +164,26 @@
                   </:content>
                 </Item>
               {{/if}}
+            {{/if}}
+            {{#if @model.changeEvent.requiresDecisionInformation}}
+              <Item
+                @errorMessage={{@model.decision.error.documentLinks}}
+                @labelFor="change-event-decision-link-0"
+              >
+                <:label>Links naar besluiten</:label>
+                <:content>
+                  <ChangeEvents::DecisionDocumentLinks
+                    @decision={{@model.decision}}
+                    @errors={{@model.decision.error.documentLinks}}
+                  />
+                </:content>
+                <:error>
+                  {{!
+                    If we do not add the error block, the default implementation is used.
+                    Since we display the error below each field, we do not want the default implementation.
+                  }}
+                </:error>
+              </Item>
             {{/if}}
           </:left>
           <:right as |Item|>
@@ -230,30 +254,6 @@
                 {{date-format @model.changeEvent.date}}
               </:content>
             </Item>
-            {{#if @model.changeEvent.isLegalFormChangeEvent}}
-              {{! Old change events didn't persist this value }}
-              {{#if @model.currentChangeEventResult.originalLegalForm}}
-                <Item>
-                  <:label>Oude juridische vorm</:label>
-                  <:content>
-                    {{@model.currentChangeEventResult.originalLegalForm.label}}
-                  </:content>
-                </Item>
-              {{/if}}
-              {{#let
-                @model.currentChangeEventResult.resultingLegalForm.label
-                as |legalFormLabel|
-              }}
-                {{#if legalFormLabel}}
-                  <Item>
-                    <:label>Nieuwe juridische vorm</:label>
-                    <:content>
-                      {{legalFormLabel}}
-                    </:content>
-                  </Item>
-                {{/if}}
-              {{/let}}
-            {{/if}}
           </:right>
         </Card.Columns>
       </:card>
