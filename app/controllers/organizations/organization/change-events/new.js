@@ -40,6 +40,9 @@ const RECOGNITION_CHANGE_TYPES = [
   CHANGE_EVENT_TYPE.RECOGNITION_NOT_GRANTED,
 ];
 
+const SAME_VALUE_ERROR_MESSAGE =
+  'De huidige en nieuwe waarde kunnen niet hetzelfde zijn.';
+
 export default class OrganizationsOrganizationChangeEventsNewController extends Controller {
   @service router;
   @service store;
@@ -62,6 +65,13 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
 
   @tracked
   resultingName = null;
+
+  /**
+   * The locations within the scope of the organization, loaded when the
+   * werkingsgebied change event type is selected. Used to prefill the new
+   * werkingsgebied and to validate it against the current value.
+   */
+  currentLocationsInScope = null;
 
   isNameChangeType = isNameChangeType;
 
@@ -202,6 +212,41 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     this.selectedResultingAdditionalQualifications = qualifications;
   }
 
+  /**
+   * Update the type of the change event being created. For change event types
+   * whose new value is multi-valued, the current values of the organization
+   * are prefilled, so the editor only has to modify what has changed.
+   */
+  @action
+  async updateChangeEventType(type) {
+    this.model.changeEvent.type = type;
+
+    // Clear the type-specific selections so stale values don't linger when
+    // the type is switched.
+    this.selectedResultingOrganization = null;
+    this.selectedResultingLegalForm = null;
+    this.selectedResultingLocations = [];
+    this.selectedResultingAdditionalQualifications = [];
+    this.resultingName = null;
+    this.currentLocationsInScope = null;
+
+    if (type?.id === CHANGE_EVENT_TYPE.WERKINGSGEBIED_CHANGE) {
+      const locations = await this.scopeOfOperation.getLocationsInScope(
+        this.model.organization,
+      );
+
+      // Guard against switching to another type while loading the locations
+      if (this.model.changeEvent.type === type) {
+        this.currentLocationsInScope = locations;
+        this.selectedResultingLocations = locations;
+      }
+    } else if (type?.id === CHANGE_EVENT_TYPE.ADDITIONAL_QUALIFICATION_CHANGE) {
+      this.selectedResultingAdditionalQualifications = (
+        this.model.organization.additionalQualifications ?? []
+      ).slice();
+    }
+  }
+
   createNewChangeEventTask = dropTask(async (event) => {
     event.preventDefault();
 
@@ -211,6 +256,14 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       decision,
       decisionActivity,
     } = this.model;
+
+    // Snapshot the current value of the organization *before* it is updated
+    // by this change event, so it can be persisted on the change event result
+    // as the original value. Only the value relevant for the selected change
+    // event type is snapshotted; change event types can't be changed after
+    // saving, so nothing else needs to be kept.
+    const isLegalFormChange =
+      changeEvent.type?.id === CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE;
 
     const shouldSaveDecision = await changeEvent.requiresDecisionInformation;
 
@@ -226,8 +279,6 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       await decision.validate();
     }
 
-    const isLegalFormChange =
-      changeEvent.type?.id === CHANGE_EVENT_TYPE.LEGAL_FORM_CHANGE;
     if (isLegalFormChange && !this.selectedResultingLegalForm) {
       changeEvent.addError(
         'resultingLegalForm',
@@ -259,7 +310,73 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
       changeEvent.addError('resultingName', 'Vul de nieuwe naam in');
     }
 
+    // The change event can only be saved when the new value differs from the
+    // current value of the organization
+    if (
+      isNameChangeType(changeEvent.type) &&
+      this.resultingName?.trim() === currentOrganization.abbName?.trim()
+    ) {
+      changeEvent.addError('resultingName', SAME_VALUE_ERROR_MESSAGE);
+    }
+
+    if (isLegalFormChange) {
+      const currentLegalForm = await currentOrganization.legalForm;
+      if (this.selectedResultingLegalForm?.id === currentLegalForm?.id) {
+        changeEvent.addError('resultingLegalForm', SAME_VALUE_ERROR_MESSAGE);
+      }
+    }
+
+    if (
+      changeEvent.isWerkingsgebiedChangeEvent &&
+      this.selectedResultingLocations.length > 0
+    ) {
+      if (
+        containsSameIds(
+          this.selectedResultingLocations,
+          this.currentLocationsInScope ?? [],
+        )
+      ) {
+        changeEvent.addError('resultingScope', SAME_VALUE_ERROR_MESSAGE);
+      }
+    }
+
+    if (
+      isAdditionalQualificationChangeEvent(changeEvent) &&
+      this.selectedResultingAdditionalQualifications.length > 0
+    ) {
+      if (
+        containsSameIds(
+          this.selectedResultingAdditionalQualifications,
+          currentOrganization.additionalQualifications ?? [],
+        )
+      ) {
+        changeEvent.addError(
+          'resultingAdditionalQualifications',
+          SAME_VALUE_ERROR_MESSAGE,
+        );
+      }
+    }
+
     if (!changeEvent.error && (shouldSaveDecision ? !decision.error : true)) {
+      // Snapshot the current value of the organization *before* it is updated
+      // by this change event, so it can be persisted on the change event
+      // result as the original value. Only the value relevant for the selected
+      // change event type is snapshotted; change event types can't be changed
+      // after saving, so nothing else needs to be kept.
+      const originalName = isNameChangeType(changeEvent.type)
+        ? currentOrganization.abbName
+        : null;
+      const originalLegalForm = isLegalFormChange
+        ? await currentOrganization.legalForm
+        : null;
+      const originalScope = changeEvent.isWerkingsgebiedChangeEvent
+        ? await currentOrganization.scope
+        : null;
+      const originalAdditionalQualifications =
+        isAdditionalQualificationChangeEvent(changeEvent)
+          ? (currentOrganization.additionalQualifications ?? []).slice()
+          : [];
+
       changeEvent.decision = await saveDecision(
         shouldSaveDecision,
         decision,
@@ -371,6 +488,10 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
           resultingAdditionalQualifications:
             this.selectedResultingAdditionalQualifications,
           resultingName,
+          originalName,
+          originalLegalForm,
+          originalScope,
+          originalAdditionalQualifications,
         });
       }
 
@@ -459,6 +580,7 @@ export default class OrganizationsOrganizationChangeEventsNewController extends 
     this.selectedResultingLocations = [];
     this.selectedResultingAdditionalQualifications = [];
     this.resultingName = null;
+    this.currentLocationsInScope = null;
   }
 }
 
@@ -471,6 +593,10 @@ async function createChangeEventResult({
   resultingScope = null,
   resultingAdditionalQualifications = [],
   resultingName,
+  originalName = null,
+  originalLegalForm = null,
+  originalScope = null,
+  originalAdditionalQualifications = [],
 }) {
   const { content: resultingStatus } = await store.request(
     findRecord('organization-status-code', resultingStatusId),
@@ -546,6 +672,19 @@ async function createChangeEventResult({
   if (resultingName) {
     changeEventResult.resultingName = resultingName;
   }
+  if (originalName) {
+    changeEventResult.originalName = originalName;
+  }
+  if (originalLegalForm) {
+    changeEventResult.originalLegalForm = originalLegalForm;
+  }
+  if (originalScope) {
+    changeEventResult.originalScope = originalScope;
+  }
+  if (originalAdditionalQualifications.length > 0) {
+    changeEventResult.originalAdditionalQualifications =
+      originalAdditionalQualifications;
+  }
 
   changeEventResult.resultingOrganization = resultingOrganization;
   changeEventResult.resultFrom = changeEvent;
@@ -611,4 +750,15 @@ async function saveDecision(
   } else {
     return null;
   }
+}
+
+/**
+ * Check whether both arrays contain exactly the same ids, regardless of order.
+ */
+function containsSameIds(a = [], b = []) {
+  const idsA = a.map(({ id }) => id).sort();
+  const idsB = b.map(({ id }) => id).sort();
+  return (
+    idsA.length === idsB.length && idsA.every((id, index) => id === idsB[index])
+  );
 }
