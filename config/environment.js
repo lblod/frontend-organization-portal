@@ -67,6 +67,8 @@ module.exports = function (environment) {
     features: {
       'edit-contact-data': '{{ENABLE_EDIT_CONTACT_DATA_FEATURE}}',
       'legal-form-editable': '{{ENABLE_LEGAL_FORM_EDITABLE_FEATURE}}',
+      'disable-rvs-organizations-edits':
+        '{{ENABLE_DISABLE_RVS_ORGANIZATIONS_EDITS}}',
     },
 
     yasgui: {

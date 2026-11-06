@@ -114,9 +114,34 @@ Or in template files by using the `is-feature-enabled` helper:
 
 ### List of feature flags
 
-| Name              | Description                        |
-| ----------------- | ---------------------------------- |
-| edit-contact-data | Enable the edition of contact site |
+| Name                            | Description                                       |
+| ------------------------------- | ------------------------------------------------- |
+| edit-contact-data               | Enable the edition of contact site                |
+| disable-rvs-organizations-edits | Lock RVS-owned organisation data in OP, see below |
+
+#### `disable-rvs-organizations-edits`
+
+Once the RVS → OP sync is active, RVS (the Lokale Verkenner) becomes the place
+where non-worship organisations are edited. This flag locks that data in OP.
+
+- the edit and new buttons are replaced by a short notice pointing to RVS;
+- opening an edit URL directly redirects to the read view of that screen, except
+  `core-data/edit`, which stays open for the address and contact card;
+- non-worship users can no longer create organisations;
+- the legal form is read-only, whatever `legal-form-editable` says.
+
+Worship users are not affected: they keep editing the organisation data and the
+sites. Non-worship users can still view the sites, but not edit them.
+
+|                      |                                                                                                        |
+| -------------------- | ------------------------------------------------------------------------------------------------------ |
+| Default              | off                                                                                                    |
+| Environment variable | `EMBER_ENABLE_DISABLE_RVS_ORGANIZATIONS_EDITS: "true"` (on the `frontend` service in the compose file) |
+| Query parameter      | `?feature-disable-rvs-organizations-edits=true`                                                        |
+| Cookie               | `feature-disable-rvs-organizations-edits=true`                                                         |
+
+Enable it at go-live of the sync. `?feature-disable-rvs-organizations-edits=false`
+(or `?clear-feature-overrides=true`) turns it off again in a browser.
 
 ## Releasing a new version
 

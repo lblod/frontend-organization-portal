@@ -4,10 +4,17 @@ import { service } from '@ember/service';
 export default class OrganizationsOrganizationGoverningBodiesGoverningBodyEditRoute extends Route {
   @service currentSession;
   @service router;
+  @service organizationEdits;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
-      this.router.transitionTo('unauthorized');
+      return this.router.transitionTo('unauthorized');
+    }
+
+    if (this.organizationEdits.isReadOnly) {
+      return this.router.transitionTo(
+        'organizations.organization.governing-bodies.governing-body',
+      );
     }
   }
 
