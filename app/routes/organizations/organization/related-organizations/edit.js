@@ -7,6 +7,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
   @service currentSession;
   @service router;
   @service store;
+  @service organizationEdits;
 
   queryParams = {
     page: { refreshModel: true },
@@ -15,7 +16,13 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
-      this.router.transitionTo('unauthorized');
+      return this.router.transitionTo('unauthorized');
+    }
+
+    if (this.organizationEdits.isReadOnly) {
+      return this.router.transitionTo(
+        'organizations.organization.related-organizations',
+      );
     }
   }
 

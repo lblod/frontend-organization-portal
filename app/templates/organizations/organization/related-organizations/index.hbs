@@ -6,32 +6,39 @@
         ({{@model.organization.classification.label}})
       </:subtitle>
       <:action>
-        {{#if
-          (not
-            (or
-              @model.organization.isDistrict
-              @model.organization.isProvince
-              @model.organization.isRepresentativeBody
-              @model.organization.isAndere
+        <div class="au-u-text-right">
+          {{#if
+            (not
+              (or
+                @model.organization.isDistrict
+                @model.organization.isProvince
+                @model.organization.isRepresentativeBody
+                @model.organization.isAndere
+              )
             )
-          )
-        }}
-          <SecuredArea>
-            <:edit>
-              <AuLink
-                @route="organizations.organization.related-organizations.edit"
-                @skin="button-secondary"
-                @icon="pencil"
-                @iconAlignment="left"
-              >
-                Bewerk
-              </AuLink>
-            </:edit>
-            <:readOnly>
+          }}
+            {{#if (read-only)}}
+              <EditsDisabledMessage />
               <ReportWrongData />
-            </:readOnly>
-          </SecuredArea>
-        {{/if}}
+            {{else}}
+              <SecuredArea>
+                <:edit>
+                  <AuLink
+                    @route="organizations.organization.related-organizations.edit"
+                    @skin="button-secondary"
+                    @icon="pencil"
+                    @iconAlignment="left"
+                  >
+                    Bewerk
+                  </AuLink>
+                </:edit>
+                <:readOnly>
+                  <ReportWrongData />
+                </:readOnly>
+              </SecuredArea>
+            {{/if}}
+          {{/if}}
+        </div>
       </:action>
     </PageHeader>
 

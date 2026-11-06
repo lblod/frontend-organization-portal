@@ -1,0 +1,12 @@
+{{#if this.isShown}}
+  {{! Not an `AuAlert`: it renders `role="alert"`, which makes the text
+  unselectable and announces the notice on every page load. }}
+  <div class="au-c-alert au-c-alert--small">
+    <div class="au-c-alert__content">
+      <div class="au-c-alert__message">
+        Aanpassen kan niet meer in het Organisatieportaal. Beheer gebeurt in de
+        Lokale Verkenner.
+      </div>
+    </div>
+  </div>
+{{/if}}

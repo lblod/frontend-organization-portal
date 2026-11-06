@@ -186,7 +186,10 @@ module('Unit | Controller | organizations/new', function (hooks) {
      * and the adapter answers every request, so no backend is needed.
      */
     async function saveWithContactData(owner, controller) {
-      owner.lookup('service:features').setup({ 'edit-contact-data': true });
+      owner.lookup('service:features').setup({
+        'edit-contact-data': true,
+        'disable-rvs-organizations-edits': false,
+      });
       sinon.stub(AbstractValidationModel.prototype, 'validate').resolves(true);
 
       const adapter = owner.lookup('adapter:application');

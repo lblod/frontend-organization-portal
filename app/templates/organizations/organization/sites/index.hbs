@@ -3,25 +3,30 @@
   <:subtitle>{{@model.organization.abbName}}
     ({{@model.organization.classification.label}})</:subtitle>
   <:action>
-    {{#if (editable-contact-data @model.organization)}}
-      <SecuredArea>
-        <:edit>
-          <AuLink
-            @route="organizations.organization.sites.new"
-            @icon="add"
-            @iconAlignment="left"
-            @skin="button"
-          >
-            Nieuw
-          </AuLink>
-        </:edit>
-        <:readOnly>
-          <ReportWrongData />
-        </:readOnly>
-      </SecuredArea>
-    {{else}}
-      <ReportWrongData />
-    {{/if}}
+    <div class="au-u-text-right">
+      {{#if (read-only)}}
+        <EditsDisabledMessage />
+        <ReportWrongData />
+      {{else if (editable-contact-data @model.organization)}}
+        <SecuredArea>
+          <:edit>
+            <AuLink
+              @route="organizations.organization.sites.new"
+              @icon="add"
+              @iconAlignment="left"
+              @skin="button"
+            >
+              Nieuw
+            </AuLink>
+          </:edit>
+          <:readOnly>
+            <ReportWrongData />
+          </:readOnly>
+        </SecuredArea>
+      {{else}}
+        <ReportWrongData />
+      {{/if}}
+    </div>
   </:action>
 </PageHeader>
 
@@ -54,7 +59,11 @@
       <SecuredArea>
         <:edit>
           <td>
-            {{#if (editable-contact-data @model.organization)}}
+            {{#if
+              (and
+                (not (read-only)) (editable-contact-data @model.organization)
+              )
+            }}
               <AuLink
                 @model={{site.id}}
                 @route="organizations.organization.sites.site.edit"
