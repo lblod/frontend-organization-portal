@@ -65,6 +65,15 @@
               </:content>
             </Item>
             {{#if (this.isNameChangeType @model.changeEvent.type)}}
+              {{! Old change events didn't persist this value }}
+              {{#if @model.currentChangeEventResult.originalName}}
+                <Item>
+                  <:label>Oude naam</:label>
+                  <:content>
+                    {{@model.currentChangeEventResult.originalName}}
+                  </:content>
+                </Item>
+              {{/if}}
               <Item
                 @labelFor="change-event-resulting-name"
                 @required={{true}}
@@ -105,6 +114,15 @@
               </Item>
             {{/if}}
             {{#if @model.changeEvent.isWerkingsgebiedChangeEvent}}
+              {{! Old change events didn't persist this value }}
+              {{#if @model.originalScopeLabel}}
+                <Item>
+                  <:label>Oud werkingsgebied</:label>
+                  <:content>
+                    {{@model.originalScopeLabel}}
+                  </:content>
+                </Item>
+              {{/if}}
               {{#if @model.resultingScopeLabel}}
                 <Item>
                   <:label>Nieuw werkingsgebied</:label>
@@ -117,40 +135,28 @@
             {{#if
               (is-additional-qualification-change-event @model.changeEvent)
             }}
+              {{! Old change events didn't persist this value }}
+              {{#if
+                @model.currentChangeEventResult.originalAdditionalQualifications.length
+              }}
+                <Item>
+                  <:label>Oude bijkomende kwalificatie(s)</:label>
+                  <:content>
+                    <AdditionalQualificationsList
+                      @qualifications={{@model.currentChangeEventResult.originalAdditionalQualifications}}
+                    />
+                  </:content>
+                </Item>
+              {{/if}}
               {{#if
                 @model.currentChangeEventResult.resultingAdditionalQualifications.length
               }}
                 <Item>
                   <:label>Nieuwe bijkomende kwalificatie(s)</:label>
                   <:content>
-                    <AuList as |Item|>
-                      {{#each
-                        @model.currentChangeEventResult.resultingAdditionalQualifications
-                        as |qualification|
-                      }}
-                        <Item>
-                          {{#if qualification.definition}}
-                            <AuTooltip as |tooltip|>
-                              <div
-                                class="au-u-flex au-u-flex--inline au-u-flex--vertical-center"
-                                {{tooltip.target}}
-                              >
-                                {{qualification.label}}
-                                <AuIcon
-                                  @icon="info-circle"
-                                  class="au-u-margin-left-tiny"
-                                />
-                              </div>
-                              <tooltip.Content>
-                                {{qualification.definition}}
-                              </tooltip.Content>
-                            </AuTooltip>
-                          {{else}}
-                            {{qualification.label}}
-                          {{/if}}
-                        </Item>
-                      {{/each}}
-                    </AuList>
+                    <AdditionalQualificationsList
+                      @qualifications={{@model.currentChangeEventResult.resultingAdditionalQualifications}}
+                    />
                   </:content>
                 </Item>
               {{/if}}
@@ -225,6 +231,15 @@
               </:content>
             </Item>
             {{#if @model.changeEvent.isLegalFormChangeEvent}}
+              {{! Old change events didn't persist this value }}
+              {{#if @model.currentChangeEventResult.originalLegalForm}}
+                <Item>
+                  <:label>Oude juridische vorm</:label>
+                  <:content>
+                    {{@model.currentChangeEventResult.originalLegalForm.label}}
+                  </:content>
+                </Item>
+              {{/if}}
               {{#let
                 @model.currentChangeEventResult.resultingLegalForm.label
                 as |legalFormLabel|
