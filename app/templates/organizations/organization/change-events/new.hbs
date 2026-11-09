@@ -53,7 +53,7 @@
                   @id="change-event-type"
                   @selected={{@model.changeEvent.type}}
                   @organizationClassification={{@model.organization.classification}}
-                  @onChange={{fn (mut @model.changeEvent.type)}}
+                  @onChange={{this.updateChangeEventType}}
                   @error={{hasError}}
                 />
               </:content>
@@ -73,6 +73,12 @@
               </:content>
             </Item>
             {{#if (this.isNameChangeType @model.changeEvent.type)}}
+              <Item>
+                <:label>Huidige naam</:label>
+                <:content>
+                  {{@model.organization.abbName}}
+                </:content>
+              </Item>
               <Item
                 @labelFor="change-event-resulting-name"
                 @required={{true}}
@@ -91,6 +97,15 @@
               </Item>
             {{/if}}
             {{#if this.isLegalFormChange}}
+              {{! The current legal form may not be available, so we hide the field in that scenario }}
+              {{#if @model.organization.legalForm}}
+                <Item>
+                  <:label>Huidige juridische vorm</:label>
+                  <:content>
+                    {{@model.organization.legalForm.label}}
+                  </:content>
+                </Item>
+              {{/if}}
               <Item
                 @labelFor="change-event-legal-form"
                 @required={{true}}
@@ -108,6 +123,15 @@
               </Item>
             {{/if}}
             {{#if @model.changeEvent.isWerkingsgebiedChangeEvent}}
+              {{! The current scope may not be available, so we hide the field in that scenario }}
+              {{#if @model.currentScopeLabel}}
+                <Item>
+                  <:label>Huidig werkingsgebied</:label>
+                  <:content>
+                    {{@model.currentScopeLabel}}
+                  </:content>
+                </Item>
+              {{/if}}
               <Item
                 @labelFor="change-event-scope"
                 @required={{true}}
@@ -127,6 +151,17 @@
             {{#if
               (is-additional-qualification-change-event @model.changeEvent)
             }}
+              {{! The current qualifications may not be available, so we hide the field in that scenario }}
+              {{#if @model.organization.additionalQualifications.length}}
+                <Item>
+                  <:label>Huidige bijkomende kwalificatie(s)</:label>
+                  <:content>
+                    <AdditionalQualificationsList
+                      @qualifications={{@model.organization.additionalQualifications}}
+                    />
+                  </:content>
+                </Item>
+              {{/if}}
               <Item
                 @labelFor="change-event-additional-qualifications"
                 @required={{true}}

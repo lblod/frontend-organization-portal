@@ -39,6 +39,24 @@ export default class OrganizationsOrganizationChangeEventsDetailsEditController 
       changeEvent.addError('resultingName', 'Vul de nieuwe naam in');
     }
 
+    // The change event can only be saved when the new name differs from the
+    // name this change event was created to change. Old change events don't
+    // have the original name persisted and can simply be edited as before
+    if (
+      isNameChangeType(changeEvent.type) &&
+      currentChangeEventResult.originalName
+    ) {
+      if (
+        currentChangeEventResult.resultingName?.trim() ===
+        currentChangeEventResult.originalName?.trim()
+      ) {
+        changeEvent.addError(
+          'resultingName',
+          'De huidige en nieuwe waarde kunnen niet hetzelfde zijn.',
+        );
+      }
+    }
+
     if (
       !changeEvent.error &&
       (changeEvent.requiresDecisionInformation ? !decision.error : true)

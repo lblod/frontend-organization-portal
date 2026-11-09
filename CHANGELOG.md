@@ -1,3 +1,15 @@
+## v1.51.0 (2026-11-09)
+#### :rocket: Enhancement
+* [#766](https://github.com/lblod/frontend-organization-portal/pull/766) [OP-3950] Change event improvements ([@Windvis](https://github.com/Windvis))
+* [#762](https://github.com/lblod/frontend-organization-portal/pull/762) [OP-3940] Related organization relationship improvements ([@Windvis](https://github.com/Windvis))
+
+#### :bug: Bug Fix
+* [#765](https://github.com/lblod/frontend-organization-portal/pull/765) [OP-3973] Filter "inactive" municipalities from the werkingsgebied filter ([@Windvis](https://github.com/Windvis))
+* [#763](https://github.com/lblod/frontend-organization-portal/pull/763) [OP-3969] Don't show a confirm modal for unsaved relationships ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 1
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
 ## v1.50.2 (2026-10-29)
 
 #### :bug: Bug Fix
