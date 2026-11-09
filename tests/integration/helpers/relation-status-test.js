@@ -8,12 +8,14 @@ module('Integration | Helper | relation-status', function (hooks) {
   setupRenderingTest(hooks);
 
   test('it derives the status from the named arguments', async function (assert) {
+    this.set('startDate', undefined);
     this.set('endDate', undefined);
     this.set('statusId', ORGANIZATION_STATUS.ACTIVE);
 
     await render(hbs`
       {{#let
         (relation-status
+          startDate=this.startDate
           endDate=this.endDate
           memberStatusId=this.statusId
           organizationStatusId=this.statusId
@@ -28,5 +30,14 @@ module('Integration | Helper | relation-status', function (hooks) {
     this.set('endDate', new Date('2024-01-01'));
     await settled();
     assert.dom(this.element).hasText('Niet actief');
+
+    this.set('endDate', undefined);
+    this.set('startDate', new Date('2999-12-31'));
+    await settled();
+    assert.dom(this.element).hasText('Niet actief');
+
+    this.set('startDate', new Date('2024-01-01'));
+    await settled();
+    assert.dom(this.element).hasText('Actief');
   });
 });
