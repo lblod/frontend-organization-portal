@@ -124,24 +124,36 @@ Or in template files by using the `is-feature-enabled` helper:
 Once the RVS → OP sync is active, RVS (the Lokale Verkenner) becomes the place
 where non-worship organisations are edited. This flag locks that data in OP.
 
-- the edit and new buttons are replaced by a short notice pointing to RVS;
-- opening an edit URL directly redirects to the read view of that screen, except
-  `core-data/edit`, which stays open for the address and contact card;
-- non-worship users can no longer create organisations;
-- the legal form is read-only, whatever `legal-form-editable` says.
+- the edit and new buttons are replaced, for users who can edit, by a short
+  notice pointing to RVS;
+- opening an edit URL directly redirects to the read view of that screen, or to
+  the list of sites for a site edit URL;
+- non-worship editors can no longer create organisations, sites or change
+  events;
+- the legal form is read-only for non-worship users, whatever
+  `legal-form-editable` says.
 
 Worship users are not affected: they keep editing the organisation data and the
 sites. Non-worship users can still view the sites, but not edit them.
 
-|                      |                                                                                                        |
-| -------------------- | ------------------------------------------------------------------------------------------------------ |
-| Default              | off                                                                                                    |
-| Environment variable | `EMBER_ENABLE_DISABLE_RVS_ORGANIZATIONS_EDITS: "true"` (on the `frontend` service in the compose file) |
-| Query parameter      | `?feature-disable-rvs-organizations-edits=true`                                                        |
-| Cookie               | `feature-disable-rvs-organizations-edits=true`                                                         |
+Until the RVS export covers sites, addresses and contact points, that data is
+editable only in RVS with the flag on and does not reach OP: the next sync does
+not restore it. The environment variable is not set in the compose file yet; add
+it to the `frontend` service when the flag is enabled.
+
+|                      |                                                                                                   |
+| -------------------- | ------------------------------------------------------------------------------------------------- |
+| Default              | off                                                                                               |
+| Environment variable | `EMBER_ENABLE_DISABLE_RVS_ORGANIZATIONS_EDITS_FEATURE: "true"` (add it to the `frontend` service) |
+| Query parameter      | `?feature-disable-rvs-organizations-edits=true`                                                   |
+| Cookie               | `feature-disable-rvs-organizations-edits=true`                                                    |
 
 Enable it at go-live of the sync. `?feature-disable-rvs-organizations-edits=false`
 (or `?clear-feature-overrides=true`) turns it off again in a browser.
+
+To try the flag in a browser, set the query parameter on an organisations page
+(e.g. `/organisations`), not on the home or login page: those pages never load
+the `features` service, so the parameter is ignored there.
 
 ## Releasing a new version
 

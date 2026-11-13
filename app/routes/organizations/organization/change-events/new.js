@@ -5,14 +5,14 @@ export default class OrganizationsOrganizationChangeEventsNewRoute extends Route
   @service currentSession;
   @service router;
   @service store;
-  @service organizationEdits;
+  @service rvsOrganizationEdits;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
       return this.router.transitionTo('unauthorized');
     }
 
-    if (this.organizationEdits.isReadOnly) {
+    if (this.rvsOrganizationEdits.isReadOnly) {
       return this.router.transitionTo(
         'organizations.organization.change-events',
       );

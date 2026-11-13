@@ -26,20 +26,23 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
         <:subtitle>{{@model.organization.abbName}}
           ({{@model.organization.classification.label}})</:subtitle>
         <:action>
-          <div class="au-u-text-right">
-            {{#if (readOnly)}}
+          {{#if (readOnly)}}
+            <div class="au-u-text-right">
               <EditsDisabledMessage />
-            {{else}}
-              <SecuredArea>
-                <:edit>
-                  <EditButton
-                    @route="organizations.organization.change-events.details.edit"
-                  />
-                </:edit>
-              </SecuredArea>
-            {{/if}}
-            <ReportWrongData />
-          </div>
+              <ReportWrongData />
+            </div>
+          {{else}}
+            <SecuredArea>
+              <:edit>
+                <EditButton
+                  @route="organizations.organization.change-events.details.edit"
+                />
+              </:edit>
+              <:readOnly>
+                <ReportWrongData />
+              </:readOnly>
+            </SecuredArea>
+          {{/if}}
         </:action>
       </PageHeader>
 

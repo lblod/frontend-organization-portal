@@ -12,7 +12,7 @@ export default class OrganizationsNewRoute extends Route {
   @service store;
   @service currentSession;
   @service router;
-  @service organizationEdits;
+  @service rvsOrganizationEdits;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
@@ -21,7 +21,7 @@ export default class OrganizationsNewRoute extends Route {
 
     // RVS creates non-worship organisations once the flag is on; only the
     // worship users keep the create form.
-    if (this.organizationEdits.isReadOnly) {
+    if (this.rvsOrganizationEdits.isReadOnly) {
       return this.router.transitionTo('organizations');
     }
   }

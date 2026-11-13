@@ -3,10 +3,11 @@
   <:subtitle>{{@model.organization.abbName}}
     ({{@model.organization.classification.label}})</:subtitle>
   <:alert>
-    <div>
-      {{#if (read-only)}}
+    {{#if (read-only)}}
+      <div>
         <EditsDisabledMessage />
-      {{/if}}
+      </div>
+    {{else}}
       <SecuredArea>
         <:edit>
           <AuAlert
@@ -27,7 +28,7 @@
           <ReportWrongData />
         </:readOnly>
       </SecuredArea>
-    </div>
+    {{/if}}
   </:alert>
 </PageHeader>
 

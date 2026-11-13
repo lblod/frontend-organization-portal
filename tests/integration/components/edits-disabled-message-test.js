@@ -34,4 +34,14 @@ module('Integration | Component | edits-disabled-message', function (hooks) {
 
     assert.dom().hasNoText();
   });
+
+  test('it renders nothing for users who can only read when the flag is on', async function (assert) {
+    setFeatures(this.owner, { 'disable-rvs-organizations-edits': true });
+    this.owner.lookup('service:role')._activeRole =
+      'ABBOrganisatiePortaalGebruiker-lezer';
+
+    await render(hbs`<EditsDisabledMessage />`);
+
+    assert.dom().hasNoText();
+  });
 });

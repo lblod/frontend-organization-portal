@@ -7,7 +7,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
   @service currentSession;
   @service router;
   @service store;
-  @service organizationEdits;
+  @service rvsOrganizationEdits;
 
   queryParams = {
     page: { refreshModel: true },
@@ -19,7 +19,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
       return this.router.transitionTo('unauthorized');
     }
 
-    if (this.organizationEdits.isReadOnly) {
+    if (this.rvsOrganizationEdits.isReadOnly) {
       return this.router.transitionTo(
         'organizations.organization.related-organizations',
       );

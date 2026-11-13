@@ -3,12 +3,12 @@ import { service } from '@ember/service';
 
 /**
  * Whether the current user can only read the organisation data, see
- * `organization-edits`.
+ * `rvs-organization-edits`.
  */
 export default class ReadOnlyHelper extends Helper {
-  @service organizationEdits;
+  @service rvsOrganizationEdits;
 
   compute() {
-    return this.organizationEdits.isReadOnly;
+    return this.rvsOrganizationEdits.isReadOnly;
   }
 }
