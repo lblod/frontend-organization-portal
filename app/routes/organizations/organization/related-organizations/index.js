@@ -155,6 +155,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
         startDate: membership.during?.startDate,
         endDate: membership.during?.endDate,
         relationStatus: getRelationStatus({
+          startDate: membership.during?.startDate,
           endDate: membership.during?.endDate,
           memberStatusId: organizationStatus?.id,
           organizationStatusId: relatedStatus?.id,
@@ -180,6 +181,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
         startDate: membership.during?.startDate,
         endDate: membership.during?.endDate,
         relationStatus: getRelationStatus({
+          startDate: membership.during?.startDate,
           endDate: membership.during?.endDate,
           memberStatusId: memberStatus?.id,
           organizationStatusId: organizationStatus?.id,

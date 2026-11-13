@@ -9,6 +9,7 @@ import EditController from 'frontend-organization-portal/controllers/organizatio
 import { isEmptyPeriod } from 'frontend-organization-portal/utils/period-of-time';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
+import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 
 module(
   'Unit | Controller | organizations/organization/related-organizations/edit',
@@ -121,6 +122,129 @@ module(
         });
 
       return requests;
+    }
+
+    const PARTICIPATES_IN = MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN;
+    const HAS_RELATION_WITH = MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH;
+
+    /**
+     * Push the organization being edited (`a`), another organization (`b`),
+     * the role and a stored membership between them, as the edit route would
+     * have loaded them. Both organizations are active, `inactive` is a third,
+     * inactive organization; `period` adds a stored period to the membership.
+     * The classifications make `a` a central worship service and `b` and
+     * `inactive` worship services, so that the "has a relation with" role
+     * stores them on the member side.
+     */
+    function pushStoredRelation(
+      store,
+      { role = PARTICIPATES_IN, member = 'a', organization = 'b', period } = {},
+    ) {
+      const statusCode = (id, label) => ({
+        type: 'organization-status-code',
+        id,
+        attributes: { label },
+      });
+      const classification = (code) => ({
+        type: 'administrative-unit-classification-code',
+        id: code.id,
+        attributes: { label: code.label },
+      });
+      const organizationData = (
+        id,
+        name,
+        code,
+        statusId = ORGANIZATION_STATUS.ACTIVE,
+      ) => ({
+        type: 'organization',
+        id,
+        attributes: { name },
+        relationships: {
+          classification: {
+            data: {
+              type: 'administrative-unit-classification-code',
+              id: code.id,
+            },
+          },
+          organizationStatus: {
+            data: { type: 'organization-status-code', id: statusId },
+          },
+        },
+      });
+      store.push({
+        data: [
+          statusCode(ORGANIZATION_STATUS.ACTIVE, 'Actief'),
+          statusCode(ORGANIZATION_STATUS.INACTIVE, 'Niet actief'),
+          classification(CLASSIFICATION.CENTRAL_WORSHIP_SERVICE),
+          classification(CLASSIFICATION.WORSHIP_SERVICE),
+          organizationData(
+            'a',
+            'Centraal bestuur',
+            CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
+          ),
+          organizationData(
+            'b',
+            'Bestuur van de eredienst',
+            CLASSIFICATION.WORSHIP_SERVICE,
+          ),
+          organizationData(
+            'inactive',
+            'Ontbonden bestuur van de eredienst',
+            CLASSIFICATION.WORSHIP_SERVICE,
+            ORGANIZATION_STATUS.INACTIVE,
+          ),
+          {
+            type: 'membership-role',
+            id: role.id,
+            attributes: { label: role.label },
+          },
+          {
+            type: 'membership',
+            id: 'stored',
+            relationships: {
+              member: { data: { type: 'organization', id: member } },
+              organization: {
+                data: { type: 'organization', id: organization },
+              },
+              role: { data: { type: 'membership-role', id: role.id } },
+              during: {
+                data: period
+                  ? { type: 'period-of-time', id: 'stored-period' }
+                  : null,
+              },
+            },
+          },
+          ...(period
+            ? [
+                {
+                  type: 'period-of-time',
+                  id: 'stored-period',
+                  attributes: period,
+                },
+              ]
+            : []),
+        ],
+      });
+      return {
+        a: store.peekRecord('organization', 'a'),
+        b: store.peekRecord('organization', 'b'),
+        inactive: store.peekRecord('organization', 'inactive'),
+        role: store.peekRecord('membership-role', role.id),
+        stored: store.peekRecord('membership', 'stored'),
+      };
+    }
+
+    /**
+     * Add a row relating the organization being edited (the member) with the
+     * given organization.
+     */
+    function addRelation(controller, { role, member, organization }) {
+      controller.addMembership();
+      const added = controller.memberships.at(-1);
+      added.role = role;
+      added.member = member;
+      added.organization = organization;
+      return added;
     }
 
     module('reset', function () {
@@ -857,6 +981,358 @@ module(
         ]);
         assert.strictEqual(membership.belongsTo('during').id(), period.id);
         assert.true(transitionTo.calledOnce);
+      });
+    });
+
+    module('duplicates', function () {
+      test('it does not store a new membership that repeats a stored relation', async function (assert) {
+        const store = this.store();
+        const { a, b, role, stored } = pushStoredRelation(store);
+        const requests = stubAdapter(this.owner);
+        const controller = this.controller();
+        sinon.stub(controller.router, 'transitionTo');
+        controller.model = {
+          organization: a,
+          memberships: [stored],
+          roles: [role],
+        };
+        controller.setup();
+
+        const added = addRelation(controller, {
+          role,
+          member: a,
+          organization: b,
+        });
+        controller.setStartDate(added, new Date('2026-01-01'));
+
+        assert.true(controller.isDuplicateMembership(added));
+        assert.false(controller.isDuplicateMembership(stored));
+
+        await controller.save.perform(event);
+
+        assert.deepEqual(requests, ['update organization']);
+        assert.deepEqual(controller.memberships, [stored]);
+        assert.false(controller.hasValidationErrors);
+        // The dropped row and its period leave the store
+        assert.strictEqual(store.peekAll('membership').length, 1);
+        assert.strictEqual(store.peekAll('period-of-time').length, 0);
+      });
+
+      test('it stores a new membership that repeats a relation that is being removed', async function (assert) {
+        const store = this.store();
+        const { a, b, role, stored } = pushStoredRelation(store);
+        const requests = stubAdapter(this.owner);
+        const controller = this.controller();
+        sinon.stub(controller.router, 'transitionTo');
+        controller.model = {
+          organization: a,
+          memberships: [stored],
+          roles: [role],
+        };
+        controller.setup();
+
+        controller.reallyRemoveMembership(stored);
+        const added = addRelation(controller, {
+          role,
+          member: a,
+          organization: b,
+        });
+
+        assert.false(controller.isDuplicateMembership(added));
+
+        await controller.save.perform(event);
+
+        assert.deepEqual(requests.sort(), [
+          'create membership',
+          'delete membership',
+          'update organization',
+        ]);
+        assert.false(added.isNew);
+      });
+
+      test('it does not store a new "has a relation with" membership that repeats a stored one with the sides swapped', async function (assert) {
+        const store = this.store();
+        const { a, b, role, stored } = pushStoredRelation(store, {
+          role: HAS_RELATION_WITH,
+          member: 'b',
+          organization: 'a',
+        });
+        const requests = stubAdapter(this.owner);
+        const controller = this.controller();
+        sinon.stub(controller.router, 'transitionTo');
+        controller.model = {
+          organization: a,
+          memberships: [stored],
+          roles: [role],
+        };
+        controller.setup();
+
+        controller.addMembership();
+        const added = controller.memberships.at(-1);
+        // As picking the role does: the organization being edited becomes the
+        // member, the sides are only corrected when saving
+        controller.updateMembershipRole(added, role.opLabel);
+        added.organization = b;
+
+        assert.true(controller.isDuplicateMembership(added));
+
+        await controller.save.perform(event);
+
+        assert.deepEqual(requests, ['update organization']);
+        assert.strictEqual(store.peekAll('membership').length, 1);
+      });
+
+      test('it stores a new membership that repeats an ended relation after its end', async function (assert) {
+        const store = this.store();
+        const { a, b, role, stored } = pushStoredRelation(store, {
+          period: {
+            startDate: new Date('2010-01-01'),
+            endDate: new Date('2015-12-31'),
+          },
+        });
+        const requests = stubAdapter(this.owner);
+        const controller = this.controller();
+        sinon.stub(controller.router, 'transitionTo');
+        controller.model = {
+          organization: a,
+          memberships: [stored],
+          roles: [role],
+        };
+        controller.setup();
+
+        const added = addRelation(controller, {
+          role,
+          member: a,
+          organization: b,
+        });
+        // Without dates the new relation would still be running today
+        assert.true(controller.isDuplicateMembership(added));
+
+        controller.setStartDate(added, new Date('2016-01-01'));
+        assert.false(controller.isDuplicateMembership(added));
+
+        await controller.save.perform(event);
+
+        assert.deepEqual(requests, [
+          'create period-of-time',
+          'create membership',
+          'update organization',
+        ]);
+        assert.false(added.isNew);
+        assert.deepEqual(controller.memberships, [stored, added]);
+      });
+
+      test('of two identical new rows only the first one is stored', async function (assert) {
+        const store = this.store();
+        const { a, b, role, stored } = pushStoredRelation(store, {
+          period: { endDate: new Date('2015-12-31') },
+        });
+        const requests = stubAdapter(this.owner);
+        const controller = this.controller();
+        sinon.stub(controller.router, 'transitionTo');
+        controller.model = {
+          organization: a,
+          memberships: [stored],
+          roles: [role],
+        };
+        controller.setup();
+
+        const first = addRelation(controller, {
+          role,
+          member: a,
+          organization: b,
+        });
+        controller.setStartDate(first, new Date('2016-01-01'));
+        const second = addRelation(controller, {
+          role,
+          member: a,
+          organization: b,
+        });
+        controller.setStartDate(second, new Date('2016-01-01'));
+
+        assert.false(controller.isDuplicateMembership(first));
+        assert.true(controller.isDuplicateMembership(second));
+
+        await controller.save.perform(event);
+
+        assert.deepEqual(requests, [
+          'create period-of-time',
+          'create membership',
+          'update organization',
+        ]);
+        assert.deepEqual(controller.memberships, [stored, first]);
+        assert.strictEqual(store.peekAll('membership').length, 2);
+        assert.strictEqual(store.peekAll('period-of-time').length, 2);
+      });
+    });
+
+    module('relations', function () {
+      test('updateMembershipRole puts the organization on the side the label implies', function (assert) {
+        const store = this.store();
+        const { a, role, stored } = pushStoredRelation(store);
+        const controller = this.controller();
+        controller.model = {
+          organization: a,
+          memberships: [stored],
+          roles: [role],
+        };
+        controller.setup();
+        controller.addMembership();
+        const added = controller.memberships.at(-1);
+
+        controller.updateMembershipRole(added, 'Is lid van');
+
+        assert.strictEqual(added.belongsTo('role').value(), role);
+        assert.strictEqual(added.belongsTo('member').value(), a);
+        assert.strictEqual(added.belongsTo('organization').value(), null);
+        assert.strictEqual(controller.displayRoleLabel(added), 'Is lid van');
+
+        // The inverse label moves the organization to the other side
+        controller.updateMembershipRole(added, 'Heeft als leden');
+
+        assert.strictEqual(added.belongsTo('role').value(), role);
+        assert.strictEqual(added.belongsTo('member').value(), null);
+        assert.strictEqual(added.belongsTo('organization').value(), a);
+        assert.strictEqual(
+          controller.displayRoleLabel(added),
+          'Heeft als leden',
+        );
+      });
+
+      test('displayRoleLabel reads a stored relation from the perspective of the organization', function (assert) {
+        const store = this.store();
+        const { a, role, stored } = pushStoredRelation(store, {
+          member: 'b',
+          organization: 'a',
+        });
+        const controller = this.controller();
+        controller.model = {
+          organization: a,
+          memberships: [stored],
+          roles: [role],
+        };
+        controller.setup();
+
+        assert.strictEqual(
+          controller.displayRoleLabel(stored),
+          'Heeft als leden',
+        );
+      });
+
+      test('setRelatedOrganizationMembership sets an active organization at once', function (assert) {
+        const store = this.store();
+        const { a, b, role, stored } = pushStoredRelation(store, {
+          role: HAS_RELATION_WITH,
+        });
+        const controller = this.controller();
+        controller.model = {
+          organization: a,
+          memberships: [stored],
+          roles: [role],
+        };
+        controller.setup();
+        controller.addMembership();
+        const added = controller.memberships.at(-1);
+        controller.updateMembershipRole(added, 'Heeft een relatie met');
+
+        controller.setRelatedOrganizationMembership(added, b);
+
+        assert.strictEqual(added.belongsTo('organization').value(), b);
+        assert.strictEqual(controller.nonActiveMembership, undefined);
+        assert.strictEqual(controller.nonActiveRelatedOrganization, undefined);
+      });
+
+      test('setRelatedOrganizationMembership asks for confirmation for an inactive organization', function (assert) {
+        const store = this.store();
+        const { a, inactive, role, stored } = pushStoredRelation(store);
+        const controller = this.controller();
+        controller.model = {
+          organization: a,
+          memberships: [stored],
+          roles: [role],
+        };
+        controller.setup();
+        controller.addMembership();
+        const added = controller.memberships.at(-1);
+        controller.updateMembershipRole(added, 'Is lid van');
+
+        controller.setRelatedOrganizationMembership(added, inactive);
+
+        assert.strictEqual(added.belongsTo('organization').value(), null);
+        assert.strictEqual(controller.nonActiveMembership, added);
+        assert.strictEqual(controller.nonActiveRelatedOrganization, inactive);
+
+        controller.confirmNonActiveRelatedOrganization();
+
+        assert.strictEqual(added.belongsTo('organization').value(), inactive);
+        assert.strictEqual(controller.nonActiveMembership, undefined);
+        assert.strictEqual(controller.nonActiveRelatedOrganization, undefined);
+      });
+
+      test('cancelling the confirmation leaves the organization empty', function (assert) {
+        const store = this.store();
+        const { a, inactive, role, stored } = pushStoredRelation(store);
+        const controller = this.controller();
+        controller.model = {
+          organization: a,
+          memberships: [stored],
+          roles: [role],
+        };
+        controller.setup();
+        controller.addMembership();
+        const added = controller.memberships.at(-1);
+        controller.updateMembershipRole(added, 'Is lid van');
+        controller.setRelatedOrganizationMembership(added, inactive);
+
+        controller.cancelNonActiveRelatedOrganization();
+
+        assert.strictEqual(added.belongsTo('organization').value(), null);
+        assert.strictEqual(added.belongsTo('member').value(), a);
+        assert.strictEqual(controller.nonActiveMembership, undefined);
+        assert.strictEqual(controller.nonActiveRelatedOrganization, undefined);
+      });
+
+      test('save stores a new "has a relation with" membership with the sides the rules prescribe', async function (assert) {
+        const store = this.store();
+        const { a, b, role, stored } = pushStoredRelation(store);
+        const [hasRelationWith] = store.push({
+          data: [
+            {
+              type: 'membership-role',
+              id: HAS_RELATION_WITH.id,
+              attributes: { label: HAS_RELATION_WITH.label },
+            },
+          ],
+        });
+        const requests = stubAdapter(this.owner);
+        const controller = this.controller();
+        sinon.stub(controller.router, 'transitionTo');
+        controller.model = {
+          organization: a,
+          memberships: [stored],
+          roles: [role, hasRelationWith],
+        };
+        controller.setup();
+        controller.addMembership();
+        const added = controller.memberships.at(-1);
+        controller.updateMembershipRole(added, 'Heeft een relatie met');
+        controller.setRelatedOrganizationMembership(added, b);
+
+        // Picked from the central worship service's page, so for now it is
+        // the member
+        assert.strictEqual(added.belongsTo('member').value(), a);
+        assert.strictEqual(added.belongsTo('organization').value(), b);
+
+        await controller.save.perform(event);
+
+        assert.deepEqual(requests, [
+          'create membership',
+          'update organization',
+        ]);
+        // The rules put the worship service on the member side
+        assert.strictEqual(added.belongsTo('member').value(), b);
+        assert.strictEqual(added.belongsTo('organization').value(), a);
+        assert.false(added.isNew);
       });
     });
 

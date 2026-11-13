@@ -13,6 +13,7 @@ import {
   shouldSwapAssignments,
 } from 'frontend-organization-portal/utils/membership-rules';
 import { isEmptyPeriod } from 'frontend-organization-portal/utils/period-of-time';
+import { findDuplicatedMembership } from 'frontend-organization-portal/utils/duplicate-memberships';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditController extends Controller {
   @service router;
@@ -189,9 +190,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     //   Otherwise, they can result in failing validations or errors.
     if (membership.isNew) {
       this.memberships = this.memberships.filter((m) => m !== membership);
-      this.#rollbackPeriod(membership);
-      membership.deleteRecord();
-      membership.unloadRecord();
+      this.#discardMembership(membership);
     } else {
       membership.deleteRecord();
     }
@@ -266,6 +265,26 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     return !org && !member && !role && isEmptyPeriod(membership.during);
   }
 
+  /**
+   * Whether the row repeats a relation that is already stored, or that an
+   * earlier row stores. `save` does not store such a row, so the table warns
+   * about it. Only rows added in this session can repeat a relation.
+   */
+  @action
+  isDuplicateMembership(membership) {
+    return (
+      membership.isNew &&
+      Boolean(findDuplicatedMembership(membership, this.memberships))
+    );
+  }
+
+  // Drop a new row for good: it is never stored
+  #discardMembership(membership) {
+    this.#rollbackPeriod(membership);
+    membership.deleteRecord();
+    membership.unloadRecord();
+  }
+
   @action
   updateMembershipRole(membership, roleLabel) {
     // Remove any previous assignments
@@ -303,9 +322,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
 
     this.memberships = this.memberships.filter((membership) => {
       if (membership.isNew && this.#isEmptyMembership(membership)) {
-        this.#rollbackPeriod(membership);
-        membership.deleteRecord();
-        membership.unloadRecord();
+        this.#discardMembership(membership);
         return false;
       }
       return true;
@@ -329,13 +346,20 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditController
     await Promise.all(validationPromises);
 
     if (!this.hasValidationErrors) {
-      // Filter duplicate memberships, this means memberships that have the same
-      // member, organization, and role.
+      // Drop the new memberships that repeat a relation that is already
+      // stored, or that an earlier row stores; the table warned that these
+      // are not saved. They are found before any is dropped, exactly as the
+      // table showed them, and unloaded so that they do not linger in the
+      // store.
       // Note: Do *not* move this filtering earlier in the function, that
       // results in nasty interactions/errors when a validation fails.
-      this.memberships = this.memberships.filter(
+      const duplicates = this.memberships.filter(
         (membership, index, memberships) =>
-          index === memberships.findIndex((m) => membership.equals(m)),
+          membership.isNew && findDuplicatedMembership(membership, memberships),
+      );
+      duplicates.forEach((membership) => this.#discardMembership(membership));
+      this.memberships = this.memberships.filter(
+        (membership) => !duplicates.includes(membership),
       );
 
       // For "has relation with" memberships, assign the current organization

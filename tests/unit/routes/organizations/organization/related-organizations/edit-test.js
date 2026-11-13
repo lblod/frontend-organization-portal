@@ -6,6 +6,7 @@ import {
   stubTransitionTo,
 } from 'frontend-organization-portal/tests/helpers/feature-flags';
 import EditRoute from 'frontend-organization-portal/routes/organizations/organization/related-organizations/edit';
+import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 
 module(
   'Unit | Route | organizations/organization/related-organizations/edit',
@@ -162,6 +163,71 @@ module(
       this.route().beforeModel();
 
       assert.true(transitionTo.notCalled);
+    test('it loads the relations on both sides with everything the page shows', async function (assert) {
+      const store = this.store();
+      const { organization } = pushOrganizationWithMemberships(store);
+      const route = this.route();
+      route.modelFor = () => ({ organization, roles: [], selectableRoles: [] });
+      const requestStub = sinon
+        .stub(store, 'request')
+        .resolves({ content: [] });
+
+      await route.model({ page: 2, size: 50 });
+
+      const { data } = requestStub.firstCall.args[0];
+      assert.strictEqual(data.type, 'membership');
+      assert.deepEqual(data.query, {
+        'filter[:or:][member][:id:]': 'organization',
+        'filter[:or:][organization][:id:]': 'organization',
+        include: [
+          'role',
+          'member.classification',
+          'member.organization-status',
+          'organization.classification',
+          'organization.organization-status',
+          'during',
+        ].join(),
+        page: { size: 50, number: 2 },
+      });
+      requestStub.restore();
+    });
+
+    test('it only loads the relations with the selected role', async function (assert) {
+      const store = this.store();
+      const { organization } = pushOrganizationWithMemberships(store);
+      const [role] = store.push({
+        data: [
+          {
+            type: 'membership-role',
+            id: MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id,
+            attributes: {},
+          },
+        ],
+      });
+      const route = this.route();
+      route.modelFor = () => ({
+        organization,
+        roles: [role],
+        selectableRoles: [role],
+      });
+      const requestStub = sinon
+        .stub(store, 'request')
+        .resolves({ content: [] });
+
+      await route.model({
+        page: 0,
+        size: 500,
+        selectedRoleLabel: 'Heeft als leden',
+      });
+
+      const { query } = requestStub.firstCall.args[0].data;
+      assert.strictEqual(query['filter[organization][:id:]'], 'organization');
+      assert.strictEqual(
+        query['filter[role][:id:]'],
+        MEMBERSHIP_ROLES_MAPPING.PARTICIPATES_IN.id,
+      );
+      assert.notOk(query['filter[:or:][member][:id:]']);
+      requestStub.restore();
     });
   },
 );

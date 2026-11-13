@@ -89,6 +89,10 @@
               {{/if}}
             {{/let}}
           {{/if}}
+          {{#if (@isDuplicateMembership membership)}}
+            <AuHelpText @warning={{true}}>Je maakt een relatie aan die reeds
+              bestaat, deze nieuwe relatie zal niet worden opgeslagen</AuHelpText>
+          {{/if}}
         </td>
         <td>
           {{#if (eq membership.member.id @model.organization.id)}}
@@ -130,6 +134,7 @@
         <td>
           {{#let
             (relation-status
+              startDate=membership.during.startDate
               endDate=membership.during.endDate
               memberStatusId=membership.member.organizationStatus.id
               organizationStatusId=membership.organization.organizationStatus.id
