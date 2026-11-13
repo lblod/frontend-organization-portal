@@ -11,6 +11,20 @@ export const RELATION_STATUS = Object.freeze({
 });
 
 /**
+ * Whether a relation with the given start date has started. The start date is
+ * a day: the relation is active from that day on, so compare with the start of
+ * tomorrow rather than with the current time.
+ */
+export function hasRelationStarted(startDate) {
+  if (!startDate) {
+    return true;
+  }
+  const startOfTomorrow = new Date();
+  startOfTomorrow.setHours(24, 0, 0, 0);
+  return startDate < startOfTomorrow;
+}
+
+/**
  * Whether a relation with the given end date has ended. The end date is a
  * day: the relation is still active on that day, so compare with the start of
  * today rather than with the current time.
@@ -25,15 +39,18 @@ export function isRelationEnded(endDate) {
 }
 
 /**
- * The status of a relation is derived, never stored: not active once the
- * relation has ended or when one of the organizations is not active.
+ * The status of a relation is derived, never stored: not active until the
+ * relation starts, once it has ended or when one of the organizations is not
+ * active.
  */
 export function getRelationStatus({
+  startDate,
   endDate,
   memberStatusId,
   organizationStatusId,
 }) {
   if (
+    !hasRelationStarted(startDate) ||
     isRelationEnded(endDate) ||
     memberStatusId === ORGANIZATION_STATUS.INACTIVE ||
     organizationStatusId === ORGANIZATION_STATUS.INACTIVE
