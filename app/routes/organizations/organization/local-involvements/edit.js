@@ -9,10 +9,17 @@ export default class OrganizationsOrganizationLocalInvolvementsEditRoute extends
   @service store;
   @service currentSession;
   @service router;
+  @service rvsOrganizationEdits;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
-      this.router.transitionTo('unauthorized');
+      return this.router.transitionTo('unauthorized');
+    }
+
+    if (this.rvsOrganizationEdits.isReadOnly) {
+      return this.router.transitionTo(
+        'organizations.organization.local-involvements',
+      );
     }
   }
 

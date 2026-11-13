@@ -8,8 +8,10 @@ import OrganizationStatus from 'frontend-organization-portal/components/organiza
 import PageHeader from 'frontend-organization-portal/components/page-header';
 import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
 import SecuredArea from 'frontend-organization-portal/components/secured-area';
+import EditsDisabledMessage from 'frontend-organization-portal/components/edits-disabled-message';
 import isAdditionalQualificationChangeEvent from 'frontend-organization-portal/helpers/is-additional-qualification-change-event';
 import dateFormat from 'frontend-organization-portal/helpers/date-format';
+import readOnly from 'frontend-organization-portal/helpers/read-only';
 import { isNameChangeType } from 'frontend-organization-portal/models/change-event-type';
 
 <template>
@@ -23,16 +25,23 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
         <:subtitle>{{@model.organization.abbName}}
           ({{@model.organization.classification.label}})</:subtitle>
         <:action>
-          <SecuredArea>
-            <:edit>
-              <EditButton
-                @route="organizations.organization.change-events.details.edit"
-              />
-            </:edit>
-            <:readOnly>
+          {{#if (readOnly)}}
+            <div class="au-u-text-right">
+              <EditsDisabledMessage />
               <ReportWrongData />
-            </:readOnly>
-          </SecuredArea>
+            </div>
+          {{else}}
+            <SecuredArea>
+              <:edit>
+                <EditButton
+                  @route="organizations.organization.change-events.details.edit"
+                />
+              </:edit>
+              <:readOnly>
+                <ReportWrongData />
+              </:readOnly>
+            </SecuredArea>
+          {{/if}}
         </:action>
       </PageHeader>
 

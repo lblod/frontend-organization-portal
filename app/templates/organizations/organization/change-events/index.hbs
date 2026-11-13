@@ -3,14 +3,23 @@
   <:subtitle>{{@model.organization.abbName}}
     ({{@model.organization.classification.label}})</:subtitle>
   <:action>
-    <SecuredArea>
-      <:edit>
-        <Button::New @route="organizations.organization.change-events.new" />
-      </:edit>
-      <:readOnly>
+    <div class="au-u-text-right">
+      {{#if (read-only)}}
+        <EditsDisabledMessage />
         <ReportWrongData />
-      </:readOnly>
-    </SecuredArea>
+      {{else}}
+        <SecuredArea>
+          <:edit>
+            <Button::New
+              @route="organizations.organization.change-events.new"
+            />
+          </:edit>
+          <:readOnly>
+            <ReportWrongData />
+          </:readOnly>
+        </SecuredArea>
+      {{/if}}
+    </div>
   </:action>
 </PageHeader>
 
@@ -44,11 +53,13 @@
         @currentSorting={{this.sort}}
         @label="Resulterende status"
       />
-      <SecuredArea>
-        <:edit>
-          <th></th>
-        </:edit>
-      </SecuredArea>
+      {{#unless (read-only)}}
+        <SecuredArea>
+          <:edit>
+            <th></th>
+          </:edit>
+        </SecuredArea>
+      {{/unless}}
     </c.header>
     <c.body as |changeEventResult|>
       {{#let changeEventResult.resultFrom as |changeEvent|}}
@@ -70,18 +81,20 @@
             @label={{changeEventResult.status.label}}
           />
         </td>
-        <SecuredArea>
-          <:edit>
-            <td>
-              <AuLink
-                @route="organizations.organization.change-events.details.edit"
-                @model={{changeEvent.id}}
-              >
-                Bewerk
-              </AuLink>
-            </td>
-          </:edit>
-        </SecuredArea>
+        {{#unless (read-only)}}
+          <SecuredArea>
+            <:edit>
+              <td>
+                <AuLink
+                  @route="organizations.organization.change-events.details.edit"
+                  @model={{changeEvent.id}}
+                >
+                  Bewerk
+                </AuLink>
+              </td>
+            </:edit>
+          </SecuredArea>
+        {{/unless}}
       {{/let}}
     </c.body>
   </t.content>

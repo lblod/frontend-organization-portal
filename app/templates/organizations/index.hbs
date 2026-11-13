@@ -144,18 +144,24 @@
           <PageHeader class="au-o-box">
             <:title>Organisaties</:title>
             <:action>
-              <SecuredArea>
-                <:edit>
-                  <AuLink
-                    @route="organizations.new"
-                    @icon="add"
-                    @iconAlignment="left"
-                    @skin="button"
-                  >
-                    Nieuw
-                  </AuLink>
-                </:edit>
-              </SecuredArea>
+              <div class="au-u-text-right">
+                {{#if (read-only)}}
+                  <EditsDisabledMessage />
+                {{else}}
+                  <SecuredArea>
+                    <:edit>
+                      <AuLink
+                        @route="organizations.new"
+                        @icon="add"
+                        @iconAlignment="left"
+                        @skin="button"
+                      >
+                        Nieuw
+                      </AuLink>
+                    </:edit>
+                  </SecuredArea>
+                {{/if}}
+              </div>
             </:action>
           </PageHeader>
         </menu.general>
@@ -207,8 +213,10 @@
                 class="au-c-link"
                 href="mailto:{{config 'contactEmail'}}"
               >{{config "contactEmail"}}</a>
-              of
-              <AuLink @route="organizations.new">maak een organisatie aan.</AuLink>
+              {{#unless (read-only)}}
+                of
+                <AuLink @route="organizations.new">maak een organisatie aan.</AuLink>
+              {{/unless}}
             </p>
           </TableMessage>
         {{else}}

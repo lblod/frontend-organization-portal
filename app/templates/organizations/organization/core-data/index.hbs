@@ -8,21 +8,28 @@
       <:action>
         {{#if this.showAbbData}}
           {{#unless @model.organization.isRepresentativeBody}}
-            <SecuredArea>
-              <:edit>
-                <div class="au-u-text-right">
-                  <AuLink
-                    @route="organizations.organization.core-data.edit"
-                    @skin="button-secondary"
-                    @icon="pencil"
-                    @iconAlignment="left"
-                  >
-                    Bewerk
-                  </AuLink>
-                  <ReportWrongData />
-                </div>
-              </:edit>
-            </SecuredArea>
+            {{#if (read-only)}}
+              <div class="au-u-text-right">
+                <EditsDisabledMessage />
+                <ReportWrongData />
+              </div>
+            {{else}}
+              <SecuredArea>
+                <:edit>
+                  <div class="au-u-text-right">
+                    <AuLink
+                      @route="organizations.organization.core-data.edit"
+                      @skin="button-secondary"
+                      @icon="pencil"
+                      @iconAlignment="left"
+                    >
+                      Bewerk
+                    </AuLink>
+                    <ReportWrongData />
+                  </div>
+                </:edit>
+              </SecuredArea>
+            {{/if}}
           {{/unless}}
         {{else if @model.kboOrganization.modified}}
           <div class="au-u-text-right">

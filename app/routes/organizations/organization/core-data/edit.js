@@ -16,12 +16,17 @@ export default class OrganizationsOrganizationCoreDataEditRoute extends Route {
   @service currentSession;
   @service router;
   @service scopeOfOperation;
+  @service rvsOrganizationEdits;
 
   locationsInScope = [];
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
-      this.router.transitionTo('unauthorized');
+      return this.router.transitionTo('unauthorized');
+    }
+
+    if (this.rvsOrganizationEdits.isReadOnly) {
+      return this.router.transitionTo('organizations.organization.core-data');
     }
   }
 

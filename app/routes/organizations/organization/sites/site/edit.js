@@ -13,10 +13,15 @@ export default class OrganizationsOrganizationSitesSiteEditRoute extends Route {
   @service currentSession;
   @service router;
   @service features;
+  @service rvsOrganizationEdits;
 
   beforeModel() {
     if (!this.currentSession.canEdit) {
-      this.router.transitionTo('unauthorized');
+      return this.router.transitionTo('unauthorized');
+    }
+
+    if (this.rvsOrganizationEdits.isReadOnly) {
+      return this.router.transitionTo('organizations.organization.sites');
     }
   }
 
