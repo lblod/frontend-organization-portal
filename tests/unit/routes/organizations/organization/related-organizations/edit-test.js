@@ -163,6 +163,8 @@ module(
       this.route().beforeModel();
 
       assert.true(transitionTo.notCalled);
+    });
+
     test('it loads the relations on both sides with everything the page shows', async function (assert) {
       const store = this.store();
       const { organization } = pushOrganizationWithMemberships(store);
