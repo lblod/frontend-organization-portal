@@ -1,6 +1,7 @@
 import Model, { attr, belongsTo, hasMany } from '@warp-drive/legacy/model';
 
 export default class ChangeEventResultModel extends Model {
+  @attr originalName;
   @attr resultingName;
 
   @belongsTo('organization-status-code', {
@@ -13,13 +14,31 @@ export default class ChangeEventResultModel extends Model {
     inverse: null,
     async: true,
   })
+  originalLegalForm;
+
+  @belongsTo('concept', {
+    inverse: null,
+    async: true,
+  })
   resultingLegalForm;
 
   @belongsTo('location', {
     inverse: null,
     async: false,
   })
+  originalScope;
+
+  @belongsTo('location', {
+    inverse: null,
+    async: false,
+  })
   resultingScope;
+
+  @hasMany('additional-qualification-code', {
+    inverse: null,
+    async: false,
+  })
+  originalAdditionalQualifications;
 
   @hasMany('additional-qualification-code', {
     inverse: null,
