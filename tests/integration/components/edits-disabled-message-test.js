@@ -7,14 +7,24 @@ import { setFeatures } from 'frontend-organization-portal/tests/helpers/feature-
 module('Integration | Component | edits-disabled-message', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it points to the Lokale Verkenner for non-worship users when the flag is on', async function (assert) {
+  test('it points to the Lokale Verkenner and the helpdesk for non-worship users when the flag is on', async function (assert) {
     setFeatures(this.owner, { 'disable-rvs-organizations-edits': true });
     this.owner.lookup('service:role')._activeRole =
       'ABBOrganisatiePortaalGebruiker-editeerder';
 
     await render(hbs`<EditsDisabledMessage />`);
 
-    assert.dom().includesText('Lokale Verkenner');
+    assert
+      .dom()
+      .includesText('Bewerken kan niet meer in het OrganisatiePortaal.');
+    assert
+      .dom('a[href="https://lokaleverkenner.lokaalbestuur.vlaanderen.be"]')
+      .exists()
+      .hasText('Lokale Verkenner');
+    assert
+      .dom('a[href="mailto:LoketLokaalBestuur@vlaanderen.be"]')
+      .exists()
+      .hasText('helpdesk');
   });
 
   test('it renders nothing for worship users when the flag is on', async function (assert) {

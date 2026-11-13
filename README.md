@@ -125,7 +125,7 @@ Once the RVS → OP sync is active, RVS (the Lokale Verkenner) becomes the place
 where non-worship organisations are edited. This flag locks that data in OP.
 
 - the edit and new buttons are replaced, for users who can edit, by a short
-  notice pointing to RVS;
+  notice linking to the Lokale Verkenner and the helpdesk;
 - opening an edit URL directly redirects to the read view of that screen, or to
   the list of sites for a site edit URL;
 - non-worship editors can no longer create organisations, sites or change
