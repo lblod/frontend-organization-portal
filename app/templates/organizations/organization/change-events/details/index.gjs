@@ -82,27 +82,30 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
                   </Item>
                 {{/if}}
               {{/if}}
-              {{#let
-                @model.changeEvent.decision.documentLinks
-                as |documentLinks|
-              }}
-                {{#if documentLinks.length}}
+              {{#if @model.changeEvent.isLegalFormChangeEvent}}
+                {{! Old change events didn't persist this value }}
+                {{#if @model.currentChangeEventResult.originalLegalForm}}
                   <Item>
-                    <:label>Links naar besluiten</:label>
+                    <:label>Oude juridische vorm</:label>
                     <:content>
-                      <AuList as |Item|>
-                        {{#each documentLinks as |documentLink|}}
-                          <Item>
-                            <AuLinkExternal href={{documentLink}}>
-                              {{documentLink}}
-                            </AuLinkExternal>
-                          </Item>
-                        {{/each}}
-                      </AuList>
+                      {{@model.currentChangeEventResult.originalLegalForm.label}}
                     </:content>
                   </Item>
                 {{/if}}
-              {{/let}}
+                {{#let
+                  @model.currentChangeEventResult.resultingLegalForm.label
+                  as |legalFormLabel|
+                }}
+                  {{#if legalFormLabel}}
+                    <Item>
+                      <:label>Nieuwe juridische vorm</:label>
+                      <:content>
+                        {{legalFormLabel}}
+                      </:content>
+                    </Item>
+                  {{/if}}
+                {{/let}}
+              {{/if}}
               {{#if @model.changeEvent.isWerkingsgebiedChangeEvent}}
                 {{! Old change events didn't persist this value }}
                 {{#if @model.originalScopeLabel}}
@@ -149,6 +152,27 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
                   </Item>
                 {{/if}}
               {{/if}}
+              {{#let
+                @model.changeEvent.decision.documentLinks
+                as |documentLinks|
+              }}
+                {{#if documentLinks.length}}
+                  <Item>
+                    <:label>Links naar besluiten</:label>
+                    <:content>
+                      <AuList as |Item|>
+                        {{#each documentLinks as |documentLink|}}
+                          <Item>
+                            <AuLinkExternal href={{documentLink}}>
+                              {{documentLink}}
+                            </AuLinkExternal>
+                          </Item>
+                        {{/each}}
+                      </AuList>
+                    </:content>
+                  </Item>
+                {{/if}}
+              {{/let}}
             </:left>
             <:right as |Item|>
               {{#let
@@ -189,30 +213,6 @@ import { isNameChangeType } from 'frontend-organization-portal/models/change-eve
                   {{dateFormat @model.changeEvent.date}}
                 </:content>
               </Item>
-              {{#if @model.changeEvent.isLegalFormChangeEvent}}
-                {{! Old change events didn't persist this value }}
-                {{#if @model.currentChangeEventResult.originalLegalForm}}
-                  <Item>
-                    <:label>Oude juridische vorm</:label>
-                    <:content>
-                      {{@model.currentChangeEventResult.originalLegalForm.label}}
-                    </:content>
-                  </Item>
-                {{/if}}
-                {{#let
-                  @model.currentChangeEventResult.resultingLegalForm.label
-                  as |legalFormLabel|
-                }}
-                  {{#if legalFormLabel}}
-                    <Item>
-                      <:label>Nieuwe juridische vorm</:label>
-                      <:content>
-                        {{legalFormLabel}}
-                      </:content>
-                    </Item>
-                  {{/if}}
-                {{/let}}
-              {{/if}}
             </:right>
           </Card.Columns>
         </:card>
