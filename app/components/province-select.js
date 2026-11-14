@@ -17,7 +17,7 @@ export default class ProvinceSelectComponent extends Component {
     // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
     await Promise.resolve();
 
-    let provinces = [];
+    let provinceNames = [];
     if (
       this.args.selectedMunicipality &&
       this.args.selectedMunicipality.length
@@ -32,23 +32,19 @@ export default class ProvinceSelectComponent extends Component {
         return [this.previousProvince];
       }
 
-      // If a municipality is selected, load the province it belongs to
-      provinces = (
-        await this.store.request(
-          queryBuilder('organization', {
-            filter: {
-              memberships: {
-                member: {
-                  ':exact:name': this.args.selectedMunicipality,
-                },
-              },
-              classification: {
-                id: CLASSIFICATION.PROVINCE.id,
-              },
+      // If a municipality is selected, load the province location it lies in:
+      // locations are readable for every role, labeled with the province name.
+      const { content: provinces } = await this.store.request(
+        queryBuilder('location', {
+          filter: {
+            ':exact:level': 'Provincie',
+            locations: {
+              ':exact:label': this.args.selectedMunicipality,
             },
-          }),
-        )
-      ).content;
+          },
+        }),
+      );
+      provinceNames = provinces.map(({ label }) => label);
     } else {
       // Else load all the provinces
       const query = {
@@ -59,20 +55,21 @@ export default class ProvinceSelectComponent extends Component {
         },
         sort: 'name',
       };
-      provinces = (
-        await this.store.request(queryBuilder('organization', query))
-      ).content;
+      const { content: provinces } = await this.store.request(
+        queryBuilder('organization', query),
+      );
+      provinceNames = provinces.map(({ name }) => name);
     }
 
-    if (provinces.slice().length === 1) {
+    if (provinceNames.length === 1) {
       this.previousMunicipality = this.args.selectedMunicipality;
-      this.previousProvince = provinces.map(({ name }) => name).slice()[0];
+      this.previousProvince = provinceNames[0];
       this.args.onChange(this.previousProvince);
     } else {
       this.previousMunicipality = null;
       this.previousProvince = null;
     }
-    return provinces.map(({ name }) => name);
+    return provinceNames;
   });
 
   provinces = trackedTask(this, this.loadProvincesTask, () => [
