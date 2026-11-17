@@ -57,6 +57,15 @@ export default class GoverningBodyModel extends AbstractValidationModel {
   }
 
   get validationSchema() {
+    const endDateRequiredSchema = Joi.date().empty(null).required().messages({
+      'any.required': 'Vul de einddatum in',
+      'date.base': 'Vul de einddatum in',
+    });
+
+    const endDateOptionalSchema = Joi.date().empty(null).messages({
+      'date.base': 'Vul de einddatum in',
+    });
+
     return Joi.object({
       startDate: Joi.date()
         .empty(null)
@@ -77,25 +86,24 @@ export default class GoverningBodyModel extends AbstractValidationModel {
           'any.required': 'Vul de startdatum in',
           'date.base': 'Vul de startdatum in',
         }),
-      endDate: Joi.date()
-        .empty(null)
-        .required()
-        .external(async (value, helpers) => {
-          // Note, Joi does not handle cyclic references properly. Therefore, we
-          // check whether the end is after the start date (if any) in this
-          // external check instead of using Joi.date().min().
-          if (this.startDate && value < this.startDate) {
-            return helpers.message(
-              'Kies een einddatum die na de startdatum plaatsvindt',
-            );
-          }
+      // The end date may be left empty for worship services that are still
+      // being established ("in oprichting").
+      endDate: Joi.when(Joi.ref('$endDateOptional'), {
+        is: true,
+        then: endDateOptionalSchema,
+        otherwise: endDateRequiredSchema,
+      }).external(async (value, helpers) => {
+        // Note, Joi does not handle cyclic references properly. Therefore, we
+        // check whether the end is after the start date (if any) in this
+        // external check instead of using Joi.date().min().
+        if (this.startDate && value < this.startDate) {
+          return helpers.message(
+            'Kies een einddatum die na de startdatum plaatsvindt',
+          );
+        }
 
-          return value;
-        })
-        .messages({
-          'any.required': 'Vul de einddatum in',
-          'date.base': 'Vul de einddatum in',
-        }),
+        return value;
+      }),
       administrativeUnit: validateBelongsToOptional(),
       classification: validateBelongsToOptional(),
       isTimeSpecializationOf: validateBelongsToOptional(),

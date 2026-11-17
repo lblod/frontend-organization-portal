@@ -79,7 +79,7 @@
                 <Item
                   @labelFor="governing-body-end-date"
                   @errorMessage={{@model.governingBody.error.endDate.message}}
-                  @required={{true}}
+                  @required={{not this.endDateOptional}}
                 >
                   <:label>Einddatum</:label>
                   <:content as |hasError|>
