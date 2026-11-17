@@ -1,3 +1,14 @@
+import Component from '@glimmer/component';
+import { service } from '@ember/service';
+
+export default class EditsDisabledMessageComponent extends Component {
+  @service rvsOrganizationEdits;
+
+  get isShown() {
+    return this.rvsOrganizationEdits.isReadOnly;
+  }
+}
+
 {{#if this.isShown}}
   {{! Not an `AuAlert`: it renders `role="alert"`, which makes the text
   unselectable and announces the notice on every page load. }}
