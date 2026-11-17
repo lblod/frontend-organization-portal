@@ -11,6 +11,8 @@ function changeEventType(id, label) {
   return { id, type: 'change-event-type', attributes: { label } };
 }
 
+const noopOnChange = () => {};
+
 module('Integration | Component | change-event-type-select', function (hooks) {
   setupRenderingTest(hooks);
 
@@ -29,19 +31,18 @@ module('Integration | Component | change-event-type-select', function (hooks) {
       ],
     });
     sinon.stub(store, 'request').resolves({ content: types });
-    this.set('onChange', () => {});
   });
 
   hooks.afterEach(function () {
     sinon.restore();
   });
 
-  async function optionLabels() {
+  async function optionLabels(classification) {
     await render(
       <template>
         <ChangeEventTypeSelect
-          @organizationClassification={{this.classification}}
-          @onChange={{this.onChange}}
+          @organizationClassification={{classification}}
+          @onChange={{noopOnChange}}
         />
       </template>,
     );
@@ -52,9 +53,7 @@ module('Integration | Component | change-event-type-select', function (hooks) {
   }
 
   test('it lists the municipality types without the worship-only ones', async function (assert) {
-    this.set('classification', CLASSIFICATION.MUNICIPALITY);
-
-    assert.deepEqual(await optionLabels(), [
+    assert.deepEqual(await optionLabels(CLASSIFICATION.MUNICIPALITY), [
       'Naamswijziging',
       'Oprichting',
       'Stadstitel',
@@ -62,9 +61,7 @@ module('Integration | Component | change-event-type-select', function (hooks) {
   });
 
   test('it keeps the worship-only types for a worship service', async function (assert) {
-    this.set('classification', CLASSIFICATION.WORSHIP_SERVICE);
-
-    assert.deepEqual(await optionLabels(), [
+    assert.deepEqual(await optionLabels(CLASSIFICATION.WORSHIP_SERVICE), [
       'Naamswijziging',
       'Erkenning toegekend',
     ]);
