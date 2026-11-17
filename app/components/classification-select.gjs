@@ -7,6 +7,7 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
 import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { getClassificationIdsForRole } from 'frontend-organization-portal/utils/classification-identifiers';
 import { convertClassificationToGroups } from 'frontend-organization-portal/utils/group-classifications';
+import PowerSelect from 'ember-power-select/components/power-select';
 
 export default class ClassificationSelectComponent extends Component {
   @service store;
@@ -74,23 +75,25 @@ export default class ClassificationSelectComponent extends Component {
   #isIdInBlacklist(id) {
     return CENTRAL_WORSHIP_SERVICE_BLACKLIST.find((element) => element == id);
   }
-}
 
-<div class={{if @error "ember-power-select--error"}}>
-  <PowerSelect
-    @allowClear={{@allowClear}}
-    @loadingMessage="Aan het laden..."
-    @noMatchesMessage="Geen resultaten"
-    @searchEnabled={{true}}
-    @searchPlaceholder="Typ om te zoeken"
-    @searchField="searchLabel"
-    @options={{this.classifications.value}}
-    @selected={{@selected}}
-    @onChange={{@onChange}}
-    @triggerId={{@id}}
-    as |classification|
-  >
-    {{classification.label}}{{#if classification.altLabel}}
-      ({{classification.altLabel}}){{/if}}
-  </PowerSelect>
-</div>
+  <template>
+    <div class={{if @error "ember-power-select--error"}}>
+      <PowerSelect
+        @allowClear={{@allowClear}}
+        @loadingMessage="Aan het laden..."
+        @noMatchesMessage="Geen resultaten"
+        @searchEnabled={{true}}
+        @searchPlaceholder="Typ om te zoeken"
+        @searchField="searchLabel"
+        @options={{this.classifications.value}}
+        @selected={{@selected}}
+        @onChange={{@onChange}}
+        @triggerId={{@id}}
+        as |classification|
+      >
+        {{classification.label}}{{#if classification.altLabel}}
+          ({{classification.altLabel}}){{/if}}
+      </PowerSelect>
+    </div>
+  </template>
+}

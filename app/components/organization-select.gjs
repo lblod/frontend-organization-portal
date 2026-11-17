@@ -6,6 +6,8 @@ import { tracked } from '@glimmer/tracking';
 import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { ORGANIZATION_STATUS } from '../models/organization-status-code';
+import PowerSelect from 'ember-power-select/components/power-select';
+import perform from 'ember-concurrency/helpers/perform';
 
 export default class OrganizationSelectComponent extends Component {
   @service store;
@@ -127,37 +129,39 @@ export default class OrganizationSelectComponent extends Component {
       ).content;
     }
   });
-}
 
-<div class={{if @error "ember-power-select--error"}} ...attributes>
-  <PowerSelect
-    @disabled={{@disabled}}
-    @allowClear={{@allowClear}}
-    @searchEnabled={{true}}
-    @loadingMessage="Aan het laden..."
-    @noMatchesMessage="Geen resultaten"
-    @searchMessage="Typ om te zoeken"
-    @searchField="name"
-    @onChange={{this.triggerChange}}
-    @search={{perform this.loadOrganizationsTask}}
-    @selected={{this.selectedOrganization}}
-    @triggerId={{@id}}
-    as |organization|
-  >
-    {{#if @showKbo}}
-      {{#if organization.kboNumber}}
-        {{organization.kboNumber}}
-        -
-        {{organization.abbName}}
-      {{else}}
-        {{organization.abbName}}
-        (geen kbo gevonden)
-      {{/if}}
-    {{else}}
-      {{organization.abbName}}
-    {{/if}}
-    {{#unless organization.isWorshipAdministrativeUnit}}
-      ({{organization.classification.label}})
-    {{/unless}}
-  </PowerSelect>
-</div>
+  <template>
+    <div class={{if @error "ember-power-select--error"}} ...attributes>
+      <PowerSelect
+        @disabled={{@disabled}}
+        @allowClear={{@allowClear}}
+        @searchEnabled={{true}}
+        @loadingMessage="Aan het laden..."
+        @noMatchesMessage="Geen resultaten"
+        @searchMessage="Typ om te zoeken"
+        @searchField="name"
+        @onChange={{this.triggerChange}}
+        @search={{perform this.loadOrganizationsTask}}
+        @selected={{this.selectedOrganization}}
+        @triggerId={{@id}}
+        as |organization|
+      >
+        {{#if @showKbo}}
+          {{#if organization.kboNumber}}
+            {{organization.kboNumber}}
+            -
+            {{organization.abbName}}
+          {{else}}
+            {{organization.abbName}}
+            (geen kbo gevonden)
+          {{/if}}
+        {{else}}
+          {{organization.abbName}}
+        {{/if}}
+        {{#unless organization.isWorshipAdministrativeUnit}}
+          ({{organization.classification.label}})
+        {{/unless}}
+      </PowerSelect>
+    </div>
+  </template>
+}

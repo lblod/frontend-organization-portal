@@ -1,78 +1,88 @@
-{{page-title this.model.abbName}}
-{{breadcrumb
-  this.model.abbName
-  route="organizations.organization"
-  model=this.model.id
-}}
+import pageTitle from 'ember-page-title/helpers/page-title';
+import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
+import SidebarContainer from '../../components/sidebar-container';
+import AuNavigationLink from '@appuniversum/ember-appuniversum/components/au-navigation-link';
+import eq from 'ember-truth-helpers/helpers/eq';
 
-<SidebarContainer>
-  <:sidebar>
-    <div class="au-c-sidebar">
-      <ul class="au-c-list-navigation">
-        <li class="au-c-list-navigation__item">
-          <AuNavigationLink @route="organizations.organization.core-data">
-            Kerngegevens
-          </AuNavigationLink>
-        </li>
-        <li class="au-c-list-navigation__item">
+<template>
+  {{pageTitle @controller.model.abbName}}
+  {{breadcrumb
+    @controller.model.abbName
+    route="organizations.organization"
+    model=@controller.model.id
+  }}
+
+  <SidebarContainer>
+    <:sidebar>
+      <div class="au-c-sidebar">
+        <ul class="au-c-list-navigation">
+          <li class="au-c-list-navigation__item">
+            <AuNavigationLink @route="organizations.organization.core-data">
+              Kerngegevens
+            </AuNavigationLink>
+          </li>
+          <li class="au-c-list-navigation__item">
+            {{#unless @model.isRepresentativeBody}}
+              <AuNavigationLink @route="organizations.organization.sites">
+                Vestigingen
+              </AuNavigationLink>
+            {{/unless}}
+          </li>
+          {{#if @model.isWorshipAdministrativeUnit}}
+            <li class="au-c-list-navigation__item">
+              <AuNavigationLink
+                @route="organizations.organization.local-involvements"
+              >
+                Betrokken lokale besturen
+              </AuNavigationLink>
+            </li>
+          {{/if}}
+          {{#if @model.requiresGoverningBodies}}
+            <li class="au-c-list-navigation__item">
+              <AuNavigationLink
+                @route="organizations.organization.governing-bodies"
+              >
+                Bestuursorganen
+              </AuNavigationLink>
+            </li>
+          {{/if}}
+          {{#if (eq @model.constructor.modelName "worship-service")}}
+            <li class="au-c-list-navigation__item">
+              <AuNavigationLink @route="organizations.organization.ministers">
+                Bedienaren
+              </AuNavigationLink>
+            </li>
+          {{/if}}
+          {{#if @model.requiresFunctionaries}}
+            <li class="au-c-list-navigation__item">
+              <AuNavigationLink @route="organizations.organization.executives">
+                Leidinggevenden
+              </AuNavigationLink>
+            </li>
+          {{/if}}
           {{#unless @model.isRepresentativeBody}}
-            <AuNavigationLink @route="organizations.organization.sites">
-              Vestigingen
-            </AuNavigationLink>
+            <li class="au-c-list-navigation__item">
+              <AuNavigationLink
+                @route="organizations.organization.change-events"
+              >
+                Veranderingsgebeurtenissen
+              </AuNavigationLink>
+            </li>
           {{/unless}}
-        </li>
-        {{#if @model.isWorshipAdministrativeUnit}}
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink
-              @route="organizations.organization.local-involvements"
-            >
-              Betrokken lokale besturen
-            </AuNavigationLink>
-          </li>
-        {{/if}}
-        {{#if @model.requiresGoverningBodies}}
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink
-              @route="organizations.organization.governing-bodies"
-            >
-              Bestuursorganen
-            </AuNavigationLink>
-          </li>
-        {{/if}}
-        {{#if (eq @model.constructor.modelName "worship-service")}}
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink @route="organizations.organization.ministers">
-              Bedienaren
-            </AuNavigationLink>
-          </li>
-        {{/if}}
-        {{#if @model.requiresFunctionaries}}
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink @route="organizations.organization.executives">
-              Leidinggevenden
-            </AuNavigationLink>
-          </li>
-        {{/if}}
-        {{#unless @model.isRepresentativeBody}}
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink @route="organizations.organization.change-events">
-              Veranderingsgebeurtenissen
-            </AuNavigationLink>
-          </li>
-        {{/unless}}
-        {{#unless @model.isVlaamseGemeenschapscommissie}}
-          <li class="au-c-list-navigation__item">
-            <AuNavigationLink
-              @route="organizations.organization.related-organizations"
-            >
-              Gerelateerde organisaties
-            </AuNavigationLink>
-          </li>
-        {{/unless}}
-      </ul>
-    </div>
-  </:sidebar>
-  <:content>
-    {{outlet}}
-  </:content>
-</SidebarContainer>
+          {{#unless @model.isVlaamseGemeenschapscommissie}}
+            <li class="au-c-list-navigation__item">
+              <AuNavigationLink
+                @route="organizations.organization.related-organizations"
+              >
+                Gerelateerde organisaties
+              </AuNavigationLink>
+            </li>
+          {{/unless}}
+        </ul>
+      </div>
+    </:sidebar>
+    <:content>
+      {{outlet}}
+    </:content>
+  </SidebarContainer>
+</template>

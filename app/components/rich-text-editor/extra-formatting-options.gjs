@@ -1,4 +1,7 @@
 import Component from '@glimmer/component';
+import Dropdown from '@lblod/ember-rdfa-editor/components/toolbar/dropdown';
+import Mark from './mark';
+import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 
 export default class ExtraFormattingOptionsComponent extends Component {
   menuItems = [
@@ -15,33 +18,35 @@ export default class ExtraFormattingOptionsComponent extends Component {
       return controller.isMarkActive(mark);
     });
   }
-}
 
-{{#if @controller}}
-  <Toolbar::Dropdown
-    @label="Meer opmaakopties"
-    @hideLabel={{true}}
-    @icon="three-dots"
-    @iconSize="small"
-    @controller={{@controller}}
-    class={{if this.isAnyMenuItemActive "say-dropdown--active-items"}}
-    as |Menu|
-  >
-    {{#each this.menuItems as |item|}}
-      <RichTextEditor::Mark
-        @mark={{item.mark}}
+  <template>
+    {{#if @controller}}
+      <Dropdown
+        @label="Meer opmaakopties"
+        @hideLabel={{true}}
+        @icon="three-dots"
+        @iconSize="small"
         @controller={{@controller}}
-        as |mark|
+        class={{if this.isAnyMenuItemActive "say-dropdown--active-items"}}
+        as |Menu|
       >
-        <Menu.Item
-          @menuAction={{mark.toggle}}
-          class="extra-formatting-option
-            {{if mark.isActive 'extra-formatting-option--active'}}"
-        >
-          <AuIcon @icon={{item.icon}} @alignment="left" @ariaHidden={{true}} />
-          {{item.label}}
-        </Menu.Item>
-      </RichTextEditor::Mark>
-    {{/each}}
-  </Toolbar::Dropdown>
-{{/if}}
+        {{#each this.menuItems as |item|}}
+          <Mark @mark={{item.mark}} @controller={{@controller}} as |mark|>
+            <Menu.Item
+              @menuAction={{mark.toggle}}
+              class="extra-formatting-option
+                {{if mark.isActive 'extra-formatting-option--active'}}"
+            >
+              <AuIcon
+                @icon={{item.icon}}
+                @alignment="left"
+                @ariaHidden={{true}}
+              />
+              {{item.label}}
+            </Menu.Item>
+          </Mark>
+        {{/each}}
+      </Dropdown>
+    {{/if}}
+  </template>
+}

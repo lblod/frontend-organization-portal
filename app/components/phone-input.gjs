@@ -1,4 +1,6 @@
 import Component from '@glimmer/component';
+import { hash } from '@ember/helper';
+import PhoneInputInput from './phone-input/input';
 
 const SHORT_BE_NUMBER_LENGTH = 9; // Belgian landline numbers are at least 9 digits long
 const LONG_INTL_NUMBER_LENGTH = 12; // Mobile phone numbers in international notation are 12 characters, including the +
@@ -29,21 +31,23 @@ export default class PhoneInput extends Component {
   onUpdate = (event) => {
     this.args.onUpdate?.(event.target.value);
   };
+
+  <template>
+    {{yield
+      (hash
+        Input=(component
+          PhoneInputInput
+          value=@value
+          warning=this.warningMessage
+          onUpdate=this.onUpdate
+        )
+        warning=this.warningMessage
+      )
+    }}
+  </template>
 }
 
 function isInternationalNumber(phone) {
   const BASIC_INTL_FORMAT_REGEX = /\+\d*/;
   return BASIC_INTL_FORMAT_REGEX.test(phone);
 }
-
-{{yield
-  (hash
-    Input=(component
-      "phone-input/input"
-      value=@value
-      warning=this.warningMessage
-      onUpdate=this.onUpdate
-    )
-    warning=this.warningMessage
-  )
-}}

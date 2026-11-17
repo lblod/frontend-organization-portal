@@ -1,90 +1,108 @@
-<div class="au-c-body-container au-c-body-container--scroll">
-  <div class="au-o-box">
-    <PageHeader class="au-u-margin-bottom-large">
-      <:title>Bewerk gerelateerde organisaties</:title>
-      <:subtitle>{{@model.organization.abbName}}
-        ({{@model.organization.classification.label}})</:subtitle>
-      <:action>
-        <div class="au-u-text-right">
-          <AuButtonGroup class="au-c-button-group--align-right">
-            <AuLink
-              @route="organizations.organization.related-organizations"
-              @skin="button-secondary"
-            >
-              Annuleer
-            </AuLink>
-            <AuButton
-              @loading={{this.save.isRunning}}
-              @loadingMessage="Opslaan"
-              @disabled={{this.save.isRunning}}
-              form="edit-core-info-form"
-              type="submit"
-            >
-              Opslaan
-            </AuButton>
-          </AuButtonGroup>
-          <ReportWrongData />
-          <Error::Save @showSaveError={{this.hasValidationErrors}} />
+import PageHeader from '../../../../components/page-header';
+import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
+import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
+import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
+import ReportWrongData from '../../../../components/report-wrong-data';
+import Save from '../../../../components/error/save';
+import { on } from '@ember/modifier';
+import perform from 'ember-concurrency/helpers/perform';
+import RelatedOrganizationsEditTable from '../../../../components/related-organizations-edit-table';
+import ConfirmationModal from '../../../../components/confirmation-modal';
+import confirmationMessageText from '../../../../helpers/confirmation-message-text';
+import DeleteModal from '../../../../components/delete-modal';
+import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
+
+<template>
+  <div class="au-c-body-container au-c-body-container--scroll">
+    <div class="au-o-box">
+      <PageHeader class="au-u-margin-bottom-large">
+        <:title>Bewerk gerelateerde organisaties</:title>
+        <:subtitle>{{@model.organization.abbName}}
+          ({{@model.organization.classification.label}})</:subtitle>
+        <:action>
+          <div class="au-u-text-right">
+            <AuButtonGroup class="au-c-button-group--align-right">
+              <AuLink
+                @route="organizations.organization.related-organizations"
+                @skin="button-secondary"
+              >
+                Annuleer
+              </AuLink>
+              <AuButton
+                @loading={{@controller.save.isRunning}}
+                @loadingMessage="Opslaan"
+                @disabled={{@controller.save.isRunning}}
+                form="edit-core-info-form"
+                type="submit"
+              >
+                Opslaan
+              </AuButton>
+            </AuButtonGroup>
+            <ReportWrongData />
+            <Save @showSaveError={{@controller.hasValidationErrors}} />
+          </div>
+        </:action>
+      </PageHeader>
+
+      <form
+        id="edit-core-info-form"
+        aria-label="edit-core-info-form"
+        {{on "submit" (perform @controller.save)}}
+      >
+        <div class="au-o-flow au-o-flow--large">
+          <RelatedOrganizationsEditTable
+            @model={{@model}}
+            @content={{@controller.memberships}}
+            @organizationStatus={{@controller.organizationStatus}}
+            @page={{@controller.page}}
+            @size={{@controller.size}}
+            @addRelatedOrganization={{@controller.addMembership}}
+            @removeRelatedOrganization={{@controller.removeMembership}}
+            @updateMembershipRole={{@controller.updateMembershipRole}}
+            @displayRoleLabel={{@controller.displayRoleLabel}}
+            @selectedRole={{@controller.selectedRoleLabel}}
+            @unsavedEdit={{@controller.hasUnsavedEdits}}
+            @setOtherRelatedOrganization={{@controller.setRelatedOrganizationMembership}}
+            @setStartDate={{@controller.setStartDate}}
+            @setEndDate={{@controller.setEndDate}}
+            @isDuplicateMembership={{@controller.isDuplicateMembership}}
+            id="edit-related-organizations"
+          />
         </div>
-      </:action>
-    </PageHeader>
-
-    <form
-      id="edit-core-info-form"
-      aria-label="edit-core-info-form"
-      {{on "submit" (perform this.save)}}
-    >
-      <div class="au-o-flow au-o-flow--large">
-        <RelatedOrganizationsEditTable
-          @model={{@model}}
-          @content={{this.memberships}}
-          @organizationStatus={{this.organizationStatus}}
-          @page={{this.page}}
-          @size={{this.size}}
-          @addRelatedOrganization={{this.addMembership}}
-          @removeRelatedOrganization={{this.removeMembership}}
-          @updateMembershipRole={{this.updateMembershipRole}}
-          @displayRoleLabel={{this.displayRoleLabel}}
-          @selectedRole={{this.selectedRoleLabel}}
-          @unsavedEdit={{this.hasUnsavedEdits}}
-          @setOtherRelatedOrganization={{this.setRelatedOrganizationMembership}}
-          @setStartDate={{this.setStartDate}}
-          @setEndDate={{this.setEndDate}}
-          @isDuplicateMembership={{this.isDuplicateMembership}}
-          id="edit-related-organizations"
-        />
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
 
-{{#if this.nonActiveRelatedOrganization}}
-  <ConfirmationModal
-    @message={{confirmation-message-text "nonActiveRelatedOrganization"}}
-    @onConfirm={{this.confirmNonActiveRelatedOrganization}}
-    @onCancel={{this.cancelNonActiveRelatedOrganization}}
-  />
-{{/if}}
+  {{#if @controller.nonActiveRelatedOrganization}}
+    <ConfirmationModal
+      @message={{confirmationMessageText "nonActiveRelatedOrganization"}}
+      @onConfirm={{@controller.confirmNonActiveRelatedOrganization}}
+      @onCancel={{@controller.cancelNonActiveRelatedOrganization}}
+    />
+  {{/if}}
 
-{{#if this.founderToRemove}}
-  <DeleteModal
-    @title="Relatie verwijderen"
-    @message="Een relatie verwijderen kan je niet ongedaan maken. Wens je zeker door te gaan met het verwijderen van de relatie? Na het opslaan van de pagina wordt de relatie pas definitief verwijderd."
-    @deleteLabel="Relatie verwijderen"
-    @onConfirm={{this.reallyRemoveMembership}}
-    @onCancel={{this.cancelMembershipRemoval}}
-  />
-{{/if}}
+  {{#if @controller.founderToRemove}}
+    <DeleteModal
+      @title="Relatie verwijderen"
+      @message="Een relatie verwijderen kan je niet ongedaan maken. Wens je zeker door te gaan met het verwijderen van de relatie? Na het opslaan van de pagina wordt de relatie pas definitief verwijderd."
+      @deleteLabel="Relatie verwijderen"
+      @onConfirm={{@controller.reallyRemoveMembership}}
+      @onCancel={{@controller.cancelMembershipRemoval}}
+    />
+  {{/if}}
 
-{{#if this.membershipRemovalError}}
-  <AuModal
-    @modalOpen={{true}}
-    @closeModal={{this.dismissMembershipRemovalError}}
-  >
-    <:title>Relatie verwijderen</:title>
-    <:body>{{this.membershipRemovalError}}</:body>
-    <:footer>
-      <AuButton {{on "click" this.dismissMembershipRemovalError}}>OK</AuButton>
-    </:footer>
-  </AuModal>
-{{/if}}
+  {{#if @controller.membershipRemovalError}}
+    <AuModal
+      @modalOpen={{true}}
+      @closeModal={{@controller.dismissMembershipRemovalError}}
+    >
+      <:title>Relatie verwijderen</:title>
+      <:body>{{@controller.membershipRemovalError}}</:body>
+      <:footer>
+        <AuButton
+          {{on "click" @controller.dismissMembershipRemovalError}}
+        >OK</AuButton>
+      </:footer>
+    </AuModal>
+  {{/if}}
+</template>

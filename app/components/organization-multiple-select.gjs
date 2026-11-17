@@ -3,6 +3,8 @@ import { service } from '@ember/service';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { ORGANIZATION_STATUS } from '../models/organization-status-code';
+import PowerSelect from 'ember-power-select/components/power-select';
+import perform from 'ember-concurrency/helpers/perform';
 
 export default class OrganizationMultipleSelectComponent extends Component {
   @service store;
@@ -39,25 +41,27 @@ export default class OrganizationMultipleSelectComponent extends Component {
 
     return content;
   });
-}
 
-<div class={{if @error "ember-power-select--error"}} ...attributes>
-  <PowerSelect
-    @multiple={{true}}
-    @disabled={{@disabled}}
-    @allowClear={{true}}
-    @searchEnabled={{true}}
-    @loadingMessage="Aan het laden..."
-    @noMatchesMessage="Geen resultaten"
-    @searchMessage="Typ om te zoeken"
-    @searchField="name"
-    @search={{perform this.loadOrganizationsMultipleTask}}
-    @selected={{@selected}}
-    @onChange={{@onChange}}
-    @triggerId={{@id}}
-    as |organization|
-  >
-    {{organization.abbName}}
-    ({{organization.classification.label}})
-  </PowerSelect>
-</div>
+  <template>
+    <div class={{if @error "ember-power-select--error"}} ...attributes>
+      <PowerSelect
+        @multiple={{true}}
+        @disabled={{@disabled}}
+        @allowClear={{true}}
+        @searchEnabled={{true}}
+        @loadingMessage="Aan het laden..."
+        @noMatchesMessage="Geen resultaten"
+        @searchMessage="Typ om te zoeken"
+        @searchField="name"
+        @search={{perform this.loadOrganizationsMultipleTask}}
+        @selected={{@selected}}
+        @onChange={{@onChange}}
+        @triggerId={{@id}}
+        as |organization|
+      >
+        {{organization.abbName}}
+        ({{organization.classification.label}})
+      </PowerSelect>
+    </div>
+  </template>
+}

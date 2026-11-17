@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import { hbs } from 'ember-cli-htmlbars';
+import isLast from 'frontend-organization-portal/helpers/is-last.js';
 
 module('Integration | Helper | is-last', function (hooks) {
   setupRenderingTest(hooks);
@@ -10,9 +10,7 @@ module('Integration | Helper | is-last', function (hooks) {
     this.list = [1, 2, 3];
     this.currentItem = 1;
 
-    await render(hbs`
-      {{is-last this.currentItem this.list}}
-    `);
+    await render(<template>{{isLast this.currentItem this.list}}</template>);
 
     assert.strictEqual(this.element.textContent.trim(), 'false');
 
@@ -37,9 +35,7 @@ module('Integration | Helper | is-last', function (hooks) {
     ];
     this.currentItem = this.list[0];
 
-    await render(hbs`
-      {{is-last this.currentItem this.list}}
-    `);
+    await render(<template>{{isLast this.currentItem this.list}}</template>);
 
     assert.strictEqual(this.element.textContent.trim(), 'false');
 
@@ -51,9 +47,7 @@ module('Integration | Helper | is-last', function (hooks) {
     this.list = [];
     this.currentItem = 'foo';
 
-    await render(hbs`
-      {{is-last this.currentItem this.list}}
-    `);
+    await render(<template>{{isLast this.currentItem this.list}}</template>);
 
     assert.strictEqual(this.element.textContent.trim(), 'false');
   });

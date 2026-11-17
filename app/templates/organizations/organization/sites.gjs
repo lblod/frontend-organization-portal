@@ -1,9 +1,15 @@
-{{page-title "Vestigingen"}}
+import pageTitle from 'ember-page-title/helpers/page-title';
+import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
+import paramsFor from '../../../helpers/params-for';
 
-{{breadcrumb
-  "Vestigingen"
-  route="organizations.organization.sites"
-  model=(params-for "organizations.organization" param="id")
-}}
+<template>
+  {{pageTitle "Vestigingen"}}
 
-{{outlet}}
+  {{breadcrumb
+    "Vestigingen"
+    route="organizations.organization.sites"
+    model=(paramsFor "organizations.organization" param="id")
+  }}
+
+  {{outlet}}
+</template>

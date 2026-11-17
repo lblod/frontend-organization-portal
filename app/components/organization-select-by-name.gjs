@@ -5,6 +5,8 @@ import {
   selectByRole as getClassificationIds,
   getClassificationIdsForRole,
 } from 'frontend-organization-portal/utils/classification-identifiers';
+import PowerSelect from 'ember-power-select/components/power-select';
+import perform from 'ember-concurrency/helpers/perform';
 
 export default class OrganizationSelectByNameComponent extends Component {
   @service muSearch;
@@ -91,22 +93,24 @@ export default class OrganizationSelectByNameComponent extends Component {
       return [...[searchParams], ...new Set(result.slice())];
     }
   });
-}
 
-<div class={{if @error "ember-power-select--error"}} ...attributes>
-  <PowerSelect
-    @allowClear={{true}}
-    @searchEnabled={{true}}
-    @loadingMessage="Aan het laden..."
-    @noMatchesMessage="Geen resultaten"
-    @searchMessage="Typ om te zoeken"
-    @searchField="name"
-    @search={{perform this.loadOrganizationsTask}}
-    @selected={{@selected}}
-    @onChange={{@onChange}}
-    @triggerId={{@id}}
-    as |name|
-  >
-    {{name}}
-  </PowerSelect>
-</div>
+  <template>
+    <div class={{if @error "ember-power-select--error"}} ...attributes>
+      <PowerSelect
+        @allowClear={{true}}
+        @searchEnabled={{true}}
+        @loadingMessage="Aan het laden..."
+        @noMatchesMessage="Geen resultaten"
+        @searchMessage="Typ om te zoeken"
+        @searchField="name"
+        @search={{perform this.loadOrganizationsTask}}
+        @selected={{@selected}}
+        @onChange={{@onChange}}
+        @triggerId={{@id}}
+        as |name|
+      >
+        {{name}}
+      </PowerSelect>
+    </div>
+  </template>
+}

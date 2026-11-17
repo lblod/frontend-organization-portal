@@ -1,6 +1,12 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import hasHarvestMeta from '../helpers/has-harvest-meta.ts';
+import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
+import { on } from '@ember/modifier';
+import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
+import dateFormat from '../helpers/date-format';
+import AuLinkExternal from '@appuniversum/ember-appuniversum/components/au-link-external';
 
 export default class HarvestMetaPopupComponent extends Component {
   @tracked modalOpen = false;
@@ -9,84 +15,90 @@ export default class HarvestMetaPopupComponent extends Component {
   toggle() {
     this.modalOpen = !this.modalOpen;
   }
-}
 
-{{#if (has-harvest-meta @harvestable)}}
-  <AuButton
-    @skin="naked"
-    @icon="info-circle"
-    @hideText={{@iconOnly}}
-    {{on "click" this.toggle}}
-  >
-    Herkomst van gegevens
-  </AuButton>
-  <AuModal
-    @modalOpen={{this.modalOpen}}
-    @closable={{true}}
-    @closeModal={{this.toggle}}
-    @overflow={{false}}
-  >
-    <:title>Herkomst van de gegevens</:title>
-    <:body>
-      <p class="au-u-margin-bottom">
-        Deze data werd opgehaald via een automatische job. Hieronder staat,
-        indien beschikbaar, metadata over de laatst opgehaalde updates over deze
-        data. Dit is nuttige informatie voor de helpdesk in geval van problemen
-        met de data.
-      </p>
-      <dl class="au-c-dl au-u-background-gray-100">
-        <dt>Vendor</dt>
-        <dd>
-          {{#if @harvestable.vendor.uri}}
-            {{@harvestable.vendor.name}}
-            <br />
-            <code class="au-c-code-inline">{{@harvestable.vendor.uri}}</code>
-          {{else}}
-            <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
-          {{/if}}
-        </dd>
-        <dt>Bron</dt>
-        <dd>
-          {{#if @harvestable.harvestSource}}
-            <code class="au-c-code-inline">{{@harvestable.harvestSource}}</code>
-          {{else}}
-            <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
-          {{/if}}
-        </dd>
-        <dt>Originele identificatie</dt>
-        <dd>
-          {{#if @harvestable.harvestOriginalUri}}
-            <code
-              class="au-c-code-inline"
-            >{{@harvestable.harvestOriginalUri}}</code>
-          {{else}}
-            <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
-          {{/if}}
-        </dd>
-        <dt>Datum van laatste harvesting</dt>
-        <dd>
-          {{#if @harvestable.harvestDate}}
-            {{date-format @harvestable.harvestDate}}
-          {{else}}
-            <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
-          {{/if}}
-        </dd>
-        <dt>Laatste harvesting Job</dt>
-        <dd>
-          {{#if @harvestable.harvestJob}}
-            <AuLinkExternal href={{@harvestable.harvestLink}}>
-              {{@harvestable.harvestJob}}
-            </AuLinkExternal>
-          {{else}}
-            <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
-          {{/if}}
-        </dd>
-      </dl>
-    </:body>
-    <:footer>
-      <AuButton {{on "click" this.toggle}}>
-        Sluiten
+  <template>
+    {{#if (hasHarvestMeta @harvestable)}}
+      <AuButton
+        @skin="naked"
+        @icon="info-circle"
+        @hideText={{@iconOnly}}
+        {{on "click" this.toggle}}
+      >
+        Herkomst van gegevens
       </AuButton>
-    </:footer>
-  </AuModal>
-{{/if}}
+      <AuModal
+        @modalOpen={{this.modalOpen}}
+        @closable={{true}}
+        @closeModal={{this.toggle}}
+        @overflow={{false}}
+      >
+        <:title>Herkomst van de gegevens</:title>
+        <:body>
+          <p class="au-u-margin-bottom">
+            Deze data werd opgehaald via een automatische job. Hieronder staat,
+            indien beschikbaar, metadata over de laatst opgehaalde updates over
+            deze data. Dit is nuttige informatie voor de helpdesk in geval van
+            problemen met de data.
+          </p>
+          <dl class="au-c-dl au-u-background-gray-100">
+            <dt>Vendor</dt>
+            <dd>
+              {{#if @harvestable.vendor.uri}}
+                {{@harvestable.vendor.name}}
+                <br />
+                <code
+                  class="au-c-code-inline"
+                >{{@harvestable.vendor.uri}}</code>
+              {{else}}
+                <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
+              {{/if}}
+            </dd>
+            <dt>Bron</dt>
+            <dd>
+              {{#if @harvestable.harvestSource}}
+                <code
+                  class="au-c-code-inline"
+                >{{@harvestable.harvestSource}}</code>
+              {{else}}
+                <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
+              {{/if}}
+            </dd>
+            <dt>Originele identificatie</dt>
+            <dd>
+              {{#if @harvestable.harvestOriginalUri}}
+                <code
+                  class="au-c-code-inline"
+                >{{@harvestable.harvestOriginalUri}}</code>
+              {{else}}
+                <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
+              {{/if}}
+            </dd>
+            <dt>Datum van laatste harvesting</dt>
+            <dd>
+              {{#if @harvestable.harvestDate}}
+                {{dateFormat @harvestable.harvestDate}}
+              {{else}}
+                <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
+              {{/if}}
+            </dd>
+            <dt>Laatste harvesting Job</dt>
+            <dd>
+              {{#if @harvestable.harvestJob}}
+                <AuLinkExternal href={{@harvestable.harvestLink}}>
+                  {{@harvestable.harvestJob}}
+                </AuLinkExternal>
+              {{else}}
+                <span class="au-u-muted au-u-italic">Niet beschikbaar</span>
+              {{/if}}
+            </dd>
+          </dl>
+        </:body>
+        <:footer>
+          <AuButton {{on "click" this.toggle}}>
+            Sluiten
+          </AuButton>
+        </:footer>
+      </AuModal>
+    {{/if}}
+  </template>
+}

@@ -1,7 +1,9 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { fillIn, render } from '@ember/test-helpers';
-import { hbs } from 'ember-cli-htmlbars';
+import { on } from '@ember/modifier';
+import eventValue from 'frontend-organization-portal/helpers/event-value.js';
+import { fn } from '@ember/helper';
 
 module('Integration | Helper | event-value', function (hooks) {
   setupRenderingTest(hooks);
@@ -11,22 +13,26 @@ module('Integration | Helper | event-value', function (hooks) {
       assert.step(value);
     };
 
-    await render(hbs`
-      <label>
-        <input {{on "change" (event-value this.handler)}} />
-      </label>
-    `);
+    await render(
+      <template>
+        <label>
+          <input {{on "change" (eventValue this.handler)}} />
+        </label>
+      </template>,
+    );
 
     await fillIn('input', 'foo');
     assert.verifySteps(['foo']);
   });
 
   test('it works with fn + mut', async function (assert) {
-    await render(hbs`
-      <label>
-        <input {{on "change" (event-value (fn (mut this.value)))}} />
-      </label>
-    `);
+    await render(
+      <template>
+        <label>
+          <input {{on "change" (eventValue (fn (mut this.value)))}} />
+        </label>
+      </template>,
+    );
 
     assert.strictEqual(this.value, undefined);
     await fillIn('input', 'foo');

@@ -1,59 +1,66 @@
-{{#if
-  (or
-    @address.fullAddress
-    @primaryContact.email
-    @primaryContact.telephone
-    @secondaryContact.telephone
-  )
-}}
-  <DataCard>
-    <:title>
-      Contactgegevens
-      <HarvestMetaPopup @harvestable={{@primaryContact}} />
-    </:title>
-    <:card as |Card|>
-      <Card.Columns>
-        <:left as |Item|>
-          {{#if @primaryContact.email}}
-            <Item>
-              <:label>E-mail</:label>
-              <:content>
-                {{@primaryContact.email}}
-              </:content>
-            </Item>
-          {{/if}}
-          {{#if @address.fullAddress}}
-            <Item>
-              <:label>Adres</:label>
-              <:content>
-                {{@address.fullAddress}}
-                <HarvestMetaPopup
-                  @harvestable={{@address}}
-                  @iconOnly={{true}}
-                />
-              </:content>
-            </Item>
-          {{/if}}
-        </:left>
-        <:right as |Item|>
-          {{#if @primaryContact.telephone}}
-            <Item>
-              <:label>Primair telefoonnummer</:label>
-              <:content>
-                {{tel-format @primaryContact.telephone}}
-              </:content>
-            </Item>
-          {{/if}}
-          {{#if @secondaryContact.telephone}}
-            <Item>
-              <:label>Secundair telefoonnummer</:label>
-              <:content>
-                {{tel-format @secondaryContact.telephone}}
-              </:content>
-            </Item>
-          {{/if}}
-        </:right>
-      </Card.Columns>
-    </:card>
-  </DataCard>
-{{/if}}
+import or from 'ember-truth-helpers/helpers/or';
+import DataCard from '../data-card';
+import HarvestMetaPopup from '../harvest-meta-popup';
+import telFormat from '../../helpers/tel-format';
+
+<template>
+  {{#if
+    (or
+      @address.fullAddress
+      @primaryContact.email
+      @primaryContact.telephone
+      @secondaryContact.telephone
+    )
+  }}
+    <DataCard>
+      <:title>
+        Contactgegevens
+        <HarvestMetaPopup @harvestable={{@primaryContact}} />
+      </:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            {{#if @primaryContact.email}}
+              <Item>
+                <:label>E-mail</:label>
+                <:content>
+                  {{@primaryContact.email}}
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if @address.fullAddress}}
+              <Item>
+                <:label>Adres</:label>
+                <:content>
+                  {{@address.fullAddress}}
+                  <HarvestMetaPopup
+                    @harvestable={{@address}}
+                    @iconOnly={{true}}
+                  />
+                </:content>
+              </Item>
+            {{/if}}
+          </:left>
+          <:right as |Item|>
+            {{#if @primaryContact.telephone}}
+              <Item>
+                <:label>Primair telefoonnummer</:label>
+                <:content>
+                  {{telFormat @primaryContact.telephone}}
+                </:content>
+              </Item>
+            {{/if}}
+            {{#if @secondaryContact.telephone}}
+              <Item>
+                <:label>Secundair telefoonnummer</:label>
+                <:content>
+                  {{telFormat @secondaryContact.telephone}}
+                </:content>
+              </Item>
+            {{/if}}
+          </:right>
+        </Card.Columns>
+      </:card>
+    </DataCard>
+  {{/if}}
+</template>

@@ -3,6 +3,7 @@ import Component from '@glimmer/component';
 import { toggleMarkAddFirst } from '@lblod/ember-rdfa-editor/commands';
 
 // Headless variant of the Toolbar::Mark component https://github.com/lblod/ember-rdfa-editor/blob/master/addon/components/toolbar/mark.ts
+import { hash } from '@ember/helper';
 export default class MarkComponent extends Component {
   get mark() {
     return this.args.controller.schema.marks[this.args.mark];
@@ -17,6 +18,8 @@ export default class MarkComponent extends Component {
     this.args.controller.focus();
     this.args.controller.doCommand(toggleMarkAddFirst(this.mark));
   }
-}
 
-{{yield (hash isActive=this.isActive toggle=this.toggle)}}
+  <template>
+    {{yield (hash isActive=this.isActive toggle=this.toggle)}}
+  </template>
+}

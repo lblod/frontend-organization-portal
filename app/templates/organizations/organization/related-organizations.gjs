@@ -1,9 +1,15 @@
-{{page-title "Gerelateerde organisaties"}}
+import pageTitle from 'ember-page-title/helpers/page-title';
+import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
+import paramsFor from '../../../helpers/params-for';
 
-{{breadcrumb
-  "Gerelateerde organisaties"
-  route="organizations.organization.related-organizations"
-  model=(params-for "organizations.organization" param="id")
-}}
+<template>
+  {{pageTitle "Gerelateerde organisaties"}}
 
-{{outlet}}
+  {{breadcrumb
+    "Gerelateerde organisaties"
+    route="organizations.organization.related-organizations"
+    model=(paramsFor "organizations.organization" param="id")
+  }}
+
+  {{outlet}}
+</template>

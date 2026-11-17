@@ -38,6 +38,19 @@ import {
   ordered_list,
 } from '@lblod/ember-rdfa-editor/plugins/list';
 import { placeholder } from '@lblod/ember-rdfa-editor/plugins/placeholder';
+import AuContent from '@appuniversum/ember-appuniversum/components/au-content';
+import { on } from '@ember/modifier';
+import EditorContainer from '@lblod/ember-rdfa-editor/components/editor-container';
+import Toolbar from '@lblod/ember-rdfa-editor/components/toolbar';
+import HeadingMenu from '@lblod/ember-rdfa-editor/components/plugins/heading/heading-menu';
+import Bold from '@lblod/ember-rdfa-editor/components/plugins/text-style/bold';
+import Italic from '@lblod/ember-rdfa-editor/components/plugins/text-style/italic';
+import ExtraFormattingOptions from './rich-text-editor/extra-formatting-options';
+import Unordered from '@lblod/ember-rdfa-editor/components/plugins/list/unordered';
+import Ordered from '@lblod/ember-rdfa-editor/components/plugins/list/ordered';
+import LinkMenu from '@lblod/ember-rdfa-editor/components/plugins/link/link-menu';
+import TableMenu from '@lblod/ember-rdfa-editor/components/plugins/table/table-menu';
+import Editor from '@lblod/ember-rdfa-editor/components/editor';
 
 export default class RichTextEditorComponent extends Component {
   @tracked editorController;
@@ -163,6 +176,64 @@ export default class RichTextEditorComponent extends Component {
       editorController.editor.mainView.dispatch(tr);
     }
   }
+
+  <template>
+    {{#if @show}}
+      <AuContent @skin="tiny" class="rich-text-editor-content">
+        {{! template-lint-disable no-triple-curlies}}
+        {{{this.value}}}
+      </AuContent>
+    {{else}}
+      <div class="rich-text-editor" {{on "focusout" this.updateValue}}>
+        <EditorContainer @controller={{this.editorController}}>
+          <:top>
+            <Toolbar as |Tb|>
+              {{#if this.config.heading}}
+                <Tb.Group>
+                  <HeadingMenu @controller={{this.editorController}} />
+                </Tb.Group>
+              {{/if}}
+              <Tb.Group>
+                {{#if this.config.bold}}
+                  <Bold @controller={{this.editorController}} />
+                {{/if}}
+                {{#if this.config.italic}}
+                  <Italic @controller={{this.editorController}} />
+                {{/if}}
+                {{#if this.config.extraFormatting}}
+                  <ExtraFormattingOptions
+                    @controller={{this.editorController}}
+                  />
+                {{/if}}
+              </Tb.Group>
+              {{#if this.config.list}}
+                <Tb.Group>
+                  <Unordered @controller={{this.editorController}} />
+                  <Ordered @controller={{this.editorController}} />
+                </Tb.Group>
+              {{/if}}
+              <Tb.Group>
+                {{#if this.config.link}}
+                  <LinkMenu @controller={{this.editorController}} />
+                {{/if}}
+                {{#if this.config.table}}
+                  <TableMenu @controller={{this.editorController}} />
+                {{/if}}
+              </Tb.Group>
+            </Toolbar>
+          </:top>
+          <:default>
+            <Editor
+              @schema={{this.schema}}
+              @rdfaEditorInit={{this.handleRdfaEditorInit}}
+              @plugins={{this.plugins}}
+              @nodeViews={{this.nodeViews}}
+            />
+          </:default>
+        </EditorContainer>
+      </div>
+    {{/if}}
+  </template>
 }
 
 // https://discuss.prosemirror.net/t/non-breaking-spaces-being-added-to-pasted-html/3911/4
@@ -175,65 +246,3 @@ function stripNbspEntities(htmlContent) {
 function postProccessLinks(htmlContent) {
   return htmlContent.replaceAll('<a ', '<a target="_blank" ');
 }
-
-{{#if @show}}
-  <AuContent @skin="tiny" class="rich-text-editor-content">
-    {{! template-lint-disable no-triple-curlies}}
-    {{{this.value}}}
-  </AuContent>
-{{else}}
-  <div class="rich-text-editor" {{on "focusout" this.updateValue}}>
-    <EditorContainer @controller={{this.editorController}}>
-      <:top>
-        <Toolbar as |Tb|>
-          {{#if this.config.heading}}
-            <Tb.Group>
-              <Plugins::Heading::HeadingMenu
-                @controller={{this.editorController}}
-              />
-            </Tb.Group>
-          {{/if}}
-          <Tb.Group>
-            {{#if this.config.bold}}
-              <Plugins::TextStyle::Bold @controller={{this.editorController}} />
-            {{/if}}
-            {{#if this.config.italic}}
-              <Plugins::TextStyle::Italic
-                @controller={{this.editorController}}
-              />
-            {{/if}}
-            {{#if this.config.extraFormatting}}
-              <RichTextEditor::ExtraFormattingOptions
-                @controller={{this.editorController}}
-              />
-            {{/if}}
-          </Tb.Group>
-          {{#if this.config.list}}
-            <Tb.Group>
-              <Plugins::List::Unordered @controller={{this.editorController}} />
-              <Plugins::List::Ordered @controller={{this.editorController}} />
-            </Tb.Group>
-          {{/if}}
-          <Tb.Group>
-            {{#if this.config.link}}
-              <Plugins::Link::LinkMenu @controller={{this.editorController}} />
-            {{/if}}
-            {{#if this.config.table}}
-              <Plugins::Table::TableMenu
-                @controller={{this.editorController}}
-              />
-            {{/if}}
-          </Tb.Group>
-        </Toolbar>
-      </:top>
-      <:default>
-        <Editor
-          @schema={{this.schema}}
-          @rdfaEditorInit={{this.handleRdfaEditorInit}}
-          @plugins={{this.plugins}}
-          @nodeViews={{this.nodeViews}}
-        />
-      </:default>
-    </EditorContainer>
-  </div>
-{{/if}}

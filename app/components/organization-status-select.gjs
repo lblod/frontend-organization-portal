@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { findAll } from '@warp-drive/legacy/compat/builders';
+import PowerSelect from 'ember-power-select/components/power-select';
 
 export default class OrganizationStatusSelectComponent extends Component {
   @service store;
@@ -35,20 +36,22 @@ export default class OrganizationStatusSelectComponent extends Component {
     );
     return statuses;
   });
-}
 
-<div class={{if @error "ember-power-select--error"}}>
-  <PowerSelect
-    @allowClear={{@allowClear}}
-    @searchEnabled={{true}}
-    @searchField="label"
-    @loadingMessage="Aan het laden..."
-    @options={{this.loadOrganizationStatusesTask.last}}
-    @selected={{this.selectedOrganizationStatus}}
-    @onChange={{@onChange}}
-    @triggerId={{@id}}
-    as |organizationStatus|
-  >
-    {{organizationStatus.label}}
-  </PowerSelect>
-</div>
+  <template>
+    <div class={{if @error "ember-power-select--error"}}>
+      <PowerSelect
+        @allowClear={{@allowClear}}
+        @searchEnabled={{true}}
+        @searchField="label"
+        @loadingMessage="Aan het laden..."
+        @options={{this.loadOrganizationStatusesTask.last}}
+        @selected={{this.selectedOrganizationStatus}}
+        @onChange={{@onChange}}
+        @triggerId={{@id}}
+        as |organizationStatus|
+      >
+        {{organizationStatus.label}}
+      </PowerSelect>
+    </div>
+  </template>
+}

@@ -1,6 +1,8 @@
 import Component from '@glimmer/component';
 import { modifier } from 'ember-modifier';
 import Inputmask from 'inputmask';
+import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
+import { on } from '@ember/modifier';
 
 const phoneInputMask = modifier(function (element) {
   new Inputmask({
@@ -15,16 +17,18 @@ const phoneInputMask = modifier(function (element) {
 
 export default class Input extends Component {
   phoneInputMask = phoneInputMask;
-}
 
-<AuInput
-  @disabled={{@disabled}}
-  @error={{@error}}
-  @warning={{@warning}}
-  @width={{@width}}
-  type="tel"
-  value={{@value}}
-  {{on "focusout" @onUpdate}}
-  {{this.phoneInputMask}}
-  ...attributes
-/>
+  <template>
+    <AuInput
+      @disabled={{@disabled}}
+      @error={{@error}}
+      @warning={{@warning}}
+      @width={{@width}}
+      type="tel"
+      value={{@value}}
+      {{on "focusout" @onUpdate}}
+      {{this.phoneInputMask}}
+      ...attributes
+    />
+  </template>
+}

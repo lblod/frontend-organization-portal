@@ -1,8 +1,8 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'frontend-organization-portal/tests/helpers';
 import { render, settled } from '@ember/test-helpers';
-import { hbs } from 'ember-cli-htmlbars';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
+import relationStatus from 'frontend-organization-portal/helpers/relation-status.js';
 
 module('Integration | Helper | relation-status', function (hooks) {
   setupRenderingTest(hooks);
@@ -12,19 +12,21 @@ module('Integration | Helper | relation-status', function (hooks) {
     this.set('endDate', undefined);
     this.set('statusId', ORGANIZATION_STATUS.ACTIVE);
 
-    await render(hbs`
-      {{#let
-        (relation-status
-          startDate=this.startDate
-          endDate=this.endDate
-          memberStatusId=this.statusId
-          organizationStatusId=this.statusId
-        )
-        as |status|
-      }}
-        {{status.label}}
-      {{/let}}
-    `);
+    await render(
+      <template>
+        {{#let
+          (relationStatus
+            startDate=this.startDate
+            endDate=this.endDate
+            memberStatusId=this.statusId
+            organizationStatusId=this.statusId
+          )
+          as |status|
+        }}
+          {{status.label}}
+        {{/let}}
+      </template>,
+    );
     assert.dom(this.element).hasText('Actief');
 
     this.set('endDate', new Date('2024-01-01'));

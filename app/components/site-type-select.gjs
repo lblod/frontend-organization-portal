@@ -5,6 +5,7 @@ import { findAll } from '@warp-drive/legacy/compat/builders';
 
 // TODO: remove administrative unit classifications after edit functionality
 // moved to CLB
+import PowerSelect from 'ember-power-select/components/power-select';
 export default class SiteTypeSelectComponent extends Component {
   @service store;
   siteTypes;
@@ -74,19 +75,21 @@ export default class SiteTypeSelectComponent extends Component {
 
     return filteredTypes;
   });
-}
 
-<div class={{if @error "ember-power-select--error"}}>
-  <PowerSelect
-    @allowClear={{true}}
-    @loadingMessage="Aan het laden..."
-    @options={{this.siteTypes}}
-    @selected={{@selected}}
-    @error={{@error}}
-    @onChange={{@onChange}}
-    @triggerId={{@id}}
-    as |siteType|
-  >
-    {{siteType.label}}
-  </PowerSelect>
-</div>
+  <template>
+    <div class={{if @error "ember-power-select--error"}}>
+      <PowerSelect
+        @allowClear={{true}}
+        @loadingMessage="Aan het laden..."
+        @options={{this.siteTypes}}
+        @selected={{@selected}}
+        @error={{@error}}
+        @onChange={{@onChange}}
+        @triggerId={{@id}}
+        as |siteType|
+      >
+        {{siteType.label}}
+      </PowerSelect>
+    </div>
+  </template>
+}

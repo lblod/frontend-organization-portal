@@ -4,6 +4,7 @@ import { task } from 'ember-concurrency';
 import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { trackedTask } from 'reactiveweb/ember-concurrency';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import PowerSelect from 'ember-power-select/components/power-select';
 
 export default class PositionSelectComponent extends Component {
   @service store;
@@ -132,20 +133,22 @@ export default class PositionSelectComponent extends Component {
   positions = trackedTask(this, this.loadPositionTask, () => [
     this.args.selectedOrganization,
   ]);
-}
 
-<div class={{if @error "ember-power-select--error"}}>
-  <PowerSelect
-    @allowClear={{true}}
-    @searchEnabled={{true}}
-    @loadingMessage="Aan het laden..."
-    @searchField="label"
-    @options={{this.positions.value}}
-    @selected={{this.selectedPosition}}
-    @onChange={{@onChange}}
-    @triggerId={{@id}}
-    as |position|
-  >
-    {{position.label}}
-  </PowerSelect>
-</div>
+  <template>
+    <div class={{if @error "ember-power-select--error"}}>
+      <PowerSelect
+        @allowClear={{true}}
+        @searchEnabled={{true}}
+        @loadingMessage="Aan het laden..."
+        @searchField="label"
+        @options={{this.positions.value}}
+        @selected={{this.selectedPosition}}
+        @onChange={{@onChange}}
+        @triggerId={{@id}}
+        as |position|
+      >
+        {{position.label}}
+      </PowerSelect>
+    </div>
+  </template>
+}

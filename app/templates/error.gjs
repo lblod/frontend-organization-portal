@@ -1,22 +1,28 @@
-{{page-title "Er ging iets fout"}}
+import pageTitle from 'ember-page-title/helpers/page-title';
+import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
+import AuContent from '@appuniversum/ember-appuniversum/components/au-content';
 
-<div class="au-o-layout au-o-region-large h-full">
-  <div
-    class="au-u-flex@medium au-u-flex--row-reverse au-u-flex--center au-u-flex--vertical-center h-full"
-  >
+<template>
+  {{pageTitle "Er ging iets fout"}}
+
+  <div class="au-o-layout au-o-region-large h-full">
     <div
-      class="au-u-text-center au-u-text-left@medium au-u-margin-bottom au-u-margin-bottom-none@medium"
+      class="au-u-flex@medium au-u-flex--row-reverse au-u-flex--center au-u-flex--vertical-center h-full"
     >
-      <img src="/assets/images/status/unexpected-error.svg" alt="" />
-    </div>
-    <div class="au-u-margin-right-large@medium au-o-flow">
-      <AuHeading @skin="2">
-        Oeps, er is een probleem op deze pagina
-      </AuHeading>
-      <AuContent>
-        De pagina die u bezoekt, lijkt niet te reageren. Dit is meestal van zeer
-        tijdelijke aard. Herlaad de pagina, of probeer later nog eens.
-      </AuContent>
+      <div
+        class="au-u-text-center au-u-text-left@medium au-u-margin-bottom au-u-margin-bottom-none@medium"
+      >
+        <img src="/assets/images/status/unexpected-error.svg" alt />
+      </div>
+      <div class="au-u-margin-right-large@medium au-o-flow">
+        <AuHeading @skin="2">
+          Oeps, er is een probleem op deze pagina
+        </AuHeading>
+        <AuContent>
+          De pagina die u bezoekt, lijkt niet te reageren. Dit is meestal van
+          zeer tijdelijke aard. Herlaad de pagina, of probeer later nog eens.
+        </AuContent>
+      </div>
     </div>
   </div>
-</div>
+</template>

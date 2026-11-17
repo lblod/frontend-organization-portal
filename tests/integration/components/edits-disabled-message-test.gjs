@@ -1,8 +1,8 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'frontend-organization-portal/tests/helpers';
 import { render } from '@ember/test-helpers';
-import { hbs } from 'ember-cli-htmlbars';
 import { setFeatures } from 'frontend-organization-portal/tests/helpers/feature-flags';
+import EditsDisabledMessage from 'frontend-organization-portal/components/edits-disabled-message';
 
 module('Integration | Component | edits-disabled-message', function (hooks) {
   setupRenderingTest(hooks);
@@ -12,7 +12,7 @@ module('Integration | Component | edits-disabled-message', function (hooks) {
     this.owner.lookup('service:role')._activeRole =
       'ABBOrganisatiePortaalGebruiker-editeerder';
 
-    await render(hbs`<EditsDisabledMessage />`);
+    await render(<template><EditsDisabledMessage /></template>);
 
     assert
       .dom()
@@ -32,7 +32,7 @@ module('Integration | Component | edits-disabled-message', function (hooks) {
     this.owner.lookup('service:role')._activeRole =
       'ABBOrganisatiePortaalErediensten-editeerder';
 
-    await render(hbs`<EditsDisabledMessage />`);
+    await render(<template><EditsDisabledMessage /></template>);
 
     assert.dom().hasNoText();
   });
@@ -40,7 +40,7 @@ module('Integration | Component | edits-disabled-message', function (hooks) {
   test('it renders nothing when the flag is off', async function (assert) {
     setFeatures(this.owner, { 'disable-rvs-organizations-edits': false });
 
-    await render(hbs`<EditsDisabledMessage />`);
+    await render(<template><EditsDisabledMessage /></template>);
 
     assert.dom().hasNoText();
   });
@@ -50,7 +50,7 @@ module('Integration | Component | edits-disabled-message', function (hooks) {
     this.owner.lookup('service:role')._activeRole =
       'ABBOrganisatiePortaalGebruiker-lezer';
 
-    await render(hbs`<EditsDisabledMessage />`);
+    await render(<template><EditsDisabledMessage /></template>);
 
     assert.dom().hasNoText();
   });

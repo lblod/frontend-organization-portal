@@ -1,181 +1,199 @@
-<AuDataTable
-  @content={{@content}}
-  @page={{@page}}
-  @size={{@size}}
-  @isLoading={{@isLoading}}
-  @noDataMessage={{or @noDataMessage "Geen organisatie"}}
-  as |t|
->
-  <t.menu as |menu|>
-    <menu.general>
-      <div class="au-o-box">
-        <MembershipRoleSelect
-          @disabled={{@unsavedEdit}}
-          @options={{@model.selectableRoleLabels}}
-          @selected={{@selectedRole}}
-          @onChange={{fn (mut @selectedRole)}}
-          @allowClear={{true}}
-        />
-      </div>
-    </menu.general>
-  </t.menu>
+import AuDataTable from '@appuniversum/ember-appuniversum/components/au-data-table';
+import or from 'ember-truth-helpers/helpers/or';
+import MembershipRoleSelect from './membership-role-select';
+import { fn } from '@ember/helper';
+import not from 'ember-truth-helpers/helpers/not';
+import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text';
+import eq from 'ember-truth-helpers/helpers/eq';
+import OrganizationSelect from './organization-select';
+import and from 'ember-truth-helpers/helpers/and';
+import OrganizationStatus from './organization-status';
+import Datepicker from './datepicker';
+import relationStatus from '../helpers/relation-status';
+import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
+import { on } from '@ember/modifier';
+import perform from 'ember-concurrency/helpers/perform';
 
-  <t.content as |c|>
-    <c.header>
-      <th>Type relatie</th>
-      <th>Type organisatie</th>
-      <th>Organisatie</th>
-      <th>Status organisatie</th>
-      <th>Startdatum relatie</th>
-      <th>Einddatum relatie</th>
-      <th>Status relatie</th>
-      <th></th>
-    </c.header>
-
-    <c.body as |membership|>
-      {{#unless membership.isDeleted}}
-        <td>
-          {{#let membership.error.role.message as |errorMessage|}}
-            <MembershipRoleSelect
-              @disabled={{not membership.isNew}}
-              @selected={{fn @displayRoleLabel membership}}
-              @options={{@model.allowedRoleLabels}}
-              @onChange={{fn @updateMembershipRole membership}}
-              @error={{errorMessage}}
-              @id="membership-role"
-            />
-            {{#if errorMessage}}
-              <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
-            {{/if}}
-          {{/let}}
-        </td>
-        {{! TODO: get rid of conditionals and duplication here}}
-        <td>
-          {{#if (eq membership.member.id @model.organization.id)}}
-            {{membership.organization.classification.label}}
-          {{else}}
-            {{membership.member.classification.label}}
-          {{/if}}
-        </td>
-        <td>
-          {{#if (eq membership.member.id @model.organization.id)}}
-            {{#let membership.error.organization.message as |errorMessage|}}
-              <OrganizationSelect
-                @disabled={{not (and membership.role membership.isNew)}}
-                @selected={{membership.organization}}
-                @error={{errorMessage}}
-                @onChange={{fn @setOtherRelatedOrganization membership}}
-                @classificationCodes={{@model.organization.getClassificationCodesForMembership
-                  membership
-                }}
-              />
-              {{#if errorMessage}}
-                <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
-              {{/if}}
-            {{/let}}
-          {{else}}
-            {{#let membership.error.member.message as |errorMessage|}}
-              <OrganizationSelect
-                @disabled={{not (and membership.role membership.isNew)}}
-                @selected={{membership.member}}
-                @onChange={{fn @setOtherRelatedOrganization membership}}
-                @error={{errorMessage}}
-                @classificationCodes={{@model.organization.getClassificationCodesForMembership
-                  membership
-                }}
-              />
-              {{#if errorMessage}}
-                <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
-              {{/if}}
-            {{/let}}
-          {{/if}}
-          {{#if (@isDuplicateMembership membership)}}
-            <AuHelpText @warning={{true}}>Je maakt een relatie aan die reeds
-              bestaat, deze nieuwe relatie zal niet worden opgeslagen</AuHelpText>
-          {{/if}}
-        </td>
-        <td>
-          {{#if (eq membership.member.id @model.organization.id)}}
-            <OrganizationStatus
-              @id={{membership.organization.organizationStatus.id}}
-              @label={{membership.organization.organizationStatus.label}}
-            />
-          {{else}}
-            <OrganizationStatus
-              @id={{membership.member.organizationStatus.id}}
-              @label={{membership.member.organizationStatus.label}}
-            />
-          {{/if}}
-        </td>
-        <td>
-          {{#let membership.during.error.startDate.message as |errorMessage|}}
-            <Datepicker
-              @value={{membership.during.startDate}}
-              @onChange={{fn @setStartDate membership}}
-              @error={{errorMessage}}
-            />
-            {{#if errorMessage}}
-              <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
-            {{/if}}
-          {{/let}}
-        </td>
-        <td>
-          {{#let membership.during.error.endDate.message as |errorMessage|}}
-            <Datepicker
-              @value={{membership.during.endDate}}
-              @onChange={{fn @setEndDate membership}}
-              @error={{errorMessage}}
-            />
-            {{#if errorMessage}}
-              <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
-            {{/if}}
-          {{/let}}
-        </td>
-        <td>
-          {{#let
-            (relation-status
-              startDate=membership.during.startDate
-              endDate=membership.during.endDate
-              memberStatusId=membership.member.organizationStatus.id
-              organizationStatusId=membership.organization.organizationStatus.id
-            )
-            as |relationStatus|
-          }}
-            <OrganizationStatus
-              @id={{relationStatus.id}}
-              @label={{relationStatus.label}}
-            />
-          {{/let}}
-        </td>
-        <td>
-          <AuButton
-            @alert={{true}}
-            @disabled={{or
-              membership.isNotRemovableByUser
-              @removeRelatedOrganization.isRunning
-            }}
-            @loading={{@removeRelatedOrganization.isRunning}}
-            @icon="bin"
-            @iconAlignment="left"
-            @skin="link"
-            {{on "click" (perform @removeRelatedOrganization membership)}}
-          >
-            Verwijder
-          </AuButton>
-        </td>
-      {{/unless}}
-    </c.body>
-  </t.content>
-</AuDataTable>
-
-<div class="au-o-box au-o-box--small">
-  <AuButton
-    @skin="secondary"
-    @width="block"
-    @icon="add"
-    @iconAlignment="left"
-    {{on "click" @addRelatedOrganization}}
+<template>
+  <AuDataTable
+    @content={{@content}}
+    @page={{@page}}
+    @size={{@size}}
+    @isLoading={{@isLoading}}
+    @noDataMessage={{or @noDataMessage "Geen organisatie"}}
+    as |t|
   >
-    Voeg nieuwe gerelateerde organisatie toe
-  </AuButton>
-</div>
+    <t.menu as |menu|>
+      <menu.general>
+        <div class="au-o-box">
+          <MembershipRoleSelect
+            @disabled={{@unsavedEdit}}
+            @options={{@model.selectableRoleLabels}}
+            @selected={{@selectedRole}}
+            @onChange={{fn (mut @selectedRole)}}
+            @allowClear={{true}}
+          />
+        </div>
+      </menu.general>
+    </t.menu>
+
+    <t.content as |c|>
+      <c.header>
+        <th>Type relatie</th>
+        <th>Type organisatie</th>
+        <th>Organisatie</th>
+        <th>Status organisatie</th>
+        <th>Startdatum relatie</th>
+        <th>Einddatum relatie</th>
+        <th>Status relatie</th>
+        <th></th>
+      </c.header>
+
+      <c.body as |membership|>
+        {{#unless membership.isDeleted}}
+          <td>
+            {{#let membership.error.role.message as |errorMessage|}}
+              <MembershipRoleSelect
+                @disabled={{not membership.isNew}}
+                @selected={{fn @displayRoleLabel membership}}
+                @options={{@model.allowedRoleLabels}}
+                @onChange={{fn @updateMembershipRole membership}}
+                @error={{errorMessage}}
+                @id="membership-role"
+              />
+              {{#if errorMessage}}
+                <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+              {{/if}}
+            {{/let}}
+          </td>
+          {{! TODO: get rid of conditionals and duplication here}}
+          <td>
+            {{#if (eq membership.member.id @model.organization.id)}}
+              {{membership.organization.classification.label}}
+            {{else}}
+              {{membership.member.classification.label}}
+            {{/if}}
+          </td>
+          <td>
+            {{#if (eq membership.member.id @model.organization.id)}}
+              {{#let membership.error.organization.message as |errorMessage|}}
+                <OrganizationSelect
+                  @disabled={{not (and membership.role membership.isNew)}}
+                  @selected={{membership.organization}}
+                  @error={{errorMessage}}
+                  @onChange={{fn @setOtherRelatedOrganization membership}}
+                  @classificationCodes={{@model.organization.getClassificationCodesForMembership
+                    membership
+                  }}
+                />
+                {{#if errorMessage}}
+                  <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+                {{/if}}
+              {{/let}}
+            {{else}}
+              {{#let membership.error.member.message as |errorMessage|}}
+                <OrganizationSelect
+                  @disabled={{not (and membership.role membership.isNew)}}
+                  @selected={{membership.member}}
+                  @onChange={{fn @setOtherRelatedOrganization membership}}
+                  @error={{errorMessage}}
+                  @classificationCodes={{@model.organization.getClassificationCodesForMembership
+                    membership
+                  }}
+                />
+                {{#if errorMessage}}
+                  <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+                {{/if}}
+              {{/let}}
+            {{/if}}
+            {{#if (@isDuplicateMembership membership)}}
+              <AuHelpText @warning={{true}}>Je maakt een relatie aan die reeds
+                bestaat, deze nieuwe relatie zal niet worden opgeslagen</AuHelpText>
+            {{/if}}
+          </td>
+          <td>
+            {{#if (eq membership.member.id @model.organization.id)}}
+              <OrganizationStatus
+                @id={{membership.organization.organizationStatus.id}}
+                @label={{membership.organization.organizationStatus.label}}
+              />
+            {{else}}
+              <OrganizationStatus
+                @id={{membership.member.organizationStatus.id}}
+                @label={{membership.member.organizationStatus.label}}
+              />
+            {{/if}}
+          </td>
+          <td>
+            {{#let membership.during.error.startDate.message as |errorMessage|}}
+              <Datepicker
+                @value={{membership.during.startDate}}
+                @onChange={{fn @setStartDate membership}}
+                @error={{errorMessage}}
+              />
+              {{#if errorMessage}}
+                <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+              {{/if}}
+            {{/let}}
+          </td>
+          <td>
+            {{#let membership.during.error.endDate.message as |errorMessage|}}
+              <Datepicker
+                @value={{membership.during.endDate}}
+                @onChange={{fn @setEndDate membership}}
+                @error={{errorMessage}}
+              />
+              {{#if errorMessage}}
+                <AuHelpText @error={{true}}>{{errorMessage}}</AuHelpText>
+              {{/if}}
+            {{/let}}
+          </td>
+          <td>
+            {{#let
+              (relationStatus
+                startDate=membership.during.startDate
+                endDate=membership.during.endDate
+                memberStatusId=membership.member.organizationStatus.id
+                organizationStatusId=membership.organization.organizationStatus.id
+              )
+              as |relationStatus|
+            }}
+              <OrganizationStatus
+                @id={{relationStatus.id}}
+                @label={{relationStatus.label}}
+              />
+            {{/let}}
+          </td>
+          <td>
+            <AuButton
+              @alert={{true}}
+              @disabled={{or
+                membership.isNotRemovableByUser
+                @removeRelatedOrganization.isRunning
+              }}
+              @loading={{@removeRelatedOrganization.isRunning}}
+              @icon="bin"
+              @iconAlignment="left"
+              @skin="link"
+              {{on "click" (perform @removeRelatedOrganization membership)}}
+            >
+              Verwijder
+            </AuButton>
+          </td>
+        {{/unless}}
+      </c.body>
+    </t.content>
+  </AuDataTable>
+
+  <div class="au-o-box au-o-box--small">
+    <AuButton
+      @skin="secondary"
+      @width="block"
+      @icon="add"
+      @iconAlignment="left"
+      {{on "click" @addRelatedOrganization}}
+    >
+      Voeg nieuwe gerelateerde organisatie toe
+    </AuButton>
+  </div>
+</template>

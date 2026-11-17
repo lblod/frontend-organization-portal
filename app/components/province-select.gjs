@@ -5,6 +5,8 @@ import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { trackedTask } from 'reactiveweb/ember-concurrency';
 import { tracked } from '@glimmer/tracking';
+import PowerSelect from 'ember-power-select/components/power-select';
+import not from 'ember-truth-helpers/helpers/not';
 
 export default class ProvinceSelectComponent extends Component {
   @service store;
@@ -78,21 +80,23 @@ export default class ProvinceSelectComponent extends Component {
   provinces = trackedTask(this, this.loadProvincesTask, () => [
     this.args.selectedMunicipality,
   ]);
-}
 
-<div class={{if @error "ember-power-select--error"}}>
-  <PowerSelect
-    @allowClear={{not @selectedMunicipality}}
-    @renderInPlace={{false}}
-    @loadingMessage="Aan het laden..."
-    @noMatchesMessage="Geen resultaten"
-    @searchMessage="Typ om te zoeken"
-    @options={{this.provinces.value}}
-    @selected={{@selected}}
-    @onChange={{@onChange}}
-    @triggerId={{@id}}
-    as |province|
-  >
-    {{province}}
-  </PowerSelect>
-</div>
+  <template>
+    <div class={{if @error "ember-power-select--error"}}>
+      <PowerSelect
+        @allowClear={{not @selectedMunicipality}}
+        @renderInPlace={{false}}
+        @loadingMessage="Aan het laden..."
+        @noMatchesMessage="Geen resultaten"
+        @searchMessage="Typ om te zoeken"
+        @options={{this.provinces.value}}
+        @selected={{@selected}}
+        @onChange={{@onChange}}
+        @triggerId={{@id}}
+        as |province|
+      >
+        {{province}}
+      </PowerSelect>
+    </div>
+  </template>
+}

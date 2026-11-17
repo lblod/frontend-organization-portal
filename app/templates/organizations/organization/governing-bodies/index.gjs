@@ -1,83 +1,95 @@
-<PageHeader class="au-o-box">
-  <:title>Bestuursorganen</:title>
-  <:subtitle>{{@model.organization.abbName}}
-    ({{@model.organization.classification.label}})</:subtitle>
-  <:alert>
-    {{#if (read-only)}}
-      <div>
-        <EditsDisabledMessage />
-      </div>
-    {{else}}
-      <SecuredArea>
-        <:edit>
-          <AuAlert
-            @alertIcon="info-circle"
-            @alertskin="info"
-            @alertsize="small"
-            class="au-u-margin-bottom-small au-u-margin-top-small au-c-app-helpdesk-banner"
-          >
-            <p>Stuur een
-              <a
-                class="au-c-link"
-                href="mailto: organisaties.abb@vlaanderen.be"
-              >mail naar de helpdesk</a>
-              om een nieuw bestuursorgaan te laten aanmaken.</p>
-          </AuAlert>
-        </:edit>
-        <:readOnly>
-          <ReportWrongData />
-        </:readOnly>
-      </SecuredArea>
-    {{/if}}
-  </:alert>
-</PageHeader>
+import PageHeader from '../../../../components/page-header';
+import readOnly from '../../../../helpers/read-only';
+import EditsDisabledMessage from '../../../../components/edits-disabled-message';
+import SecuredArea from '../../../../components/secured-area';
+import AuAlert from '@appuniversum/ember-appuniversum/components/au-alert';
+import ReportWrongData from '../../../../components/report-wrong-data';
+import AuDataTable from '@appuniversum/ember-appuniversum/components/au-data-table';
+import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
+import GoverningBodyStatus from '../../../../components/governing-body-status';
 
-<AuDataTable
-  @content={{@model.governingBodies}}
-  @noDataMessage="Geen bestuursorganen"
-  as |t|
->
-  <t.content as |c|>
-    <c.header>
-      <th class="au-c-data-table__header-title">Type bestuursorgaan</th>
-      <th class="au-c-data-table__header-title">Periode</th>
-      <th class="au-c-data-table__header-title">Status</th>
-      {{#unless (read-only)}}
+<template>
+  <PageHeader class="au-o-box">
+    <:title>Bestuursorganen</:title>
+    <:subtitle>{{@model.organization.abbName}}
+      ({{@model.organization.classification.label}})</:subtitle>
+    <:alert>
+      {{#if (readOnly)}}
+        <div>
+          <EditsDisabledMessage />
+        </div>
+      {{else}}
         <SecuredArea>
           <:edit>
-            <th></th>
+            <AuAlert
+              @alertIcon="info-circle"
+              @alertskin="info"
+              @alertsize="small"
+              class="au-u-margin-bottom-small au-u-margin-top-small au-c-app-helpdesk-banner"
+            >
+              <p>Stuur een
+                <a
+                  class="au-c-link"
+                  href="mailto: organisaties.abb@vlaanderen.be"
+                >mail naar de helpdesk</a>
+                om een nieuw bestuursorgaan te laten aanmaken.</p>
+            </AuAlert>
           </:edit>
+          <:readOnly>
+            <ReportWrongData />
+          </:readOnly>
         </SecuredArea>
-      {{/unless}}
-    </c.header>
-    <c.body as |governingBody|>
-      <td>
-        <AuLink
-          @route="organizations.organization.governing-bodies.governing-body"
-          @model={{governingBody.id}}
-        >
-          {{governingBody.isTimeSpecializationOf.classification.label}}
-        </AuLink>
-      </td>
-      <td>{{governingBody.period}}</td>
-      <td><GoverningBodyStatus
-          @startDate={{governingBody.startDate}}
-          @endDate={{governingBody.endDate}}
-        /></td>
-      {{#unless (read-only)}}
-        <SecuredArea>
-          <:edit>
-            <td>
-              <AuLink
-                @route="organizations.organization.governing-bodies.governing-body.edit"
-                @model={{governingBody.id}}
-              >
-                Bewerk
-              </AuLink>
-            </td>
-          </:edit>
-        </SecuredArea>
-      {{/unless}}
-    </c.body>
-  </t.content>
-</AuDataTable>
+      {{/if}}
+    </:alert>
+  </PageHeader>
+
+  <AuDataTable
+    @content={{@model.governingBodies}}
+    @noDataMessage="Geen bestuursorganen"
+    as |t|
+  >
+    <t.content as |c|>
+      <c.header>
+        <th class="au-c-data-table__header-title">Type bestuursorgaan</th>
+        <th class="au-c-data-table__header-title">Periode</th>
+        <th class="au-c-data-table__header-title">Status</th>
+        {{#unless (readOnly)}}
+          <SecuredArea>
+            <:edit>
+              <th></th>
+            </:edit>
+          </SecuredArea>
+        {{/unless}}
+      </c.header>
+      <c.body as |governingBody|>
+        <td>
+          <AuLink
+            @route="organizations.organization.governing-bodies.governing-body"
+            @model={{governingBody.id}}
+          >
+            {{governingBody.isTimeSpecializationOf.classification.label}}
+          </AuLink>
+        </td>
+        <td>{{governingBody.period}}</td>
+        <td><GoverningBodyStatus
+            @startDate={{governingBody.startDate}}
+            @endDate={{governingBody.endDate}}
+          /></td>
+        {{#unless (readOnly)}}
+          <SecuredArea>
+            <:edit>
+              <td>
+                <AuLink
+                  @route="organizations.organization.governing-bodies.governing-body.edit"
+                  @model={{governingBody.id}}
+                >
+                  Bewerk
+                </AuLink>
+              </td>
+            </:edit>
+          </SecuredArea>
+        {{/unless}}
+      </c.body>
+    </t.content>
+  </AuDataTable>
+</template>

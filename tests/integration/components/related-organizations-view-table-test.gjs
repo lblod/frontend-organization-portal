@@ -1,10 +1,10 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'frontend-organization-portal/tests/helpers';
 import { render } from '@ember/test-helpers';
-import { hbs } from 'ember-cli-htmlbars';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import { RELATION_STATUS } from 'frontend-organization-portal/utils/relation-status';
 import { VLAAMSE_REGERING_ID } from 'frontend-organization-portal/constants/special-organizations';
+import RelatedOrganizationsViewTable from 'frontend-organization-portal/components/related-organizations-view-table';
 
 module(
   'Integration | Component | related-organizations-view-table',
@@ -50,17 +50,19 @@ module(
         noop: () => {},
       });
 
-      await render(hbs`
-        <RelatedOrganizationsViewTable
-          @model={{this.model}}
-          @sort="name"
-          @page={{0}}
-          @size={{500}}
-          @organizationStatus={{this.organizationStatus}}
-          @onOrganizationStatusChange={{this.noop}}
-          @selectedRole={{this.selectedRole}}
-        />
-      `);
+      await render(
+        <template>
+          <RelatedOrganizationsViewTable
+            @model={{this.model}}
+            @sort="name"
+            @page={{0}}
+            @size={{500}}
+            @organizationStatus={{this.organizationStatus}}
+            @onOrganizationStatusChange={{this.noop}}
+            @selectedRole={{this.selectedRole}}
+          />
+        </template>,
+      );
 
       assert.dom('tbody tr').exists({ count: 2 });
 

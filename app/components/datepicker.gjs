@@ -1,6 +1,9 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
+import { on } from '@ember/modifier';
+import auDateInput from '@appuniversum/ember-appuniversum/modifiers/au-date-input';
 
 const EMPTY_DATE = 'EMPTY_DATE';
 const INVALID_DATE = 'INVALID_DATE';
@@ -73,20 +76,22 @@ export default class DatepickerComponent extends Component {
   get width() {
     return this.args.width || 'block';
   }
-}
 
-<AuInput
-  @disabled={{@disabled}}
-  @error={{@error}}
-  {{on "focusout" this.focusOut}}
-  @width={{this.width}}
-  id={{@id}}
-  {{au-date-input value=@value onChange=this.onChange}}
-  {{!
-    inputmask.js has a bug that makes it throw an error in Chrome, when autocomplete feature is used: https://github.com/RobinHerbots/Inputmask/issues/2809
-    That bug has been fixed, but the fix hasn't been released yet in a stable release.
-    It also seems there is a second bug that probably needs to be fixed before we can revert this: https://github.com/RobinHerbots/Inputmask/issues/2832
-  }}
-  autocomplete="off"
-  ...attributes
-/>
+  <template>
+    <AuInput
+      @disabled={{@disabled}}
+      @error={{@error}}
+      {{on "focusout" this.focusOut}}
+      @width={{this.width}}
+      id={{@id}}
+      {{auDateInput value=@value onChange=this.onChange}}
+      {{!
+        inputmask.js has a bug that makes it throw an error in Chrome, when autocomplete feature is used: https://github.com/RobinHerbots/Inputmask/issues/2809
+        That bug has been fixed, but the fix hasn't been released yet in a stable release.
+        It also seems there is a second bug that probably needs to be fixed before we can revert this: https://github.com/RobinHerbots/Inputmask/issues/2832
+      }}
+      autocomplete="off"
+      ...attributes
+    />
+  </template>
+}

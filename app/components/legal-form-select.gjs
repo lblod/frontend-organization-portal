@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
 import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
+import PowerSelect from 'ember-power-select/components/power-select';
 
 const LEGAL_FORM_SCHEME_ID = 'c3ff1a7f-c091-484d-8785-c8a5740573af';
 
@@ -43,23 +44,25 @@ export default class LegalFormSelectComponent extends Component {
 
     return content;
   });
-}
 
-<div class={{if @error "ember-power-select--error"}}>
-  <PowerSelect
-    @allowClear={{@allowClear}}
-    @loadingMessage="Aan het laden..."
-    @noMatchesMessage="Geen resultaten"
-    @searchMessage="Typ om te zoeken"
-    @searchEnabled={{true}}
-    @searchField="label"
-    @options={{this.loadLegalFormsTask.last}}
-    @selected={{this.selectedLegalForm}}
-    @onChange={{@onChange}}
-    @disabled={{@disabled}}
-    @triggerId={{@id}}
-    as |legalForm|
-  >
-    {{legalForm.label}}
-  </PowerSelect>
-</div>
+  <template>
+    <div class={{if @error "ember-power-select--error"}}>
+      <PowerSelect
+        @allowClear={{@allowClear}}
+        @loadingMessage="Aan het laden..."
+        @noMatchesMessage="Geen resultaten"
+        @searchMessage="Typ om te zoeken"
+        @searchEnabled={{true}}
+        @searchField="label"
+        @options={{this.loadLegalFormsTask.last}}
+        @selected={{this.selectedLegalForm}}
+        @onChange={{@onChange}}
+        @disabled={{@disabled}}
+        @triggerId={{@id}}
+        as |legalForm|
+      >
+        {{legalForm.label}}
+      </PowerSelect>
+    </div>
+  </template>
+}

@@ -2,10 +2,10 @@ import { module, test } from 'qunit';
 import sinon from 'sinon';
 import { setupRenderingTest } from 'frontend-organization-portal/tests/helpers';
 import { findAll, render } from '@ember/test-helpers';
-import { hbs } from 'ember-cli-htmlbars';
 import { clickTrigger } from 'ember-power-select/test-support/helpers';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import ChangeEventTypeSelect from 'frontend-organization-portal/components/change-event-type-select.js';
 
 function changeEventType(id, label) {
   return { id, type: 'change-event-type', attributes: { label } };
@@ -37,12 +37,14 @@ module('Integration | Component | change-event-type-select', function (hooks) {
   });
 
   async function optionLabels() {
-    await render(hbs`
-      <ChangeEventTypeSelect
-        @organizationClassification={{this.classification}}
-        @onChange={{this.onChange}}
-      />
-    `);
+    await render(
+      <template>
+        <ChangeEventTypeSelect
+          @organizationClassification={{this.classification}}
+          @onChange={{this.onChange}}
+        />
+      </template>,
+    );
     await clickTrigger();
     return findAll('.ember-power-select-option').map((option) =>
       option.textContent.trim(),

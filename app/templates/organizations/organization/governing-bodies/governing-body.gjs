@@ -1,9 +1,17 @@
-{{page-title this.model.governingBodyClassification.label}}
+import pageTitle from 'ember-page-title/helpers/page-title';
+import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
+import { array } from '@ember/helper';
 
-{{breadcrumb
-  this.model.governingBodyClassification.label
-  route="organizations.organization.governing-bodies.governing-body"
-  models=(array this.model.organization.id this.model.governingBody.id)
-}}
+<template>
+  {{pageTitle @controller.model.governingBodyClassification.label}}
 
-{{outlet}}
+  {{breadcrumb
+    @controller.model.governingBodyClassification.label
+    route="organizations.organization.governing-bodies.governing-body"
+    models=(array
+      @controller.model.organization.id @controller.model.governingBody.id
+    )
+  }}
+
+  {{outlet}}
+</template>

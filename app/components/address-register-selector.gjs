@@ -3,6 +3,9 @@ import { service } from '@ember/service';
 import { findRecord } from '@warp-drive/legacy/compat/builders';
 import { task, restartableTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
+import PowerSelect from 'ember-power-select/components/power-select';
+import perform from 'ember-concurrency/helpers/perform';
+import PowerSelectBeforeOptionsWithPreFilledText from './power-select/before-options-with-pre-filled-text';
 
 export default class AddressRegisterSelectorComponent extends Component {
   @service addressRegister;
@@ -69,28 +72,30 @@ export default class AddressRegisterSelectorComponent extends Component {
 
     return filteredAddressSuggestions;
   });
-}
 
-<div class={{if @error "ember-power-select--error"}}>
-  <PowerSelect
-    @width="block"
-    @triggerId={{@id}}
-    @allowClear={{false}}
-    @renderInPlace={{false}}
-    @search={{perform this.search}}
-    @selected={{this.addressSuggestion}}
-    @options={{this.addressSuggestion}}
-    @onChange={{perform this.selectSuggestion}}
-    @loadingMessage="Aan het laden..."
-    @searchEnabled={{true}}
-    @noMatchesMessage="Het adres is niet gevonden, vul het adres manueel in"
-    @searchMessage="Typ om te zoeken"
-    @beforeOptionsComponent={{component
-      "power-select/before-options-with-pre-filled-text"
-      addressSuggestion=this.addressSuggestion
-    }}
-    as |suggestion|
-  >
-    {{suggestion.fullAddress}}
-  </PowerSelect>
-</div>
+  <template>
+    <div class={{if @error "ember-power-select--error"}}>
+      <PowerSelect
+        @width="block"
+        @triggerId={{@id}}
+        @allowClear={{false}}
+        @renderInPlace={{false}}
+        @search={{perform this.search}}
+        @selected={{this.addressSuggestion}}
+        @options={{this.addressSuggestion}}
+        @onChange={{perform this.selectSuggestion}}
+        @loadingMessage="Aan het laden..."
+        @searchEnabled={{true}}
+        @noMatchesMessage="Het adres is niet gevonden, vul het adres manueel in"
+        @searchMessage="Typ om te zoeken"
+        @beforeOptionsComponent={{component
+          PowerSelectBeforeOptionsWithPreFilledText
+          addressSuggestion=this.addressSuggestion
+        }}
+        as |suggestion|
+      >
+        {{suggestion.fullAddress}}
+      </PowerSelect>
+    </div>
+  </template>
+}

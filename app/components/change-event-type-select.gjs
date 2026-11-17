@@ -23,6 +23,7 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
 import { WorshipCodeList } from 'frontend-organization-portal/constants/classification';
 import requiresAdditionalQualifications from 'frontend-organization-portal/helpers/requires-additional-qualifications';
 import { findAll } from '@warp-drive/legacy/compat/builders';
+import PowerSelect from 'ember-power-select/components/power-select';
 
 export default class ChangeEventTypeSelectComponent extends Component {
   @service store;
@@ -153,18 +154,20 @@ export default class ChangeEventTypeSelectComponent extends Component {
   isIdInList(id, blacklist) {
     return blacklist.find((element) => element == id);
   }
-}
 
-<div class={{if @error "ember-power-select--error"}}>
-  <PowerSelect
-    @loadingMessage="Aan het laden..."
-    @searchField="label"
-    @options={{this.loadChangeEventTypesTask.last}}
-    @selected={{@selected}}
-    @onChange={{@onChange}}
-    @triggerId={{@id}}
-    as |type|
-  >
-    {{type.label}}
-  </PowerSelect>
-</div>
+  <template>
+    <div class={{if @error "ember-power-select--error"}}>
+      <PowerSelect
+        @loadingMessage="Aan het laden..."
+        @searchField="label"
+        @options={{this.loadChangeEventTypesTask.last}}
+        @selected={{@selected}}
+        @onChange={{@onChange}}
+        @triggerId={{@id}}
+        as |type|
+      >
+        {{type.label}}
+      </PowerSelect>
+    </div>
+  </template>
+}

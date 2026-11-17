@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import { hbs } from 'ember-cli-htmlbars';
+import kboFormat from 'frontend-organization-portal/helpers/kbo-format.js';
 
 module('Integration | Helper | kbo-format', function (hooks) {
   setupRenderingTest(hooks);
@@ -9,7 +9,7 @@ module('Integration | Helper | kbo-format', function (hooks) {
   test('It correctly formats KBO number', async function (assert) {
     this.set('inputValue', '0123456789');
 
-    await render(hbs`{{kbo-format this.inputValue}}`);
+    await render(<template>{{kboFormat this.inputValue}}</template>);
 
     assert.strictEqual(this.element.textContent.trim(), '0123.456.789');
   });
@@ -17,7 +17,7 @@ module('Integration | Helper | kbo-format', function (hooks) {
   test('Returns an empty string for an input that is too short', async function (assert) {
     this.set('inputValue', '012345');
 
-    await render(hbs`{{kbo-format this.inputValue}}`);
+    await render(<template>{{kboFormat this.inputValue}}</template>);
 
     assert.strictEqual(this.element.textContent.trim(), '');
   });
@@ -25,7 +25,7 @@ module('Integration | Helper | kbo-format', function (hooks) {
   test('Returns an empty string for an input that is too long', async function (assert) {
     this.set('inputValue', '01234567891011');
 
-    await render(hbs`{{kbo-format this.inputValue}}`);
+    await render(<template>{{kboFormat this.inputValue}}</template>);
 
     assert.strictEqual(this.element.textContent.trim(), '');
   });

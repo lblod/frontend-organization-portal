@@ -3,6 +3,8 @@ import { service } from '@ember/service';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { ORGANIZATION_STATUS } from '../models/organization-status-code';
+import PowerSelect from 'ember-power-select/components/power-select';
+import perform from 'ember-concurrency/helpers/perform';
 
 export default class WorshipServiceSelectComponent extends Component {
   @service store;
@@ -32,22 +34,24 @@ export default class WorshipServiceSelectComponent extends Component {
 
     return content;
   });
-}
 
-<PowerSelect
-  @multiple={{true}}
-  @allowClear={{true}}
-  @searchEnabled={{true}}
-  @loadingMessage="Aan het laden..."
-  @noMatchesMessage="Geen resultaten"
-  @searchMessage="Typ om te zoeken"
-  @searchField="name"
-  @search={{perform this.loadWorshipServicesTask}}
-  @selected={{@selected}}
-  @onChange={{@onChange}}
-  @triggerId={{@id}}
-  ...attributes
-  as |worshipService|
->
-  {{worshipService.abbName}}
-</PowerSelect>
+  <template>
+    <PowerSelect
+      @multiple={{true}}
+      @allowClear={{true}}
+      @searchEnabled={{true}}
+      @loadingMessage="Aan het laden..."
+      @noMatchesMessage="Geen resultaten"
+      @searchMessage="Typ om te zoeken"
+      @searchField="name"
+      @search={{perform this.loadWorshipServicesTask}}
+      @selected={{@selected}}
+      @onChange={{@onChange}}
+      @triggerId={{@id}}
+      ...attributes
+      as |worshipService|
+    >
+      {{worshipService.abbName}}
+    </PowerSelect>
+  </template>
+}

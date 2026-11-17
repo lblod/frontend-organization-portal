@@ -1,4 +1,5 @@
 import Component from '@glimmer/component';
+import AuPill from '@appuniversum/ember-appuniversum/components/au-pill';
 
 export default class GoverningBodyStatusComponent extends Component {
   get isActive() {
@@ -14,8 +15,10 @@ export default class GoverningBodyStatusComponent extends Component {
       (start_unknown && end_in_future)
     );
   }
-}
 
-<AuPill @skin={{if this.isActive "success" "error"}}>
-  {{if this.isActive "Actief" "Niet actief"}}
-</AuPill>
+  <template>
+    <AuPill @skin={{if this.isActive "success" "error"}}>
+      {{if this.isActive "Actief" "Niet actief"}}
+    </AuPill>
+  </template>
+}

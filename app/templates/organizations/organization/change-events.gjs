@@ -1,9 +1,15 @@
-{{page-title "Veranderingsgebeurtenissen"}}
+import pageTitle from 'ember-page-title/helpers/page-title';
+import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
+import paramsFor from '../../../helpers/params-for';
 
-{{breadcrumb
-  "Veranderingsgebeurtenissen"
-  route="organizations.organization.change-events"
-  model=(params-for "organizations.organization" param="id")
-}}
+<template>
+  {{pageTitle "Veranderingsgebeurtenissen"}}
 
-{{outlet}}
+  {{breadcrumb
+    "Veranderingsgebeurtenissen"
+    route="organizations.organization.change-events"
+    model=(paramsFor "organizations.organization" param="id")
+  }}
+
+  {{outlet}}
+</template>

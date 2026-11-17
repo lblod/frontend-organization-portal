@@ -1,46 +1,52 @@
-<div
-  class="au-c-card-item
-    {{if @alignTop 'au-c-card-item--align-top'}}
-    {{if @isGrid 'au-o-grid__item au-u-1-2@medium'}}"
-  ...attributes
->
-  {{#if (has-block "label")}}
-    <div class="au-c-card-item__label au-c-card-item__label--edit">
-      <AuLabel
-        @required={{@required}}
-        @requiredLabel="*"
-        @inline={{true}}
-        @error={{@errorMessage}}
-        @warning={{@warningMessage}}
-        class={{@labelClass}}
-        for={{@labelFor}}
+import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
+import not from 'ember-truth-helpers/helpers/not';
+import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text';
+
+<template>
+  <div
+    class="au-c-card-item
+      {{if @alignTop 'au-c-card-item--align-top'}}
+      {{if @isGrid 'au-o-grid__item au-u-1-2@medium'}}"
+    ...attributes
+  >
+    {{#if (has-block "label")}}
+      <div class="au-c-card-item__label au-c-card-item__label--edit">
+        <AuLabel
+          @required={{@required}}
+          @requiredLabel="*"
+          @inline={{true}}
+          @error={{@errorMessage}}
+          @warning={{@warningMessage}}
+          class={{@labelClass}}
+          for={{@labelFor}}
+        >
+          {{yield to="label"}}
+        </AuLabel>
+      </div>
+    {{/if}}
+
+    {{#if (has-block "content")}}
+      <div
+        class="au-c-card-item__content
+          {{if (not (has-block 'label')) 'au-c-card-item__content--offset'}}
+          "
       >
-        {{yield to="label"}}
-      </AuLabel>
-    </div>
-  {{/if}}
+        {{yield @errorMessage to="content"}}
 
-  {{#if (has-block "content")}}
-    <div
-      class="au-c-card-item__content
-        {{if (not (has-block 'label')) 'au-c-card-item__content--offset'}}
-        "
-    >
-      {{yield @errorMessage to="content"}}
-
-      {{#if @errorMessage}}
-        {{#if (has-block "error")}}
-          {{yield @errorMessage to="error"}}
-        {{else}}
-          <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
+        {{#if @errorMessage}}
+          {{#if (has-block "error")}}
+            {{yield @errorMessage to="error"}}
+          {{else}}
+            <AuHelpText @error={{true}}>{{@errorMessage}}</AuHelpText>
+          {{/if}}
+        {{else if @warningMessage}}
+          <AuHelpText @warning={{true}}>{{@warningMessage}}</AuHelpText>
         {{/if}}
-      {{else if @warningMessage}}
-        <AuHelpText @warning={{true}}>{{@warningMessage}}</AuHelpText>
-      {{/if}}
 
-      {{#if (has-block "helpText")}}
-        <AuHelpText @skin="tertiary">{{yield to="helpText"}}</AuHelpText>
-      {{/if}}
-    </div>
-  {{/if}}
-</div>
+        {{#if (has-block "helpText")}}
+          <AuHelpText @skin="tertiary">{{yield to="helpText"}}</AuHelpText>
+        {{/if}}
+      </div>
+    {{/if}}
+  </div>
+</template>

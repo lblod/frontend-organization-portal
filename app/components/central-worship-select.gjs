@@ -3,6 +3,8 @@ import { service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { ORGANIZATION_STATUS } from '../models/organization-status-code';
+import PowerSelect from 'ember-power-select/components/power-select';
+import perform from 'ember-concurrency/helpers/perform';
 
 export default class CentralWorshipSelectComponent extends Component {
   @service store;
@@ -39,23 +41,25 @@ export default class CentralWorshipSelectComponent extends Component {
       return content;
     },
   );
-}
 
-<div class={{if @error "ember-power-select--error"}}>
-  <PowerSelect
-    @allowClear={{true}}
-    @searchEnabled={{true}}
-    @loadingMessage="Aan het laden..."
-    @noMatchesMessage="Geen resultaten"
-    @searchMessage="Typ om te zoeken"
-    @searchField="name"
-    @search={{perform this.loadCentralWorshipServicesTask}}
-    @options={{this.centralWorshipServices}}
-    @selected={{@selected}}
-    @onChange={{@onChange}}
-    @triggerId={{@id}}
-    as |centralWorshipService|
-  >
-    {{centralWorshipService.abbName}}
-  </PowerSelect>
-</div>
+  <template>
+    <div class={{if @error "ember-power-select--error"}}>
+      <PowerSelect
+        @allowClear={{true}}
+        @searchEnabled={{true}}
+        @loadingMessage="Aan het laden..."
+        @noMatchesMessage="Geen resultaten"
+        @searchMessage="Typ om te zoeken"
+        @searchField="name"
+        @search={{perform this.loadCentralWorshipServicesTask}}
+        @options={{this.centralWorshipServices}}
+        @selected={{@selected}}
+        @onChange={{@onChange}}
+        @triggerId={{@id}}
+        as |centralWorshipService|
+      >
+        {{centralWorshipService.abbName}}
+      </PowerSelect>
+    </div>
+  </template>
+}

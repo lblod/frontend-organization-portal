@@ -1,10 +1,10 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'frontend-organization-portal/tests/helpers';
 import { render, settled } from '@ember/test-helpers';
-import { hbs } from 'ember-cli-htmlbars';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
+import RelatedOrganizationsEditTable from 'frontend-organization-portal/components/related-organizations-edit-table';
 
 module(
   'Integration | Component | related-organizations-edit-table',
@@ -53,24 +53,26 @@ module(
         isDuplicateMembership: (row) => row === membership,
       });
 
-      await render(hbs`
-        <RelatedOrganizationsEditTable
-          @model={{this.model}}
-          @content={{this.memberships}}
-          @page={{0}}
-          @size={{500}}
-          @addRelatedOrganization={{this.noop}}
-          @removeRelatedOrganization={{this.remove}}
-          @updateMembershipRole={{this.noop}}
-          @displayRoleLabel={{this.displayRoleLabel}}
-          @setOtherRelatedOrganization={{this.noop}}
-          @setStartDate={{this.noop}}
-          @setEndDate={{this.noop}}
-          @selectedRole={{this.selectedRole}}
-          @unsavedEdit={{false}}
-          @isDuplicateMembership={{this.isDuplicateMembership}}
-        />
-      `);
+      await render(
+        <template>
+          <RelatedOrganizationsEditTable
+            @model={{this.model}}
+            @content={{this.memberships}}
+            @page={{0}}
+            @size={{500}}
+            @addRelatedOrganization={{this.noop}}
+            @removeRelatedOrganization={{this.remove}}
+            @updateMembershipRole={{this.noop}}
+            @displayRoleLabel={{this.displayRoleLabel}}
+            @setOtherRelatedOrganization={{this.noop}}
+            @setStartDate={{this.noop}}
+            @setEndDate={{this.noop}}
+            @selectedRole={{this.selectedRole}}
+            @unsavedEdit={{false}}
+            @isDuplicateMembership={{this.isDuplicateMembership}}
+          />
+        </template>,
+      );
 
       assert.dom('tbody tr').exists({ count: 1 });
       assert
@@ -177,24 +179,26 @@ module(
         isDuplicateMembership: () => false,
       });
 
-      await render(hbs`
-        <RelatedOrganizationsEditTable
-          @model={{this.model}}
-          @content={{this.memberships}}
-          @page={{0}}
-          @size={{500}}
-          @addRelatedOrganization={{this.noop}}
-          @removeRelatedOrganization={{this.remove}}
-          @updateMembershipRole={{this.noop}}
-          @displayRoleLabel={{this.displayRoleLabel}}
-          @setOtherRelatedOrganization={{this.noop}}
-          @setStartDate={{this.noop}}
-          @setEndDate={{this.noop}}
-          @selectedRole={{this.selectedRole}}
-          @unsavedEdit={{false}}
-          @isDuplicateMembership={{this.isDuplicateMembership}}
-        />
-      `);
+      await render(
+        <template>
+          <RelatedOrganizationsEditTable
+            @model={{this.model}}
+            @content={{this.memberships}}
+            @page={{0}}
+            @size={{500}}
+            @addRelatedOrganization={{this.noop}}
+            @removeRelatedOrganization={{this.remove}}
+            @updateMembershipRole={{this.noop}}
+            @displayRoleLabel={{this.displayRoleLabel}}
+            @setOtherRelatedOrganization={{this.noop}}
+            @setStartDate={{this.noop}}
+            @setEndDate={{this.noop}}
+            @selectedRole={{this.selectedRole}}
+            @unsavedEdit={{false}}
+            @isDuplicateMembership={{this.isDuplicateMembership}}
+          />
+        </template>,
+      );
 
       assert.dom('tbody tr').exists({ count: 1 });
       // The role and the organization of a stored relation cannot change: a

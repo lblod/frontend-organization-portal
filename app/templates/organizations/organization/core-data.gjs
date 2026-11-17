@@ -1,2 +1,6 @@
-{{page-title "Kerngegevens"}}
-{{outlet}}
+import pageTitle from 'ember-page-title/helpers/page-title';
+
+<template>
+  {{pageTitle "Kerngegevens"}}
+  {{outlet}}
+</template>

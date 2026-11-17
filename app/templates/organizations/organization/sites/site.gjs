@@ -1,9 +1,15 @@
-{{page-title @model.site.address.fullAddress}}
+import pageTitle from 'ember-page-title/helpers/page-title';
+import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
+import { array } from '@ember/helper';
 
-{{breadcrumb
-  this.model.site.address.fullAddress
-  route="organizations.organization.sites"
-  models=(array this.model.organization.id this.model.site.id)
-}}
+<template>
+  {{pageTitle @model.site.address.fullAddress}}
 
-{{outlet}}
+  {{breadcrumb
+    @controller.model.site.address.fullAddress
+    route="organizations.organization.sites"
+    models=(array @controller.model.organization.id @controller.model.site.id)
+  }}
+
+  {{outlet}}
+</template>

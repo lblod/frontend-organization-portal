@@ -1,7 +1,11 @@
-<StaticPage>
-  <div class="au-o-region-large">
-    <div class="au-o-layout">
-      {{outlet}}
+import StaticPage from '../components/static-page';
+
+<template>
+  <StaticPage>
+    <div class="au-o-region-large">
+      <div class="au-o-layout">
+        {{outlet}}
+      </div>
     </div>
-  </div>
-</StaticPage>
+  </StaticPage>
+</template>

@@ -1,15 +1,22 @@
-{{#let
-  (concat
-    @model.changeEvent.type.label " " (date-format @model.changeEvent.date)
-  )
-  as |title|
-}}
-  {{page-title title}}
-  {{breadcrumb
-    title
-    route="organizations.organization.change-events.details"
-    models=(array @model.organization.id @model.changeEvent.id)
-  }}
-{{/let}}
+import { concat, array } from '@ember/helper';
+import dateFormat from '../../../../helpers/date-format';
+import pageTitle from 'ember-page-title/helpers/page-title';
+import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
 
-{{outlet}}
+<template>
+  {{#let
+    (concat
+      @model.changeEvent.type.label " " (dateFormat @model.changeEvent.date)
+    )
+    as |title|
+  }}
+    {{pageTitle title}}
+    {{breadcrumb
+      title
+      route="organizations.organization.change-events.details"
+      models=(array @model.organization.id @model.changeEvent.id)
+    }}
+  {{/let}}
+
+  {{outlet}}
+</template>

@@ -8,6 +8,7 @@ import { tracked } from '@glimmer/tracking';
 import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { getClassificationIdsForRole } from 'frontend-organization-portal/utils/classification-identifiers';
 import { convertClassificationToGroups } from '../utils/group-classifications';
+import PowerSelect from 'ember-power-select/components/power-select';
 
 export default class ClassificationMultipleSelectComponent extends Component {
   @service store;
@@ -115,23 +116,25 @@ export default class ClassificationMultipleSelectComponent extends Component {
   #isIdInBlacklist(id) {
     return CENTRAL_WORSHIP_SERVICE_BLACKLIST.find((element) => element == id);
   }
-}
 
-<div class={{if @error "ember-power-select--error"}}>
-  <PowerSelect
-    @multiple={{true}}
-    @searchEnabled={{true}}
-    @allowClear={{@allowClear}}
-    @searchField="label"
-    @loadingMessage="Aan het laden..."
-    @noMatchesMessage="Geen resultaten"
-    @searchMessage="Typ om te zoeken"
-    @options={{this.groupedClassifications}}
-    @selected={{this.selectedClassifications}}
-    @onChange={{@onChange}}
-    @triggerId={{@id}}
-    as |classification|
-  >
-    {{classification.label}}
-  </PowerSelect>
-</div>
+  <template>
+    <div class={{if @error "ember-power-select--error"}}>
+      <PowerSelect
+        @multiple={{true}}
+        @searchEnabled={{true}}
+        @allowClear={{@allowClear}}
+        @searchField="label"
+        @loadingMessage="Aan het laden..."
+        @noMatchesMessage="Geen resultaten"
+        @searchMessage="Typ om te zoeken"
+        @options={{this.groupedClassifications}}
+        @selected={{this.selectedClassifications}}
+        @onChange={{@onChange}}
+        @triggerId={{@id}}
+        as |classification|
+      >
+        {{classification.label}}
+      </PowerSelect>
+    </div>
+  </template>
+}

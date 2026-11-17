@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
+import AuPill from '@appuniversum/ember-appuniversum/components/au-pill';
 
 const ORGANIZATION_STATUS_SKINS = {
   [ORGANIZATION_STATUS.ACTIVE]: 'success',
@@ -11,8 +12,10 @@ export default class OrganizationStatusComponent extends Component {
   get statusSkin() {
     return ORGANIZATION_STATUS_SKINS[this.args.id];
   }
-}
 
-<AuPill @skin={{this.statusSkin}}>
-  {{@label}}
-</AuPill>
+  <template>
+    <AuPill @skin={{this.statusSkin}}>
+      {{@label}}
+    </AuPill>
+  </template>
+}

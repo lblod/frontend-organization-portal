@@ -1,11 +1,15 @@
-<AuLink
-  @route={{@route}}
-  @model={{@model}}
-  @models={{@models}}
-  @skin="button-secondary"
-  @icon="pencil"
-  @iconAlignment="left"
-  ...attributes
->
-  Bewerk
-</AuLink>
+import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
+
+<template>
+  <AuLink
+    @route={{@route}}
+    @model={{@model}}
+    @models={{@models}}
+    @skin="button-secondary"
+    @icon="pencil"
+    @iconAlignment="left"
+    ...attributes
+  >
+    Bewerk
+  </AuLink>
+</template>
