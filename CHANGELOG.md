@@ -1,3 +1,14 @@
+## 1.52.0 (2026-11-18)
+
+#### :rocket: Enhancement
+* [#771](https://github.com/lblod/frontend-organization-portal/pull/771) [OP-3959] Allow empty end dates of bestuursperiode for worship services in oprichting ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#768](https://github.com/lblod/frontend-organization-portal/pull/768) [RVS-30] Disable edit feature flag ([@claire-lovisa](https://github.com/claire-lovisa))
+* [#769](https://github.com/lblod/frontend-organization-portal/pull/769) [OP-3962] Relation status before the start date and duplicate relation rules ([@bdevloed](https://github.com/bdevloed))
+
+#### Committers: 2
+- Boris De Vloed ([@bdevloed](https://github.com/bdevloed))
+- Claire Lovisa ([@claire-lovisa](https://github.com/claire-lovisa))
+
 ## v1.51.0 (2026-11-09)
 #### :rocket: Enhancement
 * [#766](https://github.com/lblod/frontend-organization-portal/pull/766) [OP-3950] Change event improvements ([@Windvis](https://github.com/Windvis))

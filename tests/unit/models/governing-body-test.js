@@ -141,6 +141,66 @@ module('Unit | Model | governing body', function (hooks) {
         },
       });
     });
+
+    test('it returns a single error when the end date is missing but required', async function (assert) {
+      const model = this.store().createRecord('governing-body', {
+        startDate: new Date('2024-01-01'),
+      });
+
+      const isValid = await model.validate({ endDateOptional: false });
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.propContains(model.error, {
+        endDate: { message: 'Vul de einddatum in' },
+      });
+    });
+
+    test('it returns no errors when the end date is missing but optional', async function (assert) {
+      const model = this.store().createRecord('governing-body', {
+        startDate: new Date('2024-01-01'),
+      });
+
+      const isValid = await model.validate({ endDateOptional: true });
+
+      assert.true(isValid);
+      assert.notOk(model.error);
+    });
+
+    test('it returns two errors when the end date is before the start date and the end date is optional', async function (assert) {
+      const model = this.store().createRecord('governing-body', {
+        startDate: new Date('2024-01-01'),
+        endDate: new Date('2023-01-01'),
+      });
+
+      const isValid = await model.validate({ endDateOptional: true });
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 2);
+      assert.propContains(model.error, {
+        startDate: {
+          message: 'Kies een startdatum die vóór de einddatum plaatsvindt',
+        },
+        endDate: {
+          message: 'Kies een einddatum die na de startdatum plaatsvindt',
+        },
+      });
+    });
+
+    test('it returns a single error when the given end date is invalid and the end date is optional', async function (assert) {
+      const model = this.store().createRecord('governing-body', {
+        startDate: new Date('2024-01-01'),
+        endDate: 'Not a date',
+      });
+
+      const isValid = await model.validate({ endDateOptional: true });
+
+      assert.false(isValid);
+      assert.strictEqual(Object.keys(model.error).length, 1);
+      assert.propContains(model.error, {
+        endDate: { message: 'Vul de einddatum in' },
+      });
+    });
   });
 
   module('get period', function () {

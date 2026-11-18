@@ -9,6 +9,7 @@ import EditCard from '../../../../../components/edit-card';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
 import Datepicker from '../../../../../components/datepicker';
 import { fn } from '@ember/helper';
+import not from 'ember-truth-helpers/helpers/not';
 
 <template>
   <div class="au-c-body-container au-c-body-container--scroll">
@@ -92,7 +93,7 @@ import { fn } from '@ember/helper';
                   <Item
                     @labelFor="governing-body-end-date"
                     @errorMessage={{@model.governingBody.error.endDate.message}}
-                    @required={{true}}
+                    @required={{not this.endDateOptional}}
                   >
                     <:label>Einddatum</:label>
                     <:content as |hasError|>
