@@ -1,12 +1,12 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import hasHarvestMeta from '../helpers/has-harvest-meta.ts';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import { on } from '@ember/modifier';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
-import dateFormat from '../helpers/date-format';
 import AuLinkExternal from '@appuniversum/ember-appuniversum/components/au-link-external';
+import hasHarvestMeta from '../helpers/has-harvest-meta';
+import dateFormat from '../helpers/date-format';
 
 export default class HarvestMetaPopupComponent extends Component {
   @tracked modalOpen = false;

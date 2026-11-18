@@ -16,7 +16,7 @@ import and from 'ember-truth-helpers/helpers/and';
 import not from 'ember-truth-helpers/helpers/not';
 import LegalFormSelect from '../../components/legal-form-select';
 import ContentThemeSelect from '../../components/content-theme-select';
-import requiresAdditionalQualifications from '../../helpers/requires-additional-qualifications.ts';
+import requiresAdditionalQualifications from '../../helpers/requires-additional-qualifications';
 import AdditionalQualificationsSelect from '../../components/additional-qualifications-select';
 import AuList from '@appuniversum/ember-appuniversum/components/au-list';
 import RecognizedWorshipTypeSelect from '../../components/recognized-worship-type-select';

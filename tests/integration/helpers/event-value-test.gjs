@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { fillIn, render } from '@ember/test-helpers';
 import { on } from '@ember/modifier';
-import eventValue from 'frontend-organization-portal/helpers/event-value.js';
+import eventValue from 'frontend-organization-portal/helpers/event-value';
 import { fn } from '@ember/helper';
 
 module('Integration | Helper | event-value', function (hooks) {

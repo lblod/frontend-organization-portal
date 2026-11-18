@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import isLast from 'frontend-organization-portal/helpers/is-last.js';
+import isLast from 'frontend-organization-portal/helpers/is-last';
 
 module('Integration | Helper | is-last', function (hooks) {
   setupRenderingTest(hooks);

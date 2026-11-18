@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import formatIdentifier from 'frontend-organization-portal/helpers/format-identifier.js';
+import formatIdentifier from 'frontend-organization-portal/helpers/format-identifier';
 
 module('Integration | Helper | format-identifier', function (hooks) {
   setupRenderingTest(hooks);

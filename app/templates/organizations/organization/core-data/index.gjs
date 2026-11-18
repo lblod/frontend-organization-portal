@@ -12,7 +12,7 @@ import { fn, get } from '@ember/helper';
 import DataCard from '../../../../components/data-card';
 import gt from 'ember-truth-helpers/helpers/gt';
 import joinArray from '../../../../helpers/join-array';
-import requiresAdditionalQualifications from '../../../../helpers/requires-additional-qualifications.ts';
+import requiresAdditionalQualifications from '../../../../helpers/requires-additional-qualifications';
 import AdditionalQualificationsList from '../../../../components/additional-qualifications-list';
 import AuList from '@appuniversum/ember-appuniversum/components/au-list';
 import and from 'ember-truth-helpers/helpers/and';

@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import rrnFormat from 'frontend-organization-portal/helpers/rrn-format.js';
+import rrnFormat from 'frontend-organization-portal/helpers/rrn-format';
 
 module('Integration | Helper | rrn-format', function (hooks) {
   setupRenderingTest(hooks);

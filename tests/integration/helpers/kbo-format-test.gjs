@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import kboFormat from 'frontend-organization-portal/helpers/kbo-format.js';
+import kboFormat from 'frontend-organization-portal/helpers/kbo-format';
 
 module('Integration | Helper | kbo-format', function (hooks) {
   setupRenderingTest(hooks);

@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import dateFormat from 'frontend-organization-portal/helpers/date-format.js';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
 
 module('Integration | Helper | date-format', function (hooks) {
   setupRenderingTest(hooks);

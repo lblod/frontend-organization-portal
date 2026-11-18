@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'frontend-organization-portal/tests/helpers';
 import { render } from '@ember/test-helpers';
-import joinArray from 'frontend-organization-portal/helpers/join-array.js';
+import joinArray from 'frontend-organization-portal/helpers/join-array';
 import { array } from '@ember/helper';
 
 module('Integration | Helper | join-array', function (hooks) {

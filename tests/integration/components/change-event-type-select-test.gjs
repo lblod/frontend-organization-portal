@@ -5,7 +5,7 @@ import { findAll, render } from '@ember/test-helpers';
 import { clickTrigger } from 'ember-power-select/test-support/helpers';
 import { CHANGE_EVENT_TYPE } from 'frontend-organization-portal/models/change-event-type';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import ChangeEventTypeSelect from 'frontend-organization-portal/components/change-event-type-select.js';
+import ChangeEventTypeSelect from 'frontend-organization-portal/components/change-event-type-select';
 
 function changeEventType(id, label) {
   return { id, type: 'change-event-type', attributes: { label } };

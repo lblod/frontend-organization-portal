@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'frontend-organization-portal/tests/helpers';
 import { render, settled } from '@ember/test-helpers';
 import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
-import relationStatus from 'frontend-organization-portal/helpers/relation-status.js';
+import relationStatus from 'frontend-organization-portal/helpers/relation-status';
 
 module('Integration | Helper | relation-status', function (hooks) {
   setupRenderingTest(hooks);
