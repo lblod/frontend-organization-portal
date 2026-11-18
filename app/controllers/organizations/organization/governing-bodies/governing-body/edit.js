@@ -3,6 +3,7 @@ import { dropTask } from 'ember-concurrency';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { saveRecord } from '@warp-drive/legacy/compat/builders';
+import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 
 export default class OrganizationsOrganizationGoverningBodiesGoverningBodyEditController extends Controller {
   @service router;
@@ -10,6 +11,16 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyEditCo
 
   get hasValidationErrors() {
     return this.model.governingBody.error;
+  }
+
+  get endDateOptional() {
+    const { organization } = this.model;
+    const status = organization.belongsTo('organizationStatus').value();
+
+    return Boolean(
+      organization.isWorshipService &&
+      status?.id === ORGANIZATION_STATUS.IN_FORMATION,
+    );
   }
 
   @action
@@ -24,7 +35,9 @@ export default class OrganizationsOrganizationGoverningBodiesGoverningBodyEditCo
   save = dropTask(async (event) => {
     event.preventDefault();
 
-    await this.model.governingBody.validate();
+    await this.model.governingBody.validate({
+      endDateOptional: this.endDateOptional,
+    });
 
     if (!this.hasValidationErrors) {
       await this.store.request(saveRecord(this.model.governingBody));
