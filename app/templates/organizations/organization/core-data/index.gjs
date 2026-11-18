@@ -23,7 +23,7 @@ import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text
 import kboFormat from '../../../../helpers/kbo-format';
 import AuLinkExternal from '@appuniversum/ember-appuniversum/components/au-link-external';
 import ContactDataCard from '../../../../components/site/contact-data-card';
-import DataCard0 from '../../../../components/kbo-organization/data-card';
+import KboDataCard from '../../../../components/kbo-organization/data-card';
 
 <template>
   <div class="au-c-body-container au-c-body-container--scroll">
@@ -360,7 +360,7 @@ import DataCard0 from '../../../../components/kbo-organization/data-card';
           </:title>
         </ContactDataCard>
       {{else}}
-        <DataCard0
+        <KboDataCard
           @kboOrganization={{@model.kboOrganization}}
           @kboNumber={{@controller.kboIdentifier.structuredIdentifier.localId}}
           @kboContact={{@model.kboContact}}

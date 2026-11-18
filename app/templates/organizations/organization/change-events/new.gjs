@@ -7,7 +7,7 @@ import PageHeader from '../../../../components/page-header';
 import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
-import Save from '../../../../components/error/save';
+import SaveError from '../../../../components/error/save';
 import EditCard from '../../../../components/edit-card';
 import ChangeEventTypeSelect from '../../../../components/change-event-type-select';
 import AuTextarea from '@appuniversum/ember-appuniversum/components/au-textarea';
@@ -67,7 +67,7 @@ import hasManyValue from '../../../../helpers/has-many-value';
                 Opslaan
               </AuButton>
             </AuButtonGroup>
-            <Save @showSaveError={{@controller.hasValidationErrors}} />
+            <SaveError @showSaveError={{@controller.hasValidationErrors}} />
           </div>
         </:action>
       </PageHeader>

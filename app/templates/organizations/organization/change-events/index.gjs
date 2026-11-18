@@ -3,7 +3,7 @@ import readOnly from '../../../../helpers/read-only';
 import EditsDisabledMessage from '../../../../components/edits-disabled-message';
 import ReportWrongData from '../../../../components/report-wrong-data';
 import SecuredArea from '../../../../components/secured-area';
-import New from '../../../../components/button/new';
+import NewButton from '../../../../components/button/new';
 import AuDataTable from '@appuniversum/ember-appuniversum/components/au-data-table';
 import AuDataTableThSortable from '@appuniversum/ember-appuniversum/components/au-data-table-th-sortable';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
@@ -23,7 +23,9 @@ import OrganizationStatus from '../../../../components/organization-status';
         {{else}}
           <SecuredArea>
             <:edit>
-              <New @route="organizations.organization.change-events.new" />
+              <NewButton
+                @route="organizations.organization.change-events.new"
+              />
             </:edit>
             <:readOnly>
               <ReportWrongData />

@@ -4,7 +4,7 @@ import PageHeader from '../../components/page-header';
 import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
-import Save from '../../components/error/save';
+import SaveError from '../../components/error/save';
 import { on } from '@ember/modifier';
 import perform from 'ember-concurrency/helpers/perform';
 import EditCard from '../../components/edit-card';
@@ -70,7 +70,7 @@ import confirmationMessageText from '../../helpers/confirmation-message-text';
               Voeg toe
             </AuButton>
           </AuButtonGroup>
-          <Save @showSaveError={{@controller.hasValidationErrors}} />
+          <SaveError @showSaveError={{@controller.hasValidationErrors}} />
         </div>
       </:action>
     </PageHeader>

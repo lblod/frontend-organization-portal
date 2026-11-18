@@ -20,7 +20,7 @@ import EditsDisabledMessage from '../../components/edits-disabled-message';
 import SecuredArea from '../../components/secured-area';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuDataTableThSortable from '@appuniversum/ember-appuniversum/components/au-data-table-th-sortable';
-import Error0 from '../../components/table-message/error';
+import ErrorTableMessage from '../../components/table-message/error';
 import TableMessage from '../../components/table-message';
 import config from 'ember-config-helper/helpers/config';
 import OrganizationStatus from '../../components/organization-status';
@@ -233,7 +233,7 @@ import OrganizationStatus from '../../components/organization-status';
             />
           </c.header>
           {{#if @controller.hasErrored}}
-            <Error0 />
+            <ErrorTableMessage />
           {{else if @controller.hasNoResults}}
             <TableMessage>
               <p>

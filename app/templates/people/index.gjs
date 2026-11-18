@@ -10,12 +10,12 @@ import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import AuDataTable from '@appuniversum/ember-appuniversum/components/au-data-table';
 import PageHeader from '../../components/page-header';
 import SecuredArea from '../../components/secured-area';
-import New from '../../components/button/new';
+import NewButton from '../../components/button/new';
 import AuToggleSwitch from '@appuniversum/ember-appuniversum/components/au-toggle-switch';
 import { fn, array } from '@ember/helper';
 import not from 'ember-truth-helpers/helpers/not';
 import AuDataTableThSortable from '@appuniversum/ember-appuniversum/components/au-data-table-th-sortable';
-import Error0 from '../../components/table-message/error';
+import ErrorTableMessage from '../../components/table-message/error';
 import TableMessage from '../../components/table-message';
 import config from 'ember-config-helper/helpers/config';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
@@ -100,7 +100,7 @@ import PositionStatus from '../../components/position-status';
               <:alert>
                 <SecuredArea>
                   <:edit>
-                    <New @route="people.new-position" />
+                    <NewButton @route="people.new-position" />
                   </:edit>
                 </SecuredArea>
               </:alert>
@@ -143,7 +143,7 @@ import PositionStatus from '../../components/position-status';
             <th>Status</th>
           </c.header>
           {{#if @controller.hasErrored}}
-            <Error0 />
+            <ErrorTableMessage />
           {{else if @controller.hasNoResults}}
             <TableMessage>
               <p>

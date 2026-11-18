@@ -3,7 +3,7 @@ import PageHeader from '../../../../components/page-header';
 import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
-import Save from '../../../../components/error/save';
+import SaveError from '../../../../components/error/save';
 import ReportWrongData from '../../../../components/report-wrong-data';
 import { on } from '@ember/modifier';
 import perform from 'ember-concurrency/helpers/perform';
@@ -45,7 +45,7 @@ import confirmationMessageText from '../../../../helpers/confirmation-message-te
               Opslaan
             </AuButton>
           </AuButtonGroup>
-          <Save @showSaveError={{@controller.hasValidationErrors}} />
+          <SaveError @showSaveError={{@controller.hasValidationErrors}} />
           <ReportWrongData />
         </div>
       </:action>

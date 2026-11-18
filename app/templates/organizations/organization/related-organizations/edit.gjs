@@ -3,7 +3,7 @@ import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import ReportWrongData from '../../../../components/report-wrong-data';
-import Save from '../../../../components/error/save';
+import SaveError from '../../../../components/error/save';
 import { on } from '@ember/modifier';
 import perform from 'ember-concurrency/helpers/perform';
 import RelatedOrganizationsEditTable from '../../../../components/related-organizations-edit-table';
@@ -39,7 +39,7 @@ import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
               </AuButton>
             </AuButtonGroup>
             <ReportWrongData />
-            <Save @showSaveError={{@controller.hasValidationErrors}} />
+            <SaveError @showSaveError={{@controller.hasValidationErrors}} />
           </div>
         </:action>
       </PageHeader>
