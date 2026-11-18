@@ -1,6 +1,6 @@
 import pageTitle from 'ember-page-title/helpers/page-title';
-import StaticPage from '../components/static-page';
-import yasgui from '../modifiers/yasgui';
+import StaticPage from 'frontend-organization-portal/components/static-page';
+import yasgui from 'frontend-organization-portal/modifiers/yasgui';
 
 <template>
   {{pageTitle "SPARQL"}}

@@ -1,13 +1,13 @@
-import PageHeader from '../../../../../components/page-header';
+import PageHeader from 'frontend-organization-portal/components/page-header';
 import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import { on } from '@ember/modifier';
-import SaveError from '../../../../../components/error/save';
-import ReportWrongData from '../../../../../components/report-wrong-data';
+import SaveError from 'frontend-organization-portal/components/error/save';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
 import perform from 'ember-concurrency/helpers/perform';
-import EditCard from '../../../../../components/edit-card';
+import EditCard from 'frontend-organization-portal/components/edit-card';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
-import Datepicker from '../../../../../components/datepicker';
+import Datepicker from 'frontend-organization-portal/components/datepicker';
 import { fn } from '@ember/helper';
 import not from 'ember-truth-helpers/helpers/not';
 

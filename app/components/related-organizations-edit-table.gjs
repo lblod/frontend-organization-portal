@@ -9,7 +9,7 @@ import OrganizationSelect from './organization-select';
 import and from 'ember-truth-helpers/helpers/and';
 import OrganizationStatus from './organization-status';
 import Datepicker from './datepicker';
-import relationStatus from '../helpers/relation-status';
+import relationStatus from 'frontend-organization-portal/helpers/relation-status';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import { on } from '@ember/modifier';
 import perform from 'ember-concurrency/helpers/perform';

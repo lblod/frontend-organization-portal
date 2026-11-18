@@ -7,7 +7,7 @@ import { CLASSIFICATION } from 'frontend-organization-portal/models/administrati
 import { tracked } from '@glimmer/tracking';
 import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { getClassificationIdsForRole } from 'frontend-organization-portal/utils/classification-identifiers';
-import { convertClassificationToGroups } from '../utils/group-classifications';
+import { convertClassificationToGroups } from 'frontend-organization-portal/utils/group-classifications';
 import PowerSelect from 'ember-power-select/components/power-select';
 
 export default class ClassificationMultipleSelectComponent extends Component {

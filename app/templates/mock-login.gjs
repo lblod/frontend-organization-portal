@@ -1,4 +1,4 @@
-import StaticPage from '../components/static-page';
+import StaticPage from 'frontend-organization-portal/components/static-page';
 import MockLogin from '@lblod/ember-mock-login/components/mock-login';
 import AuLoader from '@appuniversum/ember-appuniversum/components/au-loader';
 import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';

@@ -1,7 +1,7 @@
 import AuToolbar from '@appuniversum/ember-appuniversum/components/au-toolbar';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import breadcrumbs from 'ember-breadcrumb-trail/helpers/breadcrumbs';
-import isLast from '../helpers/is-last';
+import isLast from 'frontend-organization-portal/helpers/is-last';
 
 <template>
   <AuToolbar @border="bottom" @size="small" @skin="tint">

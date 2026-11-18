@@ -1,13 +1,13 @@
-import PageHeader from '../../../../components/page-header';
+import PageHeader from 'frontend-organization-portal/components/page-header';
 import not from 'ember-truth-helpers/helpers/not';
 import or from 'ember-truth-helpers/helpers/or';
-import readOnly from '../../../../helpers/read-only';
-import EditsDisabledMessage from '../../../../components/edits-disabled-message';
-import ReportWrongData from '../../../../components/report-wrong-data';
-import SecuredArea from '../../../../components/secured-area';
+import readOnly from 'frontend-organization-portal/helpers/read-only';
+import EditsDisabledMessage from 'frontend-organization-portal/components/edits-disabled-message';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
+import SecuredArea from 'frontend-organization-portal/components/secured-area';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import { LinkTo } from '@ember/routing';
-import RelatedOrganizationsViewTable from '../../../../components/related-organizations-view-table';
+import RelatedOrganizationsViewTable from 'frontend-organization-portal/components/related-organizations-view-table';
 import { fn } from '@ember/helper';
 
 <template>

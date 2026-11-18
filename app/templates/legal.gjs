@@ -1,4 +1,4 @@
-import StaticPage from '../components/static-page';
+import StaticPage from 'frontend-organization-portal/components/static-page';
 
 <template>
   <StaticPage>

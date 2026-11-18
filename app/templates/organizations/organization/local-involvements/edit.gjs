@@ -1,15 +1,15 @@
 import pageTitle from 'ember-page-title/helpers/page-title';
-import PageHeader from '../../../../components/page-header';
+import PageHeader from 'frontend-organization-portal/components/page-header';
 import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
-import SaveError from '../../../../components/error/save';
-import ReportWrongData from '../../../../components/report-wrong-data';
+import SaveError from 'frontend-organization-portal/components/error/save';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
 import { on } from '@ember/modifier';
 import perform from 'ember-concurrency/helpers/perform';
 import AuDataTable from '@appuniversum/ember-appuniversum/components/au-data-table';
 import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text';
-import OrganizationSelect from '../../../../components/organization-select';
+import OrganizationSelect from 'frontend-organization-portal/components/organization-select';
 import { fn } from '@ember/helper';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
 import PowerSelect from 'ember-power-select/components/power-select';
@@ -17,8 +17,8 @@ import and from 'ember-truth-helpers/helpers/and';
 import not from 'ember-truth-helpers/helpers/not';
 import or from 'ember-truth-helpers/helpers/or';
 import eq from 'ember-truth-helpers/helpers/eq';
-import ConfirmationModal from '../../../../components/confirmation-modal';
-import confirmationMessageText from '../../../../helpers/confirmation-message-text';
+import ConfirmationModal from 'frontend-organization-portal/components/confirmation-modal';
+import confirmationMessageText from 'frontend-organization-portal/helpers/confirmation-message-text';
 
 <template>
   {{pageTitle "Bewerk"}}

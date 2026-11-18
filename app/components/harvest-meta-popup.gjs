@@ -5,8 +5,8 @@ import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import { on } from '@ember/modifier';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import AuLinkExternal from '@appuniversum/ember-appuniversum/components/au-link-external';
-import hasHarvestMeta from '../helpers/has-harvest-meta';
-import dateFormat from '../helpers/date-format';
+import hasHarvestMeta from 'frontend-organization-portal/helpers/has-harvest-meta';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
 
 export default class HarvestMetaPopupComponent extends Component {
   @tracked modalOpen = false;

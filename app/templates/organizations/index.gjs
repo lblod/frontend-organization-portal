@@ -1,29 +1,29 @@
-import SidebarContainer from '../../components/sidebar-container';
+import SidebarContainer from 'frontend-organization-portal/components/sidebar-container';
 import { on } from '@ember/modifier';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
-import OrganizationSelectByName from '../../components/organization-select-by-name';
-import OrganizationSelectByIdentifier from '../../components/organization-select-by-identifier';
-import LocationMultipleSelect from '../../components/location-multiple-select';
-import MunicipalitySelectByName from '../../components/municipality-select-by-name';
-import ProvinceSelect from '../../components/province-select';
-import OrganizationTypeMultipleSelect from '../../components/organization-type-multiple-select';
-import ClassificationMultipleSelect from '../../components/classification-multiple-select';
-import RecognizedWorshipTypeSelect from '../../components/recognized-worship-type-select';
-import OrganizationStatusSelect from '../../components/organization-status-select';
-import VendorSelect from '../../components/vendor-select';
+import OrganizationSelectByName from 'frontend-organization-portal/components/organization-select-by-name';
+import OrganizationSelectByIdentifier from 'frontend-organization-portal/components/organization-select-by-identifier';
+import LocationMultipleSelect from 'frontend-organization-portal/components/location-multiple-select';
+import MunicipalitySelectByName from 'frontend-organization-portal/components/municipality-select-by-name';
+import ProvinceSelect from 'frontend-organization-portal/components/province-select';
+import OrganizationTypeMultipleSelect from 'frontend-organization-portal/components/organization-type-multiple-select';
+import ClassificationMultipleSelect from 'frontend-organization-portal/components/classification-multiple-select';
+import RecognizedWorshipTypeSelect from 'frontend-organization-portal/components/recognized-worship-type-select';
+import OrganizationStatusSelect from 'frontend-organization-portal/components/organization-status-select';
+import VendorSelect from 'frontend-organization-portal/components/vendor-select';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import AuDataTable from '@appuniversum/ember-appuniversum/components/au-data-table';
-import PageHeader from '../../components/page-header';
-import readOnly from '../../helpers/read-only';
-import EditsDisabledMessage from '../../components/edits-disabled-message';
-import SecuredArea from '../../components/secured-area';
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import readOnly from 'frontend-organization-portal/helpers/read-only';
+import EditsDisabledMessage from 'frontend-organization-portal/components/edits-disabled-message';
+import SecuredArea from 'frontend-organization-portal/components/secured-area';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuDataTableThSortable from '@appuniversum/ember-appuniversum/components/au-data-table-th-sortable';
-import ErrorTableMessage from '../../components/table-message/error';
-import TableMessage from '../../components/table-message';
+import ErrorTableMessage from 'frontend-organization-portal/components/table-message/error';
+import TableMessage from 'frontend-organization-portal/components/table-message';
 import config from 'ember-config-helper/helpers/config';
-import OrganizationStatus from '../../components/organization-status';
+import OrganizationStatus from 'frontend-organization-portal/components/organization-status';
 
 <template>
   <SidebarContainer>

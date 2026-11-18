@@ -4,7 +4,7 @@ import AuModalContainer from '@appuniversum/ember-appuniversum/components/au-mod
 import BasicDropdownWormhole from 'ember-basic-dropdown/components/basic-dropdown-wormhole';
 import AuApp from '@appuniversum/ember-appuniversum/components/au-app';
 import EnvironmentBanner from '@lblod/ember-environment-banner/components/environment-banner';
-import AppHeader from '../components/app-header';
+import AppHeader from 'frontend-organization-portal/components/app-header';
 import eq from 'ember-truth-helpers/helpers/eq';
 import config from 'ember-config-helper/helpers/config';
 import AuAlert from '@appuniversum/ember-appuniversum/components/au-alert';

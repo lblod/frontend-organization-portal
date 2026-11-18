@@ -1,6 +1,6 @@
 import pageTitle from 'ember-page-title/helpers/page-title';
 import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
-import NavigationBar from '../components/navigation-bar';
+import NavigationBar from 'frontend-organization-portal/components/navigation-bar';
 
 <template>
   {{pageTitle "Organisaties"}}

@@ -1,9 +1,9 @@
-import PageHeader from '../../../../components/page-header';
+import PageHeader from 'frontend-organization-portal/components/page-header';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import { on } from '@ember/modifier';
 import not from 'ember-truth-helpers/helpers/not';
 import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text';
-import EditCard from '../../../../components/edit-card';
+import EditCard from 'frontend-organization-portal/components/edit-card';
 import PowerSelect from 'ember-power-select/components/power-select';
 import { fn } from '@ember/helper';
 

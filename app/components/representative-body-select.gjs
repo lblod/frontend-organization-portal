@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import { BLACKLIST_RO } from '../models/representative-body';
+import { BLACKLIST_RO } from 'frontend-organization-portal/models/representative-body';
 import { findAll } from '@warp-drive/legacy/compat/builders';
 import PowerSelect from 'ember-power-select/components/power-select';
 

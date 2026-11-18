@@ -3,24 +3,24 @@ import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
 import { array, fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import perform from 'ember-concurrency/helpers/perform';
-import PageHeader from '../../../../../components/page-header';
+import PageHeader from 'frontend-organization-portal/components/page-header';
 import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
-import SaveError from '../../../../../components/error/save';
-import EditCard from '../../../../../components/edit-card';
+import SaveError from 'frontend-organization-portal/components/error/save';
+import EditCard from 'frontend-organization-portal/components/edit-card';
 import AuTextarea from '@appuniversum/ember-appuniversum/components/au-textarea';
-import eventValue from '../../../../../helpers/event-value';
-import TrimInput from '../../../../../components/trim-input';
-import DecisionDocumentLinks from '../../../../../components/change-events/decision-document-links';
-import isAdditionalQualificationChangeEvent from '../../../../../helpers/is-additional-qualification-change-event';
-import AdditionalQualificationsList from '../../../../../components/additional-qualifications-list';
+import eventValue from 'frontend-organization-portal/helpers/event-value';
+import TrimInput from 'frontend-organization-portal/components/trim-input';
+import DecisionDocumentLinks from 'frontend-organization-portal/components/change-events/decision-document-links';
+import isAdditionalQualificationChangeEvent from 'frontend-organization-portal/helpers/is-additional-qualification-change-event';
+import AdditionalQualificationsList from 'frontend-organization-portal/components/additional-qualifications-list';
 import and from 'ember-truth-helpers/helpers/and';
-import Datepicker from '../../../../../components/datepicker';
+import Datepicker from 'frontend-organization-portal/components/datepicker';
 import or from 'ember-truth-helpers/helpers/or';
-import dateFormat from '../../../../../helpers/date-format';
-import DataCard from '../../../../../components/data-card';
-import OrganizationStatus from '../../../../../components/organization-status';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
+import DataCard from 'frontend-organization-portal/components/data-card';
+import OrganizationStatus from 'frontend-organization-portal/components/organization-status';
 
 <template>
   {{pageTitle "Bewerk veranderingsgebeurtenis"}}

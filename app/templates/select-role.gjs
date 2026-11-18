@@ -1,9 +1,9 @@
-import StaticPage from '../components/static-page';
+import StaticPage from 'frontend-organization-portal/components/static-page';
 import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
-import convertRoleNames from '../helpers/convert-role-names';
+import convertRoleNames from 'frontend-organization-portal/helpers/convert-role-names';
 
 <template>
   <StaticPage>

@@ -1,6 +1,6 @@
 import pageTitle from 'ember-page-title/helpers/page-title';
 import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
-import SidebarContainer from '../../components/sidebar-container';
+import SidebarContainer from 'frontend-organization-portal/components/sidebar-container';
 import AuNavigationLink from '@appuniversum/ember-appuniversum/components/au-navigation-link';
 import eq from 'ember-truth-helpers/helpers/eq';
 

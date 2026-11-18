@@ -1,9 +1,9 @@
-import PageHeader from '../../../../../components/page-header';
-import DataCard from '../../../../../components/data-card';
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import DataCard from 'frontend-organization-portal/components/data-card';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import gt from 'ember-truth-helpers/helpers/gt';
-import ContactDataCard from '../../../../../components/position/contact-data-card';
-import dateFormat from '../../../../../helpers/date-format';
+import ContactDataCard from 'frontend-organization-portal/components/position/contact-data-card';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
 
 <template>
   <div class="au-c-body-container au-c-body-container--scroll">

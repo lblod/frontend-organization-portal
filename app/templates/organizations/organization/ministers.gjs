@@ -1,6 +1,6 @@
 import pageTitle from 'ember-page-title/helpers/page-title';
 import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
-import paramsFor from '../../../helpers/params-for';
+import paramsFor from 'frontend-organization-portal/helpers/params-for';
 
 <template>
   {{pageTitle "Bedienaren"}}

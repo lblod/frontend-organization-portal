@@ -1,11 +1,11 @@
-import PageHeader from '../../../../components/page-header';
+import PageHeader from 'frontend-organization-portal/components/page-header';
 import AuDataTable from '@appuniversum/ember-appuniversum/components/au-data-table';
 import AuDataTableThSortable from '@appuniversum/ember-appuniversum/components/au-data-table-th-sortable';
 import eq from 'ember-truth-helpers/helpers/eq';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import { array } from '@ember/helper';
 import gt from 'ember-truth-helpers/helpers/gt';
-import PositionStatus from '../../../../components/position-status';
+import PositionStatus from 'frontend-organization-portal/components/position-status';
 
 <template>
   <PageHeader class="au-o-box">

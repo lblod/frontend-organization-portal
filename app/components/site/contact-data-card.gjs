@@ -1,5 +1,5 @@
 import DataCard from '../data-card';
-import telFormat from '../../helpers/tel-format';
+import telFormat from 'frontend-organization-portal/helpers/tel-format';
 import AuLinkExternal from '@appuniversum/ember-appuniversum/components/au-link-external';
 
 <template>

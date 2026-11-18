@@ -4,7 +4,7 @@ import { task } from 'ember-concurrency';
 import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 import { trackedTask } from 'reactiveweb/ember-concurrency';
-import { ORGANIZATION_STATUS } from '../models/organization-status-code';
+import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import PowerSelect from 'ember-power-select/components/power-select';
 
 export default class MunicipalitySelectComponent extends Component {

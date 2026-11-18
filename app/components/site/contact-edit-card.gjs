@@ -8,7 +8,7 @@ import { fn } from '@ember/helper';
 import MunicipalitySelectByName from '../municipality-select-by-name';
 import ProvinceSelect from '../province-select';
 import PhoneInput from '../phone-input';
-import helpText from '../../helpers/help-text';
+import helpText from 'frontend-organization-portal/helpers/help-text';
 
 export default class ContactEditCard extends Component {
   @action

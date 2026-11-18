@@ -1,27 +1,27 @@
-import SidebarContainer from '../../components/sidebar-container';
+import SidebarContainer from 'frontend-organization-portal/components/sidebar-container';
 import { on } from '@ember/modifier';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
-import TrimInput from '../../components/trim-input';
-import OrganizationSelect from '../../components/organization-select';
+import TrimInput from 'frontend-organization-portal/components/trim-input';
+import OrganizationSelect from 'frontend-organization-portal/components/organization-select';
 import or from 'ember-truth-helpers/helpers/or';
-import PositionSelect from '../../components/position-select';
+import PositionSelect from 'frontend-organization-portal/components/position-select';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
 import AuDataTable from '@appuniversum/ember-appuniversum/components/au-data-table';
-import PageHeader from '../../components/page-header';
-import SecuredArea from '../../components/secured-area';
-import NewButton from '../../components/button/new';
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import SecuredArea from 'frontend-organization-portal/components/secured-area';
+import NewButton from 'frontend-organization-portal/components/button/new';
 import AuToggleSwitch from '@appuniversum/ember-appuniversum/components/au-toggle-switch';
 import { fn, array } from '@ember/helper';
 import not from 'ember-truth-helpers/helpers/not';
 import AuDataTableThSortable from '@appuniversum/ember-appuniversum/components/au-data-table-th-sortable';
-import ErrorTableMessage from '../../components/table-message/error';
-import TableMessage from '../../components/table-message';
+import ErrorTableMessage from 'frontend-organization-portal/components/table-message/error';
+import TableMessage from 'frontend-organization-portal/components/table-message';
 import config from 'ember-config-helper/helpers/config';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import eq from 'ember-truth-helpers/helpers/eq';
 import gt from 'ember-truth-helpers/helpers/gt';
-import PositionStatus from '../../components/position-status';
+import PositionStatus from 'frontend-organization-portal/components/position-status';
 
 <template>
   <SidebarContainer>

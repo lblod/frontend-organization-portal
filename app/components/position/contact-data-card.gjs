@@ -1,7 +1,7 @@
 import or from 'ember-truth-helpers/helpers/or';
 import DataCard from '../data-card';
 import HarvestMetaPopup from '../harvest-meta-popup';
-import telFormat from '../../helpers/tel-format';
+import telFormat from 'frontend-organization-portal/helpers/tel-format';
 
 <template>
   {{#if

@@ -1,14 +1,14 @@
-import PageHeader from '../../../../components/page-header';
-import readOnly from '../../../../helpers/read-only';
-import EditsDisabledMessage from '../../../../components/edits-disabled-message';
-import ReportWrongData from '../../../../components/report-wrong-data';
-import SecuredArea from '../../../../components/secured-area';
-import NewButton from '../../../../components/button/new';
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import readOnly from 'frontend-organization-portal/helpers/read-only';
+import EditsDisabledMessage from 'frontend-organization-portal/components/edits-disabled-message';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
+import SecuredArea from 'frontend-organization-portal/components/secured-area';
+import NewButton from 'frontend-organization-portal/components/button/new';
 import AuDataTable from '@appuniversum/ember-appuniversum/components/au-data-table';
 import AuDataTableThSortable from '@appuniversum/ember-appuniversum/components/au-data-table-th-sortable';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
-import dateFormat from '../../../../helpers/date-format';
-import OrganizationStatus from '../../../../components/organization-status';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
+import OrganizationStatus from 'frontend-organization-portal/components/organization-status';
 
 <template>
   <PageHeader class="au-o-box">

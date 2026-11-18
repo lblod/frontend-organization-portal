@@ -1,10 +1,10 @@
-import PageHeader from '../../../../components/page-header';
-import SecuredArea from '../../../../components/secured-area';
-import ReportWrongData from '../../../../components/report-wrong-data';
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import SecuredArea from 'frontend-organization-portal/components/secured-area';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
 import AuDataTable from '@appuniversum/ember-appuniversum/components/au-data-table';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import { array } from '@ember/helper';
-import PositionStatus from '../../../../components/position-status';
+import PositionStatus from 'frontend-organization-portal/components/position-status';
 
 <template>
   <PageHeader class="au-o-box">

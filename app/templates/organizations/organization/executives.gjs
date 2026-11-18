@@ -1,12 +1,12 @@
 import pageTitle from 'ember-page-title/helpers/page-title';
 import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
-import paramsFor from '../../../helpers/params-for';
-import PageHeader from '../../../components/page-header';
+import paramsFor from 'frontend-organization-portal/helpers/params-for';
+import PageHeader from 'frontend-organization-portal/components/page-header';
 import AuDataTable from '@appuniversum/ember-appuniversum/components/au-data-table';
 import AuDataTableThSortable from '@appuniversum/ember-appuniversum/components/au-data-table-th-sortable';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import { array } from '@ember/helper';
-import dateFormat from '../../../helpers/date-format';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
 
 <template>
   {{pageTitle "Leidinggevenden"}}

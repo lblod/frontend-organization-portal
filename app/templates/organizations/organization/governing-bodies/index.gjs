@@ -1,12 +1,12 @@
-import PageHeader from '../../../../components/page-header';
-import readOnly from '../../../../helpers/read-only';
-import EditsDisabledMessage from '../../../../components/edits-disabled-message';
-import SecuredArea from '../../../../components/secured-area';
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import readOnly from 'frontend-organization-portal/helpers/read-only';
+import EditsDisabledMessage from 'frontend-organization-portal/components/edits-disabled-message';
+import SecuredArea from 'frontend-organization-portal/components/secured-area';
 import AuAlert from '@appuniversum/ember-appuniversum/components/au-alert';
-import ReportWrongData from '../../../../components/report-wrong-data';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
 import AuDataTable from '@appuniversum/ember-appuniversum/components/au-data-table';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
-import GoverningBodyStatus from '../../../../components/governing-body-status';
+import GoverningBodyStatus from 'frontend-organization-portal/components/governing-body-status';
 
 <template>
   <PageHeader class="au-o-box">

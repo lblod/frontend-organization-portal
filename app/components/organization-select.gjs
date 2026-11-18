@@ -5,7 +5,7 @@ import { timeout, task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
-import { ORGANIZATION_STATUS } from '../models/organization-status-code';
+import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
 import PowerSelect from 'ember-power-select/components/power-select';
 import perform from 'ember-concurrency/helpers/perform';
 

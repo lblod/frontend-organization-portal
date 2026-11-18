@@ -7,7 +7,7 @@ import MembershipRoleSelect from './membership-role-select';
 import AuDataTableThSortable from '@appuniversum/ember-appuniversum/components/au-data-table-th-sortable';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import OrganizationStatus from './organization-status';
-import dateFormat from '../helpers/date-format';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
 
 <template>
   <AuDataTable

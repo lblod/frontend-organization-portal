@@ -1,29 +1,29 @@
-import PageHeader from '../../../../components/page-header';
-import readOnly from '../../../../helpers/read-only';
-import EditsDisabledMessage from '../../../../components/edits-disabled-message';
-import ReportWrongData from '../../../../components/report-wrong-data';
-import SecuredArea from '../../../../components/secured-area';
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import readOnly from 'frontend-organization-portal/helpers/read-only';
+import EditsDisabledMessage from 'frontend-organization-portal/components/edits-disabled-message';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
+import SecuredArea from 'frontend-organization-portal/components/secured-area';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuPill from '@appuniversum/ember-appuniversum/components/au-pill';
-import dateFormat from '../../../../helpers/date-format';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
 import AuTabs from '@appuniversum/ember-appuniversum/components/au-tabs';
 import { on } from '@ember/modifier';
 import { fn, get } from '@ember/helper';
-import DataCard from '../../../../components/data-card';
+import DataCard from 'frontend-organization-portal/components/data-card';
 import gt from 'ember-truth-helpers/helpers/gt';
-import joinArray from '../../../../helpers/join-array';
-import requiresAdditionalQualifications from '../../../../helpers/requires-additional-qualifications';
-import AdditionalQualificationsList from '../../../../components/additional-qualifications-list';
+import joinArray from 'frontend-organization-portal/helpers/join-array';
+import requiresAdditionalQualifications from 'frontend-organization-portal/helpers/requires-additional-qualifications';
+import AdditionalQualificationsList from 'frontend-organization-portal/components/additional-qualifications-list';
 import AuList from '@appuniversum/ember-appuniversum/components/au-list';
 import and from 'ember-truth-helpers/helpers/and';
 import or from 'ember-truth-helpers/helpers/or';
-import RichTextEditor from '../../../../components/rich-text-editor';
-import OrganizationStatus from '../../../../components/organization-status';
+import RichTextEditor from 'frontend-organization-portal/components/rich-text-editor';
+import OrganizationStatus from 'frontend-organization-portal/components/organization-status';
 import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text';
-import kboFormat from '../../../../helpers/kbo-format';
+import kboFormat from 'frontend-organization-portal/helpers/kbo-format';
 import AuLinkExternal from '@appuniversum/ember-appuniversum/components/au-link-external';
-import ContactDataCard from '../../../../components/site/contact-data-card';
-import KboDataCard from '../../../../components/kbo-organization/data-card';
+import ContactDataCard from 'frontend-organization-portal/components/site/contact-data-card';
+import KboDataCard from 'frontend-organization-portal/components/kbo-organization/data-card';
 
 <template>
   <div class="au-c-body-container au-c-body-container--scroll">

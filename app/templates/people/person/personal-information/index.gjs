@@ -1,16 +1,16 @@
-import PageHeader from '../../../../components/page-header';
-import SecuredArea from '../../../../components/secured-area';
-import ReportWrongData from '../../../../components/report-wrong-data';
-import DataCard from '../../../../components/data-card';
-import HarvestMetaPopup from '../../../../components/harvest-meta-popup';
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import SecuredArea from 'frontend-organization-portal/components/secured-area';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
+import DataCard from 'frontend-organization-portal/components/data-card';
+import HarvestMetaPopup from 'frontend-organization-portal/components/harvest-meta-popup';
 import or from 'ember-truth-helpers/helpers/or';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import { hash, array } from '@ember/helper';
-import dateFormat from '../../../../helpers/date-format';
-import rrnFormat from '../../../../helpers/rrn-format';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
+import rrnFormat from 'frontend-organization-portal/helpers/rrn-format';
 import gt from 'ember-truth-helpers/helpers/gt';
 import eq from 'ember-truth-helpers/helpers/eq';
-import telFormat from '../../../../helpers/tel-format';
+import telFormat from 'frontend-organization-portal/helpers/tel-format';
 import AuHelpText from '@appuniversum/ember-appuniversum/components/au-help-text';
 
 <template>

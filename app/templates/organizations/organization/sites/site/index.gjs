@@ -1,14 +1,14 @@
-import PageHeader from '../../../../../components/page-header';
-import readOnly from '../../../../../helpers/read-only';
-import EditsDisabledMessage from '../../../../../components/edits-disabled-message';
-import ReportWrongData from '../../../../../components/report-wrong-data';
-import editableContactData from '../../../../../helpers/editable-contact-data';
-import SecuredArea from '../../../../../components/secured-area';
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import readOnly from 'frontend-organization-portal/helpers/read-only';
+import EditsDisabledMessage from 'frontend-organization-portal/components/edits-disabled-message';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
+import editableContactData from 'frontend-organization-portal/helpers/editable-contact-data';
+import SecuredArea from 'frontend-organization-portal/components/secured-area';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
-import DataCard from '../../../../../components/data-card';
+import DataCard from 'frontend-organization-portal/components/data-card';
 import and from 'ember-truth-helpers/helpers/and';
 import eq from 'ember-truth-helpers/helpers/eq';
-import ContactDataCard from '../../../../../components/site/contact-data-card';
+import ContactDataCard from 'frontend-organization-portal/components/site/contact-data-card';
 
 <template>
   <div class="au-c-body-container au-c-body-container--scroll">

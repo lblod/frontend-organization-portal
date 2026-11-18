@@ -1,5 +1,5 @@
 import pageTitle from 'ember-page-title/helpers/page-title';
-import StaticPage from '../components/static-page';
+import StaticPage from 'frontend-organization-portal/components/static-page';
 import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
 import AuList from '@appuniversum/ember-appuniversum/components/au-list';
 import AuLinkExternal from '@appuniversum/ember-appuniversum/components/au-link-external';

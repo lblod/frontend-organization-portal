@@ -1,3 +1,3 @@
-import PageLoader from '../../../components/page-loader';
+import PageLoader from 'frontend-organization-portal/components/page-loader';
 
 <template><PageLoader /></template>

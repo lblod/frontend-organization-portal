@@ -1,11 +1,11 @@
-import PageHeader from '../../../../../components/page-header';
-import SecuredArea from '../../../../../components/secured-area';
-import ReportWrongData from '../../../../../components/report-wrong-data';
-import DataCard from '../../../../../components/data-card';
-import HarvestMetaPopup from '../../../../../components/harvest-meta-popup';
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import SecuredArea from 'frontend-organization-portal/components/secured-area';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
+import DataCard from 'frontend-organization-portal/components/data-card';
+import HarvestMetaPopup from 'frontend-organization-portal/components/harvest-meta-popup';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
-import ContactDataCard from '../../../../../components/position/contact-data-card';
-import dateFormat from '../../../../../helpers/date-format';
+import ContactDataCard from 'frontend-organization-portal/components/position/contact-data-card';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
 
 <template>
   {{#let

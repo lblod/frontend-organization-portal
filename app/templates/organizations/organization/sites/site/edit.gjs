@@ -1,17 +1,17 @@
-import PageHeader from '../../../../../components/page-header';
+import PageHeader from 'frontend-organization-portal/components/page-header';
 import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
-import SaveError from '../../../../../components/error/save';
-import ReportWrongData from '../../../../../components/report-wrong-data';
+import SaveError from 'frontend-organization-portal/components/error/save';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
 import { on } from '@ember/modifier';
 import perform from 'ember-concurrency/helpers/perform';
-import EditCard from '../../../../../components/edit-card';
-import SiteTypeSelect from '../../../../../components/site-type-select';
+import EditCard from 'frontend-organization-portal/components/edit-card';
+import SiteTypeSelect from 'frontend-organization-portal/components/site-type-select';
 import { fn } from '@ember/helper';
 import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
 import AuRadioGroup from '@appuniversum/ember-appuniversum/components/au-radio-group';
-import ContactEditCard from '../../../../../components/site/contact-edit-card';
+import ContactEditCard from 'frontend-organization-portal/components/site/contact-edit-card';
 import or from 'ember-truth-helpers/helpers/or';
 import not from 'ember-truth-helpers/helpers/not';
 

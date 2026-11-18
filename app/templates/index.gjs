@@ -1,4 +1,4 @@
-import SidebarContainer from '../components/sidebar-container';
+import SidebarContainer from 'frontend-organization-portal/components/sidebar-container';
 import AuNavigationLink from '@appuniversum/ember-appuniversum/components/au-navigation-link';
 import config from 'ember-config-helper/helpers/config';
 import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';

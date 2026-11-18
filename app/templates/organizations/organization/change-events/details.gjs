@@ -1,5 +1,5 @@
 import { concat, array } from '@ember/helper';
-import dateFormat from '../../../../helpers/date-format';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
 import pageTitle from 'ember-page-title/helpers/page-title';
 import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
 

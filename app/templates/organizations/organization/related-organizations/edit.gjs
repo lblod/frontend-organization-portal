@@ -1,15 +1,15 @@
-import PageHeader from '../../../../components/page-header';
+import PageHeader from 'frontend-organization-portal/components/page-header';
 import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
 import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
-import ReportWrongData from '../../../../components/report-wrong-data';
-import SaveError from '../../../../components/error/save';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
+import SaveError from 'frontend-organization-portal/components/error/save';
 import { on } from '@ember/modifier';
 import perform from 'ember-concurrency/helpers/perform';
-import RelatedOrganizationsEditTable from '../../../../components/related-organizations-edit-table';
-import ConfirmationModal from '../../../../components/confirmation-modal';
-import confirmationMessageText from '../../../../helpers/confirmation-message-text';
-import DeleteModal from '../../../../components/delete-modal';
+import RelatedOrganizationsEditTable from 'frontend-organization-portal/components/related-organizations-edit-table';
+import ConfirmationModal from 'frontend-organization-portal/components/confirmation-modal';
+import confirmationMessageText from 'frontend-organization-portal/helpers/confirmation-message-text';
+import DeleteModal from 'frontend-organization-portal/components/delete-modal';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 
 <template>
