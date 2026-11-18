@@ -1,0 +1,37 @@
+import pageTitle from 'ember-page-title/helpers/page-title';
+import breadcrumb from 'ember-breadcrumb-trail/helpers/breadcrumb';
+import SidebarContainer from 'frontend-organization-portal/components/sidebar-container';
+import AuNavigationLink from '@appuniversum/ember-appuniversum/components/au-navigation-link';
+
+<template>
+  {{pageTitle @controller.model.givenName " " @controller.model.familyName}}
+  {{breadcrumb
+    @controller.model.givenName
+    " "
+    @controller.model.familyName
+    route="people.person"
+    model=@controller.model.id
+  }}
+
+  <SidebarContainer>
+    <:sidebar>
+      <div class="au-d-component-block au-c-sidebar">
+        <ul class="au-c-list-navigation">
+          <li class="au-c-list-navigation__item">
+            <AuNavigationLink @route="people.person.personal-information">
+              Contactgegevens
+            </AuNavigationLink>
+          </li>
+          <li class="au-c-list-navigation__item">
+            <AuNavigationLink @route="people.person.positions">
+              Posities
+            </AuNavigationLink>
+          </li>
+        </ul>
+      </div>
+    </:sidebar>
+    <:content>
+      {{outlet}}
+    </:content>
+  </SidebarContainer>
+</template>

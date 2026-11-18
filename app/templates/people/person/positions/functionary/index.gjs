@@ -1,0 +1,121 @@
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import DataCard from 'frontend-organization-portal/components/data-card';
+import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
+import gt from 'ember-truth-helpers/helpers/gt';
+import ContactDataCard from 'frontend-organization-portal/components/position/contact-data-card';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
+
+<template>
+  <div class="au-c-body-container au-c-body-container--scroll">
+    <div class="au-o-box au-o-flow au-o-flow--large">
+      <PageHeader>
+        <:title>
+          Positie:
+          {{@model.functionary.boardPosition.roleBoard.label}},
+          <br />
+          {{#each @model.governingBodies as |governingBody|}}
+            {{governingBody.administrativeUnit.classification.label}}
+            {{governingBody.administrativeUnit.abbName}}
+            <br />
+          {{/each}}
+        </:title>
+        <:subtitle>
+          {{@model.person.givenName}}
+          {{@model.person.familyName}}
+        </:subtitle>
+      </PageHeader>
+
+      <DataCard>
+        <:title>Positie</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item>
+                <:label>Type</:label>
+                <:content>Functionaris</:content>
+              </Item>
+              <Item>
+                <:label>Bestuursfunctie</:label>
+                <:content
+                >{{@model.functionary.boardPosition.roleBoard.label}}</:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item>
+                <:label>Naam bestuur</:label>
+                <:content>
+                  {{#each
+                    @model.administrativeUnits
+                    as |administrativeUnit index|
+                  }}
+                    <AuLink
+                      @route="organizations.organization"
+                      @model={{administrativeUnit.id}}
+                    >
+                      {{administrativeUnit.abbName}}
+                      ({{administrativeUnit.classification.label}})
+                    </AuLink>
+                    {{#if (gt @model.administrativeUnits.length 1)}}
+                      {{unless index "/"}}
+                    {{/if}}
+                  {{/each}}
+                </:content>
+              </Item>
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+
+      <ContactDataCard
+        @address={{@model.address}}
+        @primaryContact={{@model.contact}}
+        @secondaryContact={{@model.secondaryContact}}
+      />
+
+      <DataCard>
+        <:title>Aanstelling</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              {{#if @model.functionary.startDate}}
+                <Item>
+                  <:label>Start mandaat</:label>
+                  <:content>
+                    {{dateFormat @model.functionary.startDate}}
+                  </:content>
+                </Item>
+              {{/if}}
+              {{#if @model.functionary.expectedEndDate}}
+                <Item>
+                  <:label>Geplande einddatum</:label>
+                  <:content>
+                    {{dateFormat @model.functionary.expectedEndDate}}
+                  </:content>
+                </Item>
+              {{/if}}
+            </:left>
+            <:right as |Item|>
+              {{#each @model.governingBodiesInTime as |governingBodyInTime|}}
+                <Item>
+                  <:label>
+                    Bestuursperiode
+                    {{governingBodyInTime.isTimeSpecializationOf.administrativeUnit.classification.label}}
+                  </:label>
+                  <:content>
+                    {{governingBodyInTime.period}}
+                  </:content>
+                </Item>
+              {{/each}}
+              {{#if @model.functionary.endDate}}
+                <Item>
+                  <:label>Einddatum</:label>
+                  <:content>{{dateFormat @model.functionary.endDate}}</:content>
+                </Item>
+              {{/if}}
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+    </div>
+  </div>
+</template>

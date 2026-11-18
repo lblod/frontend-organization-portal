@@ -1,0 +1,82 @@
+import Component from '@glimmer/component';
+import { service } from '@ember/service';
+import { task } from 'ember-concurrency';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
+import { trackedTask } from 'reactiveweb/ember-concurrency';
+import { CENTRAL_WORSHIP_SERVICE_BLACKLIST } from 'frontend-organization-portal/models/recognized-worship-type';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import PowerSelect from 'ember-power-select/components/power-select';
+
+export default class RecognizedWorshipTypeSelect extends Component {
+  @service store;
+
+  get selectedRecognizedWorshipType() {
+    if (typeof this.args.selected === 'string') {
+      return this.getRecognizedWorshipTypeById(this.args.selected);
+    }
+
+    return this.args.selected;
+  }
+
+  getRecognizedWorshipTypeById(id) {
+    if (this.recognizedWorshipTypes.isRunning) {
+      return null;
+    }
+
+    return this.recognizedWorshipTypes.value.find(
+      (worshipType) => worshipType.id === id,
+    );
+  }
+
+  loadRecognizedWorshipTypesTask = task(async () => {
+    // Trick used to avoid infinite loop
+    // See https://github.com/NullVoxPopuli/ember-resources/issues/340 for more details
+    await Promise.resolve();
+
+    let { content: recognizedWorshipTypes } = await this.store.request(
+      queryBuilder('recognized-worship-type', { sort: 'label' }),
+    );
+
+    if (
+      this.args.selectedClassificationId ==
+      CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id
+    ) {
+      // Filter out blacklisted types for central worship services
+      recognizedWorshipTypes = recognizedWorshipTypes.filter(
+        (t) => !this.isIdInBlacklist(t.id),
+      );
+    }
+
+    return recognizedWorshipTypes;
+  });
+
+  recognizedWorshipTypes = trackedTask(
+    this,
+    this.loadRecognizedWorshipTypesTask,
+    () => [this.args.selectedClassificationId],
+  );
+
+  isIdInBlacklist(id) {
+    return CENTRAL_WORSHIP_SERVICE_BLACKLIST.find((element) => element == id);
+  }
+
+  <template>
+    <div class={{if @error "ember-power-select--error"}}>
+      <PowerSelect
+        @allowClear={{@allowClear}}
+        @searchEnabled={{true}}
+        @loadingMessage="Aan het laden..."
+        @noMatchesMessage="Geen resultaten"
+        @searchMessage="Typ om te zoeken"
+        @searchField="label"
+        @options={{this.recognizedWorshipTypes.value}}
+        @selected={{this.selectedRecognizedWorshipType}}
+        @onChange={{@onChange}}
+        @triggerId={{@id}}
+        as |recognizedWorshipType|
+      >
+        {{recognizedWorshipType.label}}
+      </PowerSelect>
+    </div>
+  </template>
+}

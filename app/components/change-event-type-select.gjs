@@ -1,0 +1,173 @@
+import Component from '@glimmer/component';
+import { service } from '@ember/service';
+import { task } from 'ember-concurrency';
+import {
+  CHANGE_EVENT_TYPE,
+  CHANGE_EVENTS_WORSHIP_SERVICE,
+  CHANGE_EVENTS_CENTRAL_WORSHIP_SERVICE,
+  CHANGE_EVENTS_MUNICIPALITY,
+  CHANGE_EVENTS_OCMW,
+  CHANGE_EVENTS_AGB_APB,
+  CHANGE_EVENTS_DISTRICT,
+  CHANGE_EVENTS_IGS,
+  CHANGE_EVENTS_PZ_HPZ,
+  CHANGE_EVENTS_OCMW_ASSOCIATION,
+  CHANGE_EVENTS_PEVA,
+  CHANGE_EVENTS_VLAAMSE_GEMEENSCHAPSCOMMISSIE,
+  CHANGE_EVENTS_PROVINCE,
+  CHANGE_EVENTS_INTERLOKALE_VERENIGING_ANDERE,
+  CHANGE_EVENTS_REGIONAL_COOPERATION,
+  WORSHIP_ONLY_CHANGE_EVENT_TYPES,
+} from 'frontend-organization-portal/models/change-event-type';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { WorshipCodeList } from 'frontend-organization-portal/constants/classification';
+import requiresAdditionalQualifications from 'frontend-organization-portal/helpers/requires-additional-qualifications';
+import { findAll } from '@warp-drive/legacy/compat/builders';
+import PowerSelect from 'ember-power-select/components/power-select';
+
+export default class ChangeEventTypeSelectComponent extends Component {
+  @service store;
+
+  constructor() {
+    super(...arguments);
+
+    this.loadChangeEventTypesTask.perform();
+  }
+
+  loadChangeEventTypesTask = task(async () => {
+    let { content: types } = await this.store.request(
+      findAll('change-event-type', { reload: true }),
+    );
+
+    let classification = await this.args.organizationClassification;
+
+    if (classification.id == CLASSIFICATION.WORSHIP_SERVICE.id) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_WORSHIP_SERVICE),
+      );
+    }
+    if (classification.id == CLASSIFICATION.CENTRAL_WORSHIP_SERVICE.id) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_CENTRAL_WORSHIP_SERVICE),
+      );
+    }
+    if (classification.id == CLASSIFICATION.MUNICIPALITY.id) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_MUNICIPALITY),
+      );
+    }
+    if (classification.id == CLASSIFICATION.OCMW.id) {
+      types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_OCMW));
+    }
+    if (classification.id == CLASSIFICATION.DISTRICT.id) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_DISTRICT),
+      );
+    }
+    if (
+      classification.id == CLASSIFICATION.AGB.id ||
+      classification.id == CLASSIFICATION.APB.id
+    ) {
+      types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_AGB_APB));
+    }
+    if (
+      classification.id == CLASSIFICATION.PROJECTVERENIGING.id ||
+      classification.id == CLASSIFICATION.DIENSTVERLENENDE_VERENIGING.id ||
+      classification.id == CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING.id ||
+      classification.id ==
+        CLASSIFICATION.OPDRACHTHOUDENDE_VERENIGING_MET_PRIVATE_DEELNAME.id
+    ) {
+      types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_IGS));
+    }
+    if (
+      classification.id == CLASSIFICATION.POLICE_ZONE.id ||
+      classification.id == CLASSIFICATION.ASSISTANCE_ZONE.id
+    ) {
+      types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_PZ_HPZ));
+    }
+    if (
+      classification.id == CLASSIFICATION.WELZIJNSVERENIGING.id ||
+      classification.id == CLASSIFICATION.AUTONOME_VERZORGINGSINSTELLING.id ||
+      classification.id == CLASSIFICATION.ZIEKENHUISVERENIGING.id ||
+      classification.id ==
+        CLASSIFICATION.VERENIGING_OF_VENNOOTSCHAP_VOOR_SOCIALE_DIENSTVERLENING
+          .id ||
+      classification.id ==
+        CLASSIFICATION.WOONZORGVERENIGING_OF_WOONZORGVENNOOTSCHAP.id
+    ) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_OCMW_ASSOCIATION),
+      );
+    }
+    if (
+      classification.id == CLASSIFICATION.PEVA_MUNICIPALITY.id ||
+      classification.id == CLASSIFICATION.PEVA_PROVINCE.id
+    ) {
+      types = types.filter((t) => this.isIdInList(t.id, CHANGE_EVENTS_PEVA));
+    }
+    if (classification.id === CLASSIFICATION.VLAAMSE_GEMEENSCHAPSCOMMISSIE.id) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_VLAAMSE_GEMEENSCHAPSCOMMISSIE),
+      );
+    }
+    if (classification.id == CLASSIFICATION.PROVINCE.id) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_PROVINCE),
+      );
+    }
+    if (
+      classification.id == CLASSIFICATION.INTERLOKALE_VERENIGING.id ||
+      classification.id == CLASSIFICATION.ANDERE.id
+    ) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_INTERLOKALE_VERENIGING_ANDERE),
+      );
+    }
+    if (
+      classification.id == CLASSIFICATION.ZORGRAAD.id ||
+      classification.id == CLASSIFICATION.VERVOERREGIORAAD.id ||
+      classification.id == CLASSIFICATION.REGIONAAL_ZORGPLATFORM.id ||
+      classification.id == CLASSIFICATION.REGIONAAL_LANDSCHAP.id ||
+      classification.id == CLASSIFICATION.BOSGROEP.id ||
+      classification.id == CLASSIFICATION.WOONMAATSCHAPPIJ.id
+    ) {
+      types = types.filter((t) =>
+        this.isIdInList(t.id, CHANGE_EVENTS_REGIONAL_COOPERATION),
+      );
+    }
+
+    if (!requiresAdditionalQualifications(classification)) {
+      types = types.filter(
+        (t) => t.id !== CHANGE_EVENT_TYPE.ADDITIONAL_QUALIFICATION_CHANGE,
+      );
+    }
+
+    if (!WorshipCodeList.includes(classification.id)) {
+      types = types.filter(
+        (t) => !this.isIdInList(t.id, WORSHIP_ONLY_CHANGE_EVENT_TYPES),
+      );
+    }
+
+    return types;
+  });
+
+  isIdInList(id, blacklist) {
+    return blacklist.find((element) => element == id);
+  }
+
+  <template>
+    <div class={{if @error "ember-power-select--error"}}>
+      <PowerSelect
+        @loadingMessage="Aan het laden..."
+        @searchField="label"
+        @options={{this.loadChangeEventTypesTask.last}}
+        @selected={{@selected}}
+        @onChange={{@onChange}}
+        @triggerId={{@id}}
+        as |type|
+      >
+        {{type.label}}
+      </PowerSelect>
+    </div>
+  </template>
+}

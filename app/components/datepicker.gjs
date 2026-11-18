@@ -1,0 +1,97 @@
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
+import { on } from '@ember/modifier';
+import auDateInput from '@appuniversum/ember-appuniversum/modifiers/au-date-input';
+
+const EMPTY_DATE = 'EMPTY_DATE';
+const INVALID_DATE = 'INVALID_DATE';
+const MIN_DATE = 'MIN_DATE';
+const MAX_DATE = 'MAX_DATE';
+
+export default class DatepickerComponent extends Component {
+  @tracked
+  validation = { valid: true };
+
+  constructor() {
+    super(...arguments);
+  }
+
+  @action
+  onChange(isoDate, dt) {
+    let { date, validation } = this.validate(dt);
+    if (validation.valid || validation.error === EMPTY_DATE) {
+      this.args.onChange?.(date);
+      this.args.onValidate?.(validation);
+    }
+    this.validation = validation;
+  }
+
+  @action
+  focusOut() {
+    this.args.onValidate?.(this.validation);
+  }
+
+  validate(dt) {
+    let date;
+    if (!dt) {
+      return { date: null, validation: { valid: false, error: EMPTY_DATE } };
+    }
+    if (dt instanceof Date) {
+      date = dt;
+    } else {
+      if (dt.length === 0) {
+        return { date: null, validation: { valid: false, error: EMPTY_DATE } };
+      }
+
+      if (dt.length != 8) {
+        return { date: dt, validation: { valid: false, error: INVALID_DATE } };
+      }
+
+      date = new Date(
+        `${dt.substring(4, 8)}-${dt.substring(2, 4)}-${dt.substring(0, 2)}`,
+      );
+    }
+
+    let valid = date !== 'Invalid Date' && !isNaN(date);
+    if (!valid) {
+      return { date: dt, validation: { valid, error: INVALID_DATE } };
+    }
+
+    const min = this.args.min;
+    const max = this.args.max;
+
+    if (min && date.getTime() < min.getTime()) {
+      return { date, validation: { valid: false, error: MIN_DATE } };
+    }
+
+    if (max && date.getTime() > max.getTime()) {
+      return { date, validation: { valid: false, error: MAX_DATE } };
+    }
+
+    return { date, validation: { valid: true, error: null } };
+  }
+
+  get width() {
+    return this.args.width || 'block';
+  }
+
+  <template>
+    <AuInput
+      @disabled={{@disabled}}
+      @error={{@error}}
+      {{on "focusout" this.focusOut}}
+      @width={{this.width}}
+      id={{@id}}
+      {{auDateInput value=@value onChange=this.onChange}}
+      {{!
+        inputmask.js has a bug that makes it throw an error in Chrome, when autocomplete feature is used: https://github.com/RobinHerbots/Inputmask/issues/2809
+        That bug has been fixed, but the fix hasn't been released yet in a stable release.
+        It also seems there is a second bug that probably needs to be fixed before we can revert this: https://github.com/RobinHerbots/Inputmask/issues/2832
+      }}
+      autocomplete="off"
+      ...attributes
+    />
+  </template>
+}

@@ -1,0 +1,10 @@
+<template>
+  <div class="au-c-sidebar-container">
+    <div class="au-c-sidebar-container__sidebar">{{yield to="sidebar"}}</div>
+    <div
+      class="au-c-sidebar-container__content"
+      id="container"
+      tabindex="0"
+    >{{yield to="content"}}</div>
+  </div>
+</template>

@@ -1,0 +1,109 @@
+import StaticPage from 'frontend-organization-portal/components/static-page';
+import AuContent from '@appuniversum/ember-appuniversum/components/au-content';
+import LoginButton from 'frontend-organization-portal/components/login-button';
+import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
+import AuCard from '@appuniversum/ember-appuniversum/components/au-card';
+import config from 'ember-config-helper/helpers/config';
+import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
+
+<template>
+  <StaticPage>
+    <section class="au-o-layout au-o-region-large">
+      <div class="au-o-grid au-o-grid--small">
+        <div class="au-o-grid__item au-u-3-4@small au-u-1-2@medium">
+          <AuContent @skin="large">
+            <h1>OrganisatiePortaal</h1>
+            <p class="au-c-heading au-c-heading--4">Consulteer organisatie- en
+              contactinformatie van lokale besturen en hun
+              samenwerkingsverbanden.</p>
+            <p>Lukt het aanmelden niet? Neem contact op met uw interne
+              beheerder. Indien er zich een probleem voordoet, contacteer
+              <a
+                class="au-c-link"
+                href="https://overheid.vlaanderen.be/ict/ict-diensten/gebruikersbeheer"
+              >gebruikersbeheer Vlaanderen</a>.</p>
+          </AuContent>
+        </div>
+        <div
+          role="menu"
+          class="au-o-grid__item au-u-1-4@small au-u-1-2@medium au-u-text-right@medium"
+        >
+          <LoginButton />
+        </div>
+      </div>
+    </section>
+
+    <section class="au-o-region-large au-u-background-gray-200">
+      <div class="au-o-layout">
+        <AuHeading @level="2" @skin="3" class="au-u-margin-bottom">
+          De functionaliteiten van het OrganisatiePortaal
+        </AuHeading>
+        <div class="au-o-grid au-o-grid--small">
+          <div class="au-o-grid__item au-u-1-2@small">
+            <AuCard @flex="true" as |c|>
+              <c.header @badgeSkin="brand" @badgeIcon="sitemap">
+                <AuHeading @level="3" @skin="4">
+                  Organisaties
+                </AuHeading>
+              </c.header>
+              <c.content>
+                <AuContent>
+                  <ul>
+                    <li>Kerninformatie over organisaties</li>
+                    <li>Bestuursorganen en mandaten</li>
+                    <li>Gerelateerde organisaties</li>
+                  </ul>
+
+                </AuContent>
+              </c.content>
+              <c.footer>
+                <p>
+                  <a
+                    class="au-c-link au-c-link--secondary"
+                    href={{config "userManual.module.organizations"}}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <AuIcon @icon="manual" @alignment="left" />
+                    Handleiding (externe link)
+                  </a>
+                </p>
+              </c.footer>
+            </AuCard>
+          </div>
+          <div class="au-o-grid__item au-u-1-2@small">
+            <AuCard @flex="true" as |c|>
+              <c.header @badgeSkin="brand" @badgeIcon="users">
+                <AuHeading @level="3" @skin="4">
+                  Personen
+                </AuHeading>
+              </c.header>
+              <c.content>
+                <AuContent>
+                  <ul>
+                    <li>Kerngegevens over personen</li>
+                    <li>Contactgegevens</li>
+                    <li>Posities</li>
+                  </ul>
+                </AuContent>
+              </c.content>
+              <c.footer>
+                <p>
+                  <a
+                    href={{config "userManual.module.people"}}
+                    class="au-c-link au-c-link--secondary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <AuIcon @icon="manual" @alignment="left" />
+                    Handleiding (externe link)
+                  </a>
+                </p>
+              </c.footer>
+            </AuCard>
+          </div>
+        </div>
+      </div>
+    </section>
+  </StaticPage>
+</template>

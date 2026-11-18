@@ -1,0 +1,136 @@
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import SecuredArea from 'frontend-organization-portal/components/secured-area';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
+import DataCard from 'frontend-organization-portal/components/data-card';
+import HarvestMetaPopup from 'frontend-organization-portal/components/harvest-meta-popup';
+import AuLink from '@appuniversum/ember-appuniversum/components/au-link';
+import ContactDataCard from 'frontend-organization-portal/components/position/contact-data-card';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
+
+<template>
+  {{#let
+    @model.mandatory.mandate.governingBody.isTimeSpecializationOf
+    @model.mandatory.mandate.governingBody.isTimeSpecializationOf.administrativeUnit
+    as |governingBody administrativeUnit|
+  }}
+    <div class="au-c-body-container au-c-body-container--scroll">
+      <div class="au-o-box au-o-flow au-o-flow--large">
+        <PageHeader>
+          <:title>
+            Positie:
+            {{@model.mandatory.mandate.roleBoard.label}},
+            <br />
+            {{governingBody.classification.label}}
+            {{governingBody.administrativeUnit.abbName}}
+          </:title>
+          <:subtitle>
+            {{@model.person.givenName}}
+            {{@model.person.familyName}}
+          </:subtitle>
+          <:action>
+            <SecuredArea>
+              <:readOnly>
+                <ReportWrongData />
+              </:readOnly>
+            </SecuredArea>
+          </:action>
+        </PageHeader>
+
+        <DataCard>
+          <:title>
+            Positie
+            <HarvestMetaPopup @harvestable={{@model.mandatory}} />
+          </:title>
+          <:card as |Card|>
+            <Card.Columns>
+              <:left as |Item|>
+                <Item>
+                  <:label>Type</:label>
+                  <:content>Mandaat</:content>
+                </Item>
+                <Item>
+                  <:label>Bestuursfunctie</:label>
+                  <:content
+                  >{{@model.mandatory.mandate.roleBoard.label}}</:content>
+                </Item>
+              </:left>
+              <:right as |Item|>
+                <Item>
+                  <:label>Naam bestuur</:label>
+                  <:content>
+                    <AuLink
+                      @route="organizations.organization"
+                      @model={{administrativeUnit.id}}
+                    >
+                      {{administrativeUnit.abbName}}
+                    </AuLink>
+                  </:content>
+                </Item>
+              </:right>
+            </Card.Columns>
+          </:card>
+        </DataCard>
+
+        <ContactDataCard
+          @address={{@model.address}}
+          @primaryContact={{@model.contact}}
+          @secondaryContact={{@model.secondaryContact}}
+        />
+
+        <DataCard>
+          <:title>Aanstelling</:title>
+          <:card as |Card|>
+            <Card.Columns>
+              <:left as |Item|>
+                {{#if @model.mandatory.startDate}}
+                  <Item>
+                    <:label>Start mandaat</:label>
+                    <:content>
+                      {{dateFormat @model.mandatory.startDate}}
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#if @model.mandatory.expectedEndDate}}
+                  <Item>
+                    <:label>Geplande einddatum</:label>
+                    <:content>
+                      {{dateFormat @model.mandatory.expectedEndDate}}
+                    </:content>
+                  </Item>
+                {{/if}}
+              </:left>
+              <:right as |Item|>
+                {{#if @model.mandatory.mandate.governingBody.period}}
+                  <Item>
+                    <:label>Bestuursperiode</:label>
+                    <:content>
+                      {{@model.mandatory.mandate.governingBody.period}}
+                    </:content>
+                  </Item>
+                {{/if}}
+                {{#if @model.mandatory.typeHalf.label}}
+                  <Item>
+                    <:label>Verkozen</:label>
+                    <:content>{{@model.mandatory.typeHalf.label}}</:content>
+                  </Item>
+                {{/if}}
+                {{#if @model.mandatory.endDate}}
+                  <Item>
+                    <:label>Einddatum</:label>
+                    <:content>{{dateFormat @model.mandatory.endDate}}</:content>
+                  </Item>
+                {{/if}}
+                {{#if @model.mandatory.reasonStopped}}
+                  <Item>
+                    <:label>Stopzetting</:label>
+                    <:content>{{@model.mandatory.reasonStopped}}</:content>
+                  </Item>
+                {{/if}}
+              </:right>
+            </Card.Columns>
+          </:card>
+        </DataCard>
+      </div>
+    </div>
+  {{/let}}
+</template>

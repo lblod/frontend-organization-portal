@@ -1,0 +1,116 @@
+import PageHeader from 'frontend-organization-portal/components/page-header';
+import AuButtonGroup from '@appuniversum/ember-appuniversum/components/au-button-group';
+import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
+import { on } from '@ember/modifier';
+import SaveError from 'frontend-organization-portal/components/error/save';
+import ReportWrongData from 'frontend-organization-portal/components/report-wrong-data';
+import perform from 'ember-concurrency/helpers/perform';
+import EditCard from 'frontend-organization-portal/components/edit-card';
+import AuInput from '@appuniversum/ember-appuniversum/components/au-input';
+import Datepicker from 'frontend-organization-portal/components/datepicker';
+import { fn } from '@ember/helper';
+import not from 'ember-truth-helpers/helpers/not';
+
+<template>
+  <div class="au-c-body-container au-c-body-container--scroll">
+    <div class="au-o-box">
+      <PageHeader class="au-u-margin-bottom-large">
+        <:title>Bewerk bestuursorgaan</:title>
+        <:subtitle>
+          {{@model.governingBodyClassification.label}}
+          {{@model.organization.abbName}}
+          ({{@model.organization.classification.label}})
+        </:subtitle>
+        <:action>
+          <div class="au-u-text-right">
+            <AuButtonGroup class="au-c-button-group--align-right">
+              <AuButton {{on "click" @controller.cancel}} @skin="secondary">
+                Annuleer
+              </AuButton>
+              <AuButton
+                @loading={{@controller.save.isRunning}}
+                @loadingMessage="Opslaan"
+                @disabled={{@controller.save.isRunning}}
+                type="submit"
+                form="edit-governing-body-form"
+              >
+                Opslaan
+              </AuButton>
+            </AuButtonGroup>
+            <SaveError @showSaveError={{@controller.hasValidationErrors}} />
+            <ReportWrongData />
+          </div>
+        </:action>
+      </PageHeader>
+      <form
+        id="edit-governing-body-form"
+        aria-label="edit-governing-body-form"
+        {{on "submit" (perform @controller.save)}}
+      >
+        <div class="au-o-flow au-o-flow--large">
+          <EditCard>
+            <:title>Bestuursorgaan</:title>
+            <:card as |Card|>
+              <Card.Columns>
+                <:left as |Item|>
+                  <Item>
+                    <:label>Type</:label>
+                    <:content>
+                      <AuInput
+                        @width="block"
+                        @disabled={{true}}
+                        value={{@model.governingBodyClassification.label}}
+                      />
+                    </:content>
+                  </Item>
+                  <Item>
+                    <:label>Termijn</:label>
+                    <:content>
+                      <AuInput
+                        @width="block"
+                        @disabled={{true}}
+                        value={{@model.governingBody.period}}
+                      />
+                    </:content>
+                  </Item>
+                </:left>
+                <:right as |Item|>
+                  <Item
+                    @labelFor="governing-body-start-date"
+                    @errorMessage={{@model.governingBody.error.startDate.message}}
+                    @required={{true}}
+                  >
+                    <:label>Startdatum</:label>
+                    <:content as |hasError|>
+                      <Datepicker
+                        @id="governing-body-start-date"
+                        @value={{@model.governingBody.startDate}}
+                        @onChange={{fn (mut @model.governingBody.startDate)}}
+                        @error={{hasError}}
+                      />
+                    </:content>
+                  </Item>
+                  <Item
+                    @labelFor="governing-body-end-date"
+                    @errorMessage={{@model.governingBody.error.endDate.message}}
+                    @required={{not this.endDateOptional}}
+                  >
+                    <:label>Einddatum</:label>
+                    <:content as |hasError|>
+                      <Datepicker
+                        @id="governing-body-end-date"
+                        @value={{@model.governingBody.endDate}}
+                        @onChange={{fn (mut @model.governingBody.endDate)}}
+                        @error={{hasError}}
+                      />
+                    </:content>
+                  </Item>
+                </:right>
+              </Card.Columns>
+            </:card>
+          </EditCard>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>

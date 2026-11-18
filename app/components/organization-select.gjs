@@ -1,0 +1,167 @@
+import Component from '@glimmer/component';
+import { service } from '@ember/service';
+import { action } from '@ember/object';
+import { timeout, task } from 'ember-concurrency';
+import { tracked } from '@glimmer/tracking';
+import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
+import { ORGANIZATION_STATUS } from 'frontend-organization-portal/models/organization-status-code';
+import PowerSelect from 'ember-power-select/components/power-select';
+import perform from 'ember-concurrency/helpers/perform';
+
+export default class OrganizationSelectComponent extends Component {
+  @service store;
+
+  @tracked loadedRecord;
+
+  @action
+  triggerChange(event) {
+    this.args.onChange(event);
+    if (this.args.onChangeExtra) {
+      this.args.onChangeExtra();
+    }
+  }
+
+  loadOrganizationsTask = task(async (searchParams = '') => {
+    await Promise.resolve();
+    await timeout(500);
+
+    let classificationCodes = this.args.classificationCodes;
+    let searchResults = [];
+    let query;
+
+    const selectedPositionId = this.args.selectedPosition;
+
+    if (selectedPositionId) {
+      const { content: boardPositionCodes } = await this.store.request(
+        queryBuilder('board-position-code', {
+          filter: {
+            ':id:': selectedPositionId,
+          },
+        }),
+      );
+
+      const { content: ministerPositions } = await this.store.request(
+        queryBuilder('minister-position-function', {
+          filter: {
+            ':id:': selectedPositionId,
+          },
+        }),
+      );
+
+      if (ministerPositions.length) {
+        // Only worship services have minister positions
+        classificationCodes = [CLASSIFICATION.WORSHIP_SERVICE.id];
+      } else if (boardPositionCodes.length) {
+        const selectedPosition = boardPositionCodes.at(0);
+        const governingBodyClassification = await selectedPosition.appliesTo;
+        const classificationOptions =
+          await governingBodyClassification.appliesWithin;
+
+        // If we find one, we use it as the only allowed code
+        classificationOptions.forEach((classificationOption) => {
+          if (
+            classificationCodes.find((code) => code == classificationOption.id)
+          ) {
+            classificationCodes.push(classificationOption.id);
+          }
+        });
+      }
+    }
+
+    if (classificationCodes && classificationCodes.length) {
+      query = {
+        filter: {
+          classification: {
+            id: classificationCodes.join(),
+          },
+          'organization-status': {
+            id: this.args.limitToActiveOrganizations
+              ? ORGANIZATION_STATUS.ACTIVE
+              : undefined,
+          },
+        },
+        sort: 'name',
+        include: [
+          'classification',
+          'identifiers.structured-identifier',
+          'organization-status',
+        ].join(),
+      };
+    }
+
+    if (searchParams.trim() !== '') {
+      query['filter[name]'] = searchParams;
+    }
+
+    if (query) {
+      searchResults = (
+        await this.store.request(queryBuilder('organization', query))
+      ).content;
+    }
+
+    if (typeof this.args.filter === 'function') {
+      return this.args.filter(searchResults);
+    } else {
+      return searchResults;
+    }
+  });
+
+  get selectedOrganization() {
+    if (typeof this.args.selected === 'string') {
+      return this.loadedRecord;
+    }
+
+    return this.args.selected;
+  }
+
+  loadRecord = task(async () => {
+    let selectedOrganization = this.args.selected;
+    if (typeof selectedOrganization === 'string') {
+      this.loadedRecord = (
+        await this.store.request(
+          queryBuilder('organization', {
+            filter: {
+              ':id:': selectedOrganization,
+            },
+          }),
+        )
+      ).content;
+    }
+  });
+
+  <template>
+    <div class={{if @error "ember-power-select--error"}} ...attributes>
+      <PowerSelect
+        @disabled={{@disabled}}
+        @allowClear={{@allowClear}}
+        @searchEnabled={{true}}
+        @loadingMessage="Aan het laden..."
+        @noMatchesMessage="Geen resultaten"
+        @searchMessage="Typ om te zoeken"
+        @searchField="name"
+        @onChange={{this.triggerChange}}
+        @search={{perform this.loadOrganizationsTask}}
+        @selected={{this.selectedOrganization}}
+        @triggerId={{@id}}
+        as |organization|
+      >
+        {{#if @showKbo}}
+          {{#if organization.kboNumber}}
+            {{organization.kboNumber}}
+            -
+            {{organization.abbName}}
+          {{else}}
+            {{organization.abbName}}
+            (geen kbo gevonden)
+          {{/if}}
+        {{else}}
+          {{organization.abbName}}
+        {{/if}}
+        {{#unless organization.isWorshipAdministrativeUnit}}
+          ({{organization.classification.label}})
+        {{/unless}}
+      </PowerSelect>
+    </div>
+  </template>
+}

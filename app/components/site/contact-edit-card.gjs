@@ -1,0 +1,265 @@
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
+import EditCard from '../edit-card';
+import AddressSearch from '../address-search';
+import CountrySelect from '../country-select';
+import TrimInput from '../trim-input';
+import { fn } from '@ember/helper';
+import MunicipalitySelectByName from '../municipality-select-by-name';
+import ProvinceSelect from '../province-select';
+import PhoneInput from '../phone-input';
+import helpText from 'frontend-organization-portal/helpers/help-text';
+
+export default class ContactEditCard extends Component {
+  @action
+  updateCountry(value) {
+    this.args.address.country = value;
+    this.args.address.municipality = null;
+    this.args.address.province = null;
+  }
+
+  @action
+  updatePostCode(value) {
+    this.args.address.postcode = value;
+    this.args.address.municipality = null;
+    this.args.address.province = null;
+  }
+
+  <template>
+    <EditCard @containsRequiredFields={{true}}>
+      <:title>{{yield to="title"}}</:title>
+      <:card as |Card|>
+        <Card.Columns>
+          <:left as |Item|>
+            <AddressSearch
+              @address={{@address}}
+              @itemComponent={{Item}}
+              @isSearchEnabledInitially={{@isAddressSearchEnabledInitially}}
+              @required={{true}}
+              @error={{@address.error}}
+            >
+              <:manualAddressInputBeforeButton>
+                <Item
+                  @labelFor="site-address-country"
+                  @required={{true}}
+                  @errorMessage={{@address.error.country.message}}
+                >
+                  <:label>Land</:label>
+                  <:content as |hasError|>
+                    <CountrySelect
+                      @selected={{@address.country}}
+                      @onChange={{this.updateCountry}}
+                      @id="site-address-country"
+                      @error={{hasError}}
+                    />
+                  </:content>
+                </Item>
+                <Item
+                  @labelFor="site-address-street-name"
+                  @required={{true}}
+                  @errorMessage={{@address.error.street.message}}
+                >
+                  <:label>Straat</:label>
+                  <:content as |hasError|>
+                    <TrimInput
+                      @width="block"
+                      @value={{@address.street}}
+                      @onUpdate={{fn (mut @address.street)}}
+                      @error={{hasError}}
+                      id="site-address-street-name"
+                    />
+                  </:content>
+                </Item>
+              </:manualAddressInputBeforeButton>
+              <:manualAddressInput>
+                <Item
+                  @labelFor="site-address-house-number"
+                  @required={{true}}
+                  @errorMessage={{@address.error.number.message}}
+                >
+                  <:label>Huisnummer</:label>
+                  <:content as |hasError|>
+                    <TrimInput
+                      @width="block"
+                      @value={{@address.number}}
+                      @onUpdate={{fn (mut @address.number)}}
+                      @error={{hasError}}
+                      id="site-address-house-number"
+                    />
+                  </:content>
+                </Item>
+                <Item @labelFor="site-address-bus-number">
+                  <:label>Busnummer</:label>
+                  <:content>
+                    <TrimInput
+                      @width="block"
+                      @value={{@address.boxNumber}}
+                      @onUpdate={{fn (mut @address.boxNumber)}}
+                      id="site-address-bus-number"
+                    />
+                  </:content>
+                </Item>
+                <Item
+                  @labelFor="site-address-postal-code"
+                  @required={{true}}
+                  @errorMessage={{@address.error.postcode.message}}
+                >
+                  <:label>Postcode</:label>
+                  <:content as |hasError|>
+                    <TrimInput
+                      @width="block"
+                      @value={{@address.postcode}}
+                      @onUpdate={{this.updatePostCode}}
+                      @error={{hasError}}
+                      id="site-address-postal-code"
+                    />
+                  </:content>
+                </Item>
+                {{#if @address.isPostcodeInFlanders}}
+                  <Item
+                    @labelFor="site-address-municipality"
+                    @required={{true}}
+                    @errorMessage={{@address.error.municipality.message}}
+                  >
+                    <:label>Gemeente</:label>
+                    <:content as |hasError|>
+                      <MunicipalitySelectByName
+                        @selected={{@address.municipality}}
+                        @selectedProvince={{@address.province}}
+                        @onChange={{fn (mut @address.municipality)}}
+                        @id="site-address-municipality"
+                        @error={{hasError}}
+                      />
+                    </:content>
+                  </Item>
+                {{else}}
+                  <Item
+                    @labelFor="site-address-municipality"
+                    @required={{true}}
+                    @errorMessage={{@address.error.municipality.message}}
+                  >
+                    <:label>Gemeente</:label>
+                    <:content as |hasError|>
+                      <TrimInput
+                        @width="block"
+                        @value={{@address.municipality}}
+                        @onUpdate={{fn (mut @address.municipality)}}
+                        @error={{hasError}}
+                        id="site-address-municipality"
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
+              </:manualAddressInput>
+              <:commonInput>
+                {{#if @address.isPostcodeInFlanders}}
+                  <Item
+                    @labelFor="site-address-province"
+                    @required={{true}}
+                    @errorMessage={{@address.error.province.message}}
+                  >
+                    <:label>Provincie</:label>
+                    <:content as |hasError|>
+                      <ProvinceSelect
+                        @selected={{@address.province}}
+                        @selectedMunicipality={{@address.municipality}}
+                        @onChange={{fn (mut @address.province)}}
+                        @id="site-address-province"
+                        @error={{hasError}}
+                      />
+                    </:content>
+                  </Item>
+                {{/if}}
+              </:commonInput>
+            </AddressSearch>
+          </:left>
+          <:right as |Item|>
+            <PhoneInput
+              @value={{@primaryContact.telephone}}
+              @onUpdate={{fn (mut @primaryContact.telephone)}}
+              as |phone|
+            >
+              <Item
+                @labelFor="site-contact-phone-number"
+                @errorMessage={{@primaryContact.error.telephone.message}}
+                @warningMessage={{phone.warning}}
+              >
+                <:label>Primair telefoonnummer</:label>
+                <:content as |hasError|>
+                  <phone.Input
+                    @width="block"
+                    @error={{hasError}}
+                    id="site-contact-phone-number"
+                  />
+                </:content>
+                <:helpText>
+                  {{helpText "phone-number"}}
+                </:helpText>
+              </Item>
+            </PhoneInput>
+
+            <PhoneInput
+              @value={{@secondaryContact.telephone}}
+              @onUpdate={{fn (mut @secondaryContact.telephone)}}
+              as |phone|
+            >
+              <Item
+                @labelFor="site-contact-secondary-phone-number"
+                @errorMessage={{@secondaryContact.error.telephone.message}}
+                @warningMessage={{phone.warning}}
+              >
+                <:label>Secundair telefoonnummer</:label>
+                <:content as |hasError|>
+                  <phone.Input
+                    @width="block"
+                    @error={{hasError}}
+                    id="site-contact-secondary-phone-number"
+                  />
+                </:content>
+                <:helpText>
+                  {{helpText "phone-number"}}
+                </:helpText>
+              </Item>
+            </PhoneInput>
+            <Item
+              @labelFor="site-contact-email"
+              @errorMessage={{@primaryContact.error.email.message}}
+            >
+              <:label>E-mail</:label>
+              <:content as |errorMessage|>
+                <TrimInput
+                  @width="block"
+                  @value={{@primaryContact.email}}
+                  @onUpdate={{fn (mut @primaryContact.email)}}
+                  @error={{errorMessage}}
+                  id="site-contact-email"
+                />
+              </:content>
+              <:helpText>
+                {{helpText "email"}}
+              </:helpText>
+            </Item>
+            <Item
+              @labelFor="site-contact-website"
+              @errorMessage={{@primaryContact.error.website.message}}
+            >
+              <:label>Website</:label>
+              <:content as |hasError|>
+                <TrimInput
+                  @width="block"
+                  @value={{@primaryContact.website}}
+                  @onUpdate={{fn (mut @primaryContact.website)}}
+                  @error={{hasError}}
+                  id="site-contact-website"
+                />
+              </:content>
+              <:helpText>
+                {{helpText "url"}}
+              </:helpText>
+            </Item>
+          </:right>
+        </Card.Columns>
+      </:card>
+    </EditCard>
+  </template>
+}

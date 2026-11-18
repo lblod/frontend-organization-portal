@@ -1,0 +1,73 @@
+import DataCard from '../data-card';
+import telFormat from 'frontend-organization-portal/helpers/tel-format';
+import AuLinkExternal from '@appuniversum/ember-appuniversum/components/au-link-external';
+
+<template>
+  <DataCard>
+    <:title>
+      {{yield to="title"}}
+    </:title>
+    <:infotext>
+      {{yield to="infotext"}}
+    </:infotext>
+    <:card as |Card|>
+      <Card.Columns>
+        <:left as |Item|>
+          {{#if @address.fullAddress}}
+            <Item>
+              <:label>Adres</:label>
+              <:content>
+                {{@address.fullAddress}}
+              </:content>
+            </Item>
+          {{/if}}
+          {{#if @address.province}}
+            <Item>
+              <:label>Provincie</:label>
+              <:content>
+                {{@address.province}}
+              </:content>
+            </Item>
+          {{/if}}
+        </:left>
+        <:right as |Item|>
+          {{#if @primaryContact.telephone}}
+            <Item>
+              <:label>Primair telefoonnummer</:label>
+              <:content>
+                {{telFormat @primaryContact.telephone}}
+              </:content>
+            </Item>
+          {{/if}}
+          {{#if @secondaryContact.telephone}}
+            <Item>
+              <:label>Secundair telefoonnummer</:label>
+              <:content>
+                {{telFormat @secondaryContact.telephone}}
+              </:content>
+            </Item>
+          {{/if}}
+          {{#if @primaryContact.email}}
+            <Item>
+              <:label>E-mail</:label>
+              <:content>
+                {{@primaryContact.email}}
+              </:content>
+            </Item>
+          {{/if}}
+          {{#if @primaryContact.website}}
+            <Item>
+              <:label>Website</:label>
+              <:content>
+                <AuLinkExternal href={{@primaryContact.website}}>
+                  {{@primaryContact.website}}
+                  (externe link)
+                </AuLinkExternal>
+              </:content>
+            </Item>
+          {{/if}}
+        </:right>
+      </Card.Columns>
+    </:card>
+  </DataCard>
+</template>

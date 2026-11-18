@@ -1,0 +1,104 @@
+import Component from '@glimmer/component';
+import DataCard from '../data-card';
+import OrganizationStatus from '../organization-status';
+import dateFormat from 'frontend-organization-portal/helpers/date-format';
+import kboFormat from 'frontend-organization-portal/helpers/kbo-format';
+import AuLinkExternal from '@appuniversum/ember-appuniversum/components/au-link-external';
+import ContactDataCard from '../site/contact-data-card';
+import AuAlert from '@appuniversum/ember-appuniversum/components/au-alert';
+
+export default class DataCardComponent extends Component {
+  noKboMessage =
+    'Het KBO nummer is niet ingevuld. Hierdoor kunnen we de KBO gegevens niet tonen.';
+  noKboOrganizationMessage =
+    'De KBO gegevens van deze organisatie kunnen we niet tonen omdat deze momenteel niet beschikbaar zijn in onze bron Organisatieregister Wegwijs.';
+
+  <template>
+    {{#if @kboOrganization}}
+      <DataCard>
+        <:title>Organisatie</:title>
+        <:card as |Card|>
+          <Card.Columns>
+            <:left as |Item|>
+              <Item>
+                <:label>Naam</:label>
+                <:content>
+                  {{@kboOrganization.legalName}}
+                </:content>
+              </Item>
+              <Item>
+                <:label>Commerciële naam</:label>
+                <:content>
+                  {{@kboOrganization.name}}
+                </:content>
+              </Item>
+
+              <Item>
+                <:label>Afgekorte naam</:label>
+                <:content>
+                  {{@kboOrganization.alternativeName}}
+                </:content>
+              </Item>
+
+              <Item>
+                <:label>Rechtsvorm</:label>
+                <:content>
+                  {{@kboOrganization.rechtsvorm}}
+                </:content>
+              </Item>
+            </:left>
+            <:right as |Item|>
+              <Item>
+                <:label>Status</:label>
+                <:content>
+                  <OrganizationStatus
+                    @id={{@kboOrganization.organizationStatus.id}}
+                    @label={{@kboOrganization.organizationStatus.label}}
+                  />
+                </:content>
+              </Item>
+
+              <Item>
+                <:label>Begindatum</:label>
+                <:content>
+                  {{dateFormat @kboOrganization.startDate}}
+                </:content>
+              </Item>
+
+              <Item>
+                <:label>Ondernemingsnummer</:label>
+                <:content>
+                  {{#each @kboOrganization.identifiers as |identifier|}}
+                    {{kboFormat identifier.structuredIdentifier.localId}}
+                  {{/each}}
+                </:content>
+              </Item>
+              <Item>
+                <:label>Website KBO</:label>
+                <:content>
+                  <AuLinkExternal
+                    href="https://kbopub.economie.fgov.be/kbopub/zoeknummerform.html?nummer={{@kboNumber}}"
+                  >
+                    Link to page (externe link)
+                  </AuLinkExternal>
+                </:content>
+              </Item>
+            </:right>
+          </Card.Columns>
+        </:card>
+      </DataCard>
+      <ContactDataCard
+        @address={{@kboContact.contactAddress}}
+        @primaryContact={{@kboContact}}
+      >
+        <:title>
+          Maatschappelijke zetel
+        </:title>
+      </ContactDataCard>
+    {{else}}
+      <AuAlert @skin="warning" @size="tiny">
+        <p>{{if @kboNumber this.noKboOrganizationMessage this.noKboMessage}}</p>
+      </AuAlert>
+    {{/if}}
+  </template>
+}
