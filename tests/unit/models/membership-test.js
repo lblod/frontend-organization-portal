@@ -1340,21 +1340,6 @@ module('Unit | Model | membership', function (hooks) {
         CLASSIFICATION.OCMW,
         MEMBERSHIP_ROLES_MAPPING.SERVES,
       ],
-      [
-        CLASSIFICATION.MUNICIPALITY,
-        CLASSIFICATION.OCMW,
-        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
-      ],
-      [
-        CLASSIFICATION.PROVINCE,
-        CLASSIFICATION.MUNICIPALITY,
-        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
-      ],
-      [
-        CLASSIFICATION.PROVINCE,
-        CLASSIFICATION.OCMW,
-        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
-      ],
     ].forEach(([organization, member, roleMapping]) => {
       test(`a persisted "${roleMapping.label}" membership between a ${organization.label} and a ${member.label} cannot be removed`, async function (assert) {
         const model = pushMembership(this.store(), {
@@ -1368,6 +1353,21 @@ module('Unit | Model | membership', function (hooks) {
     });
 
     [
+      [
+        CLASSIFICATION.MUNICIPALITY,
+        CLASSIFICATION.OCMW,
+        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+      ],
+      [
+        CLASSIFICATION.PROVINCE,
+        CLASSIFICATION.MUNICIPALITY,
+        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+      ],
+      [
+        CLASSIFICATION.PROVINCE,
+        CLASSIFICATION.OCMW,
+        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+      ],
       [
         CLASSIFICATION.MUNICIPALITY,
         CLASSIFICATION.OCMW,

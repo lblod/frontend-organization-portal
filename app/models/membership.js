@@ -178,9 +178,8 @@ export default class MembershipModel extends AbstractValidationModel {
   }
 
   /**
-   * Memberships that reflect the administrative hierarchy are managed by
-   * migrations, not by users: province - municipality and province - OCMW
-   * (generic relation) and municipality - OCMW ("served by").
+   * The municipality - OCMW ("served by") memberships reflect the
+   * administrative hierarchy and are managed by migrations, not by users.
    * The same goes for the government relations that are auto-filled:
    * the special organizations sit on the `member` side, the memberships
    * are created automatically and are not editable or removable.
@@ -192,11 +191,7 @@ export default class MembershipModel extends AbstractValidationModel {
 
     return (
       !this.isNew &&
-      ((role?.hasRelationWith &&
-        ((org?.isProvince && member?.isMunicipality) ||
-          (org?.isProvince && member?.isOCMW) ||
-          (org?.isMunicipality && member?.isOCMW))) ||
-        (role?.serves && org?.isMunicipality && member?.isOCMW) ||
+      ((role?.serves && org?.isMunicipality && member?.isOCMW) ||
         ((role?.isFounderOf || role?.grantsRecognition) &&
           SPECIAL_RELATED_ORGANIZATION_IDS.includes(member?.id)))
     );
