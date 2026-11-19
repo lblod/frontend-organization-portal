@@ -25,6 +25,7 @@ export default class OrganizationsIndexRoute extends Route {
     organizationStatus: { refreshModel: true, replace: true },
     legalFormIds: { refreshModel: true, replace: true },
     contentThemes: { refreshModel: true, replace: true },
+    additionalQualificationIds: { refreshModel: true, replace: true },
     vendor: { refreshModel: true, replace: true },
   };
 
@@ -129,6 +130,14 @@ export default class OrganizationsIndexRoute extends Route {
         .split(',')
         .map((id) => `(content_theme_id:"${id}")`)
         .join(' OR ');
+    }
+
+    if (params.additionalQualificationIds) {
+      filter[':query:additional_qualification_id'] =
+        params.additionalQualificationIds
+          .split(',')
+          .map((id) => `(additional_qualification_id:"${id}")`)
+          .join(' OR ');
     }
 
     filter[':has-no:source'] = true;

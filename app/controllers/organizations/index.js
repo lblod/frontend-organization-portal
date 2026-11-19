@@ -22,6 +22,7 @@ export default class OrganizationsIndexController extends Controller {
     'organizationStatus',
     'legalFormIds',
     'contentThemes',
+    'additionalQualificationIds',
     'vendor',
   ];
 
@@ -39,6 +40,7 @@ export default class OrganizationsIndexController extends Controller {
   @tracked organizationStatus = '';
   @tracked legalFormIds = '';
   @tracked contentThemes = '';
+  @tracked additionalQualificationIds = '';
   @tracked vendor = '';
 
   get organizations() {
@@ -141,6 +143,14 @@ export default class OrganizationsIndexController extends Controller {
   }
 
   @action
+  setAdditionalQualificationIds(selection) {
+    this.page = null;
+    this.additionalQualificationIds = selection
+      .map((qualification) => qualification.id)
+      .join(',');
+  }
+
+  @action
   setOperationArea(selection) {
     this.page = null;
     this.operationArea = selection.map((location) => location.id).join(',');
@@ -188,6 +198,7 @@ export default class OrganizationsIndexController extends Controller {
     this.organizationStatus = '';
     this.legalFormIds = '';
     this.contentThemes = '';
+    this.additionalQualificationIds = '';
     this.page = 0;
     this.sort = 'name';
     this.vendor = '';
