@@ -1,10 +1,8 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import PowerSelect from 'ember-power-select/components/power-select';
-
-const CONTENT_THEME_SCHEME_ID = 'b8a2c4d6-e9f1-4a3b-8c5d-7e2f9a1b3c4d';
+import { contentThemesQuery } from 'frontend-organization-portal/builders/concepts';
 
 export default class ContentThemeSelectComponent extends Component {
   @service store;
@@ -15,15 +13,30 @@ export default class ContentThemeSelectComponent extends Component {
     this.loadContentThemesTask.perform();
   }
 
+  get selectedContentThemes() {
+    let selection = this.args.selected;
+
+    if (typeof selection === 'string' && selection.length) {
+      selection = selection
+        .split(',')
+        .map((id) => this.findContentThemeById(id))
+        .filter(Boolean);
+    }
+
+    return selection;
+  }
+
+  findContentThemeById(id) {
+    if (this.loadContentThemesTask.isRunning) {
+      return null;
+    }
+
+    let contentThemes = this.loadContentThemesTask.last.value;
+    return contentThemes.find((contentTheme) => contentTheme.id === id);
+  }
+
   loadContentThemesTask = task(async () => {
-    const { content } = await this.store.request(
-      queryBuilder('concept', {
-        sort: 'label',
-        'page[size]': 50,
-        'filter[in-scheme][:id:]': CONTENT_THEME_SCHEME_ID,
-        include: 'in-scheme',
-      }),
-    );
+    const { content } = await this.store.request(contentThemesQuery());
 
     return content;
   });
@@ -38,7 +51,7 @@ export default class ContentThemeSelectComponent extends Component {
         @searchField="label"
         @closeOnSelect={{false}}
         @options={{this.loadContentThemesTask.last}}
-        @selected={{@selected}}
+        @selected={{this.selectedContentThemes}}
         @onChange={{@onChange}}
         @triggerId={{@id}}
         as |contentTheme|

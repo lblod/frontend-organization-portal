@@ -21,6 +21,7 @@ export default class OrganizationsIndexController extends Controller {
     'recognizedWorshipTypeId',
     'organizationStatus',
     'legalFormIds',
+    'contentThemes',
     'vendor',
   ];
 
@@ -37,6 +38,7 @@ export default class OrganizationsIndexController extends Controller {
   @tracked recognizedWorshipTypeId = '';
   @tracked organizationStatus = '';
   @tracked legalFormIds = '';
+  @tracked contentThemes = '';
   @tracked vendor = '';
 
   get organizations() {
@@ -133,6 +135,12 @@ export default class OrganizationsIndexController extends Controller {
   }
 
   @action
+  setContentThemes(selection) {
+    this.page = null;
+    this.contentThemes = selection.map((theme) => theme.id).join(',');
+  }
+
+  @action
   setOperationArea(selection) {
     this.page = null;
     this.operationArea = selection.map((location) => location.id).join(',');
@@ -179,6 +187,7 @@ export default class OrganizationsIndexController extends Controller {
     this.recognizedWorshipTypeId = '';
     this.organizationStatus = '';
     this.legalFormIds = '';
+    this.contentThemes = '';
     this.page = 0;
     this.sort = 'name';
     this.vendor = '';

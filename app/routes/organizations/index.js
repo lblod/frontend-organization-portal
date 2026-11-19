@@ -24,6 +24,7 @@ export default class OrganizationsIndexRoute extends Route {
     recognizedWorshipTypeId: { refreshModel: true, replace: true },
     organizationStatus: { refreshModel: true, replace: true },
     legalFormIds: { refreshModel: true, replace: true },
+    contentThemes: { refreshModel: true, replace: true },
     vendor: { refreshModel: true, replace: true },
   };
 
@@ -120,6 +121,13 @@ export default class OrganizationsIndexRoute extends Route {
       filter[':query:legal_form_id'] = params.legalFormIds
         .split(',')
         .map((id) => `(legal_form_id:"${id}")`)
+        .join(' OR ');
+    }
+
+    if (params.contentThemes) {
+      filter[':query:content_theme_id'] = params.contentThemes
+        .split(',')
+        .map((id) => `(content_theme_id:"${id}")`)
         .join(' OR ');
     }
 

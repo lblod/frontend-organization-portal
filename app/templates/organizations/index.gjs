@@ -11,6 +11,7 @@ import ClassificationMultipleSelect from 'frontend-organization-portal/component
 import RecognizedWorshipTypeSelect from 'frontend-organization-portal/components/recognized-worship-type-select';
 import OrganizationStatusSelect from 'frontend-organization-portal/components/organization-status-select';
 import LegalFormMultipleSelect from 'frontend-organization-portal/components/legal-form-multiple-select';
+import ContentThemeSelect from 'frontend-organization-portal/components/content-theme-select';
 import VendorSelect from 'frontend-organization-portal/components/vendor-select';
 import AuButton from '@appuniversum/ember-appuniversum/components/au-button';
 import AuIcon from '@appuniversum/ember-appuniversum/components/au-icon';
@@ -152,6 +153,15 @@ import OrganizationStatus from 'frontend-organization-portal/components/organiza
                 @onChange={{@controller.setLegalFormIds}}
                 @allowClear={{true}}
                 @id="legal-form"
+              />
+            </div>
+            <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
+              <AuLabel for="content-themes">Inhoudelijk thema</AuLabel>
+              <ContentThemeSelect
+                @selected={{@controller.contentThemes}}
+                @onChange={{@controller.setContentThemes}}
+                @allowClear={{true}}
+                @id="content-themes"
               />
             </div>
             <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
