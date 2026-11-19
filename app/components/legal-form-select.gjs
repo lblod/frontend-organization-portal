@@ -1,10 +1,8 @@
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 import { task } from 'ember-concurrency';
-import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import PowerSelect from 'ember-power-select/components/power-select';
-
-const LEGAL_FORM_SCHEME_ID = 'c3ff1a7f-c091-484d-8785-c8a5740573af';
+import { legalFormsQuery } from 'frontend-organization-portal/builders/concepts';
 
 export default class LegalFormSelectComponent extends Component {
   @service store;
@@ -33,14 +31,7 @@ export default class LegalFormSelectComponent extends Component {
   }
 
   loadLegalFormsTask = task(async () => {
-    const { content } = await this.store.request(
-      queryBuilder('concept', {
-        sort: 'order',
-        'page[size]': 30,
-        'filter[in-scheme][:id:]': LEGAL_FORM_SCHEME_ID,
-        include: 'in-scheme',
-      }),
-    );
+    const { content } = await this.store.request(legalFormsQuery());
 
     return content;
   });
