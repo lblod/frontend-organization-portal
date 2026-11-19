@@ -1,6 +1,7 @@
 import SidebarContainer from 'frontend-organization-portal/components/sidebar-container';
 import { on } from '@ember/modifier';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
+import AdditionalQualificationsMultipleSelect from 'frontend-organization-portal/components/additional-qualifications-multiple-select';
 import OrganizationSelectByName from 'frontend-organization-portal/components/organization-select-by-name';
 import OrganizationSelectByIdentifier from 'frontend-organization-portal/components/organization-select-by-identifier';
 import LocationMultipleSelect from 'frontend-organization-portal/components/location-multiple-select';
@@ -162,6 +163,15 @@ import OrganizationStatus from 'frontend-organization-portal/components/organiza
                 @onChange={{@controller.setContentThemes}}
                 @allowClear={{true}}
                 @id="content-themes"
+              />
+            </div>
+            <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">
+              <AuLabel for="additional-qualifications">Bijkomende kwalificatie</AuLabel>
+              <AdditionalQualificationsMultipleSelect
+                @selected={{@controller.additionalQualificationIds}}
+                @onChange={{@controller.setAdditionalQualificationIds}}
+                @allowClear={{true}}
+                @id="additional-qualifications"
               />
             </div>
             <div class="au-o-grid__item au-u-1-2@small au-u-1-1@medium">

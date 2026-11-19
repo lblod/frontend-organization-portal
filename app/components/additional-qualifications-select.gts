@@ -9,8 +9,8 @@ import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { Await } from '@warp-drive/ember';
-import { query } from '@warp-drive/legacy/compat/builders';
 import PowerSelect from 'ember-power-select/components/power-select';
+import { additionalQualificationCodesQuery } from 'frontend-organization-portal/builders/additional-qualification-codes';
 import type AdditionalQualificationCode from 'frontend-organization-portal/models/additional-qualification-code';
 import { ADDITIONAL_QUALIFICATIONS } from 'frontend-organization-portal/models/additional-qualification-code';
 import type Store from 'frontend-organization-portal/services/store';
@@ -73,11 +73,7 @@ export default class AdditionalQualificationsSelect extends Component<Signature>
 
   async #loadOptions() {
     const { content: qualifications } = await this.store.request(
-      query<AdditionalQualificationCode>('additional-qualification-code', {
-        // There are currently 21 records in the DB, ensure this number is big enough to load all of them at once
-        'page[size]': 21,
-        sort: 'label',
-      }),
+      additionalQualificationCodesQuery(),
     );
 
     this._noQualificationsRecord = qualifications.find((qualification) => {
