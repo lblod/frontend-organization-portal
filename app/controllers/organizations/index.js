@@ -20,6 +20,7 @@ export default class OrganizationsIndexController extends Controller {
     'classificationIds',
     'recognizedWorshipTypeId',
     'organizationStatus',
+    'legalFormIds',
     'vendor',
   ];
 
@@ -35,6 +36,7 @@ export default class OrganizationsIndexController extends Controller {
   @tracked classificationIds = '';
   @tracked recognizedWorshipTypeId = '';
   @tracked organizationStatus = '';
+  @tracked legalFormIds = '';
   @tracked vendor = '';
 
   get organizations() {
@@ -125,6 +127,12 @@ export default class OrganizationsIndexController extends Controller {
   }
 
   @action
+  setLegalFormIds(selection) {
+    this.page = null;
+    this.legalFormIds = selection.map((form) => form.id).join(',');
+  }
+
+  @action
   setOperationArea(selection) {
     this.page = null;
     this.operationArea = selection.map((location) => location.id).join(',');
@@ -170,6 +178,7 @@ export default class OrganizationsIndexController extends Controller {
     this.classificationIds = '';
     this.recognizedWorshipTypeId = '';
     this.organizationStatus = '';
+    this.legalFormIds = '';
     this.page = 0;
     this.sort = 'name';
     this.vendor = '';

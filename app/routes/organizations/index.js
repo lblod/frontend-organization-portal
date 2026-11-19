@@ -23,6 +23,7 @@ export default class OrganizationsIndexRoute extends Route {
     classificationIds: { refreshModel: true, replace: true },
     recognizedWorshipTypeId: { refreshModel: true, replace: true },
     organizationStatus: { refreshModel: true, replace: true },
+    legalFormIds: { refreshModel: true, replace: true },
     vendor: { refreshModel: true, replace: true },
   };
 
@@ -113,6 +114,13 @@ export default class OrganizationsIndexRoute extends Route {
       filter['status_id'] = params.organizationStatus;
     } else {
       filter[':query:status_id'] = `(_exists_:status_id)`;
+    }
+
+    if (params.legalFormIds) {
+      filter[':query:legal_form_id'] = params.legalFormIds
+        .split(',')
+        .map((id) => `(legal_form_id:"${id}")`)
+        .join(' OR ');
     }
 
     filter[':has-no:source'] = true;
