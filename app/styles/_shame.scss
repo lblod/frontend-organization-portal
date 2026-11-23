@@ -215,3 +215,10 @@ $ember-power-select-focus-outline: solid 2px rgb(16 108 200) !default;
 .h-full {
   height: 100%;
 }
+
+// Based on https://tailwindcss.com/docs/text-overflow#truncating-text
+.u-truncate {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
