@@ -1,3 +1,9 @@
+## 1.53.0 (2026-11-23)
+
+#### :rocket: Enhancement
+* [#773](https://github.com/lblod/frontend-organization-portal/pull/773) [OP-3963] Add more organization filters ([@Windvis](https://github.com/Windvis))
+* [#772](https://github.com/lblod/frontend-organization-portal/pull/772) [OP-3951] Change event overview page changes ([@Windvis](https://github.com/Windvis))
+
 ## 1.52.0 (2026-11-18)
 
 #### :rocket: Enhancement
