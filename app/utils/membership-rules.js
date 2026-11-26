@@ -81,6 +81,45 @@ export function allowedRolesForClassification(classificationId) {
 }
 
 /**
+ * Whether a stored relation is left out of the related-organizations pages.
+ *
+ * The generic "has a relation with" role is reserved for the classifications
+ * `allowedHasRelationWithMemberships` lists. Stored relations with that role
+ * between two organizations of other classifications are kept, because the
+ * hierarchy that other applications receive is derived from them, but they
+ * are no longer shown. A relation with an organization that may have the role
+ * stays visible, on the pages of both its organizations.
+ *
+ * A relation is only hidden when the classification of both its organizations
+ * is known. The backend does not send the classification of a representative
+ * body along with the relations it is included in, so that one may still be
+ * loading; those relations stay visible in any case.
+ *
+ * @param {MembershipRoleModel} role - the role of the relation.
+ * @param {OrganizationModel[]} organizations - the two organizations of the
+ *     relation.
+ * @returns {boolean} true if the relation must not be shown.
+ */
+export function isHiddenRelation(role, organizations) {
+  if (role?.id !== MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id) {
+    return false;
+  }
+
+  return organizations.every((organization) => {
+    const classificationId = organization?.belongsTo('classification').id();
+    return classificationId && !mayHaveRelationWithRole(classificationId);
+  });
+}
+
+function mayHaveRelationWithRole(classificationId) {
+  return allowedHasRelationWithMemberships.some(
+    (entry) =>
+      entry.organizations.includes(classificationId) ||
+      entry.members.includes(classificationId),
+  );
+}
+
+/**
  * The relationship labels a user may pick for a new relation row with an
  * organization of the given classification. Each directional label implies one
  * side of the membership for the organization being edited: `role.label`

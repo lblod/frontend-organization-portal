@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import { query as queryBuilder } from '@warp-drive/legacy/compat/builders';
 import getFiltersForRoleLabel from 'frontend-organization-portal/utils/get-filters-for-role-label';
+import { isHiddenRelation } from 'frontend-organization-portal/utils/membership-rules';
 
 export default class OrganizationsOrganizationRelatedOrganizationsEditRoute extends Route {
   @service currentSession;
@@ -70,8 +71,18 @@ export default class OrganizationsOrganizationRelatedOrganizationsEditRoute exte
         ? membership.belongsTo('organization').value()
         : membership.belongsTo('member').value();
 
+    // Hidden relations are left out here rather than by the query: the rule
+    // looks at the role and at the classifications of both organizations of a
+    // relation, see `isHiddenRelation`. They are not on the page, so they
+    // cannot be edited or removed there either.
     const sortedMemberships = memberships
-      .slice()
+      .filter(
+        (membership) =>
+          !isHiddenRelation(membership.belongsTo('role').value(), [
+            membership.belongsTo('member').value(),
+            membership.belongsTo('organization').value(),
+          ]),
+      )
       .sort((a, b) =>
         otherOrganizationOf(a).abbName.localeCompare(
           otherOrganizationOf(b).abbName,

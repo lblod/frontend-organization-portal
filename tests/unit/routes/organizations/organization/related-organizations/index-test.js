@@ -280,6 +280,102 @@ module(
       );
     });
 
+    test('it leaves out the "has a relation with" relations between organizations that may not have that role', async function (assert) {
+      const store = this.store();
+      const { municipality, roles } = pushMunicipalityWithRelations(store);
+      const classificationCode = ({ id, label }) => ({
+        type: 'administrative-unit-classification-code',
+        id,
+        attributes: { label },
+      });
+      const organization = (id, name, classification) => ({
+        type: 'organization',
+        id,
+        attributes: { name },
+        relationships: {
+          classification: {
+            data: {
+              type: 'administrative-unit-classification-code',
+              id: classification.id,
+            },
+          },
+          organizationStatus: {
+            data: {
+              type: 'organization-status-code',
+              id: ORGANIZATION_STATUS.ACTIVE,
+            },
+          },
+        },
+      });
+      const relationWith = (id, { member, organization }) => ({
+        type: 'membership',
+        id,
+        relationships: {
+          member: { data: { type: 'organization', id: member } },
+          organization: { data: { type: 'organization', id: organization } },
+          role: { data: { type: 'membership-role', id: HAS_RELATION_WITH.id } },
+          during: { data: null },
+        },
+      });
+      const [withProvince, withWorshipService, withPoliceZone] = store
+        .push({
+          data: [
+            classificationCode(CLASSIFICATION.PROVINCE),
+            classificationCode(CLASSIFICATION.POLICE_ZONE),
+            classificationCode(CLASSIFICATION.WORSHIP_SERVICE),
+            organization('province', 'Provincie', CLASSIFICATION.PROVINCE),
+            organization('zone', 'Politiezone', CLASSIFICATION.POLICE_ZONE),
+            organization(
+              'worship-service',
+              'Kerkfabriek',
+              CLASSIFICATION.WORSHIP_SERVICE,
+            ),
+            // Kept for the hierarchy, but hidden
+            relationWith('m-province', {
+              member: 'municipality',
+              organization: 'province',
+            }),
+            // A worship service may have the role, so this one is shown
+            relationWith('m-worship-service', {
+              member: 'municipality',
+              organization: 'worship-service',
+            }),
+            // Kept for the hierarchy, but hidden
+            relationWith('m-zone', {
+              member: 'zone',
+              organization: 'municipality',
+            }),
+          ],
+        })
+        .slice(-3);
+      stubQueries(store, {
+        asMember: [withProvince, withWorshipService],
+        asOrganization: [withPoliceZone],
+      });
+      const route = setupRoute(this, { municipality, roles });
+      const shownRows = (model) =>
+        model.relatedOrganizations.map((row) => [
+          row.role,
+          row.organizationName,
+        ]);
+
+      assert.deepEqual(shownRows(await route.model(PARAMS)), [
+        ['Heeft een relatie met', 'Kerkfabriek'],
+      ]);
+
+      // Also when a link still selects the role, which the filter of the
+      // municipality no longer offers
+      assert.deepEqual(
+        shownRows(
+          await route.model({
+            ...PARAMS,
+            selectedRoleLabel: 'Heeft een relatie met',
+          }),
+        ),
+        [['Heeft een relatie met', 'Kerkfabriek']],
+      );
+    });
+
     test('it queries both sides with what the table shows when no role is selected', async function (assert) {
       const store = this.store();
       const { municipality, roles, asMember, asOrganization } =
