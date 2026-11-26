@@ -7,6 +7,7 @@ import {
 } from 'frontend-organization-portal/tests/helpers/feature-flags';
 import EditRoute from 'frontend-organization-portal/routes/organizations/organization/related-organizations/edit';
 import { MEMBERSHIP_ROLES_MAPPING } from 'frontend-organization-portal/models/membership-role';
+import { CLASSIFICATION } from 'frontend-organization-portal/models/administrative-unit-classification-code';
 
 module(
   'Unit | Route | organizations/organization/related-organizations/edit',
@@ -130,6 +131,149 @@ module(
         membershipC,
       ]);
       requestStub.restore();
+    });
+
+    const linkageTo = ({ type, id }) => ({ data: { type, id } });
+
+    const classifiedOrganization = (id, name, classification) => ({
+      type: 'organization',
+      id,
+      attributes: { name },
+      relationships: {
+        classification: linkageTo({
+          type: 'administrative-unit-classification-code',
+          id: classification.id,
+        }),
+      },
+    });
+
+    const hasRelationWithRole = {
+      type: 'membership-role',
+      id: MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
+      attributes: {},
+    };
+
+    const relationWith = (id, { member, organization }) => ({
+      type: 'membership',
+      id,
+      relationships: {
+        member: linkageTo(member),
+        organization: linkageTo(organization),
+        role: linkageTo(hasRelationWithRole),
+      },
+    });
+
+    /**
+     * Push the resources and run the model hook for the organization, with
+     * the pushed relations as the answer of the backend.
+     */
+    async function modelFor(context, organization, resources) {
+      const store = context.store();
+      const records = store.push({ data: resources });
+      const recordOf = (resource) => records[resources.indexOf(resource)];
+      const route = context.route();
+      route.modelFor = () => ({
+        organization: recordOf(organization),
+        roles: [],
+        selectableRoles: [],
+      });
+      const requestStub = sinon.stub(store, 'request').resolves({
+        content: resources
+          .filter((resource) => resource.type === 'membership')
+          .map(recordOf),
+      });
+
+      const model = await route.model({ page: 0, size: 500 });
+
+      requestStub.restore();
+      return model;
+    }
+
+    test('it leaves out the "has a relation with" relations between organizations that may not have that role', async function (assert) {
+      const municipality = classifiedOrganization(
+        'municipality',
+        'Gemeente',
+        CLASSIFICATION.MUNICIPALITY,
+      );
+      const province = classifiedOrganization(
+        'province',
+        'Provincie',
+        CLASSIFICATION.PROVINCE,
+      );
+      const zone = classifiedOrganization(
+        'zone',
+        'Politiezone',
+        CLASSIFICATION.POLICE_ZONE,
+      );
+      const worshipService = classifiedOrganization(
+        'worship-service',
+        'Kerkfabriek',
+        CLASSIFICATION.WORSHIP_SERVICE,
+      );
+
+      const model = await modelFor(this, municipality, [
+        hasRelationWithRole,
+        municipality,
+        province,
+        zone,
+        worshipService,
+        // Kept for the hierarchy, but hidden
+        relationWith('with-province', {
+          member: municipality,
+          organization: province,
+        }),
+        relationWith('with-zone', { member: zone, organization: municipality }),
+        // A worship service may have the role, so this one is shown
+        relationWith('with-worship-service', {
+          member: municipality,
+          organization: worshipService,
+        }),
+      ]);
+
+      assert.deepEqual(
+        model.memberships.map((membership) => membership.id),
+        ['with-worship-service'],
+      );
+    });
+
+    test('it keeps the relations of a worship organization, also with a representative body sent without its classification', async function (assert) {
+      const worshipService = classifiedOrganization(
+        'worship-service',
+        'Kerkfabriek',
+        CLASSIFICATION.WORSHIP_SERVICE,
+      );
+      const centralWorshipService = classifiedOrganization(
+        'central-worship-service',
+        'Centraal kerkbestuur',
+        CLASSIFICATION.CENTRAL_WORSHIP_SERVICE,
+      );
+      // The backend includes a representative body without the linkage to
+      // its classification
+      const representativeBody = {
+        type: 'representative-body',
+        id: 'representative-body',
+        attributes: { name: 'Bisdom' },
+      };
+
+      const model = await modelFor(this, worshipService, [
+        hasRelationWithRole,
+        worshipService,
+        centralWorshipService,
+        representativeBody,
+        relationWith('with-central-worship-service', {
+          member: worshipService,
+          organization: centralWorshipService,
+        }),
+        relationWith('with-representative-body', {
+          member: representativeBody,
+          organization: worshipService,
+        }),
+      ]);
+
+      assert.deepEqual(
+        model.memberships.map((membership) => membership.id),
+        ['with-representative-body', 'with-central-worship-service'],
+      );
     });
 
     test('it redirects non-worship users to the read view when the flag is on', function (assert) {

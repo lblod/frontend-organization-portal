@@ -7,6 +7,7 @@ import {
   allowedRoleLabelsForClassification,
   allowedRolesForClassification,
   hasRequiredMembershipFields,
+  isHiddenRelation,
   removingMembershipBreaksMinimum,
   sortRoleLabels,
 } from 'frontend-organization-portal/utils/membership-rules';
@@ -119,6 +120,100 @@ module('Unit | Utils | membership rules', function (hooks) {
           roles.map((role) => role.id),
         );
       });
+    });
+  });
+
+  module('isHiddenRelation', function () {
+    function createRole(store, role) {
+      return cachedRecord(store, 'membership-role', role);
+    }
+
+    [
+      // The stored generic relations the hierarchy is derived from
+      [CLASSIFICATION.PROVINCE, CLASSIFICATION.MUNICIPALITY],
+      [CLASSIFICATION.PROVINCE, CLASSIFICATION.OCMW],
+      [CLASSIFICATION.MUNICIPALITY, CLASSIFICATION.POLICE_ZONE],
+      [CLASSIFICATION.MUNICIPALITY, CLASSIFICATION.PROJECTVERENIGING],
+      [CLASSIFICATION.MUNICIPALITY, CLASSIFICATION.DISTRICT],
+    ].forEach(([organization, member]) => {
+      test(`it hides a "has a relation with" relation between a ${organization.label} and a ${member.label}`, function (assert) {
+        const store = this.store();
+        const role = createRole(
+          store,
+          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+        );
+
+        assert.true(
+          isHiddenRelation(role, [
+            createOrganization(store, member),
+            createOrganization(store, organization),
+          ]),
+        );
+      });
+    });
+
+    [
+      [CLASSIFICATION.CENTRAL_WORSHIP_SERVICE, CLASSIFICATION.WORSHIP_SERVICE],
+      [CLASSIFICATION.WORSHIP_SERVICE, CLASSIFICATION.REPRESENTATIVE_BODY],
+      // One organization that may have the role is enough, on either side
+      [CLASSIFICATION.MUNICIPALITY, CLASSIFICATION.WORSHIP_SERVICE],
+      [CLASSIFICATION.REPRESENTATIVE_BODY, CLASSIFICATION.PROVINCE],
+    ].forEach(([organization, member]) => {
+      test(`it shows a "has a relation with" relation between a ${organization.label} and a ${member.label}`, function (assert) {
+        const store = this.store();
+        const role = createRole(
+          store,
+          MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+        );
+
+        assert.false(
+          isHiddenRelation(role, [
+            createOrganization(store, member),
+            createOrganization(store, organization),
+          ]),
+        );
+      });
+    });
+
+    test('it shows the relations with every other role', function (assert) {
+      const store = this.store();
+      const organizations = [
+        createOrganization(store, CLASSIFICATION.MUNICIPALITY),
+        createOrganization(store, CLASSIFICATION.PROVINCE),
+      ];
+
+      Object.values(MEMBERSHIP_ROLES_MAPPING)
+        .filter((role) => role !== MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH)
+        .forEach((role) => {
+          assert.false(
+            isHiddenRelation(createRole(store, role), organizations),
+            role.label,
+          );
+        });
+    });
+
+    test('it only hides a relation when the classification of both organizations is known', function (assert) {
+      const store = this.store();
+      const role = createRole(
+        store,
+        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH,
+      );
+      // The backend includes a representative body in a relation without the
+      // linkage to its classification
+      const representativeBody = store.createRecord('representative-body');
+
+      assert.false(
+        isHiddenRelation(role, [
+          createOrganization(store, CLASSIFICATION.MUNICIPALITY),
+          representativeBody,
+        ]),
+      );
+      assert.false(
+        isHiddenRelation(role, [
+          representativeBody,
+          store.createRecord('representative-body'),
+        ]),
+      );
     });
   });
 

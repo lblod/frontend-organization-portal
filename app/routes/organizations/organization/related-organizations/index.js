@@ -4,6 +4,7 @@ import { query } from '@warp-drive/legacy/compat/builders';
 import { ORGANIZATION_STATUS } from '../../../../models/organization-status-code';
 import { getRelationStatus } from 'frontend-organization-portal/utils/relation-status';
 import { sortRelatedOrganizations } from 'frontend-organization-portal/utils/sort-related-organizations';
+import { isHiddenRelation } from 'frontend-organization-portal/utils/membership-rules';
 import { SPECIAL_RELATED_ORGANIZATION_IDS } from 'frontend-organization-portal/constants/special-organizations';
 
 export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute extends Route {
@@ -129,6 +130,10 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
 
     // Process the memberships retrieved from the backend since we need to
     // determined which involved organization display.
+    //
+    // Hidden relations are left out here rather than by the queries above: the
+    // rule looks at the role and at the classifications of both organizations
+    // of a relation, see `isHiddenRelation`.
     let relatedOrganizations = [];
 
     // The status of the current organization is loaded by the parent route,
@@ -140,6 +145,10 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       const relatedStatus = await relatedOrganization.organizationStatus;
       const role = await membership.role;
       const classification = await relatedOrganization.classification;
+
+      if (isHiddenRelation(role, [organization, relatedOrganization])) {
+        continue;
+      }
 
       relatedOrganizations.push({
         role: role.opLabel,
@@ -168,6 +177,10 @@ export default class OrganizationsOrganizationRelatedOrganizationsIndexRoute ext
       const memberStatus = await member.organizationStatus;
       const role = await membership.role;
       const classification = await member.classification;
+
+      if (isHiddenRelation(role, [organization, member])) {
+        continue;
+      }
 
       relatedOrganizations.push({
         role: role.inverseOpLabel,

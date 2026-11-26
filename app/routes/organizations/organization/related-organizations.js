@@ -23,7 +23,10 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
       }),
     );
 
-    const classificationId = organization.classification?.get('id');
+    // Wait for the classification instead of reading what is loaded: the
+    // backend does not send the one of a representative body along with the
+    // organization.
+    const classificationId = (await organization.classification)?.id;
 
     // Only offer the roles the rules allow for the classification.
     const selectableRoles = roles.filter((role) =>
@@ -38,19 +41,11 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
 
     // Labels the rules exclude. Only added if the organization already has
     // relations with them, so they stay filterable.
+    //
+    // Non-worship types no longer get the generic "has a relation with" role.
+    // Their stored relations with it are not shown (see `isHiddenRelation`),
+    // so its label is not offered as a filter either.
     const storedRoleLabels = [];
-
-    // Non-worship types no longer get the generic "has a relation with" role,
-    // but existing relations with it must stay filterable.
-    if (
-      !selectableRoles.some((role) => role.hasRelationWith) &&
-      (await this.#hasStoredRelationsWithRole(
-        organization,
-        MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.id,
-      ))
-    ) {
-      storedRoleLabels.push(MEMBERSHIP_ROLES_MAPPING.HAS_RELATION_WITH.label);
-    }
 
     // The rules exclude the founder and recognition roles because they're
     // autofilled for some types. Show "Is opgericht door" and
@@ -63,11 +58,7 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
         continue;
       }
       if (
-        await this.#hasStoredRelationsWithRole(
-          organization,
-          governmentRole.id,
-          'organization',
-        )
+        await this.#hasStoredRelationsWithRole(organization, governmentRole.id)
       ) {
         storedRoleLabels.push(governmentRole.inverseLabel);
       }
@@ -88,20 +79,13 @@ export default class OrganizationsOrganizationRelatedOrganizationsRoute extends 
   }
 
   /**
-   * Whether the organization has stored memberships with the given role,
-   * either as their member or as their organization. Pass a relation to
-   * only check the memberships on that side of the organization.
+   * Whether the organization has stored memberships with the given role in
+   * which it is the `organization`.
    */
-  async #hasStoredRelationsWithRole(organization, roleId, relation) {
-    const organizationFilters = relation
-      ? { [`filter[${relation}][:id:]`]: organization.id }
-      : {
-          'filter[:or:][member][:id:]': organization.id,
-          'filter[:or:][organization][:id:]': organization.id,
-        };
+  async #hasStoredRelationsWithRole(organization, roleId) {
     const { content } = await this.store.request(
       query('membership', {
-        ...organizationFilters,
+        'filter[organization][:id:]': organization.id,
         'filter[role][:id:]': roleId,
         page: { size: 1, number: 0 },
       }),

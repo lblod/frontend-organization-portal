@@ -133,6 +133,27 @@ module(
       assert.deepEqual(model.selectableRoleLabels, MUNICIPALITY_LABELS);
     });
 
+    test('it waits for a classification that is not loaded with the organization, as for a representative body', async function (assert) {
+      const store = this.store();
+      const { roles } = pushMunicipalityAndRoles(store);
+      stubQueries(store, roles);
+      // An async relationship that is still loading: reading it gives
+      // nothing yet, awaiting it gives the classification
+      const classification = Promise.resolve({
+        id: CLASSIFICATION.REPRESENTATIVE_BODY.id,
+      });
+      classification.get = () => undefined;
+      const route = setupRoute(this, {
+        id: 'representative-body',
+        classification,
+      });
+
+      const model = await route.model();
+
+      assert.deepEqual(model.allowedRoleLabels, ['Heeft een relatie met']);
+      assert.deepEqual(model.selectableRoleLabels, ['Heeft een relatie met']);
+    });
+
     test('it checks for stored relations with the roles the rules exclude', async function (assert) {
       const store = this.store();
       const { municipality, roles } = pushMunicipalityAndRoles(store);
@@ -142,13 +163,6 @@ module(
       await route.model();
 
       assert.deepEqual(queries, [
-        {
-          // "Has a relation with" has no direction: both sides
-          'filter[:or:][member][:id:]': 'municipality',
-          'filter[:or:][organization][:id:]': 'municipality',
-          'filter[role][:id:]': HAS_RELATION_WITH.id,
-          page: { size: 1, number: 0 },
-        },
         {
           // "Is erkend door": the municipality is the recognised organization
           'filter[organization][:id:]': 'municipality',
@@ -161,23 +175,37 @@ module(
     test('it keeps the labels of stored relations with excluded roles filterable, without offering them for new relations', async function (assert) {
       const store = this.store();
       const { municipality, roles } = pushMunicipalityAndRoles(store);
-      stubQueries(store, roles, [
-        HAS_RELATION_WITH.id,
-        GRANTS_RECOGNITION_TO.id,
-      ]);
+      stubQueries(store, roles, [GRANTS_RECOGNITION_TO.id]);
       const route = setupRoute(this, municipality);
 
       const model = await route.model();
 
       assert.deepEqual(model.allowedRoleLabels, MUNICIPALITY_LABELS);
       assert.deepEqual(model.selectableRoleLabels, [
-        'Heeft een relatie met',
         'Is lid van',
         'Is feitelijk vertegenwoordigd in (niet lidmaatschap)',
         'Is erkend door',
         'Is oprichter van',
         'Wordt bediend door',
       ]);
+    });
+
+    test('it does not offer "Heeft een relatie met" as a filter for a type that may not have the role, whatever is stored', async function (assert) {
+      const store = this.store();
+      const { municipality, roles } = pushMunicipalityAndRoles(store);
+      // The stored relations with the role are kept, but hidden
+      const queries = stubQueries(store, roles, [HAS_RELATION_WITH.id]);
+      const route = setupRoute(this, municipality);
+
+      const model = await route.model();
+
+      assert.deepEqual(model.selectableRoleLabels, MUNICIPALITY_LABELS);
+      assert.notOk(
+        queries.some(
+          (query) => query['filter[role][:id:]'] === HAS_RELATION_WITH.id,
+        ),
+        'it does not look for stored relations with the role',
+      );
     });
   },
 );
